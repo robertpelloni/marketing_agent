@@ -9,3 +9,10 @@ This system is an asynchronous, event-driven orchestration layer written in Go t
 
 ## Database Schema Constraints
 All data migrations must use strict relational mappings with full foreign key constraints tracking Companies -> Contacts -> Interactions -> Deals.
+
+## Autonomous Development & Repository Management Protocol
+The system follows a strict "EXECUTIVE PROTOCOL" for repository synchronization and intelligent merging:
+- **Upstream Tracking:** Always sync with the parent fork and update all submodules recursively.
+- **Intelligent Merge:** Use the dual-direction merge engine to reconcile feature branches with `main`.
+- **Validation:** Every build must pass the merge integrity tests defined in `internal/gitcheck`.
+- **Automation:** Utilize `scripts/sync_repo.sh` for automated synchronization.

@@ -47,6 +47,30 @@ func IsSynced(target string) (bool, error) {
 	return true, nil
 }
 
+// SyncRemote fetches and merges changes from origin/main.
+func SyncRemote() error {
+	fetchCmd := exec.Command("git", "fetch", "origin", "main")
+	if err := fetchCmd.Run(); err != nil {
+		return fmt.Errorf("failed to fetch from origin: %v", err)
+	}
+
+	mergeCmd := exec.Command("git", "merge", "origin/main", "-m", "chore: autonomous sync with origin/main", "--no-edit")
+	if err := mergeCmd.Run(); err != nil {
+		return fmt.Errorf("failed to merge from origin/main: %v", err)
+	}
+
+	return nil
+}
+
+// UpdateSubmodules updates all git submodules.
+func UpdateSubmodules() error {
+	cmd := exec.Command("git", "submodule", "update", "--init")
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to update submodules: %v", err)
+	}
+	return nil
+}
+
 // CheckConflicts checks if there are any unmerged paths (conflicts).
 func CheckConflicts() (bool, error) {
 	cmd := exec.Command("git", "diff", "--name-only", "--diff-filter=U")

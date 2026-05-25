@@ -13,3 +13,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `VERSION`, `ROADMAP.md`, and `TODO.md` for project tracking.
 - Go module initialization.
 - Basic `build.bat` and `start.bat` execution scripts.
+- Automated conflict detection and merge integrity tests in `internal/gitcheck`.

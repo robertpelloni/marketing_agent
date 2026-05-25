@@ -5,5 +5,6 @@
 - [ ] Implement Task 3: Engineering Contact Enrichment Engine
 - [ ] Implement Task 4: Technical Context Aggregator & Prompt Formatter
 - [ ] Implement Task 5: The Inbound Communication State Machine
-- [ ] Verify pathing in `build.bat` and `start.bat`
+- [x] Verify pathing in `build.bat` and `start.bat`
+- [x] Implement automated conflict detection tests
 - [ ] Add `borg` submodule for technical documentation reference

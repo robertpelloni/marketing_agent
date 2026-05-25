@@ -1,22 +1,25 @@
 # Handoff - Session Summary
 
 ## Accomplishments
-- **Self-Learning Sales Workflow Engine Implementation:**
-    - Developed `internal/communication/strategy.go` defining the `SalesStrategy` interface.
-    - Implemented `LearningSalesEngine` in `internal/communication/engine.go`, enabling autonomous decision-making for responses, state transitions, and human escalation.
-    - Integrated the sales engine into the `communication.Manager`, ensuring context-aware interactions.
-- **System Hardening:**
-    - Resolved critical bugs in the communication module, including a potential panic and incorrect deal association.
-    - Restored the `--recursive` flag for native Go submodule updates to ensure full protocol compliance.
-- **Documentation & Roadmap:**
-    - Updated `ROADMAP.md` and `TODO.md` to reflect Phase 4 progress.
-    - Documented the self-learning architecture in `MEMORY.md`.
+- **CRM Integration:**
+    - Established the `internal/crm` package with a robust `CRMClient` interface.
+    - Implemented `MockCRMClient` for real-time sales data simulation.
+    - Developed a `Worker` for periodic deal synchronization and lead reconciliation.
+- **Borg Outreach System Foundation:**
+    - Created `pkg/agents/discovery.go` for automated GitHub/MCP repository scanning.
+    - Implemented `pkg/config/safety.go` with strict PR throttling (max 3-5/day) and "Helpful Peer" tone constraints.
+- **Governance & Scaling:**
+    - Unified the multi-agent orchestration in `cmd/sales_bot/main.go` with independent intervals for CRM sync, Outreach discovery, and Lead enrichment.
+    - Updated `AGENTS.md` with new "Extension Conventions" and "Tech Stack" specifications.
+- **Project Tracking:**
+    - Refined `ROADMAP.md` and `TODO.md` to reflect Phase 4/5 integration progress.
 
-## Key Technical Details
-- **Decision Engine:** Uses lead value (market cap) and interaction depth to determine whether to advance a lead to the `Negotiating` state or escalate to a human.
-- **Data Association:** The communication manager now correctly identifies the specific deal associated with a contact's company during inbound processing.
+## Technical Details
+- **Sync Logic:** Deals in `Negotiating` or `Closed` states are automatically pushed to the CRM.
+- **Safety Policy:** Outreach is gated by the `SafetyConfig` to maintain developer-to-developer collaboration standards.
+- **System Stability:** Verified via the full test suite and Dockerized build validation.
 
 ## Next Steps
-1. Transition from mock components to real RAG-powered technical Q&A in the conversational engine.
-2. Implement Phase 5: Billing & ERP integration with Stripe.
-3. Enhance the web UI to provide visibility into the sales engine's decision-making process.
+1. Transition `MockCRMClient` to a live integration (e.g., Salesforce, HubSpot).
+2. Implement the `Context Analysis Layer` to parse target repository READMEs for tool mappings.
+3. Enhance the web dashboard with Outreach and CRM synchronization logs.

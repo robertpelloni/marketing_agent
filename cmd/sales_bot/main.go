@@ -10,12 +10,14 @@ import (
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/researcher"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/web"
+	"github.com/robertpelloni/enterprise_sales_bot/pkg/agents"
 
 	_ "github.com/lib/pq" // PostgreSQL driver
 )
@@ -68,6 +70,19 @@ func main() {
 
 	// Run researcher in background
 	go r.Run(ctx, 1*time.Hour)
+
+	// 2ca. Setup CRM Integration
+	crmClient := crm.NewMockCRMClient()
+	crmWorker := crm.NewWorker(database, crmClient)
+
+	// Run CRM sync in background
+	go crmWorker.Run(ctx, 30*time.Minute)
+
+	// 2cb. Setup Borg Outreach System
+	outreachWorker := agents.NewTargetDiscoveryWorker(database)
+
+	// Run outreach discovery in background
+	go outreachWorker.Run(ctx, 2*time.Hour)
 
 	// 2d. Setup Deployer
 	deployer := deploy.NewDeployer()

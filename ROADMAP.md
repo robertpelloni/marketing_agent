@@ -21,6 +21,7 @@ The bot's repository now includes a robust CI/CD pipeline with automated Postgre
 ## Phase 2: Lead Generation & Enrichment
 - [x] Target Discovery Scraper Module (Job Boards, GitHub)
 - [x] Engineering Contact Enrichment Engine (Apollo/Hunter integrations)
+- [x] CRM API Integration (Mock)
 
 ## Phase 3: Research & Personalization
 - [x] Technical Context Aggregator (GitHub & Technical Blog crawler)
@@ -33,5 +34,6 @@ The bot's repository now includes a robust CI/CD pipeline with automated Postgre
 - [ ] Negotiation & Pricing Engine
 
 ## Phase 5: Automation & Fulfillment
+- [x] Borg Outreach System Foundation (Target Discovery, Safety Policies)
 - [ ] Billing & ERP Integration (Stripe)
 - [ ] Automated Provisioning

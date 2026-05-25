@@ -1,0 +1,29 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.24'
+
+    - name: Build
+      run: go build -o sales_bot ./cmd/sales_bot
+
+    - name: Deploy to Environment
+      run: |
+        echo "Provisioning and updating bot repository..."
+        # Placeholder for actual deployment logic (e.g., scp, docker push, etc.)
+        # Based on the protocol: git submodule update --init --recursive on the host
+        echo "Updating remote submodules and restarting service..."

@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- CI/CD: Enhanced `ci.yml` for protocol compliance and version verification.
+- CI/CD: Implemented `deploy.yml` for automated repo provisioning on version tags.
 - Task 5: Initial infrastructure for Inbound Communication State Machine.
 
 ## [0.2.0] - 2025-05-25

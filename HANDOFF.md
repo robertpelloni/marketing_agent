@@ -1,23 +1,23 @@
 # Handoff - Session Summary
 
 ## Accomplishments
-- **Communication Module Implementation:**
-    - Developed `internal/communication/classifier.go` with a `MockIntentClassifier` for heuristic-based intent detection.
-    - Developed `internal/communication/responder.go` with a `MockResponseGenerator` for template-based technical and sales replies.
-    - Implemented core processing logic in `internal/communication/manager.go`, coordinating classification, persistence, and response generation.
-- **Database Enhancements:**
-    - Added persistence methods for interactions (`CreateInteraction`, `ListInteractionsByContact`) to `internal/db/company.go`.
-- **System Integration:**
-    - Integrated the `communication.Manager` into the main entry point at `cmd/sales_bot/main.go`.
-- **Roadmap Progression:**
-    - Updated `TODO.md` and `ROADMAP.md` to reflect progress on Phase 4 (Task 5).
-    - Incremented version to `0.3.0-dev`.
+- **CI/CD Pipeline Implementation:**
+    - Refined `.github/workflows/ci.yml` for protocol compliance, adding recursive submodule initialization and version consistency checks.
+    - Created `.github/workflows/deploy.yml` for automated provisioning and repository updates on version tags (`v*`).
+- **System Hardening & Bug Fixes:**
+    - Fixed database persistence errors in `internal/db/company.go` related to Go slice/PostgreSQL array mapping using `pq.Array()`.
+    - Implemented robust `sql.Null*` handling for nullable database columns (`quoted_pricing`, `technical_dossier`, etc.).
+    - Ensured all programmatic Git operations (merges, syncs) are non-interactive (`--no-edit`, `-m`) to support autonomous execution.
+- **Documentation:**
+    - Updated `DEPLOY.md` with CI/CD details and secret requirements.
+    - Updated `ROADMAP.md` and `CHANGELOG.md`.
 
-## Technical Details
-- **Architecture:** The communication system is now capable of processing simulated inbound messages, categorizing them into `Technical`, `Pricing`, `Objection`, or `Spam` intents, and generating tailored responses.
-- **Data Integrity:** Both inbound and outbound interactions are persisted to the PostgreSQL database with full relationship mapping to contacts.
+## Key Technical Details
+- **SQL Safety:** All slice types passed to the database must be wrapped in `pq.Array()`.
+- **NULL Safety:** Nullable columns from the database are scanned into `sql.Null*` types before being assigned to struct fields.
+- **Autonomous Sync:** The native Go `SyncRemote` logic is now safe for unattended environments.
 
 ## Next Steps
-1. Transition to a real LLM-backed `IntentClassifier` for more robust message categorization.
-2. Integrate the RAG (Retrieval-Augmented Generation) engine into the `ResponseGenerator` to use Borg's codebase and documentation for technical answers.
-3. Enhance the web dashboard to visualize interaction histories for each contact.
+1. Push a version tag (e.g., `v0.2.0`) to trigger and verify the automated deployment workflow.
+2. Complete Task 5: Implement real LLM-backed intent classification and RAG response generation.
+3. Enhance the web UI to display technical dossiers and detailed interaction logs.

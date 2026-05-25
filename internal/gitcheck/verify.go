@@ -54,7 +54,7 @@ func SyncRemote() error {
 		return fmt.Errorf("failed to fetch from origin: %v", err)
 	}
 
-	mergeCmd := exec.Command("git", "merge", "origin/main")
+	mergeCmd := exec.Command("git", "merge", "origin/main", "-m", "chore: autonomous sync with origin/main", "--no-edit")
 	if err := mergeCmd.Run(); err != nil {
 		return fmt.Errorf("failed to merge from origin/main: %v", err)
 	}

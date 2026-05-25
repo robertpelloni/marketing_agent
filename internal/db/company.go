@@ -2,8 +2,11 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"time"
+
+	"github.com/lib/pq"
 )
 
 // CreateCompany inserts a new company into the database.
@@ -20,8 +23,8 @@ func (db *DB) CreateCompany(ctx context.Context, company *Company) error {
 	err := db.Conn.QueryRowContext(ctx, query,
 		company.Name,
 		company.Domain,
-		company.TechStack,
-		company.HiringSignals,
+		pq.Array(company.TechStack),
+		pq.Array(company.HiringSignals),
 		company.MarketCapTier,
 		company.CreatedAt,
 		company.UpdatedAt,
@@ -45,8 +48,8 @@ func (db *DB) GetCompanyByID(ctx context.Context, id int64) (*Company, error) {
 		&company.ID,
 		&company.Name,
 		&company.Domain,
-		&company.TechStack,
-		&company.HiringSignals,
+		pq.Array(&company.TechStack),
+		pq.Array(&company.HiringSignals),
 		&company.MarketCapTier,
 		&company.CreatedAt,
 		&company.UpdatedAt,
@@ -69,8 +72,8 @@ func (db *DB) GetCompanyByDomain(ctx context.Context, domain string) (*Company, 
 		&company.ID,
 		&company.Name,
 		&company.Domain,
-		&company.TechStack,
-		&company.HiringSignals,
+		pq.Array(&company.TechStack),
+		pq.Array(&company.HiringSignals),
 		&company.MarketCapTier,
 		&company.CreatedAt,
 		&company.UpdatedAt,
@@ -137,18 +140,23 @@ func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, er
 	var deals []Deal
 	for rows.Next() {
 		var deal Deal
+		var pricing sql.NullFloat64
+		var requirements, dossier sql.NullString
 		if err := rows.Scan(
 			&deal.ID,
 			&deal.CompanyID,
 			&deal.CurrentState,
-			&deal.QuotedPricing,
-			&deal.CustomRequirements,
-			&deal.TechnicalDossier,
+			&pricing,
+			&requirements,
+			&dossier,
 			&deal.CreatedAt,
 			&deal.UpdatedAt,
 		); err != nil {
 			return nil, fmt.Errorf("failed to scan deal: %w", err)
 		}
+		deal.QuotedPricing = pricing.Float64
+		deal.CustomRequirements = requirements.String
+		deal.TechnicalDossier = dossier.String
 		deals = append(deals, deal)
 	}
 	return deals, nil
@@ -171,18 +179,23 @@ func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
 	var deals []Deal
 	for rows.Next() {
 		var deal Deal
+		var pricing sql.NullFloat64
+		var requirements, dossier sql.NullString
 		if err := rows.Scan(
 			&deal.ID,
 			&deal.CompanyID,
 			&deal.CurrentState,
-			&deal.QuotedPricing,
-			&deal.CustomRequirements,
-			&deal.TechnicalDossier,
+			&pricing,
+			&requirements,
+			&dossier,
 			&deal.CreatedAt,
 			&deal.UpdatedAt,
 		); err != nil {
 			return nil, fmt.Errorf("failed to scan deal: %w", err)
 		}
+		deal.QuotedPricing = pricing.Float64
+		deal.CustomRequirements = requirements.String
+		deal.TechnicalDossier = dossier.String
 		deals = append(deals, deal)
 	}
 	return deals, nil

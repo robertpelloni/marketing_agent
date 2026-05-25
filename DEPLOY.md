@@ -39,4 +39,12 @@ start.bat
 ```
 
 ## CI/CD
-The project uses GitHub Actions for continuous integration. The workflow is defined in `.github/workflows/ci.yml`.
+The project uses GitHub Actions for continuous integration and automated deployment:
+- **CI (`ci.yml`):** Runs on every push and PR to `main`. It verifies submodule integrity, version consistency between `VERSION` and `VERSION.md`, and executes all integrity and project tests.
+- **CD (`deploy.yml`):** Automatically triggers on version tags (e.g., `v0.2.0`). It builds the bot and executes provisioning logic to update the target environment.
+
+### Required Secrets
+To enable automated deployment, ensure the following secrets are configured in GitHub:
+- `DEPLOY_HOST`: The target server address.
+- `DEPLOY_KEY`: SSH private key for server access.
+- `DATABASE_URL`: Production PostgreSQL connection string.

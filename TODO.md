@@ -12,9 +12,12 @@
     - [x] Technical blog scraper
     - [x] Prompt construction engine
 - [ ] Implement Task 5: The Inbound Communication State Machine
-    - [ ] Intent classification
-    - [ ] RAG integration
-    - [ ] Negotiation logic
+    - [ ] Define communication interfaces (Classifier, Responder)
+    - [ ] Implement Mock Intent Classifier
+    - [ ] Implement RAG-powered Response Generator foundation
+    - [ ] Create Interaction database handlers
+    - [ ] Implement the Inbound Communication background worker
+    - [ ] Add negotiation & pricing engine bounds
 - [x] Verify pathing in `build.bat` and `start.bat`
 - [x] Implement automated conflict detection tests
 - [x] Implement automated conflict resolution simulation tests

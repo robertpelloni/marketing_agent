@@ -41,6 +41,15 @@ func (o *Orchestrator) Run(ctx context.Context, interval time.Duration) {
 }
 
 func (o *Orchestrator) executeStep(ctx context.Context) {
+	// 0. Executive Protocol: Sync & Update
+	log.Println("Autodev: Executing Executive Sync Protocol...")
+	if err := gitcheck.SyncRemote(); err != nil {
+		log.Printf("Autodev: Remote sync failed: %v", err)
+	}
+	if err := gitcheck.UpdateSubmodules(); err != nil {
+		log.Printf("Autodev: Submodule update failed: %v", err)
+	}
+
 	// 1. Verify repository state
 	clean, err := gitcheck.IsClean()
 	if err != nil {

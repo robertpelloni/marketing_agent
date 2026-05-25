@@ -1,0 +1,26 @@
+# TODO
+
+- [x] Implement Task 1: Core Database Migrations & Models
+- [x] Implement Task 2: The Target Discovery Scraper Module
+- [x] Implement Task 3: Engineering Contact Enrichment Engine
+    - [x] Define Enrichment interfaces
+    - [x] Implement Mock Enrichment Source
+    - [x] Implement Enricher background worker
+    - [x] Add DB persistence for Contacts
+- [x] Implement Task 4: Technical Context Aggregator & Prompt Formatter
+    - [x] GitHub crawler for target engineers
+    - [x] Technical blog scraper
+    - [x] Prompt construction engine
+- [ ] Implement Task 5: The Inbound Communication State Machine
+    - [ ] Define communication interfaces (Classifier, Responder)
+    - [ ] Implement Mock Intent Classifier
+    - [ ] Implement RAG-powered Response Generator foundation
+    - [ ] Create Interaction database handlers
+    - [ ] Implement the Inbound Communication background worker
+    - [ ] Add negotiation & pricing engine bounds
+- [x] Verify pathing in `build.bat` and `start.bat`
+- [x] Implement automated conflict detection tests
+- [x] Implement automated conflict resolution simulation tests
+- [x] Configure CI pipeline
+- [x] Implement Self-Service Deployment Pipeline (Sync & Build triggers)
+- [x] Add `borg` submodule for technical documentation reference

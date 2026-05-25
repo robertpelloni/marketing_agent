@@ -37,6 +37,11 @@ The application includes a built-in dashboard for managing deployment tasks auto
 - **Sync Repository:** Triggers a fetch and merge from the remote origin and updates all submodules recursively, ensuring the bot is running the latest code.
 - **Trigger Build:** Executes the project build process (`go build`) to recompile the system on the target environment.
 
+### Automated Repository Synchronization
+The bot can be configured to automatically sync with its repository using two methods:
+1. **GitHub Webhooks:** Configure your repository to send push events to `http://<bot-ip>:8080/api/v1/webhook/github`. This will trigger an immediate sync and build.
+2. **Background Polling:** Set the `DEPLOY_SYNC_INTERVAL` environment variable (e.g., `1h`, `15m`) to enable periodic background synchronization.
+
 ## Running the Application
 Run the provided start script:
 ```batch

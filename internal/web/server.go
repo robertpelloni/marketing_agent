@@ -28,6 +28,7 @@ func (s *Server) ListenAndServe(addr string) error {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", s.handleDashboard)
 	mux.HandleFunc("/health", s.handleHealth)
+	mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
 
 	log.Printf("Web dashboard starting on %s", addr)
 	return http.ListenAndServe(addr, mux)
@@ -143,4 +144,27 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "OK")
+}
+
+func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	log.Println("Webhook: Received GitHub push event, triggering deployment...")
+
+	// Trigger sync and build in a goroutine to avoid blocking the webhook response
+	go func() {
+		if err := s.deploy.ExecuteSync(); err != nil {
+			log.Printf("Webhook: Sync failed: %v", err)
+			return
+		}
+		if err := s.deploy.ExecuteBuild(); err != nil {
+			log.Printf("Webhook: Build failed: %v", err)
+		}
+	}()
+
+	w.WriteHeader(http.StatusAccepted)
+	fmt.Fprintln(w, "Deployment triggered")
 }

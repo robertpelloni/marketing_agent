@@ -72,6 +72,16 @@ func main() {
 	// 2d. Setup Deployer
 	deployer := deploy.NewDeployer()
 
+	// 2da. Setup Deployer background sync (optional)
+	syncIntervalStr := os.Getenv("DEPLOY_SYNC_INTERVAL")
+	if syncIntervalStr != "" {
+		if interval, err := time.ParseDuration(syncIntervalStr); err == nil {
+			go deployer.Run(ctx, interval)
+		} else {
+			log.Printf("Warning: Invalid DEPLOY_SYNC_INTERVAL: %v", err)
+		}
+	}
+
 	// 2e. Setup Communication Manager
 	classifier := &communication.MockIntentClassifier{}
 	responder := &communication.MockResponseGenerator{}

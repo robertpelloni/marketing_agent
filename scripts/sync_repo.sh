@@ -15,15 +15,15 @@ git submodule update --init --recursive
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 if [ "$CURRENT_BRANCH" == "main" ]; then
-    echo "On main branch. Checking for feature branches to merge..."
-    # Logic to identify robertpelloni feature branches would go here
+    echo "On main branch. Syncing with remote..."
+    git merge origin/main --no-edit
 else
     echo "On feature branch: $CURRENT_BRANCH. Merging main back to feature..."
-    git merge main -m "chore: sync feature branch with main"
+    git merge main -m "chore: sync feature branch with main" --no-edit
 fi
 
 # 4. Workspace Cleanup & Build
 echo "Validating build..."
-./build.bat
+go build -v -o bin/sales_bot.exe ./cmd/sales_bot
 
 echo "Sync complete."

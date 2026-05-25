@@ -1,9 +1,11 @@
 package deploy
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os/exec"
+	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 )
@@ -41,4 +43,24 @@ func (d *Deployer) ExecuteBuild() error {
 	}
 	log.Println("Deployment: Build successful.")
 	return nil
+}
+
+// Run starts the background synchronization worker.
+func (d *Deployer) Run(ctx context.Context, interval time.Duration) {
+	ticker := time.NewTicker(interval)
+	defer ticker.Stop()
+
+	log.Printf("Deployment worker started (interval: %v)...", interval)
+
+	for {
+		select {
+		case <-ctx.Done():
+			log.Println("Deployment worker stopping...")
+			return
+		case <-ticker.C:
+			if err := d.ExecuteSync(); err != nil {
+				log.Printf("Deployment background sync failed: %v", err)
+			}
+		}
+	}
 }

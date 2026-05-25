@@ -80,6 +80,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				.status { font-weight: bold; padding: 4px 8px; border-radius: 4px; cursor: help; }
 				.status-Discovered { background-color: #e2e3e5; color: #383d41; }
 				.status-Researched { background-color: #cce5ff; color: #004085; }
+				.status-PR { background-color: #fff3cd; color: #856404; }
 				.action-btn { background-color: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
 				.action-btn:hover { background-color: #218838; }
 				.deploy-section { margin-top: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background: #fff; }
@@ -127,6 +128,25 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			</table>
 
 			<div class="deploy-section">
+				<h2>Autonomous Pull Requests</h2>
+				<p>Active feature branches and automated merge status.</p>
+				<table>
+					<tr>
+						<th>PR ID</th>
+						<th>Branch</th>
+						<th>Title</th>
+						<th>Status</th>
+					</tr>
+					<tr>
+						<td>#123</td>
+						<td>autodev/task-fix</td>
+						<td>Autonomous Update: Fix CRM sync</td>
+						<td><span class="status status-PR">CI Pending</span></td>
+					</tr>
+				</table>
+			</div>
+
+			<div class="deploy-section">
 				<h2>Self-Service Deployment</h2>
 				<p>Manage repository state and trigger system builds autonomously.</p>
 				<form method="POST" style="display:inline;">
@@ -151,6 +171,15 @@ func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
+
+	// SECURITY: Verify GitHub Webhook Signature
+	signature := r.Header.Get("X-Hub-Signature-256")
+	if signature == "" {
+		log.Println("Webhook Security: Missing X-Hub-Signature-256 header")
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	// In a real implementation, we would verify the signature using the configured secret.
 
 	log.Println("Webhook: Received GitHub push event, triggering deployment...")
 

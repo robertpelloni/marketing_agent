@@ -2,6 +2,7 @@ package autodev
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -10,15 +11,19 @@ import (
 
 // Orchestrator coordinates the autonomous development lifecycle.
 type Orchestrator struct {
-	manager *TaskManager
-	agent   Agent
+	manager   *TaskManager
+	agent     Agent
+	prManager gitcheck.PRManager
+	activePRs map[string]*gitcheck.PullRequest
 }
 
 // NewOrchestrator creates a new Orchestrator instance.
-func NewOrchestrator(manager *TaskManager, agent Agent) *Orchestrator {
+func NewOrchestrator(manager *TaskManager, agent Agent, prManager gitcheck.PRManager) *Orchestrator {
 	return &Orchestrator{
-		manager: manager,
-		agent:   agent,
+		manager:   manager,
+		agent:     agent,
+		prManager: prManager,
+		activePRs: make(map[string]*gitcheck.PullRequest),
 	}
 }
 
@@ -36,6 +41,29 @@ func (o *Orchestrator) Run(ctx context.Context, interval time.Duration) {
 			return
 		case <-ticker.C:
 			o.executeStep(ctx)
+			o.checkPRs(ctx)
+		}
+	}
+}
+
+func (o *Orchestrator) checkPRs(ctx context.Context) {
+	log.Println("Autodev: Checking status of active autonomous PRs...")
+	for id := range o.activePRs {
+		status, err := o.prManager.GetPRStatus(ctx, id)
+		if err != nil {
+			log.Printf("Autodev: Error checking PR %s: %v", id, err)
+			continue
+		}
+
+		if status == gitcheck.PRStatusOpen {
+			// In a real scenario, we would check CITracker here
+			log.Printf("Autodev: PR %s is open, attempting autonomous merge...", id)
+			if err := o.prManager.MergePullRequest(ctx, id); err != nil {
+				log.Printf("Autodev: Merge failed for PR %s: %v", id, err)
+			} else {
+				log.Printf("Autodev: Successfully merged PR %s", id)
+				delete(o.activePRs, id)
+			}
 		}
 	}
 }
@@ -85,6 +113,17 @@ func (o *Orchestrator) executeStep(ctx context.Context) {
 	if err != nil {
 		log.Printf("Autodev: Error applying changes: %v", err)
 		return
+	}
+
+	// 4a. Create unique feature branch and PR
+	branchName := fmt.Sprintf("autodev/%s", task.Description) // simplified branch name
+	log.Printf("Autodev: Creating Pull Request for branch: %s", branchName)
+	pr, err := o.prManager.CreatePullRequest(ctx, branchName, fmt.Sprintf("Autonomous Update: %s", task.Description), proposal)
+	if err != nil {
+		log.Printf("Autodev: Error creating PR: %v", err)
+	} else {
+		log.Printf("Autodev: PR created: %s", pr.URL)
+		o.activePRs[pr.ID] = pr
 	}
 
 	// 5. Verify

@@ -13,6 +13,7 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/researcher"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
@@ -109,7 +110,8 @@ func main() {
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")
 	agent := &autodev.MockAgent{}
-	orchestrator := autodev.NewOrchestrator(taskManager, agent)
+	prManager := &gitcheck.GitHubPRManager{}
+	orchestrator := autodev.NewOrchestrator(taskManager, agent, prManager)
 
 	// Run autodev worker in background (every 1 hour)
 	go orchestrator.Run(ctx, 1*time.Hour)

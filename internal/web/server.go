@@ -34,6 +34,16 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if r.Method == http.MethodPost {
+		action := r.FormValue("action")
+		if action == "enrich" {
+			log.Printf("UI: Manual enrichment triggered for deal %s", r.FormValue("deal_id"))
+			// In a real scenario, we might trigger a specific worker signal here
+		}
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
 	deals, err := s.db.ListRecentDeals(r.Context(), 20)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Failed to retrieve deals: %v", err), http.StatusInternalServerError)

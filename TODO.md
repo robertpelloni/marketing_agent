@@ -7,10 +7,10 @@
     - [x] Implement Mock Enrichment Source
     - [x] Implement Enricher background worker
     - [x] Add DB persistence for Contacts
-- [ ] Implement Task 4: Technical Context Aggregator & Prompt Formatter
-    - [ ] GitHub crawler for target engineers
-    - [ ] Technical blog scraper
-    - [ ] Prompt construction engine
+- [x] Implement Task 4: Technical Context Aggregator & Prompt Formatter
+    - [x] GitHub crawler for target engineers
+    - [x] Technical blog scraper
+    - [x] Prompt construction engine
 - [ ] Implement Task 5: The Inbound Communication State Machine
     - [ ] Intent classification
     - [ ] RAG integration

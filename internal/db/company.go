@@ -124,7 +124,7 @@ func (db *DB) UpdateDealState(ctx context.Context, dealID int64, newState LeadSt
 // ListDealsByState retrieves deals in a specific state.
 func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, error) {
 	query := `
-		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, created_at, updated_at
+		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at
 		FROM deals
 		WHERE current_state = $1
 	`
@@ -143,6 +143,7 @@ func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, er
 			&deal.CurrentState,
 			&deal.QuotedPricing,
 			&deal.CustomRequirements,
+			&deal.TechnicalDossier,
 			&deal.CreatedAt,
 			&deal.UpdatedAt,
 		); err != nil {
@@ -156,7 +157,7 @@ func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, er
 // ListRecentDeals retrieves the most recently updated deals.
 func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
 	query := `
-		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, created_at, updated_at
+		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at
 		FROM deals
 		ORDER BY updated_at DESC
 		LIMIT $1
@@ -176,6 +177,7 @@ func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
 			&deal.CurrentState,
 			&deal.QuotedPricing,
 			&deal.CustomRequirements,
+			&deal.TechnicalDossier,
 			&deal.CreatedAt,
 			&deal.UpdatedAt,
 		); err != nil {
@@ -184,6 +186,20 @@ func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
 		deals = append(deals, deal)
 	}
 	return deals, nil
+}
+
+// UpdateTechnicalDossier updates the technical dossier for a deal.
+func (db *DB) UpdateTechnicalDossier(ctx context.Context, dealID int64, dossier string) error {
+	query := `
+		UPDATE deals
+		SET technical_dossier = $1, updated_at = $2
+		WHERE id = $3
+	`
+	_, err := db.Conn.ExecContext(ctx, query, dossier, time.Now(), dealID)
+	if err != nil {
+		return fmt.Errorf("failed to update technical dossier: %w", err)
+	}
+	return nil
 }
 
 // CreateContact inserts a new contact into the database.

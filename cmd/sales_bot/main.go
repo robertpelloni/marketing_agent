@@ -11,6 +11,7 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/researcher"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/web"
 
@@ -54,6 +55,17 @@ func main() {
 
 	// Run enricher in background
 	go e.Run(ctx, 1*time.Hour)
+
+	// 2c. Setup Researcher
+	crawlers := []researcher.Crawler{
+		&researcher.GitHubCrawler{},
+		&researcher.BlogCrawler{},
+	}
+	processor := &researcher.DefaultDossierProcessor{}
+	r := researcher.NewResearcher(database, crawlers, processor)
+
+	// Run researcher in background
+	go r.Run(ctx, 1*time.Hour)
 
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")

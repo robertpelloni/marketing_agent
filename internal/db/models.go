@@ -59,6 +59,7 @@ type Deal struct {
 	CurrentState       LeadState `db:"current_state"`
 	QuotedPricing      float64   `db:"quoted_pricing"`
 	CustomRequirements string    `db:"custom_requirements"`
+	TechnicalDossier   string    `db:"technical_dossier"`
 	CreatedAt          time.Time `db:"created_at"`
 	UpdatedAt          time.Time `db:"updated_at"`
 }

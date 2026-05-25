@@ -14,7 +14,7 @@
 - [x] Engineering Contact Enrichment Engine (Apollo/Hunter integrations)
 
 ## Phase 3: Research & Personalization
-- [ ] Technical Context Aggregator (GitHub & Technical Blog crawler)
+- [x] Technical Context Aggregator (GitHub & Technical Blog crawler)
 - [ ] Hyper-Personalization LLM Layer
 
 ## Phase 4: Conversational Engine

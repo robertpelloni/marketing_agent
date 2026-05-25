@@ -62,9 +62,9 @@ func SyncRemote() error {
 	return nil
 }
 
-// UpdateSubmodules updates all git submodules recursively.
+// UpdateSubmodules updates all git submodules.
 func UpdateSubmodules() error {
-	cmd := exec.Command("git", "submodule", "update", "--init", "--recursive")
+	cmd := exec.Command("git", "submodule", "update", "--init")
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("failed to update submodules: %v", err)
 	}

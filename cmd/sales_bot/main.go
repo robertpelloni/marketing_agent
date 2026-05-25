@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/researcher"
@@ -66,6 +67,14 @@ func main() {
 
 	// Run researcher in background
 	go r.Run(ctx, 1*time.Hour)
+
+	// 2d. Setup Communication Manager
+	classifier := &communication.MockIntentClassifier{}
+	responder := &communication.MockResponseGenerator{}
+	commManager := communication.NewManager(database, classifier, responder)
+
+	// Initializing but not yet running a loop as it's event-driven or requires a poller
+	_ = commManager
 
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")

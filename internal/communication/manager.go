@@ -2,6 +2,8 @@ package communication
 
 import (
 	"context"
+	"fmt"
+
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
@@ -40,4 +42,46 @@ func NewManager(database *db.DB, classifier IntentClassifier, responder Response
 		classifier: classifier,
 		responder:  responder,
 	}
+}
+
+// ProcessInbound handles a new inbound message from a contact.
+func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text string) (string, error) {
+	// 1. Persist inbound interaction
+	inbound := db.Interaction{
+		ContactID: contact.ID,
+		Channel:   "Email", // Default for now
+		Direction: "Inbound",
+		RawText:   text,
+	}
+	err := m.db.CreateInteraction(ctx, &inbound)
+	if err != nil {
+		return "", err
+	}
+
+	// 2. Classify intent
+	intent, err := m.classifier.Classify(ctx, text)
+	if err != nil {
+		return "", err
+	}
+
+	// 3. Generate response
+	replyText, err := m.responder.Generate(ctx, contact, inbound, intent)
+	if err != nil {
+		return "", err
+	}
+
+	// 4. Persist outbound interaction
+	outbound := db.Interaction{
+		ContactID: contact.ID,
+		Channel:   "Email",
+		Direction: "Outbound",
+		RawText:   replyText,
+		Summary:   fmt.Sprintf("Reply to intent: %s", intent),
+	}
+	err = m.db.CreateInteraction(ctx, &outbound)
+	if err != nil {
+		return "", err
+	}
+
+	return replyText, nil
 }

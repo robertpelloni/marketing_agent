@@ -263,3 +263,64 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 	}
 	return contacts, nil
 }
+
+// CreateInteraction inserts a new interaction into the database.
+func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) error {
+	query := `
+		INSERT INTO interactions (contact_id, channel, direction, raw_text, summary, sentiment, created_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
+		RETURNING id
+	`
+	if interaction.CreatedAt.IsZero() {
+		interaction.CreatedAt = time.Now()
+	}
+
+	err := db.Conn.QueryRowContext(ctx, query,
+		interaction.ContactID,
+		interaction.Channel,
+		interaction.Direction,
+		interaction.RawText,
+		interaction.Summary,
+		interaction.Sentiment,
+		interaction.CreatedAt,
+	).Scan(&interaction.ID)
+
+	if err != nil {
+		return fmt.Errorf("failed to create interaction: %w", err)
+	}
+	return nil
+}
+
+// ListInteractionsByContact retrieves all interactions for a specific contact.
+func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([]Interaction, error) {
+	query := `
+		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, created_at
+		FROM interactions
+		WHERE contact_id = $1
+		ORDER BY created_at DESC
+	`
+	rows, err := db.Conn.QueryContext(ctx, query, contactID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list interactions: %w", err)
+	}
+	defer rows.Close()
+
+	var interactions []Interaction
+	for rows.Next() {
+		var interaction Interaction
+		if err := rows.Scan(
+			&interaction.ID,
+			&interaction.ContactID,
+			&interaction.Channel,
+			&interaction.Direction,
+			&interaction.RawText,
+			&interaction.Summary,
+			&interaction.Sentiment,
+			&interaction.CreatedAt,
+		); err != nil {
+			return nil, fmt.Errorf("failed to scan interaction: %w", err)
+		}
+		interactions = append(interactions, interaction)
+	}
+	return interactions, nil
+}

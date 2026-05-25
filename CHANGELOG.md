@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.0] - 2025-05-25
 
 ### Added
+- Autonomous Development Module: `internal/autodev` for self-initiated task processing.
 - Core project documentation: `VISION.md`, `MEMORY.md`, `DEPLOY.md`, and `IDEAS.md`.
 - Initial database models and migrations for lead tracking (merged from previous iteration).
 - Phase 1 infrastructure and conflict resolution tests.

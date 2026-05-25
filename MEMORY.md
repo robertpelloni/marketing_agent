@@ -11,6 +11,7 @@
 - **Interface-Based:** External integrations (scrapers, email providers) are abstracted behind interfaces for easier mocking and rotation.
 - **Rigid State Management:** Lead transitions are handled via an atomic state machine in the database.
 - **Automation First:** Every feature is built with the intent of being fully autonomous.
+- **Self-Development Loop:** The system includes an `autodev` module that autonomously selects tasks from `TODO.md`, proposes changes, and verifies them.
 
 ## Design Preferences
 - **Go (Golang):** Preferred for the orchestration layer due to its performance and concurrency model.

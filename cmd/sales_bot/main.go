@@ -8,6 +8,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/web"
@@ -44,7 +45,15 @@ func main() {
 	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows"}
 	go s.Run(ctx, 1*time.Hour, keywords)
 
-	// 3. Start Web Server
+	// 3. Initialize Autonomous Development
+	taskManager := autodev.NewTaskManager("TODO.md")
+	agent := &autodev.MockAgent{}
+	orchestrator := autodev.NewOrchestrator(taskManager, agent)
+
+	// Run autodev worker in background (every 1 hour)
+	go orchestrator.Run(ctx, 1*time.Hour)
+
+	// 4. Start Web Server
 	webServer := web.NewServer(database)
 	go func() {
 		if err := webServer.ListenAndServe(":8080"); err != nil {

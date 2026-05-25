@@ -3,6 +3,7 @@ package communication
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
@@ -25,7 +26,7 @@ type IntentClassifier interface {
 
 // ResponseGenerator defines the interface for creating tailored replies.
 type ResponseGenerator interface {
-	Generate(ctx context.Context, contact db.Contact, interaction db.Interaction, intent Intent) (string, error)
+	Generate(ctx context.Context, contact db.Contact, interaction db.Interaction, intent Intent, action Action) (string, error)
 }
 
 // Manager coordinates the inbound communication state machine.
@@ -33,14 +34,16 @@ type Manager struct {
 	db         *db.DB
 	classifier IntentClassifier
 	responder  ResponseGenerator
+	strategy   SalesStrategy
 }
 
 // NewManager creates a new communication Manager.
-func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator) *Manager {
+func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy) *Manager {
 	return &Manager{
 		db:         database,
 		classifier: classifier,
 		responder:  responder,
+		strategy:   strategy,
 	}
 }
 
@@ -64,8 +67,42 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		return "", err
 	}
 
+	// 2a. Decide next action using strategy engine
+	company, err := m.db.GetCompanyByID(ctx, contact.CompanyID)
+	if err != nil {
+		return "", fmt.Errorf("failed to get company for strategy: %w", err)
+	}
+
+	interactions, err := m.db.ListInteractionsByContact(ctx, contact.ID)
+	if err != nil {
+		log.Printf("Warning: failed to list interactions for strategy: %v", err)
+	}
+
+	deal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
+	if err != nil {
+		return "", fmt.Errorf("failed to get deal for strategy: %w", err)
+	}
+
+	salesCtx := SalesContext{
+		Company:      *company,
+		Deal:         *deal,
+		Contact:      contact,
+		Interactions: interactions,
+		LatestIntent: intent,
+	}
+
+	action, err := m.strategy.Decide(ctx, salesCtx)
+	if err != nil {
+		return "", err
+	}
+
+	if action == ActionEscalate {
+		log.Printf("UI: Deal %d escalated for human review.", salesCtx.Deal.ID)
+		return "I've flagged this for our technical lead to review. We will get back to you shortly.", nil
+	}
+
 	// 3. Generate response
-	replyText, err := m.responder.Generate(ctx, contact, inbound, intent)
+	replyText, err := m.responder.Generate(ctx, contact, inbound, intent, action)
 	if err != nil {
 		return "", err
 	}

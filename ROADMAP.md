@@ -27,7 +27,8 @@ The bot's repository now includes a robust CI/CD pipeline with automated Postgre
 - [ ] Hyper-Personalization LLM Layer
 
 ## Phase 4: Conversational Engine
-- [ ] Inbound Communication State Machine
+- [x] Inbound Communication State Machine (Initial)
+- [x] Self-Learning Sales Workflow Engine (Initial)
 - [ ] RAG-Powered Technical Q&A
 - [ ] Negotiation & Pricing Engine
 

@@ -85,7 +85,8 @@ func main() {
 	// 2e. Setup Communication Manager
 	classifier := &communication.MockIntentClassifier{}
 	responder := &communication.MockResponseGenerator{}
-	commManager := communication.NewManager(database, classifier, responder)
+	strategy := communication.NewLearningSalesEngine(database)
+	commManager := communication.NewManager(database, classifier, responder, strategy)
 
 	// Initializing but not yet running a loop as it's event-driven or requires a poller
 	_ = commManager

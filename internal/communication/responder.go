@@ -11,8 +11,12 @@ import (
 // MockResponseGenerator provides template-based replies for testing.
 type MockResponseGenerator struct{}
 
-func (m *MockResponseGenerator) Generate(ctx context.Context, contact db.Contact, interaction db.Interaction, intent Intent) (string, error) {
-	log.Printf("MockResponseGenerator: Generating response for intent: %s", intent)
+func (m *MockResponseGenerator) Generate(ctx context.Context, contact db.Contact, interaction db.Interaction, intent Intent, action Action) (string, error) {
+	log.Printf("MockResponseGenerator: Generating response for intent: %s, action: %s", intent, action)
+
+	if action == ActionAdvanceState {
+		return fmt.Sprintf("Hi %s, based on our conversation, I'm preparing a formal proposal for you.", contact.Name), nil
+	}
 
 	switch intent {
 	case IntentTechnical:

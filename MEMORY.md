@@ -12,6 +12,7 @@
 - **Rigid State Management:** Lead transitions are handled via an atomic state machine in the database.
 - **Automation First:** Every feature is built with the intent of being fully autonomous.
 - **Self-Development Loop:** The system includes an `autodev` module that autonomously selects tasks from `TODO.md`, proposes changes, and verifies them.
+- **Self-Learning Sales Engine:** The `communication` package features a `LearningSalesEngine` that analyzes interaction history and lead context to decide on autonomous responses, state transitions, or human escalation.
 
 ## Design Preferences
 - **Go (Golang):** Preferred for the orchestration layer due to its performance and concurrency model.

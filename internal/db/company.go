@@ -162,6 +162,37 @@ func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, er
 	return deals, nil
 }
 
+// GetDealByCompanyID retrieves the most recent deal for a specific company.
+func (db *DB) GetDealByCompanyID(ctx context.Context, companyID int64) (*Deal, error) {
+	query := `
+		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at
+		FROM deals
+		WHERE company_id = $1
+		ORDER BY updated_at DESC
+		LIMIT 1
+	`
+	deal := &Deal{}
+	var pricing sql.NullFloat64
+	var requirements, dossier sql.NullString
+	err := db.Conn.QueryRowContext(ctx, query, companyID).Scan(
+		&deal.ID,
+		&deal.CompanyID,
+		&deal.CurrentState,
+		&pricing,
+		&requirements,
+		&dossier,
+		&deal.CreatedAt,
+		&deal.UpdatedAt,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get deal by company id: %w", err)
+	}
+	deal.QuotedPricing = pricing.Float64
+	deal.CustomRequirements = requirements.String
+	deal.TechnicalDossier = dossier.String
+	return deal, nil
+}
+
 // ListRecentDeals retrieves the most recently updated deals.
 func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
 	query := `

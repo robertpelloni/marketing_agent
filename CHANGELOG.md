@@ -14,3 +14,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Go module initialization.
 - Basic `build.bat` and `start.bat` execution scripts.
 - Automated conflict detection and merge integrity tests in `internal/gitcheck`.
+- Automated conflict resolution simulation tests in `internal/gitres`.
+- CI pipeline configuration in `.github/workflows/ci.yml`.

@@ -5,6 +5,8 @@
 - [ ] State Machine Logic Implementation
 - [x] Base Go Project Structure
 - [x] Merge Integrity & Conflict Detection Tests
+- [x] Conflict Resolution Simulation Tests
+- [x] CI Pipeline Integration
 
 ## Phase 2: Lead Generation & Enrichment
 - [ ] Target Discovery Scraper Module (Job Boards, GitHub)

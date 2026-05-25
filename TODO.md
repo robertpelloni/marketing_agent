@@ -7,4 +7,6 @@
 - [ ] Implement Task 5: The Inbound Communication State Machine
 - [x] Verify pathing in `build.bat` and `start.bat`
 - [x] Implement automated conflict detection tests
+- [x] Implement automated conflict resolution simulation tests
+- [x] Configure CI pipeline
 - [ ] Add `borg` submodule for technical documentation reference

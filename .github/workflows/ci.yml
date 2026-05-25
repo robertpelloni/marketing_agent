@@ -9,6 +9,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: sales_bot
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - uses: actions/checkout@v4
       with:
@@ -42,6 +57,8 @@ jobs:
       run: go test ./internal/gitres/...
 
     - name: Run All Project Tests
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable
       run: go test ./...
 
     - name: Build

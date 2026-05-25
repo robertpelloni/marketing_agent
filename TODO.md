@@ -1,5 +1,6 @@
 # TODO
 
+- [ ] Implement robust CI/CD pipeline with automated PostgreSQL integration testing
 - [x] Implement Task 1: Core Database Migrations & Models
 - [x] Implement Task 2: The Target Discovery Scraper Module
 - [x] Implement Task 3: Engineering Contact Enrichment Engine

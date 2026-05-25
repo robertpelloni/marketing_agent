@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Phase 1: Infrastructure & Data Modeling
-- [ ] Core Database Migrations & Models (PostgreSQL)
+- [x] Core Database Migrations & Models (PostgreSQL)
 - [ ] State Machine Logic Implementation
 - [x] Base Go Project Structure
 - [x] Merge Integrity & Conflict Detection Tests

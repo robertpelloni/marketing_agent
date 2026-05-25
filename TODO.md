@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] Implement Task 1: Core Database Migrations & Models
+- [x] Implement Task 1: Core Database Migrations & Models
 - [ ] Implement Task 2: The Target Discovery Scraper Module
 - [ ] Implement Task 3: Engineering Contact Enrichment Engine
 - [ ] Implement Task 4: Technical Context Aggregator & Prompt Formatter

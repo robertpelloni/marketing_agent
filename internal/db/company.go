@@ -33,6 +33,30 @@ func (db *DB) CreateCompany(ctx context.Context, company *Company) error {
 	return nil
 }
 
+// GetCompanyByID retrieves a company by its ID.
+func (db *DB) GetCompanyByID(ctx context.Context, id int64) (*Company, error) {
+	query := `
+		SELECT id, name, domain, tech_stack, hiring_signals, market_cap_tier, created_at, updated_at
+		FROM companies
+		WHERE id = $1
+	`
+	company := &Company{}
+	err := db.Conn.QueryRowContext(ctx, query, id).Scan(
+		&company.ID,
+		&company.Name,
+		&company.Domain,
+		&company.TechStack,
+		&company.HiringSignals,
+		&company.MarketCapTier,
+		&company.CreatedAt,
+		&company.UpdatedAt,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get company by id: %w", err)
+	}
+	return company, nil
+}
+
 // GetCompanyByDomain retrieves a company by its domain.
 func (db *DB) GetCompanyByDomain(ctx context.Context, domain string) (*Company, error) {
 	query := `
@@ -97,6 +121,38 @@ func (db *DB) UpdateDealState(ctx context.Context, dealID int64, newState LeadSt
 	return nil
 }
 
+// ListDealsByState retrieves deals in a specific state.
+func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, error) {
+	query := `
+		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, created_at, updated_at
+		FROM deals
+		WHERE current_state = $1
+	`
+	rows, err := db.Conn.QueryContext(ctx, query, state)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list deals by state: %w", err)
+	}
+	defer rows.Close()
+
+	var deals []Deal
+	for rows.Next() {
+		var deal Deal
+		if err := rows.Scan(
+			&deal.ID,
+			&deal.CompanyID,
+			&deal.CurrentState,
+			&deal.QuotedPricing,
+			&deal.CustomRequirements,
+			&deal.CreatedAt,
+			&deal.UpdatedAt,
+		); err != nil {
+			return nil, fmt.Errorf("failed to scan deal: %w", err)
+		}
+		deals = append(deals, deal)
+	}
+	return deals, nil
+}
+
 // ListRecentDeals retrieves the most recently updated deals.
 func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
 	query := `
@@ -128,4 +184,66 @@ func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
 		deals = append(deals, deal)
 	}
 	return deals, nil
+}
+
+// CreateContact inserts a new contact into the database.
+func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
+	query := `
+		INSERT INTO contacts (company_id, name, role, email, github_handle, linkedin_url, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		RETURNING id
+	`
+	now := time.Now()
+	contact.CreatedAt = now
+	contact.UpdatedAt = now
+
+	err := db.Conn.QueryRowContext(ctx, query,
+		contact.CompanyID,
+		contact.Name,
+		contact.Role,
+		contact.Email,
+		contact.GitHubHandle,
+		contact.LinkedInURL,
+		contact.CreatedAt,
+		contact.UpdatedAt,
+	).Scan(&contact.ID)
+
+	if err != nil {
+		return fmt.Errorf("failed to create contact: %w", err)
+	}
+	return nil
+}
+
+// ListContactsByCompany retrieves all contacts for a specific company.
+func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Contact, error) {
+	query := `
+		SELECT id, company_id, name, role, email, github_handle, linkedin_url, created_at, updated_at
+		FROM contacts
+		WHERE company_id = $1
+	`
+	rows, err := db.Conn.QueryContext(ctx, query, companyID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list contacts: %w", err)
+	}
+	defer rows.Close()
+
+	var contacts []Contact
+	for rows.Next() {
+		var contact Contact
+		if err := rows.Scan(
+			&contact.ID,
+			&contact.CompanyID,
+			&contact.Name,
+			&contact.Role,
+			&contact.Email,
+			&contact.GitHubHandle,
+			&contact.LinkedInURL,
+			&contact.CreatedAt,
+			&contact.UpdatedAt,
+		); err != nil {
+			return nil, fmt.Errorf("failed to scan contact: %w", err)
+		}
+		contacts = append(contacts, contact)
+	}
+	return contacts, nil
 }

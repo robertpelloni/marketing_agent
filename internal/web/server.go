@@ -53,8 +53,11 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				th { background-color: #007bff; color: white; }
 				tr:nth-child(even) { background-color: #f2f2f2; }
 				h1 { color: #333; }
-				.status { font-weight: bold; padding: 4px 8px; border-radius: 4px; }
+				.status { font-weight: bold; padding: 4px 8px; border-radius: 4px; cursor: help; }
 				.status-Discovered { background-color: #e2e3e5; color: #383d41; }
+				.status-Researched { background-color: #cce5ff; color: #004085; }
+				.action-btn { background-color: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+				.action-btn:hover { background-color: #218838; }
 			</style>
 		</head>
 		<body>
@@ -66,16 +69,32 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 					<th>Company ID</th>
 					<th>State</th>
 					<th>Last Updated</th>
+					<th>Actions</th>
 				</tr>`, len(deals))
 
 	for _, d := range deals {
+		statusTitle := ""
+		switch d.CurrentState {
+		case db.StateDiscovered:
+			statusTitle = "Company identified, awaiting technical research."
+		case db.StateResearched:
+			statusTitle = "Key engineering contacts found and technical dossier compiled."
+		}
+
 		fmt.Fprintf(w, `
 				<tr>
 					<td>%d</td>
 					<td>%d</td>
-					<td><span class="status status-%s">%s</span></td>
+					<td><span class="status status-%s" title="%s">%s</span></td>
 					<td>%s</td>
-				</tr>`, d.ID, d.CompanyID, d.CurrentState, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"))
+					<td>
+						<form method="POST" style="display:inline;">
+							<input type="hidden" name="action" value="enrich">
+							<input type="hidden" name="deal_id" value="%d">
+							<button type="submit" class="action-btn">Trigger Enrichment</button>
+						</form>
+					</td>
+				</tr>`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID)
 	}
 
 	fmt.Fprintf(w, `

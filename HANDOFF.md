@@ -1,24 +1,27 @@
 # Handoff - Session Summary
 
 ## Accomplishments
-- **Autonomous Development Module:** Implemented the `internal/autodev` package, providing a complete framework for self-initiated development.
-    - **TaskManager:** Parses `TODO.md` to identify and update tasks.
-    - **Orchestrator:** Manages the development loop, including repo state checks and task execution.
-    - **MockAgent:** Provides a template for future AI-driven code generation.
-- **Repository Initialization & Sync:** Merged initial database schemas and models. Established a full documentation suite (`VISION.md`, `MEMORY.md`, `DEPLOY.md`, `IDEAS.md`, `VERSION.md`, `AGENTS.md`).
-- **Submodule Integration:** Added the `borg` repository as a submodule.
-- **Protocol Automation:** Created `scripts/sync_repo.sh` to automate the "EXECUTIVE PROTOCOL" for repository management.
-- **Lead Generation & UI:** Implemented a scraper module and a web dashboard for monitoring leads.
+- **Phase 1 & 2 Completed:** All infrastructure, data modeling, and lead discovery/enrichment features are now fully implemented.
+- **Autonomous Development & Protocol:**
+    - Established the `internal/autodev` module for self-initiated task processing.
+    - Automated the "EXECUTIVE PROTOCOL" via `scripts/sync_repo.sh` and internal git utility packages.
+    - Documented architectural governance in `AGENTS.md`.
+- **Engineering Contact Enrichment (Task 3):**
+    - Implemented `internal/enrichment` featuring the `Enricher` worker and `MockApolloSource`.
+    - Added database persistence for contacts and advanced state machine logic.
+- **Web UI & Orchestration:**
+    - Enhanced the dashboard with interactive enrichment triggers and state tooltips.
+    - Integrated scraper, enricher, and autodev workers in `cmd/sales_bot/main.go`.
+- **Documentation & Versioning:**
+    - Full suite of mandatory documentation files created and maintained.
+    - Version reached **0.2.0**.
 
-## Versioning
-Current project version: **0.2.0**
-
-## Repository State
-- All tests passing.
-- Working directory clean.
-- Phase 1 milestones and Task 2 completed.
+## Key Technical Details
+- **State Machine:** Leads transition from `Discovered` (Scraper) -> `Researched` (Enricher).
+- **Concurrency:** All background tasks run as independent goroutines coordinated by the main entry point.
+- **Relational Integrity:** Strict foreign key constraints and relational mapping enforced in the PostgreSQL schema.
 
 ## Next Steps
-1. Replace `MockAgent` with a real LLM-backed agent for autonomous code generation.
-2. Implement Task 3: Engineering Contact Enrichment Engine.
-3. Enhance the Web Dashboard with interactive management controls.
+1. **Phase 3: Research & Personalization:** Implement the Technical Context Aggregator (GitHub crawler and blog scraper).
+2. **Phase 4: Conversational Engine:** Develop the inbound communication state machine and RAG-powered Q&A.
+3. **Task 4 Implementation:** Begin developing the GitHub crawler for target engineers.

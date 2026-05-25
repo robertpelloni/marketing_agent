@@ -11,7 +11,7 @@
 
 ## Phase 2: Lead Generation & Enrichment
 - [x] Target Discovery Scraper Module (Job Boards, GitHub)
-- [ ] Engineering Contact Enrichment Engine (Apollo/Hunter integrations)
+- [x] Engineering Contact Enrichment Engine (Apollo/Hunter integrations)
 
 ## Phase 3: Research & Personalization
 - [ ] Technical Context Aggregator (GitHub & Technical Blog crawler)

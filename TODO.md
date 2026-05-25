@@ -2,9 +2,19 @@
 
 - [x] Implement Task 1: Core Database Migrations & Models
 - [x] Implement Task 2: The Target Discovery Scraper Module
-- [ ] Implement Task 3: Engineering Contact Enrichment Engine
+- [x] Implement Task 3: Engineering Contact Enrichment Engine
+    - [x] Define Enrichment interfaces
+    - [x] Implement Mock Enrichment Source
+    - [x] Implement Enricher background worker
+    - [x] Add DB persistence for Contacts
 - [ ] Implement Task 4: Technical Context Aggregator & Prompt Formatter
+    - [ ] GitHub crawler for target engineers
+    - [ ] Technical blog scraper
+    - [ ] Prompt construction engine
 - [ ] Implement Task 5: The Inbound Communication State Machine
+    - [ ] Intent classification
+    - [ ] RAG integration
+    - [ ] Negotiation logic
 - [x] Verify pathing in `build.bat` and `start.bat`
 - [x] Implement automated conflict detection tests
 - [x] Implement automated conflict resolution simulation tests

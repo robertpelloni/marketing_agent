@@ -10,6 +10,7 @@ import (
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/web"
 
@@ -44,6 +45,15 @@ func main() {
 	// Run scraper in background
 	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows"}
 	go s.Run(ctx, 1*time.Hour, keywords)
+
+	// 2b. Setup Enricher
+	enrichmentSources := []enrichment.EnrichmentSource{
+		&enrichment.MockApolloSource{},
+	}
+	e := enrichment.NewEnricher(database, enrichmentSources)
+
+	// Run enricher in background
+	go e.Run(ctx, 1*time.Hour)
 
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")

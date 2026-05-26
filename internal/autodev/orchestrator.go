@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"strings"
 	"time"
 
@@ -95,12 +96,16 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 
 func (o *Orchestrator) executeStep(ctx context.Context) {
 	// 0. Executive Protocol: Sync & Update
-	log.Println("Autodev: Executing Executive Sync Protocol...")
-	if err := gitcheck.SyncRemote(); err != nil {
-		log.Printf("Autodev: Remote sync failed: %v", err)
-	}
-	if err := gitcheck.UpdateSubmodules(); err != nil {
-		log.Printf("Autodev: Submodule update failed: %v", err)
+	if os.Getenv("SKIP_AUTODEV_SYNC") != "true" {
+		log.Println("Autodev: Executing Executive Sync Protocol...")
+		if err := gitcheck.SyncRemote(); err != nil {
+			log.Printf("Autodev: Remote sync failed: %v", err)
+		}
+		if err := gitcheck.UpdateSubmodules(); err != nil {
+			log.Printf("Autodev: Submodule update failed: %v", err)
+		}
+	} else {
+		log.Println("Autodev: Skipping Executive Sync Protocol (SKIP_AUTODEV_SYNC=true)")
 	}
 
 	// 1. Verify repository state
@@ -150,16 +155,20 @@ func (o *Orchestrator) executeStep(ctx context.Context) {
 	}, task.Description)
 	branchName := fmt.Sprintf("autodev/%s", safeDescription)
 
-	log.Printf("Autodev: Committing changes to branch: %s", branchName)
-	if err := gitcheck.CheckoutAndCommit(branchName, fmt.Sprintf("Autonomous Update: %s", task.Description)); err != nil {
-		log.Printf("Autodev: Error committing changes: %v", err)
-		return
-	}
+	if os.Getenv("SKIP_AUTODEV_SYNC") != "true" {
+		log.Printf("Autodev: Committing changes to branch: %s", branchName)
+		if err := gitcheck.CheckoutAndCommit(branchName, fmt.Sprintf("Autonomous Update: %s", task.Description)); err != nil {
+			log.Printf("Autodev: Error committing changes: %v", err)
+			return
+		}
 
-	log.Printf("Autodev: Pushing feature branch: %s", branchName)
-	if err := gitcheck.PushBranch(branchName); err != nil {
-		log.Printf("Autodev: Error pushing branch: %v", err)
-		// We proceed as CreatePullRequest might still work if the branch exists
+		log.Printf("Autodev: Pushing feature branch: %s", branchName)
+		if err := gitcheck.PushBranch(branchName); err != nil {
+			log.Printf("Autodev: Error pushing branch: %v", err)
+			// We proceed as CreatePullRequest might still work if the branch exists
+		}
+	} else {
+		log.Println("Autodev: Skipping git commit/push (SKIP_AUTODEV_SYNC=true)")
 	}
 
 	log.Printf("Autodev: Creating Pull Request for branch: %s", branchName)

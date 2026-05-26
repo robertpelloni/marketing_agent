@@ -1,22 +1,24 @@
 # Handoff - Session Summary
 
 ## Accomplishments
+- **Persistent PR Tracking & Management:**
+    - Created `pull_requests` database table and migration `000003_create_pull_requests.up.sql`.
+    - Implemented PR persistence methods in `internal/db/repository.go` (renamed from `company.go`).
+    - Migrated the `autodev` orchestrator from in-memory tracking to the persistent DB store.
+- **Dynamic PR Dashboard:**
+    - Enhanced the web UI to dynamically render active autonomous Pull Requests from the database.
+    - Implemented **XSS Protection** by escaping PR titles, branches, and statuses.
 - **Dual-Direction Intelligent Merge Engine:**
-    - Developed `ListFeatureBranches` in `internal/gitcheck` to autonomously discover local work.
-    - Implemented `ReconcileBranches` in `internal/gitres` for multi-branch reconciliation (merging `main` into features and vice-versa).
-    - Integrated the reconciliation logic into the main entry point via the `--reconcile` flag.
-- **Repository Protocol Integration:**
-    - Refined `scripts/sync_repo.sh` to delegate complex merge logic to the Go binary, fulfilling the "EXECUTIVE PROTOCOL" requirements.
-    - Improved `CheckoutAndCommit` to use `git checkout -B` for better retry resilience.
-- **System Maturity:**
-    - Updated `ROADMAP.md` and `TODO.md` to reflect the full implementation of the intelligent merge engine.
-    - Verified all features via system-wide builds and tests.
+    - Completed the "Forward Merge" logic in `internal/gitres/resolve.go`, enabling full bidirectional reconciliation (Feature <-> Main).
+- **Git Flow Hardening:**
+    - Updated `CheckoutAndCommit` to use `git checkout -B` for better resilience during retries.
+    - Implemented task-based branch name sanitization in the orchestrator.
 
 ## Key Technical Details
-- **Sanitized Flow:** The `autodev` module now correctly sanitizes task descriptions into valid git branch names and follows a strict branch-push-PR sequence.
-- **Merge Logic:** Uses the "ours" strategy for automated reverse merges to prioritize main branch stability while keeping feature branches current.
+- **Persistence:** PR state is now survivor of bot restarts, allowing for continuous tracking and merging of long-running CI jobs.
+- **Bidirectional Sync:** The bot now handles both syncing features from `main` and merging completed features into `main`.
 
 ## Next Steps
-1. Transition `activePRs` in the orchestrator to a persistent database store to ensure state across bot restarts.
-2. Implement dynamic rendering of the Pull Request table in the web dashboard.
-3. Transition from `MockAgent` to a live LLM integration for autonomous code generation.
+1. Transition `GitHubPRManager` and `GitHubCITracker` to live GitHub API implementations using personal access tokens.
+2. Complete Task 5: Implement real RAG-powered response generation in the communication module.
+3. Enhance the web dashboard with a persistent log viewer for background workers.

@@ -38,24 +38,24 @@ func ReconcileBranches() error {
 	}
 
 	for _, branch := range branches {
-		log.Printf("Reconciling branch: %s", branch)
+		log.Printf("Intelligent Merge: Reconciling branch: %s", branch)
 
-		// 1. Forward Merge: Feature -> Main (if on main)
-		// 2. Reverse Merge: Main -> Feature
-		// For simplicity in this implementation, we focus on the Reverse Merge to prevent drift.
-
-		// Checkout feature branch
-		checkoutCmd := exec.Command("git", "checkout", branch)
-		if err := checkoutCmd.Run(); err != nil {
-			log.Printf("Failed to checkout %s: %v", branch, err)
-			continue
+		// 1. Forward Merge: Feature -> Main
+		log.Printf("Intelligent Merge: Attempting Forward Merge (%s -> main)...", branch)
+		exec.Command("git", "checkout", "main").Run()
+		if err := ResolveConflict(branch, "theirs"); err != nil {
+			log.Printf("Intelligent Merge: Forward merge failed for %s: %v", branch, err)
+		} else {
+			log.Printf("Intelligent Merge: Successfully merged %s into main", branch)
 		}
 
-		// Merge main into feature
+		// 2. Reverse Merge: Main -> Feature
+		log.Printf("Intelligent Merge: Attempting Reverse Merge (main -> %s)...", branch)
+		exec.Command("git", "checkout", branch).Run()
 		if err := ResolveConflict("main", "ours"); err != nil {
-			log.Printf("Failed to reconcile %s with main: %v", branch, err)
+			log.Printf("Intelligent Merge: Reverse merge failed for %s: %v", branch, err)
 		} else {
-			log.Printf("Successfully reconciled %s with main", branch)
+			log.Printf("Intelligent Merge: Successfully reconciled %s with main", branch)
 		}
 	}
 

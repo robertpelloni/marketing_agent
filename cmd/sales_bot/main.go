@@ -127,7 +127,7 @@ func main() {
 	taskManager := autodev.NewTaskManager("TODO.md")
 	agent := &autodev.MockAgent{}
 	prManager := &gitcheck.GitHubPRManager{}
-	orchestrator := autodev.NewOrchestrator(taskManager, agent, prManager, ciTracker)
+	orchestrator := autodev.NewOrchestrator(database, taskManager, agent, prManager, ciTracker)
 
 	// Run autodev worker in background (every 1 hour)
 	go orchestrator.Run(ctx, 1*time.Hour)

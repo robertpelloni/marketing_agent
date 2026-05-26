@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/lib/pq"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 )
 
 // CreateCompany inserts a new company into the database.
@@ -333,6 +334,57 @@ func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) e
 		return fmt.Errorf("failed to create interaction: %w", err)
 	}
 	return nil
+}
+
+// CreatePullRequest persists a new pull request record.
+func (db *DB) CreatePullRequest(ctx context.Context, pr *gitcheck.PullRequest, taskDesc string) error {
+	query := `
+		INSERT INTO pull_requests (id, branch, title, status, task_description, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+	`
+	_, err := db.Conn.ExecContext(ctx, query, pr.ID, pr.Branch, pr.Title, pr.Status, taskDesc)
+	if err != nil {
+		return fmt.Errorf("failed to create pull request: %w", err)
+	}
+	return nil
+}
+
+// UpdatePRStatus updates the status of an existing PR.
+func (db *DB) UpdatePRStatus(ctx context.Context, prID string, status gitcheck.PRStatus) error {
+	query := `
+		UPDATE pull_requests
+		SET status = $1, updated_at = CURRENT_TIMESTAMP
+		WHERE id = $2
+	`
+	_, err := db.Conn.ExecContext(ctx, query, status, prID)
+	if err != nil {
+		return fmt.Errorf("failed to update PR status: %w", err)
+	}
+	return nil
+}
+
+// ListActivePullRequests retrieves all open pull requests.
+func (db *DB) ListActivePullRequests(ctx context.Context) ([]gitcheck.PullRequest, error) {
+	query := `
+		SELECT id, branch, title, status
+		FROM pull_requests
+		WHERE status = $1
+	`
+	rows, err := db.Conn.QueryContext(ctx, query, gitcheck.PRStatusOpen)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list active PRs: %w", err)
+	}
+	defer rows.Close()
+
+	var prs []gitcheck.PullRequest
+	for rows.Next() {
+		var pr gitcheck.PullRequest
+		if err := rows.Scan(&pr.ID, &pr.Branch, &pr.Title, &pr.Status); err != nil {
+			return nil, fmt.Errorf("failed to scan PR: %w", err)
+		}
+		prs = append(prs, pr)
+	}
+	return prs, nil
 }
 
 // ListInteractionsByContact retrieves all interactions for a specific contact.

@@ -10,25 +10,28 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 )
 
-// Orchestrator coordinates the autonomous development lifecycle.
-import "github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
+import (
+	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
+)
 
+// Orchestrator coordinates the autonomous development lifecycle.
 type Orchestrator struct {
+	db        *db.DB
 	manager   *TaskManager
 	agent     Agent
 	prManager gitcheck.PRManager
 	tracker   deploy.CITracker
-	activePRs map[string]*gitcheck.PullRequest
 }
 
 // NewOrchestrator creates a new Orchestrator instance.
-func NewOrchestrator(manager *TaskManager, agent Agent, prManager gitcheck.PRManager, tracker deploy.CITracker) *Orchestrator {
+func NewOrchestrator(database *db.DB, manager *TaskManager, agent Agent, prManager gitcheck.PRManager, tracker deploy.CITracker) *Orchestrator {
 	return &Orchestrator{
+		db:        database,
 		manager:   manager,
 		agent:     agent,
 		prManager: prManager,
 		tracker:   tracker,
-		activePRs: make(map[string]*gitcheck.PullRequest),
 	}
 }
 
@@ -53,10 +56,16 @@ func (o *Orchestrator) Run(ctx context.Context, interval time.Duration) {
 
 func (o *Orchestrator) checkPRs(ctx context.Context) {
 	log.Println("Autodev: Checking status of active autonomous PRs...")
-	for id, pr := range o.activePRs {
-		status, err := o.prManager.GetPRStatus(ctx, id)
+	prs, err := o.db.ListActivePullRequests(ctx)
+	if err != nil {
+		log.Printf("Autodev: Error listing active PRs: %v", err)
+		return
+	}
+
+	for _, pr := range prs {
+		status, err := o.prManager.GetPRStatus(ctx, pr.ID)
 		if err != nil {
-			log.Printf("Autodev: Error checking PR %s: %v", id, err)
+			log.Printf("Autodev: Error checking PR %s: %v", pr.ID, err)
 			continue
 		}
 
@@ -69,16 +78,16 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 			}
 
 			if ciStatus != deploy.CIStatusSuccess {
-				log.Printf("Autodev: PR %s CI status is %s, waiting...", id, ciStatus)
+				log.Printf("Autodev: PR %s CI status is %s, waiting...", pr.ID, ciStatus)
 				continue
 			}
 
-			log.Printf("Autodev: PR %s CI successful, attempting autonomous merge...", id)
-			if err := o.prManager.MergePullRequest(ctx, id); err != nil {
-				log.Printf("Autodev: Merge failed for PR %s: %v", id, err)
+			log.Printf("Autodev: PR %s CI successful, attempting autonomous merge...", pr.ID)
+			if err := o.prManager.MergePullRequest(ctx, pr.ID); err != nil {
+				log.Printf("Autodev: Merge failed for PR %s: %v", pr.ID, err)
 			} else {
-				log.Printf("Autodev: Successfully merged PR %s", id)
-				delete(o.activePRs, id)
+				log.Printf("Autodev: Successfully merged PR %s", pr.ID)
+				o.db.UpdatePRStatus(ctx, pr.ID, gitcheck.PRStatusMerged)
 			}
 		}
 	}
@@ -159,7 +168,7 @@ func (o *Orchestrator) executeStep(ctx context.Context) {
 		log.Printf("Autodev: Error creating PR: %v", err)
 	} else {
 		log.Printf("Autodev: PR created: %s", pr.URL)
-		o.activePRs[pr.ID] = pr
+		o.db.CreatePullRequest(ctx, pr, task.Description)
 	}
 
 	// 5. Verify

@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"html"
 	"io"
 	"log"
 	"net/http"
@@ -74,6 +75,11 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	}
 
 	health, _ := s.tracker.GetSystemHealth(r.Context())
+
+	prs, err := s.db.ListActivePullRequests(r.Context())
+	if err != nil {
+		log.Printf("UI: Error listing PRs: %v", err)
+	}
 
 	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprintf(w, `
@@ -147,13 +153,18 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 						<th>Branch</th>
 						<th>Title</th>
 						<th>Status</th>
-					</tr>
+						</tr>`)
+	for _, pr := range prs {
+		fmt.Fprintf(w, `
 					<tr>
-						<td>#123</td>
-						<td>autodev/task-fix</td>
-						<td>Autonomous Update: Fix CRM sync</td>
-						<td><span class="status status-PR">CI Pending</span></td>
-					</tr>
+						<td>%s</td>
+						<td>%s</td>
+						<td>%s</td>
+						<td><span class="status status-PR">%s</span></td>
+					</tr>`, html.EscapeString(pr.ID), html.EscapeString(pr.Branch), html.EscapeString(pr.Title), html.EscapeString(string(pr.Status)))
+	}
+
+	fmt.Fprintf(w, `
 				</table>
 			</div>
 

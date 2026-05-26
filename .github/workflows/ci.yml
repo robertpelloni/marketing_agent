@@ -64,4 +64,4 @@ jobs:
         go tool cover -func=coverage.out
 
     - name: Build
-      run: go build -v -o sales_bot ./cmd/sales_bot
+      run: go build -v -o bin/sales_bot ./cmd/sales_bot

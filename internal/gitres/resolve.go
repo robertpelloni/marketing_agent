@@ -56,7 +56,8 @@ func ReconcileBranches() error {
 		if out, err := exec.Command("git", "checkout", branch).CombinedOutput(); err != nil {
 			return fmt.Errorf("failed to checkout feature branch %s: %v, output: %s", branch, err, string(out))
 		}
-		if err := ResolveConflict("main", "ours"); err != nil {
+		// We use standard merge to catch drift and ensure metadata (TODO, VERSION) is preserved correctly
+		if err := ResolveConflict("main", ""); err != nil {
 			log.Printf("Intelligent Merge: Reverse merge failed for %s: %v", branch, err)
 		} else {
 			log.Printf("Intelligent Merge: Successfully reconciled %s with main", branch)

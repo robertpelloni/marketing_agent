@@ -151,6 +151,22 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 		return
 	}
 
+	// 5. Verify
+	err = o.agent.Verify(ctx)
+	if err != nil {
+		log.Printf("Autodev: Verification failed for task '%s': %v", task.Description, err)
+		// Here we would ideally rollback or attempt fix
+		return
+	}
+
+	// 6. Mark completed & Bump Version (Metadata update before commit)
+	err = o.manager.MarkCompleted(ctx, task.Description)
+	if err != nil {
+		log.Printf("Autodev: Error marking task as completed: %v", err)
+		return
+	}
+	o.finalizeCycle(ctx, task)
+
 	// 4a. Create unique feature branch, push, and PR
 	// Sanitize branch name: replace spaces and special characters
 	safeDescription := strings.Map(func(r rune) rune {
@@ -186,23 +202,7 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 		o.db.CreatePullRequest(ctx, pr, task.Description)
 	}
 
-	// 5. Verify
-	err = o.agent.Verify(ctx)
-	if err != nil {
-		log.Printf("Autodev: Verification failed for task '%s': %v", task.Description, err)
-		// Here we would ideally rollback or attempt fix
-		return
-	}
-
-	// 6. Mark completed
-	err = o.manager.MarkCompleted(ctx, task.Description)
-	if err != nil {
-		log.Printf("Autodev: Error marking task as completed: %v", err)
-		return
-	}
-
 	log.Printf("Autodev: Task completed successfully: %s", task.Description)
-	o.finalizeCycle(ctx, task)
 }
 
 func (o *Orchestrator) finalizeCycle(ctx context.Context, task *Task) {

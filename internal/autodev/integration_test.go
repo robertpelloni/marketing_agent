@@ -98,6 +98,22 @@ func TestMultiAgentWorkflow_Integration(t *testing.T) {
 	}
 }
 
+func TestLocalAgent_Verify(t *testing.T) {
+	agent := &LocalAgent{}
+	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
+	defer cancel()
+
+	// We skip the tests inside Verify to avoid recursive test execution in this environment
+	os.Setenv("SKIP_AUTODEV_TESTS", "true")
+	defer os.Unsetenv("SKIP_AUTODEV_TESTS")
+
+	// This runs 'go build' which should pass in this environment
+	err := agent.Verify(ctx)
+	if err != nil {
+		t.Errorf("LocalAgent.Verify failed: %v", err)
+	}
+}
+
 func contains(s, substr string) bool {
 	return len(s) >= len(substr) && (s[:len(substr)] == substr || contains(s[1:], substr))
 }

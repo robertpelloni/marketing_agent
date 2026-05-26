@@ -125,7 +125,7 @@ func main() {
 
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")
-	agent := &autodev.MockAgent{}
+	agent := &autodev.LocalAgent{}
 	prManager := &gitcheck.GitHubPRManager{}
 	orchestrator := autodev.NewOrchestrator(database, taskManager, agent, prManager, ciTracker)
 

@@ -36,3 +36,4 @@ jobs:
         # Placeholder for actual deployment logic (e.g., scp, docker push, etc.)
         # Based on the protocol: git submodule update --init --recursive on the host
         echo "Updating remote submodules and restarting service..."
+        echo "Finalizing CI/CD integration and monitoring."

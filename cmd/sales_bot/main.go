@@ -113,13 +113,13 @@ func main() {
 	taskManager := autodev.NewTaskManager("TODO.md")
 	agent := &autodev.MockAgent{}
 	prManager := &gitcheck.GitHubPRManager{}
-	orchestrator := autodev.NewOrchestrator(taskManager, agent, prManager)
+	orchestrator := autodev.NewOrchestrator(taskManager, agent, prManager, ciTracker)
 
 	// Run autodev worker in background (every 1 hour)
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer)
+	webServer := web.NewServer(database, deployer, ciTracker)
 	go func() {
 		if err := webServer.ListenAndServe(":8080"); err != nil {
 			log.Printf("Web server error: %v", err)

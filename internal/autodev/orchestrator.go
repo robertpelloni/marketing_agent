@@ -4,25 +4,30 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 )
 
 // Orchestrator coordinates the autonomous development lifecycle.
+import "github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
+
 type Orchestrator struct {
 	manager   *TaskManager
 	agent     Agent
 	prManager gitcheck.PRManager
+	tracker   deploy.CITracker
 	activePRs map[string]*gitcheck.PullRequest
 }
 
 // NewOrchestrator creates a new Orchestrator instance.
-func NewOrchestrator(manager *TaskManager, agent Agent, prManager gitcheck.PRManager) *Orchestrator {
+func NewOrchestrator(manager *TaskManager, agent Agent, prManager gitcheck.PRManager, tracker deploy.CITracker) *Orchestrator {
 	return &Orchestrator{
 		manager:   manager,
 		agent:     agent,
 		prManager: prManager,
+		tracker:   tracker,
 		activePRs: make(map[string]*gitcheck.PullRequest),
 	}
 }
@@ -48,7 +53,7 @@ func (o *Orchestrator) Run(ctx context.Context, interval time.Duration) {
 
 func (o *Orchestrator) checkPRs(ctx context.Context) {
 	log.Println("Autodev: Checking status of active autonomous PRs...")
-	for id := range o.activePRs {
+	for id, pr := range o.activePRs {
 		status, err := o.prManager.GetPRStatus(ctx, id)
 		if err != nil {
 			log.Printf("Autodev: Error checking PR %s: %v", id, err)
@@ -56,8 +61,19 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 		}
 
 		if status == gitcheck.PRStatusOpen {
-			// In a real scenario, we would check CITracker here
-			log.Printf("Autodev: PR %s is open, attempting autonomous merge...", id)
+			// Gate merge on CI Success
+			ciStatus, err := o.tracker.GetLatestStatus(ctx, pr.Branch)
+			if err != nil {
+				log.Printf("Autodev: Error checking CI status for branch %s: %v", pr.Branch, err)
+				continue
+			}
+
+			if ciStatus != deploy.CIStatusSuccess {
+				log.Printf("Autodev: PR %s CI status is %s, waiting...", id, ciStatus)
+				continue
+			}
+
+			log.Printf("Autodev: PR %s CI successful, attempting autonomous merge...", id)
 			if err := o.prManager.MergePullRequest(ctx, id); err != nil {
 				log.Printf("Autodev: Merge failed for PR %s: %v", id, err)
 			} else {
@@ -116,7 +132,21 @@ func (o *Orchestrator) executeStep(ctx context.Context) {
 	}
 
 	// 4a. Create unique feature branch, push, and PR
-	branchName := fmt.Sprintf("autodev/%s", task.Description) // simplified branch name
+	// Sanitize branch name: replace spaces and special characters
+	safeDescription := strings.Map(func(r rune) rune {
+		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') {
+			return r
+		}
+		return '-'
+	}, task.Description)
+	branchName := fmt.Sprintf("autodev/%s", safeDescription)
+
+	log.Printf("Autodev: Committing changes to branch: %s", branchName)
+	if err := gitcheck.CheckoutAndCommit(branchName, fmt.Sprintf("Autonomous Update: %s", task.Description)); err != nil {
+		log.Printf("Autodev: Error committing changes: %v", err)
+		return
+	}
+
 	log.Printf("Autodev: Pushing feature branch: %s", branchName)
 	if err := gitcheck.PushBranch(branchName); err != nil {
 		log.Printf("Autodev: Error pushing branch: %v", err)

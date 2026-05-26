@@ -71,6 +71,26 @@ func UpdateSubmodules() error {
 	return nil
 }
 
+// CheckoutAndCommit creates a new branch and commits all changes.
+func CheckoutAndCommit(branch string, message string) error {
+	checkoutCmd := exec.Command("git", "checkout", "-b", branch)
+	if err := checkoutCmd.Run(); err != nil {
+		return fmt.Errorf("failed to checkout branch %s: %v", branch, err)
+	}
+
+	addCmd := exec.Command("git", "add", ".")
+	if err := addCmd.Run(); err != nil {
+		return fmt.Errorf("failed to stage changes: %v", err)
+	}
+
+	commitCmd := exec.Command("git", "commit", "-m", message)
+	if err := commitCmd.Run(); err != nil {
+		return fmt.Errorf("failed to commit changes: %v", err)
+	}
+
+	return nil
+}
+
 // PushBranch pushes a branch to the remote origin.
 func PushBranch(branch string) error {
 	cmd := exec.Command("git", "push", "origin", branch)

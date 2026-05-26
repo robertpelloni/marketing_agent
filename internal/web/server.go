@@ -18,15 +18,17 @@ import (
 
 // Server handles web dashboard requests.
 type Server struct {
-	db     *db.DB
-	deploy *deploy.Deployer
+	db      *db.DB
+	deploy  *deploy.Deployer
+	tracker deploy.CITracker
 }
 
 // NewServer creates a new Server instance.
-func NewServer(database *db.DB, deployer *deploy.Deployer) *Server {
+func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker) *Server {
 	return &Server{
-		db:     database,
-		deploy: deployer,
+		db:      database,
+		deploy:  deployer,
+		tracker: tracker,
 	}
 }
 
@@ -70,6 +72,8 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("Failed to retrieve deals: %v", err), http.StatusInternalServerError)
 		return
 	}
+
+	health, _ := s.tracker.GetSystemHealth(r.Context())
 
 	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprintf(w, `
@@ -170,12 +174,11 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				<h2>System Health & CI Status</h2>
 				<p>Real-time monitoring of the autonomous deployment pipeline.</p>
 				<ul>
-					<li><strong>Global Health:</strong> <span style="color: #28a745;">All systems operational</span></li>
-					<li><strong>Latest CI Status:</strong> <span class="status status-Researched">Success</span></li>
+					<li><strong>Global Health:</strong> <span style="color: #28a745;">%s</span></li>
 				</ul>
 			</div>
 		</body>
-		</html>`)
+			</html>`, health)
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {

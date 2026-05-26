@@ -28,7 +28,7 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        docker build -t enterprise-sales-bot:${{ github.sha }} -t sales_bot .
+        docker build -t enterprise-sales-bot:${{ github.sha }} -t enterprise-sales-bot:latest .
 
     - name: Deploy to Environment
       run: |

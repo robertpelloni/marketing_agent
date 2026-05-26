@@ -2,6 +2,7 @@ package crm
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -50,7 +51,13 @@ func (w *Worker) sync(ctx context.Context) {
 	} else {
 		for _, update := range updates {
 			log.Printf("CRM Worker: Reconciling update for lead %s to %s", update.ID, update.NewState)
-			// Logic to find local lead by CRM ID and update state would go here
+			// In a real system, we'd map external IDs. For now, we assume numeric mapping.
+			var dealID int64
+			if _, err := fmt.Sscanf(update.ID, "%d", &dealID); err == nil {
+				if err := w.db.UpdateDealState(ctx, dealID, update.NewState); err != nil {
+					log.Printf("CRM Worker: Failed to update deal %d: %v", dealID, err)
+				}
+			}
 		}
 	}
 

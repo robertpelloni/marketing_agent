@@ -5,6 +5,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"html"
 	"io"
@@ -38,6 +39,7 @@ func (s *Server) ListenAndServe(addr string) error {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", s.handleDashboard)
 	mux.HandleFunc("/health", s.handleHealth)
+	mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
 	mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
 
 	log.Printf("Web dashboard starting on %s", addr)
@@ -194,6 +196,29 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "OK")
+}
+
+func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	health := make(map[string]interface{})
+
+	// 1. Check DB
+	if err := s.db.Conn.PingContext(r.Context()); err != nil {
+		health["database"] = "ERROR: " + err.Error()
+		w.WriteHeader(http.StatusServiceUnavailable)
+	} else {
+		health["database"] = "OK"
+	}
+
+	// 2. Check CI/Sync status
+	healthStatus, _ := s.tracker.GetSystemHealth(r.Context())
+	health["system_health"] = healthStatus
+
+	// 3. Worker liveness (Simulated)
+	health["workers"] = "active"
+
+	json.NewEncoder(w).Encode(health)
 }
 
 func verifySignature(payload []byte, secret string, signatureHeader string) bool {

@@ -2,8 +2,8 @@
 
 - [x] Implement robust CI/CD pipeline with automated PostgreSQL integration testing
 - [x] Mature CI/CD infrastructure for autonomous provisioning
-    - [ ] Dockerize application for consistent deployment
-    - [ ] Add Docker build step to deployment workflow
+    - [x] Dockerize application for consistent deployment
+    - [x] Add Docker build step to deployment workflow
     - [x] Implement CI status tracking interfaces
 - [x] Implement Task 1: Core Database Migrations & Models
 - [x] Implement Task 2: The Target Discovery Scraper Module

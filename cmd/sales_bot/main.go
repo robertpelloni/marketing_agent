@@ -87,7 +87,18 @@ func main() {
 	go r.Run(ctx, 1*time.Hour)
 
 	// 2ca. Setup CRM Integration
-	crmClient := crm.NewMockCRMClient()
+	var crmClient crm.CRMClient
+	crmBaseURL := os.Getenv("CRM_BASE_URL")
+	crmAPIKey := os.Getenv("CRM_API_KEY")
+
+	if crmBaseURL != "" && crmAPIKey != "" {
+		log.Println("CRM: Initializing production REST CRM client.")
+		crmClient = crm.NewRestCRMClient(crmBaseURL, crmAPIKey)
+	} else {
+		log.Println("CRM: Initializing mock CRM client (missing configuration).")
+		crmClient = crm.NewMockCRMClient()
+	}
+
 	crmWorker := crm.NewWorker(database, crmClient)
 
 	// Run CRM sync in background
@@ -120,8 +131,8 @@ func main() {
 	strategy := communication.NewLearningSalesEngine(database)
 	commManager := communication.NewManager(database, classifier, responder, strategy)
 
-	// Initializing but not yet running a loop as it's event-driven or requires a poller
-	_ = commManager
+	// Run communication poller in background
+	go commManager.Run(ctx, 30*time.Minute)
 
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")

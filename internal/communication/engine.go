@@ -23,6 +23,12 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 
 	// 1. Analyze historical performance
 	if e.shouldAdvanceState(salesCtx) {
+		log.Printf("LearningSalesEngine: Advancing deal %d to Negotiating state.", salesCtx.Deal.ID)
+		if e.db != nil {
+			if err := e.db.UpdateDealState(ctx, salesCtx.Deal.ID, db.StateNegotiating); err != nil {
+				log.Printf("LearningSalesEngine: Error updating deal state: %v", err)
+			}
+		}
 		return ActionAdvanceState, nil
 	}
 

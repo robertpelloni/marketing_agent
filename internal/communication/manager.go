@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
@@ -44,6 +45,59 @@ func NewManager(database *db.DB, classifier IntentClassifier, responder Response
 		classifier: classifier,
 		responder:  responder,
 		strategy:   strategy,
+	}
+}
+
+// Run starts the periodic inbound communication processing loop.
+func (m *Manager) Run(ctx context.Context, interval time.Duration) {
+	ticker := time.NewTicker(interval)
+	defer ticker.Stop()
+
+	log.Printf("Communication Manager: Background poller started (interval: %v)...", interval)
+
+	for {
+		select {
+		case <-ctx.Done():
+			log.Println("Communication Manager: Background poller stopping...")
+			return
+		case <-ticker.C:
+			m.pollAndProcess(ctx)
+		}
+	}
+}
+
+func (m *Manager) pollAndProcess(ctx context.Context) {
+	// In a real scenario, this would poll an IMAP server or Webhook queue.
+	// For this architecture, we simulate by checking for 'Researched' deals
+	// that haven't had an outbound interaction yet (triggering initial outreach).
+	deals, err := m.db.ListDealsByState(ctx, db.StateResearched)
+	if err != nil {
+		log.Printf("Comm Manager: Error polling deals: %v", err)
+		return
+	}
+
+	for _, deal := range deals {
+		contacts, err := m.db.ListContactsByCompany(ctx, deal.CompanyID)
+		if err != nil || len(contacts) == 0 {
+			continue
+		}
+
+		// Check if we already sent outreach
+		interactions, _ := m.db.ListInteractionsByContact(ctx, contacts[0].ID)
+		hasOutbound := false
+		for _, i := range interactions {
+			if i.Direction == "Outbound" {
+				hasOutbound = true
+				break
+			}
+		}
+
+		if !hasOutbound {
+			log.Printf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email)
+			// Trigger outreach
+			m.ProcessInbound(ctx, contacts[0], "START_OUTREACH") // Internal trigger
+			m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent)
+		}
 	}
 }
 

@@ -7,7 +7,7 @@ if %errorlevel% neq 0 (
 )
 
 echo Building Enterprise Sales Bot...
-go build -o bin/sales_bot.exe ./cmd/sales_bot
+go build -o bin/sales_bot ./cmd/sales_bot
 if %errorlevel% neq 0 (
     echo Build failed!
     exit /b %errorlevel%

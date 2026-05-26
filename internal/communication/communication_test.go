@@ -19,22 +19,47 @@ func TestIntentClassifier_Classify(t *testing.T) {
 }
 
 func TestSalesEngine_Decide(t *testing.T) {
-	engine := NewLearningSalesEngine(nil) // Mock DB not needed for pure logic
-	salesCtx := SalesContext{
-		LatestIntent: IntentPricing,
-		Company: db.Company{
-			MarketCapTier: "Enterprise",
-		},
-		Deal: db.Deal{
-			CurrentState: db.StateResearched,
-		},
-	}
+	engine := NewLearningSalesEngine(nil)
 
-	action, err := engine.Decide(context.Background(), salesCtx)
-	if err != nil {
-		t.Fatalf("Decision failed: %v", err)
-	}
-	if action != ActionRespond {
-		t.Errorf("Expected ActionRespond for Enterprise pricing intent, got %s", action)
-	}
+	t.Run("Enterprise Pricing Intent", func(t *testing.T) {
+		salesCtx := SalesContext{
+			LatestIntent: IntentPricing,
+			Company: db.Company{
+				MarketCapTier: "Enterprise",
+			},
+			Deal: db.Deal{
+				ID:           1,
+				CurrentState: db.StateResearched,
+			},
+		}
+
+		action, err := engine.Decide(context.Background(), salesCtx)
+		if err != nil {
+			t.Fatalf("Decision failed: %v", err)
+		}
+		if action != ActionRespond {
+			t.Errorf("Expected ActionRespond for Enterprise pricing, got %s", action)
+		}
+	})
+
+	t.Run("Should Advance State", func(t *testing.T) {
+		salesCtx := SalesContext{
+			LatestIntent: IntentPricing,
+			Interactions: []db.Interaction{
+				{ID: 1}, {ID: 2}, {ID: 3}, {ID: 4},
+			},
+			Deal: db.Deal{
+				ID:           2,
+				CurrentState: db.StateEngaged,
+			},
+		}
+
+		action, err := engine.Decide(context.Background(), salesCtx)
+		if err != nil {
+			t.Fatalf("Decision failed: %v", err)
+		}
+		if action != ActionAdvanceState {
+			t.Errorf("Expected ActionAdvanceState when interest is high, got %s", action)
+		}
+	})
 }

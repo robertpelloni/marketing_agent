@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -14,16 +15,22 @@ type LocalAgent struct{}
 
 func (a *LocalAgent) ProposeSolution(ctx context.Context, task Task) (string, error) {
 	log.Printf("LocalAgent: Analyzing task: %s", task.Description)
-	// In a full implementation, this might call an LLM.
-	// For now, it returns a placeholder or uses predefined scripts.
+
+	if strings.Contains(strings.ToLower(task.Description), "sales-feature") {
+		return fmt.Sprintf("FILE: internal/sales/feature.go\nCONTENT:\npackage sales\n\n// Autonomous Feature: %s\nfunc ExecuteSalesFeature() {\n\tprintln(\"Executing autonomous sales logic\")\n}\n", task.Description), nil
+	}
+
 	return fmt.Sprintf("Implementation for: %s", task.Description), nil
 }
 
 func (a *LocalAgent) ApplyChanges(ctx context.Context, proposal string) error {
 	log.Printf("LocalAgent: Applying changes via proposal parsing...")
-	// For simple autonomous updates, we expect the proposal to be in the format:
-	// FILE: <filepath>
-	// CONTENT: <content>
+
+	wd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("failed to get working directory: %w", err)
+	}
+
 	lines := strings.Split(proposal, "\n")
 	var currentFile string
 	var content strings.Builder
@@ -31,12 +38,13 @@ func (a *LocalAgent) ApplyChanges(ctx context.Context, proposal string) error {
 
 	for _, line := range lines {
 		if strings.HasPrefix(line, "FILE: ") {
+			// Write previous file if exists
 			if currentFile != "" && content.Len() > 0 {
-				if err := os.WriteFile(currentFile, []byte(content.String()), 0644); err != nil {
-					return fmt.Errorf("failed to write %s: %w", currentFile, err)
+				if err := a.safeWriteFile(wd, currentFile, content.String()); err != nil {
+					return err
 				}
 			}
-			currentFile = strings.TrimPrefix(line, "FILE: ")
+			currentFile = strings.TrimSpace(strings.TrimPrefix(line, "FILE: "))
 			content.Reset()
 			writing = false
 		} else if strings.HasPrefix(line, "CONTENT:") {
@@ -47,11 +55,29 @@ func (a *LocalAgent) ApplyChanges(ctx context.Context, proposal string) error {
 	}
 
 	if currentFile != "" && content.Len() > 0 {
-		if err := os.WriteFile(currentFile, []byte(content.String()), 0644); err != nil {
-			return fmt.Errorf("failed to write %s: %w", currentFile, err)
-		}
+		return a.safeWriteFile(wd, currentFile, content.String())
 	}
 
+	return nil
+}
+
+func (a *LocalAgent) safeWriteFile(wd, relPath, content string) error {
+	absPath := filepath.Join(wd, relPath)
+
+	// Ensure the path is within the working directory (Security: Path Traversal)
+	if !strings.HasPrefix(absPath, wd) {
+		return fmt.Errorf("security: blocked attempt to write outside repository: %s", relPath)
+	}
+
+	// Ensure directory exists
+	dir := filepath.Dir(absPath)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return fmt.Errorf("failed to create directory %s: %w", dir, err)
+	}
+
+	if err := os.WriteFile(absPath, []byte(content), 0644); err != nil {
+		return fmt.Errorf("failed to write %s: %w", absPath, err)
+	}
 	return nil
 }
 

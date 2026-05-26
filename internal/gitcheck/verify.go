@@ -23,7 +23,9 @@ func IsClean() (bool, error) {
 // IsSynced checks if the current branch is synchronized with the target branch.
 func IsSynced(target string) (bool, error) {
 	// Fetch first to ensure we have latest info
-	exec.Command("git", "fetch", "origin").Run()
+	if err := exec.Command("git", "fetch", "origin").Run(); err != nil {
+		return false, fmt.Errorf("failed to fetch from origin: %w", err)
+	}
 
 	cmd := exec.Command("git", "rev-list", "--left-right", "--count", "HEAD...origin/"+target)
 	var out bytes.Buffer
@@ -101,7 +103,7 @@ func PushBranch(branch string) error {
 	return nil
 }
 
-// ListFeatureBranches returns a list of local feature branches (excluding main).
+// ListFeatureBranches returns a list of autonomous feature branches (prefixed with autodev/).
 func ListFeatureBranches() ([]string, error) {
 	cmd := exec.Command("git", "for-each-ref", "--format=%(refname:short)", "refs/heads/")
 	var out bytes.Buffer
@@ -115,7 +117,8 @@ func ListFeatureBranches() ([]string, error) {
 	scanner := bufio.NewScanner(&out)
 	for scanner.Scan() {
 		branch := strings.TrimSpace(scanner.Text())
-		if branch != "" && branch != "main" {
+		// Only reconcile branches explicitly created by the autonomous agent
+		if strings.HasPrefix(branch, "autodev/") {
 			branches = append(branches, branch)
 		}
 	}

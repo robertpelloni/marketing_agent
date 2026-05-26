@@ -121,6 +121,22 @@ func TestLocalAgent_ApplyChanges(t *testing.T) {
 	}
 }
 
+func TestLocalAgent_PathTraversalProtection(t *testing.T) {
+	agent := &LocalAgent{}
+
+	// Attempt to write outside the working directory
+	proposal := "FILE: ../outside.txt\nCONTENT:\nMalicious Content\n"
+	err := agent.ApplyChanges(context.Background(), proposal)
+
+	if err == nil {
+		t.Fatal("Expected error for path traversal attempt, got nil")
+	}
+
+	if !strings.Contains(err.Error(), "security: blocked attempt") {
+		t.Errorf("Expected security block error, got: %v", err)
+	}
+}
+
 func TestLocalAgent_Verify(t *testing.T) {
 	agent := &LocalAgent{}
 	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)

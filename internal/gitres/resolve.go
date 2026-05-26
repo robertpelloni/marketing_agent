@@ -42,7 +42,9 @@ func ReconcileBranches() error {
 
 		// 1. Forward Merge: Feature -> Main
 		log.Printf("Intelligent Merge: Attempting Forward Merge (%s -> main)...", branch)
-		exec.Command("git", "checkout", "main").Run()
+		if out, err := exec.Command("git", "checkout", "main").CombinedOutput(); err != nil {
+			return fmt.Errorf("failed to checkout main: %v, output: %s", err, string(out))
+		}
 		if err := ResolveConflict(branch, "theirs"); err != nil {
 			log.Printf("Intelligent Merge: Forward merge failed for %s: %v", branch, err)
 		} else {
@@ -51,7 +53,9 @@ func ReconcileBranches() error {
 
 		// 2. Reverse Merge: Main -> Feature
 		log.Printf("Intelligent Merge: Attempting Reverse Merge (main -> %s)...", branch)
-		exec.Command("git", "checkout", branch).Run()
+		if out, err := exec.Command("git", "checkout", branch).CombinedOutput(); err != nil {
+			return fmt.Errorf("failed to checkout feature branch %s: %v, output: %s", branch, err, string(out))
+		}
 		if err := ResolveConflict("main", "ours"); err != nil {
 			log.Printf("Intelligent Merge: Reverse merge failed for %s: %v", branch, err)
 		} else {
@@ -60,6 +64,8 @@ func ReconcileBranches() error {
 	}
 
 	// Switch back to main
-	exec.Command("git", "checkout", "main").Run()
+	if out, err := exec.Command("git", "checkout", "main").CombinedOutput(); err != nil {
+		return fmt.Errorf("failed to return to main: %v, output: %s", err, string(out))
+	}
 	return nil
 }

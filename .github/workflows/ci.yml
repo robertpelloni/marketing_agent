@@ -56,10 +56,12 @@ jobs:
     - name: Run Conflict Resolution Tests
       run: go test ./internal/gitres/...
 
-    - name: Run All Project Tests
+    - name: Run All Project Tests with Coverage
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable
-      run: go test ./...
+      run: |
+        go test -v -coverprofile=coverage.out ./...
+        go tool cover -func=coverage.out
 
     - name: Build
       run: go build -v -o sales_bot ./cmd/sales_bot

@@ -11,11 +11,15 @@ import (
 )
 
 // Deployer handles self-service deployment operations.
-type Deployer struct{}
+type Deployer struct {
+	tracker CITracker
+}
 
 // NewDeployer creates a new Deployer instance.
-func NewDeployer() *Deployer {
-	return &Deployer{}
+func NewDeployer(tracker CITracker) *Deployer {
+	return &Deployer{
+		tracker: tracker,
+	}
 }
 
 // ExecuteSync performs a remote sync and submodule update.
@@ -32,6 +36,29 @@ func (d *Deployer) ExecuteSync() error {
 }
 
 // ExecuteBuild triggers the project build process.
+// MonitorDeployment periodically checks the health of the deployment.
+func (d *Deployer) MonitorDeployment(ctx context.Context, interval time.Duration) {
+	ticker := time.NewTicker(interval)
+	defer ticker.Stop()
+
+	log.Printf("Deployment monitor started (interval: %v)...", interval)
+
+	for {
+		select {
+		case <-ctx.Done():
+			log.Println("Deployment monitor stopping...")
+			return
+		case <-ticker.C:
+			health, err := d.tracker.GetSystemHealth(ctx)
+			if err != nil {
+				log.Printf("Deployment Monitor: Health check failed: %v", err)
+				continue
+			}
+			log.Printf("Deployment Monitor: System Health: %s", health)
+		}
+	}
+}
+
 func (d *Deployer) ExecuteBuild() error {
 	log.Println("Deployment: Initiating build...")
 	// We call 'go build' directly for autonomy, mirroring build.bat logic.

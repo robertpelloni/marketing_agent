@@ -86,13 +86,15 @@ func main() {
 	go outreachWorker.Run(ctx, 2*time.Hour)
 
 	// 2d. Setup Deployer
-	deployer := deploy.NewDeployer()
+	ciTracker := &deploy.MockCITracker{}
+	deployer := deploy.NewDeployer(ciTracker)
 
-	// 2da. Setup Deployer background sync (optional)
+	// 2da. Setup Deployer background sync and monitoring
 	syncIntervalStr := os.Getenv("DEPLOY_SYNC_INTERVAL")
 	if syncIntervalStr != "" {
 		if interval, err := time.ParseDuration(syncIntervalStr); err == nil {
 			go deployer.Run(ctx, interval)
+			go deployer.MonitorDeployment(ctx, interval)
 		} else {
 			log.Printf("Warning: Invalid DEPLOY_SYNC_INTERVAL: %v", err)
 		}

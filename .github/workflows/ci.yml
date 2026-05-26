@@ -62,4 +62,4 @@ jobs:
       run: go test ./...
 
     - name: Build
-      run: go build -v ./cmd/sales_bot
+      run: go build -v -o sales_bot ./cmd/sales_bot

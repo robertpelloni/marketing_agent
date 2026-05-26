@@ -62,8 +62,8 @@ func (d *Deployer) MonitorDeployment(ctx context.Context, interval time.Duration
 func (d *Deployer) ExecuteBuild() error {
 	log.Println("Deployment: Initiating build...")
 	// We call 'go build' directly for autonomy, mirroring build.bat logic.
-	// We use .exe for consistency with start.bat.
-	cmd := exec.Command("go", "build", "-v", "-o", "bin/sales_bot.exe", "./cmd/sales_bot")
+	// We use bin/sales_bot for standardized cross-platform consistency.
+	cmd := exec.Command("go", "build", "-v", "-o", "bin/sales_bot", "./cmd/sales_bot")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("build failed: %v, output: %s", err, string(output))

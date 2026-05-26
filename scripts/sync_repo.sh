@@ -18,6 +18,6 @@ go run ./cmd/sales_bot --reconcile
 
 # 4. Workspace Cleanup & Build
 echo "Validating build..."
-go build -v -o bin/sales_bot.exe ./cmd/sales_bot
+go build -v -o bin/sales_bot ./cmd/sales_bot
 
 echo "Sync complete."

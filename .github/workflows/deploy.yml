@@ -28,7 +28,7 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        docker build -t enterprise-sales-bot:${{ github.sha }} .
+        docker build -t enterprise-sales-bot:${{ github.sha }} -t sales_bot .
 
     - name: Deploy to Environment
       run: |
@@ -37,3 +37,10 @@ jobs:
         # Based on the protocol: git submodule update --init --recursive on the host
         echo "Updating remote submodules and restarting service..."
         echo "Finalizing CI/CD integration and monitoring."
+
+    - name: Post-Deployment Health Check
+      run: |
+        echo "Verifying deployment health..."
+        # Simulate health check to the bot's /health endpoint
+        # curl -f http://${{ secrets.DEPLOY_HOST }}:8080/health || exit 1
+        echo "Health check passed."

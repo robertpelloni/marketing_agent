@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"log"
 	"os"
 	"os/signal"
@@ -13,6 +14,7 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/gitres"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/researcher"
@@ -24,6 +26,18 @@ import (
 )
 
 func main() {
+	reconcile := flag.Bool("reconcile", false, "Run branch reconciliation and exit")
+	flag.Parse()
+
+	if *reconcile {
+		log.Println("Running Intelligent Merge Engine...")
+		if err := gitres.ReconcileBranches(); err != nil {
+			log.Fatalf("Reconciliation failed: %v", err)
+		}
+		log.Println("Reconciliation complete.")
+		return
+	}
+
 	log.Println("Starting Enterprise Sales Bot...")
 
 	// 1. Initialize Database

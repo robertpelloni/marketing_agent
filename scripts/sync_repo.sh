@@ -12,15 +12,9 @@ echo "Updating submodules recursively..."
 git submodule update --init --recursive
 
 # 3. Intelligent Branch Reconciliation
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-
-if [ "$CURRENT_BRANCH" == "main" ]; then
-    echo "On main branch. Syncing with remote..."
-    git merge origin/main --no-edit
-else
-    echo "On feature branch: $CURRENT_BRANCH. Merging main back to feature..."
-    git merge main -m "chore: sync feature branch with main" --no-edit
-fi
+echo "Executing Dual-Direction Intelligent Merge Engine..."
+# We use a dedicated go routine or sub-command to handle multi-branch reconciliation
+go run ./cmd/sales_bot --reconcile
 
 # 4. Workspace Cleanup & Build
 echo "Validating build..."

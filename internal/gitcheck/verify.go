@@ -1,6 +1,7 @@
 package gitcheck
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"os/exec"
@@ -71,9 +72,9 @@ func UpdateSubmodules() error {
 	return nil
 }
 
-// CheckoutAndCommit creates a new branch and commits all changes.
+// CheckoutAndCommit creates a new branch (or resets an existing one) and commits all changes.
 func CheckoutAndCommit(branch string, message string) error {
-	checkoutCmd := exec.Command("git", "checkout", "-b", branch)
+	checkoutCmd := exec.Command("git", "checkout", "-B", branch)
 	if err := checkoutCmd.Run(); err != nil {
 		return fmt.Errorf("failed to checkout branch %s: %v", branch, err)
 	}
@@ -98,6 +99,27 @@ func PushBranch(branch string) error {
 		return fmt.Errorf("failed to push branch %s: %v", branch, err)
 	}
 	return nil
+}
+
+// ListFeatureBranches returns a list of local feature branches (excluding main).
+func ListFeatureBranches() ([]string, error) {
+	cmd := exec.Command("git", "for-each-ref", "--format=%(refname:short)", "refs/heads/")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		return nil, err
+	}
+
+	var branches []string
+	scanner := bufio.NewScanner(&out)
+	for scanner.Scan() {
+		branch := strings.TrimSpace(scanner.Text())
+		if branch != "" && branch != "main" {
+			branches = append(branches, branch)
+		}
+	}
+	return branches, nil
 }
 
 // CheckConflicts checks if there are any unmerged paths (conflicts).

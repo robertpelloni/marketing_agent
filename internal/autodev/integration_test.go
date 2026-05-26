@@ -51,7 +51,7 @@ func TestAutonomousLoop_Integration(t *testing.T) {
 	defer os.Unsetenv("SKIP_AUTODEV_SYNC")
 
 	// Run one cycle manually
-	orchestrator.executeStep(ctx)
+	orchestrator.ExecuteStep(ctx)
 
 	// Verify task is marked completed in the file
 	newContent, _ := os.ReadFile(tmpTodo.Name())
@@ -90,8 +90,8 @@ func TestMultiAgentWorkflow_Integration(t *testing.T) {
 	defer os.Unsetenv("SKIP_AUTODEV_SYNC")
 
 	// Execute two steps
-	orchestrator.executeStep(ctx)
-	orchestrator.executeStep(ctx)
+	orchestrator.ExecuteStep(ctx)
+	orchestrator.ExecuteStep(ctx)
 
 	// Verify both completed
 	newContent, _ := os.ReadFile(tmpTodo.Name())

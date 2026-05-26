@@ -41,12 +41,13 @@ func (s *Scraper) Run(ctx context.Context, interval time.Duration, keywords []st
 			log.Println("Scraper worker stopping...")
 			return
 		case <-ticker.C:
-			s.executeDiscovery(ctx, keywords)
+			s.ExecuteDiscovery(ctx, keywords)
 		}
 	}
 }
 
-func (s *Scraper) executeDiscovery(ctx context.Context, keywords []string) {
+// ExecuteDiscovery manually triggers a discovery cycle (exported for testing).
+func (s *Scraper) ExecuteDiscovery(ctx context.Context, keywords []string) {
 	for _, source := range s.sources {
 		companies, err := source.Discover(ctx, keywords)
 		if err != nil {

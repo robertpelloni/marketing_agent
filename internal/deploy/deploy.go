@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
 	"time"
 
@@ -20,6 +21,17 @@ func NewDeployer(tracker CITracker) *Deployer {
 	return &Deployer{
 		tracker: tracker,
 	}
+}
+
+// ValidateEnvironment checks for required environment variables for production.
+func (d *Deployer) ValidateEnvironment() error {
+	required := []string{"DATABASE_URL", "GITHUB_TOKEN", "GITHUB_WEBHOOK_SECRET"}
+	for _, env := range required {
+		if os.Getenv(env) == "" {
+			return fmt.Errorf("missing required environment variable: %s", env)
+		}
+	}
+	return nil
 }
 
 // ExecuteSync performs a remote sync and submodule update.

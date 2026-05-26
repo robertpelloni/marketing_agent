@@ -50,7 +50,7 @@ func (o *Orchestrator) Run(ctx context.Context, interval time.Duration) {
 			log.Println("Autonomous development orchestrator stopping...")
 			return
 		case <-ticker.C:
-			o.executeStep(ctx)
+			o.ExecuteStep(ctx)
 			o.checkPRs(ctx)
 		}
 	}
@@ -95,7 +95,8 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 	}
 }
 
-func (o *Orchestrator) executeStep(ctx context.Context) {
+// ExecuteStep manually triggers a single step of the orchestrator loop (exported for testing).
+func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 	// 0. Executive Protocol: Sync & Update
 	if os.Getenv("SKIP_AUTODEV_SYNC") != "true" {
 		log.Println("Autodev: Executing Executive Sync Protocol...")

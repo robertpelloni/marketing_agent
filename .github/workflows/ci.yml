@@ -60,7 +60,7 @@ jobs:
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable
       run: |
-        go test -v -coverprofile=coverage.out ./...
+        go test -v -coverprofile=coverage.out ./... ./tests/e2e/...
         go tool cover -func=coverage.out
 
     - name: Build

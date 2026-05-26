@@ -2,7 +2,9 @@ package autodev
 
 import (
 	"context"
+	"fmt"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -95,6 +97,27 @@ func TestMultiAgentWorkflow_Integration(t *testing.T) {
 	newContent, _ := os.ReadFile(tmpTodo.Name())
 	if !contains(string(newContent), "[x] Step 1") || !contains(string(newContent), "[x] Step 2") {
 		t.Errorf("Workflow steps not completed. Content: %s", string(newContent))
+	}
+}
+
+func TestLocalAgent_ApplyChanges(t *testing.T) {
+	agent := &LocalAgent{}
+	tmpFile := "test_apply.txt"
+	defer os.Remove(tmpFile)
+
+	proposal := fmt.Sprintf("FILE: %s\nCONTENT:\nHello World\n", tmpFile)
+	err := agent.ApplyChanges(context.Background(), proposal)
+	if err != nil {
+		t.Fatalf("ApplyChanges failed: %v", err)
+	}
+
+	content, err := os.ReadFile(tmpFile)
+	if err != nil {
+		t.Fatalf("Failed to read test file: %v", err)
+	}
+
+	if strings.TrimSpace(string(content)) != "Hello World" {
+		t.Errorf("Expected 'Hello World', got '%s'", string(content))
 	}
 }
 

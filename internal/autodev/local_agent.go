@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 // LocalAgent is an agent that executes tasks and verifies them using local tools.
@@ -19,8 +20,38 @@ func (a *LocalAgent) ProposeSolution(ctx context.Context, task Task) (string, er
 }
 
 func (a *LocalAgent) ApplyChanges(ctx context.Context, proposal string) error {
-	log.Printf("LocalAgent: Applying: %s", proposal)
-	// This would typically involve writing to files.
+	log.Printf("LocalAgent: Applying changes via proposal parsing...")
+	// For simple autonomous updates, we expect the proposal to be in the format:
+	// FILE: <filepath>
+	// CONTENT: <content>
+	lines := strings.Split(proposal, "\n")
+	var currentFile string
+	var content strings.Builder
+	writing := false
+
+	for _, line := range lines {
+		if strings.HasPrefix(line, "FILE: ") {
+			if currentFile != "" && content.Len() > 0 {
+				if err := os.WriteFile(currentFile, []byte(content.String()), 0644); err != nil {
+					return fmt.Errorf("failed to write %s: %w", currentFile, err)
+				}
+			}
+			currentFile = strings.TrimPrefix(line, "FILE: ")
+			content.Reset()
+			writing = false
+		} else if strings.HasPrefix(line, "CONTENT:") {
+			writing = true
+		} else if writing {
+			content.WriteString(line + "\n")
+		}
+	}
+
+	if currentFile != "" && content.Len() > 0 {
+		if err := os.WriteFile(currentFile, []byte(content.String()), 0644); err != nil {
+			return fmt.Errorf("failed to write %s: %w", currentFile, err)
+		}
+	}
+
 	return nil
 }
 

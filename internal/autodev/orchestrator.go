@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/gitres"
 )
 
 import (
@@ -104,6 +105,10 @@ func (o *Orchestrator) executeStep(ctx context.Context) {
 		if err := gitcheck.UpdateSubmodules(); err != nil {
 			log.Printf("Autodev: Submodule update failed: %v", err)
 		}
+		log.Println("Autodev: Executing Intelligent Branch Reconciliation...")
+		if err := gitres.ReconcileBranches(); err != nil {
+			log.Printf("Autodev: Branch reconciliation failed: %v", err)
+		}
 	} else {
 		log.Println("Autodev: Skipping Executive Sync Protocol (SKIP_AUTODEV_SYNC=true)")
 	}
@@ -196,4 +201,29 @@ func (o *Orchestrator) executeStep(ctx context.Context) {
 	}
 
 	log.Printf("Autodev: Task completed successfully: %s", task.Description)
+	o.finalizeCycle(ctx, task)
+}
+
+func (o *Orchestrator) finalizeCycle(ctx context.Context, task *Task) {
+	log.Println("Autodev: Finalizing cycle with version governance...")
+
+	// 1. Update VERSION file (bump build number)
+	version, _ := os.ReadFile("VERSION")
+	vStr := strings.TrimSpace(string(version))
+	if vStr == "" {
+		vStr = "0.0.0"
+	}
+	newV := fmt.Sprintf("%s+%d", vStr, time.Now().Unix())
+	os.WriteFile("VERSION", []byte(newV), 0644)
+	os.WriteFile("VERSION.md", []byte(newV), 0644)
+
+	// 2. Append to CHANGELOG.md
+	changelogEntry := fmt.Sprintf("\n## [%s] - %s\n- %s\n", newV, time.Now().Format("2006-01-02"), task.Description)
+	f, err := os.OpenFile("CHANGELOG.md", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err == nil {
+		f.WriteString(changelogEntry)
+		f.Close()
+	}
+
+	log.Printf("Autodev: Cycle finalized. New version: %s", newV)
 }

@@ -71,6 +71,15 @@ func UpdateSubmodules() error {
 	return nil
 }
 
+// PushBranch pushes a branch to the remote origin.
+func PushBranch(branch string) error {
+	cmd := exec.Command("git", "push", "origin", branch)
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to push branch %s: %v", branch, err)
+	}
+	return nil
+}
+
 // CheckConflicts checks if there are any unmerged paths (conflicts).
 func CheckConflicts() (bool, error) {
 	cmd := exec.Command("git", "diff", "--name-only", "--diff-filter=U")

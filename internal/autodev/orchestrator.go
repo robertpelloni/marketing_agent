@@ -115,8 +115,14 @@ func (o *Orchestrator) executeStep(ctx context.Context) {
 		return
 	}
 
-	// 4a. Create unique feature branch and PR
+	// 4a. Create unique feature branch, push, and PR
 	branchName := fmt.Sprintf("autodev/%s", task.Description) // simplified branch name
+	log.Printf("Autodev: Pushing feature branch: %s", branchName)
+	if err := gitcheck.PushBranch(branchName); err != nil {
+		log.Printf("Autodev: Error pushing branch: %v", err)
+		// We proceed as CreatePullRequest might still work if the branch exists
+	}
+
 	log.Printf("Autodev: Creating Pull Request for branch: %s", branchName)
 	pr, err := o.prManager.CreatePullRequest(ctx, branchName, fmt.Sprintf("Autonomous Update: %s", task.Description), proposal)
 	if err != nil {

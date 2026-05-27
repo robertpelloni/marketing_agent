@@ -8,7 +8,8 @@ import (
 	"strings"
 )
 
-// IsClean checks if the git working directory is clean.
+// IsClean checks if the git working directory is clean using 'git status --porcelain'.
+// It returns true if there are no staged or unstaged changes.
 func IsClean() (bool, error) {
 	cmd := exec.Command("git", "status", "--porcelain")
 	var out bytes.Buffer
@@ -20,7 +21,8 @@ func IsClean() (bool, error) {
 	return out.Len() == 0, nil
 }
 
-// IsSynced checks if the current branch is synchronized with the target branch.
+// IsSynced checks if the current branch is synchronized with the remote 'origin/target'.
+// It performs a 'git fetch' first to ensure local awareness of remote state.
 func IsSynced(target string) (bool, error) {
 	// Fetch first to ensure we have latest info
 	if err := exec.Command("git", "fetch", "origin").Run(); err != nil {
@@ -50,7 +52,8 @@ func IsSynced(target string) (bool, error) {
 	return true, nil
 }
 
-// SyncRemote fetches and merges changes from origin/main.
+// SyncRemote fetches and merges changes from 'origin/main'.
+// It uses '--no-edit' to ensure the operation remains autonomous and non-interactive.
 func SyncRemote() error {
 	fetchCmd := exec.Command("git", "fetch", "origin", "main")
 	if err := fetchCmd.Run(); err != nil {
@@ -65,7 +68,8 @@ func SyncRemote() error {
 	return nil
 }
 
-// UpdateSubmodules updates all git submodules recursively.
+// UpdateSubmodules updates all git submodules recursively within the repository.
+// It initializes submodules if they haven't been already.
 func UpdateSubmodules() error {
 	cmd := exec.Command("git", "submodule", "update", "--init", "--recursive")
 	if err := cmd.Run(); err != nil {
@@ -74,7 +78,8 @@ func UpdateSubmodules() error {
 	return nil
 }
 
-// CheckoutAndCommit creates a new branch (or resets an existing one) and commits all changes.
+// CheckoutAndCommit creates or resets a branch and commits all current working directory changes.
+// This is typically used by the autonomous agent to persist its self-directed updates.
 func CheckoutAndCommit(branch string, message string) error {
 	checkoutCmd := exec.Command("git", "checkout", "-B", branch)
 	if err := checkoutCmd.Run(); err != nil {
@@ -94,7 +99,7 @@ func CheckoutAndCommit(branch string, message string) error {
 	return nil
 }
 
-// PushBranch pushes a branch to the remote origin.
+// PushBranch pushes the specified local branch to the 'origin' remote.
 func PushBranch(branch string) error {
 	cmd := exec.Command("git", "push", "origin", branch)
 	if err := cmd.Run(); err != nil {
@@ -103,7 +108,8 @@ func PushBranch(branch string) error {
 	return nil
 }
 
-// ListFeatureBranches returns a list of autonomous feature branches (prefixed with autodev/).
+// ListFeatureBranches returns a list of all local branches prefixed with 'autodev/'.
+// These represent the active feature branches managed by the autonomous orchestrator.
 func ListFeatureBranches() ([]string, error) {
 	cmd := exec.Command("git", "for-each-ref", "--format=%(refname:short)", "refs/heads/")
 	var out bytes.Buffer
@@ -125,7 +131,8 @@ func ListFeatureBranches() ([]string, error) {
 	return branches, nil
 }
 
-// CheckConflicts checks if there are any unmerged paths (conflicts).
+// CheckConflicts checks the repository for any unmerged paths (merge conflicts).
+// It returns true if any conflict markers are detected in the index.
 func CheckConflicts() (bool, error) {
 	cmd := exec.Command("git", "diff", "--name-only", "--diff-filter=U")
 	var out bytes.Buffer

@@ -8,8 +8,8 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 )
 
-// ResolveConflict performs a merge of the source branch into the current branch
-// using the specified strategy.
+// ResolveConflict performs a 'git merge' of the source branch into the current branch.
+// It accepts an optional strategy (e.g., 'ours', 'theirs') to automatically resolve conflicts.
 func ResolveConflict(source string, strategy string) error {
 	args := []string{"merge", source}
 	if strategy != "" {
@@ -24,13 +24,16 @@ func ResolveConflict(source string, strategy string) error {
 	return nil
 }
 
-// AbortMerge aborts an ongoing merge.
+// AbortMerge resets the current merge state using 'git merge --abort'.
+// This is used for recovery when an autonomous merge fails to resolve cleanly.
 func AbortMerge() error {
 	cmd := exec.Command("git", "merge", "--abort")
 	return cmd.Run()
 }
 
 // ReconcileBranches implements the Dual-Direction Intelligent Merge Engine.
+// It iterates through all 'autodev/' branches, attempting to forward-merge them into 'main'
+// and reverse-merge 'main' back into each feature branch to prevent drift.
 func ReconcileBranches() error {
 	branches, err := gitcheck.ListFeatureBranches()
 	if err != nil {

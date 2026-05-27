@@ -38,3 +38,15 @@ func TestIsSynced(t *testing.T) {
 		// We don't fail here in local environments where divergence is expected during development
 	}
 }
+
+func TestListFeatureBranches_Filter(t *testing.T) {
+	branches, err := ListFeatureBranches()
+	if err != nil {
+		t.Fatalf("ListFeatureBranches failed: %v", err)
+	}
+	for _, b := range branches {
+		if b == "main" {
+			t.Error("ListFeatureBranches should not return 'main'")
+		}
+	}
+}

@@ -144,7 +144,7 @@ func main() {
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker)
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager)
 	go func() {
 		if err := webServer.ListenAndServe(":8080"); err != nil {
 			log.Printf("Web server error: %v", err)

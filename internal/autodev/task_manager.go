@@ -18,7 +18,7 @@ func NewTaskManager(todoPath string) *TaskManager {
 	return &TaskManager{todoPath: todoPath}
 }
 
-// GetNextTask parses TODO.md and returns the first uncompleted task.
+// GetNextTask parses TODO.md and returns the highest priority uncompleted task.
 func (m *TaskManager) GetNextTask(ctx context.Context) (*Task, error) {
 	file, err := os.Open(m.todoPath)
 	if err != nil {
@@ -26,16 +26,24 @@ func (m *TaskManager) GetNextTask(ctx context.Context) (*Task, error) {
 	}
 	defer file.Close()
 
+	var tasks []Task
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
 		line = strings.TrimSpace(line)
 		if strings.HasPrefix(line, "- [ ]") {
-			description := strings.TrimSpace(strings.TrimPrefix(line, "- [ ]"))
-			return &Task{
-				Description: description,
+			desc := strings.TrimSpace(strings.TrimPrefix(line, "- [ ]"))
+			t := Task{
+				Description: desc,
 				Completed:   false,
-			}, nil
+			}
+			// Priority parsing: e.g. [HIGH]
+			if strings.Contains(desc, "[HIGH]") {
+				t.Category = "High"
+			} else {
+				t.Category = "Normal"
+			}
+			tasks = append(tasks, t)
 		}
 	}
 
@@ -43,7 +51,41 @@ func (m *TaskManager) GetNextTask(ctx context.Context) (*Task, error) {
 		return nil, fmt.Errorf("error reading TODO.md: %w", err)
 	}
 
-	return nil, nil // No tasks found
+	if len(tasks) == 0 {
+		return nil, nil
+	}
+
+	// Simple sort: High first
+	for _, t := range tasks {
+		if t.Category == "High" {
+			return &t, nil
+		}
+	}
+
+	return &tasks[0], nil
+}
+
+// ListAllTasks returns all tasks from TODO.md.
+func (m *TaskManager) ListAllTasks(ctx context.Context) ([]Task, error) {
+	file, err := os.Open(m.todoPath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var tasks []Task
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "- [ ]") || strings.HasPrefix(line, "- [x]") {
+			tasks = append(tasks, Task{
+				Description: strings.TrimSpace(line[5:]),
+				Completed:   strings.HasPrefix(line, "- [x]"),
+			})
+		}
+	}
+	return tasks, nil
 }
 
 // MarkCompleted updates TODO.md to mark a task as completed.

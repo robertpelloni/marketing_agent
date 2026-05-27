@@ -14,6 +14,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 )
@@ -23,14 +24,16 @@ type Server struct {
 	db      *db.DB
 	deploy  *deploy.Deployer
 	tracker deploy.CITracker
+	tasks   *autodev.TaskManager
 }
 
 // NewServer creates a new Server instance.
-func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker) *Server {
+func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager) *Server {
 	return &Server{
 		db:      database,
 		deploy:  deployer,
 		tracker: tracker,
+		tasks:   taskManager,
 	}
 }
 
@@ -82,6 +85,8 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("UI: Error listing PRs: %v", err)
 	}
+
+	taskList, _ := s.tasks.ListAllTasks(r.Context())
 
 	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprintf(w, `
@@ -145,6 +150,29 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, `
 			</table>
+
+			<div class="deploy-section">
+				<h2>Autonomous Task Board</h2>
+				<p>Prioritized development roadmap and execution status.</p>
+				<table>
+					<tr>
+						<th>Description</th>
+						<th>Status</th>
+					</tr>`)
+	for _, t := range taskList {
+		status := "Pending"
+		if t.Completed {
+			status = "Completed"
+		}
+		fmt.Fprintf(w, `
+					<tr>
+						<td>%s</td>
+						<td><span class="status status-%s">%s</span></td>
+					</tr>`, html.EscapeString(t.Description), status, status)
+	}
+	fmt.Fprintf(w, `
+				</table>
+			</div>
 
 			<div class="deploy-section">
 				<h2>Autonomous Pull Requests</h2>

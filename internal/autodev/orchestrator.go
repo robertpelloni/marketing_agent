@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"strings"
 	"time"
 
@@ -88,8 +89,16 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 			if err := o.prManager.MergePullRequest(ctx, pr.ID); err != nil {
 				log.Printf("Autodev: Merge failed for PR %s: %v", pr.ID, err)
 			} else {
-				log.Printf("Autodev: Successfully merged PR %s", pr.ID)
+				log.Printf("Autodev: Successfully merged PR %s. Initiating branch cleanup...", pr.ID)
 				o.db.UpdatePRStatus(ctx, pr.ID, gitcheck.PRStatusMerged)
+
+				// Post-merge cleanup
+				if err := exec.Command("git", "branch", "-d", pr.Branch).Run(); err != nil {
+					log.Printf("Autodev: Local branch deletion failed for %s: %v", pr.Branch, err)
+				}
+				if err := exec.Command("git", "push", "origin", "--delete", pr.Branch).Run(); err != nil {
+					log.Printf("Autodev: Remote branch deletion failed for %s: %v", pr.Branch, err)
+				}
 			}
 		}
 	}

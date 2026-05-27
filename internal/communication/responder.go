@@ -4,7 +4,32 @@ import (
 	"context"
 	"fmt"
 	"log"
+
+	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 )
+
+// LLMResponseGenerator utilizes large language models for hyper-personalized outreach.
+type LLMResponseGenerator struct {
+	llm llm.LLMProvider
+}
+
+// NewLLMResponseGenerator creates a new generator instance.
+func NewLLMResponseGenerator(provider llm.LLMProvider) *LLMResponseGenerator {
+	return &LLMResponseGenerator{llm: provider}
+}
+
+// Generate creates a tailored response using the technical dossier and conversational context.
+func (g *LLMResponseGenerator) Generate(ctx context.Context, salesCtx SalesContext, action Action) (string, error) {
+	log.Printf("LLMResponseGenerator: Generating personalized response for intent: %s", salesCtx.LatestIntent)
+
+	prompt := llm.Prompt{
+		System: "You are an expert sales engineer at Borg, a multi-agent LLM orchestration platform. Your goal is to provide hyper-personalized outreach based on the prospect's technical findings.",
+		User: fmt.Sprintf("Draft a reply to %s (%s) at %s. Context: %s. Technical Findings: %s. Latest Message: %s. Action: %s.",
+			salesCtx.Contact.Name, salesCtx.Contact.Role, salesCtx.Company.Name, salesCtx.LatestIntent, salesCtx.Deal.TechnicalDossier, salesCtx.Interactions[0].RawText, action),
+	}
+
+	return g.llm.Generate(ctx, prompt)
+}
 
 // MockResponseGenerator provides template-based replies for testing.
 type MockResponseGenerator struct{}

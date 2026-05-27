@@ -9,7 +9,7 @@ import (
 
 
 func TestScoreLead(t *testing.T) {
-	engine := NewLearningSalesEngine(nil)
+	engine := NewLearningSalesEngine(nil, nil, nil)
 
 	ctx := SalesContext{
 		Company: db.Company{MarketCapTier: "Enterprise"},
@@ -28,7 +28,7 @@ func TestScoreLead(t *testing.T) {
 }
 
 func TestQualifyLead(t *testing.T) {
-	engine := NewLearningSalesEngine(nil)
+	engine := NewLearningSalesEngine(nil, nil, nil)
 
 	ctx := SalesContext{
 		Company: db.Company{MarketCapTier: "Enterprise"},
@@ -53,7 +53,7 @@ func TestQualifyLead(t *testing.T) {
 }
 
 func TestDecide_AdvanceToWon(t *testing.T) {
-	engine := NewLearningSalesEngine(nil)
+	engine := NewLearningSalesEngine(nil, nil, nil)
 	ctx := context.Background()
 
 	salesCtx := SalesContext{

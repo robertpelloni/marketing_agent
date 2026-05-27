@@ -13,6 +13,7 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/billing"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
@@ -140,10 +141,13 @@ func main() {
 		}
 	}
 
+	// 2da. Setup LLM Provider
+	llmProvider := &llm.MockLLMProvider{}
+
 	// 2e. Setup Communication Manager
 	classifier := &communication.MockIntentClassifier{}
-	responder := &communication.MockResponseGenerator{}
-	strategy := communication.NewLearningSalesEngine(database)
+	responder := communication.NewLLMResponseGenerator(llmProvider)
+	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
 
 	// 2ea. Setup Order Processing
 	billingClient := &billing.MockBillingClient{}

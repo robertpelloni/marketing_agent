@@ -19,7 +19,7 @@ func TestIntentClassifier_Classify(t *testing.T) {
 }
 
 func TestSalesEngine_Decide(t *testing.T) {
-	engine := NewLearningSalesEngine(nil)
+	engine := NewLearningSalesEngine(nil, nil, nil)
 
 	t.Run("Enterprise Pricing Intent", func(t *testing.T) {
 		salesCtx := SalesContext{

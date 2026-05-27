@@ -5,17 +5,25 @@ import (
 	"log"
 	"strings"
 
+	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 )
 
 // LearningSalesEngine implements the SalesStrategy interface.
 type LearningSalesEngine struct {
-	db *db.DB
+	db        *db.DB
+	crmClient crm.CRMClient
+	llm       llm.LLMProvider
 }
 
 // NewLearningSalesEngine creates a new instance of the engine.
-func NewLearningSalesEngine(database *db.DB) *LearningSalesEngine {
-	return &LearningSalesEngine{db: database}
+func NewLearningSalesEngine(database *db.DB, crmClient crm.CRMClient, llmProvider llm.LLMProvider) *LearningSalesEngine {
+	return &LearningSalesEngine{
+		db:        database,
+		crmClient: crmClient,
+		llm:       llmProvider,
+	}
 }
 
 // Decide determines the next action for a lead.
@@ -34,6 +42,13 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 		if e.db != nil {
 			if err := e.db.UpdateDealState(ctx, salesCtx.Deal.ID, newState); err != nil {
 				log.Printf("LearningSalesEngine: Error updating deal state: %v", err)
+			} else if e.crmClient != nil {
+				// Immediate CRM Sync
+				updatedDeal := salesCtx.Deal
+				updatedDeal.CurrentState = newState
+				if err := e.crmClient.PushDeal(ctx, updatedDeal, salesCtx.Company); err != nil {
+					log.Printf("LearningSalesEngine: Immediate CRM Push failed: %v", err)
+				}
 			}
 		}
 		return ActionAdvanceState, nil

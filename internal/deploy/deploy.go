@@ -67,6 +67,13 @@ func (d *Deployer) MonitorDeployment(ctx context.Context, interval time.Duration
 				continue
 			}
 			log.Printf("Deployment Monitor: System Health: %s", health)
+
+			// Autonomous Deployment: If main is successful and we are out of sync, trigger build
+			if health == "Main branch status: Success" {
+				// In a real autonomous system, we'd check if local bin matches remote
+				// For now, we just log the readiness.
+				log.Println("Deployment Monitor: System is healthy and ready for deployment.")
+			}
 		}
 	}
 }

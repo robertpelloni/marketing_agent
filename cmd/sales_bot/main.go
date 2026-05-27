@@ -5,6 +5,7 @@ import (
 	"flag"
 	"log"
 	"os"
+	"strings"
 	"os/signal"
 	"syscall"
 	"time"
@@ -113,7 +114,19 @@ func main() {
 	go outreachWorker.Run(ctx, 2*time.Hour)
 
 	// 2d. Setup Deployer
-	ciTracker := &deploy.MockCITracker{}
+	var ciTracker deploy.CITracker
+	ghRepo := os.Getenv("GITHUB_REPOSITORY")
+	if ghRepo != "" {
+		parts := strings.Split(ghRepo, "/")
+		if len(parts) == 2 {
+			log.Printf("CI: Initializing GitHub CI Tracker for %s", ghRepo)
+			ciTracker = deploy.NewGitHubCITracker(parts[0], parts[1])
+		}
+	}
+	if ciTracker == nil {
+		log.Println("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY).")
+		ciTracker = &deploy.MockCITracker{}
+	}
 	deployer := deploy.NewDeployer(ciTracker)
 
 	// 2da. Setup Deployer background sync and monitoring

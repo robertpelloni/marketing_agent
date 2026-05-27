@@ -13,11 +13,13 @@ import (
 type Intent string
 
 const (
-	IntentTechnical Intent = "Technical"
-	IntentPricing   Intent = "Pricing"
-	IntentObjection Intent = "Objection"
-	IntentSpam      Intent = "Spam"
-	IntentUnknown   Intent = "Unknown"
+	IntentTechnical      Intent = "Technical"
+	IntentPricing        Intent = "Pricing"
+	IntentObjection      Intent = "Objection"
+	IntentMeetingRequest Intent = "MeetingRequest"
+	IntentFollowUp       Intent = "FollowUp"
+	IntentSpam           Intent = "Spam"
+	IntentUnknown        Intent = "Unknown"
 )
 
 // IntentClassifier defines the interface for categorizing inbound communication.
@@ -27,7 +29,7 @@ type IntentClassifier interface {
 
 // ResponseGenerator defines the interface for creating tailored replies.
 type ResponseGenerator interface {
-	Generate(ctx context.Context, contact db.Contact, interaction db.Interaction, intent Intent, action Action) (string, error)
+	Generate(ctx context.Context, salesCtx SalesContext, action Action) (string, error)
 }
 
 // Manager coordinates the inbound communication state machine.
@@ -156,7 +158,7 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	}
 
 	// 3. Generate response
-	replyText, err := m.responder.Generate(ctx, contact, inbound, intent, action)
+	replyText, err := m.responder.Generate(ctx, salesCtx, action)
 	if err != nil {
 		return "", err
 	}

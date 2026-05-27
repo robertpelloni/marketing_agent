@@ -30,3 +30,8 @@ func (m *MockCRMClient) ValidateAccount(ctx context.Context, domain string) (boo
 	log.Printf("CRM: Validating account for domain: %s", domain)
 	return true, nil
 }
+
+func (m *MockCRMClient) SyncInteraction(ctx context.Context, dealID int64, note string) error {
+	log.Printf("CRM: Syncing interaction for deal %d: %s", dealID, note)
+	return nil
+}

@@ -27,6 +27,9 @@ type CRMClient interface {
 
 	// ValidateAccount checks if a company account is valid and active in the CRM.
 	ValidateAccount(ctx context.Context, domain string) (bool, error)
+
+	// SyncInteraction pushes a specific interaction or note to the CRM deal.
+	SyncInteraction(ctx context.Context, dealID int64, note string) error
 }
 
 // RestCRMClient implements CRMClient using a generic REST API.
@@ -111,4 +114,26 @@ func (c *RestCRMClient) ValidateAccount(ctx context.Context, domain string) (boo
 	defer resp.Body.Close()
 
 	return resp.StatusCode == http.StatusOK, nil
+}
+
+func (c *RestCRMClient) SyncInteraction(ctx context.Context, dealID int64, note string) error {
+	url := fmt.Sprintf("%s/deals/%d/interactions", c.BaseURL, dealID)
+	payload, _ := json.Marshal(map[string]interface{}{
+		"note": note,
+	})
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.APIKey)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	return nil
 }

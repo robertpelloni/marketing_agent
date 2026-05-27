@@ -22,11 +22,17 @@ func NewLearningSalesEngine(database *db.DB) *LearningSalesEngine {
 func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext) (Action, error) {
 	log.Printf("LearningSalesEngine: Deciding next action for deal %d (Latest Intent: %s)", salesCtx.Deal.ID, salesCtx.LatestIntent)
 
-	// 1. Analyze historical performance
+	// 1. Analyze historical performance and lead quality
 	if e.shouldAdvanceState(salesCtx) {
-		log.Printf("LearningSalesEngine: Advancing deal %d to Negotiating state.", salesCtx.Deal.ID)
+		newState := db.StateNegotiating
+		// If highly qualified and intent is positive, we might jump to closing
+		if e.QualifyLead(salesCtx) >= 80 && salesCtx.LatestIntent == IntentFollowUp {
+			newState = db.StateClosedWon
+		}
+
+		log.Printf("LearningSalesEngine: Advancing deal %d to %s state.", salesCtx.Deal.ID, newState)
 		if e.db != nil {
-			if err := e.db.UpdateDealState(ctx, salesCtx.Deal.ID, db.StateNegotiating); err != nil {
+			if err := e.db.UpdateDealState(ctx, salesCtx.Deal.ID, newState); err != nil {
 				log.Printf("LearningSalesEngine: Error updating deal state: %v", err)
 			}
 		}
@@ -34,6 +40,10 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 	}
 
 	// 2. Base intent-driven logic
+	if salesCtx.LatestIntent == IntentFollowUp && e.shouldAdvanceState(salesCtx) {
+		return ActionAdvanceState, nil
+	}
+
 	switch salesCtx.LatestIntent {
 	case IntentTechnical:
 		return ActionRespond, nil
@@ -56,12 +66,20 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 }
 
 func (e *LearningSalesEngine) shouldAdvanceState(ctx SalesContext) bool {
-	// Logic to advance state from Engaged to Negotiating if interest is high
-	return len(ctx.Interactions) > 3 && ctx.LatestIntent == IntentPricing
+	// Logic to advance state from Engaged to Negotiating if interest is high or highly qualified
+	if ctx.Deal.CurrentState == db.StateEngaged && (len(ctx.Interactions) > 3 || e.QualifyLead(ctx) > 70) {
+		return true
+	}
+	// If in negotiating, check for closing signals
+	if ctx.Deal.CurrentState == db.StateNegotiating && (ctx.LatestIntent == IntentFollowUp || ctx.LatestIntent == IntentPricing) {
+		return e.QualifyLead(ctx) > 85
+	}
+
+	return false
 }
 
 func (e *LearningSalesEngine) isHighValueLead(ctx SalesContext) bool {
-	return ctx.Company.MarketCapTier == "Enterprise"
+	return ctx.Company.MarketCapTier == "Enterprise" || e.ScoreLead(ctx) > 80
 }
 
 func (e *LearningSalesEngine) countInteractionTypes(interactions []db.Interaction, direction string) int {
@@ -94,5 +112,50 @@ func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
 		score += 20
 	}
 
+	// Interaction quantity bonus
+	score += len(salesCtx.Interactions) * 2
+
+	if score > 100 {
+		return 100
+	}
 	return score
+}
+
+// QualifyLead returns a qualification percentage (0-100) based on readiness to buy.
+func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
+	qual := 0
+
+	// Base score from profile
+	qual += e.ScoreLead(ctx) / 2
+
+	// Engagement quality
+	inboundCount := e.countInteractionTypes(ctx.Interactions, "Inbound")
+	if inboundCount > 2 {
+		qual += 20
+	}
+
+	// Intent analysis
+	switch ctx.LatestIntent {
+	case IntentPricing:
+		qual += 15
+	case IntentTechnical:
+		qual += 10
+	case IntentMeetingRequest:
+		qual += 25
+	case IntentFollowUp:
+		qual += 20
+	}
+
+	// Penalty for objections
+	if ctx.LatestIntent == IntentObjection {
+		qual -= 10
+	}
+
+	if qual > 100 {
+		return 100
+	}
+	if qual < 0 {
+		return 0
+	}
+	return qual
 }

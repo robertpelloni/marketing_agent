@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/billing"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -18,6 +19,7 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/researcher"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/sales"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/web"
 	"github.com/robertpelloni/enterprise_sales_bot/pkg/agents"
@@ -129,7 +131,12 @@ func main() {
 	classifier := &communication.MockIntentClassifier{}
 	responder := &communication.MockResponseGenerator{}
 	strategy := communication.NewLearningSalesEngine(database)
-	commManager := communication.NewManager(database, classifier, responder, strategy)
+
+	// 2ea. Setup Order Processing
+	billingClient := &billing.MockBillingClient{}
+	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
+
+	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor)
 
 	// Run communication poller in background
 	go commManager.Run(ctx, 30*time.Minute)

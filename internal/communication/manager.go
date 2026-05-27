@@ -32,21 +32,28 @@ type ResponseGenerator interface {
 	Generate(ctx context.Context, salesCtx SalesContext, action Action) (string, error)
 }
 
+// OrderProcessor defines the interface for fulfillment after a win.
+type OrderProcessor interface {
+	ProcessOrder(ctx context.Context, deal db.Deal) error
+}
+
 // Manager coordinates the inbound communication state machine.
 type Manager struct {
 	db         *db.DB
 	classifier IntentClassifier
 	responder  ResponseGenerator
 	strategy   SalesStrategy
+	processor  OrderProcessor
 }
 
 // NewManager creates a new communication Manager.
-func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy) *Manager {
+func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor) *Manager {
 	return &Manager{
 		db:         database,
 		classifier: classifier,
 		responder:  responder,
 		strategy:   strategy,
+		processor:  processor,
 	}
 }
 
@@ -161,6 +168,17 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	replyText, err := m.responder.Generate(ctx, salesCtx, action)
 	if err != nil {
 		return "", err
+	}
+
+	// 3a. Handle order processing if deal was won
+	if action == ActionAdvanceState {
+		updatedDeal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
+		if err == nil && updatedDeal.CurrentState == db.StateClosedWon && m.processor != nil {
+			log.Printf("Comm Manager: Triggering order processor for won deal %d", updatedDeal.ID)
+			if err := m.processor.ProcessOrder(ctx, *updatedDeal); err != nil {
+				log.Printf("Comm Manager Error: Order processing failed: %v", err)
+			}
+		}
 	}
 
 	// 4. Persist outbound interaction

@@ -77,3 +77,42 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 		t.Error("E2E Task PR not found in database")
 	}
 }
+
+func TestAutonomousCodeGeneration_Pilot(t *testing.T) {
+	dbURL := os.Getenv("DATABASE_URL")
+	if dbURL == "" {
+		t.Skip("DATABASE_URL not set, skipping Pilot test")
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	database, err := db.NewDB(dbURL)
+	if err != nil {
+		t.Fatalf("Failed to initialize database for pilot: %v", err)
+	}
+
+	// 1. Prepare TODO
+	tmpTodo, _ := os.CreateTemp("", "TODO_PILOT.md")
+	defer os.Remove(tmpTodo.Name())
+	os.WriteFile(tmpTodo.Name(), []byte("- [ ] Implement autonomous sales-feature"), 0644)
+
+	manager := autodev.NewTaskManager(tmpTodo.Name())
+	agent := &autodev.LocalAgent{} // Real LocalAgent for code gen
+	prManager := &gitcheck.MockPRManager{}
+	tracker := &deploy.MockCITracker{}
+	orchestrator := autodev.NewOrchestrator(database, manager, agent, prManager, tracker)
+
+	os.Setenv("SKIP_AUTODEV_SYNC", "true")
+	os.Setenv("SKIP_AUTODEV_TESTS", "true")
+	defer os.Unsetenv("SKIP_AUTODEV_SYNC")
+	defer os.Unsetenv("SKIP_AUTODEV_TESTS")
+
+	// 2. Trigger Loop
+	orchestrator.ExecuteStep(ctx)
+
+	// 3. Verify file creation
+	if _, err := os.Stat("internal/sales/feature.go"); os.IsNotExist(err) {
+		t.Errorf("Autonomous code generation failed: internal/sales/feature.go not found")
+	}
+}

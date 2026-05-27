@@ -3,6 +3,7 @@ package communication
 import (
 	"context"
 	"log"
+	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
@@ -71,4 +72,27 @@ func (e *LearningSalesEngine) countInteractionTypes(interactions []db.Interactio
 		}
 	}
 	return count
+}
+
+// ScoreLead calculates a priority score based on tier and technical research.
+func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
+	score := 0
+
+	// Tier scoring
+	switch strings.ToLower(salesCtx.Company.MarketCapTier) {
+	case "enterprise":
+		score += 50
+	case "mid-market":
+		score += 25
+	}
+
+	// Dossier insight scoring
+	if strings.Contains(salesCtx.Deal.TechnicalDossier, "BOTTLENECK") {
+		score += 30
+	}
+	if strings.Contains(salesCtx.Deal.TechnicalDossier, "INFRASTRUCTURE") {
+		score += 20
+	}
+
+	return score
 }

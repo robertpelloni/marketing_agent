@@ -6,6 +6,8 @@ The ultimate goal of this project is to create a fully autonomous, end-to-end B2
 ## Core Foundational Concepts
 - **Autonomous Lead Generation:** Continuously scanning job boards, GitHub activity, and tech stacks to find high-intent prospects.
 - **Hyper-Personalized Outreach:** Using deep technical research to craft outreach that addresses the specific operational bottlenecks of target engineering teams.
+- **Autonomous Development:** The bot manages its own codebase via the `autodev` module, parsing its own `TODO.md` to implement features and gating merges on CI success.
+- **Repository Governance:** Implements the "EXECUTIVE PROTOCOL" for robust repository synchronization and intelligent branch reconciliation.
 - **Technical Authority:** Leveraging RAG (Retrieval-Augmented Generation) over the Borg codebase and documentation to answer complex technical questions from prospects.
 - **State Machine Orchestration:** A rigid, event-driven state machine that manages the entire lead lifecycle from discovery to closing.
 - **Headless & Efficient:** Built in Go for high performance and scalability, using headless browsing for data extraction.

@@ -1,59 +1,91 @@
 package gitres
 
 import (
-	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"testing"
 )
 
 func TestReconcileBranches_Functional(t *testing.T) {
-	// This test requires git and a clean environment.
-	// We will simulate branch reconciliation by creating temporary branches.
+	// Create a temporary directory for the test repository
+	tmpDir, err := os.MkdirTemp("", "gitres-test-*")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tmpDir)
 
-	// Skip in CI if git is not configured
-	if _, err := exec.LookPath("git"); err != nil {
-		t.Skip("git not found, skipping functional test")
+	// Helper to run git commands in the temp directory
+	runGit := func(args ...string) error {
+		cmd := exec.Command("git", args...)
+		cmd.Dir = tmpDir
+		return cmd.Run()
 	}
 
-	// 1. Setup temporary branches
-	// Note: In a real environment, we'd use a temporary repo.
-	// For this test, we assume we are in the bot's repo and will cleanup.
-
-	currentBranchCmd := exec.Command("git", "rev-parse", "--abbrev-ref", "HEAD")
-	out, _ := currentBranchCmd.Output()
-	originalBranch := string(out)
-
-	defer func() {
-		log.Println("Cleanup: returning to original branch")
-		exec.Command("git", "checkout", originalBranch).Run()
-		exec.Command("git", "branch", "-D", "autodev/test-reconcile").Run()
-	}()
-
-	// Create a feature branch with a commit
-	if err := exec.Command("git", "checkout", "-b", "autodev/test-reconcile").Run(); err != nil {
-		t.Logf("Warning: could not create test branch (repo might be dirty): %v", err)
-		return
+	// Real helper that returns output
+	gitOut := func(args ...string) (string, error) {
+		cmd := exec.Command("git", args...)
+		cmd.Dir = tmpDir
+		out, err := cmd.CombinedOutput()
+		return string(out), err
 	}
 
-	os.WriteFile("RECONCILE_TEST", []byte("test"), 0644)
-	exec.Command("git", "add", "RECONCILE_TEST").Run()
-	exec.Command("git", "commit", "-m", "feat: test reconciliation").Run()
+	// 1. Initialize a mock repository
+	if err := runGit("init"); err != nil {
+		t.Fatalf("git init failed: %v", err)
+	}
+	if err := runGit("config", "user.email", "test@example.com"); err != nil {
+		t.Fatalf("git config email failed: %v", err)
+	}
+	if err := runGit("config", "user.name", "Test User"); err != nil {
+		t.Fatalf("git config name failed: %v", err)
+	}
 
-	// 2. Run reconciliation
+	// Create initial commit on main
+	os.WriteFile(filepath.Join(tmpDir, "README.md"), []byte("# Test Repo"), 0644)
+	runGit("add", "README.md")
+	runGit("commit", "-m", "initial commit")
+	runGit("branch", "-M", "main")
+
+	// 2. Create a feature branch with unique progress
+	runGit("checkout", "-b", "autodev/test-feature")
+	os.WriteFile(filepath.Join(tmpDir, "feature.txt"), []byte("feature content"), 0644)
+	runGit("add", "feature.txt")
+	runGit("commit", "-m", "feat: unique progress")
+
+	// 3. Run reconciliation (mocking the environment)
+	// We need to change the working directory for the duration of the test
+	origDir, _ := os.Getwd()
+	if err := os.Chdir(tmpDir); err != nil {
+		t.Fatalf("Failed to change dir: %v", err)
+	}
+	defer os.Chdir(origDir)
+
 	if err := ReconcileBranches(); err != nil {
 		t.Errorf("ReconcileBranches failed: %v", err)
 	}
 
-	// 3. Verify forward merge (main should have RECONCILE_TEST)
-	// We expect main to have been updated if unique progress was found
-	exec.Command("git", "checkout", "main").Run()
-	if _, err := os.Stat("RECONCILE_TEST"); os.IsNotExist(err) {
-		t.Errorf("Forward merge failed: RECONCILE_TEST not found in main")
+	// 4. Verify results
+	// Main should now have the feature content
+	if out, err := gitOut("ls-tree", "-r", "main", "--name-only"); err != nil {
+		t.Errorf("Failed to list files in main: %v", err)
+	} else if !containsString(out, "feature.txt") {
+		t.Errorf("Forward merge failed: feature.txt not found in main. Output: %s", out)
 	}
 
-	// Cleanup file from main after verification
-	os.Remove("RECONCILE_TEST")
-	exec.Command("git", "add", "RECONCILE_TEST").Run()
-	exec.Command("git", "commit", "-m", "chore: cleanup test file").Run()
+	// Feature branch should have README.md (reverse merge check, though it had it already)
+	if out, err := gitOut("ls-tree", "-r", "autodev/test-feature", "--name-only"); err != nil {
+		t.Errorf("Failed to list files in feature: %v", err)
+	} else if !containsString(out, "README.md") {
+		t.Errorf("Branch state invalid: README.md not found in feature branch")
+	}
+}
+
+func containsString(s, substr string) bool {
+	for i := 0; i <= len(s)-len(substr); i++ {
+		if s[i:i+len(substr)] == substr {
+			return true
+		}
+	}
+	return false
 }

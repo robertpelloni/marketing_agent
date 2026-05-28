@@ -71,5 +71,13 @@ func ReconcileBranches() error {
 	if out, err := exec.Command("git", "checkout", "main").CombinedOutput(); err != nil {
 		return fmt.Errorf("failed to return to main: %v, output: %s", err, string(out))
 	}
+
+	// Step 3 of EXECUTIVE PROTOCOL: Finalize by pushing reconciled main branch
+	log.Println("Intelligent Merge: Finalizing reconciliation by pushing main to origin...")
+	if err := gitcheck.PushBranch("main"); err != nil {
+		log.Printf("Intelligent Merge Warning: Final push failed: %v", err)
+		// We don't return error here to allow the cycle to continue locally
+	}
+
 	return nil
 }

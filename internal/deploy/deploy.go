@@ -13,13 +13,15 @@ import (
 
 // Deployer handles self-service deployment operations.
 type Deployer struct {
-	tracker CITracker
+	tracker    CITracker
+	dispatcher WorkflowDispatcher
 }
 
 // NewDeployer creates a new Deployer instance.
-func NewDeployer(tracker CITracker) *Deployer {
+func NewDeployer(tracker CITracker, dispatcher WorkflowDispatcher) *Deployer {
 	return &Deployer{
-		tracker: tracker,
+		tracker:    tracker,
+		dispatcher: dispatcher,
 	}
 }
 
@@ -80,14 +82,25 @@ func (d *Deployer) MonitorDeployment(ctx context.Context, interval time.Duration
 
 func (d *Deployer) ExecuteBuild() error {
 	log.Println("Deployment: Initiating build...")
-	// We call 'go build' directly for autonomy, mirroring build.bat logic.
-	// We use bin/sales_bot for standardized cross-platform consistency.
+
+	// If a dispatcher is available, we trigger the remote deploy workflow
+	if d.dispatcher != nil {
+		log.Println("Deployment: Dispatching remote deployment workflow...")
+		err := d.dispatcher.Dispatch(context.Background(), "deploy.yml", "main", nil)
+		if err == nil {
+			log.Println("Deployment: Remote deployment dispatched successfully.")
+			return nil
+		}
+		log.Printf("Deployment Warning: Remote dispatch failed, falling back to local build: %v", err)
+	}
+
+	// Fallback to local 'go build'
 	cmd := exec.Command("go", "build", "-v", "-o", "bin/sales_bot", "./cmd/sales_bot")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("build failed: %v, output: %s", err, string(output))
 	}
-	log.Println("Deployment: Build successful.")
+	log.Println("Deployment: Local build successful.")
 	return nil
 }
 

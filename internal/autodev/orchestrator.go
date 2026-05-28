@@ -73,7 +73,7 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 		}
 
 		if status == gitcheck.PRStatusOpen {
-			// Gate merge on CI Success
+			// Gate merge on CI Success and Staging Validation
 			ciStatus, err := o.tracker.GetLatestStatus(ctx, pr.Branch)
 			if err != nil {
 				log.Printf("Autodev: Error checking CI status for branch %s: %v", pr.Branch, err)
@@ -81,11 +81,11 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 			}
 
 			if ciStatus != deploy.CIStatusSuccess {
-				log.Printf("Autodev: PR %s CI status is %s, waiting...", pr.ID, ciStatus)
+				log.Printf("Autodev: PR %s CI/Staging status is %s, waiting for successful validation...", pr.ID, ciStatus)
 				continue
 			}
 
-			log.Printf("Autodev: PR %s CI successful, attempting autonomous merge...", pr.ID)
+			log.Printf("Autodev: PR %s validation successful, attempting autonomous merge...", pr.ID)
 			if err := o.prManager.MergePullRequest(ctx, pr.ID); err != nil {
 				log.Printf("Autodev: Merge failed for PR %s: %v", pr.ID, err)
 			} else {

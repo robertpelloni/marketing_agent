@@ -116,19 +116,21 @@ func main() {
 
 	// 2d. Setup Deployer
 	var ciTracker deploy.CITracker
+	var dispatcher deploy.WorkflowDispatcher
 	ghRepo := os.Getenv("GITHUB_REPOSITORY")
 	if ghRepo != "" {
 		parts := strings.Split(ghRepo, "/")
 		if len(parts) == 2 {
-			log.Printf("CI: Initializing GitHub CI Tracker for %s", ghRepo)
+			log.Printf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", ghRepo)
 			ciTracker = deploy.NewGitHubCITracker(parts[0], parts[1])
+			dispatcher = deploy.NewGitHubDispatcher(parts[0], parts[1])
 		}
 	}
 	if ciTracker == nil {
 		log.Println("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY).")
 		ciTracker = &deploy.MockCITracker{}
 	}
-	deployer := deploy.NewDeployer(ciTracker)
+	deployer := deploy.NewDeployer(ciTracker, dispatcher)
 
 	// 2da. Setup Deployer background sync and monitoring
 	syncIntervalStr := os.Getenv("DEPLOY_SYNC_INTERVAL")

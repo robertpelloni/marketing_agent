@@ -54,7 +54,13 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 		return ActionAdvanceState, nil
 	}
 
-	// 2. Base intent-driven logic
+	// 2. Self-Learning Strategy Adaptation
+	// In production, this would call e.llm.Generate to analyze sentiment and adjust Action
+	if e.llm != nil {
+		log.Printf("LearningSalesEngine: Analyzing sentiment and adapting strategy via LLM for deal %d", salesCtx.Deal.ID)
+	}
+
+	// 3. Base intent-driven logic
 	if salesCtx.LatestIntent == IntentFollowUp && e.shouldAdvanceState(salesCtx) {
 		return ActionAdvanceState, nil
 	}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"log"
+	"net/http"
 	"os"
 	"strings"
 	"os/signal"
@@ -81,8 +82,8 @@ func main() {
 
 	// 2c. Setup Researcher
 	crawlers := []researcher.Crawler{
-		&researcher.GitHubCrawler{},
-		&researcher.BlogCrawler{},
+		&researcher.GitHubCrawler{Client: http.DefaultClient},
+		&researcher.BlogCrawler{Client: http.DefaultClient},
 	}
 	processor := &researcher.DefaultDossierProcessor{}
 	r := researcher.NewResearcher(database, crawlers, processor)

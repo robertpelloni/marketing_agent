@@ -22,10 +22,15 @@ func NewLLMResponseGenerator(provider llm.LLMProvider) *LLMResponseGenerator {
 func (g *LLMResponseGenerator) Generate(ctx context.Context, salesCtx SalesContext, action Action) (string, error) {
 	log.Printf("LLMResponseGenerator: Generating personalized response for intent: %s", salesCtx.LatestIntent)
 
+	latestMsg := "START_OUTREACH"
+	if len(salesCtx.Interactions) > 0 {
+		latestMsg = salesCtx.Interactions[0].RawText
+	}
+
 	prompt := llm.Prompt{
 		System: "You are an expert sales engineer at Borg, a multi-agent LLM orchestration platform. Your goal is to provide hyper-personalized outreach based on the prospect's technical findings.",
 		User: fmt.Sprintf("Draft a reply to %s (%s) at %s. Context: %s. Technical Findings: %s. Latest Message: %s. Action: %s.",
-			salesCtx.Contact.Name, salesCtx.Contact.Role, salesCtx.Company.Name, salesCtx.LatestIntent, salesCtx.Deal.TechnicalDossier, salesCtx.Interactions[0].RawText, action),
+			salesCtx.Contact.Name, salesCtx.Contact.Role, salesCtx.Company.Name, salesCtx.LatestIntent, salesCtx.Deal.TechnicalDossier, latestMsg, action),
 	}
 
 	return g.llm.Generate(ctx, prompt)

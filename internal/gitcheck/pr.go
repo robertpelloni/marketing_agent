@@ -1,6 +1,9 @@
 package gitcheck
 
-import "context"
+import (
+	"context"
+	"log"
+)
 
 // PRStatus represents the current state of a Pull Request.
 type PRStatus string
@@ -37,6 +40,7 @@ type PRManager interface {
 type GitHubPRManager struct{}
 
 func (g *GitHubPRManager) CreatePullRequest(ctx context.Context, branch string, title string, body string) (*PullRequest, error) {
+	log.Printf("GitHubPRManager: Creating Pull Request for branch %s: %s", branch, title)
 	// Simulated PR creation using 'gh pr create' logic
 	return &PullRequest{
 		ID:     "123",
@@ -52,6 +56,7 @@ func (g *GitHubPRManager) GetPRStatus(ctx context.Context, prID string) (PRStatu
 }
 
 func (g *GitHubPRManager) MergePullRequest(ctx context.Context, prID string) error {
+	log.Printf("GitHubPRManager: Merging Pull Request %s", prID)
 	return nil
 }
 

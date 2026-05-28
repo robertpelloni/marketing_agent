@@ -208,7 +208,9 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 		log.Printf("Autodev: Error creating PR: %v", err)
 	} else {
 		log.Printf("Autodev: PR created: %s", pr.URL)
-		o.db.CreatePullRequest(ctx, pr, task.Description)
+		if o.db != nil {
+			o.db.CreatePullRequest(ctx, pr, task.Description)
+		}
 	}
 
 	log.Printf("Autodev: Task completed successfully: %s", task.Description)

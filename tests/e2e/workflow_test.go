@@ -7,9 +7,12 @@ import (
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/researcher"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
 )
 
@@ -39,6 +42,42 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	deals, err := database.ListRecentDeals(ctx, 1)
 	if err != nil || len(deals) == 0 {
 		t.Fatal("Expected a lead to be created in DB")
+	}
+	deal := deals[0]
+
+	// 2b. Enrichment Phase
+	enricher := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{&enrichment.MockApolloSource{}})
+	enricher.ExecuteEnrichment(ctx)
+
+	// Verify contact was created
+	contacts, err := database.ListContactsByCompany(ctx, deal.CompanyID)
+	if err != nil || len(contacts) == 0 {
+		t.Fatal("Expected a contact to be created during enrichment")
+	}
+
+	// 2c. Research Phase
+	res := researcher.NewResearcher(database, []researcher.Crawler{&researcher.GitHubCrawler{}}, &researcher.DefaultDossierProcessor{})
+	res.ExecuteResearch(ctx)
+
+	// Verify dossier was compiled
+	updatedDeal, _ := database.GetDealByCompanyID(ctx, deal.CompanyID)
+	if updatedDeal.TechnicalDossier == "" {
+		t.Error("Expected technical dossier to be compiled")
+	}
+
+	// 2d. Outreach Phase
+	classifier := &communication.MockIntentClassifier{}
+	responder := &communication.MockResponseGenerator{}
+	strategy := communication.NewLearningSalesEngine(database, nil, nil)
+	comm := communication.NewManager(database, classifier, responder, strategy, nil)
+
+	// Simulate inbound pricing inquiry
+	reply, err := comm.ProcessInbound(ctx, contacts[0], "How much does Borg cost?")
+	if err != nil {
+		t.Fatalf("Failed to process inbound: %v", err)
+	}
+	if reply == "" {
+		t.Error("Expected outreach reply")
 	}
 
 	// 3. Autonomous Task Generation Phase

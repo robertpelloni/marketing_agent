@@ -27,6 +27,11 @@ func (e *Enricher) Run(ctx context.Context, interval time.Duration) {
 	}
 }
 
+// ExecuteEnrichment manually triggers an enrichment cycle (exported for testing).
+func (e *Enricher) ExecuteEnrichment(ctx context.Context) {
+	e.executeEnrichment(ctx)
+}
+
 func (e *Enricher) executeEnrichment(ctx context.Context) {
 	// 1. Find deals in Discovered state
 	deals, err := e.db.ListDealsByState(ctx, db.StateDiscovered)

@@ -54,6 +54,11 @@ func (r *Researcher) Run(ctx context.Context, interval time.Duration) {
 	}
 }
 
+// ExecuteResearch manually triggers a research cycle (exported for testing).
+func (r *Researcher) ExecuteResearch(ctx context.Context) {
+	r.executeResearch(ctx)
+}
+
 func (r *Researcher) executeResearch(ctx context.Context) {
 	// Find deals in Researched state (contacts found, now need deep technical context)
 	deals, err := r.db.ListDealsByState(ctx, db.StateResearched)

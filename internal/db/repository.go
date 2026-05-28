@@ -37,6 +37,20 @@ func (db *DB) CreateCompany(ctx context.Context, company *Company) error {
 	return nil
 }
 
+// UpdateDealDetails updates the pricing and custom requirements of an existing deal.
+func (db *DB) UpdateDealDetails(ctx context.Context, dealID int64, pricing float64, requirements string) error {
+	query := `
+		UPDATE deals
+		SET quoted_pricing = $1, custom_requirements = $2, updated_at = $3
+		WHERE id = $4
+	`
+	_, err := db.Conn.ExecContext(ctx, query, pricing, requirements, time.Now(), dealID)
+	if err != nil {
+		return fmt.Errorf("failed to update deal details: %w", err)
+	}
+	return nil
+}
+
 // GetCompanyByID retrieves a company by its ID.
 func (db *DB) GetCompanyByID(ctx context.Context, id int64) (*Company, error) {
 	query := `

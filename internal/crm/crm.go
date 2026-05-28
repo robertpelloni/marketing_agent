@@ -30,6 +30,18 @@ type CRMClient interface {
 
 	// SyncInteraction pushes a specific interaction or note to the CRM deal.
 	SyncInteraction(ctx context.Context, dealID int64, note string) error
+
+	// FetchDealDetails retrieves specific deal information from the CRM.
+	FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error)
+}
+
+// DealDetails represents detailed information for a deal in the CRM.
+type DealDetails struct {
+	ID                 int64        `json:"id"`
+	Status             db.LeadState `json:"status"`
+	QuotedPricing      float64      `json:"quoted_pricing"`
+	CustomRequirements string       `json:"custom_requirements"`
+	TechnicalDossier   string       `json:"technical_dossier"`
 }
 
 // RestCRMClient implements CRMClient using a generic REST API.
@@ -114,6 +126,32 @@ func (c *RestCRMClient) ValidateAccount(ctx context.Context, domain string) (boo
 	defer resp.Body.Close()
 
 	return resp.StatusCode == http.StatusOK, nil
+}
+
+func (c *RestCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error) {
+	url := fmt.Sprintf("%s/deals/%d", c.BaseURL, dealID)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.APIKey)
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("crm api error: %d", resp.StatusCode)
+	}
+
+	var details DealDetails
+	if err := json.NewDecoder(resp.Body).Decode(&details); err != nil {
+		return nil, err
+	}
+
+	return &details, nil
 }
 
 func (c *RestCRMClient) SyncInteraction(ctx context.Context, dealID int64, note string) error {

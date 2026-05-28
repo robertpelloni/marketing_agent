@@ -72,8 +72,24 @@ func (w *Worker) sync(ctx context.Context) {
 	for _, deal := range deals {
 		company, _ := w.db.GetCompanyByID(ctx, deal.CompanyID)
 		if company != nil {
+			// 2a. Push local updates to CRM
 			if err := w.client.PushDeal(ctx, deal, *company); err != nil {
 				log.Printf("CRM Worker: Error pushing deal %d: %v", deal.ID, err)
+			}
+
+			// 2b. Pull latest details from CRM to keep local state synchronized
+			details, err := w.client.FetchDealDetails(ctx, deal.ID)
+			if err != nil {
+				log.Printf("CRM Worker: Error fetching deal details for %d: %v", deal.ID, err)
+				continue
+			}
+
+			if details != nil {
+				log.Printf("CRM Worker: Synchronizing details for deal %d from CRM", deal.ID)
+				// Update local deal pricing and requirements if they differ
+				if err := w.db.UpdateDealDetails(ctx, deal.ID, details.QuotedPricing, details.CustomRequirements); err != nil {
+					log.Printf("CRM Worker: Error updating local deal %d: %v", deal.ID, err)
+				}
 			}
 		}
 	}

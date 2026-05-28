@@ -35,3 +35,13 @@ func (m *MockCRMClient) SyncInteraction(ctx context.Context, dealID int64, note 
 	log.Printf("CRM: Syncing interaction for deal %d: %s", dealID, note)
 	return nil
 }
+
+func (m *MockCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error) {
+	log.Printf("CRM: Fetching mock details for deal %d", dealID)
+	return &DealDetails{
+		ID:                 dealID,
+		Status:             db.StateNegotiating,
+		QuotedPricing:      10000.0,
+		CustomRequirements: "Mock Requirement",
+	}, nil
+}

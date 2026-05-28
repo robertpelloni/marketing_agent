@@ -80,6 +80,19 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 		t.Error("Expected outreach reply")
 	}
 
+	// 2e. Negotiation & Closing Phase
+	// Simulate positive intent after outreach
+	reply, err = comm.ProcessInbound(ctx, contacts[0], "This looks interesting, let's proceed with a proposal.")
+	if err != nil {
+		t.Fatalf("Failed to process follow-up: %v", err)
+	}
+
+	// Verify deal advanced (QualifyLead should be high)
+	wonDeal, _ := database.GetDealByCompanyID(ctx, deal.CompanyID)
+	if wonDeal.CurrentState != db.StateClosedWon {
+		t.Errorf("Expected deal to be Closed_Won, got %s", wonDeal.CurrentState)
+	}
+
 	// 3. Autonomous Task Generation Phase
 	tmpTodo, _ := os.CreateTemp("", "TODO_E2E.md")
 	defer os.Remove(tmpTodo.Name())

@@ -31,7 +31,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v5
       with:
-        go-version: '1.24'
+        go-version: '1.25'
     - name: Run Tests
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable

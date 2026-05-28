@@ -2,7 +2,14 @@ package gitcheck
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"os"
+	"strconv"
+	"strings"
+
+	"github.com/google/go-github/v60/github"
+	"golang.org/x/oauth2"
 )
 
 // PRStatus represents the current state of a Pull Request.
@@ -36,15 +43,59 @@ type PRManager interface {
 	MergePullRequest(ctx context.Context, prID string) error
 }
 
-// GitHubPRManager implements the PRManager interface using the GitHub CLI (gh).
-type GitHubPRManager struct{}
+// GitHubPRManager implements the PRManager interface using the GitHub API.
+type GitHubPRManager struct {
+	client *github.Client
+	owner  string
+	repo   string
+}
+
+// NewGitHubPRManager creates a new GitHubPRManager instance.
+func NewGitHubPRManager(owner, repo string) *GitHubPRManager {
+	token := os.Getenv("GITHUB_TOKEN")
+	if token == "" {
+		log.Println("GitHubPRManager: Warning: GITHUB_TOKEN not set.")
+		return &GitHubPRManager{owner: owner, repo: repo}
+	}
+
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: token},
+	)
+	tc := oauth2.NewClient(context.Background(), ts)
+	client := github.NewClient(tc)
+
+	return &GitHubPRManager{
+		client: client,
+		owner:  owner,
+		repo:   repo,
+	}
+}
 
 func (g *GitHubPRManager) CreatePullRequest(ctx context.Context, branch string, title string, body string) (*PullRequest, error) {
+	if g.client == nil {
+		return nil, fmt.Errorf("github client not initialized")
+	}
+
 	log.Printf("GitHubPRManager: Creating Pull Request for branch %s: %s", branch, title)
-	// Simulated PR creation using 'gh pr create' logic
+
+	head := branch
+	base := "main"
+	newPR := &github.NewPullRequest{
+		Title:               github.String(title),
+		Head:                github.String(head),
+		Base:                github.String(base),
+		Body:                github.String(body),
+		MaintainerCanModify: github.Bool(true),
+	}
+
+	pr, _, err := g.client.PullRequests.Create(ctx, g.owner, g.repo, newPR)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create PR: %w", err)
+	}
+
 	return &PullRequest{
-		ID:     "123",
-		URL:    "https://github.com/robertpelloni/enterprise_sales_bot/pull/123",
+		ID:     strconv.Itoa(pr.GetNumber()),
+		URL:    pr.GetHTMLURL(),
 		Branch: branch,
 		Title:  title,
 		Status: PRStatusOpen,
@@ -52,11 +103,57 @@ func (g *GitHubPRManager) CreatePullRequest(ctx context.Context, branch string, 
 }
 
 func (g *GitHubPRManager) GetPRStatus(ctx context.Context, prID string) (PRStatus, error) {
-	return PRStatusOpen, nil
+	if g.client == nil {
+		return PRStatusOpen, nil // Fallback for simulation
+	}
+
+	number, err := strconv.Atoi(prID)
+	if err != nil {
+		return PRStatusFailed, err
+	}
+
+	pr, _, err := g.client.PullRequests.Get(ctx, g.owner, g.repo, number)
+	if err != nil {
+		return PRStatusFailed, err
+	}
+
+	if pr.GetMerged() {
+		return PRStatusMerged, nil
+	}
+
+	state := strings.ToLower(pr.GetState())
+	switch state {
+	case "open":
+		return PRStatusOpen, nil
+	case "closed":
+		return PRStatusClosed, nil
+	default:
+		return PRStatusOpen, nil
+	}
 }
 
 func (g *GitHubPRManager) MergePullRequest(ctx context.Context, prID string) error {
+	if g.client == nil {
+		log.Printf("GitHubPRManager: Simulating PR merge for %s", prID)
+		return nil
+	}
+
 	log.Printf("GitHubPRManager: Merging Pull Request %s", prID)
+
+	number, err := strconv.Atoi(prID)
+	if err != nil {
+		return err
+	}
+
+	opts := &github.PullRequestOptions{
+		MergeMethod: "squash",
+	}
+
+	_, _, err = g.client.PullRequests.Merge(ctx, g.owner, g.repo, number, "Autonomous merge by sales-bot", opts)
+	if err != nil {
+		return fmt.Errorf("failed to merge PR %s: %w", prID, err)
+	}
+
 	return nil
 }
 

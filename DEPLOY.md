@@ -1,9 +1,10 @@
 # Deployment & Setup Instructions
 
 ## Prerequisites
-- **Go:** version 1.24 or later.
+- **Go:** version 1.25 or later.
 - **PostgreSQL:** version 13 or later.
 - **Git:** for version control and submodule management.
+- **GitHub Token:** A Personal Access Token (PAT) with `repo` permissions for autonomous PR management.
 
 ## Local Setup
 1. **Clone the Repository:**
@@ -14,6 +15,8 @@
 2. **Environment Variables:**
    Set up the following environment variables (or use a `.env` file):
    - `DATABASE_URL`: `postgres://user:password@localhost:5432/sales_bot?sslmode=disable`
+   - `GITHUB_TOKEN`: Your GitHub PAT.
+   - `GITHUB_REPOSITORY`: The `owner/repo` string for the main repository.
 3. **Database Migrations:**
    Apply migrations using your preferred tool (e.g., `golang-migrate`):
    ```bash

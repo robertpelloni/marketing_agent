@@ -164,7 +164,20 @@ func main() {
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")
 	agent := &autodev.LocalAgent{}
-	prManager := &gitcheck.GitHubPRManager{}
+
+	var prManager gitcheck.PRManager
+	if ghRepo != "" {
+		parts := strings.Split(ghRepo, "/")
+		if len(parts) == 2 {
+			log.Printf("Autodev: Initializing GitHub PR Manager for %s", ghRepo)
+			prManager = gitcheck.NewGitHubPRManager(parts[0], parts[1])
+		}
+	}
+	if prManager == nil {
+		log.Println("Autodev: Initializing Mock PR Manager (missing GITHUB_REPOSITORY).")
+		prManager = &gitcheck.MockPRManager{}
+	}
+
 	orchestrator := autodev.NewOrchestrator(database, taskManager, agent, prManager, ciTracker)
 
 	// Run autodev worker in background (every 1 hour)

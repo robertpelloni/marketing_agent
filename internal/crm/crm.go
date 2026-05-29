@@ -20,7 +20,7 @@ type LeadUpdate struct {
 // CRMClient defines the interface for interacting with external CRM systems.
 type CRMClient interface {
 	// PushDeal synchronizes a local deal to the CRM.
-	PushDeal(ctx context.Context, deal db.Deal, company db.Company) error
+	PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error
 
 	// GetLeadUpdates retrieves status changes from the CRM for local reconciliation.
 	GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error)
@@ -60,13 +60,14 @@ func NewRestCRMClient(baseURL, apiKey string) *RestCRMClient {
 	}
 }
 
-func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company) error {
+func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
 	url := fmt.Sprintf("%s/deals", c.BaseURL)
 	payload, _ := json.Marshal(map[string]interface{}{
 		"deal_id":  deal.ID,
 		"company":  company.Name,
 		"status":   deal.CurrentState,
 		"pricing":  deal.QuotedPricing,
+		"route":    route,
 	})
 
 	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))

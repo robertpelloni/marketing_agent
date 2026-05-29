@@ -1,7 +1,7 @@
 # Deployment & Setup Instructions
 
 ## Prerequisites
-- **Go:** version 1.25 or later.
+- **Go:** version 1.23 or later.
 - **PostgreSQL:** version 13 or later.
 - **Git:** for version control and submodule management.
 - **GitHub Token:** A Personal Access Token (PAT) with `repo` permissions for autonomous PR management.

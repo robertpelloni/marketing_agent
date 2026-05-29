@@ -19,7 +19,7 @@ func TestRestCRMClient_PushDeal(t *testing.T) {
 	defer server.Close()
 
 	client := NewRestCRMClient(server.URL, "test-key")
-	err := client.PushDeal(context.Background(), db.Deal{ID: 1}, db.Company{Name: "TestCorp"})
+	err := client.PushDeal(context.Background(), db.Deal{ID: 1}, db.Company{Name: "TestCorp"}, "test-route")
 	if err != nil {
 		t.Fatalf("PushDeal failed: %v", err)
 	}

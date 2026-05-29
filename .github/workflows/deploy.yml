@@ -22,6 +22,10 @@ jobs:
         uses: golangci/golangci-lint-action@v6
         with:
           version: latest
+      - name: Run Gosec Security Scanner
+        uses: securego/gosec@master
+        with:
+          args: ./...
 
   test:
     needs: lint
@@ -54,6 +58,10 @@ jobs:
           echo "Version mismatch: VERSION($V1) != VERSION.md($V2)"
           exit 1
         fi
+    - name: Verify Go Modules
+      run: |
+        go mod tidy
+        git diff --exit-code go.mod go.sum
     - name: Run Tests with Coverage
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable

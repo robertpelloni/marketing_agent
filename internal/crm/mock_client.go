@@ -15,8 +15,8 @@ func NewMockCRMClient() *MockCRMClient {
 	return &MockCRMClient{}
 }
 
-func (m *MockCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company) error {
-	log.Printf("CRM: Pushing deal %d for company %s to CRM", deal.ID, company.Name)
+func (m *MockCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
+	log.Printf("CRM: Pushing deal %d for company %s (Route: %s) to CRM", deal.ID, company.Name, route)
 	return nil
 }
 

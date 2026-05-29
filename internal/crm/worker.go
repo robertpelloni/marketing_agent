@@ -73,7 +73,7 @@ func (w *Worker) sync(ctx context.Context) {
 		company, _ := w.db.GetCompanyByID(ctx, deal.CompanyID)
 		if company != nil {
 			// 2a. Push local updates to CRM
-			if err := w.client.PushDeal(ctx, deal, *company); err != nil {
+			if err := w.client.PushDeal(ctx, deal, *company, "WorkerSync"); err != nil {
 				log.Printf("CRM Worker: Error pushing deal %d: %v", deal.ID, err)
 			}
 

@@ -46,7 +46,7 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 				// Immediate CRM Sync
 				updatedDeal := salesCtx.Deal
 				updatedDeal.CurrentState = newState
-				if err := e.crmClient.PushDeal(ctx, updatedDeal, salesCtx.Company); err != nil {
+				if err := e.crmClient.PushDeal(ctx, updatedDeal, salesCtx.Company, e.RouteLead(salesCtx)); err != nil {
 					log.Printf("LearningSalesEngine: Immediate CRM Push failed: %v", err)
 				}
 			}
@@ -179,4 +179,29 @@ func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
 		return 0
 	}
 	return qual
+}
+
+// RouteLead determines the optimal internal representative or team for a given deal context.
+func (e *LearningSalesEngine) RouteLead(salesCtx SalesContext) string {
+	score := e.ScoreLead(salesCtx)
+	qual := e.QualifyLead(salesCtx)
+
+	// Routing Logic:
+	// 1. Technical Enterprise: Route to Lead Solutions Architect
+	if salesCtx.Company.MarketCapTier == "Enterprise" && (strings.Contains(salesCtx.Deal.TechnicalDossier, "BOTTLENECK") || salesCtx.LatestIntent == IntentTechnical) {
+		return "Lead Solutions Architect"
+	}
+
+	// 2. High Value / High Readiness: Route to Senior Account Executive
+	if score > 80 || qual > 75 {
+		return "Senior Account Executive"
+	}
+
+	// 3. Technical SME: Route to Technical Sales Engineer
+	if salesCtx.LatestIntent == IntentTechnical {
+		return "Technical Sales Engineer"
+	}
+
+	// Default: Standard Sales Representative
+	return "Sales Representative"
 }

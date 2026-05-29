@@ -2,7 +2,11 @@ package communication
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"strings"
+
+	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 )
 
 // MockIntentClassifier simulates intent classification for inbound text.
@@ -35,6 +39,46 @@ func containsAny(text string, keywords ...string) bool {
 }
 
 func contains(text, kw string) bool {
-	// Simple case-insensitive search logic would go here
-	return true // Simplified for mock
+	return strings.Contains(strings.ToLower(text), strings.ToLower(kw))
+}
+
+// LLMIntentClassifier uses an LLM to categorize inbound messages.
+type LLMIntentClassifier struct {
+	llm llm.LLMProvider
+}
+
+// NewLLMIntentClassifier creates a new LLM-based classifier.
+func NewLLMIntentClassifier(provider llm.LLMProvider) *LLMIntentClassifier {
+	return &LLMIntentClassifier{llm: provider}
+}
+
+func (c *LLMIntentClassifier) Classify(ctx context.Context, text string) (Intent, error) {
+	prompt := llm.Prompt{
+		System: "You are a sales intent classifier. Classify the user's message into one of: Technical, Pricing, Objection, MeetingRequest, FollowUp, Spam, or Unknown.",
+		User:   fmt.Sprintf("Classify this message: %s", text),
+	}
+
+	resp, err := c.llm.Generate(ctx, prompt)
+	if err != nil {
+		return IntentUnknown, err
+	}
+
+	cleanResp := strings.TrimSpace(resp)
+	// Simple matching logic
+	switch {
+	case strings.Contains(cleanResp, "Technical"):
+		return IntentTechnical, nil
+	case strings.Contains(cleanResp, "Pricing"):
+		return IntentPricing, nil
+	case strings.Contains(cleanResp, "Objection"):
+		return IntentObjection, nil
+	case strings.Contains(cleanResp, "MeetingRequest"):
+		return IntentMeetingRequest, nil
+	case strings.Contains(cleanResp, "FollowUp"):
+		return IntentFollowUp, nil
+	case strings.Contains(cleanResp, "Spam"):
+		return IntentSpam, nil
+	}
+
+	return IntentUnknown, nil
 }

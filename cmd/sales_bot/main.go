@@ -149,7 +149,7 @@ func main() {
 
 	// 2e. Setup Communication Manager
 	classifier := &communication.MockIntentClassifier{}
-	responder := communication.NewLLMResponseGenerator(llmProvider)
+	responder := communication.NewRAGResponseGenerator(llmProvider)
 	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
 
 	// 2ea. Setup Order Processing

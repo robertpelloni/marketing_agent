@@ -67,7 +67,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 
 	// 2d. Outreach Phase
 	classifier := &communication.MockIntentClassifier{}
-	responder := &communication.MockResponseGenerator{}
+	responder := &communication.RAGResponseGenerator{}
 	strategy := communication.NewLearningSalesEngine(database, nil, nil)
 	comm := communication.NewManager(database, classifier, responder, strategy, nil)
 

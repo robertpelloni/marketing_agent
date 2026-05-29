@@ -11,7 +11,7 @@ import (
 
 func TestLLMResponseGenerator_Generate(t *testing.T) {
 	provider := &llm.MockLLMProvider{}
-	generator := NewLLMResponseGenerator(provider)
+	generator := NewRAGResponseGenerator(provider)
 
 	salesCtx := SalesContext{
 		Contact: db.Contact{Name: "John Doe", Role: "CTO"},

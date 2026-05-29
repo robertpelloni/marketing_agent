@@ -71,8 +71,10 @@ func (g *GitHubCITracker) GetLatestStatus(ctx context.Context, branch string) (C
 	switch run.Conclusion {
 	case "success":
 		return CIStatusSuccess, nil
-	case "failure", "cancelled", "timed_out":
+	case "failure", "cancelled", "timed_out", "action_required":
 		return CIStatusFailure, nil
+	case "skipped":
+		return CIStatusSuccess, nil // Treat skipped as non-failure for gating
 	default:
 		return CIStatusUnknown, nil
 	}

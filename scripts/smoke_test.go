@@ -63,5 +63,9 @@ func verifyDetailedHealth(url string) error {
 		return fmt.Errorf("database health is not OK: %v", health["database"])
 	}
 
+	if health["workers"] != "active" {
+		return fmt.Errorf("workers are not active: %v", health["workers"])
+	}
+
 	return nil
 }

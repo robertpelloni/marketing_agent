@@ -73,7 +73,7 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 		}
 
 		if status == gitcheck.PRStatusOpen {
-			// Gate merge on CI Success and Staging Validation
+			// Gate merge on CI Success and Staging Validation (from unified pipeline)
 			ciStatus, err := o.tracker.GetLatestStatus(ctx, pr.Branch)
 			if err != nil {
 				log.Printf("Autodev: Error checking CI status for branch %s: %v", pr.Branch, err)

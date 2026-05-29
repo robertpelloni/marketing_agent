@@ -27,8 +27,10 @@ func TestOrchestrator_ExecuteStep_Mock(t *testing.T) {
 	// Skip git sync logic for unit testing orchestrator flow
 	os.Setenv("SKIP_AUTODEV_SYNC", "true")
 	os.Setenv("GO_TEST_MODE", "true")
+	os.Setenv("SKIP_AUTODEV_TESTS", "true")
 	defer os.Unsetenv("SKIP_AUTODEV_SYNC")
 	defer os.Unsetenv("GO_TEST_MODE")
+	defer os.Unsetenv("SKIP_AUTODEV_TESTS")
 
 	ctx := context.Background()
 	orchestrator.ExecuteStep(ctx)

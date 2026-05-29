@@ -53,8 +53,10 @@ start.bat
 
 ## CI/CD
 The project uses GitHub Actions for continuous integration and automated deployment:
-- **CI (`ci.yml`):** Runs on every push and PR to `main`. It verifies submodule integrity, version consistency between `VERSION` and `VERSION.md`, and executes all integrity and project tests.
-- **CD (`deploy.yml`):** Automatically triggers on version tags (e.g., `v0.2.0`). It builds the bot and executes provisioning logic to update the target environment.
+- **CI/CD (`deploy.yml`):** A unified pipeline that manages testing, staging validation, and production deployment.
+    - **Tests:** Runs unit and integration tests with a PostgreSQL service.
+    - **Staging:** Automatically deploys to a staging environment (port 8081) on pull requests and runs smoke tests.
+    - **Production:** Deploys to the production environment on pushes to `main` or version tags, gated by successful tests.
 
 ### Required Secrets
 To enable automated deployment, ensure the following secrets are configured in GitHub:

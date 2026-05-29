@@ -44,6 +44,16 @@ func verifyEndpoint(url, expected string) error {
 	}
 
 	// Basic check for response body
+	body := make([]byte, len(expected))
+	_, err = resp.Body.Read(body)
+	if err != nil && err.Error() != "EOF" {
+		return err
+	}
+
+	if string(body) != expected {
+		return fmt.Errorf("unexpected response body: expected %q, got %q", expected, string(body))
+	}
+
 	return nil
 }
 

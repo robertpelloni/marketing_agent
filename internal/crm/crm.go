@@ -104,6 +104,10 @@ func (c *RestCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode >= 400 {
+		return nil, fmt.Errorf("crm api error: %d", resp.StatusCode)
+	}
+
 	var updates []LeadUpdate
 	if err := json.NewDecoder(resp.Body).Decode(&updates); err != nil {
 		return nil, err
@@ -125,6 +129,10 @@ func (c *RestCRMClient) ValidateAccount(ctx context.Context, domain string) (boo
 		return false, err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		return false, fmt.Errorf("crm api error: %d", resp.StatusCode)
+	}
 
 	return resp.StatusCode == http.StatusOK, nil
 }
@@ -173,6 +181,10 @@ func (c *RestCRMClient) SyncInteraction(ctx context.Context, dealID int64, note 
 		return err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		return fmt.Errorf("crm api error: %d", resp.StatusCode)
+	}
 
 	return nil
 }

@@ -1,6 +1,8 @@
 package sales
 
 import (
+	"context"
+	"errors"
 	"testing"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/billing"
@@ -8,26 +10,73 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
-// Mock objects for testing
-type mockDB struct {
-	*db.DB
+// Mock Billing Client for detailed testing
+type errorBillingClient struct {
+	billing.MockBillingClient
 }
 
-func TestProcessOrder(t *testing.T) {
-	// Note: This test requires a running database or a more extensive mock.
-	// For this task, we will verify the logic flow using mocks where possible.
+func (e *errorBillingClient) CreateInvoice(ctx context.Context, deal db.Deal, company db.Company) (string, error) {
+	return "", errors.New("billing service down")
+}
 
-	// Since we don't have a full DB mock yet, we'll focus on the logic in Processor.
-	// In a real project, we'd use a mock generator.
+// Mock CRM Client for detailed testing
+type errorCRMClient struct {
+	crm.MockCRMClient
+}
 
+func (e *errorCRMClient) SyncInteraction(ctx context.Context, dealID int64, note string) error {
+	return errors.New("crm service down")
+}
+
+// Mock objects for testing
+type mockDB struct {
+	company *db.Company
+	err     error
+}
+
+func (m *mockDB) GetCompanyByID(ctx context.Context, id int64) (*db.Company, error) {
+	return m.company, m.err
+}
+
+func TestProcessOrder_BillingFailure(t *testing.T) {
+	billingClient := &errorBillingClient{}
+	crmClient := &crm.MockCRMClient{}
+	dbMock := &mockDB{company: &db.Company{ID: 1, Name: "TestCorp"}}
+
+	p := NewOrderProcessor(dbMock, billingClient, crmClient)
+
+	err := p.ProcessOrder(context.Background(), db.Deal{ID: 1, CompanyID: 1})
+	if err == nil {
+		t.Fatal("Expected billing failure error, got nil")
+	}
+	if err.Error() != "failed to create invoice: billing service down" {
+		t.Errorf("Unexpected error message: %v", err)
+	}
+}
+
+func TestProcessOrder_Success(t *testing.T) {
 	billingClient := &billing.MockBillingClient{}
 	crmClient := &crm.MockCRMClient{}
+	dbMock := &mockDB{company: &db.Company{ID: 1, Name: "TestCorp"}}
 
-	// We can't easily mock the db.DB struct without an interface,
-	// so we'll ensure the code compiles and performs basic logic check in the main bot tests.
+	p := NewOrderProcessor(dbMock, billingClient, crmClient)
 
-	p := NewOrderProcessor(nil, billingClient, crmClient)
-	if p == nil {
-		t.Fatal("Failed to create OrderProcessor")
+	err := p.ProcessOrder(context.Background(), db.Deal{ID: 1, CompanyID: 1})
+	if err != nil {
+		t.Fatalf("ProcessOrder failed: %v", err)
+	}
+}
+
+func TestProcessOrder_CRMWarning(t *testing.T) {
+	// CRM sync failure should only log a warning and not return an error in the current implementation.
+	billingClient := &billing.MockBillingClient{}
+	crmClient := &errorCRMClient{}
+	dbMock := &mockDB{company: &db.Company{ID: 1, Name: "TestCorp"}}
+
+	p := NewOrderProcessor(dbMock, billingClient, crmClient)
+
+	err := p.ProcessOrder(context.Background(), db.Deal{ID: 1, CompanyID: 1})
+	if err != nil {
+		t.Fatalf("ProcessOrder should not fail on CRM error, but got: %v", err)
 	}
 }

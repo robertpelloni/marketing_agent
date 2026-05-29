@@ -10,15 +10,20 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
+// OrderDB defines the database interface needed by the OrderProcessor.
+type OrderDB interface {
+	GetCompanyByID(ctx context.Context, id int64) (*db.Company, error)
+}
+
 // Processor coordinates the transition from a won deal to an active order.
 type Processor struct {
-	db      *db.DB
+	db      OrderDB
 	billing billing.BillingClient
 	crm     crm.CRMClient
 }
 
 // NewOrderProcessor creates a new Processor instance.
-func NewOrderProcessor(database *db.DB, billingClient billing.BillingClient, crmClient crm.CRMClient) *Processor {
+func NewOrderProcessor(database OrderDB, billingClient billing.BillingClient, crmClient crm.CRMClient) *Processor {
 	return &Processor{
 		db:      database,
 		billing: billingClient,

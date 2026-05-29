@@ -50,3 +50,11 @@ func TestListFeatureBranches_Filter(t *testing.T) {
 		}
 	}
 }
+
+func TestDeleteBranch_NonExistent(t *testing.T) {
+	// Deleting a non-existent branch should return an error
+	err := DeleteBranch("non-existent-branch-12345")
+	if err == nil {
+		t.Error("Expected error when deleting non-existent branch, got nil")
+	}
+}

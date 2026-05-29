@@ -5,17 +5,13 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"strings"
 	"time"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/gitres"
-)
-
-import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/gitres"
 )
 
 // Orchestrator coordinates the autonomous development lifecycle.
@@ -73,6 +69,15 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 		}
 
 		if status == gitcheck.PRStatusOpen {
+			// Check for PR comments to facilitate future self-correction
+			comments, _ := o.prManager.GetPRComments(ctx, pr.ID)
+			if len(comments) > 0 {
+				log.Printf("Autodev: PR %s has %d comments. Reviewing for feedback...", pr.ID, len(comments))
+				for _, c := range comments {
+					log.Printf("Autodev: PR %s Comment: %s", pr.ID, c)
+				}
+			}
+
 			// Gate merge on CI Success and Staging Validation (from unified pipeline)
 			ciStatus, err := o.tracker.GetLatestStatus(ctx, pr.Branch)
 			if err != nil {
@@ -91,16 +96,22 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 			} else {
 				log.Printf("Autodev: Successfully merged PR %s. Initiating branch cleanup...", pr.ID)
 				o.db.UpdatePRStatus(ctx, pr.ID, gitcheck.PRStatusMerged)
-
-				// Post-merge cleanup
-				if err := exec.Command("git", "branch", "-d", pr.Branch).Run(); err != nil {
-					log.Printf("Autodev: Local branch deletion failed for %s: %v", pr.Branch, err)
-				}
-				if err := exec.Command("git", "push", "origin", "--delete", pr.Branch).Run(); err != nil {
-					log.Printf("Autodev: Remote branch deletion failed for %s: %v", pr.Branch, err)
-				}
+				o.cleanupPRBranch(pr.Branch)
 			}
+		} else if status == gitcheck.PRStatusClosed || status == gitcheck.PRStatusFailed {
+			log.Printf("Autodev: PR %s reached terminal state: %s. Initiating branch cleanup...", pr.ID, status)
+			o.db.UpdatePRStatus(ctx, pr.ID, status)
+			o.cleanupPRBranch(pr.Branch)
 		}
+	}
+}
+
+func (o *Orchestrator) cleanupPRBranch(branch string) {
+	if err := gitcheck.DeleteBranch(branch); err != nil {
+		log.Printf("Autodev: Local branch deletion failed for %s: %v", branch, err)
+	}
+	if err := gitcheck.DeleteRemoteBranch(branch); err != nil {
+		log.Printf("Autodev: Remote branch deletion failed for %s: %v", branch, err)
 	}
 }
 

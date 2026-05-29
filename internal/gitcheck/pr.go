@@ -41,6 +41,9 @@ type PRManager interface {
 
 	// MergePullRequest merges an open PR.
 	MergePullRequest(ctx context.Context, prID string) error
+
+	// GetPRComments retrieves all comments for a PR.
+	GetPRComments(ctx context.Context, prID string) ([]string, error)
 }
 
 // GitHubPRManager implements the PRManager interface using the GitHub API.
@@ -157,6 +160,28 @@ func (g *GitHubPRManager) MergePullRequest(ctx context.Context, prID string) err
 	return nil
 }
 
+func (g *GitHubPRManager) GetPRComments(ctx context.Context, prID string) ([]string, error) {
+	if g.client == nil {
+		return []string{}, nil
+	}
+
+	number, err := strconv.Atoi(prID)
+	if err != nil {
+		return nil, err
+	}
+
+	comments, _, err := g.client.Issues.ListComments(ctx, g.owner, g.repo, number, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var result []string
+	for _, c := range comments {
+		result = append(result, c.GetBody())
+	}
+	return result, nil
+}
+
 // MockPRManager is a simulated implementation for testing.
 type MockPRManager struct{}
 
@@ -175,4 +200,8 @@ func (m *MockPRManager) GetPRStatus(ctx context.Context, prID string) (PRStatus,
 
 func (m *MockPRManager) MergePullRequest(ctx context.Context, prID string) error {
 	return nil
+}
+
+func (m *MockPRManager) GetPRComments(ctx context.Context, prID string) ([]string, error) {
+	return []string{"Mock comment 1", "Mock comment 2"}, nil
 }

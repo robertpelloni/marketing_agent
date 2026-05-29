@@ -113,6 +113,24 @@ func PushBranch(branch string) error {
 	return nil
 }
 
+// DeleteBranch deletes a local branch.
+func DeleteBranch(branch string) error {
+	cmd := exec.Command("git", "branch", "-d", branch)
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to delete local branch %s: %v", branch, err)
+	}
+	return nil
+}
+
+// DeleteRemoteBranch deletes a remote branch from 'origin'.
+func DeleteRemoteBranch(branch string) error {
+	cmd := exec.Command("git", "push", "origin", "--delete", branch)
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to delete remote branch %s: %v", branch, err)
+	}
+	return nil
+}
+
 // ListFeatureBranches returns a list of all local branches prefixed with 'autodev/'.
 // These represent the active feature branches managed by the autonomous orchestrator.
 func ListFeatureBranches() ([]string, error) {

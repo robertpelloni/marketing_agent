@@ -9,6 +9,7 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
@@ -67,7 +68,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 
 	// 2d. Outreach Phase
 	classifier := &communication.MockIntentClassifier{}
-	responder := &communication.RAGResponseGenerator{}
+	responder := communication.NewRAGResponseGenerator(&llm.MockLLMProvider{})
 	strategy := communication.NewLearningSalesEngine(database, nil, nil)
 	comm := communication.NewManager(database, classifier, responder, strategy, nil)
 

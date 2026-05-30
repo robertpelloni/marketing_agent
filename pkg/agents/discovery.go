@@ -2,9 +2,12 @@ package agents
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"os"
 	"time"
 
+	"github.com/google/go-github/v60/github"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
@@ -38,5 +41,61 @@ func (w *TargetDiscoveryWorker) Run(ctx context.Context, interval time.Duration)
 
 func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 	log.Println("Borg Outreach: Scanning for new MCP server repositories on GitHub...")
-	// Simulated discovery logic as per Phase 3 requirements
+
+	client := github.NewClient(nil)
+	token := os.Getenv("GITHUB_TOKEN")
+	if token != "" {
+		client = github.NewClient(nil).WithAuthToken(token)
+	}
+
+	query := "model-context-protocol OR mcp-server language:Go language:TypeScript"
+	opts := &github.SearchOptions{
+		Sort:  "updated",
+		Order: "desc",
+		ListOptions: github.ListOptions{
+			PerPage: 10,
+		},
+	}
+
+	result, _, err := client.Search.Repositories(ctx, query, opts)
+	if err != nil {
+		log.Printf("Borg Outreach Error: GitHub search failed: %v", err)
+		return
+	}
+
+	for _, repo := range result.Repositories {
+		domain := fmt.Sprintf("github.com/%s", repo.GetFullName())
+		log.Printf("Borg Outreach: Evaluating repository: %s", domain)
+
+		// Check if company already exists
+		existing, _ := w.db.GetCompanyByDomain(ctx, domain)
+		if existing != nil {
+			continue
+		}
+
+		// Create new lead
+		company := &db.Company{
+			Name:           repo.GetName(),
+			Domain:         domain,
+			TechStack:      []string{repo.GetLanguage()},
+			HiringSignals:  []string{"Active Open Source contributor"},
+			MarketCapTier:  "SMB", // Default for discovered repos
+		}
+
+		if err := w.db.CreateCompany(ctx, company); err != nil {
+			log.Printf("Borg Outreach Warning: Failed to create company %s: %v", domain, err)
+			continue
+		}
+
+		deal := &db.Deal{
+			CompanyID:    company.ID,
+			CurrentState: db.StateDiscovered,
+		}
+
+		if err := w.db.CreateDeal(ctx, deal); err != nil {
+			log.Printf("Borg Outreach Warning: Failed to create deal for %s: %v", domain, err)
+		} else {
+			log.Printf("Borg Outreach Success: New lead discovered: %s", domain)
+		}
+	}
 }

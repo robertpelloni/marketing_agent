@@ -24,7 +24,7 @@ jobs:
         with:
           version: latest
       - name: Run Gosec Security Scanner
-        uses: securego/gosec@master
+        uses: securego/gosec-action@master
         with:
           args: ./...
 
@@ -82,7 +82,7 @@ jobs:
     - name: Run Staging Validation
       run: sleep 10 && go run scripts/smoke_test.go
       env:
-        STAGING_URL: http://localhost:8081
+        TARGET_URL: http://localhost:8081
     - name: Cleanup Staging
       if: always()
       run: docker compose -f docker-compose.staging.yml down
@@ -126,3 +126,8 @@ jobs:
           git checkout ${{ github.sha }}
           git submodule update --init --recursive
           docker compose up -d --build
+    - name: Production Smoke Test
+      run: |
+        go run scripts/smoke_test.go
+      env:
+        TARGET_URL: ${{ secrets.PRODUCTION_URL }}

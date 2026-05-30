@@ -1,4 +1,11 @@
 @echo off
+echo Updating submodules...
+git submodule update --init --recursive
+if %errorlevel% neq 0 (
+    echo Submodule update failed!
+    exit /b %errorlevel%
+)
+
 echo Running Merge Integrity Tests...
 go test ./internal/gitcheck/...
 if %errorlevel% neq 0 (

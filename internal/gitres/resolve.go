@@ -1,9 +1,11 @@
 package gitres
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os/exec"
+	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 )
@@ -11,7 +13,7 @@ import (
 // ResolveConflict performs a 'git merge' of the source branch into the current branch.
 // It accepts an optional strategy (e.g., 'ours', 'theirs') to automatically resolve conflicts.
 func ResolveConflict(source string, strategy string) error {
-	args := []string{"merge", source}
+	args := []string{"merge", source, "--no-edit"}
 	if strategy != "" {
 		args = append(args, "-X", strategy)
 	}
@@ -19,6 +21,12 @@ func ResolveConflict(source string, strategy string) error {
 	cmd := exec.Command("git", args...)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
+		// If merge failed, attempt to find conflicting files before potential abort
+		conflictCmd := exec.Command("git", "diff", "--name-only", "--diff-filter=U")
+		conflicts, _ := conflictCmd.CombinedOutput()
+		if len(conflicts) > 0 {
+			log.Printf("Intelligent Merge: Conflicts detected in files:\n%s", string(conflicts))
+		}
 		return fmt.Errorf("merge failed: %v, output: %s", err, string(output))
 	}
 	return nil
@@ -31,6 +39,17 @@ func AbortMerge() error {
 	return cmd.Run()
 }
 
+func hasUniqueProgress(branch string) bool {
+	cmd := exec.Command("git", "rev-list", "--count", "main.."+branch)
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	if err := cmd.Run(); err != nil {
+		return false
+	}
+	count := strings.TrimSpace(out.String())
+	return count != "0"
+}
+
 // ReconcileBranches implements the Dual-Direction Intelligent Merge Engine.
 // It iterates through all 'autodev/' branches, attempting to forward-merge them into 'main'
 // and reverse-merge 'main' back into each feature branch to prevent drift.
@@ -41,6 +60,11 @@ func ReconcileBranches() error {
 	}
 
 	for _, branch := range branches {
+		if !hasUniqueProgress(branch) {
+			log.Printf("Intelligent Merge: Skipping %s, no unique progress.", branch)
+			continue
+		}
+
 		log.Printf("Intelligent Merge: Reconciling branch: %s", branch)
 
 		// 1. Forward Merge: Feature -> Main
@@ -50,6 +74,7 @@ func ReconcileBranches() error {
 		}
 		if err := ResolveConflict(branch, "theirs"); err != nil {
 			log.Printf("Intelligent Merge: Forward merge failed for %s: %v", branch, err)
+			_ = AbortMerge()
 		} else {
 			log.Printf("Intelligent Merge: Successfully merged %s into main", branch)
 		}
@@ -62,6 +87,7 @@ func ReconcileBranches() error {
 		// We use standard merge to catch drift and ensure metadata (TODO, VERSION) is preserved correctly
 		if err := ResolveConflict("main", ""); err != nil {
 			log.Printf("Intelligent Merge: Reverse merge failed for %s: %v", branch, err)
+			_ = AbortMerge()
 		} else {
 			log.Printf("Intelligent Merge: Successfully reconciled %s with main", branch)
 		}

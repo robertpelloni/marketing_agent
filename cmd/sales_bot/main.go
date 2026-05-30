@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -32,7 +33,18 @@ import (
 
 func main() {
 	reconcile := flag.Bool("reconcile", false, "Run branch reconciliation and exit")
+	inventory := flag.Bool("inventory", false, "Generate submodule inventory and exit")
 	flag.Parse()
+
+	if *inventory {
+		log.Println("Generating Submodule Inventory...")
+		table, err := gitcheck.GenerateSubmoduleInventory()
+		if err != nil {
+			log.Fatalf("Failed to generate inventory: %v", err)
+		}
+		fmt.Println(table)
+		return
+	}
 
 	if *reconcile {
 		log.Println("Running Intelligent Merge Engine...")

@@ -11,6 +11,10 @@ git fetch --all --tags
 echo "Updating submodules recursively..."
 git submodule update --init --recursive
 
+# 2b. Generate Inventory
+echo "Updating submodule inventory..."
+go run ./cmd/sales_bot --inventory > borg/SUBMODULE_INVENTORY.md
+
 # 3. Intelligent Branch Reconciliation
 echo "Executing Dual-Direction Intelligent Merge Engine..."
 # We use a dedicated go routine or sub-command to handle multi-branch reconciliation

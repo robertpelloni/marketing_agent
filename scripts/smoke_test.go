@@ -8,28 +8,28 @@ import (
 )
 
 func main() {
-	stagingURL := os.Getenv("STAGING_URL")
-	if stagingURL == "" {
-		stagingURL = "http://localhost:8081"
+	targetURL := os.Getenv("TARGET_URL")
+	if targetURL == "" {
+		targetURL = "http://localhost:8081"
 	}
 
-	fmt.Printf("Starting staging smoke test for: %s\n", stagingURL)
+	fmt.Printf("Starting smoke test for: %s\n", targetURL)
 
 	// 1. Verify basic health
-	err := verifyEndpoint(fmt.Sprintf("%s/health", stagingURL), "OK\n")
+	err := verifyEndpoint(fmt.Sprintf("%s/health", targetURL), "OK\n")
 	if err != nil {
-		fmt.Printf("Staging Validation Failed: %v\n", err)
+		fmt.Printf("Smoke Test Failed: %v\n", err)
 		os.Exit(1)
 	}
 
 	// 2. Verify detailed health (DB connection)
-	err = verifyDetailedHealth(fmt.Sprintf("%s/health/detailed", stagingURL))
+	err = verifyDetailedHealth(fmt.Sprintf("%s/health/detailed", targetURL))
 	if err != nil {
-		fmt.Printf("Staging DB Validation Failed: %v\n", err)
+		fmt.Printf("Smoke Test DB Validation Failed: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Println("Staging Validation Successful.")
+	fmt.Println("Smoke Test Successful.")
 }
 
 func verifyEndpoint(url, expected string) error {

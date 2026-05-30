@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -57,20 +58,41 @@ func IsSynced(target string) (bool, error) {
 	return true, nil
 }
 
-// SyncRemote fetches and merges changes from 'origin/main'.
+// SyncRemote fetches and merges changes from 'origin/main' and upstream if configured.
 // It uses '--no-edit' to ensure the operation remains autonomous and non-interactive.
 func SyncRemote() error {
-	fetchCmd := exec.Command("git", "fetch", "origin", "main")
+	// Step 1: Fetch All to ensure complete repository awareness
+	fetchCmd := exec.Command("git", "fetch", "--all", "--tags")
 	if err := fetchCmd.Run(); err != nil {
-		return fmt.Errorf("failed to fetch from origin: %v", err)
+		return fmt.Errorf("failed to fetch all remotes: %v", err)
 	}
 
+	// Step 2: Handle Upstream Sync if present
+	if hasUpstream() {
+		log.Println("Git Sync: Upstream remote detected, merging changes...")
+		upstreamMerge := exec.Command("git", "merge", "upstream/main", "-m", "chore: autonomous upstream sync", "--no-edit")
+		if err := upstreamMerge.Run(); err != nil {
+			log.Printf("Git Sync Warning: Upstream merge failed: %v", err)
+		}
+	}
+
+	// Step 3: Merge from origin/main
 	mergeCmd := exec.Command("git", "merge", "origin/main", "-m", "chore: autonomous sync with origin/main", "--no-edit")
 	if err := mergeCmd.Run(); err != nil {
 		return fmt.Errorf("failed to merge from origin/main: %v", err)
 	}
 
 	return nil
+}
+
+func hasUpstream() bool {
+	cmd := exec.Command("git", "remote")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	if err := cmd.Run(); err != nil {
+		return false
+	}
+	return strings.Contains(out.String(), "upstream")
 }
 
 // UpdateSubmodules updates all git submodules recursively within the repository.
@@ -165,4 +187,36 @@ func CheckConflicts() (bool, error) {
 		return false, err
 	}
 	return out.Len() > 0, nil
+}
+
+// GenerateSubmoduleInventory produces a Markdown table listing all submodules and their details.
+func GenerateSubmoduleInventory() (string, error) {
+	cmd := exec.Command("git", "submodule", "status", "--recursive")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	if err := cmd.Run(); err != nil {
+		return "", err
+	}
+
+	inventory := "| Submodule Path | Current Commit | Remote URL |\n"
+	inventory += "|----------------|----------------|------------|\n"
+
+	scanner := bufio.NewScanner(&out)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		parts := strings.Fields(line)
+		if len(parts) >= 2 {
+			commit := parts[0]
+			path := parts[1]
+
+			// Get URL
+			urlCmd := exec.Command("git", "config", "--file", ".gitmodules", fmt.Sprintf("submodule.%s.url", path))
+			urlOut, _ := urlCmd.Output()
+			url := strings.TrimSpace(string(urlOut))
+
+			inventory += fmt.Sprintf("| %s | %s | %s |\n", path, commit, url)
+		}
+	}
+
+	return inventory, nil
 }

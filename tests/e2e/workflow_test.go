@@ -95,9 +95,14 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	}
 
 	// 3. Autonomous Task Generation Phase
-	tmpTodo, _ := os.CreateTemp("", "TODO_E2E.md")
+	tmpTodo, err := os.CreateTemp("", "TODO_E2E.md")
+	if err != nil {
+		t.Fatalf("Failed to create E2E TODO: %v", err)
+	}
 	defer os.Remove(tmpTodo.Name())
-	os.WriteFile(tmpTodo.Name(), []byte("- [ ] E2E Task"), 0644)
+	if err := os.WriteFile(tmpTodo.Name(), []byte("- [ ] E2E Task"), 0644); err != nil {
+		t.Fatalf("Failed to write E2E TODO: %v", err)
+	}
 
 	manager := autodev.NewTaskManager(tmpTodo.Name())
 	agent := &autodev.MockAgent{}
@@ -146,9 +151,14 @@ func TestAutonomousCodeGeneration_Pilot(t *testing.T) {
 	}
 
 	// 1. Prepare TODO
-	tmpTodo, _ := os.CreateTemp("", "TODO_PILOT.md")
+	tmpTodo, err := os.CreateTemp("", "TODO_PILOT.md")
+	if err != nil {
+		t.Fatalf("Failed to create pilot TODO: %v", err)
+	}
 	defer os.Remove(tmpTodo.Name())
-	os.WriteFile(tmpTodo.Name(), []byte("- [ ] Implement autonomous sales-feature"), 0644)
+	if err := os.WriteFile(tmpTodo.Name(), []byte("- [ ] Implement autonomous sales-feature"), 0644); err != nil {
+		t.Fatalf("Failed to write pilot TODO: %v", err)
+	}
 
 	manager := autodev.NewTaskManager(tmpTodo.Name())
 	agent := &autodev.LocalAgent{} // Real LocalAgent for code gen

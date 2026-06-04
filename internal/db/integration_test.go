@@ -98,4 +98,29 @@ func TestDatabase_Integration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to update deal state: %v", err)
 	}
+
+	// 6. Test Interaction Success Flagging (Prompt Optimization Loop)
+	err = database.UpdateInteractionSuccess(ctx, interaction.ID, true)
+	if err != nil {
+		t.Fatalf("Failed to update interaction success: %v", err)
+	}
+
+	successes, err := database.ListSuccessfulInteractions(ctx, 10)
+	if err != nil {
+		t.Fatalf("Failed to list successful interactions: %v", err)
+	}
+
+	foundSuccess := false
+	for _, s := range successes {
+		if s.ID == interaction.ID {
+			foundSuccess = true
+			if !s.Success {
+				t.Error("Expected interaction success to be true")
+			}
+			break
+		}
+	}
+	if !foundSuccess {
+		t.Error("Expected to find the flagged interaction in successful list")
+	}
 }

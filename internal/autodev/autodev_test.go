@@ -49,7 +49,9 @@ func TestTaskManager_MarkCompleted(t *testing.T) {
 	}
 	defer os.Remove(tmpfile.Name())
 
-	os.WriteFile(tmpfile.Name(), []byte(content), 0644)
+	if err := os.WriteFile(tmpfile.Name(), []byte(content), 0644); err != nil {
+		t.Fatalf("Failed to write TODO file: %v", err)
+	}
 
 	manager := NewTaskManager(tmpfile.Name())
 	err = manager.MarkCompleted(context.Background(), "Task A")

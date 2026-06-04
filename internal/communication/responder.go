@@ -20,8 +20,23 @@ type RAGResponseGenerator struct {
 
 // NewRAGResponseGenerator creates a new generator with Borg context.
 func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResponseGenerator {
-	docsPath := "borg/docs/ARCHITECTURE.md"
-	content, err := os.ReadFile(docsPath)
+	// Documentation path resolution to support both root execution and package-level tests
+	docsPaths := []string{
+		"borg/docs/ARCHITECTURE.md",
+		"../../borg/docs/ARCHITECTURE.md",
+		"../../../borg/docs/ARCHITECTURE.md",
+	}
+
+	var content []byte
+	var err error
+	for _, path := range docsPaths {
+		content, err = os.ReadFile(path)
+		if err == nil {
+			log.Printf("RAG: Successfully loaded Borg documentation from %s", path)
+			break
+		}
+	}
+
 	if err != nil {
 		log.Printf("RAG: Warning: could not load Borg documentation: %v", err)
 	}

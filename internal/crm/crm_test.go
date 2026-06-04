@@ -28,7 +28,7 @@ func TestRestCRMClient_PushDeal(t *testing.T) {
 func TestRestCRMClient_GetLeadUpdates(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`[{"ID": "123", "NewState": "Negotiating"}]`))
+		_, _ = w.Write([]byte(`[{"ID": "123", "NewState": "Negotiating"}]`))
 	}))
 	defer server.Close()
 

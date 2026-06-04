@@ -83,7 +83,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 
 	// 2e. Negotiation & Closing Phase
 	// Simulate positive intent after outreach
-	reply, err = comm.ProcessInbound(ctx, contacts[0], "This looks interesting, let's proceed with a proposal.")
+	_, err = comm.ProcessInbound(ctx, contacts[0], "This looks interesting, let's proceed with a proposal.")
 	if err != nil {
 		t.Fatalf("Failed to process follow-up: %v", err)
 	}

@@ -16,7 +16,7 @@ func TestRestCRMClient_FetchDealDetails(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{
+		_, _ = w.Write([]byte(`{
 			"id": 123,
 			"status": "Negotiating",
 			"quoted_pricing": 50000.0,

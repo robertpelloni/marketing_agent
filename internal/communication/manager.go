@@ -104,8 +104,12 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 		if !hasOutbound {
 			log.Printf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email)
 			// Trigger outreach
-			m.ProcessInbound(ctx, contacts[0], "START_OUTREACH") // Internal trigger
-			m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent)
+			if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
+				log.Printf("Comm Manager Error: Failed to initiate outreach for deal %d: %v", deal.ID, err)
+			}
+			if err := m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent); err != nil {
+				log.Printf("Comm Manager Error: Failed to update deal state to OutreachSent for deal %d: %v", deal.ID, err)
+			}
 		}
 	}
 }

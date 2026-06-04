@@ -68,9 +68,12 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			interactionID := r.FormValue("interaction_id")
 			success := r.FormValue("success") == "true"
 			var id int64
-			fmt.Sscanf(interactionID, "%d", &id)
-			if err := s.db.UpdateInteractionSuccess(r.Context(), id, success); err != nil {
-				log.Printf("UI: Error flagging interaction: %v", err)
+			if _, err := fmt.Sscanf(interactionID, "%d", &id); err != nil {
+				log.Printf("UI: Invalid interaction ID: %v", err)
+			} else {
+				if err := s.db.UpdateInteractionSuccess(r.Context(), id, success); err != nil {
+					log.Printf("UI: Error flagging interaction: %v", err)
+				}
 			}
 		case "build":
 			if err := s.deploy.ExecuteBuild(); err != nil {
@@ -140,6 +143,16 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			statusTitle = "Key engineering contacts found and technical dossier compiled."
 		}
 
+		// Retrieve latest interaction ID to allow manual flagging from UI
+		contacts, _ := s.db.ListContactsByCompany(r.Context(), d.CompanyID)
+		latestInteractionID := int64(0)
+		if len(contacts) > 0 {
+			interactions, _ := s.db.ListInteractionsByContact(r.Context(), contacts[0].ID)
+			if len(interactions) > 0 {
+				latestInteractionID = interactions[0].ID
+			}
+		}
+
 		fmt.Fprintf(w, `
 				<tr>
 					<td>%d</td>
@@ -159,7 +172,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 							<button type="submit" class="action-btn" style="background-color: #6f42c1;">Flag Success</button>
 						</form>
 					</td>
-				</tr>`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID, d.ID)
+				</tr>`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID, latestInteractionID)
 	}
 
 	fmt.Fprintf(w, `
@@ -260,7 +273,9 @@ func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 	// 3. Worker liveness (Simulated)
 	health["workers"] = "active"
 
-	json.NewEncoder(w).Encode(health)
+	if err := json.NewEncoder(w).Encode(health); err != nil {
+		log.Printf("Web: Error encoding health JSON: %v", err)
+	}
 }
 
 func verifySignature(payload []byte, secret string, signatureHeader string) bool {

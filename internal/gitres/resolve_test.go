@@ -27,20 +27,26 @@ func setupTestRepo(t *testing.T) string {
 
 	// Create base commit
 	file := filepath.Join(tempDir, "test.txt")
-	os.WriteFile(file, []byte("base content\n"), 0644)
+	if err := os.WriteFile(file, []byte("base content\n"), 0644); err != nil {
+		t.Fatalf("Failed to write base file: %v", err)
+	}
 	runCmd("add", "test.txt")
 	runCmd("commit", "-m", "base")
 
 	// Create branch A
 	runCmd("checkout", "-b", "branchA")
-	os.WriteFile(file, []byte("content from A\n"), 0644)
+	if err := os.WriteFile(file, []byte("content from A\n"), 0644); err != nil {
+		t.Fatalf("Failed to write branch A file: %v", err)
+	}
 	runCmd("add", "test.txt")
 	runCmd("commit", "-m", "from A")
 
 	// Create branch B from base
 	runCmd("checkout", "main")
 	runCmd("checkout", "-b", "branchB")
-	os.WriteFile(file, []byte("content from B\n"), 0644)
+	if err := os.WriteFile(file, []byte("content from B\n"), 0644); err != nil {
+		t.Fatalf("Failed to write branch B file: %v", err)
+	}
 	runCmd("add", "test.txt")
 	runCmd("commit", "-m", "from B")
 

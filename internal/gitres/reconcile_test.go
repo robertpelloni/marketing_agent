@@ -42,16 +42,20 @@ func TestReconcileBranches_Functional(t *testing.T) {
 	}
 
 	// Create initial commit on main
-	os.WriteFile(filepath.Join(tmpDir, "README.md"), []byte("# Test Repo"), 0644)
-	runGit("add", "README.md")
-	runGit("commit", "-m", "initial commit")
-	runGit("branch", "-M", "main")
+	if err := os.WriteFile(filepath.Join(tmpDir, "README.md"), []byte("# Test Repo"), 0644); err != nil {
+		t.Fatalf("Failed to write README: %v", err)
+	}
+	_ = runGit("add", "README.md")
+	_ = runGit("commit", "-m", "initial commit")
+	_ = runGit("branch", "-M", "main")
 
 	// 2. Create a feature branch with unique progress
-	runGit("checkout", "-b", "autodev/test-feature")
-	os.WriteFile(filepath.Join(tmpDir, "feature.txt"), []byte("feature content"), 0644)
-	runGit("add", "feature.txt")
-	runGit("commit", "-m", "feat: unique progress")
+	_ = runGit("checkout", "-b", "autodev/test-feature")
+	if err := os.WriteFile(filepath.Join(tmpDir, "feature.txt"), []byte("feature content"), 0644); err != nil {
+		t.Fatalf("Failed to write feature file: %v", err)
+	}
+	_ = runGit("add", "feature.txt")
+	_ = runGit("commit", "-m", "feat: unique progress")
 
 	// 3. Run reconciliation (mocking the environment)
 	// We need to change the working directory for the duration of the test
@@ -59,7 +63,11 @@ func TestReconcileBranches_Functional(t *testing.T) {
 	if err := os.Chdir(tmpDir); err != nil {
 		t.Fatalf("Failed to change dir: %v", err)
 	}
-	defer os.Chdir(origDir)
+	defer func() {
+		if err := os.Chdir(origDir); err != nil {
+			t.Errorf("Failed to restore working directory: %v", err)
+		}
+	}()
 
 	if err := ReconcileBranches(); err != nil {
 		t.Errorf("ReconcileBranches failed: %v", err)

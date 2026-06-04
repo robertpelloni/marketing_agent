@@ -92,6 +92,11 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 
 	health, _ := s.tracker.GetSystemHealth(r.Context())
 
+	metrics, err := s.db.GetPerformanceMetrics(r.Context())
+	if err != nil {
+		log.Printf("UI: Error retrieving metrics: %v", err)
+	}
+
 	prs, err := s.db.ListActivePullRequests(r.Context())
 	if err != nil {
 		log.Printf("UI: Error listing PRs: %v", err)
@@ -178,6 +183,37 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, `
 			</table>
 
+			<div class="deploy-section" style="border-top: 5px solid #17a2b8;">
+				<h2>Performance Metrics</h2>
+				<p>Real-time pipeline statistics and conversion rates.</p>
+				<div style="display: flex; gap: 20px; flex-wrap: wrap;">
+					<div style="background: #e9ecef; padding: 15px; border-radius: 8px; min-width: 150px;">
+						<strong>Total Leads:</strong> %d
+					</div>
+					<div style="background: #d4edda; padding: 15px; border-radius: 8px; min-width: 150px;">
+						<strong>Won Deals:</strong> %d
+					</div>
+					<div style="background: #f8d7da; padding: 15px; border-radius: 8px; min-width: 150px;">
+						<strong>Win Rate:</strong> %.1f%%
+					</div>
+					<div style="background: #fff3cd; padding: 15px; border-radius: 8px; min-width: 150px;">
+						<strong>Successful Outreach:</strong> %d
+					</div>
+				</div>
+				<h3>Leads by State</h3>
+				<ul>
+					<li><strong>Discovered:</strong> %d</li>
+					<li><strong>Researched:</strong> %d</li>
+					<li><strong>Outreach Sent:</strong> %d</li>
+					<li><strong>Engaged:</strong> %d</li>
+					<li><strong>Negotiating:</strong> %d</li>
+				</ul>
+			</div>`,
+		metrics.TotalLeads, metrics.LeadsByState[db.StateClosedWon], metrics.WinRate, metrics.SuccessfulOutreach,
+		metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateOutreachSent],
+		metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateNegotiating])
+
+	fmt.Fprintf(w, `
 			<div class="deploy-section">
 				<h2>Autonomous Task Board</h2>
 				<p>Prioritized development roadmap and execution status.</p>
@@ -246,7 +282,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				</ul>
 			</div>
 		</body>
-			</html>`, health)
+				</html>`, health)
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {

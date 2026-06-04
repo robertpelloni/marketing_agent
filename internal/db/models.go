@@ -64,3 +64,11 @@ type Deal struct {
 	CreatedAt          time.Time `db:"created_at"`
 	UpdatedAt          time.Time `db:"updated_at"`
 }
+
+// PerformanceMetrics aggregates key sales pipeline statistics.
+type PerformanceMetrics struct {
+	TotalLeads         int            `json:"total_leads"`
+	LeadsByState       map[LeadState]int `json:"leads_by_state"`
+	SuccessfulOutreach int            `json:"successful_outreach"`
+	WinRate            float64        `json:"win_rate"`
+}

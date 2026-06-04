@@ -2,24 +2,59 @@ package main
 
 import (
 	"context"
+	"flag"
+	"fmt"
 	"log"
+	"net/http"
 	"os"
+	"strings"
 	"os/signal"
 	"syscall"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/billing"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/gitres"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/researcher"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/sales"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/web"
+	"github.com/robertpelloni/enterprise_sales_bot/pkg/agents"
 
 	_ "github.com/lib/pq" // PostgreSQL driver
 )
 
 func main() {
+	reconcile := flag.Bool("reconcile", false, "Run branch reconciliation and exit")
+	inventory := flag.Bool("inventory", false, "Generate submodule inventory and exit")
+	flag.Parse()
+
+	if *inventory {
+		log.Println("Generating Submodule Inventory...")
+		table, err := gitcheck.GenerateSubmoduleInventory()
+		if err != nil {
+			log.Fatalf("Failed to generate inventory: %v", err)
+		}
+		fmt.Println(table)
+		return
+	}
+
+	if *reconcile {
+		log.Println("Running Intelligent Merge Engine...")
+		if err := gitres.ReconcileBranches(); err != nil {
+			log.Fatalf("Reconciliation failed: %v", err)
+		}
+		log.Println("Reconciliation complete.")
+		return
+	}
+
 	log.Println("Starting Enterprise Sales Bot...")
 
 	// 1. Initialize Database
@@ -59,8 +94,8 @@ func main() {
 
 	// 2c. Setup Researcher
 	crawlers := []researcher.Crawler{
-		&researcher.GitHubCrawler{},
-		&researcher.BlogCrawler{},
+		&researcher.GitHubCrawler{Client: http.DefaultClient},
+		&researcher.BlogCrawler{Client: http.DefaultClient},
 	}
 	processor := &researcher.DefaultDossierProcessor{}
 	r := researcher.NewResearcher(database, crawlers, processor)
@@ -68,24 +103,100 @@ func main() {
 	// Run researcher in background
 	go r.Run(ctx, 1*time.Hour)
 
-	// 2d. Setup Communication Manager
-	classifier := &communication.MockIntentClassifier{}
-	responder := &communication.MockResponseGenerator{}
-	commManager := communication.NewManager(database, classifier, responder)
+	// 2ca. Setup CRM Integration
+	var crmClient crm.CRMClient
+	crmBaseURL := os.Getenv("CRM_BASE_URL")
+	crmAPIKey := os.Getenv("CRM_API_KEY")
 
-	// Initializing but not yet running a loop as it's event-driven or requires a poller
-	_ = commManager
+	if crmBaseURL != "" && crmAPIKey != "" {
+		log.Println("CRM: Initializing production REST CRM client.")
+		crmClient = crm.NewRestCRMClient(crmBaseURL, crmAPIKey)
+	} else {
+		log.Println("CRM: Initializing mock CRM client (missing configuration).")
+		crmClient = crm.NewMockCRMClient()
+	}
+
+	crmWorker := crm.NewWorker(database, crmClient)
+
+	// Run CRM sync in background
+	go crmWorker.Run(ctx, 30*time.Minute)
+
+	// 2cb. Setup Borg Outreach System
+	outreachWorker := agents.NewTargetDiscoveryWorker(database)
+
+	// Run outreach discovery in background
+	go outreachWorker.Run(ctx, 2*time.Hour)
+
+	// 2d. Setup Deployer
+	var ciTracker deploy.CITracker
+	var dispatcher deploy.WorkflowDispatcher
+	ghRepo := os.Getenv("GITHUB_REPOSITORY")
+	if ghRepo != "" {
+		parts := strings.Split(ghRepo, "/")
+		if len(parts) == 2 {
+			log.Printf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", ghRepo)
+			ciTracker = deploy.NewGitHubCITracker(parts[0], parts[1])
+			dispatcher = deploy.NewGitHubDispatcher(parts[0], parts[1])
+		}
+	}
+	if ciTracker == nil {
+		log.Println("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY).")
+		ciTracker = &deploy.MockCITracker{}
+	}
+	deployer := deploy.NewDeployer(ciTracker, dispatcher)
+
+	// 2da. Setup Deployer background sync and monitoring
+	syncIntervalStr := os.Getenv("DEPLOY_SYNC_INTERVAL")
+	if syncIntervalStr != "" {
+		if interval, err := time.ParseDuration(syncIntervalStr); err == nil {
+			go deployer.Run(ctx, interval)
+			go deployer.MonitorDeployment(ctx, interval)
+		} else {
+			log.Printf("Warning: Invalid DEPLOY_SYNC_INTERVAL: %v", err)
+		}
+	}
+
+	// 2da. Setup LLM Provider
+	llmProvider := &llm.MockLLMProvider{}
+
+	// 2e. Setup Communication Manager
+	classifier := &communication.MockIntentClassifier{}
+	responder := communication.NewRAGResponseGenerator(llmProvider)
+	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
+
+	// 2ea. Setup Order Processing
+	billingClient := &billing.MockBillingClient{}
+	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
+
+	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor)
+
+	// Run communication poller in background
+	go commManager.Run(ctx, 30*time.Minute)
 
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")
-	agent := &autodev.MockAgent{}
-	orchestrator := autodev.NewOrchestrator(taskManager, agent)
+	agent := &autodev.LocalAgent{}
+
+	var prManager gitcheck.PRManager
+	if ghRepo != "" {
+		parts := strings.Split(ghRepo, "/")
+		if len(parts) == 2 {
+			log.Printf("Autodev: Initializing GitHub PR Manager for %s", ghRepo)
+			prManager = gitcheck.NewGitHubPRManager(parts[0], parts[1])
+		}
+	}
+	if prManager == nil {
+		log.Println("Autodev: Initializing Mock PR Manager (missing GITHUB_REPOSITORY).")
+		prManager = &gitcheck.MockPRManager{}
+	}
+
+	orchestrator := autodev.NewOrchestrator(database, taskManager, agent, prManager, ciTracker)
 
 	// Run autodev worker in background (every 1 hour)
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
-	webServer := web.NewServer(database)
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager)
 	go func() {
 		if err := webServer.ListenAndServe(":8080"); err != nil {
 			log.Printf("Web server error: %v", err)

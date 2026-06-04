@@ -11,19 +11,17 @@ git fetch --all --tags
 echo "Updating submodules recursively..."
 git submodule update --init --recursive
 
-# 3. Intelligent Branch Reconciliation
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+# 2b. Generate Inventory
+echo "Updating submodule inventory..."
+go run ./cmd/sales_bot --inventory > borg/SUBMODULE_INVENTORY.md
 
-if [ "$CURRENT_BRANCH" == "main" ]; then
-    echo "On main branch. Checking for feature branches to merge..."
-    # Logic to identify robertpelloni feature branches would go here
-else
-    echo "On feature branch: $CURRENT_BRANCH. Merging main back to feature..."
-    git merge main -m "chore: sync feature branch with main"
-fi
+# 3. Intelligent Branch Reconciliation
+echo "Executing Dual-Direction Intelligent Merge Engine..."
+# We use a dedicated go routine or sub-command to handle multi-branch reconciliation
+go run ./cmd/sales_bot --reconcile
 
 # 4. Workspace Cleanup & Build
 echo "Validating build..."
-./build.bat
+go build -v -o bin/sales_bot ./cmd/sales_bot
 
 echo "Sync complete."

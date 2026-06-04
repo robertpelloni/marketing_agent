@@ -5,12 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.4.0-dev] - 2026-05-31
 
 ### Added
-- CI/CD: Enhanced `ci.yml` for protocol compliance and version verification.
-- CI/CD: Implemented `deploy.yml` for automated repo provisioning on version tags.
-- Task 5: Initial infrastructure for Inbound Communication State Machine.
+- Integrated Phase 5: Automated Provisioning for won deals.
+- Consolidated database repository logic and resolved method re-declaration conflicts.
+- Completed dual-direction intelligent merge for full branch reconciliation.
+- Updated documentation and roadmap to reflect end-to-end sales lifecycle readiness.
+
+## [0.3.0-dev] - 2026-05-26
+
+### Added
+- Functional autonomous development loop with self-updating workflows.
+- Dual-Direction Intelligent Merge Engine (Forward & Reverse) integrated into sync cycle.
+- Production-ready CRM integration and lead state reconciliation.
+- Dossier-aware pseudo-RAG response logic for hyper-personalized technical outreach.
+- Tiered pricing engine and automated lead scoring/prioritization.
+- Persistent PR tracking in PostgreSQL with real-time web dashboard.
+- Standardized Dockerized deployment pipeline and health monitoring.
+- Enhanced CI/CD with PostgreSQL integration testing and coverage reporting.
 
 ## [0.2.0] - 2025-05-25
 

@@ -11,7 +11,9 @@
 - **Interface-Based:** External integrations (scrapers, email providers) are abstracted behind interfaces for easier mocking and rotation.
 - **Rigid State Management:** Lead transitions are handled via an atomic state machine in the database.
 - **Automation First:** Every feature is built with the intent of being fully autonomous.
-- **Self-Development Loop:** The system includes an `autodev` module that autonomously selects tasks from `TODO.md`, proposes changes, and verifies them.
+- **Self-Development Loop:** The system includes an `autodev` module that autonomously selects tasks from `TODO.md`, proposes changes, and verifies them via a branch-push-PR-merge lifecycle.
+- **Autonomous Continuous Delivery:** Codebase updates initiated by the bot trigger automated GitHub Action workflows for testing and deployment to ensure system stability.
+- **Self-Learning Sales Engine:** The `communication` package features a `LearningSalesEngine` that analyzes interaction history and lead context to decide on autonomous responses, state transitions, or human escalation.
 
 ## Design Preferences
 - **Go (Golang):** Preferred for the orchestration layer due to its performance and concurrency model.

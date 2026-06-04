@@ -2,8 +2,17 @@
 
 This system is an asynchronous, event-driven orchestration layer written in Go to automate B2B lead generation, enrichment, hyper-personalized outreach, and billing for the Borg repository.
 
-## System Guidelines
+## Tech Stack
 - **Language:** Go (Golang) using standard concurrency paradigms (goroutines, channels) for background workers.
+- **Core Pattern:** Multi-agent autonomous orchestrations, task workers, and state logging.
+
+## Extension Conventions
+- All new worker engines or agent subclasses must implement the internal `Agent` interface (or module-specific equivalent).
+- Add new background routines to `/pkg/agents/` or `/internal/`.
+- Maintain state, run logs, and target histories inside the existing database configuration layer.
+- Always include explicit mock testing endpoints and defensive execution loops.
+
+## System Guidelines
 - **State Machine:** Enforce rigid, atomic state updates for all leads in the PostgreSQL database.
 - **Integrations:** All scraper engines must utilize headless configuration profiles. External communication modules use abstract interfaces to allow mock testing.
 

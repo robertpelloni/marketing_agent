@@ -70,6 +70,19 @@ The project uses GitHub Actions for continuous integration and automated deploym
     - **Staging:** Automatically deploys to a staging environment (port 8081) on pull requests and runs smoke tests.
     - **Production:** Deploys to the production environment on pushes to `main` or version tags, gated by successful tests.
 
+## Production Deployment Checklist
+Before deploying to production, ensure:
+- [ ] `VERSION` and `VERSION.md` are updated to the target release version.
+- [ ] Database migrations are up to date (`migrations/` directory).
+- [ ] Environment variables for production are configured (see below).
+- [ ] The `borg` documentation submodule is initialized and up to date.
+
+### Production Verification
+After deployment, run the production smoke test to verify the system's health:
+```bash
+TARGET_URL="https://your-production-url.com" go run scripts/smoke_test.go
+```
+
 ### Required Secrets
 To enable automated deployment, ensure the following secrets are configured in GitHub:
 - `DEPLOY_HOST`: The target server address.

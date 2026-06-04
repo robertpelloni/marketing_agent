@@ -1,0 +1,180 @@
+?   	github.com/robertpelloni/enterprise_sales_bot/cmd/sales_bot	[no test files]
+=== RUN   TestTaskManager_GetNextTask
+--- PASS: TestTaskManager_GetNextTask (0.00s)
+=== RUN   TestTaskManager_MarkCompleted
+--- PASS: TestTaskManager_MarkCompleted (0.00s)
+=== RUN   TestAutonomousLoop_Integration
+    integration_test.go:22: DATABASE_URL not set, skipping integration test
+--- SKIP: TestAutonomousLoop_Integration (0.00s)
+=== RUN   TestMultiAgentWorkflow_Integration
+    integration_test.go:68: DATABASE_URL not set, skipping multi-agent integration test
+--- SKIP: TestMultiAgentWorkflow_Integration (0.00s)
+=== RUN   TestLocalAgent_ApplyChanges
+2026/06/04 19:54:16 LocalAgent: Applying changes via proposal parsing...
+--- PASS: TestLocalAgent_ApplyChanges (0.00s)
+=== RUN   TestLocalAgent_PathTraversalProtection
+2026/06/04 19:54:16 LocalAgent: Applying changes via proposal parsing...
+--- PASS: TestLocalAgent_PathTraversalProtection (0.00s)
+=== RUN   TestLocalAgent_Verify
+2026/06/04 19:54:16 LocalAgent: Running full verification suite...
+2026/06/04 19:54:17 LocalAgent: Build verification passed.
+2026/06/04 19:54:17 LocalAgent: Skipping test verification (SKIP_AUTODEV_TESTS=true)
+--- PASS: TestLocalAgent_Verify (0.33s)
+=== RUN   TestOrchestrator_ExecuteStep_Mock
+2026/06/04 19:54:17 Autodev: Skipping Executive Sync Protocol (SKIP_AUTODEV_SYNC=true)
+2026/06/04 19:54:17 Autodev: Processing task: Test integration task
+2026/06/04 19:54:17 MockAgent: Proposing solution for: Test integration task
+2026/06/04 19:54:17 MockAgent: Applying changes: Simulated changes
+2026/06/04 19:54:17 MockAgent: Verifying changes...
+2026/06/04 19:54:17 Autodev: Finalizing cycle with version governance...
+2026/06/04 19:54:17 Autodev: Cycle finalized. New version: 0.0.0+1780094716+1780108444+1780117636+1780119703+1780120031+1780133517+1780136160+1780136483+1780544969+1780581569+1780581823+1780582991+1780583148+1780583859+1780584270+1780585238+1780588177+1780591480+1780595119+1780595554+1780595750+1780598736+1780599325+1780599649+1780599694+1780600349+1780600692+1780602857
+2026/06/04 19:54:17 Autodev: Skipping git commit/push (SKIP_AUTODEV_SYNC=true)
+2026/06/04 19:54:17 Autodev: Creating Pull Request for branch: autodev/Test-integration-task
+2026/06/04 19:54:17 Autodev: PR created:
+2026/06/04 19:54:17 Autodev: Task completed successfully: Test integration task
+--- PASS: TestOrchestrator_ExecuteStep_Mock (0.00s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/internal/autodev	0.353s
+=== RUN   TestStripeBillingClient_Mock
+--- PASS: TestStripeBillingClient_Mock (0.00s)
+=== RUN   TestMockBillingClient
+--- PASS: TestMockBillingClient (0.00s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/internal/billing	(cached)
+=== RUN   TestIntentClassifier_Classify
+2026/06/04 19:12:29 MockIntentClassifier: Classifying text: How much does Borg cost?
+--- PASS: TestIntentClassifier_Classify (0.00s)
+=== RUN   TestSalesEngine_Decide
+=== RUN   TestSalesEngine_Decide/Enterprise_Pricing_Intent
+2026/06/04 19:12:29 LearningSalesEngine: Deciding next action for deal 1 (Latest Intent: Pricing)
+=== RUN   TestSalesEngine_Decide/Should_Advance_State
+2026/06/04 19:12:29 LearningSalesEngine: Deciding next action for deal 2 (Latest Intent: Pricing)
+2026/06/04 19:12:29 LearningSalesEngine: Advancing deal 2 to Negotiating state.
+--- PASS: TestSalesEngine_Decide (0.00s)
+    --- PASS: TestSalesEngine_Decide/Enterprise_Pricing_Intent (0.00s)
+    --- PASS: TestSalesEngine_Decide/Should_Advance_State (0.00s)
+=== RUN   TestScoreLead
+--- PASS: TestScoreLead (0.00s)
+=== RUN   TestQualifyLead
+--- PASS: TestQualifyLead (0.00s)
+=== RUN   TestDecide_AdvanceToWon
+    engine_test.go:78: Qualification: 90
+2026/06/04 19:12:29 LearningSalesEngine: Deciding next action for deal 0 (Latest Intent: FollowUp)
+2026/06/04 19:12:29 LearningSalesEngine: Advancing deal 0 to Closed_Won state.
+--- PASS: TestDecide_AdvanceToWon (0.00s)
+=== RUN   TestLLMResponseGenerator_Generate
+2026/06/04 19:12:29 RAG: Successfully loaded Borg documentation from ../../borg/docs/ARCHITECTURE.md
+2026/06/04 19:12:29 RAGResponseGenerator: Generating response for intent: Technical
+--- PASS: TestLLMResponseGenerator_Generate (0.00s)
+=== RUN   TestProcessInbound_Mock
+--- PASS: TestProcessInbound_Mock (0.00s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/internal/communication	(cached)
+=== RUN   TestRestCRMClient_PushDeal
+--- PASS: TestRestCRMClient_PushDeal (0.00s)
+=== RUN   TestRestCRMClient_GetLeadUpdates
+--- PASS: TestRestCRMClient_GetLeadUpdates (0.00s)
+=== RUN   TestRestCRMClient_FetchDealDetails
+--- PASS: TestRestCRMClient_FetchDealDetails (0.00s)
+=== RUN   TestMockCRMClient_FetchDealDetails
+2026/06/04 17:45:20 CRM: Fetching mock details for deal 456
+--- PASS: TestMockCRMClient_FetchDealDetails (0.00s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/internal/crm	(cached)
+=== RUN   TestLeadStateEnums
+--- PASS: TestLeadStateEnums (0.00s)
+=== RUN   TestDatabase_Integration
+    integration_test.go:14: DATABASE_URL not set, skipping integration test
+--- SKIP: TestDatabase_Integration (0.00s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/internal/db	(cached)
+=== RUN   TestGitHubCITracker_GetLatestStatus
+--- PASS: TestGitHubCITracker_GetLatestStatus (0.00s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/internal/deploy	(cached)
+=== RUN   TestMockApolloSource_Enrich
+2026/06/04 17:45:20 MockApolloSource: Searching for contacts at aidynamics.com
+--- PASS: TestMockApolloSource_Enrich (0.00s)
+=== RUN   TestEnricher_Initialization
+--- PASS: TestEnricher_Initialization (0.00s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/internal/enrichment	(cached)
+=== RUN   TestIsClean
+    verify_test.go:14: Warning: Working directory is not clean
+--- PASS: TestIsClean (0.17s)
+=== RUN   TestCheckConflicts
+--- PASS: TestCheckConflicts (0.03s)
+=== RUN   TestIsSynced
+    verify_test.go:37: Warning: Current branch is not synchronized with origin/main
+--- PASS: TestIsSynced (0.44s)
+=== RUN   TestListFeatureBranches_Filter
+--- PASS: TestListFeatureBranches_Filter (0.00s)
+=== RUN   TestDeleteBranch_NonExistent
+--- PASS: TestDeleteBranch_NonExistent (0.00s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck	(cached)
+=== RUN   TestReconcileBranches_Functional
+2026/06/04 17:45:21 Intelligent Merge: Reconciling branch: autodev/test-feature
+2026/06/04 17:45:21 Intelligent Merge: Attempting Forward Merge (autodev/test-feature -> main)...
+2026/06/04 17:45:21 Intelligent Merge: Successfully merged autodev/test-feature into main
+2026/06/04 17:45:21 Intelligent Merge: Attempting Reverse Merge (main -> autodev/test-feature)...
+2026/06/04 17:45:21 Intelligent Merge: Successfully reconciled autodev/test-feature with main
+2026/06/04 17:45:21 Intelligent Merge: Finalizing reconciliation by pushing main to origin...
+2026/06/04 17:45:21 Intelligent Merge Warning: Final push failed: failed to push branch main: exit status 128
+--- PASS: TestReconcileBranches_Functional (0.13s)
+=== RUN   TestResolveConflictTheirs
+--- PASS: TestResolveConflictTheirs (0.10s)
+=== RUN   TestResolveConflict_InvalidSource
+--- PASS: TestResolveConflict_InvalidSource (0.07s)
+=== RUN   TestAbortMerge_SafeExecute
+--- PASS: TestAbortMerge_SafeExecute (0.00s)
+=== RUN   TestResolveConflictOurs
+--- PASS: TestResolveConflictOurs (0.08s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/internal/gitres	(cached)
+?   	github.com/robertpelloni/enterprise_sales_bot/internal/llm	[no test files]
+=== RUN   TestResearcher_Run
+--- PASS: TestResearcher_Run (0.00s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/internal/researcher	(cached)
+=== RUN   TestProcessOrder_BillingFailure
+2026/06/04 17:45:21 OrderProcessor: Processing fulfillment for deal 1
+--- PASS: TestProcessOrder_BillingFailure (0.00s)
+=== RUN   TestProcessOrder_Success
+2026/06/04 17:45:21 OrderProcessor: Processing fulfillment for deal 1
+2026/06/04 17:45:21 OrderProcessor: Invoice INV-MOCK-123 created for deal 1
+2026/06/04 17:45:21 CRM: Syncing interaction for deal 1: Order processed. Invoice: INV-MOCK-123
+2026/06/04 17:45:21 OrderProcessor: Fulfillment complete for deal 1
+--- PASS: TestProcessOrder_Success (0.00s)
+=== RUN   TestProcessOrder_CRMWarning
+2026/06/04 17:45:21 OrderProcessor: Processing fulfillment for deal 1
+2026/06/04 17:45:21 OrderProcessor: Invoice INV-MOCK-123 created for deal 1
+2026/06/04 17:45:21 OrderProcessor Warning: CRM sync failed: crm service down
+2026/06/04 17:45:21 OrderProcessor: Fulfillment complete for deal 1
+--- PASS: TestProcessOrder_CRMWarning (0.00s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/internal/sales	(cached)
+=== RUN   TestMockJobBoardSource_Discover
+2026/06/04 17:45:21 MockJobBoardSource: Scanning for keywords: [AI Engineer]
+--- PASS: TestMockJobBoardSource_Discover (0.00s)
+=== RUN   TestScraper_Initialization
+--- PASS: TestScraper_Initialization (0.00s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/internal/scraper	(cached)
+=== RUN   TestHealthCheck
+--- PASS: TestHealthCheck (0.00s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/internal/web	(cached)
+?   	github.com/robertpelloni/enterprise_sales_bot/pkg/agents	[no test files]
+?   	github.com/robertpelloni/enterprise_sales_bot/pkg/config	[no test files]
+testing: warning: no tests to run
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/scripts	(cached) [no tests to run]
+=== RUN   TestEndToEndSalesWorkflow
+    workflow_test.go:24: DATABASE_URL not set, skipping E2E test
+--- SKIP: TestEndToEndSalesWorkflow (0.00s)
+=== RUN   TestAutonomousCodeGeneration_Pilot
+    workflow_test.go:142: DATABASE_URL not set, skipping Pilot test
+--- SKIP: TestAutonomousCodeGeneration_Pilot (0.00s)
+PASS
+ok  	github.com/robertpelloni/enterprise_sales_bot/tests/e2e	(cached)

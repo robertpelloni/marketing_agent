@@ -11,6 +11,7 @@ The ultimate goal of this project is to create a fully autonomous, end-to-end B2
 - **Technical Authority:** Leveraging RAG (Retrieval-Augmented Generation) over the Borg codebase and documentation to answer complex technical questions from prospects.
 - **State Machine Orchestration:** A rigid, event-driven state machine that manages the entire lead lifecycle from discovery to closing.
 - **Headless & Efficient:** Built in Go for high performance and scalability, using headless browsing for data extraction.
+- **Continuous Prompt Optimization:** A self-improving feedback loop that utilizes successful interaction history to refine and optimize LLM outreach prompts.
 
 ## User-Satisfaction Design
 - **High Signal, Low Noise:** The system prioritizes quality over quantity, ensuring that outreach is technical and value-oriented rather than spammy.

@@ -5,18 +5,21 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
+	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 )
 
 // RAGResponseGenerator provides technically grounded replies using Pseudo-RAG.
 type RAGResponseGenerator struct {
+	db       *db.DB
 	llm      llm.LLMProvider
 	borgDocs string
 }
 
 // NewRAGResponseGenerator creates a new generator with Borg context.
-func NewRAGResponseGenerator(provider llm.LLMProvider) *RAGResponseGenerator {
+func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResponseGenerator {
 	docsPath := "borg/docs/ARCHITECTURE.md"
 	content, err := os.ReadFile(docsPath)
 	if err != nil {
@@ -24,6 +27,7 @@ func NewRAGResponseGenerator(provider llm.LLMProvider) *RAGResponseGenerator {
 	}
 
 	return &RAGResponseGenerator{
+		db:       database,
 		llm:      provider,
 		borgDocs: string(content),
 	}
@@ -42,6 +46,18 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 	if salesCtx.LatestIntent == IntentPricing {
 		pricing := CalculateQuote(salesCtx.Company.MarketCapTier)
 		contextInjection = fmt.Sprintf("\nPricing Context: Annual subscription is approximately $%d based on company size.\n", pricing)
+	}
+
+	// SELF-IMPROVING PROMPTS: Inject successful past interactions as few-shot examples
+	if g.db != nil {
+		successes, err := g.db.ListSuccessfulInteractions(ctx, 3)
+		if err == nil && len(successes) > 0 {
+			examples := []string{}
+			for _, s := range successes {
+				examples = append(examples, fmt.Sprintf("- Successful Response: %s", s.Summary))
+			}
+			contextInjection += fmt.Sprintf("\nSuccessful Past Outreach Examples:\n%s\n", strings.Join(examples, "\n"))
+		}
 	}
 
 	latestMsg := "START_OUTREACH"

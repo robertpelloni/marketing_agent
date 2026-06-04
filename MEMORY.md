@@ -14,6 +14,7 @@
 - **Self-Development Loop:** The system includes an `autodev` module that autonomously selects tasks from `TODO.md`, proposes changes, and verifies them via a branch-push-PR-merge lifecycle.
 - **Autonomous Continuous Delivery:** Codebase updates initiated by the bot trigger automated GitHub Action workflows for testing and deployment to ensure system stability.
 - **Self-Learning Sales Engine:** The `communication` package features a `LearningSalesEngine` that analyzes interaction history and lead context to decide on autonomous responses, state transitions, or human escalation.
+- **Prompt Optimization Feedback Loop:** The `RAGResponseGenerator` implements a feedback loop by injecting successful past interactions (flagged upon `StateClosedWon`) into the prompt context.
 
 ## Design Preferences
 - **Go (Golang):** Preferred for the orchestration layer due to its performance and concurrency model.

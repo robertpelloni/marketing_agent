@@ -49,6 +49,7 @@ type Interaction struct {
 	RawText   string    `db:"raw_text"`
 	Summary   string    `db:"summary"`
 	Sentiment string    `db:"sentiment"`
+	Success   bool      `db:"success"` // Indicates if the interaction led to a positive outcome
 	CreatedAt time.Time `db:"created_at"`
 }
 

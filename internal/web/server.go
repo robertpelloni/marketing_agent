@@ -64,6 +64,14 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			if err := s.deploy.ExecuteSync(); err != nil {
 				log.Printf("UI: Sync error: %v", err)
 			}
+		case "flag_success":
+			interactionID := r.FormValue("interaction_id")
+			success := r.FormValue("success") == "true"
+			var id int64
+			fmt.Sscanf(interactionID, "%d", &id)
+			if err := s.db.UpdateInteractionSuccess(r.Context(), id, success); err != nil {
+				log.Printf("UI: Error flagging interaction: %v", err)
+			}
 		case "build":
 			if err := s.deploy.ExecuteBuild(); err != nil {
 				log.Printf("UI: Build error: %v", err)
@@ -144,8 +152,14 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 							<input type="hidden" name="deal_id" value="%d">
 							<button type="submit" class="action-btn">Trigger Enrichment</button>
 						</form>
+						<form method="POST" style="display:inline;">
+							<input type="hidden" name="action" value="flag_success">
+							<input type="hidden" name="interaction_id" value="%d">
+							<input type="hidden" name="success" value="true">
+							<button type="submit" class="action-btn" style="background-color: #6f42c1;">Flag Success</button>
+						</form>
 					</td>
-				</tr>`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID)
+				</tr>`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID, d.ID)
 	}
 
 	fmt.Fprintf(w, `

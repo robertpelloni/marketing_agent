@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1-dev] - 2026-06-01
+
+### Added
+- Implemented "Self-Improving Prompts" feature to optimize outreach using successful past interactions.
+- Reconciled repository using the Dual-Direction Intelligent Merge Engine (Executive Protocol Step 2).
+- Updated database schema and repository to support interaction success tracking.
+- Enhanced RAGResponseGenerator with few-shot learning from successful examples.
+
 ## [0.4.0-dev] - 2026-05-31
 
 ### Added

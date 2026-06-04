@@ -326,8 +326,8 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 // CreateInteraction inserts a new interaction into the database.
 func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) error {
 	query := `
-		INSERT INTO interactions (contact_id, channel, direction, raw_text, summary, sentiment, created_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7)
+		INSERT INTO interactions (contact_id, channel, direction, raw_text, summary, sentiment, success, created_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 		RETURNING id
 	`
 	if interaction.CreatedAt.IsZero() {
@@ -341,6 +341,7 @@ func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) e
 		interaction.RawText,
 		interaction.Summary,
 		interaction.Sentiment,
+		interaction.Success,
 		interaction.CreatedAt,
 	).Scan(&interaction.ID)
 
@@ -348,6 +349,56 @@ func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) e
 		return fmt.Errorf("failed to create interaction: %w", err)
 	}
 	return nil
+}
+
+// UpdateInteractionSuccess updates the success status of an existing interaction.
+func (db *DB) UpdateInteractionSuccess(ctx context.Context, interactionID int64, success bool) error {
+	query := `
+		UPDATE interactions
+		SET success = $1
+		WHERE id = $2
+	`
+	_, err := db.Conn.ExecContext(ctx, query, success, interactionID)
+	if err != nil {
+		return fmt.Errorf("failed to update interaction success: %w", err)
+	}
+	return nil
+}
+
+// ListSuccessfulInteractions retrieves recent interactions marked as successful.
+func (db *DB) ListSuccessfulInteractions(ctx context.Context, limit int) ([]Interaction, error) {
+	query := `
+		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, success, created_at
+		FROM interactions
+		WHERE success = true
+		ORDER BY created_at DESC
+		LIMIT $1
+	`
+	rows, err := db.Conn.QueryContext(ctx, query, limit)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list successful interactions: %w", err)
+	}
+	defer rows.Close()
+
+	var interactions []Interaction
+	for rows.Next() {
+		var interaction Interaction
+		if err := rows.Scan(
+			&interaction.ID,
+			&interaction.ContactID,
+			&interaction.Channel,
+			&interaction.Direction,
+			&interaction.RawText,
+			&interaction.Summary,
+			&interaction.Sentiment,
+			&interaction.Success,
+			&interaction.CreatedAt,
+		); err != nil {
+			return nil, fmt.Errorf("failed to scan interaction: %w", err)
+		}
+		interactions = append(interactions, interaction)
+	}
+	return interactions, nil
 }
 
 // CreatePullRequest persists a new pull request record.

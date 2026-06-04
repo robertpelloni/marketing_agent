@@ -23,6 +23,7 @@
    # Example using a tool that supports the migrations/ directory
    migrate -path migrations/ -database "$DATABASE_URL" up
    ```
+   *Note: Ensure `000004_add_interaction_success.up.sql` is applied for the Self-Improving Prompts feature.*
 4. **Initialize Submodules:**
    ```bash
    git submodule update --init --recursive

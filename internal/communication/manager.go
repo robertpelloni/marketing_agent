@@ -170,13 +170,25 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		return "", err
 	}
 
-	// 3a. Handle order processing if deal was won
+	// 3a. Handle order processing and prompt optimization loop if deal was won
 	if action == ActionAdvanceState {
 		updatedDeal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
-		if err == nil && updatedDeal.CurrentState == db.StateClosedWon && m.processor != nil {
-			log.Printf("Comm Manager: Triggering order processor for won deal %d", updatedDeal.ID)
-			if err := m.processor.ProcessOrder(ctx, *updatedDeal); err != nil {
-				log.Printf("Comm Manager Error: Order processing failed: %v", err)
+		if err == nil && updatedDeal.CurrentState == db.StateClosedWon {
+			log.Printf("Comm Manager: Deal %d won! Flagging past outbound interactions as successful.", updatedDeal.ID)
+			// Mark all outbound interactions for this contact as successful to feed back into RAG
+			for _, interaction := range interactions {
+				if interaction.Direction == "Outbound" {
+					if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
+						log.Printf("Comm Manager Error: Failed to mark interaction %d as successful: %v", interaction.ID, err)
+					}
+				}
+			}
+
+			if m.processor != nil {
+				log.Printf("Comm Manager: Triggering order processor for won deal %d", updatedDeal.ID)
+				if err := m.processor.ProcessOrder(ctx, *updatedDeal); err != nil {
+					log.Printf("Comm Manager Error: Order processing failed: %v", err)
+				}
 			}
 		}
 	}

@@ -21,6 +21,7 @@
     - [x] Implement Mock Intent Classifier
 - [x] Implement pseudo-RAG Response Generator (Dossier-aware)
 - [x] Create Interaction database handlers
+- [x] Implement "Self-Improving Prompts" feedback loop
 - [x] Implement autonomous sales-feature code generation
     - [x] Implement the Inbound Communication background worker
     - [x] Add negotiation & pricing engine bounds (Tiered Pricing)

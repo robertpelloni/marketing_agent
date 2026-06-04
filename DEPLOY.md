@@ -15,6 +15,7 @@
 2. **Environment Variables:**
    Set up the following environment variables (or use a `.env` file):
    - `DATABASE_URL`: `postgres://user:password@localhost:5432/sales_bot?sslmode=disable`
+   - `GO_TEST_MODE`: Set to `true` to facilitate local unit testing.
    - `GITHUB_TOKEN`: Your GitHub PAT.
    - `GITHUB_REPOSITORY`: The `owner/repo` string for the main repository.
 3. **Database Migrations:**
@@ -51,6 +52,16 @@ Run the provided start script:
 ```batch
 start.bat
 ```
+
+## Staging Validation
+To validate the **Self-Improving Prompts** feedback loop in a staging environment:
+1. Deploy using Docker Compose:
+   ```bash
+   docker compose -f docker-compose.staging.yml up -d --build
+   ```
+2. Simulate a "Closed Won" state for a lead via the CRM mock or manual DB update.
+3. Verify in the logs or dashboard that past outbound interactions are flagged with `success=true`.
+4. Trigger a new outreach generation and confirm that successful examples are injected into the LLM prompt.
 
 ## CI/CD
 The project uses GitHub Actions for continuous integration and automated deployment:

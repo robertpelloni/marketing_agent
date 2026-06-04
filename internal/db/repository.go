@@ -401,6 +401,55 @@ func (db *DB) ListSuccessfulInteractions(ctx context.Context, limit int) ([]Inte
 	return interactions, nil
 }
 
+// GetPerformanceMetrics aggregates and returns current pipeline performance data.
+func (db *DB) GetPerformanceMetrics(ctx context.Context) (*PerformanceMetrics, error) {
+	metrics := &PerformanceMetrics{
+		LeadsByState: make(map[LeadState]int),
+	}
+
+	// 1. Get counts by state
+	query := `SELECT current_state, COUNT(*) FROM deals GROUP BY current_state`
+	rows, err := db.Conn.QueryContext(ctx, query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query state counts: %w", err)
+	}
+	defer rows.Close()
+
+	total := 0
+	won := 0
+	lost := 0
+	for rows.Next() {
+		var state LeadState
+		var count int
+		if err := rows.Scan(&state, &count); err != nil {
+			return nil, fmt.Errorf("failed to scan state count: %w", err)
+		}
+		metrics.LeadsByState[state] = count
+		total += count
+		if state == StateClosedWon {
+			won = count
+		}
+		if state == StateClosedLost {
+			lost = count
+		}
+	}
+	metrics.TotalLeads = total
+
+	// 2. Calculate Win Rate
+	if total > 0 && (won+lost) > 0 {
+		metrics.WinRate = float64(won) / float64(won+lost) * 100
+	}
+
+	// 3. Get successful outreach count
+	outreachQuery := `SELECT COUNT(*) FROM interactions WHERE success = true`
+	err = db.Conn.QueryRowContext(ctx, outreachQuery).Scan(&metrics.SuccessfulOutreach)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query successful outreach: %w", err)
+	}
+
+	return metrics, nil
+}
+
 // CreatePullRequest persists a new pull request record.
 func (db *DB) CreatePullRequest(ctx context.Context, pr *gitcheck.PullRequest, taskDesc string) error {
 	query := `

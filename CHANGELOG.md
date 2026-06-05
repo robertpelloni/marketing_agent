@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.4.1-dev] - 2026-06-01
+## [0.4.1] - 2026-06-05
 
 ### Added
 - Implemented "Self-Improving Prompts" feature to optimize outreach using successful past interactions.
@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated database schema and repository to support interaction success tracking.
 - Enhanced RAGResponseGenerator with few-shot learning from successful examples.
 - Resolved CI/CD stability issues by correcting Gosec action references and fixing linting errors.
+- Upgraded system to Go 1.24 across all environments.
 
 ## [0.4.0-dev] - 2026-05-31
 

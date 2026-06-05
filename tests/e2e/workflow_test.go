@@ -8,6 +8,7 @@ import (
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
@@ -67,9 +68,10 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	}
 
 	// 2d. Outreach Phase
+	crmMock := &crm.MockCRMClient{}
 	classifier := &communication.MockIntentClassifier{}
 	responder := communication.NewRAGResponseGenerator(database, &llm.MockLLMProvider{})
-	strategy := communication.NewLearningSalesEngine(database, nil, nil)
+	strategy := communication.NewLearningSalesEngine(database, crmMock, nil)
 	comm := communication.NewManager(database, classifier, responder, strategy, nil)
 
 	// Simulate inbound pricing inquiry
@@ -92,6 +94,11 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	wonDeal, _ := database.GetDealByCompanyID(ctx, deal.CompanyID)
 	if wonDeal.CurrentState != db.StateClosedWon {
 		t.Errorf("Expected deal to be Closed_Won, got %s", wonDeal.CurrentState)
+	}
+
+	// Verify CRM synchronization occurred during win
+	if !crmMock.PushDealCalled {
+		t.Error("Expected CRM PushDeal to be called when deal was won")
 	}
 
 	// 3. Autonomous Task Generation Phase

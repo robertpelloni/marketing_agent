@@ -8,7 +8,13 @@ import (
 )
 
 // MockCRMClient simulates an external CRM integration.
-type MockCRMClient struct{}
+type MockCRMClient struct {
+	PushDealCalled        bool
+	SyncInteractionCalled bool
+	GetLeadUpdatesCalled  bool
+	LatestNote            string
+	UpdatesToReturn       []LeadUpdate
+}
 
 // NewMockCRMClient creates a new mock CRM client.
 func NewMockCRMClient() *MockCRMClient {
@@ -17,12 +23,16 @@ func NewMockCRMClient() *MockCRMClient {
 
 func (m *MockCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
 	log.Printf("CRM: Pushing deal %d for company %s (Route: %s) to CRM", deal.ID, company.Name, route)
+	m.PushDealCalled = true
 	return nil
 }
 
 func (m *MockCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error) {
 	log.Println("CRM: Fetching updates from external CRM...")
-	// Simulate a lead being closed in the CRM
+	m.GetLeadUpdatesCalled = true
+	if m.UpdatesToReturn != nil {
+		return m.UpdatesToReturn, nil
+	}
 	return []LeadUpdate{}, nil
 }
 
@@ -33,6 +43,8 @@ func (m *MockCRMClient) ValidateAccount(ctx context.Context, domain string) (boo
 
 func (m *MockCRMClient) SyncInteraction(ctx context.Context, dealID int64, note string) error {
 	log.Printf("CRM: Syncing interaction for deal %d: %s", dealID, note)
+	m.SyncInteractionCalled = true
+	m.LatestNote = note
 	return nil
 }
 

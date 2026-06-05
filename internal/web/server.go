@@ -95,6 +95,9 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	metrics, err := s.db.GetPerformanceMetrics(r.Context())
 	if err != nil {
 		log.Printf("UI: Error retrieving metrics: %v", err)
+		metrics = &db.PerformanceMetrics{
+			LeadsByState: make(map[db.LeadState]int),
+		}
 	}
 
 	prs, err := s.db.ListActivePullRequests(r.Context())

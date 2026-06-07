@@ -15,10 +15,10 @@ import (
 type RAGResponseGenerator struct {
 	db       *db.DB
 	llm      llm.LLMProvider
-	borgDocs string
+	tormentNexusDocs string
 }
 
-// NewRAGResponseGenerator creates a new generator with Borg context.
+// NewRAGResponseGenerator creates a new generator with TormentNexus context.
 func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResponseGenerator {
 	// Documentation path resolution to support both root execution and package-level tests
 	docsPaths := []string{
@@ -32,19 +32,19 @@ func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResp
 	for _, path := range docsPaths {
 		content, err = os.ReadFile(path)
 		if err == nil {
-			log.Printf("RAG: Successfully loaded Borg documentation from %s", path)
+			log.Printf("RAG: Successfully loaded TormentNexus documentation from %s", path)
 			break
 		}
 	}
 
 	if err != nil {
-		log.Printf("RAG: Warning: could not load Borg documentation: %v", err)
+		log.Printf("RAG: Warning: could not load TormentNexus documentation: %v", err)
 	}
 
 	return &RAGResponseGenerator{
 		db:       database,
 		llm:      provider,
-		borgDocs: string(content),
+		tormentNexusDocs: string(content),
 	}
 }
 
@@ -53,8 +53,8 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 
 	// Inject technical context if the intent is technical
 	contextInjection := ""
-	if salesCtx.LatestIntent == IntentTechnical && g.borgDocs != "" {
-		contextInjection = fmt.Sprintf("\nRelevant Technical Context from Borg Docs:\n%s\n", g.truncateDocs(g.borgDocs))
+	if salesCtx.LatestIntent == IntentTechnical && g.tormentNexusDocs != "" {
+		contextInjection = fmt.Sprintf("\nRelevant Technical Context from TormentNexus Docs:\n%s\n", g.truncateDocs(g.tormentNexusDocs))
 	}
 
 	// Inject pricing context if the intent is pricing
@@ -81,7 +81,7 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 	}
 
 	prompt := llm.Prompt{
-		System: "You are a senior sales engineer at Borg. Use the provided technical and pricing context to draft a hyper-personalized response.",
+		System: "You are a senior sales engineer at TormentNexus. Use the provided technical and pricing context to draft a hyper-personalized response.",
 		User: fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
 			salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier),
 	}

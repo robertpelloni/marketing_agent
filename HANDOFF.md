@@ -1,27 +1,53 @@
-# Session Handoff: Production Release v0.4.1
+# Session Handoff: TormentNexus v0.4.1+
 
 ## Session Summary
-In this session, I completed the development and reconciliation cycle for Phase 5, culminating in the official production release of version 0.4.1. The primary focus was implementing a closed-loop feedback system for sales outreach and stabilizing the repository after autonomous branch divergence.
 
-### Repository Reconciliation & Compliance
-- **Executive Protocol:** Reconciled all divergent autonomous feature branches (including `main-4215924055125686102`) into `main`.
-- **Infrastructure:** Upgraded the system to Go 1.24 and resolved all CI/CD stability issues (Gosec and linting).
-- **Governance:** Synchronized all core documentation (`VISION.md`, `MEMORY.md`, `DEPLOY.md`, `CHANGELOG.md`, `ROADMAP.md`, `TODO.md`) to reflect the current technical truth.
+In this session, the TormentNexus Autonomous Sales Pipeline was analyzed for gaps and improvement opportunities, and all core documentation was comprehensively updated. A rebrand from "Borg" to "TormentNexus" was completed across all product-facing references.
 
-### Feature Implementation: Self-Improving Prompts
-- **Feedback Loop:** Implemented a system that automatically flags successful outreach (when a deal is Won) and injects those examples as few-shot learning context into the `RAGResponseGenerator`.
-- **UI Metrics:** Added a "Performance Metrics" section to the dashboard and provided manual tools for flagging interaction success.
+### Rebrand: Borg → TormentNexus
+- Replaced all product/brand references to "Borg" with "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
+- Preserved `borg/` git submodule path references to avoid breaking git operations.
+- Build and tests verified clean after rebrand.
 
-### Verification & Stability
-- **Testing:** Verified system stability through full unit and integration test suites.
-- **Reporting:** Confirmed that performance metrics (Win Rate, Total Leads, Outreach Success) are correctly aggregated from the database.
+### Documentation Overhaul
+- **ROADMAP.md:** Expanded from a flat completed-features list to a 5-phase forward-looking roadmap (Phases 6–10) covering production hardening, real integrations, intelligence evolution, security/compliance, and platform/ecosystem.
+- **TODO.md:** Rebuilt as an actionable task list organized by phase with ~80 new items spanning test coverage, database integrity, config management, logging, error handling, real integrations, security, scale, and platform features.
+- **VISION.md:** Added current state assessment, architecture diagram (mermaid), evolution roadmap summary, and key metrics table with current/target values.
+- **README.md:** Comprehensive rewrite with table of contents, full feature list, worker table, state machine diagram, configuration table, database schema reference, known issues section, and improved organization.
+- **DEPLOY.md:** Added environment variable table, command-line flags, Docker deployment instructions, staging validation steps, and production checklist improvements.
+- **MEMORY.md:** Added known technical debt inventory and integration status matrix (real vs. mock).
+- **IDEAS.md:** Expanded with new ideas for inbound lead capture, community intelligence, prompt A/B testing, GDPR compliance, dashboard auth, and more.
+- **AGENTS.md:** Updated with TormentNexus branding.
+
+### Gap Analysis Findings
+- **15 specific technical debt items** identified and documented (CRLF test failure, scattered config, unstructured logging, no graceful shutdown, no connection pooling, no retry/backoff, no DB migration runner, no dashboard auth, no rate limiting, no pagination, missing DB indices, hardcoded worker intervals, etc.)
+- **Integration status matrix:** 5 real integrations working (GitHub API ×3, Stripe, REST CRM), 5 still mock (LLM, enrichment, job scraper, email send, email receive)
+- **Test coverage gaps:** Web dashboard handlers untested, enrichment/researcher/CRM/communication workers lack integration tests, DB repository lacks error-path tests
 
 ## Current State
+
 - **Version:** 0.4.1
 - **Branch:** main
-- **Status:** Production-Ready
+- **Status:** Production-Ready (with documented technical debt)
 
 ## Next Steps for Successor
-- Monitor the impact of the "Self-Improving Prompts" loop on outreach conversion rates via the dashboard.
-- Consider expanding the `TargetDiscoveryWorker` to monitor real-time GitHub repository creation for specific AI frameworks.
-- Implement automated PR feedback loops using `GetPRComments` to refine the `autodev` agent's coding accuracy.
+
+### Immediate (Phase 6)
+1. Fix CRLF test failure in `internal/gitres/resolve_test.go`
+2. Consolidate `os.Getenv()` calls into a typed `Config` struct
+3. Add connection pool configuration to `db.NewDB()`
+4. Add graceful shutdown with drain timeouts for all workers
+5. Replace `log.Printf` with structured logging (`slog`)
+6. Add database indices for `interactions.success` and `deals.current_state`
+
+### Short-Term (Phase 7)
+1. Implement real SMTP email sender and IMAP polling for the communication channel
+2. Implement real OpenAI/Anthropic LLM provider to replace mock
+3. Implement real Apollo.io enrichment source to replace mock
+4. Add retry with exponential backoff to external API calls
+
+### Medium-Term (Phase 8)
+1. Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation
+2. Add PR feedback loop using `GetPRComments` to refine AutoDev
+3. Add multi-touch outreach sequences with configurable cadence
+4. Add A/B testing for outreach templates

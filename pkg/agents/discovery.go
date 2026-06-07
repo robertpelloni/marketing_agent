@@ -26,12 +26,12 @@ func (w *TargetDiscoveryWorker) Run(ctx context.Context, interval time.Duration)
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	log.Printf("Borg Outreach: Target discovery worker started (interval: %v)...", interval)
+	log.Printf("TormentNexus Outreach: Target discovery worker started (interval: %v)...", interval)
 
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("Borg Outreach: Target discovery worker stopping...")
+			log.Println("TormentNexus Outreach: Target discovery worker stopping...")
 			return
 		case <-ticker.C:
 			w.discover(ctx)
@@ -40,7 +40,7 @@ func (w *TargetDiscoveryWorker) Run(ctx context.Context, interval time.Duration)
 }
 
 func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
-	log.Println("Borg Outreach: Scanning for new MCP server repositories on GitHub...")
+	log.Println("TormentNexus Outreach: Scanning for new MCP server repositories on GitHub...")
 
 	client := github.NewClient(nil)
 	token := os.Getenv("GITHUB_TOKEN")
@@ -59,13 +59,13 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 
 	result, _, err := client.Search.Repositories(ctx, query, opts)
 	if err != nil {
-		log.Printf("Borg Outreach Error: GitHub search failed: %v", err)
+		log.Printf("TormentNexus Outreach Error: GitHub search failed: %v", err)
 		return
 	}
 
 	for _, repo := range result.Repositories {
 		domain := fmt.Sprintf("github.com/%s", repo.GetFullName())
-		log.Printf("Borg Outreach: Evaluating repository: %s", domain)
+		log.Printf("TormentNexus Outreach: Evaluating repository: %s", domain)
 
 		// Check if company already exists
 		existing, _ := w.db.GetCompanyByDomain(ctx, domain)
@@ -83,7 +83,7 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 		}
 
 		if err := w.db.CreateCompany(ctx, company); err != nil {
-			log.Printf("Borg Outreach Warning: Failed to create company %s: %v", domain, err)
+			log.Printf("TormentNexus Outreach Warning: Failed to create company %s: %v", domain, err)
 			continue
 		}
 
@@ -93,9 +93,9 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 		}
 
 		if err := w.db.CreateDeal(ctx, deal); err != nil {
-			log.Printf("Borg Outreach Warning: Failed to create deal for %s: %v", domain, err)
+			log.Printf("TormentNexus Outreach Warning: Failed to create deal for %s: %v", domain, err)
 		} else {
-			log.Printf("Borg Outreach Success: New lead discovered: %s", domain)
+			log.Printf("TormentNexus Outreach Success: New lead discovered: %s", domain)
 		}
 	}
 }

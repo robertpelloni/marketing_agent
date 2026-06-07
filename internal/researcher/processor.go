@@ -22,18 +22,18 @@ func (p *DefaultDossierProcessor) Process(findings []string) (string, error) {
 
 // PromptFormatter constructs a hyper-personalized outreach prompt.
 type PromptFormatter struct {
-	BorgContext string
+	TormentNexusContext string
 }
 
 func (f *PromptFormatter) Format(dossier string) string {
-	return fmt.Sprintf(`### BORG OUTREACH CONTEXT ###
+	return fmt.Sprintf(`### TORMENTNEXUS OUTREACH CONTEXT ###
 %s
 
 ### TARGET TECHNICAL FINDINGS ###
 %s
 
 ### HYPER-PERSONALIZED HOOK ###
-[Drafting specialized technical outreach based on the discovered bottleneck...]`, f.BorgContext, dossier)
+[Drafting specialized technical outreach based on the discovered bottleneck...]`, f.TormentNexusContext, dossier)
 }
 
 // Run starts the background research process.

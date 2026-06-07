@@ -121,7 +121,7 @@ func main() {
 	// Run CRM sync in background
 	go crmWorker.Run(ctx, 30*time.Minute)
 
-	// 2cb. Setup Borg Outreach System
+	// 2cb. Setup TormentNexus Outreach System
 	outreachWorker := agents.NewTargetDiscoveryWorker(database)
 
 	// Run outreach discovery in background

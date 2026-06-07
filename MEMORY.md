@@ -1,23 +1,62 @@
 # Memory: Architectural Observations & Design Preferences
 
 ## Current State
-- The project is in its early implementation phase (Phase 1/2).
-- Core database models and migrations are implemented in Go and PostgreSQL.
-- A robust merge integrity and conflict resolution testing framework is in place.
+
+- The project has completed Phase 5 (v0.4.1) with a fully functional end-to-end pipeline.
+- All core modules are implemented: scraper, enricher, researcher, communication, CRM, billing, deploy, and autodev.
 - The project uses Go 1.24 and follows standard Golang concurrency patterns.
+- All external integrations currently use mock implementations (except GitHub API for target discovery and CI tracking).
+- A robust merge integrity and conflict resolution testing framework is in place.
+- The project was rebranded from Borg to TormentNexus across all product-facing references.
 
 ## Architectural Traits
-- **Event-Driven:** Designed to be asynchronous and event-driven.
-- **Interface-Based:** External integrations (scrapers, email providers) are abstracted behind interfaces for easier mocking and rotation.
-- **Rigid State Management:** Lead transitions are handled via an atomic state machine in the database.
+
+- **Event-Driven:** Designed to be asynchronous and event-driven via background worker goroutines.
+- **Interface-Based:** External integrations (scrapers, CRM, billing, LLM, email) are abstracted behind interfaces for easier mocking and rotation.
+- **Rigid State Management:** Lead transitions are handled via an atomic state machine in PostgreSQL with a 7-state enum.
 - **Automation First:** Every feature is built with the intent of being fully autonomous.
 - **Self-Development Loop:** The system includes an `autodev` module that autonomously selects tasks from `TODO.md`, proposes changes, and verifies them via a branch-push-PR-merge lifecycle.
 - **Autonomous Continuous Delivery:** Codebase updates initiated by the bot trigger automated GitHub Action workflows for testing and deployment to ensure system stability.
 - **Self-Learning Sales Engine:** The `communication` package features a `LearningSalesEngine` that analyzes interaction history and lead context to decide on autonomous responses, state transitions, or human escalation.
 - **Prompt Optimization Feedback Loop:** The `RAGResponseGenerator` implements a feedback loop by injecting successful past interactions (flagged upon `StateClosedWon`) into the prompt context.
+- **Dual-Direction Merge Engine:** Reconciles autonomous feature branches by forward-merging into main and reverse-merging main back into features to prevent drift.
+
+## Known Technical Debt
+
+- **CRLF Test Failure:** `internal/gitres/resolve_test.go::TestResolveConflictTheirs` fails on Windows due to `\r\n` vs `\n` mismatch.
+- **Scattered Configuration:** `os.Getenv()` calls are scattered throughout `main.go` and packages instead of a centralized config struct.
+- **Unstructured Logging:** All modules use `log.Printf` — no structured JSON logging, no log levels, no correlation IDs.
+- **No Graceful Shutdown:** Workers respond to context cancellation but do not drain in-flight work before exiting.
+- **No Connection Pooling:** `db.NewDB()` opens a connection with default pool settings (no max open/idle/lifetime).
+- **No Retry/Backoff:** External API calls (GitHub, CRM, Stripe) fail immediately without retry.
+- **No DB Migration Runner:** Migrations must be applied manually; they are not auto-applied on startup.
+- **No Dashboard Auth:** The web dashboard is completely unauthenticated.
+- **No Rate Limiting:** HTTP endpoints accept unlimited requests.
+- **No Pagination:** Dashboard hardcodes `LIMIT 20` for deals.
+- **Missing Indices:** `interactions.success` and `deals.current_state` lack database indices for query performance.
+- **Hardcoded Worker Intervals:** All background worker intervals are hardcoded in `main.go` rather than configurable.
 
 ## Design Preferences
+
 - **Go (Golang):** Preferred for the orchestration layer due to its performance and concurrency model.
 - **PostgreSQL:** Used for reliable relational data storage and state tracking.
 - **Headless Scrapers:** Required for robust data extraction from modern web platforms.
 - **Atomic Commits:** Prefer small, descriptive commits that correspond to specific features or fixes.
+- **Interface-Driven Design:** All external dependencies should be behind Go interfaces for testability and swappability.
+- **CI-Gated Merging:** No code reaches main without passing all tests.
+
+## Integration Status
+
+| Integration | Status | Implementation |
+|---|---|---|
+| GitHub API (target discovery) | ✅ Real | `pkg/agents/discovery.go` with `go-github` |
+| GitHub API (CI tracking) | ✅ Real | `internal/deploy/github_tracker.go` |
+| GitHub API (PR management) | ✅ Real | `internal/gitcheck/pr.go` with `go-github` |
+| Stripe billing | ✅ Real | `internal/billing/billing.go` with `stripe-go` |
+| REST CRM client | ✅ Real | `internal/crm/crm.go` with generic REST |
+| LLM provider | ❌ Mock | `internal/llm/llm.go::MockLLMProvider` |
+| Intent classifier | ⚠️ Hybrid | `MockIntentClassifier` + `LLMIntentClassifier` (exists but mock is default) |
+| Enrichment (Apollo) | ❌ Mock | `internal/enrichment/worker.go::MockApolloSource` |
+| Job board scraper | ❌ Mock | `internal/scraper/scraper.go::MockJobBoardSource` |
+| Email sending | ❌ Not implemented | Outbound is logged but not sent |
+| Email receiving | ❌ Not implemented | Inbound is simulated by polling DB |

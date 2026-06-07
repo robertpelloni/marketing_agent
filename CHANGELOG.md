@@ -1,9 +1,22 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [Unreleased]
+
+### Changed
+- Rebranded all product-facing references from "Borg" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
+- Comprehensive documentation overhaul: ROADMAP, TODO, VISION, README, DEPLOY, MEMORY, IDEAS, AGENTS, HANDOFF all updated with gap analysis, forward-looking phases, and technical debt inventory.
+
+### Documentation
+- **ROADMAP.md:** Expanded from flat completed list to 5-phase forward roadmap (Phases 6–10) with ~80 new items.
+- **TODO.md:** Rebuilt as actionable task list organized by phase with specific, trackable items.
+- **VISION.md:** Added current state assessment, architecture diagram (mermaid), evolution roadmap, and key metrics table.
+- **README.md:** Comprehensive rewrite with full feature list, worker table, state machine, config reference, and known issues.
+- **DEPLOY.md:** Added env var table, CLI flags, Docker instructions, staging validation, and production checklist.
+- **MEMORY.md:** Added technical debt inventory and integration status matrix (real vs. mock).
+- **IDEAS.md:** Expanded with inbound lead capture, community intelligence, A/B testing, GDPR, and more.
+- **AGENTS.md:** Added module architecture table, schema debt section, and system guidelines.
 
 ## [0.4.1] - 2026-06-05
 

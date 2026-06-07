@@ -107,7 +107,7 @@ func (g *GitHubJobSource) Discover(ctx context.Context, keywords []string) ([]db
 		{
 			Name:          "Compute Logic",
 			Domain:        "computelogic.tech",
-			TechStack:     []string{"Go", "gRPC", "Borg"},
+			TechStack:     []string{"Go", "gRPC", "TormentNexus"},
 			HiringSignals: []string{"Hiring: Distributed Systems Engineer (Autonomous Agent focus)"},
 			MarketCapTier: "Enterprise",
 		},

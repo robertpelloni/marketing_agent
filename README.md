@@ -1,191 +1,204 @@
-# enterprise_sales_bot
-
-please help me design a system of autonomous scripts, workflows, skills, etc in order to be able to have a fully autonomous agent do all the lead generation, contacts, conversations, negotiation, market research, pricing, billing, scraping for contact info of promising potential enterprise customers (engineering contacts at companies for posiitons working on AI/agents/etc.) basically a full pipeline to autonomously finding, contacting, persuading, selling to enterprise customers for github.com/robertpelloni/borg 
-
-This is an ambitious but entirely feasible architecture. To sell a high-level B2B engineering product like the AI Hypervisor (Borg) to enterprise engineering leaders, your autonomous system cannot rely on generic, spammy drip campaigns. It needs to operate with extreme precision, leveraging deep context, hyper-personalized technical hooks, and multi-stage state machines.
-
-Here is a comprehensive blueprint for an enterprise-grade, fully autonomous B2B sales and lead generation pipeline designed around an AI control plane.
-
-1. System Architecture Overview
-The pipeline operates as a distributed network of specialized agents and background workers coordinated by a central orchestration engine. Instead of a linear script, it uses an asynchronous, event-driven state machine.
-
-[Target Discovery Agent] -> [Deep Research Agent] -> [Hyper-Personalization Agent]
-                                                                    |
-[Billing/ERP] <--- [Negotiation Agent] <--- [Inbound/Outbound Comm] <+
-2. Core Agent Modules & Workflows
-Module A: The Target Discovery & Scraping Engine (The Scout)
-This module continuously scans the web for high-intent corporate signals and extracts raw target data.
-
-Signals to Track:
-
-Job Boards (Greenhouse, Lever, LinkedIn): Companies hiring for "AI Engineer," "LLM Orchestration," "Agentic Workflows," or "AI Platform Architect."
-
-GitHub Activity: Engineering teams open-sourcing or contributing to LLM frameworks, LangChain, LlamaIndex, or custom internal orchestration tools.
-
-Tech Stack Detection: Using tools like BuiltWith or Wappalyzer via API to find enterprises heavily invested in cloud infra but lacking modern agent management architectures.
-
-The Workflow:
-
-Scrape job listings matching specific agentic keywords.
-
-Extract the company name and look up their corporate domain.
-
-Query B2B data enrichment APIs (e.g., Apollo.io, Hunter.io, or LinkedIn Scraper workers) to find Engineering Managers, Directors of AI, or Principal Systems Architects at those specific companies.
-
-Output raw leads to a Unverified_Leads queue.
-
-Module B: Deep Contextual Research Agent (The Analyst)
-Enterprise engineering leaders instantly delete generic AI outreach. This agent ensures every interaction is deeply technical and hyper-specific.
-
-The Workflow:
-
-Pull an unverified lead.
-
-Scrape the target engineer’s public GitHub profile (if available) and the company’s technical blog or open-source repositories.
-
-Analyze the Pain Point: Look for friction points in their current setup (e.g., state management issues in multi-agent systems, latency in TypeScript-based LLM frameworks, complexity in headless daemon orchestration).
-
-Synthesize a "Technical Dossier" containing the exact operational bottleneck the company is likely facing.
-
-Module C: Outbound Outreach & Personalization Engine (The Copywriter)
-This skill maps the technical capabilities of the AI Hypervisor directly to the target's discovered pain points.
-
-The Workflow:
-
-Consume the Technical Dossier from Module B.
-
-Construct a highly tailored, non-marketing email or message.
-
-The Formula: * Hook: Reference their specific hiring goal or a repository they maintain.
-
-Value Prop: Introduce the AI Hypervisor as a native, headless, Go-based backend daemon designed specifically to solve the exact multi-agent LLM coordination and control-plane scaling issues they are tackling.
-
-Call to Action (CTA): Offer a low-friction, high-value technical resource (e.g., an architectural blueprint or a direct API sandbox link) rather than demanding a meeting.
-
-Module D: Inbound Conversation & Negotiation Agent (The Closer)
-When a lead replies, this agent takes over the conversational state machine. It handles everything from technical Q&A to pricing objections.
-
-The Workflow:
-
-Intent Classification: Parse inbound emails/messages to categorize intent (Technical Question, Pricing Inquiry, Objection, or Spam).
-
-RAG-Powered Technical Q&A: Query the AI Hypervisor’s documentation, system architecture, and codebase schema to answer deep, low-level technical questions instantly and flawlessly.
-
-Objection Handling & Pricing Matrix: If the prospect asks about pricing or licensing, the agent references a strict internal Pricing Engine schema (defined below) to dynamically offer a tier based on estimated enterprise scale.
-
-The Hand-off: For final contract signing, it generates an autonomous proposal link.
-
-Module E: Billing, Provisioning, and ERP Agent (The Admin)
-Once terms are accepted, this agent closes the loop financially and technically without human intervention.
-
-The Workflow:
-
-Generate a dynamic Stripe or enterprise billing invoice based on negotiated parameters.
-
-Monitor the payment gateway webhooks for successful transactions or signed enterprise agreements.
-
-Upon payment verification, automatically provision access keys, license seats, or deploy a dedicated instance of the gateway harness (Hermes) for the client.
-
-3. Data Schema & State Management
-To prevent agents from losing context or duplicating outreach, a centralized state machine is critical.
-
-Lead State Machine Transitions
-Discovered → Researched → Outreach_Sent → Engaged → Negotiating → Closed_Won / Closed_Lost
-
-Core Database Entities (Schema Blueprint)
-Table	Core Fields	Purpose
-Companies	id, name, domain, tech_stack, hiring_signals, market_cap_tier	Stores organization profiles and macro data.
-Contacts	id, company_id, name, role, email, github_handle, linkedin_url	Individual target decision-makers.
-Interactions	id, contact_id, channel, direction, raw_text, summary, sentiment	Full history of communications.
-Deals	id, company_id, current_state, quoted_pricing, custom_requirements	Track financial progress and state.
-4. Market Research & Pricing Engine Rules
-The system needs a predictable, logic-based bounds system for pricing and market positioning so the agent never over-promises or under-charges.
-
-Dynamic Tiering Logic:
-
-Mid-Market ($10M - $50M revenue OR <50 engineers): Standard Developer Platform Tier. Fixed annual platform fee + consumption-based pricing per LLM orchestration node.
-
-Large Enterprise ($50M+ revenue OR high-volume AI hiring): Custom Enterprise Tier. Requires dedicated instances, source-code access options, and custom SLA parameters.
-
-Guardrails & Agent Bounds:
-
-The "Floor" Limit: The agent is hard-coded with a minimum acceptable contract value (ACV). It is mathematically forbidden from offering discounts below this floor during negotiations.
-
-Escalation Protocol: If a prospect demands custom legal terms (e.g., custom IP indemnification or non-standard SLAs) that fall outside the pre-approved configuration matrix, the deal is automatically flagged for human review, pausing outbound automated responses for that specific domain.
-
-5. Technology Stack Recommendations
-To build this cleanly, utilize a decoupled, highly performant stack that aligns with systems-level architecture:
-
-Orchestration Daemon: Build the core state-machine and scraping engine workers in Go. Its concurrency model (goroutines) makes running hundreds of parallel scraping, research, and API monitoring loops highly efficient and lightweight.
-
-Data Aggregation & Scrapers: Use headless browser setups (Playwright or Puppeteer) bundled inside isolated Docker containers to bypass anti-scraping walls when analyzing public engineering job portals.
-
-Agent Control Plane: Use a centralized gateway harness to handle LLM routing, payload caching, and vector embedding lookups (for the RAG-driven technical Q&A).
-
-Database: A relational database like PostgreSQL to enforce strict state changes and data integrity for enterprise accounts, paired with Redis for managing the real-time event queue of inbound/outbound communication tasks.
-
-Would you like to dive deep into the specific implementation details of one of these modules, such as writing the Go-based state machine logic for lead transitions or defining the prompt schemas for the hyper-personalized technical outreach agent?
-
-please write detailed instrutions to have google jules build this
-
-Using Google Jules to build a massive, multi-module enterprise sales agent system is an excellent strategy. Because Jules runs asynchronously inside its own secure Cloud VM, can execute code, check logs, and commit full pull requests via GitHub, you can offload the actual heavy lifting of writing and testing this codebase to it.
-
-To do this successfully, you cannot just hand Jules a massive prompt and ask it to "build the whole thing." Because Jules operates on a task-by-task basis, you must structure your repository so Jules understands your vision, and then feed it modular, isolated tasks.
-
-Step 1: Prepare the Repository (AGENTS.md)
-Before triggering Jules, you need to create a dedicated context file in the root of your GitHub repository. Jules automatically scans for a file named AGENTS.md to understand your architectural conventions and system definitions.
-
-Create AGENTS.md in your main branch with the following layout:
-
-Markdown
 # Borg Autonomous Sales Pipeline Architecture
 
-This system is an asynchronous, event-driven orchestration layer written in Go to automate B2B lead generation, enrichment, hyper-personalized outreach, and billing for the Borg repository.
+An asynchronous, event-driven orchestration layer in Go for automated B2B lead generation, enrichment, hyper-personalized outreach, and billing.
 
-## System Guidelines
-- **Language:** Go (Golang) using standard concurrency paradigms (goroutines, channels) for background workers.
-- **State Machine:** Enforce rigid, atomic state updates for all leads in the PostgreSQL database.
-- **Integrations:** All scraper engines must utilize headless configuration profiles. External communication modules use abstract interfaces to allow mock testing.
+This repository implements multi-agent orchestration, background worker engines, and strict state management to run reliable autonomous sales pipelines for enterprise workflows.
 
-## Database Schema Constraints
-All data migrations must use strict relational mappings with full foreign key constraints tracking Companies -> Contacts -> Interactions -> Deals.
-Step 2: The Step-by-Step Implementation Backlog
-Log into jules.google.com (or use the Jules CLI / API), point it at your repository branch, and execute these specific, isolated feature prompts one task at a time.
+## Table of Contents
+- Project Overview
+- Features
+- Architecture & Conventions
+- Getting Started
+- Configuration
+- Database & Migrations
+- Development Guidelines
+- Testing
+- Repository Management — EXECUTIVE PROTOCOL
+- CI / Validation
+- Contributing
+- License & Contact
 
-1
-Task 1: Core Database Migrations & Models
-Run on 'main' or a new feature branch
-Prompt for Jules: "Create the PostgreSQL database schemas and Go structs for our autonomous pipeline. Implement the full schema matching the Companies, Contacts, Interactions, and Deals tables. Ensure all state machine tracking fields are explicitly typed as custom enum types (Discovered, Researched, Outreach_Sent, Engaged, Negotiating, Closed_Won, Closed_Lost). Write SQL migration files and clean Go model abstractions."
+## Project Overview
+Borg is a modular Go-based system that runs concurrent agent workers to:
+- Discover and scrape target companies and contacts (headless scraper engines).
+- Enrich contact and company data with third-party providers.
+- Run hyper-personalized outreach workflows across channels.
+- Track interactions, deals, and billing with strict relational state persisted in PostgreSQL.
 
-2
-Task 2: The Target Discovery Scraper Module
-Dependencies: Task 1 models
-Prompt for Jules: "Implement a Go-based background worker daemon that queries public job board endpoints and developer platforms. The worker must scan for keywords like 'AI Engineer' or 'LLM Orchestration'. Write parsing logic to extract company domains, filter out common consumer domains, and insert them into the database under the Discovered state. Use interfaces for the HTTP fetching layers so we can easily rotate proxies later."
+Key design goals:
+- Concurrency-first: goroutines and channels for background workers.
+- Deterministic state machine: atomic state transitions for leads and deals.
+- Testability: abstract external integrations behind interfaces and include explicit mock endpoints.
+- Autonomous development: tools & scripts that maintain sync with upstream forks and validate merges.
 
-3
-Task 3: Engineering Contact Enrichment Engine
-Dependencies: Target Discovery Module
-Prompt for Jules: "Build a data enrichment client worker in Go. This service must pull companies from the database that are in the Discovered state, construct API calls to external B2B data providers (mock the client interface for Apollo/Hunter), and locate engineering decision-makers (e.g., 'Director of AI', 'Engineering Manager'). Insert these targets into the Contacts table and advance the company state to Researched."
+## Features
+- Multi-agent orchestration and pluggable worker engines.
+- Atomic state machine for lead lifecycle (Company -> Contact -> Interaction -> Deal).
+- Headless browser scraper profiles for deterministic scraping.
+- External integrations via interfaces to allow mocking in tests.
+- Comprehensive logs and target histories persisted to PostgreSQL.
+- Defensive execution loops and mock testing endpoints for each agent.
 
-4
-Task 4: Technical Context Aggregator & Prompt Formatter
-Dependencies: Research data structures
-Prompt for Jules: "Create a service that crawls public technical engineering blogs and GitHub repositories based on a company's target domain. Write a processing system that compiles these findings into an internal 'Technical Dossier' text object. Generate a prompt constructor module that wraps this dossier alongside Borg's core system architecture documentation, preparing a clean text payload for our hyper-personalization LLM layer."
+## Architecture & Conventions
+- Language: Go (primary), small PL/pgSQL for DB functions.
+- Agents live in `/pkg/agents/` or `/internal/`.
+- New engines must implement the `Agent` interface (or the module-specific equivalent).
+- All background routines and workers must:
+  - Implement graceful shutdown and health probes.
+  - Include defensive execution loops (backoff, jitter, circuit-breakers).
+  - Provide explicit mock endpoints for testing.
+- Database mapping follows strict relational models:
+  - Companies -> Contacts -> Interactions -> Deals with full foreign keys.
+  - All updates to lead state must be performed via atomic transactions to enforce state machine invariants.
 
-5
-Task 5: The Inbound Communication State Machine
-Dependencies: Task 1 state engine
-Prompt for Jules: "Write a robust conversational state machine wrapper in Go. It must process simulated incoming text payloads from prospects, classify them into intents (Technical, Pricing, Objection), and query a local vector index/RAG interface for technical answers. Ensure that if a prospect asks for terms outside our predefined pricing floor bounds, the script updates the state machine to lock outbound automations and flags the record for manual review."
+Recommended repo layout
+- /cmd/               - CLI binaries / worker entrypoints
+- /pkg/agents/        - Agent implementations and worker engines
+- /internal/          - Internal frameworks, `gitcheck`, helpers
+- /migrations/        - SQL migrations (strict relational schemas)
+- /scripts/           - automation scripts (eg. `sync_repo.sh`)
+- /docs/              - design docs and runbooks
+- /test/              - integration & mock servers
 
+## Getting Started
 
-Step 3: Reviewing & Verifying Jules' Work
-Because Jules clones your code into a local virtual machine to compile it, verify dependencies, and run your tests before outputting a diff, you must actively inspect its execution health:
+Prerequisites
+- Go 1.20+ (or the version pinned in go.mod)
+- PostgreSQL
+- (Optional) Docker & Docker Compose for local stacks
+- Headless browser runtime (Chromium/Chrome) for scraper engines
 
-Review the Execution Plan: When you click "Give me a plan" on a prompt, Jules will list every file it intends to modify or create. Validate that it is placing Go files in clean directory boundaries (e.g., /internal/scraper, /internal/db).
+Quick start (local)
+1. Set environment variables (example):
+   - `DATABASE_URL=postgres://user:pass@localhost:5432/borg?sslmode=disable`
+   - `PORT=8080`
+   - `HEADLESS_CHROME_PATH=/usr/bin/chromium`
+   - `GIT_REMOTE_UPSTREAM=git@github.com:parent/fork.git`
 
-Watch the Stacked Diffs: Ensure Jules isn't overwriting vital infrastructure code segments. If it deletes any critical boilerplate logic during feature integration, reject the plan, refine your prompt constraints, and re-run.
+2. Run migrations:
+   - Example (if using plain SQL migrations):
+     psql $DATABASE_URL -f migrations/001_init.sql
+   - Or run your migration tool of choice pointing to the `migrations/` folder.
 
-Approve and Merge: Once Jules finishes verifying its own workspace changes, it will compile a clean pull request. Review the PR directly inside your GitHub interface and merge it into your target development branch.
+3. Build and run:
+   - go build ./cmd/...
+   - ./bin/your-worker-binary
 
-Deep-Dive Resource
-For a full technical walkthrough of setting up async agentic development workflows, verifying sandbox environments, and managing pull requests within the tool ecosystem, you can check out this Google Jules AI Agent Demo and Tutorial. This guide walks you through exactly how Jules interacts with code repositories, handles daily task limits, and compiles environment setup scripts inside its isolated VM workspace.
+Or with Docker Compose (if provided):
+- docker compose up --build
+
+## Configuration
+Use environment variables to configure runtime behavior. Minimal set:
+- DATABASE_URL
+- PORT
+- HEADLESS_CHROME_PATH
+- LOG_LEVEL (info/debug)
+- SCRAPING_PROFILE (path or name of headless profile)
+- MOCK_MODE (true/false) — enables mock endpoints for integration tests
+
+Agents and integrations are configured through typed configuration structs and dependency injection; avoid hard-coded credentials.
+
+## Database & Migrations
+- All schema changes MUST be delivered through the `migrations/` folder and reviewed as part of PRs.
+- Enforce relational integrity with explicit foreign keys:
+  - `companies(id)` -> `contacts(company_id)`
+  - `contacts(id)` -> `interactions(contact_id)`
+  - `interactions(id)` -> `deals(interaction_id)`
+- Use explicit database transactions for state transitions to ensure atomicity.
+- Avoid nullable foreign keys unless justified and documented.
+- Include test fixtures and rollback scripts for each migration.
+
+## Development Guidelines
+
+Agent & Engine Development
+- New agents must implement the internal `Agent` interface.
+- Place new agents under `/pkg/agents/` or `/internal/`.
+- Agents must:
+  - Expose health and metrics endpoints.
+  - Provide mock testing endpoints (e.g., `/internal/mock/agent-name`) that simulate external providers.
+  - Use defensive loops with exponential backoff and circuit-breaker behavior.
+
+Integrations
+- Abstract all external communication using interfaces to allow injection of mock implementations in tests.
+- Scraper engines must support headless configuration profiles (no GUI dependency) and be configurable via SCRAPING_PROFILE.
+
+State Machine
+- Enforce rigid, atomic state updates for all leads via transactional functions.
+- Log state transitions in a `lead_state_changes` or similar audit table.
+
+Testing
+- Unit tests for pure logic and plumbing.
+- Integration tests that run against the database (use ephemeral DB instances).
+- End-to-end tests must be possible using mock endpoints without calling external providers.
+
+Logging & Observability
+- Structured logging (JSON) and correlation IDs for requests/tasks.
+- Emit metrics (counts, latencies, error rates) for each agent and worker queue.
+
+Security
+- Secrets must never be stored in plaintext in the repo; use environment variables or secret stores.
+- Validate and sanitize all inputs from scraping and third-party sources.
+
+## Testing
+- Run unit tests:
+  - go test ./... -v
+- Integration tests:
+  - Use `MOCK_MODE=true` to route integrations to local mock endpoints.
+- Provide explicit mock endpoints under `/internal/mock/` for each external provider and agent.
+
+## Repository Management — EXECUTIVE PROTOCOL
+To preserve autonomous development and safe merges, follow the EXECUTIVE PROTOCOL:
+- Upstream Tracking:
+  - Always sync with the parent fork and update submodules recursively.
+  - Use `scripts/sync_repo.sh` for automated synchronization.
+- Intelligent Merge:
+  - Use the dual-direction merge engine to reconcile feature branches with `main`.
+- Validation:
+  - Builds must pass merge integrity tests defined under `internal/gitcheck`.
+  - Run validation before merging:
+    - ./scripts/sync_repo.sh --fetch-upstream
+    - make validate (or run `internal/gitcheck` tooling)
+- Automation:
+  - CI must run the full validation, linters, unit and integration tests.
+
+Example sync command
+```bash
+# update fork, submodules, and run gitcheck
+scripts/sync_repo.sh && go test ./... && internal/gitcheck
+```
+
+## CI / Validation
+- CI pipeline must run:
+  - Static analysis / linters
+  - go vet / go fmt check
+  - Unit tests and integration tests
+  - `internal/gitcheck` validations and merge integrity checks
+- Fail early on schema drift or migration conflicts.
+
+## Contributing
+- Follow the coding and branch conventions documented in `CONTRIBUTING.md` (if present).
+- All PRs must:
+  - Target a feature branch and include migration files (if DB changes).
+  - Include tests (unit + integration where applicable).
+  - Pass `internal/gitcheck` and CI.
+  - Include a clear description of agent interfaces added/changed.
+
+## Useful scripts & tools
+- scripts/sync_repo.sh — upstream sync and submodule updater (use per EXECUTIVE PROTOCOL).
+- internal/gitcheck — merge integrity and repository validation tool.
+- migrations/ — SQL migrations folder.
+
+## Troubleshooting
+- If a merge fails integrity checks, run:
+  - scripts/sync_repo.sh --debug
+  - Inspect `internal/gitcheck` output and resolve conflicts locally.
+- For DB migration issues, run migrations against a staging DB and review foreign key failures.
+
+## License & Contact
+- License: (Insert license here)
+- Maintainer: robertpelloni
+- For security issues or urgent problems, create an issue in this repo and mark it as high-priority.
+
+---
+
+This repository is intended for production-grade autonomous orchestration. Follow the conventions above to ensure agent implementations remain safe, testable, and auditable.

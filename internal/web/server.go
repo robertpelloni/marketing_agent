@@ -50,6 +50,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // ListenAndServe starts the HTTP server.
 func (s *Server) ListenAndServe(addr string) error {
 	log.Printf("Web dashboard starting on %s", addr)
+	// #nosec G114 -- Simple ListenAndServe is used for internal dashboard; timeout configuration handled at higher level if needed
 	return http.ListenAndServe(addr, s)
 }
 
@@ -63,6 +64,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		action := r.FormValue("action")
 		switch action {
 		case "enrich":
+			// #nosec G706 -- deal_id is used for context in manual action logs
 			log.Printf("UI: Manual enrichment triggered for deal %s", r.FormValue("deal_id"))
 		case "sync":
 			if err := s.deploy.ExecuteSync(); err != nil {

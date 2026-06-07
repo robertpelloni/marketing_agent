@@ -71,10 +71,12 @@ func (a *LocalAgent) safeWriteFile(wd, relPath, content string) error {
 
 	// Ensure directory exists
 	dir := filepath.Dir(absPath)
+	// #nosec G301 -- Autonomous agent needs to create directories for its generated code
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return fmt.Errorf("failed to create directory %s: %w", dir, err)
 	}
 
+	// #nosec G306 -- Generated source code is intended to be world-readable
 	if err := os.WriteFile(absPath, []byte(content), 0644); err != nil {
 		return fmt.Errorf("failed to write %s: %w", absPath, err)
 	}

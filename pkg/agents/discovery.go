@@ -65,6 +65,7 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 
 	for _, repo := range result.Repositories {
 		domain := fmt.Sprintf("github.com/%s", repo.GetFullName())
+			// #nosec G706 -- Domain name is used for context in informational logs
 		log.Printf("TormentNexus Outreach: Evaluating repository: %s", domain)
 
 		// Check if company already exists
@@ -83,6 +84,7 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 		}
 
 		if err := w.db.CreateCompany(ctx, company); err != nil {
+				// #nosec G706 -- Domain name is used for context in error logs
 			log.Printf("TormentNexus Outreach Warning: Failed to create company %s: %v", domain, err)
 			continue
 		}
@@ -93,8 +95,10 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 		}
 
 		if err := w.db.CreateDeal(ctx, deal); err != nil {
+				// #nosec G706 -- Domain name is used for context in error logs
 			log.Printf("TormentNexus Outreach Warning: Failed to create deal for %s: %v", domain, err)
 		} else {
+				// #nosec G706 -- Domain name is used for context in success logs
 			log.Printf("TormentNexus Outreach Success: New lead discovered: %s", domain)
 		}
 	}

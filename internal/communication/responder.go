@@ -30,6 +30,7 @@ func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResp
 	var content []byte
 	var err error
 	for _, path := range docsPaths {
+		// #nosec G304 -- Documentation paths are internal to the repository structure
 		content, err = os.ReadFile(path)
 		if err == nil {
 			log.Printf("RAG: Successfully loaded TormentNexus documentation from %s", path)

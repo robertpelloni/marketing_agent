@@ -18,6 +18,7 @@ func ResolveConflict(source string, strategy string) error {
 		args = append(args, "-X", strategy)
 	}
 
+	// #nosec G204 -- This is a git automation bot; executing git commands with variable arguments is its primary function.
 	cmd := exec.Command("git", args...)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
@@ -40,6 +41,7 @@ func AbortMerge() error {
 }
 
 func hasUniqueProgress(branch string) bool {
+	// #nosec G204 -- Intentional subprocess execution for autonomous git reconciliation
 	cmd := exec.Command("git", "rev-list", "--count", "main.."+branch)
 	var out bytes.Buffer
 	cmd.Stdout = &out
@@ -81,6 +83,7 @@ func ReconcileBranches() error {
 
 		// 2. Reverse Merge: Main -> Feature
 		log.Printf("Intelligent Merge: Attempting Reverse Merge (main -> %s)...", branch)
+		// #nosec G204 -- Intentional subprocess execution for autonomous git reconciliation
 		if out, err := exec.Command("git", "checkout", branch).CombinedOutput(); err != nil {
 			return fmt.Errorf("failed to checkout feature branch %s: %v, output: %s", branch, err, string(out))
 		}

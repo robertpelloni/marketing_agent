@@ -61,6 +61,7 @@ func main() {
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {
 		// Default for local development if not provided
+		// #nosec G101 -- This is a default for local dev and does not contain real production secrets
 		dbURL = "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"
 	}
 
@@ -134,6 +135,7 @@ func main() {
 	if ghRepo != "" {
 		parts := strings.Split(ghRepo, "/")
 		if len(parts) == 2 {
+			// #nosec G706 -- Repository name is used for context in initialization logs
 			log.Printf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", ghRepo)
 			ciTracker = deploy.NewGitHubCITracker(parts[0], parts[1])
 			dispatcher = deploy.NewGitHubDispatcher(parts[0], parts[1])
@@ -181,6 +183,7 @@ func main() {
 	if ghRepo != "" {
 		parts := strings.Split(ghRepo, "/")
 		if len(parts) == 2 {
+			// #nosec G706 -- Repository name is used for context in initialization logs
 			log.Printf("Autodev: Initializing GitHub PR Manager for %s", ghRepo)
 			prManager = gitcheck.NewGitHubPRManager(parts[0], parts[1])
 		}

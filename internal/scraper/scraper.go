@@ -39,7 +39,7 @@ func (s *Scraper) Run(ctx context.Context, interval time.Duration, keywords []st
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("Scraper worker stopping...")
+			log.Println("Scraper worker stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			s.ExecuteDiscovery(ctx, keywords)
@@ -107,7 +107,7 @@ func (g *GitHubJobSource) Discover(ctx context.Context, keywords []string) ([]db
 		{
 			Name:          "Compute Logic",
 			Domain:        "computelogic.tech",
-			TechStack:     []string{"Go", "gRPC", "TormentNexus"},
+			TechStack:     []string{"Go", "gRPC", "Borg"},
 			HiringSignals: []string{"Hiring: Distributed Systems Engineer (Autonomous Agent focus)"},
 			MarketCapTier: "Enterprise",
 		},

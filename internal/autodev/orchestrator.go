@@ -44,7 +44,7 @@ func (o *Orchestrator) Run(ctx context.Context, interval time.Duration) {
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("Autonomous development orchestrator stopping...")
+			log.Println("Autonomous development orchestrator stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			o.ExecuteStep(ctx)

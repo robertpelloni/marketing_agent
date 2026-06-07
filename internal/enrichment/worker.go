@@ -19,7 +19,7 @@ func (e *Enricher) Run(ctx context.Context, interval time.Duration) {
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("Enricher worker stopping...")
+			log.Println("Enricher worker stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			e.executeEnrichment(ctx)

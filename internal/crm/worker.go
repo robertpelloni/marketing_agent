@@ -33,7 +33,7 @@ func (w *Worker) Run(ctx context.Context, interval time.Duration) {
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("CRM Worker: Synchronization stopping...")
+			log.Println("CRM Worker: Synchronization stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			w.sync(ctx)

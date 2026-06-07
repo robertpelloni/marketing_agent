@@ -22,18 +22,18 @@ func (p *DefaultDossierProcessor) Process(findings []string) (string, error) {
 
 // PromptFormatter constructs a hyper-personalized outreach prompt.
 type PromptFormatter struct {
-	TormentNexusContext string
+	BorgContext string
 }
 
 func (f *PromptFormatter) Format(dossier string) string {
-	return fmt.Sprintf(`### TORMENTNEXUS OUTREACH CONTEXT ###
+	return fmt.Sprintf(`### BORG OUTREACH CONTEXT ###
 %s
 
 ### TARGET TECHNICAL FINDINGS ###
 %s
 
 ### HYPER-PERSONALIZED HOOK ###
-[Drafting specialized technical outreach based on the discovered bottleneck...]`, f.TormentNexusContext, dossier)
+[Drafting specialized technical outreach based on the discovered bottleneck...]`, f.BorgContext, dossier)
 }
 
 // Run starts the background research process.
@@ -46,7 +46,7 @@ func (r *Researcher) Run(ctx context.Context, interval time.Duration) {
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("Researcher worker stopping...")
+			log.Println("Researcher worker stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			r.executeResearch(ctx)

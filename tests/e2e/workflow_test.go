@@ -75,7 +75,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	comm := communication.NewManager(database, classifier, responder, strategy, nil)
 
 	// Simulate inbound pricing inquiry
-	reply, err := comm.ProcessInbound(ctx, contacts[0], "How much does TormentNexus cost?")
+	reply, err := comm.ProcessInbound(ctx, contacts[0], "How much does Borg cost?")
 	if err != nil {
 		t.Fatalf("Failed to process inbound: %v", err)
 	}

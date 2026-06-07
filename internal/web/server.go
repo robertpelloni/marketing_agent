@@ -37,16 +37,20 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 	}
 }
 
-// ListenAndServe starts the HTTP server.
-func (s *Server) ListenAndServe(addr string) error {
+// ServeHTTP implements the http.Handler interface.
+func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", s.handleDashboard)
 	mux.HandleFunc("/health", s.handleHealth)
 	mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
 	mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
+	mux.ServeHTTP(w, r)
+}
 
+// ListenAndServe starts the HTTP server.
+func (s *Server) ListenAndServe(addr string) error {
 	log.Printf("Web dashboard starting on %s", addr)
-	return http.ListenAndServe(addr, mux)
+	return http.ListenAndServe(addr, s)
 }
 
 func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {

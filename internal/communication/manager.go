@@ -67,7 +67,7 @@ func (m *Manager) Run(ctx context.Context, interval time.Duration) {
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("Communication Manager: Background poller stopping...")
+			log.Println("Communication Manager: Background poller stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			m.pollAndProcess(ctx)

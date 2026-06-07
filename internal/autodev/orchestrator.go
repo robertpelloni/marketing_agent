@@ -243,8 +243,12 @@ func (o *Orchestrator) finalizeCycle(ctx context.Context, task *Task) {
 		vStr = "0.0.0"
 	}
 	newV := fmt.Sprintf("%s+%d", vStr, time.Now().Unix())
-	os.WriteFile("VERSION", []byte(newV), 0644)
-	os.WriteFile("VERSION.md", []byte(newV), 0644)
+	if err := os.WriteFile("VERSION", []byte(newV), 0644); err != nil {
+		log.Printf("Autodev Warning: Failed to write VERSION: %v", err)
+	}
+	if err := os.WriteFile("VERSION.md", []byte(newV), 0644); err != nil {
+		log.Printf("Autodev Warning: Failed to write VERSION.md: %v", err)
+	}
 
 	// 2. Append to CHANGELOG.md
 	changelogEntry := fmt.Sprintf("\n## [%s] - %s\n- %s\n", newV, time.Now().Format("2006-01-02"), task.Description)

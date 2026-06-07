@@ -13,7 +13,9 @@ func TestOrchestrator_ExecuteStep_Mock(t *testing.T) {
 	// Setup mock environment
 	tmpTodo, _ := os.CreateTemp("", "TODO_TEST.md")
 	defer os.Remove(tmpTodo.Name())
-	os.WriteFile(tmpTodo.Name(), []byte("- [ ] Test integration task"), 0644)
+	if err := os.WriteFile(tmpTodo.Name(), []byte("- [ ] Test integration task"), 0644); err != nil {
+		t.Fatalf("Failed to write mock TODO: %v", err)
+	}
 
 	manager := NewTaskManager(tmpTodo.Name())
 	agent := &MockAgent{}

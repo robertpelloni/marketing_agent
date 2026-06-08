@@ -156,7 +156,7 @@ func main() {
 	billingClient := &billing.MockBillingClient{}
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
-	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, crmClient)
+	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor)
 
 	// Run communication poller in background
 	go commManager.Run(ctx, 30*time.Minute)
@@ -185,7 +185,7 @@ func main() {
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager, crmClient)
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager)
 	srv := &http.Server{
 		Addr:    ":" + cfg.Port,
 		Handler: webServer,

@@ -16,7 +16,6 @@ import (
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 )
@@ -28,19 +27,17 @@ type Server struct {
 	tracker deploy.CITracker
 	tasks   *autodev.TaskManager
 	auth    *auth.Authenticator
-	crm     crm.CRMClient
 	mux     *http.ServeMux
 }
 
 // NewServer creates a new Server instance.
-func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, crmClient crm.CRMClient) *Server {
+func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager) *Server {
 	s := &Server{
 		db:      database,
 		deploy:  deployer,
 		tracker: tracker,
 		tasks:   taskManager,
 		auth:    auth.NewAuthenticator(),
-		crm:     crmClient,
 		mux:     http.NewServeMux(),
 	}
 	s.routes()
@@ -304,21 +301,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				<p>Real-time monitoring of the autonomous deployment pipeline.</p>
 				<ul>
 					<li><strong>Global Health:</strong> <span style="color: #28a745;">%s</span></li>
-					<li><strong>CRM Status:</strong> <span id="crm-status">Loading...</span></li>
 				</ul>
-				<script>
-					fetch('/health/detailed')
-						.then(response => response.json())
-						.then(data => {
-							const crmStatus = document.getElementById('crm-status');
-							crmStatus.textContent = data.crm || 'Unknown';
-							if (data.crm === 'OK') {
-								crmStatus.style.color = '#28a745';
-							} else {
-								crmStatus.style.color = '#dc3545';
-							}
-						});
-				</script>
 			</div>
 		</body>
 				</html>`, health)
@@ -347,17 +330,6 @@ func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 
 	// 3. Worker liveness (Simulated)
 	health["workers"] = "active"
-
-	// 4. Check CRM
-	if s.crm != nil {
-		if _, err := s.crm.GetLeadUpdates(r.Context()); err != nil {
-			health["crm"] = "ERROR: " + err.Error()
-		} else {
-			health["crm"] = "OK"
-		}
-	} else {
-		health["crm"] = "Not Configured"
-	}
 
 	if err := json.NewEncoder(w).Encode(health); err != nil {
 		log.Printf("Web: Error encoding health JSON: %v", err)

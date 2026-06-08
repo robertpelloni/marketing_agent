@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -88,7 +89,8 @@ func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.C
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return fmt.Errorf("crm api error: %d", resp.StatusCode)
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
 	}
 
 	return nil
@@ -112,7 +114,8 @@ func (c *RestCRMClient) SyncContacts(ctx context.Context, companyID int64, conta
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return fmt.Errorf("crm api error: %d", resp.StatusCode)
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
 	}
 
 	return nil
@@ -133,7 +136,8 @@ func (c *RestCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return nil, fmt.Errorf("crm api error: %d", resp.StatusCode)
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return nil, fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
 	}
 
 	var updates []LeadUpdate
@@ -159,7 +163,8 @@ func (c *RestCRMClient) ValidateAccount(ctx context.Context, domain string) (boo
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return false, fmt.Errorf("crm api error: %d", resp.StatusCode)
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return false, fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
 	}
 
 	return resp.StatusCode == http.StatusOK, nil
@@ -180,7 +185,8 @@ func (c *RestCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*De
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("crm api error: %d", resp.StatusCode)
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return nil, fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
 	}
 
 	var details DealDetails
@@ -211,7 +217,8 @@ func (c *RestCRMClient) SyncInteraction(ctx context.Context, dealID int64, note 
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		return fmt.Errorf("crm api error: %d", resp.StatusCode)
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
 	}
 
 	return nil

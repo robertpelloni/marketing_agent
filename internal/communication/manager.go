@@ -6,7 +6,6 @@ import (
 	"log"
 	"time"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
@@ -45,18 +44,16 @@ type Manager struct {
 	responder  ResponseGenerator
 	strategy   SalesStrategy
 	processor  OrderProcessor
-	crmClient  crm.CRMClient
 }
 
 // NewManager creates a new communication Manager.
-func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor, crmClient crm.CRMClient) *Manager {
+func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor) *Manager {
 	return &Manager{
 		db:         database,
 		classifier: classifier,
 		responder:  responder,
 		strategy:   strategy,
 		processor:  processor,
-		crmClient:  crmClient,
 	}
 }
 
@@ -137,11 +134,6 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		return "", err
 	}
 
-	// Synchronize inbound interaction with the CRM
-	if m.crmClient != nil {
-		go m.syncInteractionWithRetry(ctx, contact.CompanyID, fmt.Sprintf("Inbound (%s): %s", intent, text))
-	}
-
 	// 2a. Decide next action using strategy engine
 	company, err := m.db.GetCompanyByID(ctx, contact.CompanyID)
 	if err != nil {
@@ -218,25 +210,5 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		return "", err
 	}
 
-	// Synchronize outbound interaction with the CRM
-	if m.crmClient != nil {
-		go m.syncInteractionWithRetry(ctx, contact.CompanyID, fmt.Sprintf("Outbound (Reply to %s): %s", intent, replyText))
-	}
-
 	return replyText, nil
-}
-
-func (m *Manager) syncInteractionWithRetry(ctx context.Context, companyID int64, note string) {
-	maxRetries := 3
-	for i := 0; i < maxRetries; i++ {
-		// In a real system, we'd look up the CRM Deal ID.
-		// For this integration, we use the local CompanyID as a proxy for the deal ID in the CRM interface.
-		if err := m.crmClient.SyncInteraction(ctx, companyID, note); err != nil {
-			log.Printf("Comm Manager Warning: Failed to sync interaction to CRM (attempt %d/%d): %v", i+1, maxRetries, err)
-			time.Sleep(time.Duration(i+1) * 2 * time.Second)
-			continue
-		}
-		return
-	}
-	log.Printf("Comm Manager Error: CRM interaction synchronization failed after %d attempts for company %d", maxRetries, companyID)
 }

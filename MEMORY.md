@@ -7,7 +7,7 @@
 - The project uses Go 1.24 and follows standard Golang concurrency patterns.
 - All external integrations currently use mock implementations (except GitHub API for target discovery and CI tracking).
 - A robust merge integrity and conflict resolution testing framework is in place.
-- The project was rebranded from Borg to TormentNexus across all product-facing references.
+- The project was rebranded from TormentNexus to TormentNexus across all product-facing references.
 
 ## Architectural Traits
 

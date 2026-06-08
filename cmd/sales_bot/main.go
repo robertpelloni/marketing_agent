@@ -156,7 +156,7 @@ func main() {
 	billingClient := &billing.MockBillingClient{}
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
-	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor)
+	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, crmClient)
 
 	// Run communication poller in background
 	go commManager.Run(ctx, 30*time.Minute)

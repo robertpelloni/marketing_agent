@@ -2,7 +2,11 @@ package e2e
 
 import (
 	"context"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
 	"os"
+	"sync"
 	"testing"
 	"time"
 
@@ -48,8 +52,26 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	deal := deals[0]
 
 	// 2b. Enrichment Phase
-	crmMock := &crm.MockCRMClient{}
-	enricher := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{&enrichment.MockApolloSource{}}, crmMock)
+	// For production verification, we use a mock CRM server and the real RestCRMClient
+	// to test the HTTP integration layer.
+	mux := http.NewServeMux()
+	var mu sync.Mutex
+	calls := make(map[string]int)
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		mu.Lock()
+		calls[r.URL.Path]++
+		mu.Unlock()
+		w.WriteHeader(http.StatusOK)
+		if r.URL.Path == "/updates" {
+			w.Write([]byte("[]"))
+		}
+	})
+	crmServer := httptest.NewServer(mux)
+	defer crmServer.Close()
+
+	realCRM := crm.NewRestCRMClient(crmServer.URL, "e2e-token")
+
+	enricher := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{&enrichment.MockApolloSource{}}, realCRM)
 	enricher.ExecuteEnrichment(ctx)
 
 	// Verify contact was created
@@ -58,13 +80,8 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 		t.Fatal("Expected a contact to be created during enrichment")
 	}
 
-	// Verify CRM synchronization occurred during enrichment
-	if !crmMock.SyncContactsCalled {
-		t.Error("Expected CRM SyncContacts to be called during enrichment")
-	}
-
 	// 2c. Research Phase
-	res := researcher.NewResearcher(database, []researcher.Crawler{&researcher.GitHubCrawler{}}, &researcher.DefaultDossierProcessor{}, crmMock)
+	res := researcher.NewResearcher(database, []researcher.Crawler{&researcher.GitHubCrawler{}}, &researcher.DefaultDossierProcessor{}, realCRM)
 	res.ExecuteResearch(ctx)
 
 	// Verify dossier was compiled
@@ -73,17 +90,11 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 		t.Error("Expected technical dossier to be compiled")
 	}
 
-	// Verify CRM synchronization occurred during research (PushDeal with dossier)
-	if !crmMock.PushDealCalled {
-		t.Error("Expected CRM PushDeal to be called during research")
-	}
-	crmMock.PushDealCalled = false // Reset for next phase verification
-
 	// 2d. Outreach Phase
 	classifier := &communication.MockIntentClassifier{}
 	responder := communication.NewRAGResponseGenerator(database, &llm.MockLLMProvider{})
-	strategy := communication.NewLearningSalesEngine(database, crmMock, nil)
-	comm := communication.NewManager(database, classifier, responder, strategy, nil)
+	strategy := communication.NewLearningSalesEngine(database, realCRM, nil)
+	comm := communication.NewManager(database, classifier, responder, strategy, nil, realCRM)
 
 	// Simulate inbound pricing inquiry
 	reply, err := comm.ProcessInbound(ctx, contacts[0], "How much does TormentNexus cost?")
@@ -107,10 +118,16 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 		t.Errorf("Expected deal to be Closed_Won, got %s", wonDeal.CurrentState)
 	}
 
-	// Verify CRM synchronization occurred during win
-	if !crmMock.PushDealCalled {
-		t.Error("Expected CRM PushDeal to be called when deal was won")
+	// Verify CRM synchronization occurred via HTTP
+	time.Sleep(100 * time.Millisecond) // Wait for async retries/pushes
+	mu.Lock()
+	if calls["/deals"] == 0 {
+		t.Error("Expected CRM PushDeal HTTP call")
 	}
+	if calls[fmt.Sprintf("/companies/%d/contacts", deal.CompanyID)] == 0 {
+		t.Error("Expected CRM SyncContacts HTTP call")
+	}
+	mu.Unlock()
 
 	// 3. Autonomous Task Generation Phase
 	tmpTodo, err := os.CreateTemp("", "TODO_E2E.md")

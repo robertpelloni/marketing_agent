@@ -110,11 +110,26 @@ docker compose up -d --build
 ### Staging
 
 ```bash
-docker compose -f docker-compose.staging.yml up -d --build
+# Set required staging secrets in .env.staging
+docker compose -f docker-compose.staging.yml --env-file .env.staging up -d --build
 ```
 
 - Application: `http://localhost:8081`
 - Separate staging database
+
+## Staging & Live CRM Connectivity
+
+Before deploying to staging for live CRM connectivity, ensure:
+
+1.  **Configure CRM Secrets:** Update your `.env.staging` or server environment with:
+    - `CRM_BASE_URL`: The staging endpoint for your CRM.
+    - `CRM_API_KEY`: A valid API key for the staging environment.
+2.  **Verify Outbound Access:** Ensure the staging server has egress access to the CRM domain.
+3.  **Run Integration Tests:**
+    ```bash
+    go test -v ./internal/crm/...
+    ```
+4.  **Simulate CRM Webhooks:** If your CRM sends updates, use the `/api/v1/webhook/github` (or equivalent endpoint for CRM if implemented) to trigger local reconciliation.
 
 ## Staging Validation
 

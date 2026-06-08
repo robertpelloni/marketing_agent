@@ -43,42 +43,42 @@
 
 ---
 
-## Phase 6 — Production Hardening & Reliability
+## COMPLETED: Phase 6 — Production Hardening & Reliability
 
 ### 6.1 Test Coverage & Quality
-- [ ] **Fix CRLF line-ending test failure** in `internal/gitres/resolve_test.go` (`TestResolveConflictTheirs`)
-- [ ] **Add connection pool configuration** to `db.NewDB()` (max open/idle conns, lifetime)
-- [ ] **Add graceful shutdown** with drain timeouts for all background workers (scraper, enricher, researcher, CRM, comm, autodev, deploy)
-- [ ] **Add integration tests with ephemeral DB** for `enrichment/worker`, `researcher`, `crm/worker`, and `communication/manager` (currently only `db` and `e2e` have integration tests)
-- [ ] **Add web dashboard handler tests** for `/` route, webhook endpoint, and form actions (currently only `/health` is tested)
-- [ ] **Add negative/error-path unit tests** for `db/repository.go` (currently only happy-path integration tests exist)
-- [ ] **Add test coverage reporting** to CI pipeline (e.g., `go test -coverprofile` + artifact upload)
+- [x] **Fix CRLF line-ending test failure** in `internal/gitres/resolve_test.go` (`TestResolveConflictTheirs`)
+- [x] **Add connection pool configuration** to `db.NewDB()` (max open/idle conns, lifetime)
+- [x] **Add graceful shutdown** with drain timeouts for all background workers (scraper, enricher, researcher, CRM, comm, autodev, deploy)
+- [x] **Add integration tests with ephemeral DB** for `enrichment/worker`, `researcher`, `crm/worker`, and `communication/manager` (currently only `db` and `e2e` have integration tests)
+- [x] **Add web dashboard handler tests** for `/` route, webhook endpoint, and form actions (currently only `/health` is tested)
+- [x] **Add negative/error-path unit tests** for `db/repository.go` (currently only happy-path integration tests exist)
+- [x] **Add test coverage reporting** to CI pipeline (e.g., `go test -coverprofile` + artifact upload)
 
 ### 6.2 Database & Data Integrity
-- [ ] **Add `contacts.email` NULL constraint fix** — currently `UNIQUE` allows multiple NULL emails which may cause duplicate contact issues
-- [ ] **Add `interactions.success` index** for efficient `ListSuccessfulInteractions` queries
-- [ ] **Add `deals(current_state)` index** for efficient `ListDealsByState` queries
-- [ ] **Add migration for `audit_log` table** to track state transitions with who/when/why metadata
-- [ ] **Add `deleted_at` soft-delete column** to companies, contacts, and deals for GDPR compliance
-- [ ] **Add database migration runner** to application startup (auto-apply pending migrations on boot)
+- [x] **Add `contacts.email` NULL constraint fix** — currently `UNIQUE` allows multiple NULL emails which may cause duplicate contact issues
+- [x] **Add `interactions.success` index** for efficient `ListSuccessfulInteractions` queries
+- [x] **Add `deals(current_state)` index** for efficient `ListDealsByState` queries
+- [x] **Add migration for `audit_log` table** to track state transitions with who/when/why metadata
+- [x] **Add `deleted_at` soft-delete column** to companies, contacts, and deals for GDPR compliance
+- [x] **Add database migration runner** to application startup (auto-apply pending migrations on boot)
 
 ### 6.3 Configuration & Environment
-- [ ] **Add structured configuration** — replace scattered `os.Getenv()` calls with a typed config struct (e.g., `Config{DatabaseURL, GitHubToken, CRMAPIKey, SyncInterval, ...}`)
-- [ ] **Add `.env` file loading** via `godotenv` or equivalent for local development
-- [ ] **Add config validation at startup** — fail fast with clear error messages if required env vars are missing
-- [ ] **Add configurable worker intervals** — currently hardcoded in `main.go`, should be overridable via env vars
+- [x] **Add structured configuration** — replace scattered `os.Getenv()` calls with a typed config struct (e.g., `Config{DatabaseURL, GitHubToken, CRMAPIKey, SyncInterval, ...}`)
+- [x] **Add `.env` file loading** via `godotenv` or equivalent for local development
+- [x] **Add config validation at startup** — fail fast with clear error messages if required env vars are missing
+- [x] **Add configurable worker intervals** — currently hardcoded in `main.go`, should be overridable via env vars
 
 ### 6.4 Logging & Observability
-- [ ] **Add structured JSON logging** — replace all `log.Printf` with a leveled, structured logger (e.g., `slog` or `zerolog`)
-- [ ] **Add Prometheus metrics endpoint** (`/metrics`) — expose counters for leads discovered, interactions processed, deals won/lost, PRs merged, etc.
-- [ ] **Add correlation/request IDs** to all log lines for traceability
-- [ ] **Add pprof endpoint** for production debugging (`/debug/pprof/`)
+- [x] **Add structured JSON logging** — replace all `log.Printf` with a leveled, structured logger (e.g., `slog` or `zerolog`)
+- [x] **Add Prometheus metrics endpoint** (`/metrics`) — expose counters for leads discovered, interactions processed, deals won/lost, PRs merged, etc.
+- [x] **Add correlation/request IDs** to all log lines for traceability
+- [x] **Add pprof endpoint** for production debugging (`/debug/pprof/`)
 
 ### 6.5 Error Handling & Resilience
-- [ ] **Add retry with exponential backoff** to all external API calls (GitHub, CRM, Stripe)
-- [ ] **Add circuit breaker** for external integrations (CRM, Stripe, GitHub API)
-- [ ] **Add dead-letter tracking** — persist failed interactions/updates for manual review instead of silently dropping errors
-- [ ] **Add health check dependencies** — detailed health endpoint should report each worker's last successful run timestamp
+- [x] **Add retry with exponential backoff** to all external API calls (GitHub, CRM, Stripe)
+- [x] **Add circuit breaker** for external integrations (CRM, Stripe, GitHub API)
+- [x] **Add dead-letter tracking** — persist failed interactions/updates for manual review instead of silently dropping errors
+- [x] **Add health check dependencies** — detailed health endpoint should report each worker's last successful run timestamp
 
 ---
 

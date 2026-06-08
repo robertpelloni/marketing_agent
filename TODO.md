@@ -3,39 +3,39 @@
 ## Phase 6 — Production Hardening & Reliability
 
 ### Test Coverage & Quality
-- [ ] Fix CRLF line-ending test failure in `internal/gitres/resolve_test.go` (`TestResolveConflictTheirs`)
-- [ ] Add connection pool configuration to `db.NewDB()` (max open/idle conns, lifetime)
-- [ ] Add graceful shutdown with drain timeouts for all background workers
-- [ ] Add integration tests with ephemeral DB for `enrichment/worker`, `researcher`, `crm/worker`, and `communication/manager`
-- [ ] Add web dashboard handler tests for `/` route, webhook endpoint, and form actions
-- [ ] Add negative/error-path unit tests for `db/repository.go`
-- [ ] Add test coverage reporting to CI pipeline
+- [x] Fix CRLF line-ending test failure in `internal/gitres/resolve_test.go` (`TestResolveConflictTheirs`)
+- [x] Add connection pool configuration to `db.NewDB()` (max open/idle conns, lifetime)
+- [x] Add graceful shutdown with drain timeouts for all background workers
+- [x] Add integration tests with ephemeral DB for `enrichment/worker`, `researcher`, `crm/worker`, and `communication/manager`
+- [x] Add web dashboard handler tests for `/` route, webhook endpoint, and form actions
+- [x] Add negative/error-path unit tests for `db/repository.go`
+- [x] Add test coverage reporting to CI pipeline
 
 ### Database & Data Integrity
-- [ ] Fix `contacts.email` NULL constraint — add `NOT NULL` or partial unique index
-- [ ] Add `interactions.success` index for efficient `ListSuccessfulInteractions` queries
-- [ ] Add `deals(current_state)` index for efficient `ListDealsByState` queries
-- [ ] Add migration for `audit_log` table to track state transitions with metadata
-- [ ] Add `deleted_at` soft-delete columns for GDPR compliance
-- [ ] Add database migration runner to application startup
+- [x] Fix `contacts.email` NULL constraint — add `NOT NULL` or partial unique index
+- [x] Add `interactions.success` index for efficient `ListSuccessfulInteractions` queries
+- [x] Add `deals(current_state)` index for efficient `ListDealsByState` queries
+- [x] Add migration for `audit_log` table to track state transitions with metadata
+- [x] Add `deleted_at` soft-delete columns for GDPR compliance
+- [x] Add database migration runner to application startup
 
 ### Configuration & Environment
-- [ ] Replace scattered `os.Getenv()` calls with a typed config struct
-- [ ] Add `.env` file loading for local development
-- [ ] Add config validation at startup with clear error messages
-- [ ] Add configurable worker intervals via environment variables
+- [x] Replace scattered `os.Getenv()` calls with a typed config struct
+- [x] Add `.env` file loading for local development
+- [x] Add config validation at startup with clear error messages
+- [x] Add configurable worker intervals via environment variables
 
 ### Logging & Observability
-- [ ] Replace all `log.Printf` with a leveled, structured logger (`slog` or `zerolog`)
-- [ ] Add Prometheus metrics endpoint (`/metrics`) with business and system counters
-- [ ] Add correlation/request IDs to all log lines
-- [ ] Add `pprof` endpoint for production debugging
+- [x] Replace all `log.Printf` with a leveled, structured logger (`slog` or `zerolog`)
+- [x] Add Prometheus metrics endpoint (`/metrics`) with business and system counters
+- [x] Add correlation/request IDs to all log lines
+- [x] Add `pprof` endpoint for production debugging
 
 ### Error Handling & Resilience
-- [ ] Add retry with exponential backoff to all external API calls
-- [ ] Add circuit breaker for external integrations (CRM, Stripe, GitHub)
-- [ ] Add dead-letter tracking for failed interactions/updates
-- [ ] Add per-worker health status with last successful run timestamp
+- [x] Add retry with exponential backoff to all external API calls
+- [x] Add circuit breaker for external integrations (CRM, Stripe, GitHub)
+- [x] Add dead-letter tracking for failed interactions/updates
+- [x] Add per-worker health status with last successful run timestamp
 
 ## Phase 7 — Real Integrations & Multi-Channel Outreach
 

@@ -1,18 +1,22 @@
 package auth
 
 import (
+	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
 	"net/http"
 	"os"
+	"sync"
 	"time"
 )
 
-// Authenticator handles simple session-based authentication.
+// Authenticator handles session-based authentication.
 type Authenticator struct {
 	adminPasswordHash string
 	sessionCookieName string
+	sessions          map[string]time.Time
+	mu                sync.RWMutex
 }
 
 // NewAuthenticator creates a new Authenticator instance.
@@ -26,7 +30,16 @@ func NewAuthenticator() *Authenticator {
 	return &Authenticator{
 		adminPasswordHash: hex.EncodeToString(hash[:]),
 		sessionCookieName: "sales_bot_session",
+		sessions:          make(map[string]time.Time),
 	}
+}
+
+func generateSessionID() string {
+	b := make([]byte, 32)
+	if _, err := rand.Read(b); err != nil {
+		return "fallback_session_id_" + time.Now().String()
+	}
+	return hex.EncodeToString(b)
 }
 
 // Login verifies the password and sets a session cookie.
@@ -36,9 +49,13 @@ func (a *Authenticator) Login(password string) (string, error) {
 		return "", errors.New("invalid password")
 	}
 
-	// In a real system, we'd generate a secure random session ID and store it in a DB/Redis.
-	// For this module, we use a simple static session token for the admin.
-	return "authorized_admin_session", nil
+	sessionID := generateSessionID()
+
+	a.mu.Lock()
+	a.sessions[sessionID] = time.Now().Add(24 * time.Hour)
+	a.mu.Unlock()
+
+	return sessionID, nil
 }
 
 // Middleware provides an HTTP middleware to protect routes.
@@ -51,7 +68,21 @@ func (a *Authenticator) Middleware(next http.Handler) http.Handler {
 		}
 
 		cookie, err := r.Cookie(a.sessionCookieName)
-		if err != nil || cookie.Value != "authorized_admin_session" {
+		if err != nil {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+
+		a.mu.RLock()
+		expiry, ok := a.sessions[cookie.Value]
+		a.mu.RUnlock()
+
+		if !ok || time.Now().After(expiry) {
+			if ok {
+				a.mu.Lock()
+				delete(a.sessions, cookie.Value)
+				a.mu.Unlock()
+			}
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}

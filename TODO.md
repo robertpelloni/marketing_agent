@@ -174,4 +174,4 @@
 - [x] Implement Self-Service Deployment Pipeline (Sync & Build triggers)
 - [x] Add `borg` submodule for technical documentation reference
 - [x] Implement Task 6: Automated Provisioning for won deals
-- [x] Rebrand from TormentNexus to TormentNexus across all product-facing references
+- [x] Rebrand from Borg to TormentNexus across all product-facing references

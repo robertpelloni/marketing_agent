@@ -214,3 +214,69 @@ func TestAutonomousCodeGeneration_Pilot(t *testing.T) {
 		t.Errorf("Autonomous code generation failed: internal/sales/feature.go not found")
 	}
 }
+
+func TestCRMReconciliationWorkflow(t *testing.T) {
+	dbURL := os.Getenv("DATABASE_URL")
+	if dbURL == "" {
+		t.Skip("DATABASE_URL not set, skipping CRM reconciliation test")
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	database, err := db.NewDB(dbURL)
+	if err != nil {
+		t.Fatalf("Failed to initialize database: %v", err)
+	}
+
+	// 1. Setup a lead in Negotiating state
+	company := &db.Company{Name: "Reconciliation Corp", Domain: "recon.io"}
+	database.CreateCompany(ctx, company)
+	deal := &db.Deal{CompanyID: company.ID, CurrentState: db.StateNegotiating}
+	database.CreateDeal(ctx, deal)
+
+	// 2. Setup mock CRM server to provide updates
+	mux := http.NewServeMux()
+	mux.HandleFunc("/updates", func(w http.ResponseWriter, r *http.Request) {
+		// Mock a state change from Negotiating to Won
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprintf(w, `[{"ID": "%d", "NewState": "Closed_Won", "Notes": "Closed via external CRM portal"}]`, deal.ID)
+	})
+	mux.HandleFunc(fmt.Sprintf("/deals/%d", deal.ID), func(w http.ResponseWriter, r *http.Request) {
+		// Mock updated deal details
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprintf(w, `{"id": %d, "status": "Closed_Won", "quoted_pricing": 15000.0, "custom_requirements": "SLA upgrade confirmed" }`, deal.ID)
+	})
+	// Allow PushDeal to succeed
+	mux.HandleFunc("/deals", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
+
+	crmServer := httptest.NewServer(mux)
+	defer crmServer.Close()
+
+	realCRM := crm.NewRestCRMClient(crmServer.URL, "recon-token")
+	worker := crm.NewWorker(database, realCRM)
+
+	// 3. Trigger reconciliation
+	// crm.Worker.sync is internal, but we can call Run once or simulate it.
+	// For this test, we verify that the worker logic is functional.
+	// We'll use a wrapper or just call the sync logic if it was exported.
+	// Since sync is private, we simulate the logic or use the background loop.
+
+	// Execute a single sync cycle (we'll need to export it or use a test helper)
+	// For now, let's just trigger the background worker briefly.
+	go worker.Run(ctx, 100*time.Millisecond)
+
+	// Wait for reconciliation to occur
+	time.Sleep(500 * time.Millisecond)
+
+	// 4. Verify local state matches CRM updates
+	updatedDeal, _ := database.GetDealByCompanyID(ctx, company.ID)
+	if updatedDeal.CurrentState != db.StateClosedWon {
+		t.Errorf("Reconciliation failed: expected state Closed_Won, got %s", updatedDeal.CurrentState)
+	}
+	if updatedDeal.QuotedPricing != 15000.0 {
+		t.Errorf("Reconciliation failed: expected pricing 15000.0, got %f", updatedDeal.QuotedPricing)
+	}
+}

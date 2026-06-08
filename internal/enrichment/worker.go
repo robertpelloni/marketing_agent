@@ -76,6 +76,14 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 			if err != nil {
 				return fmt.Errorf("failed to update deal state: %w", err)
 			}
+
+			// Synchronize newly found contacts with the CRM
+			if e.crmClient != nil {
+				if err := e.crmClient.SyncContacts(ctx, company.ID, contacts); err != nil {
+					log.Printf("Enricher Warning: Failed to sync contacts to CRM: %v", err)
+				}
+			}
+
 			log.Printf("Enricher: Successfully enriched %s with %d contacts", company.Name, len(contacts))
 			return nil
 		}

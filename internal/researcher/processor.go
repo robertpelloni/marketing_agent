@@ -108,6 +108,19 @@ func (r *Researcher) researchLead(ctx context.Context, deal db.Deal, contact db.
 		return err
 	}
 
+	// Synchronize the updated deal (including dossier) with the CRM
+	if r.crmClient != nil {
+		company, _ := r.db.GetCompanyByID(ctx, deal.CompanyID)
+		if company != nil {
+			updatedDeal := deal
+			updatedDeal.TechnicalDossier = dossier
+			// We push the deal with a "Researcher" route to indicate provenance
+			if err := r.crmClient.PushDeal(ctx, updatedDeal, *company, "Researcher"); err != nil {
+				log.Printf("Researcher Warning: Failed to push updated dossier to CRM: %v", err)
+			}
+		}
+	}
+
 	log.Printf("Researcher: Successfully compiled technical dossier for deal %d", deal.ID)
 	return nil
 }

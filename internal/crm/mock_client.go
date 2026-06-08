@@ -11,6 +11,7 @@ import (
 type MockCRMClient struct {
 	PushDealCalled        bool
 	SyncInteractionCalled bool
+	SyncContactsCalled    bool
 	GetLeadUpdatesCalled  bool
 	LatestNote            string
 	UpdatesToReturn       []LeadUpdate
@@ -45,6 +46,12 @@ func (m *MockCRMClient) SyncInteraction(ctx context.Context, dealID int64, note 
 	log.Printf("CRM: Syncing interaction for deal %d: %s", dealID, note)
 	m.SyncInteractionCalled = true
 	m.LatestNote = note
+	return nil
+}
+
+func (m *MockCRMClient) SyncContacts(ctx context.Context, companyID int64, contacts []db.Contact) error {
+	log.Printf("CRM: Syncing %d contacts for company %d", len(contacts), companyID)
+	m.SyncContactsCalled = true
 	return nil
 }
 

@@ -31,7 +31,7 @@ func TestMockApolloSource_Enrich(t *testing.T) {
 func TestEnricher_Initialization(t *testing.T) {
 	database := &db.DB{}
 	sources := []EnrichmentSource{&MockApolloSource{}}
-	e := NewEnricher(database, sources)
+	e := NewEnricher(database, sources, nil)
 
 	if e == nil {
 		t.Fatal("Expected enricher instance, got nil")

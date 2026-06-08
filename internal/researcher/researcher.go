@@ -2,6 +2,8 @@ package researcher
 
 import (
 	"context"
+
+	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
@@ -20,13 +22,15 @@ type Researcher struct {
 	db        *db.DB
 	crawlers  []Crawler
 	processor DossierProcessor
+	crmClient crm.CRMClient
 }
 
 // NewResearcher creates a new Researcher instance.
-func NewResearcher(database *db.DB, crawlers []Crawler, processor DossierProcessor) *Researcher {
+func NewResearcher(database *db.DB, crawlers []Crawler, processor DossierProcessor, crmClient crm.CRMClient) *Researcher {
 	return &Researcher{
 		db:        database,
 		crawlers:  crawlers,
 		processor: processor,
+		crmClient: crmClient,
 	}
 }

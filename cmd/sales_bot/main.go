@@ -84,26 +84,6 @@ func main() {
 	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows"}
 	go s.Run(ctx, 1*time.Hour, keywords)
 
-	// 2b. Setup Enricher
-	enrichmentSources := []enrichment.EnrichmentSource{
-		&enrichment.MockApolloSource{},
-	}
-	e := enrichment.NewEnricher(database, enrichmentSources)
-
-	// Run enricher in background
-	go e.Run(ctx, 1*time.Hour)
-
-	// 2c. Setup Researcher
-	crawlers := []researcher.Crawler{
-		&researcher.GitHubCrawler{Client: http.DefaultClient},
-		&researcher.BlogCrawler{Client: http.DefaultClient},
-	}
-	processor := &researcher.DefaultDossierProcessor{}
-	r := researcher.NewResearcher(database, crawlers, processor)
-
-	// Run researcher in background
-	go r.Run(ctx, 1*time.Hour)
-
 	// 2ca. Setup CRM Integration
 	var crmClient crm.CRMClient
 	crmBaseURL := os.Getenv("CRM_BASE_URL")
@@ -116,6 +96,26 @@ func main() {
 		log.Println("CRM: Initializing mock CRM client (missing configuration).")
 		crmClient = crm.NewMockCRMClient()
 	}
+
+	// 2b. Setup Enricher
+	enrichmentSources := []enrichment.EnrichmentSource{
+		&enrichment.MockApolloSource{},
+	}
+	e := enrichment.NewEnricher(database, enrichmentSources, crmClient)
+
+	// Run enricher in background
+	go e.Run(ctx, 1*time.Hour)
+
+	// 2c. Setup Researcher
+	crawlers := []researcher.Crawler{
+		&researcher.GitHubCrawler{Client: http.DefaultClient},
+		&researcher.BlogCrawler{Client: http.DefaultClient},
+	}
+	processor := &researcher.DefaultDossierProcessor{}
+	r := researcher.NewResearcher(database, crawlers, processor, crmClient)
+
+	// Run researcher in background
+	go r.Run(ctx, 1*time.Hour)
 
 	crmWorker := crm.NewWorker(database, crmClient)
 

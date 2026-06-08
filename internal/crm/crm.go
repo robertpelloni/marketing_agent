@@ -31,6 +31,9 @@ type CRMClient interface {
 	// SyncInteraction pushes a specific interaction or note to the CRM deal.
 	SyncInteraction(ctx context.Context, dealID int64, note string) error
 
+	// SyncContacts synchronizes contacts for a specific company to the CRM.
+	SyncContacts(ctx context.Context, companyID int64, contacts []db.Contact) error
+
 	// FetchDealDetails retrieves specific deal information from the CRM.
 	FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error)
 }
@@ -63,12 +66,37 @@ func NewRestCRMClient(baseURL, apiKey string) *RestCRMClient {
 func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
 	url := fmt.Sprintf("%s/deals", c.BaseURL)
 	payload, _ := json.Marshal(map[string]interface{}{
-		"deal_id":  deal.ID,
-		"company":  company.Name,
-		"status":   deal.CurrentState,
-		"pricing":  deal.QuotedPricing,
-		"route":    route,
+		"deal_id":           deal.ID,
+		"company":           company.Name,
+		"status":            deal.CurrentState,
+		"pricing":           deal.QuotedPricing,
+		"technical_dossier": deal.TechnicalDossier,
+		"route":             route,
 	})
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.APIKey)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		return fmt.Errorf("crm api error: %d", resp.StatusCode)
+	}
+
+	return nil
+}
+
+func (c *RestCRMClient) SyncContacts(ctx context.Context, companyID int64, contacts []db.Contact) error {
+	url := fmt.Sprintf("%s/companies/%d/contacts", c.BaseURL, companyID)
+	payload, _ := json.Marshal(contacts)
 
 	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
 	if err != nil {

@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [0.4.3] - 2026-06-08
+
+### Added
+- **Enhanced CRM Integration:**
+    - Extended CRMClient with SyncContacts for real-time contact synchronization.
+    - Integrated CRM synchronization into Enrichment Worker and Researcher modules.
+    - Expanded PushDeal payload to include technical dossiers for better CRM visibility.
+
 ### Changed
 - Rebranded all product-facing references from "Borg" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
 - Comprehensive documentation overhaul: ROADMAP, TODO, VISION, README, DEPLOY, MEMORY, IDEAS, AGENTS, HANDOFF all updated with gap analysis, forward-looking phases, and technical debt inventory.

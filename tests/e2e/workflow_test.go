@@ -48,7 +48,8 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	deal := deals[0]
 
 	// 2b. Enrichment Phase
-	enricher := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{&enrichment.MockApolloSource{}})
+	crmMock := &crm.MockCRMClient{}
+	enricher := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{&enrichment.MockApolloSource{}}, crmMock)
 	enricher.ExecuteEnrichment(ctx)
 
 	// Verify contact was created
@@ -58,7 +59,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	}
 
 	// 2c. Research Phase
-	res := researcher.NewResearcher(database, []researcher.Crawler{&researcher.GitHubCrawler{}}, &researcher.DefaultDossierProcessor{})
+	res := researcher.NewResearcher(database, []researcher.Crawler{&researcher.GitHubCrawler{}}, &researcher.DefaultDossierProcessor{}, crmMock)
 	res.ExecuteResearch(ctx)
 
 	// Verify dossier was compiled
@@ -68,7 +69,6 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	}
 
 	// 2d. Outreach Phase
-	crmMock := &crm.MockCRMClient{}
 	classifier := &communication.MockIntentClassifier{}
 	responder := communication.NewRAGResponseGenerator(database, &llm.MockLLMProvider{})
 	strategy := communication.NewLearningSalesEngine(database, crmMock, nil)

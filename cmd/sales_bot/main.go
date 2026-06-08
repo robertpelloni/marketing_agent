@@ -200,16 +200,35 @@ func main() {
 
 	// 4. Start Web Server
 	webServer := web.NewServer(database, deployer, ciTracker, taskManager)
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: webServer,
+	}
+
 	go func() {
-		if err := webServer.ListenAndServe(":8080"); err != nil {
+		log.Println("Web Dashboard: Listening on :8080")
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Printf("Web server error: %v", err)
 		}
 	}()
 
-	// Wait for termination signal
+	// 5. Graceful Shutdown Implementation
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 	<-sigChan
 
-	log.Println("Shutting down...")
+	log.Println("Shutting down: Signal received, initiating graceful drain...")
+
+	// Cancel background workers via context
+	cancel()
+
+	// Shutdown HTTP server with timeout
+	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer shutdownCancel()
+
+	if err := srv.Shutdown(shutdownCtx); err != nil {
+		log.Printf("Web server shutdown error: %v", err)
+	}
+
+	log.Println("Shutting down: Done.")
 }

@@ -69,7 +69,7 @@ func TestDatabase_Integration(t *testing.T) {
 		ContactID: contact.ID,
 		Channel:   "Email",
 		Direction: "Inbound",
-		RawText:   "Interested in Borg.",
+		RawText:   "Interested in TormentNexus.",
 	}
 
 	err = database.CreateInteraction(ctx, interaction)

@@ -58,6 +58,11 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 		t.Fatal("Expected a contact to be created during enrichment")
 	}
 
+	// Verify CRM synchronization occurred during enrichment
+	if !crmMock.SyncContactsCalled {
+		t.Error("Expected CRM SyncContacts to be called during enrichment")
+	}
+
 	// 2c. Research Phase
 	res := researcher.NewResearcher(database, []researcher.Crawler{&researcher.GitHubCrawler{}}, &researcher.DefaultDossierProcessor{}, crmMock)
 	res.ExecuteResearch(ctx)
@@ -68,6 +73,12 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 		t.Error("Expected technical dossier to be compiled")
 	}
 
+	// Verify CRM synchronization occurred during research (PushDeal with dossier)
+	if !crmMock.PushDealCalled {
+		t.Error("Expected CRM PushDeal to be called during research")
+	}
+	crmMock.PushDealCalled = false // Reset for next phase verification
+
 	// 2d. Outreach Phase
 	classifier := &communication.MockIntentClassifier{}
 	responder := communication.NewRAGResponseGenerator(database, &llm.MockLLMProvider{})
@@ -75,7 +86,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	comm := communication.NewManager(database, classifier, responder, strategy, nil)
 
 	// Simulate inbound pricing inquiry
-	reply, err := comm.ProcessInbound(ctx, contacts[0], "How much does Borg cost?")
+	reply, err := comm.ProcessInbound(ctx, contacts[0], "How much does TormentNexus cost?")
 	if err != nil {
 		t.Fatalf("Failed to process inbound: %v", err)
 	}

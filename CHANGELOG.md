@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [0.4.4] - 2026-06-08
+
+### Added
+- **E2E Verified CRM Integration:**
+    - Enhanced E2E test suite to verify CRM synchronization across enrichment and research phases.
+    - Validated CRM client unit tests for contact and dossier synchronization.
+
 ## [0.4.3] - 2026-06-08
 
 ### Added

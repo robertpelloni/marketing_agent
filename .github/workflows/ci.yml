@@ -15,7 +15,7 @@ jobs:
         fetch-depth: 0
         submodules: false
 
-    - name: Initialize Borg Submodule
+    - name: Initialize TormentNexus Submodule
       run: git submodule update --init borg
 
     - name: Set up Go

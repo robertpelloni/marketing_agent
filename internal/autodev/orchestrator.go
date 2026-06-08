@@ -242,7 +242,11 @@ func (o *Orchestrator) finalizeCycle(ctx context.Context, task *Task) {
 	if vStr == "" {
 		vStr = "0.0.0"
 	}
-	newV := fmt.Sprintf("%s+%d", vStr, time.Now().Unix())
+
+	// Extract base version (remove previous build metadata if present)
+	baseVersion := strings.Split(vStr, "+")[0]
+	newV := fmt.Sprintf("%s+%d", baseVersion, time.Now().Unix())
+
 	// #nosec G306 -- Version files are intended to be world-readable in this architecture
 	if err := os.WriteFile("VERSION", []byte(newV), 0644); err != nil {
 		log.Printf("Autodev Warning: Failed to write VERSION: %v", err)

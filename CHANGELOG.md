@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [0.4.6] - 2026-06-08
+
+### Added
+- **User Authentication:**
+    - Implemented a simple session-based authentication module in `internal/auth`.
+    - Added middleware to protect the web dashboard and deployment controls.
+    - Integrated login page and session cookie management into `internal/web/server.go`.
+- **Infrastructure Improvements:**
+    - Centralized all environment variables into a typed `Config` struct in `internal/config`.
+    - Optimized the web server router with a pre-initialized `ServeMux`.
+    - Enhanced Graceful Shutdown with a 2-second worker drain wait time.
+
 ## [0.4.5] - 2026-06-08
 
 ### Added
@@ -11,8 +23,6 @@ All notable changes to this project will be documented in this file. The format 
     - Implemented asynchronous retry logic with exponential backoff for all CRM synchronization points.
     - Created a new CRM integration verification utility (`scripts/crm_verify/verify_crm_integration.go`) for E2E simulation.
     - Standardized CRM error logging across background workers.
-    - Improved Graceful Shutdown in `main.go` with worker drain wait time.
-    - Optimized Web Server router by pre-initializing ServeMux.
 
 ## [0.4.4] - 2026-06-08
 
@@ -32,16 +42,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Changed
 - Rebranded all product-facing references from "Borg" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
 - Comprehensive documentation overhaul: ROADMAP, TODO, VISION, README, DEPLOY, MEMORY, IDEAS, AGENTS, HANDOFF all updated with gap analysis, forward-looking phases, and technical debt inventory.
-
-### Documentation
-- **ROADMAP.md:** Expanded from flat completed list to 5-phase forward roadmap (Phases 6–10) with ~80 new items.
-- **TODO.md:** Rebuilt as actionable task list organized by phase with specific, trackable items.
-- **VISION.md:** Added current state assessment, architecture diagram (mermaid), evolution roadmap, and key metrics table.
-- **README.md:** Comprehensive rewrite with full feature list, worker table, state machine, config reference, and known issues.
-- **DEPLOY.md:** Added env var table, CLI flags, Docker instructions, staging validation, and production checklist.
-- **MEMORY.md:** Added technical debt inventory and integration status matrix (real vs. mock).
-- **IDEAS.md:** Expanded with inbound lead capture, community intelligence, A/B testing, GDPR, and more.
-- **AGENTS.md:** Added module architecture table, schema debt section, and system guidelines.
 
 ## [0.4.1] - 2026-06-05
 

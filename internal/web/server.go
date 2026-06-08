@@ -14,6 +14,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
@@ -25,6 +26,7 @@ type Server struct {
 	deploy  *deploy.Deployer
 	tracker deploy.CITracker
 	tasks   *autodev.TaskManager
+	auth    *auth.Authenticator
 	mux     *http.ServeMux
 }
 
@@ -35,6 +37,7 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 		deploy:  deployer,
 		tracker: tracker,
 		tasks:   taskManager,
+		auth:    auth.NewAuthenticator(),
 		mux:     http.NewServeMux(),
 	}
 	s.routes()
@@ -42,7 +45,11 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 }
 
 func (s *Server) routes() {
-	s.mux.HandleFunc("/", s.handleDashboard)
+	// Protected routes
+	s.mux.Handle("/", s.auth.Middleware(http.HandlerFunc(s.handleDashboard)))
+
+	// Public routes
+	s.mux.HandleFunc("/login", s.auth.HandleLogin)
 	s.mux.HandleFunc("/health", s.handleHealth)
 	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
 	s.mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)

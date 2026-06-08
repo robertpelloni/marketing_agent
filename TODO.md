@@ -97,7 +97,7 @@
 
 ### Security
 - [ ] Add rate limiting on all HTTP endpoints
-- [ ] Add authentication to web dashboard (OAuth2 or API key)
+- [x] Add authentication to web dashboard (Session-based)
 - [ ] Add CSRF protection for dashboard form submissions
 - [ ] Add input sanitization for webhook payloads and form inputs
 - [ ] Add secrets encryption at rest
@@ -174,4 +174,4 @@
 - [x] Implement Self-Service Deployment Pipeline (Sync & Build triggers)
 - [x] Add `borg` submodule for technical documentation reference
 - [x] Implement Task 6: Automated Provisioning for won deals
-- [x] Rebrand from Borg to TormentNexus across all product-facing references
+- [x] Rebrand from TormentNexus to TormentNexus across all product-facing references

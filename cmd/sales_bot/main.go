@@ -187,8 +187,9 @@ func main() {
 	// 4. Start Web Server
 	webServer := web.NewServer(database, deployer, ciTracker, taskManager)
 	srv := &http.Server{
-		Addr:    ":" + cfg.Port,
-		Handler: webServer,
+		Addr:              ":" + cfg.Port,
+		Handler:           webServer,
+		ReadHeaderTimeout: 3 * time.Second,
 	}
 
 	go func() {

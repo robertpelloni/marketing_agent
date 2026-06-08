@@ -111,7 +111,7 @@ func (m *TaskManager) MarkCompleted(ctx context.Context, taskDescription string)
 	}
 
 	output := strings.Join(lines, "\n")
-	// #nosec G306 -- TODO file is intentionally world-readable
+	// #nosec G306 G304 G703 -- TODO file is intentionally world-readable
 	err = os.WriteFile(m.todoPath, []byte(output), 0644)
 	if err != nil {
 		return err

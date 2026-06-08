@@ -14,6 +14,7 @@ import (
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/billing"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/config"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
@@ -55,17 +56,13 @@ func main() {
 		return
 	}
 
-	log.Println("Starting Enterprise Sales Bot...")
+	log.Println("Starting TormentNexus Autonomous Sales Bot...")
+
+	// 0. Load Configuration
+	cfg := config.Load()
 
 	// 1. Initialize Database
-	dbURL := os.Getenv("DATABASE_URL")
-	if dbURL == "" {
-		// Default for local development if not provided
-		// #nosec G101 -- This is a default for local dev and does not contain real production secrets
-		dbURL = "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"
-	}
-
-	database, err := db.NewDB(dbURL)
+	database, err := db.NewDB(cfg.DatabaseURL)
 	if err != nil {
 		log.Fatalf("Could not connect to database: %v", err)
 	}
@@ -86,12 +83,9 @@ func main() {
 
 	// 2ca. Setup CRM Integration
 	var crmClient crm.CRMClient
-	crmBaseURL := os.Getenv("CRM_BASE_URL")
-	crmAPIKey := os.Getenv("CRM_API_KEY")
-
-	if crmBaseURL != "" && crmAPIKey != "" {
-		log.Println("CRM: Initializing production REST CRM client.")
-		crmClient = crm.NewRestCRMClient(crmBaseURL, crmAPIKey)
+	if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
+		log.Printf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL)
+		crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
 	} else {
 		log.Println("CRM: Initializing mock CRM client (missing configuration).")
 		crmClient = crm.NewMockCRMClient()
@@ -131,12 +125,11 @@ func main() {
 	// 2d. Setup Deployer
 	var ciTracker deploy.CITracker
 	var dispatcher deploy.WorkflowDispatcher
-	ghRepo := os.Getenv("GITHUB_REPOSITORY")
-	if ghRepo != "" {
-		parts := strings.Split(ghRepo, "/")
+	if cfg.GitHubRepository != "" {
+		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
 			// #nosec G706 -- Repository name is used for context in initialization logs
-			log.Printf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", ghRepo)
+			log.Printf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", cfg.GitHubRepository)
 			ciTracker = deploy.NewGitHubCITracker(parts[0], parts[1])
 			dispatcher = deploy.NewGitHubDispatcher(parts[0], parts[1])
 		}
@@ -148,15 +141,8 @@ func main() {
 	deployer := deploy.NewDeployer(ciTracker, dispatcher)
 
 	// 2da. Setup Deployer background sync and monitoring
-	syncIntervalStr := os.Getenv("DEPLOY_SYNC_INTERVAL")
-	if syncIntervalStr != "" {
-		if interval, err := time.ParseDuration(syncIntervalStr); err == nil {
-			go deployer.Run(ctx, interval)
-			go deployer.MonitorDeployment(ctx, interval)
-		} else {
-			log.Printf("Warning: Invalid DEPLOY_SYNC_INTERVAL: %v", err)
-		}
-	}
+	go deployer.Run(ctx, cfg.DeploySyncInterval)
+	go deployer.MonitorDeployment(ctx, cfg.DeploySyncInterval)
 
 	// 2da. Setup LLM Provider
 	llmProvider := &llm.MockLLMProvider{}
@@ -180,11 +166,11 @@ func main() {
 	agent := &autodev.LocalAgent{}
 
 	var prManager gitcheck.PRManager
-	if ghRepo != "" {
-		parts := strings.Split(ghRepo, "/")
+	if cfg.GitHubRepository != "" {
+		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
 			// #nosec G706 -- Repository name is used for context in initialization logs
-			log.Printf("Autodev: Initializing GitHub PR Manager for %s", ghRepo)
+			log.Printf("Autodev: Initializing GitHub PR Manager for %s", cfg.GitHubRepository)
 			prManager = gitcheck.NewGitHubPRManager(parts[0], parts[1])
 		}
 	}
@@ -201,12 +187,12 @@ func main() {
 	// 4. Start Web Server
 	webServer := web.NewServer(database, deployer, ciTracker, taskManager)
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":" + cfg.Port,
 		Handler: webServer,
 	}
 
 	go func() {
-		log.Println("Web Dashboard: Listening on :8080")
+		log.Printf("Web Dashboard: Listening on :%s", cfg.Port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Printf("Web server error: %v", err)
 		}

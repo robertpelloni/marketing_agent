@@ -93,6 +93,8 @@ func (a *Authenticator) HandleLogin(w http.ResponseWriter, r *http.Request) {
 			Value:    token,
 			Path:     "/",
 			HttpOnly: true,
+			Secure:   true,
+			SameSite: http.SameSiteStrictMode,
 			Expires:  time.Now().Add(24 * time.Hour),
 		})
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"strings"
+	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -43,12 +44,21 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 			if err := e.db.UpdateDealState(ctx, salesCtx.Deal.ID, newState); err != nil {
 				log.Printf("LearningSalesEngine: Error updating deal state: %v", err)
 			} else if e.crmClient != nil {
-				// Immediate CRM Sync
-				updatedDeal := salesCtx.Deal
-				updatedDeal.CurrentState = newState
-				if err := e.crmClient.PushDeal(ctx, updatedDeal, salesCtx.Company, e.RouteLead(salesCtx)); err != nil {
-					log.Printf("LearningSalesEngine: Immediate CRM Push failed: %v", err)
-				}
+				// Immediate CRM Sync (non-blocking)
+				go func() {
+					updatedDeal := salesCtx.Deal
+					updatedDeal.CurrentState = newState
+					maxRetries := 3
+					for i := 0; i < maxRetries; i++ {
+						if err := e.crmClient.PushDeal(ctx, updatedDeal, salesCtx.Company, e.RouteLead(salesCtx)); err != nil {
+							log.Printf("LearningSalesEngine: Immediate CRM Push failed (attempt %d/%d): %v", i+1, maxRetries, err)
+							time.Sleep(time.Duration(i+1) * 2 * time.Second)
+							continue
+						}
+						return
+					}
+					log.Printf("LearningSalesEngine Error: CRM state sync failed after %d attempts for deal %d", maxRetries, updatedDeal.ID)
+				}()
 			}
 		}
 		return ActionAdvanceState, nil

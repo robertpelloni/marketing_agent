@@ -25,26 +25,32 @@ type Server struct {
 	deploy  *deploy.Deployer
 	tracker deploy.CITracker
 	tasks   *autodev.TaskManager
+	mux     *http.ServeMux
 }
 
 // NewServer creates a new Server instance.
 func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager) *Server {
-	return &Server{
+	s := &Server{
 		db:      database,
 		deploy:  deployer,
 		tracker: tracker,
 		tasks:   taskManager,
+		mux:     http.NewServeMux(),
 	}
+	s.routes()
+	return s
+}
+
+func (s *Server) routes() {
+	s.mux.HandleFunc("/", s.handleDashboard)
+	s.mux.HandleFunc("/health", s.handleHealth)
+	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
+	s.mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
 }
 
 // ServeHTTP implements the http.Handler interface.
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", s.handleDashboard)
-	mux.HandleFunc("/health", s.handleHealth)
-	mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
-	mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
-	mux.ServeHTTP(w, r)
+	s.mux.ServeHTTP(w, r)
 }
 
 // ListenAndServe starts the HTTP server.

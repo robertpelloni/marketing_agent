@@ -26,7 +26,7 @@ type PromptFormatter struct {
 }
 
 func (f *PromptFormatter) Format(dossier string) string {
-	return fmt.Sprintf(`### BORG OUTREACH CONTEXT ###
+	return fmt.Sprintf(`### TormentNexus OUTREACH CONTEXT ###
 %s
 
 ### TARGET TECHNICAL FINDINGS ###
@@ -108,16 +108,25 @@ func (r *Researcher) researchLead(ctx context.Context, deal db.Deal, contact db.
 		return err
 	}
 
-	// Synchronize the updated deal (including dossier) with the CRM
+	// Synchronize the updated deal (including dossier) with the CRM (with retry logic)
 	if r.crmClient != nil {
 		company, _ := r.db.GetCompanyByID(ctx, deal.CompanyID)
 		if company != nil {
 			updatedDeal := deal
 			updatedDeal.TechnicalDossier = dossier
-			// We push the deal with a "Researcher" route to indicate provenance
-			if err := r.crmClient.PushDeal(ctx, updatedDeal, *company, "Researcher"); err != nil {
-				log.Printf("Researcher Warning: Failed to push updated dossier to CRM: %v", err)
-			}
+			go func() {
+				maxRetries := 3
+				for i := 0; i < maxRetries; i++ {
+					// We push the deal with a "Researcher" route to indicate provenance
+					if err := r.crmClient.PushDeal(ctx, updatedDeal, *company, "Researcher"); err != nil {
+						log.Printf("Researcher Warning: Failed to push updated dossier to CRM (attempt %d/%d): %v", i+1, maxRetries, err)
+						time.Sleep(time.Duration(i+1) * 2 * time.Second)
+						continue
+					}
+					return
+				}
+				log.Printf("Researcher Error: CRM dossier push failed after %d attempts for deal %d", maxRetries, deal.ID)
+			}()
 		}
 	}
 

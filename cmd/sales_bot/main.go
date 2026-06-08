@@ -230,5 +230,7 @@ func main() {
 		log.Printf("Web server shutdown error: %v", err)
 	}
 
+	// Wait for workers to finish
+	time.Sleep(2 * time.Second)
 	log.Println("Shutting down: Done.")
 }

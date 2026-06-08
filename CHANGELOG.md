@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [0.4.5] - 2026-06-08
+
+### Added
+- **CRM Hardening & Verification:**
+    - Implemented asynchronous retry logic with exponential backoff for all CRM synchronization points.
+    - Created a new CRM integration verification utility (`scripts/crm_verify/verify_crm_integration.go`) for E2E simulation.
+    - Standardized CRM error logging across background workers.
+    - Improved Graceful Shutdown in `main.go` with worker drain wait time.
+    - Optimized Web Server router by pre-initializing ServeMux.
+
 ## [0.4.4] - 2026-06-08
 
 ### Added

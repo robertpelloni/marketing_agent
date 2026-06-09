@@ -21,11 +21,6 @@ func main() {
 	fmt.Printf("Starting UAT verification for: %s\n", targetURL)
 	fmt.Printf("Simulating inbound from %s: %s\n", email, text)
 
-	// Simulation endpoint is protected by auth middleware?
-	// Based on ServeHTTP, it is. But /login is public.
-	// For automation, we might need to skip auth or provide session.
-	// For now, let's assume it's running in an environment where we can hit it.
-
 	data := url.Values{}
 	data.Set("email", email)
 	data.Set("text", text)

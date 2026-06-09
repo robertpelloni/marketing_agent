@@ -61,8 +61,8 @@
 - [ ] Add response quality scoring before sending
 
 ### Real CRM Integration
-- [ ] Implement Salesforce CRM adapter
-- [ ] Implement HubSpot CRM adapter
+- [x] Implement Salesforce CRM adapter
+- [x] Implement HubSpot CRM adapter
 - [ ] Add CRM field mapping configuration
 
 ## Phase 8 — Intelligence & Autonomous Evolution

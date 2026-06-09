@@ -1,6 +1,6 @@
 module github.com/robertpelloni/enterprise_sales_bot
 
-go 1.24
+go 1.25.0
 
 require (
 	github.com/google/go-github/v60 v60.0.0
@@ -9,4 +9,7 @@ require (
 	golang.org/x/oauth2 v0.24.0
 )
 
-require github.com/google/go-querystring v1.1.0 // indirect
+require (
+	github.com/google/go-querystring v1.1.0 // indirect
+	golang.org/x/time v0.15.0 // indirect
+)

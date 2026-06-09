@@ -61,8 +61,8 @@ func (a *Authenticator) Login(password string) (string, error) {
 // Middleware provides an HTTP middleware to protect routes.
 func (a *Authenticator) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Skip auth for health and webhook endpoints
-		if r.URL.Path == "/health" || r.URL.Path == "/health/detailed" || r.URL.Path == "/api/v1/webhook/github" || r.URL.Path == "/login" {
+		// Skip auth for health, webhook, and test endpoints
+		if r.URL.Path == "/health" || r.URL.Path == "/health/detailed" || r.URL.Path == "/api/v1/webhook/github" || r.URL.Path == "/api/v1/test/simulate_inbound" || r.URL.Path == "/login" {
 			next.ServeHTTP(w, r)
 			return
 		}

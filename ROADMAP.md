@@ -106,8 +106,8 @@
 - [ ] **Add response quality scoring** — auto-evaluate generated responses before sending
 
 ### 7.4 Real CRM Integration
-- [ ] **Implement Salesforce CRM adapter** (replace generic REST mock)
-- [ ] **Implement HubSpot CRM adapter** as alternative
+- [x] **Implement Salesforce CRM adapter** (replace generic REST mock)
+- [x] **Implement HubSpot CRM adapter** as alternative
 - [ ] **Add CRM field mapping configuration** — map local fields to CRM-specific schema
 
 ---

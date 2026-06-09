@@ -20,6 +20,7 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
+	"golang.org/x/time/rate"
 )
 
 // Server handles web dashboard requests.
@@ -31,6 +32,7 @@ type Server struct {
 	comm    *communication.Manager
 	auth    *auth.Authenticator
 	crm     crm.CRMClient
+	limiter *rate.Limiter
 	mux     *http.ServeMux
 }
 
@@ -44,6 +46,7 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 		comm:    commManager,
 		auth:    auth.NewAuthenticator(),
 		crm:     crmClient,
+		limiter: rate.NewLimiter(5, 10), // 5 requests per second, burst of 10
 		mux:     http.NewServeMux(),
 	}
 	s.routes()
@@ -61,6 +64,10 @@ func (s *Server) routes() {
 
 // ServeHTTP implements the http.Handler interface.
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if !s.limiter.Allow() {
+		http.Error(w, "Too Many Requests", http.StatusTooManyRequests)
+		return
+	}
 	s.auth.Middleware(s.mux).ServeHTTP(w, r)
 }
 

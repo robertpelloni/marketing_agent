@@ -14,6 +14,9 @@ type Config struct {
 	CRMBaseURL          string
 	CRMAPIKey           string
 	CRMProvider         string
+	SalesforceAuthURL    string
+	SalesforceClientID   string
+	SalesforceClientSecret string
 	DeploySyncInterval  time.Duration
 	Port                string
 	Environment         string
@@ -46,6 +49,9 @@ func Load() *Config {
 		CRMBaseURL:          os.Getenv("CRM_BASE_URL"),
 		CRMAPIKey:           os.Getenv("CRM_API_KEY"),
 		CRMProvider:         getEnv("CRM_PROVIDER", "generic"),
+		SalesforceAuthURL:    os.Getenv("SALESFORCE_AUTH_URL"),
+		SalesforceClientID:   os.Getenv("SALESFORCE_CLIENT_ID"),
+		SalesforceClientSecret: os.Getenv("SALESFORCE_CLIENT_SECRET"),
 		DeploySyncInterval:  syncInterval,
 		Port:                port,
 		Environment:         env,

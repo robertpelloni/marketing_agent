@@ -16,6 +16,7 @@ import (
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
@@ -27,18 +28,20 @@ type Server struct {
 	deploy  *deploy.Deployer
 	tracker deploy.CITracker
 	tasks   *autodev.TaskManager
+	comm    *communication.Manager
 	auth    *auth.Authenticator
 	crm     crm.CRMClient
 	mux     *http.ServeMux
 }
 
 // NewServer creates a new Server instance.
-func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, crmClient crm.CRMClient) *Server {
+func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, crmClient crm.CRMClient, commManager *communication.Manager) *Server {
 	s := &Server{
 		db:      database,
 		deploy:  deployer,
 		tracker: tracker,
 		tasks:   taskManager,
+		comm:    commManager,
 		auth:    auth.NewAuthenticator(),
 		crm:     crmClient,
 		mux:     http.NewServeMux(),
@@ -48,10 +51,7 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 }
 
 func (s *Server) routes() {
-	// Protected routes
 	s.mux.HandleFunc("/", s.handleDashboard)
-
-	// Public routes
 	s.mux.HandleFunc("/login", s.auth.HandleLogin)
 	s.mux.HandleFunc("/health", s.handleHealth)
 	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
@@ -61,7 +61,7 @@ func (s *Server) routes() {
 
 // ServeHTTP implements the http.Handler interface.
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	s.mux.ServeHTTP(w, r)
+	s.auth.Middleware(s.mux).ServeHTTP(w, r)
 }
 
 // ListenAndServe starts the HTTP server.
@@ -305,17 +305,41 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			<div class="deploy-section" style="border-left: 5px solid #ffc107;">
 				<h2>User Testing & Inbound Simulation</h2>
 				<p>Simulate inbound messages from decision-makers to verify autonomous response logic and CRM sync.</p>
-				<form action="/api/v1/test/simulate_inbound" method="POST">
+				<form id="uat-form">
 					<div style="margin-bottom: 15px;">
 						<label style="display: block; margin-bottom: 5px;">Contact Email:</label>
-						<input type="text" name="email" placeholder="e.g. sarah.chen@aidynamics.com" style="width: 100%%; padding: 8px;">
+						<input type="text" name="email" id="uat-email" placeholder="e.g. sarah.chen@aidynamics.com" style="width: 100%%; padding: 8px;">
 					</div>
 					<div style="margin-bottom: 15px;">
 						<label style="display: block; margin-bottom: 5px;">Message Text:</label>
-						<textarea name="text" rows="3" style="width: 100%%; padding: 8px;"></textarea>
+						<textarea name="text" id="uat-text" rows="3" style="width: 100%%; padding: 8px;"></textarea>
 					</div>
 					<button type="submit" class="action-btn" style="background-color: #ffc107; color: #333;">Simulate Inbound</button>
 				</form>
+				<div id="uat-result" style="margin-top: 15px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; display: none; background: #fffbe6;">
+					<strong>Autonomous Response:</strong>
+					<p id="uat-response-text" style="margin-top: 5px; white-space: pre-wrap;"></p>
+				</div>
+				<script>
+					document.getElementById('uat-form').addEventListener('submit', function(e) {
+						e.preventDefault();
+						const email = document.getElementById('uat-email').value;
+						const text = document.getElementById('uat-text').value;
+						const resultDiv = document.getElementById('uat-result');
+						const responseText = document.getElementById('uat-response-text');
+
+						fetch('/api/v1/test/simulate_inbound', {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+							body: 'email=' + encodeURIComponent(email) + '&text=' + encodeURIComponent(text)
+						})
+						.then(response => response.text())
+						.then(data => {
+							resultDiv.style.display = 'block';
+							responseText.textContent = data;
+						});
+					});
+				</script>
 			</div>
 
 				<script>
@@ -409,13 +433,16 @@ func (s *Server) handleSimulateInbound(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// We'd typically call communication.Manager here, but web.Server doesn't have it.
-	// For testing, we just log and return OK.
-	// A more complete implementation would wire the Comm Manager.
-	log.Printf("UI: Simulated inbound from %s: %s (ID: %d)", contactEmail, text, contact.ID)
+	log.Printf("UI: Triggering autonomous response for simulated inbound from %s", contactEmail)
+
+	reply, err := s.comm.ProcessInbound(r.Context(), *contact, text)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to process inbound: %v", err), http.StatusInternalServerError)
+		return
+	}
 
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Inbound simulated for %s", contactEmail)
+	fmt.Fprintf(w, "Inbound processed. Autonomous reply: %s", reply)
 }
 
 func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {

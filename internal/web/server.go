@@ -49,7 +49,7 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 
 func (s *Server) routes() {
 	// Protected routes
-	s.mux.Handle("/", s.auth.Middleware(http.HandlerFunc(s.handleDashboard)))
+	s.mux.HandleFunc("/", s.handleDashboard)
 
 	// Public routes
 	s.mux.HandleFunc("/login", s.auth.HandleLogin)

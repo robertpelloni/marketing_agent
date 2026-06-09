@@ -83,11 +83,21 @@ func main() {
 
 	// 2ca. Setup CRM Integration
 	var crmClient crm.CRMClient
-	if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
-		log.Printf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL)
-		crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
-	} else {
-		log.Println("CRM: Initializing mock CRM client (missing configuration).")
+	switch cfg.CRMProvider {
+	case "hubspot":
+		if cfg.CRMAPIKey != "" {
+			log.Println("CRM: Initializing HubSpot CRM client.")
+			crmClient = crm.NewHubSpotCRMClient(cfg.CRMAPIKey)
+		}
+	default:
+		if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
+			log.Printf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL)
+			crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
+		}
+	}
+
+	if crmClient == nil {
+		log.Printf("CRM: Initializing mock CRM client (Provider: %s, missing or invalid configuration).", cfg.CRMProvider)
 		crmClient = crm.NewMockCRMClient()
 	}
 

@@ -26,8 +26,8 @@
 - [x] Add configurable worker intervals via environment variables
 
 ### Logging & Observability
-- [x] Replace all `log.Printf` with a leveled, structured logger (`slog` or `zerolog`)
-- [x] Add Prometheus metrics endpoint (`/metrics`) with business and system counters
+- [ ] Replace all `log.Printf` with a leveled, structured logger (`slog` or `zerolog`)
+- [ ] Add Prometheus metrics endpoint (`/metrics`) with business and system counters
 - [x] Add correlation/request IDs to all log lines
 - [x] Add `pprof` endpoint for production debugging
 

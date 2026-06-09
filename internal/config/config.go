@@ -13,6 +13,7 @@ type Config struct {
 	GitHubWebhookSecret string
 	CRMBaseURL          string
 	CRMAPIKey           string
+	CRMProvider         string
 	DeploySyncInterval  time.Duration
 	Port                string
 	Environment         string
@@ -44,6 +45,7 @@ func Load() *Config {
 		GitHubWebhookSecret: os.Getenv("GITHUB_WEBHOOK_SECRET"),
 		CRMBaseURL:          os.Getenv("CRM_BASE_URL"),
 		CRMAPIKey:           os.Getenv("CRM_API_KEY"),
+		CRMProvider:         getEnv("CRM_PROVIDER", "generic"),
 		DeploySyncInterval:  syncInterval,
 		Port:                port,
 		Environment:         env,

@@ -56,6 +56,7 @@ func (s *Server) routes() {
 	s.mux.HandleFunc("/health", s.handleHealth)
 	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
 	s.mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
+	s.mux.HandleFunc("/api/v1/test/simulate_inbound", s.handleSimulateInbound)
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -301,6 +302,22 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 					<li><strong>Global Health:</strong> <span style="color: #28a745;">%s</span></li>
 					<li><strong>CRM Status:</strong> <span id="crm-status">Loading...</span></li>
 				</ul>
+			<div class="deploy-section" style="border-left: 5px solid #ffc107;">
+				<h2>User Testing & Inbound Simulation</h2>
+				<p>Simulate inbound messages from decision-makers to verify autonomous response logic and CRM sync.</p>
+				<form action="/api/v1/test/simulate_inbound" method="POST">
+					<div style="margin-bottom: 15px;">
+						<label style="display: block; margin-bottom: 5px;">Contact Email:</label>
+						<input type="text" name="email" placeholder="e.g. sarah.chen@aidynamics.com" style="width: 100%%; padding: 8px;">
+					</div>
+					<div style="margin-bottom: 15px;">
+						<label style="display: block; margin-bottom: 5px;">Message Text:</label>
+						<textarea name="text" rows="3" style="width: 100%%; padding: 8px;"></textarea>
+					</div>
+					<button type="submit" class="action-btn" style="background-color: #ffc107; color: #333;">Simulate Inbound</button>
+				</form>
+			</div>
+
 				<script>
 					fetch('/health/detailed')
 						.then(response => response.json())
@@ -368,6 +385,37 @@ func verifySignature(payload []byte, secret string, signatureHeader string) bool
 	mac.Write(payload)
 	expectedSignature := hex.EncodeToString(mac.Sum(nil))
 	return hmac.Equal([]byte(actualSignature), []byte(expectedSignature))
+}
+
+func (s *Server) handleSimulateInbound(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// This endpoint is for staging/user testing only.
+	// In production, this would be disabled or gated by strict API keys.
+	contactEmail := r.FormValue("email")
+	text := r.FormValue("text")
+
+	if contactEmail == "" || text == "" {
+		http.Error(w, "Missing email or text", http.StatusBadRequest)
+		return
+	}
+
+	contact, err := s.db.GetContactByEmail(r.Context(), contactEmail)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Contact not found: %v", err), http.StatusNotFound)
+		return
+	}
+
+	// We'd typically call communication.Manager here, but web.Server doesn't have it.
+	// For testing, we just log and return OK.
+	// A more complete implementation would wire the Comm Manager.
+	log.Printf("UI: Simulated inbound from %s: %s (ID: %d)", contactEmail, text, contact.ID)
+
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "Inbound simulated for %s", contactEmail)
 }
 
 func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {

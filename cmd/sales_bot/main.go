@@ -90,9 +90,9 @@ func main() {
 			crmClient = crm.NewHubSpotCRMClient(cfg.CRMAPIKey)
 		}
 	case "salesforce":
-		if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
+		if cfg.CRMBaseURL != "" {
 			log.Println("CRM: Initializing Salesforce CRM client.")
-			crmClient = crm.NewSalesforceCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
+			crmClient = crm.NewSalesforceCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey, cfg.SalesforceClientID, cfg.SalesforceClientSecret, cfg.SalesforceAuthURL)
 		}
 	default:
 		if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
@@ -200,7 +200,7 @@ func main() {
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager, crmClient, commManager)
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager, crmClient, commManager, cfg.CRMProvider)
 	srv := &http.Server{
 		Addr:    ":" + cfg.Port,
 		Handler: webServer,

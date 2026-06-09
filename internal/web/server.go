@@ -32,12 +32,13 @@ type Server struct {
 	comm    *communication.Manager
 	auth    *auth.Authenticator
 	crm     crm.CRMClient
+	provider string
 	limiter *rate.Limiter
 	mux     *http.ServeMux
 }
 
 // NewServer creates a new Server instance.
-func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, crmClient crm.CRMClient, commManager *communication.Manager) *Server {
+func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, crmClient crm.CRMClient, commManager *communication.Manager, provider string) *Server {
 	s := &Server{
 		db:      database,
 		deploy:  deployer,
@@ -46,6 +47,7 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 		comm:    commManager,
 		auth:    auth.NewAuthenticator(),
 		crm:     crmClient,
+		provider: provider,
 		limiter: rate.NewLimiter(5, 10), // 5 requests per second, burst of 10
 		mux:     http.NewServeMux(),
 	}
@@ -349,6 +351,15 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				</script>
 			</div>
 
+			<div class="deploy-section" style="border-top: 5px solid #6c757d;">
+				<h2>System Settings & Configuration</h2>
+				<p>Overview of active service providers and integration status.</p>
+				<ul>
+					<li><strong>CRM Provider:</strong> %s</li>
+					<li><strong>Environment:</strong> %s</li>
+				</ul>
+			</div>
+
 				<script>
 					fetch('/health/detailed')
 						.then(response => response.json())
@@ -364,7 +375,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				</script>
 			</div>
 		</body>
-				</html>`, health)
+				</html>`, health, s.provider, os.Getenv("ENVIRONMENT"))
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {

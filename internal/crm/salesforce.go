@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
+	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
@@ -15,16 +17,59 @@ import (
 type SalesforceCRMClient struct {
 	BaseURL      string
 	AccessToken  string
+	ClientID     string
+	ClientSecret string
+	AuthURL      string
 	HTTPClient   *http.Client
 }
 
 // NewSalesforceCRMClient creates a new Salesforce CRM client.
-func NewSalesforceCRMClient(baseURL, accessToken string) *SalesforceCRMClient {
+func NewSalesforceCRMClient(baseURL, accessToken, clientID, clientSecret, authURL string) *SalesforceCRMClient {
 	return &SalesforceCRMClient{
-		BaseURL:     baseURL,
-		AccessToken: accessToken,
-		HTTPClient:  &http.Client{},
+		BaseURL:      baseURL,
+		AccessToken:  accessToken,
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
+		AuthURL:      authURL,
+		HTTPClient:   &http.Client{},
 	}
+}
+
+func (c *SalesforceCRMClient) RefreshToken(ctx context.Context) error {
+	if c.ClientID == "" || c.ClientSecret == "" || c.AuthURL == "" {
+		return nil // Skip if not configured for OAuth
+	}
+
+	data := url.Values{}
+	data.Set("grant_type", "client_credentials")
+	data.Set("client_id", c.ClientID)
+	data.Set("client_secret", c.ClientSecret)
+
+	req, err := http.NewRequestWithContext(ctx, "POST", c.AuthURL, strings.NewReader(data.Encode()))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("auth error: %d", resp.StatusCode)
+	}
+
+	var result struct {
+		AccessToken string `json:"access_token"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return err
+	}
+
+	c.AccessToken = result.AccessToken
+	return nil
 }
 
 func (c *SalesforceCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {

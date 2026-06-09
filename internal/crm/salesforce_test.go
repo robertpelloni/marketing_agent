@@ -18,7 +18,7 @@ func TestSalesforceCRMClient_PushDeal(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := NewSalesforceCRMClient(server.URL, "test-token")
+	client := NewSalesforceCRMClient(server.URL, "test-token", "", "", "")
 	err := client.PushDeal(context.Background(), db.Deal{ID: 1}, db.Company{Name: "TestCorp"}, "test")
 	if err != nil {
 		t.Fatalf("PushDeal failed: %v", err)
@@ -32,7 +32,7 @@ func TestSalesforceCRMClient_GetLeadUpdates(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := NewSalesforceCRMClient(server.URL, "test-token")
+	client := NewSalesforceCRMClient(server.URL, "test-token", "", "", "")
 	updates, err := client.GetLeadUpdates(context.Background())
 	if err != nil {
 		t.Fatalf("GetLeadUpdates failed: %v", err)

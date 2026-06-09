@@ -185,7 +185,7 @@ func main() {
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager)
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager, crmClient)
 	srv := &http.Server{
 		Addr:    ":" + cfg.Port,
 		Handler: webServer,

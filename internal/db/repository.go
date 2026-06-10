@@ -323,6 +323,35 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 	return contacts, nil
 }
 
+
+// GetContactByEmail retrieves a contact by their email address.
+func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, error) {
+	query := `
+		SELECT id, company_id, name, role, email, github_handle, linkedin_url, created_at, updated_at
+		FROM contacts
+		WHERE LOWER(email) = LOWER($1)
+		LIMIT 1
+	`
+	contact := &Contact{}
+	err := db.Conn.QueryRowContext(ctx, query, email).Scan(
+		&contact.ID,
+		&contact.CompanyID,
+		&contact.Name,
+		&contact.Role,
+		&contact.Email,
+		&contact.GitHubHandle,
+		&contact.LinkedInURL,
+		&contact.CreatedAt,
+		&contact.UpdatedAt,
+	)
+	if err != nil {
+		if err.Error() == "sql: no rows in result set" {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("failed to get contact by email: %w", err)
+	}
+	return contact, nil
+}
 // CreateInteraction inserts a new interaction into the database.
 func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) error {
 	query := `

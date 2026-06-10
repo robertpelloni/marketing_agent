@@ -68,20 +68,20 @@ func main() {
 	}
 	defer database.Close()
 
-	// 2. Setup Scraper
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	// 2. Setup Scraper — HN "Who is Hiring" + Mock fallback
 	sources := []scraper.LeadSource{
+		&scraper.HNWhoIsHiringSource{Client: http.DefaultClient},
 		&scraper.MockJobBoardSource{},
 	}
 	s := scraper.NewScraper(database, sources)
 
-	// Run scraper in background
-	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows"}
-	go s.Run(ctx, 1*time.Hour, keywords)
+	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows", "AI Platform", "ML Infrastructure"}
+	go s.Run(ctx, 2*time.Hour, keywords)
 
-	// 2ca. Setup CRM Integration
+	// 2a. Setup CRM Integration
 	var crmClient crm.CRMClient
 	if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
 		log.Printf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL)
@@ -91,13 +91,17 @@ func main() {
 		crmClient = crm.NewMockCRMClient()
 	}
 
-	// 2b. Setup Enricher
-	enrichmentSources := []enrichment.EnrichmentSource{
-		&enrichment.MockApolloSource{},
+	// 2b. Setup Enricher — Hunter.io + Mock fallback
+	var enrichmentSources []enrichment.EnrichmentSource
+	if cfg.HunterAPIKey != "" {
+		log.Println("Enrichment: Initializing Hunter.io source.")
+		enrichmentSources = append(enrichmentSources, enrichment.NewHunterSource(cfg.HunterAPIKey))
+	} else {
+		log.Println("Enrichment: No HUNTER_API_KEY set — using mock source only.")
 	}
-	e := enrichment.NewEnricher(database, enrichmentSources, crmClient)
+	enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
 
-	// Run enricher in background
+	e := enrichment.NewEnricher(database, enrichmentSources, crmClient)
 	go e.Run(ctx, 1*time.Hour)
 
 	// 2c. Setup Researcher
@@ -107,29 +111,22 @@ func main() {
 	}
 	processor := &researcher.DefaultDossierProcessor{}
 	r := researcher.NewResearcher(database, crawlers, processor, crmClient)
-
-	// Run researcher in background
 	go r.Run(ctx, 1*time.Hour)
 
 	crmWorker := crm.NewWorker(database, crmClient)
-
-	// Run CRM sync in background
 	go crmWorker.Run(ctx, 30*time.Minute)
 
-	// 2cb. Setup TormentNexus Outreach System
+	// 2d. Setup Target Discovery
 	outreachWorker := agents.NewTargetDiscoveryWorker(database)
-
-	// Run outreach discovery in background
 	go outreachWorker.Run(ctx, 2*time.Hour)
 
-	// 2d. Setup Deployer
+	// 2e. Setup Deployer
 	var ciTracker deploy.CITracker
 	var dispatcher deploy.WorkflowDispatcher
 
 	if cfg.GitHubRepository != "" {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
-			// #nosec G706 -- Repository name is used for context in initialization logs
 			log.Printf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", cfg.GitHubRepository)
 			ciTracker = deploy.NewGitHubCITracker(parts[0], parts[1])
 			dispatcher = deploy.NewGitHubDispatcher(parts[0], parts[1])
@@ -142,12 +139,10 @@ func main() {
 	}
 
 	deployer := deploy.NewDeployer(ciTracker, dispatcher)
-
-	// 2da. Setup Deployer background sync and monitoring
 	go deployer.Run(ctx, cfg.DeploySyncInterval)
 	go deployer.MonitorDeployment(ctx, cfg.DeploySyncInterval)
 
-	// 2e. Setup LLM Provider — Hermes or Mock
+	// 2f. Setup LLM Provider — Hermes or Mock
 	var llmProvider llm.LLMProvider
 	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
 		log.Printf("LLM: Initializing Hermes provider at %s (model: %s)", cfg.HermesAPIURL, cfg.HermesModel)
@@ -157,10 +152,8 @@ func main() {
 			Model:   cfg.HermesModel,
 		})
 
-		// Health check — warn but don't fail if Hermes is temporarily down
 		if err := llmProvider.(*llm.HermesLLMProvider).HealthCheck(ctx); err != nil {
 			log.Printf("LLM: WARNING — Hermes health check failed: %v", err)
-			log.Printf("LLM: The bot will continue but LLM calls will fail until Hermes is reachable.")
 		} else {
 			log.Printf("LLM: Hermes health check passed ✓")
 		}
@@ -169,7 +162,7 @@ func main() {
 		llmProvider = &llm.MockLLMProvider{}
 	}
 
-	// 2f. Setup Communication Manager — use LLM-backed classifier when Hermes is available
+	// 2g. Setup Intent Classifier
 	var classifier communication.IntentClassifier
 	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
 		log.Println("Communication: Initializing LLM-backed Intent Classifier via Hermes.")
@@ -182,14 +175,43 @@ func main() {
 	responder := communication.NewRAGResponseGenerator(database, llmProvider)
 	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
 
-	// 2fa. Setup Order Processing
+	// 2h. Setup Email Sender — SMTP or Mock
+	var emailSender communication.EmailSender
+	if cfg.SMTPHost != "" && cfg.SMTPUsername != "" && cfg.SMTPPassword != "" {
+		log.Printf("Email: Initializing SMTP sender via %s:%d as %s", cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUsername)
+		emailSender = communication.NewSMTPSender(communication.SMTPConfig{
+			Host:     cfg.SMTPHost,
+			Port:     cfg.SMTPPort,
+			Username: cfg.SMTPUsername,
+			Password: cfg.SMTPPassword,
+			From:     cfg.SMTPFrom,
+			FromName: cfg.SMTPFromName,
+		})
+	} else {
+		log.Println("Email: No SMTP configured — outbound emails will be logged but not sent.")
+		emailSender = &communication.MockEmailSender{}
+	}
+
 	billingClient := &billing.MockBillingClient{}
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
-	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor)
-
-	// Run communication poller in background
+	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender)
 	go commManager.Run(ctx, 30*time.Minute)
+
+	// 2i. Setup IMAP Email Receiver
+	if cfg.IMAPHost != "" && cfg.IMAPUsername != "" && cfg.IMAPPassword != "" {
+		log.Printf("Email: Initializing IMAP receiver from %s:%d (polling every %v)", cfg.IMAPHost, cfg.IMAPPort, cfg.IMAPPollInterval)
+		imapReceiver := communication.NewEmailReceiver(communication.IMAPConfig{
+			Host:     cfg.IMAPHost,
+			Port:     cfg.IMAPPort,
+			Username: cfg.IMAPUsername,
+			Password: cfg.IMAPPassword,
+			Folder:   cfg.IMAPFolder,
+		}, commManager)
+		go imapReceiver.Run(ctx, cfg.IMAPPollInterval)
+	} else {
+		log.Println("Email: No IMAP configured — inbound emails will not be received.")
+	}
 
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")
@@ -199,7 +221,6 @@ func main() {
 	if cfg.GitHubRepository != "" {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
-			// #nosec G706 -- Repository name is used for context in initialization logs
 			log.Printf("Autodev: Initializing GitHub PR Manager for %s", cfg.GitHubRepository)
 			prManager = gitcheck.NewGitHubPRManager(parts[0], parts[1])
 		}
@@ -210,8 +231,6 @@ func main() {
 	}
 
 	orchestrator := autodev.NewOrchestrator(database, taskManager, agent, prManager, ciTracker)
-
-	// Run autodev worker in background (every 1 hour)
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
@@ -229,17 +248,15 @@ func main() {
 		}
 	}()
 
-	// 5. Graceful Shutdown Implementation
+	// 5. Graceful Shutdown
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
 	<-sigChan
 	log.Println("Shutting down: Signal received, initiating graceful drain...")
 
-	// Cancel background workers via context
 	cancel()
 
-	// Shutdown HTTP server with timeout
 	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer shutdownCancel()
 
@@ -247,8 +264,6 @@ func main() {
 		log.Printf("Web server shutdown error: %v", err)
 	}
 
-	// Wait for workers to finish
 	time.Sleep(2 * time.Second)
-
 	log.Println("Shutting down: Done.")
 }

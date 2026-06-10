@@ -44,16 +44,19 @@ type Manager struct {
 	responder  ResponseGenerator
 	strategy   SalesStrategy
 	processor  OrderProcessor
+	sender     EmailSender // nil = no email sending (log only)
 }
 
 // NewManager creates a new communication Manager.
-func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor) *Manager {
+// sender is optional — if nil, outbound emails are logged but not sent.
+func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor, sender EmailSender) *Manager {
 	return &Manager{
 		db:         database,
 		classifier: classifier,
 		responder:  responder,
 		strategy:   strategy,
 		processor:  processor,
+		sender:     sender,
 	}
 }
 
@@ -76,9 +79,7 @@ func (m *Manager) Run(ctx context.Context, interval time.Duration) {
 }
 
 func (m *Manager) pollAndProcess(ctx context.Context) {
-	// In a real scenario, this would poll an IMAP server or Webhook queue.
-	// For this architecture, we simulate by checking for 'Researched' deals
-	// that haven't had an outbound interaction yet (triggering initial outreach).
+	// Check for 'Researched' deals that haven't had an outbound interaction yet
 	deals, err := m.db.ListDealsByState(ctx, db.StateResearched)
 	if err != nil {
 		log.Printf("Comm Manager: Error polling deals: %v", err)
@@ -119,7 +120,7 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	// 1. Persist inbound interaction
 	inbound := db.Interaction{
 		ContactID: contact.ID,
-		Channel:   "Email", // Default for now
+		Channel:   "Email",
 		Direction: "Inbound",
 		RawText:   text,
 	}
@@ -179,7 +180,6 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		updatedDeal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
 		if err == nil && updatedDeal.CurrentState == db.StateClosedWon {
 			log.Printf("Comm Manager: Deal %d won! Flagging past outbound interactions as successful.", updatedDeal.ID)
-			// Mark all outbound interactions for this contact as successful to feed back into RAG
 			for _, interaction := range interactions {
 				if interaction.Direction == "Outbound" {
 					if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
@@ -210,5 +210,33 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		return "", err
 	}
 
+	// 5. Actually send the email if SMTP is configured
+	if m.sender != nil && contact.Email != "" {
+		subject := fmt.Sprintf("Re: %s — TormentNexus", company.Name)
+		if text == "START_OUTREACH" {
+			subject = fmt.Sprintf("TormentNexus for %s — Quick Question", company.Name)
+		}
+
+		emailMsg := EmailMessage{
+			To:      contact.Email,
+			Subject: subject,
+			Body:    replyText,
+		}
+
+		if err := m.sender.Send(ctx, emailMsg); err != nil {
+			log.Printf("Comm Manager: Email send failed to %s: %v", contact.Email, err)
+			// Don't fail the whole operation — the interaction is already persisted
+		} else {
+			log.Printf("Comm Manager: Email sent to %s (%s)", contact.Email, subject)
+		}
+	} else if m.sender == nil {
+		log.Printf("Comm Manager: No email sender configured — reply logged but not sent to %s", contact.Email)
+	}
+
 	return replyText, nil
+}
+
+// GetDB returns the database connection (used by IMAP receiver for contact lookup).
+func (m *Manager) GetDB() *db.DB {
+	return m.db
 }

@@ -4,6 +4,49 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [0.4.9] - 2026-06-10
+
+### Added
+- **Hacker News "Who is Hiring" Lead Discovery:**
+    - Implemented `HNWhoIsHiringSource` in `internal/scraper/hn_source.go`.
+    - Scrapes HN Algolia API for latest "Who is Hiring" threads.
+    - Parses 200+ top-level comments per thread for company name, domain, tech stack.
+    - Filters for AI/LLM relevance using 30+ keyword patterns.
+    - Deduplicates by domain and classifies market cap tier from posting context.
+
+- **Hunter.io Email Enrichment:**
+    - Implemented `HunterSource` in `internal/enrichment/hunter.go`.
+    - Calls Hunter.io domain search API to find professional email addresses.
+    - Filters results for decision-makers (VP, Director, CTO, Lead, Architect, etc.).
+    - Health check verifies API key validity.
+
+- **SMTP Email Sending:**
+    - Implemented `SMTPSender` in `internal/communication/smtp_sender.go`.
+    - Supports STARTTLS (port 587) and direct SSL (port 465).
+    - Builds RFC 5322 compliant messages with proper headers.
+    - Health check verifies SMTP connectivity and authentication.
+    - `MockEmailSender` for testing without sending.
+
+- **IMAP Email Receiving:**
+    - Implemented `EmailReceiver` in `internal/communication/imap_receiver.go`.
+    - Polls IMAP inbox for unread messages at configurable interval.
+    - Parses inbound emails and matches sender to contacts in database.
+    - Feeds matched emails into the Communication Manager's inbound pipeline.
+    - Tracks last processed UID to avoid reprocessing.
+
+- **Communication Manager Email Integration:**
+    - `Manager` now accepts optional `EmailSender` — sends real emails after persisting outbound interactions.
+    - `NewManager()` signature updated to accept `EmailSender` (nil = log-only mode).
+    - Added `GetDB()` method for IMAP receiver contact lookup.
+
+- **Config Extensions:**
+    - Added `HunterAPIKey`, SMTP fields (`SMTPHost/Port/Username/Password/From/FromName`), IMAP fields (`IMAPHost/Port/Username/Password/Folder/IMAPPollInterval`).
+
+### Changed
+- HN scraper now runs as primary lead source alongside mock fallback.
+- Hunter.io runs as primary enrichment source when `HUNTER_API_KEY` is set.
+- Main.go wires all new components with auto-detection from environment variables.
+
 ## [0.4.8] - 2026-06-10
 
 ### Added

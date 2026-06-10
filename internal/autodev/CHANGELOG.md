@@ -105,14 +105,5 @@
 ## [0.4.4+1781013441] - 2026-06-09
 - Test integration task
 
-## [0.4.4+1781118995] - 2026-06-10
-- Test integration task
-
-## [0.4.4+1781121337] - 2026-06-10
-- Test integration task
-
-## [0.4.4+1781121405] - 2026-06-10
-- Test integration task
-
-## [0.4.4+1781122147] - 2026-06-10
+## [0.4.4+1781132329] - 2026-06-10
 - Test integration task

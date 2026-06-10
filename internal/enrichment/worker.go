@@ -3,7 +3,7 @@ package enrichment
 import (
 	"context"
 	"fmt"
-	"log/slog"
+	"log"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -14,12 +14,12 @@ func (e *Enricher) Run(ctx context.Context, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	slog.Info("Enricher worker started")
+	log.Println("Enricher worker started...")
 
 	for {
 		select {
 		case <-ctx.Done():
-			slog.Info("Enricher worker stopping: Draining in-flight work")
+			log.Println("Enricher worker stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			e.executeEnrichment(ctx)
@@ -36,20 +36,20 @@ func (e *Enricher) executeEnrichment(ctx context.Context) {
 	// 1. Find deals in Discovered state
 	deals, err := e.db.ListDealsByState(ctx, db.StateDiscovered)
 	if err != nil {
-		slog.Error("Enricher: Error listing discovered deals", "error", err)
+		log.Printf("Enricher: Error listing discovered deals: %v", err)
 		return
 	}
 
 	for _, deal := range deals {
 		company, err := e.db.GetCompanyByID(ctx, deal.CompanyID)
 		if err != nil {
-			slog.Error("Enricher: Error getting company", "company_id", deal.CompanyID, "error", err)
+			log.Printf("Enricher: Error getting company %d: %v", deal.CompanyID, err)
 			continue
 		}
 
 		err = e.enrichCompany(ctx, deal, *company)
 		if err != nil {
-			slog.Error("Enricher: Error enriching company", "company_name", company.Name, "error", err)
+			log.Printf("Enricher: Error enriching company %s: %v", company.Name, err)
 		}
 	}
 }
@@ -58,7 +58,7 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 	for _, source := range e.sources {
 		contacts, err := source.Enrich(ctx, company)
 		if err != nil {
-			slog.Error("Enricher: Error from source", "error", err)
+			log.Printf("Enricher: Error from source: %v", err)
 			continue
 		}
 
@@ -66,7 +66,7 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 			contact.CompanyID = company.ID
 			err := e.db.CreateContact(ctx, &contact)
 			if err != nil {
-				slog.Error("Enricher: Error persisting contact", "contact_name", contact.Name, "error", err)
+				log.Printf("Enricher: Error persisting contact %s: %v", contact.Name, err)
 			}
 		}
 
@@ -83,17 +83,17 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 					maxRetries := 3
 					for i := 0; i < maxRetries; i++ {
 						if err := e.crmClient.SyncContacts(ctx, company.ID, contacts); err != nil {
-							slog.Warn("Enricher: Failed to sync contacts to CRM", "attempt", i+1, "max_retries", maxRetries, "company_id", company.ID, "error", err)
+							log.Printf("Enricher Warning: Failed to sync contacts to CRM (attempt %d/%d): %v", i+1, maxRetries, err)
 							time.Sleep(time.Duration(i+1) * 2 * time.Second)
 							continue
 						}
 						return
 					}
-					slog.Error("Enricher: CRM contact synchronization failed after all attempts", "company_id", company.ID)
+					log.Printf("Enricher Error: CRM contact synchronization failed after %d attempts for company %d", maxRetries, company.ID)
 				}()
 			}
 
-			slog.Info("Enricher: Successfully enriched company", "company_name", company.Name, "contacts_count", len(contacts))
+			log.Printf("Enricher: Successfully enriched %s with %d contacts", company.Name, len(contacts))
 			return nil
 		}
 	}
@@ -104,7 +104,7 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 type MockApolloSource struct{}
 
 func (m *MockApolloSource) Enrich(ctx context.Context, company db.Company) ([]db.Contact, error) {
-	slog.Info("MockApolloSource: Searching for contacts", "domain", company.Domain)
+	log.Printf("MockApolloSource: Searching for contacts at %s", company.Domain)
 
 	// Simulate finding contacts based on domain
 	if company.Domain == "aidynamics.com" {

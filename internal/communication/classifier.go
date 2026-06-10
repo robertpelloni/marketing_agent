@@ -3,7 +3,7 @@ package communication
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
@@ -13,7 +13,7 @@ import (
 type MockIntentClassifier struct{}
 
 func (m *MockIntentClassifier) Classify(ctx context.Context, text string) (Intent, error) {
-	log.Printf("MockIntentClassifier: Classifying text: %s", text)
+	slog.Info("MockIntentClassifier Classifying text", "text", text)
 
 	// Simple heuristic-based mock classification
 	if containsAny(text, "pricing", "cost", "license") {

@@ -3,7 +3,7 @@ package scraper
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -34,12 +34,12 @@ func (s *Scraper) Run(ctx context.Context, interval time.Duration, keywords []st
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	log.Println("Scraper worker started...")
+	slog.Info("Scraper worker started...")
 
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("Scraper worker stopping: Draining in-flight work...")
+			slog.Info("Scraper worker stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			s.ExecuteDiscovery(ctx, keywords)
@@ -52,14 +52,14 @@ func (s *Scraper) ExecuteDiscovery(ctx context.Context, keywords []string) {
 	for _, source := range s.sources {
 		companies, err := source.Discover(ctx, keywords)
 		if err != nil {
-			log.Printf("Error discovering leads from source: %v", err)
+			slog.Error("Error discovering leads from source", "error", err)
 			continue
 		}
 
 		for _, company := range companies {
 			err := s.processDiscoveredCompany(ctx, company)
 			if err != nil {
-				log.Printf("Error processing company %s: %v", company.Name, err)
+				slog.Error("Error processing company", "company_Name", company.Name, "error", err)
 			}
 		}
 	}
@@ -89,7 +89,7 @@ func (s *Scraper) processDiscoveredCompany(ctx context.Context, company db.Compa
 		return fmt.Errorf("failed to create initial deal: %w", err)
 	}
 
-	log.Printf("Successfully discovered and persisted new lead: %s (%s)", company.Name, company.Domain)
+	slog.Info("Successfully discovered and persisted new lead  ()", "company_Name", company.Name, "company_Domain", company.Domain)
 	return nil
 }
 
@@ -99,7 +99,7 @@ type GitHubJobSource struct {
 }
 
 func (g *GitHubJobSource) Discover(ctx context.Context, keywords []string) ([]db.Company, error) {
-	log.Printf("GitHubJobSource: Discovering hiring signals for: %v", keywords)
+	slog.Info("GitHubJobSource Discovering hiring signals for", "keywords", keywords)
 
 	// Real-world signals: query repos related to orchestration and check contributors/hiring notices
 	// For this phase, we use a hybrid approach that returns verified high-value targets.
@@ -119,7 +119,7 @@ type MockJobBoardSource struct{}
 
 func (m *MockJobBoardSource) Discover(ctx context.Context, keywords []string) ([]db.Company, error) {
 	// Simulate finding leads based on keywords
-	log.Printf("MockJobBoardSource: Scanning for keywords: %v", keywords)
+	slog.Info("MockJobBoardSource Scanning for keywords", "keywords", keywords)
 
 	return []db.Company{
 		{

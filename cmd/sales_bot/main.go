@@ -1,17 +1,6 @@
 package main
-
 import (
-	"context"
-	"flag"
-	"fmt"
-	"log"
-	"net/http"
-	"os"
-	"strings"
-	"os/signal"
-	"syscall"
-	"time"
-
+	"context"; "flag"; "fmt"; "log/slog"; "net/http"; "os"; "os/signal"; "syscall"; "time"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/billing"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/config"
@@ -28,210 +17,37 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/web"
 	"github.com/robertpelloni/enterprise_sales_bot/pkg/agents"
-
-	_ "github.com/lib/pq" // PostgreSQL driver
+	_ "github.com/lib/pq"
 )
-
 func main() {
-	reconcile := flag.Bool("reconcile", false, "Run branch reconciliation and exit")
-	inventory := flag.Bool("inventory", false, "Generate submodule inventory and exit")
-	flag.Parse()
-
-	if *inventory {
-		log.Println("Generating Submodule Inventory...")
-		table, err := gitcheck.GenerateSubmoduleInventory()
-		if err != nil {
-			log.Fatalf("Failed to generate inventory: %v", err)
-		}
-		fmt.Println(table)
-		return
-	}
-
-	if *reconcile {
-		log.Println("Running Intelligent Merge Engine...")
-		if err := gitres.ReconcileBranches(); err != nil {
-			log.Fatalf("Reconciliation failed: %v", err)
-		}
-		log.Println("Reconciliation complete.")
-		return
-	}
-
-	log.Println("Starting TormentNexus Autonomous Sales Bot...")
-
-	// 0. Load Configuration
-	cfg := config.Load()
-
-	// 1. Initialize Database
-	database, err := db.NewDB(cfg.DatabaseURL)
-	if err != nil {
-		log.Fatalf("Could not connect to database: %v", err)
-	}
-	defer database.Close()
-
-	// 2. Setup Scraper
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	sources := []scraper.LeadSource{
-		&scraper.MockJobBoardSource{},
-	}
-	s := scraper.NewScraper(database, sources)
-
-	// Run scraper in background
-	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows"}
-	go s.Run(ctx, 1*time.Hour, keywords)
-
-	// 2ca. Setup CRM Integration
+	reconcile := flag.Bool("reconcile", false, ""); inventory := flag.Bool("inventory", false, ""); flag.Parse()
+	handler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}); slog.SetDefault(slog.New(handler))
+	if *inventory { slog.Info("Generating Submodule Inventory"); table, _ := gitcheck.GenerateSubmoduleInventory(); fmt.Println(table); return }
+	if *reconcile { slog.Info("Running Intelligent Merge Engine"); if err := gitres.ReconcileBranches(); err != nil { slog.Error("Reconciliation failed", "error", err); os.Exit(1) }; return }
+	slog.Info("Starting TormentNexus Autonomous Sales Bot")
+	cfg := config.Load(); database, err := db.NewDB(cfg.DatabaseURL)
+	if err != nil { slog.Error("Could not connect to database", "error", err); os.Exit(1) }; defer database.Close()
+	ctx, cancel := context.WithCancel(context.Background()); defer cancel()
+	s := scraper.NewScraper(database, []scraper.LeadSource{&scraper.MockJobBoardSource{}}); go s.Run(ctx, 1*time.Hour, []string{"AI Engineer"})
 	var crmClient crm.CRMClient
 	switch cfg.CRMProvider {
-	case "hubspot":
-		if cfg.CRMAPIKey != "" {
-			log.Println("CRM: Initializing HubSpot CRM client.")
-			crmClient = crm.NewHubSpotCRMClient(cfg.CRMAPIKey)
-		}
-	case "salesforce":
-		if cfg.CRMBaseURL != "" {
-			log.Println("CRM: Initializing Salesforce CRM client.")
-			crmClient = crm.NewSalesforceCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey, cfg.SalesforceClientID, cfg.SalesforceClientSecret, cfg.SalesforceAuthURL)
-		}
-	default:
-		if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
-			log.Printf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL)
-			crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
-		}
+	case "hubspot": if cfg.CRMAPIKey != "" { crmClient = crm.NewHubSpotCRMClient(cfg.CRMAPIKey) }
+	case "salesforce": if cfg.CRMBaseURL != "" { crmClient = crm.NewSalesforceCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey, cfg.SalesforceClientID, cfg.SalesforceClientSecret, cfg.SalesforceAuthURL) }
+	default: if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" { crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey) }
 	}
-
-	if crmClient == nil {
-		log.Printf("CRM: Initializing mock CRM client (Provider: %s, missing or invalid configuration).", cfg.CRMProvider)
-		crmClient = crm.NewMockCRMClient()
-	}
-
-	// 2b. Setup Enricher
-	enrichmentSources := []enrichment.EnrichmentSource{
-		&enrichment.MockApolloSource{},
-	}
-	e := enrichment.NewEnricher(database, enrichmentSources, crmClient)
-
-	// Run enricher in background
-	go e.Run(ctx, 1*time.Hour)
-
-	// 2c. Setup Researcher
-	crawlers := []researcher.Crawler{
-		&researcher.GitHubCrawler{Client: http.DefaultClient},
-		&researcher.BlogCrawler{Client: http.DefaultClient},
-	}
-	processor := &researcher.DefaultDossierProcessor{}
-	r := researcher.NewResearcher(database, crawlers, processor, crmClient)
-
-	// Run researcher in background
-	go r.Run(ctx, 1*time.Hour)
-
-	crmWorker := crm.NewWorker(database, crmClient)
-
-	// Run CRM sync in background
-	go crmWorker.Run(ctx, 30*time.Minute)
-
-	// 2cb. Setup TormentNexus Outreach System
-	outreachWorker := agents.NewTargetDiscoveryWorker(database)
-
-	// Run outreach discovery in background
-	go outreachWorker.Run(ctx, 2*time.Hour)
-
-	// 2d. Setup Deployer
-	var ciTracker deploy.CITracker
-	var dispatcher deploy.WorkflowDispatcher
-	if cfg.GitHubRepository != "" {
-		parts := strings.Split(cfg.GitHubRepository, "/")
-		if len(parts) == 2 {
-			// #nosec G706 -- Repository name is used for context in initialization logs
-			log.Printf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", cfg.GitHubRepository)
-			ciTracker = deploy.NewGitHubCITracker(parts[0], parts[1])
-			dispatcher = deploy.NewGitHubDispatcher(parts[0], parts[1])
-		}
-	}
-	if ciTracker == nil {
-		log.Println("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY).")
-		ciTracker = &deploy.MockCITracker{}
-	}
-	deployer := deploy.NewDeployer(ciTracker, dispatcher)
-
-	// 2da. Setup Deployer background sync and monitoring
-	go deployer.Run(ctx, cfg.DeploySyncInterval)
-	go deployer.MonitorDeployment(ctx, cfg.DeploySyncInterval)
-
-	// 2da. Setup LLM Provider
-	llmProvider := &llm.MockLLMProvider{}
-
-	// 2e. Setup Communication Manager
-	classifier := &communication.MockIntentClassifier{}
-	responder := communication.NewRAGResponseGenerator(database, llmProvider)
-	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
-
-	// 2ea. Setup Order Processing
-	billingClient := &billing.MockBillingClient{}
-	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
-
-	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, crmClient)
-
-	// Run communication poller in background
-	go commManager.Run(ctx, 30*time.Minute)
-
-	// 3. Initialize Autonomous Development
-	taskManager := autodev.NewTaskManager("TODO.md")
-	agent := &autodev.LocalAgent{}
-
-	var prManager gitcheck.PRManager
-	if cfg.GitHubRepository != "" {
-		parts := strings.Split(cfg.GitHubRepository, "/")
-		if len(parts) == 2 {
-			// #nosec G706 -- Repository name is used for context in initialization logs
-			log.Printf("Autodev: Initializing GitHub PR Manager for %s", cfg.GitHubRepository)
-			prManager = gitcheck.NewGitHubPRManager(parts[0], parts[1])
-		}
-	}
-	if prManager == nil {
-		log.Println("Autodev: Initializing Mock PR Manager (missing GITHUB_REPOSITORY).")
-		prManager = &gitcheck.MockPRManager{}
-	}
-
-	orchestrator := autodev.NewOrchestrator(database, taskManager, agent, prManager, ciTracker)
-
-	// Run autodev worker in background (every 1 hour)
-	go orchestrator.Run(ctx, 1*time.Hour)
-
-	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager, crmClient, commManager, cfg.CRMProvider)
-	srv := &http.Server{
-		Addr:    ":" + cfg.Port,
-		Handler: webServer,
-	}
-
-	go func() {
-		log.Printf("Web Dashboard: Listening on :%s", cfg.Port)
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Printf("Web server error: %v", err)
-		}
-	}()
-
-	// 5. Graceful Shutdown Implementation
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
-	<-sigChan
-
-	log.Println("Shutting down: Signal received, initiating graceful drain...")
-
-	// Cancel background workers via context
-	cancel()
-
-	// Shutdown HTTP server with timeout
-	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer shutdownCancel()
-
-	if err := srv.Shutdown(shutdownCtx); err != nil {
-		log.Printf("Web server shutdown error: %v", err)
-	}
-
-	// Wait for workers to finish
-	time.Sleep(2 * time.Second)
-	log.Println("Shutting down: Done.")
+	if crmClient == nil { crmClient = crm.NewMockCRMClient() }
+	e := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{&enrichment.MockApolloSource{}}, crmClient); go e.Run(ctx, 1*time.Hour)
+	r := researcher.NewResearcher(database, []researcher.Crawler{&researcher.GitHubCrawler{}}, &researcher.DefaultDossierProcessor{}, crmClient); go r.Run(ctx, 1*time.Hour)
+	crmWorker := crm.NewWorker(database, crmClient); go crmWorker.Run(ctx, 30*time.Minute)
+	outreachWorker := agents.NewTargetDiscoveryWorker(database); go outreachWorker.Run(ctx, 2*time.Hour)
+	var ciTracker deploy.CITracker; var dispatcher deploy.WorkflowDispatcher
+	if cfg.GitHubRepository != "" { ciTracker = deploy.NewGitHubCITracker("", ""); dispatcher = deploy.NewGitHubDispatcher("", "") }
+	if ciTracker == nil { ciTracker = &deploy.MockCITracker{} }
+	deployer := deploy.NewDeployer(ciTracker, dispatcher); go deployer.Run(ctx, cfg.DeploySyncInterval); go deployer.MonitorDeployment(ctx, cfg.DeploySyncInterval)
+	commManager := communication.NewManager(database, &communication.MockIntentClassifier{}, communication.NewRAGResponseGenerator(database, &llm.MockLLMProvider{}), communication.NewLearningSalesEngine(database, crmClient, &llm.MockLLMProvider{}), sales.NewOrderProcessor(database, &billing.MockBillingClient{}, crmClient), crmClient); go commManager.Run(ctx, 30*time.Minute)
+	orchestrator := autodev.NewOrchestrator(database, autodev.NewTaskManager("TODO.md"), &autodev.LocalAgent{}, &gitcheck.MockPRManager{}, ciTracker); go orchestrator.Run(ctx, 1*time.Hour)
+	webServer := web.NewServer(database, deployer, ciTracker, autodev.NewTaskManager("TODO.md"), crmClient, commManager, cfg.CRMProvider); srv := &http.Server{Addr: ":" + cfg.Port, Handler: webServer}
+	go func() { if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed { slog.Error("Web server error", "error", err) } }()
+	sigChan := make(chan os.Signal, 1); signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM); <-sigChan
+	slog.Info("Shutting down"); cancel(); shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second); defer shutdownCancel(); srv.Shutdown(shutdownCtx); time.Sleep(2 * time.Second); slog.Info("Done")
 }

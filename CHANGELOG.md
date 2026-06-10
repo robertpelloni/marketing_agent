@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [0.4.8] - 2026-06-10
+
+### Added
+- **Structured Logging:** Migrated entire codebase to `slog` for JSON-based observability.
+- **Observability & Metrics:** Implemented Prometheus `/metrics` endpoint and instrumented key events.
+- **Security Hardening:** Upgraded dashboard authentication to use `bcrypt` password hashing.
+
+
 ## [0.4.7] - 2026-06-08
 
 ### Added

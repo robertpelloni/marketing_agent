@@ -3,7 +3,7 @@ package gitcheck
 import (
 	"context"
 	"fmt"
-	"log/slog"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -57,7 +57,7 @@ type GitHubPRManager struct {
 func NewGitHubPRManager(owner, repo string) *GitHubPRManager {
 	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
-		slog.Info("GitHubPRManager: Warning: GITHUB_TOKEN not set.")
+		log.Println("GitHubPRManager: Warning: GITHUB_TOKEN not set.")
 		return &GitHubPRManager{owner: owner, repo: repo}
 	}
 
@@ -79,7 +79,7 @@ func (g *GitHubPRManager) CreatePullRequest(ctx context.Context, branch string, 
 		return nil, fmt.Errorf("github client not initialized")
 	}
 
-	slog.Info("GitHubPRManager Creating Pull Request for branch", "branch", branch, "title", title)
+	log.Printf("GitHubPRManager: Creating Pull Request for branch %s: %s", branch, title)
 
 	head := branch
 	base := "main"
@@ -137,11 +137,11 @@ func (g *GitHubPRManager) GetPRStatus(ctx context.Context, prID string) (PRStatu
 
 func (g *GitHubPRManager) MergePullRequest(ctx context.Context, prID string) error {
 	if g.client == nil {
-		slog.Info("GitHubPRManager Simulating PR merge for", "prID", prID)
+		log.Printf("GitHubPRManager: Simulating PR merge for %s", prID)
 		return nil
 	}
 
-	slog.Info("GitHubPRManager Merging Pull Request", "prID", prID)
+	log.Printf("GitHubPRManager: Merging Pull Request %s", prID)
 
 	number, err := strconv.Atoi(prID)
 	if err != nil {

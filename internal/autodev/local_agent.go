@@ -3,7 +3,7 @@ package autodev
 import (
 	"context"
 	"fmt"
-	"log/slog"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -14,7 +14,7 @@ import (
 type LocalAgent struct{}
 
 func (a *LocalAgent) ProposeSolution(ctx context.Context, task Task) (string, error) {
-	slog.Info("LocalAgent Analyzing task", "task_Description", task.Description)
+	log.Printf("LocalAgent: Analyzing task: %s", task.Description)
 
 	if strings.Contains(strings.ToLower(task.Description), "sales-feature") {
 		return fmt.Sprintf("FILE: internal/sales/feature.go\nCONTENT:\npackage sales\n\n// Autonomous Feature: %s\nfunc ExecuteSalesFeature() {\n\tprintln(\"Executing autonomous sales logic\")\n}\n", task.Description), nil
@@ -24,7 +24,7 @@ func (a *LocalAgent) ProposeSolution(ctx context.Context, task Task) (string, er
 }
 
 func (a *LocalAgent) ApplyChanges(ctx context.Context, proposal string) error {
-	slog.Info("LocalAgent Applying changes via proposal parsing...")
+	log.Printf("LocalAgent: Applying changes via proposal parsing...")
 
 	wd, err := os.Getwd()
 	if err != nil {
@@ -84,19 +84,19 @@ func (a *LocalAgent) safeWriteFile(wd, relPath, content string) error {
 }
 
 func (a *LocalAgent) Verify(ctx context.Context) error {
-	slog.Info("LocalAgent: Running full verification suite...")
+	log.Println("LocalAgent: Running full verification suite...")
 
 	// 1. Check if it builds
 	buildCmd := exec.CommandContext(ctx, "go", "build", "./...")
 	if out, err := buildCmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("build verification failed: %v, output: %s", err, string(out))
 	}
-	slog.Info("LocalAgent: Build verification passed.")
+	log.Println("LocalAgent: Build verification passed.")
 
 	// 2. Run unit tests
 	// Skip tests if requested (useful for CI/Test environments to avoid recursion/timeouts)
 	if os.Getenv("SKIP_AUTODEV_TESTS") == "true" {
-		slog.Info("LocalAgent: Skipping test verification (SKIP_AUTODEV_TESTS=true)")
+		log.Println("LocalAgent: Skipping test verification (SKIP_AUTODEV_TESTS=true)")
 		return nil
 	}
 
@@ -104,7 +104,7 @@ func (a *LocalAgent) Verify(ctx context.Context) error {
 	if out, err := testCmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("test verification failed: %v, output: %s", err, string(out))
 	}
-	slog.Info("LocalAgent: Test verification passed.")
+	log.Println("LocalAgent: Test verification passed.")
 
 	return nil
 }

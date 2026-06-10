@@ -17,7 +17,11 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	fmt.Println("Starting Production Live Check...")
+	targetEnv := os.Getenv("ENVIRONMENT")
+	if targetEnv == "" {
+		targetEnv = "production"
+	}
+	fmt.Printf("Starting %s Live Check...\n", targetEnv)
 
 	// 1. Verify CRM
 	var crmClient crm.CRMClient

@@ -1,15 +1,14 @@
 module github.com/robertpelloni/enterprise_sales_bot
 
-go 1.25.0
+go 1.24
 
 require (
 	github.com/google/go-github/v60 v60.0.0
 	github.com/lib/pq v1.10.9
 	github.com/prometheus/client_golang v1.23.2
 	github.com/stripe/stripe-go/v81 v81.4.0
-	golang.org/x/crypto v0.53.0
 	golang.org/x/oauth2 v0.30.0
-	golang.org/x/time v0.15.0
+	golang.org/x/time v0.5.0
 )
 
 require (
@@ -22,6 +21,6 @@ require (
 	github.com/prometheus/common v0.66.1 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
-	golang.org/x/sys v0.46.0 // indirect
+	golang.org/x/sys v0.35.0 // indirect
 	google.golang.org/protobuf v1.36.8 // indirect
 )

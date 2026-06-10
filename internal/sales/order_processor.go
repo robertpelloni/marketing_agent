@@ -3,7 +3,7 @@ package sales
 import (
 	"context"
 	"fmt"
-	"log/slog"
+	"log"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/billing"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
@@ -33,7 +33,7 @@ func NewOrderProcessor(database OrderDB, billingClient billing.BillingClient, cr
 
 // ProcessOrder handles fulfillment for a deal that has been closed won.
 func (p *Processor) ProcessOrder(ctx context.Context, deal db.Deal) error {
-	slog.Info("OrderProcessor Processing fulfillment for deal", "deal_ID", deal.ID)
+	log.Printf("OrderProcessor: Processing fulfillment for deal %d", deal.ID)
 
 	company, err := p.db.GetCompanyByID(ctx, deal.CompanyID)
 	if err != nil {
@@ -45,17 +45,17 @@ func (p *Processor) ProcessOrder(ctx context.Context, deal db.Deal) error {
 	if err != nil {
 		return fmt.Errorf("failed to create invoice: %w", err)
 	}
-	slog.Info("OrderProcessor Invoice  created for deal", "invoiceID", invoiceID, "deal_ID", deal.ID)
+	log.Printf("OrderProcessor: Invoice %s created for deal %d", invoiceID, deal.ID)
 
 	// 2. Synchronize with CRM
 	err = p.crm.SyncInteraction(ctx, deal.ID, fmt.Sprintf("Order processed. Invoice: %s", invoiceID))
 	if err != nil {
-		slog.Error("OrderProcessor Warning CRM sync failed", "error", err)
+		log.Printf("OrderProcessor Warning: CRM sync failed: %v", err)
 	}
 
 	// 3. (Optional) Trigger Provisioning
 	// In a full implementation, this might call a provisioning service.
-	slog.Info("OrderProcessor Fulfillment complete for deal", "deal_ID", deal.ID)
+	log.Printf("OrderProcessor: Fulfillment complete for deal %d", deal.ID)
 
 	return nil
 }

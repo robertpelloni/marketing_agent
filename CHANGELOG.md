@@ -7,10 +7,13 @@ All notable changes to this project will be documented in this file. The format 
 ## [0.4.8] - 2026-06-10
 
 ### Added
-- **Structured Logging:** Migrated entire codebase to `slog` for JSON-based observability.
-- **Observability & Metrics:** Implemented Prometheus `/metrics` endpoint and instrumented key events.
-- **Security Hardening:** Upgraded dashboard authentication to use `bcrypt` password hashing.
-
+- **Production Hardening (Phase 6):**
+    - Upgraded authentication to use `bcrypt` for salted password hashing and secure random session IDs.
+    - Implemented structured JSON logging using the Go `slog` package across all worker modules.
+    - Exposed Prometheus metrics at `/metrics` and integrated instrumentation for lead discovery, interaction processing, and deals won.
+    - Refined `LearningSalesEngine` to prioritize `MeetingRequest` intents for qualified leads.
+    - Hardened security by protecting the UAT simulation endpoint with mandatory authentication.
+    - Fixed Go environment stability issues by pinning dependencies to Go 1.24 compatible versions.
 
 ## [0.4.7] - 2026-06-08
 
@@ -55,7 +58,7 @@ All notable changes to this project will be documented in this file. The format 
     - Expanded PushDeal payload to include technical dossiers for better CRM visibility.
 
 ### Changed
-- Rebranded all product-facing references from "TormentNexus" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
+- Rebranded all product-facing references from "Borg" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
 - Comprehensive documentation overhaul: ROADMAP, TODO, VISION, README, DEPLOY, MEMORY, IDEAS, AGENTS, HANDOFF all updated with gap analysis, forward-looking phases, and technical debt inventory.
 
 ## [0.4.1] - 2026-06-05

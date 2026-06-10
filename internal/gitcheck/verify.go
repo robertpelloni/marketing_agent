@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"log/slog"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -71,10 +71,10 @@ func SyncRemote() error {
 
 	// Step 2: Handle Upstream Sync if present
 	if hasUpstream() {
-		slog.Info("Git Sync: Upstream remote detected, merging changes...")
+		log.Println("Git Sync: Upstream remote detected, merging changes...")
 		upstreamMerge := exec.Command("git", "merge", "upstream/main", "-m", "chore: autonomous upstream sync", "--no-edit")
 		if err := upstreamMerge.Run(); err != nil {
-			slog.Error("Git Sync Warning Upstream merge failed", "error", err)
+			log.Printf("Git Sync Warning: Upstream merge failed: %v", err)
 		}
 	}
 

@@ -42,7 +42,7 @@ type hunterResponse struct {
 type hunterDomainResponse struct {
 	Data struct {
 		Emails []struct {
-			Email        string  `json:"email"`
+			Value        string  `json:"value"`
 			FirstName    string  `json:"first_name"`
 			LastName     string  `json:"last_name"`
 			Position     string  `json:"position"`
@@ -152,13 +152,13 @@ func (h *HunterSource) domainSearch(ctx context.Context, domain string) ([]db.Co
 
 	var contacts []db.Contact
 	for _, email := range result.Data.Emails {
-		if email.Email == "" {
+		if email.Value == "" {
 			continue
 		}
 
 		name := strings.TrimSpace(email.FirstName + " " + email.LastName)
 		if name == "" {
-			name = email.Email
+			name = email.Value
 		}
 
 		role := email.Position
@@ -169,7 +169,7 @@ func (h *HunterSource) domainSearch(ctx context.Context, domain string) ([]db.Co
 		contacts = append(contacts, db.Contact{
 			Name:         name,
 			Role:         role,
-			Email:        email.Email,
+			Email:        email.Value,
 			LinkedInURL:  email.LinkedInURL,
 		})
 	}

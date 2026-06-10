@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [0.4.8] - 2026-06-10
+
+### Added
+- **Hermes Agent LLM Integration (Phase 7 foundation):**
+    - Implemented `HermesLLMProvider` in `internal/llm/hermes.go` — an OpenAI-compatible client that routes all LLM calls through a local Hermes Agent gateway.
+    - Added `HermesConfig` struct with `BaseURL`, `APIKey`, and `Model` fields for flexible configuration.
+    - Added `HealthCheck()` method for runtime connectivity verification.
+    - Wired Hermes as the primary LLM provider in `cmd/sales_bot/main.go` with automatic fallback to `MockLLMProvider` when `HERMES_API_URL`/`HERMES_API_KEY` are not set.
+    - Added `LLMIntentClassifier` integration — when Hermes is available, the bot uses LLM-based intent classification instead of keyword-matching mocks.
+    - Added LLM provider health status to the web dashboard (System Health section) and `/health/detailed` JSON endpoint.
+    - Extended `Config` struct with `HermesAPIURL`, `HermesAPIKey`, and `HermesModel` fields.
+    - Added integration tests that verify end-to-end Hermes connectivity (health check + LLM generation).
+    - Configured Hermes API server (`API_SERVER_HOST=0.0.0.0`) for cross-WSL/Windows access.
+
+### Changed
+- `web.NewServer()` now accepts an `llm.LLMProvider` parameter for health reporting.
+- Dashboard HTML updated with LLM provider status indicator (green for Hermes connected, grey for mock).
+
 ## [0.4.7] - 2026-06-08
 
 ### Added

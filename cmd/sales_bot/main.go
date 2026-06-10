@@ -125,6 +125,7 @@ func main() {
 	// 2d. Setup Deployer
 	var ciTracker deploy.CITracker
 	var dispatcher deploy.WorkflowDispatcher
+
 	if cfg.GitHubRepository != "" {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
@@ -134,25 +135,54 @@ func main() {
 			dispatcher = deploy.NewGitHubDispatcher(parts[0], parts[1])
 		}
 	}
+
 	if ciTracker == nil {
 		log.Println("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY).")
 		ciTracker = &deploy.MockCITracker{}
 	}
+
 	deployer := deploy.NewDeployer(ciTracker, dispatcher)
 
 	// 2da. Setup Deployer background sync and monitoring
 	go deployer.Run(ctx, cfg.DeploySyncInterval)
 	go deployer.MonitorDeployment(ctx, cfg.DeploySyncInterval)
 
-	// 2da. Setup LLM Provider
-	llmProvider := &llm.MockLLMProvider{}
+	// 2e. Setup LLM Provider — Hermes or Mock
+	var llmProvider llm.LLMProvider
+	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
+		log.Printf("LLM: Initializing Hermes provider at %s (model: %s)", cfg.HermesAPIURL, cfg.HermesModel)
+		llmProvider = llm.NewHermesLLMProvider(llm.HermesConfig{
+			BaseURL: cfg.HermesAPIURL,
+			APIKey:  cfg.HermesAPIKey,
+			Model:   cfg.HermesModel,
+		})
 
-	// 2e. Setup Communication Manager
-	classifier := &communication.MockIntentClassifier{}
+		// Health check — warn but don't fail if Hermes is temporarily down
+		if err := llmProvider.(*llm.HermesLLMProvider).HealthCheck(ctx); err != nil {
+			log.Printf("LLM: WARNING — Hermes health check failed: %v", err)
+			log.Printf("LLM: The bot will continue but LLM calls will fail until Hermes is reachable.")
+		} else {
+			log.Printf("LLM: Hermes health check passed ✓")
+		}
+	} else {
+		log.Println("LLM: Initializing Mock LLM Provider (set HERMES_API_URL and HERMES_API_KEY for real LLM).")
+		llmProvider = &llm.MockLLMProvider{}
+	}
+
+	// 2f. Setup Communication Manager — use LLM-backed classifier when Hermes is available
+	var classifier communication.IntentClassifier
+	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
+		log.Println("Communication: Initializing LLM-backed Intent Classifier via Hermes.")
+		classifier = communication.NewLLMIntentClassifier(llmProvider)
+	} else {
+		log.Println("Communication: Initializing Mock Intent Classifier.")
+		classifier = &communication.MockIntentClassifier{}
+	}
+
 	responder := communication.NewRAGResponseGenerator(database, llmProvider)
 	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
 
-	// 2ea. Setup Order Processing
+	// 2fa. Setup Order Processing
 	billingClient := &billing.MockBillingClient{}
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
@@ -185,7 +215,8 @@ func main() {
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager)
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider)
+
 	srv := &http.Server{
 		Addr:    ":" + cfg.Port,
 		Handler: webServer,
@@ -201,8 +232,8 @@ func main() {
 	// 5. Graceful Shutdown Implementation
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
-	<-sigChan
 
+	<-sigChan
 	log.Println("Shutting down: Signal received, initiating graceful drain...")
 
 	// Cancel background workers via context
@@ -218,5 +249,6 @@ func main() {
 
 	// Wait for workers to finish
 	time.Sleep(2 * time.Second)
+
 	log.Println("Shutting down: Done.")
 }

@@ -54,8 +54,8 @@
 - [ ] Add outreach cadence management (configurable follow-up schedule)
 
 ### Real LLM Integration
-- [ ] Implement OpenAI/Anthropic LLM provider (replace mock)
-- [ ] Add provider fallback chain for LLM calls
+- [x] Implement Hermes Agent LLM provider (replace mock) — routes through local Hermes gateway with 200+ model support
+- [x] Add provider fallback chain for LLM calls - Hermes handles NVIDIA - OpenRouter - LM Studio/Ollama waterfall natively
 - [ ] Add token budget tracking per deal/contact
 - [ ] Add prompt versioning with A/B testing capability
 - [ ] Add response quality scoring before sending

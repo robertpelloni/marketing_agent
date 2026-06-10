@@ -13,6 +13,9 @@ type Config struct {
 	GitHubWebhookSecret string
 	CRMBaseURL          string
 	CRMAPIKey           string
+	HermesAPIURL        string
+	HermesAPIKey        string
+	HermesModel         string
 	DeploySyncInterval  time.Duration
 	Port                string
 	Environment         string
@@ -37,6 +40,11 @@ func Load() *Config {
 		env = "development"
 	}
 
+	hermesModel := os.Getenv("HERMES_MODEL")
+	if hermesModel == "" {
+		hermesModel = "free-llm"
+	}
+
 	return &Config{
 		DatabaseURL:         getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
 		GitHubToken:         os.Getenv("GITHUB_TOKEN"),
@@ -44,6 +52,9 @@ func Load() *Config {
 		GitHubWebhookSecret: os.Getenv("GITHUB_WEBHOOK_SECRET"),
 		CRMBaseURL:          os.Getenv("CRM_BASE_URL"),
 		CRMAPIKey:           os.Getenv("CRM_API_KEY"),
+		HermesAPIURL:        os.Getenv("HERMES_API_URL"),
+		HermesAPIKey:        os.Getenv("HERMES_API_KEY"),
+		HermesModel:         hermesModel,
 		DeploySyncInterval:  syncInterval,
 		Port:                port,
 		Environment:         env,

@@ -69,3 +69,8 @@ func (m *MockCRMClient) SendEmail(ctx context.Context, contact db.Contact, subje
 	log.Printf("CRM: Simulating email send to %s (Subject: %s)", contact.Email, subject)
 	return nil
 }
+
+func (m *MockCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interaction, error) {
+	log.Println("CRM: Fetching mock interactions from CRM...")
+	return []db.Interaction{}, nil
+}

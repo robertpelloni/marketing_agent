@@ -62,6 +62,49 @@ func (c *HubSpotCRMClient) PushDeal(ctx context.Context, deal db.Deal, company d
 	return nil
 }
 
+func (c *HubSpotCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interaction, error) {
+	// HubSpot Communications API
+	url := fmt.Sprintf("%s/crm/v3/objects/communications?limit=10&properties=hs_communication_body,hs_communication_channel_type", c.BaseURL)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		return nil, fmt.Errorf("hubspot api error (%d)", resp.StatusCode)
+	}
+
+	var result struct {
+		Results []struct {
+			ID         string `json:"id"`
+			Properties struct {
+				Body        string `json:"hs_communication_body"`
+				ChannelType string `json:"hs_communication_channel_type"`
+			} `json:"properties"`
+		} `json:"results"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	interactions := make([]db.Interaction, len(result.Results))
+	for i, r := range result.Results {
+		interactions[i] = db.Interaction{
+			RawText: r.Properties.Body,
+			Channel: r.Properties.ChannelType,
+		}
+	}
+
+	return interactions, nil
+}
+
 func (c *HubSpotCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error) {
 	// Simplified: Polling recent deals for status changes
 	url := fmt.Sprintf("%s/crm/v3/objects/deals?limit=10&properties=dealstage", c.BaseURL)

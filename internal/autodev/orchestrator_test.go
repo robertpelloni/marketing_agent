@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"testing"
+	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
@@ -22,11 +23,8 @@ func TestOrchestrator_ExecuteStep_Mock(t *testing.T) {
 	prManager := &gitcheck.MockPRManager{}
 	tracker := &deploy.MockCITracker{}
 
-	// We use nil for DB for now, as ExecuteStep handles nil check for persistence
-	// In a real integration test, we'd use a test DB.
 	orchestrator := NewOrchestrator(nil, manager, agent, prManager, tracker)
 
-	// Skip git sync logic for unit testing orchestrator flow
 	os.Setenv("SKIP_AUTODEV_SYNC", "true")
 	os.Setenv("GO_TEST_MODE", "true")
 	os.Setenv("SKIP_AUTODEV_TESTS", "true")
@@ -37,9 +35,8 @@ func TestOrchestrator_ExecuteStep_Mock(t *testing.T) {
 	ctx := context.Background()
 	orchestrator.ExecuteStep(ctx)
 
-	// Verify task was marked completed in mock file
 	content, _ := os.ReadFile(tmpTodo.Name())
-	if !contains(string(content), "- [x] Test integration task") {
-		t.Error("Task was not marked completed in TODO file")
+	if !strings.Contains(string(content), "- [x] Test integration task") {
+		t.Errorf("Task was not marked completed in TODO file. Content: %s", string(content))
 	}
 }

@@ -40,6 +40,9 @@ type CRMClient interface {
 
 	// SendEmail triggers an email send via the CRM (or records a sent email).
 	SendEmail(ctx context.Context, contact db.Contact, subject, body string) error
+
+	// GetNewInteractions retrieves new external communications from the CRM.
+	GetNewInteractions(ctx context.Context) ([]db.Interaction, error)
 }
 
 // DealDetails represents detailed information for a deal in the CRM.
@@ -97,6 +100,33 @@ func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.C
 	}
 
 	return nil
+}
+
+func (c *RestCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interaction, error) {
+	url := fmt.Sprintf("%s/interactions/new", c.BaseURL)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.APIKey)
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		respBody, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return nil, fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(respBody))
+	}
+
+	var interactions []db.Interaction
+	if err := json.NewDecoder(resp.Body).Decode(&interactions); err != nil {
+		return nil, err
+	}
+
+	return interactions, nil
 }
 
 func (c *RestCRMClient) SendEmail(ctx context.Context, contact db.Contact, subject, body string) error {

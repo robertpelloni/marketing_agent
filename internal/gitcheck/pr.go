@@ -3,70 +3,48 @@ package gitcheck
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"os"
-	"strconv"
-	"strings"
 
 	"github.com/google/go-github/v60/github"
-	"golang.org/x/oauth2"
 )
 
-// PRStatus represents the current state of a Pull Request.
 type PRStatus string
 
 const (
-	PRStatusOpen   PRStatus = "Open"
-	PRStatusMerged PRStatus = "Merged"
-	PRStatusClosed PRStatus = "Closed"
-	PRStatusFailed PRStatus = "Failed"
+	PRStatusOpen   PRStatus = "open"
+	PRStatusMerged PRStatus = "merged"
+	PRStatusClosed PRStatus = "closed"
+	PRStatusFailed PRStatus = "failed"
 )
 
-// PullRequest encapsulates metadata for an autonomous PR.
 type PullRequest struct {
 	ID     string
-	URL    string
 	Branch string
 	Title  string
 	Status PRStatus
+	URL    string
 }
 
-// PRManager defines the interface for autonomous pull request operations.
 type PRManager interface {
-	// CreatePullRequest creates a new PR from the source branch to the target.
-	CreatePullRequest(ctx context.Context, branch string, title string, body string) (*PullRequest, error)
-
-	// GetPRStatus retrieves the current status of a PR.
-	GetPRStatus(ctx context.Context, prID string) (PRStatus, error)
-
-	// MergePullRequest merges an open PR.
-	MergePullRequest(ctx context.Context, prID string) error
-
-	// GetPRComments retrieves all comments for a PR.
-	GetPRComments(ctx context.Context, prID string) ([]string, error)
+	CreatePR(ctx context.Context, branch, title, body string) (*PullRequest, error)
+	GetPRStatus(ctx context.Context, prID string) (PRStatus, []string, error)
+	MergePR(ctx context.Context, prID string) error
+	DeleteRemoteBranch(ctx context.Context, branch string) error
 }
 
-// GitHubPRManager implements the PRManager interface using the GitHub API.
 type GitHubPRManager struct {
 	client *github.Client
 	owner  string
 	repo   string
 }
 
-// NewGitHubPRManager creates a new GitHubPRManager instance.
 func NewGitHubPRManager(owner, repo string) *GitHubPRManager {
 	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
-		log.Println("GitHubPRManager: Warning: GITHUB_TOKEN not set.")
-		return &GitHubPRManager{owner: owner, repo: repo}
+		slog.Warn("GitHubPRManager: GITHUB_TOKEN not set")
 	}
-
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: token},
-	)
-	tc := oauth2.NewClient(context.Background(), ts)
-	client := github.NewClient(tc)
-
+	client := github.NewClient(nil).WithAuthToken(token)
 	return &GitHubPRManager{
 		client: client,
 		owner:  owner,
@@ -74,134 +52,82 @@ func NewGitHubPRManager(owner, repo string) *GitHubPRManager {
 	}
 }
 
-func (g *GitHubPRManager) CreatePullRequest(ctx context.Context, branch string, title string, body string) (*PullRequest, error) {
-	if g.client == nil {
-		return nil, fmt.Errorf("github client not initialized")
-	}
+func (m *GitHubPRManager) CreatePR(ctx context.Context, branch, title, body string) (*PullRequest, error) {
+	slog.Info("GitHubPRManager: Creating Pull Request", "branch", branch, "title", title)
 
-	log.Printf("GitHubPRManager: Creating Pull Request for branch %s: %s", branch, title)
-
-	head := branch
-	base := "main"
 	newPR := &github.NewPullRequest{
 		Title:               github.String(title),
-		Head:                github.String(head),
-		Base:                github.String(base),
+		Head:                github.String(branch),
+		Base:                github.String("main"),
 		Body:                github.String(body),
 		MaintainerCanModify: github.Bool(true),
 	}
 
-	pr, _, err := g.client.PullRequests.Create(ctx, g.owner, g.repo, newPR)
+	pr, _, err := m.client.PullRequests.Create(ctx, m.owner, m.repo, newPR)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create PR: %w", err)
+		return nil, err
 	}
 
 	return &PullRequest{
-		ID:     strconv.Itoa(pr.GetNumber()),
-		URL:    pr.GetHTMLURL(),
+		ID:     fmt.Sprintf("%d", pr.GetNumber()),
 		Branch: branch,
 		Title:  title,
 		Status: PRStatusOpen,
+		URL:    pr.GetHTMLURL(),
 	}, nil
 }
 
-func (g *GitHubPRManager) GetPRStatus(ctx context.Context, prID string) (PRStatus, error) {
-	if g.client == nil {
-		return PRStatusOpen, nil // Fallback for simulation
-	}
-
-	number, err := strconv.Atoi(prID)
+func (m *GitHubPRManager) GetPRStatus(ctx context.Context, prID string) (PRStatus, []string, error) {
+	var n int
+	fmt.Sscanf(prID, "%d", &n)
+	pr, _, err := m.client.PullRequests.Get(ctx, m.owner, m.repo, n)
 	if err != nil {
-		return PRStatusFailed, err
+		return PRStatusFailed, nil, err
 	}
 
-	pr, _, err := g.client.PullRequests.Get(ctx, g.owner, g.repo, number)
-	if err != nil {
-		return PRStatusFailed, err
-	}
-
+	status := PRStatusOpen
 	if pr.GetMerged() {
-		return PRStatusMerged, nil
+		status = PRStatusMerged
+	} else if pr.GetState() == "closed" {
+		status = PRStatusClosed
 	}
 
-	state := strings.ToLower(pr.GetState())
-	switch state {
-	case "open":
-		return PRStatusOpen, nil
-	case "closed":
-		return PRStatusClosed, nil
-	default:
-		return PRStatusOpen, nil
+	// Fetch comments
+	comments, _, _ := m.client.Issues.ListComments(ctx, m.owner, m.repo, n, nil)
+	var commentTexts []string
+	for _, c := range comments {
+		commentTexts = append(commentTexts, c.GetBody())
 	}
+
+	return status, commentTexts, nil
 }
 
-func (g *GitHubPRManager) MergePullRequest(ctx context.Context, prID string) error {
-	if g.client == nil {
-		log.Printf("GitHubPRManager: Simulating PR merge for %s", prID)
+func (m *GitHubPRManager) MergePR(ctx context.Context, prID string) error {
+	var n int
+	fmt.Sscanf(prID, "%d", &n)
+
+	if os.Getenv("DRY_RUN") == "true" {
+		slog.Info("GitHubPRManager: Simulating PR merge (DRY_RUN)", "pr_id", prID)
 		return nil
 	}
 
-	log.Printf("GitHubPRManager: Merging Pull Request %s", prID)
-
-	number, err := strconv.Atoi(prID)
-	if err != nil {
-		return err
-	}
-
-	opts := &github.PullRequestOptions{
-		MergeMethod: "squash",
-	}
-
-	_, _, err = g.client.PullRequests.Merge(ctx, g.owner, g.repo, number, "Autonomous merge by sales-bot", opts)
-	if err != nil {
-		return fmt.Errorf("failed to merge PR %s: %w", prID, err)
-	}
-
-	return nil
+	slog.Info("GitHubPRManager: Merging Pull Request", "pr_id", prID)
+	_, _, err := m.client.PullRequests.Merge(ctx, m.owner, m.repo, n, "Autonomous merge by Sales Bot", nil)
+	return err
 }
 
-func (g *GitHubPRManager) GetPRComments(ctx context.Context, prID string) ([]string, error) {
-	if g.client == nil {
-		return []string{}, nil
-	}
-
-	number, err := strconv.Atoi(prID)
-	if err != nil {
-		return nil, err
-	}
-
-	comments, _, err := g.client.Issues.ListComments(ctx, g.owner, g.repo, number, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	var result []string
-	for _, c := range comments {
-		result = append(result, c.GetBody())
-	}
-	return result, nil
+func (m *GitHubPRManager) DeleteRemoteBranch(ctx context.Context, branch string) error {
+	_, err := m.client.Git.DeleteRef(ctx, m.owner, m.repo, "heads/"+branch)
+	return err
 }
 
-// MockPRManager is a simulated implementation for testing.
 type MockPRManager struct{}
 
-func (m *MockPRManager) CreatePullRequest(ctx context.Context, branch string, title string, body string) (*PullRequest, error) {
-	return &PullRequest{
-		ID:     "mock-456",
-		Branch: branch,
-		Title:  title,
-		Status: PRStatusOpen,
-	}, nil
+func (m *MockPRManager) CreatePR(ctx context.Context, branch, title, body string) (*PullRequest, error) {
+	return &PullRequest{ID: "mock-1", Branch: branch, Title: title, Status: PRStatusOpen, URL: "http://mock/pr/1"}, nil
 }
-
-func (m *MockPRManager) GetPRStatus(ctx context.Context, prID string) (PRStatus, error) {
-	return PRStatusOpen, nil
+func (m *MockPRManager) GetPRStatus(ctx context.Context, prID string) (PRStatus, []string, error) {
+	return PRStatusOpen, nil, nil
 }
-
-func (m *MockPRManager) MergePullRequest(ctx context.Context, prID string) error {
-	return nil
-}
-
-func (m *MockPRManager) GetPRComments(ctx context.Context, prID string) ([]string, error) {
-	return []string{"Mock comment 1", "Mock comment 2"}, nil
-}
+func (m *MockPRManager) MergePR(ctx context.Context, prID string) error { return nil }
+func (m *MockPRManager) DeleteRemoteBranch(ctx context.Context, branch string) error { return nil }

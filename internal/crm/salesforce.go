@@ -72,6 +72,47 @@ func (c *SalesforceCRMClient) RefreshToken(ctx context.Context) error {
 	return nil
 }
 
+func (c *SalesforceCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interaction, error) {
+	// Querying Task or EmailMessage
+	url := fmt.Sprintf("%s/services/data/v54.0/query/?q=SELECT+Description,Subject+FROM+Task+LIMIT+10", c.BaseURL)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		return nil, fmt.Errorf("salesforce api error (%d)", resp.StatusCode)
+	}
+
+	var result struct {
+		Records []struct {
+			Description string `json:"Description"`
+			Subject     string `json:"Subject"`
+		} `json:"records"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	interactions := make([]db.Interaction, len(result.Records))
+	for i, r := range result.Records {
+		interactions[i] = db.Interaction{
+			RawText: r.Description,
+			Summary: r.Subject,
+			Channel: "Salesforce Task",
+		}
+	}
+
+	return interactions, nil
+}
+
 func (c *SalesforceCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
 	url := fmt.Sprintf("%s/services/data/v54.0/sobjects/Opportunity", c.BaseURL)
 	payload, _ := json.Marshal(map[string]interface{}{

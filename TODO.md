@@ -46,7 +46,7 @@
 - [ ] Add enrichment source fallback chain
 
 ### Real Communication Channels
-- [x] Implement SMTP email sender for outbound outreach
+- [ ] Implement SMTP email sender for outbound outreach
 - [ ] Implement IMAP/POP3 email polling for inbound ingestion
 - [ ] Implement LinkedIn message sending via headless automation
 - [ ] Implement GitHub Issue/PR comment outreach as technical hook
@@ -63,6 +63,7 @@
 ### Real CRM Integration
 - [x] Implement Salesforce CRM adapter
 - [x] Implement HubSpot CRM adapter
+- [x] Integrate Live CRM Outreach (SendEmail)
 - [ ] Add CRM field mapping configuration
 
 ## Phase 8 — Intelligence & Autonomous Evolution

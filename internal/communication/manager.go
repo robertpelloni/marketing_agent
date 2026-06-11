@@ -231,21 +231,22 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 
 	// Synchronize outbound interaction with the CRM and send the real email
 	go func() {
+		asyncCtx := context.Background()
 		subject := fmt.Sprintf("Follow-up: TormentNexus for %s", salesCtx.Company.Name)
 
 		// 1. Primary: Send via SMTP if configured
 		if m.emailSender != nil {
-			if err := m.emailSender.Send(ctx, contact.Email, subject, replyText); err != nil {
+			if err := m.emailSender.Send(asyncCtx, contact.Email, subject, replyText); err != nil {
 				slog.Error("Comm Manager: Direct SMTP delivery failed", "contact_email", contact.Email, "error", err)
 			}
 		}
 
 		// 2. Secondary/Record: Send/Log via CRM
 		if m.crmClient != nil {
-			if err := m.crmClient.SendEmail(ctx, contact, subject, replyText); err != nil {
+			if err := m.crmClient.SendEmail(asyncCtx, contact, subject, replyText); err != nil {
 				slog.Error("Comm Manager: Failed to record email in CRM", "contact_email", contact.Email, "error", err)
 			}
-			m.syncInteractionWithRetry(ctx, contact.CompanyID, fmt.Sprintf("Outbound (Reply to %s): %s", intent, replyText))
+			m.syncInteractionWithRetry(asyncCtx, contact.CompanyID, fmt.Sprintf("Outbound (Reply to %s): %s", intent, replyText))
 		}
 	}()
 

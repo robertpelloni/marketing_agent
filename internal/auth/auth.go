@@ -2,14 +2,13 @@ package auth
 
 import (
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/hex"
 	"errors"
 	"net/http"
 	"os"
 	"sync"
 	"time"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 // Authenticator handles session-based authentication.
@@ -27,9 +26,9 @@ func NewAuthenticator() *Authenticator {
 		password = "admin" // Default for development
 	}
 
-	hash, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	hash := sha256.Sum256([]byte(password))
 	return &Authenticator{
-		adminPasswordHash: string(hash),
+		adminPasswordHash: hex.EncodeToString(hash[:]),
 		sessionCookieName: "sales_bot_session",
 		sessions:          make(map[string]time.Time),
 	}
@@ -45,8 +44,8 @@ func generateSessionID() string {
 
 // Login verifies the password and sets a session cookie.
 func (a *Authenticator) Login(password string) (string, error) {
-	err := bcrypt.CompareHashAndPassword([]byte(a.adminPasswordHash), []byte(password))
-	if err != nil {
+	hash := sha256.Sum256([]byte(password))
+	if hex.EncodeToString(hash[:]) != a.adminPasswordHash {
 		return "", errors.New("invalid password")
 	}
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"log"
 	"log/slog"
 	"net/http"
 	"os"
@@ -39,27 +40,25 @@ func main() {
 	flag.Parse()
 
 	if *inventory {
-		slog.Info("Generating Submodule Inventory")
+		log.Println("Generating Submodule Inventory...")
 		table, err := gitcheck.GenerateSubmoduleInventory()
 		if err != nil {
-			slog.Error("Failed to generate inventory", "error", err)
-			os.Exit(1)
+			log.Fatalf("Failed to generate inventory: %v", err)
 		}
 		fmt.Println(table)
 		return
 	}
 
 	if *reconcile {
-		slog.Info("Running Intelligent Merge Engine")
+		log.Println("Running Intelligent Merge Engine...")
 		if err := gitres.ReconcileBranches(); err != nil {
-			slog.Error("Reconciliation failed", "error", err)
-			os.Exit(1)
+			log.Fatalf("Reconciliation failed: %v", err)
 		}
-		slog.Info("Reconciliation complete")
+		log.Println("Reconciliation complete.")
 		return
 	}
 
-	slog.Info("Starting TormentNexus Autonomous Sales Bot")
+	log.Println("Starting TormentNexus Autonomous Sales Bot...")
 
 	// 0. Load Configuration
 	cfg := config.Load()
@@ -67,8 +66,7 @@ func main() {
 	// 1. Initialize Database
 	database, err := db.NewDB(cfg.DatabaseURL)
 	if err != nil {
-		slog.Error("Could not connect to database", "error", err)
-		os.Exit(1)
+		log.Fatalf("Could not connect to database: %v", err)
 	}
 	defer database.Close()
 
@@ -90,23 +88,23 @@ func main() {
 	switch cfg.CRMProvider {
 	case "hubspot":
 		if cfg.CRMAPIKey != "" {
-			slog.Info("CRM: Initializing HubSpot CRM client")
+			log.Println("CRM: Initializing HubSpot CRM client.")
 			crmClient = crm.NewHubSpotCRMClient(cfg.CRMAPIKey)
 		}
 	case "salesforce":
 		if cfg.CRMBaseURL != "" {
-			slog.Info("CRM: Initializing Salesforce CRM client")
+			log.Println("CRM: Initializing Salesforce CRM client.")
 			crmClient = crm.NewSalesforceCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey, cfg.SalesforceClientID, cfg.SalesforceClientSecret, cfg.SalesforceAuthURL)
 		}
 	default:
 		if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
-			slog.Info("CRM: Initializing production REST CRM client", "url", cfg.CRMBaseURL)
+			log.Printf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL)
 			crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
 		}
 	}
 
 	if crmClient == nil {
-		slog.Info("CRM: Initializing mock CRM client", "provider", cfg.CRMProvider)
+		log.Printf("CRM: Initializing mock CRM client (Provider: %s, missing or invalid configuration).", cfg.CRMProvider)
 		crmClient = crm.NewMockCRMClient()
 	}
 
@@ -148,13 +146,13 @@ func main() {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
 			// #nosec G706 -- Repository name is used for context in initialization logs
-			slog.Info("CI: Initializing GitHub CI Tracker and Dispatcher", "repository", cfg.GitHubRepository)
+			log.Printf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", cfg.GitHubRepository)
 			ciTracker = deploy.NewGitHubCITracker(parts[0], parts[1])
 			dispatcher = deploy.NewGitHubDispatcher(parts[0], parts[1])
 		}
 	}
 	if ciTracker == nil {
-		slog.Info("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY)")
+		log.Println("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY).")
 		ciTracker = &deploy.MockCITracker{}
 	}
 	deployer := deploy.NewDeployer(ciTracker, dispatcher)
@@ -196,12 +194,12 @@ func main() {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
 			// #nosec G706 -- Repository name is used for context in initialization logs
-			slog.Info("Autodev: Initializing GitHub PR Manager", "repository", cfg.GitHubRepository)
+			log.Printf("Autodev: Initializing GitHub PR Manager for %s", cfg.GitHubRepository)
 			prManager = gitcheck.NewGitHubPRManager(parts[0], parts[1])
 		}
 	}
 	if prManager == nil {
-		slog.Info("Autodev: Initializing Mock PR Manager (missing GITHUB_REPOSITORY)")
+		log.Println("Autodev: Initializing Mock PR Manager (missing GITHUB_REPOSITORY).")
 		prManager = &gitcheck.MockPRManager{}
 	}
 
@@ -218,9 +216,9 @@ func main() {
 	}
 
 	go func() {
-		slog.Info("Web Dashboard: Listening", "port", cfg.Port)
+		log.Printf("Web Dashboard: Listening on :%s", cfg.Port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			slog.Error("Web server error", "error", err)
+			log.Printf("Web server error: %v", err)
 		}
 	}()
 
@@ -229,7 +227,7 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 	<-sigChan
 
-	slog.Info("Shutting down: Signal received, initiating graceful drain")
+	log.Println("Shutting down: Signal received, initiating graceful drain...")
 
 	// Cancel background workers via context
 	cancel()
@@ -239,10 +237,10 @@ func main() {
 	defer shutdownCancel()
 
 	if err := srv.Shutdown(shutdownCtx); err != nil {
-		slog.Error("Web server shutdown error", "error", err)
+		log.Printf("Web server shutdown error: %v", err)
 	}
 
 	// Wait for workers to finish
 	time.Sleep(2 * time.Second)
-	slog.Info("Shutting down: Done")
+	log.Println("Shutting down: Done.")
 }

@@ -133,14 +133,21 @@ Before deploying to staging for live CRM connectivity, ensure:
 
 ## Staging Validation
 
-To validate the **Self-Improving Prompts** feedback loop in a staging environment:
+To validate **Live CRM Interactions** and the **Self-Improving Prompts** feedback loop in a staging environment:
 
 1. Deploy using Docker Compose:
    ```bash
-   docker compose -f docker-compose.staging.yml up -d --build
+   # Set required staging secrets in .env.staging (CRM_API_KEY, CRM_BASE_URL, etc.)
+   docker compose -f docker-compose.staging.yml --env-file .env.staging up -d --build
    ```
 
-2. Simulate a "Closed Won" state for a lead via the CRM mock or manual DB update.
+2. Run the Staging UAT Simulation:
+   ```bash
+   TARGET_URL="http://localhost:8081" ADMIN_PASSWORD="your-admin-pass" go run scripts/uat_verify/main.go
+   ```
+   This script performs a simulated login, drives an inbound simulation, and verifies autonomous response generation.
+
+3. Simulate a "Closed Won" state for a lead via the CRM mock or manual DB update.
 
 3. Verify in the logs or dashboard that past outbound interactions are flagged with `success=true`.
 

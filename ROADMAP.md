@@ -91,7 +91,7 @@
 - [ ] **Add enrichment source fallback chain** — if primary fails, try secondary automatically
 
 ### 7.2 Real Communication Channels
-- [x] **Implement SMTP email sender** for outbound outreach (replace mock)
+- [ ] **Implement SMTP email sender** for outbound outreach (replace mock)
 - [ ] **Implement IMAP/POP3 email polling** for inbound message ingestion
 - [ ] **Implement LinkedIn message sending** via headless automation
 - [ ] **Implement GitHub Issue/PR comment outreach** as a technical hook channel
@@ -108,6 +108,7 @@
 ### 7.4 Real CRM Integration
 - [x] **Implement Salesforce CRM adapter** (replace generic REST mock)
 - [x] **Implement HubSpot CRM adapter** as alternative
+- [x] **Integrate Live CRM Outreach** (SendEmail via Engagements/EmailMessage APIs)
 - [ ] **Add CRM field mapping configuration** — map local fields to CRM-specific schema
 
 ---

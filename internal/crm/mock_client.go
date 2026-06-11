@@ -64,3 +64,8 @@ func (m *MockCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*De
 		CustomRequirements: "Mock Requirement",
 	}, nil
 }
+
+func (m *MockCRMClient) SendEmail(ctx context.Context, contact db.Contact, subject, body string) error {
+	log.Printf("CRM: Simulating email send to %s (Subject: %s)", contact.Email, subject)
+	return nil
+}

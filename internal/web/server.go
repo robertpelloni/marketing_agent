@@ -21,6 +21,7 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 	"golang.org/x/time/rate"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // Server handles web dashboard requests.
@@ -60,6 +61,7 @@ func (s *Server) routes() {
 	s.mux.HandleFunc("/login", s.auth.HandleLogin)
 	s.mux.HandleFunc("/health", s.handleHealth)
 	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
+	s.mux.Handle("/metrics", promhttp.Handler())
 	s.mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
 	s.mux.HandleFunc("/api/v1/test/simulate_inbound", s.handleSimulateInbound)
 }

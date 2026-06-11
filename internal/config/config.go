@@ -17,6 +17,11 @@ type Config struct {
 	SalesforceAuthURL    string
 	SalesforceClientID   string
 	SalesforceClientSecret string
+	SMTPHost            string
+	SMTPPort            string
+	SMTPUser            string
+	SMTPPass            string
+	SMTPFrom            string
 	DeploySyncInterval  time.Duration
 	Port                string
 	Environment         string
@@ -52,6 +57,11 @@ func Load() *Config {
 		SalesforceAuthURL:    os.Getenv("SALESFORCE_AUTH_URL"),
 		SalesforceClientID:   os.Getenv("SALESFORCE_CLIENT_ID"),
 		SalesforceClientSecret: os.Getenv("SALESFORCE_CLIENT_SECRET"),
+		SMTPHost:            os.Getenv("SMTP_HOST"),
+		SMTPPort:            os.Getenv("SMTP_PORT"),
+		SMTPUser:            os.Getenv("SMTP_USER"),
+		SMTPPass:            os.Getenv("SMTP_PASS"),
+		SMTPFrom:            os.Getenv("SMTP_FROM"),
 		DeploySyncInterval:  syncInterval,
 		Port:                port,
 		Environment:         env,

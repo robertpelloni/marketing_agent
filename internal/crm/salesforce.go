@@ -256,3 +256,33 @@ func (c *SalesforceCRMClient) FetchDealDetails(ctx context.Context, dealID int64
 		QuotedPricing: r.Amount,
 	}, nil
 }
+
+func (c *SalesforceCRMClient) SendEmail(ctx context.Context, contact db.Contact, subject, body string) error {
+	url := fmt.Sprintf("%s/services/data/v54.0/sobjects/EmailMessage", c.BaseURL)
+	payload, _ := json.Marshal(map[string]interface{}{
+		"Subject":      subject,
+		"TextBody":     body,
+		"ToAddress":    contact.Email,
+		"Status":       "3", // Sent
+	})
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		respBody, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return fmt.Errorf("salesforce api error (%d): %s", resp.StatusCode, string(respBody))
+	}
+
+	return nil
+}

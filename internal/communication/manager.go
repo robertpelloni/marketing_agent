@@ -3,11 +3,13 @@ package communication
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/mail"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/metrics"
 )
 
 // Intent represents the classified purpose of an inbound message.
@@ -40,23 +42,25 @@ type OrderProcessor interface {
 
 // Manager coordinates the inbound communication state machine.
 type Manager struct {
-	db         *db.DB
-	classifier IntentClassifier
-	responder  ResponseGenerator
-	strategy   SalesStrategy
-	processor  OrderProcessor
-	crmClient  crm.CRMClient
+	db          *db.DB
+	classifier  IntentClassifier
+	responder   ResponseGenerator
+	strategy    SalesStrategy
+	processor   OrderProcessor
+	crmClient   crm.CRMClient
+	emailSender mail.EmailSender
 }
 
 // NewManager creates a new communication Manager.
-func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor, crmClient crm.CRMClient) *Manager {
+func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor, crmClient crm.CRMClient, emailSender mail.EmailSender) *Manager {
 	return &Manager{
-		db:         database,
-		classifier: classifier,
-		responder:  responder,
-		strategy:   strategy,
-		processor:  processor,
-		crmClient:  crmClient,
+		db:          database,
+		classifier:  classifier,
+		responder:   responder,
+		strategy:    strategy,
+		processor:   processor,
+		crmClient:   crmClient,
+		emailSender: emailSender,
 	}
 }
 
@@ -65,12 +69,12 @@ func (m *Manager) Run(ctx context.Context, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	log.Printf("Communication Manager: Background poller started (interval: %v)...", interval)
+	slog.Info("Communication Manager: Background poller started", "interval", interval)
 
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("Communication Manager: Background poller stopping: Draining in-flight work...")
+			slog.Info("Communication Manager: Background poller stopping: Draining in-flight work")
 			return
 		case <-ticker.C:
 			m.pollAndProcess(ctx)
@@ -84,7 +88,7 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 	// that haven't had an outbound interaction yet (triggering initial outreach).
 	deals, err := m.db.ListDealsByState(ctx, db.StateResearched)
 	if err != nil {
-		log.Printf("Comm Manager: Error polling deals: %v", err)
+		slog.Error("Comm Manager: Error polling deals", "error", err)
 		return
 	}
 
@@ -105,13 +109,13 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 		}
 
 		if !hasOutbound {
-			log.Printf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email)
+			slog.Info("Comm Manager: Initiating autonomous outreach", "deal_id", deal.ID, "contact_email", contacts[0].Email)
 			// Trigger outreach
 			if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
-				log.Printf("Comm Manager Error: Failed to initiate outreach for deal %d: %v", deal.ID, err)
+				slog.Error("Comm Manager: Failed to initiate outreach", "deal_id", deal.ID, "error", err)
 			}
 			if err := m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent); err != nil {
-				log.Printf("Comm Manager Error: Failed to update deal state to OutreachSent for deal %d: %v", deal.ID, err)
+				slog.Error("Comm Manager: Failed to update deal state to OutreachSent", "deal_id", deal.ID, "error", err)
 			}
 		}
 	}
@@ -127,6 +131,9 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		RawText:   text,
 	}
 	err := m.db.CreateInteraction(ctx, &inbound)
+	if err == nil {
+		metrics.InteractionsProcessed.WithLabelValues("Inbound", "Email").Inc()
+	}
 	if err != nil {
 		return "", err
 	}
@@ -150,7 +157,7 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 
 	interactions, err := m.db.ListInteractionsByContact(ctx, contact.ID)
 	if err != nil {
-		log.Printf("Warning: failed to list interactions for strategy: %v", err)
+		slog.Warn("Comm Manager: failed to list interactions for strategy", "error", err)
 	}
 
 	deal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
@@ -172,7 +179,7 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	}
 
 	if action == ActionEscalate {
-		log.Printf("UI: Deal %d escalated for human review.", salesCtx.Deal.ID)
+		slog.Info("UI: Deal escalated for human review", "deal_id", salesCtx.Deal.ID)
 		return "I've flagged this for our technical lead to review. We will get back to you shortly.", nil
 	}
 
@@ -186,20 +193,21 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	if action == ActionAdvanceState {
 		updatedDeal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
 		if err == nil && updatedDeal.CurrentState == db.StateClosedWon {
-			log.Printf("Comm Manager: Deal %d won! Flagging past outbound interactions as successful.", updatedDeal.ID)
+			slog.Info("Comm Manager: Deal won! Flagging past outbound interactions as successful", "deal_id", updatedDeal.ID)
+			metrics.DealsWon.Inc()
 			// Mark all outbound interactions for this contact as successful to feed back into RAG
 			for _, interaction := range interactions {
 				if interaction.Direction == "Outbound" {
 					if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
-						log.Printf("Comm Manager Error: Failed to mark interaction %d as successful: %v", interaction.ID, err)
+						slog.Error("Comm Manager: Failed to mark interaction as successful", "interaction_id", interaction.ID, "error", err)
 					}
 				}
 			}
 
 			if m.processor != nil {
-				log.Printf("Comm Manager: Triggering order processor for won deal %d", updatedDeal.ID)
+				slog.Info("Comm Manager: Triggering order processor", "deal_id", updatedDeal.ID)
 				if err := m.processor.ProcessOrder(ctx, *updatedDeal); err != nil {
-					log.Printf("Comm Manager Error: Order processing failed: %v", err)
+					slog.Error("Comm Manager: Order processing failed", "deal_id", updatedDeal.ID, "error", err)
 				}
 			}
 		}
@@ -214,14 +222,32 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		Summary:   fmt.Sprintf("Reply to intent: %s", intent),
 	}
 	err = m.db.CreateInteraction(ctx, &outbound)
+	if err == nil {
+		metrics.InteractionsProcessed.WithLabelValues("Outbound", "Email").Inc()
+	}
 	if err != nil {
 		return "", err
 	}
 
-	// Synchronize outbound interaction with the CRM
-	if m.crmClient != nil {
-		go m.syncInteractionWithRetry(ctx, contact.CompanyID, fmt.Sprintf("Outbound (Reply to %s): %s", intent, replyText))
-	}
+	// Synchronize outbound interaction with the CRM and send the real email
+	go func() {
+		subject := fmt.Sprintf("Follow-up: TormentNexus for %s", salesCtx.Company.Name)
+
+		// 1. Primary: Send via SMTP if configured
+		if m.emailSender != nil {
+			if err := m.emailSender.Send(ctx, contact.Email, subject, replyText); err != nil {
+				slog.Error("Comm Manager: Direct SMTP delivery failed", "contact_email", contact.Email, "error", err)
+			}
+		}
+
+		// 2. Secondary/Record: Send/Log via CRM
+		if m.crmClient != nil {
+			if err := m.crmClient.SendEmail(ctx, contact, subject, replyText); err != nil {
+				slog.Error("Comm Manager: Failed to record email in CRM", "contact_email", contact.Email, "error", err)
+			}
+			m.syncInteractionWithRetry(ctx, contact.CompanyID, fmt.Sprintf("Outbound (Reply to %s): %s", intent, replyText))
+		}
+	}()
 
 	return replyText, nil
 }
@@ -232,11 +258,11 @@ func (m *Manager) syncInteractionWithRetry(ctx context.Context, companyID int64,
 		// In a real system, we'd look up the CRM Deal ID.
 		// For this integration, we use the local CompanyID as a proxy for the deal ID in the CRM interface.
 		if err := m.crmClient.SyncInteraction(ctx, companyID, note); err != nil {
-			log.Printf("Comm Manager Warning: Failed to sync interaction to CRM (attempt %d/%d): %v", i+1, maxRetries, err)
+			slog.Warn("Comm Manager: Failed to sync interaction to CRM", "attempt", i+1, "max_retries", maxRetries, "company_id", companyID, "error", err)
 			time.Sleep(time.Duration(i+1) * 2 * time.Second)
 			continue
 		}
 		return
 	}
-	log.Printf("Comm Manager Error: CRM interaction synchronization failed after %d attempts for company %d", maxRetries, companyID)
+	slog.Error("Comm Manager: CRM interaction synchronization failed after all attempts", "company_id", companyID)
 }

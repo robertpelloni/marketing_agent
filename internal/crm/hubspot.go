@@ -241,3 +241,36 @@ func (c *HubSpotCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (
 		QuotedPricing: amount,
 	}, nil
 }
+
+func (c *HubSpotCRMClient) SendEmail(ctx context.Context, contact db.Contact, subject, body string) error {
+	// HubSpot Engagements API (Communication type)
+	url := fmt.Sprintf("%s/crm/v3/objects/communications", c.BaseURL)
+	payload, _ := json.Marshal(map[string]interface{}{
+		"properties": map[string]string{
+			"hs_communication_channel_type": "EMAIL",
+			"hs_communication_logged_from":  "CRM",
+			"hs_communication_body":         body,
+			"hs_communication_subject":      subject,
+		},
+	})
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		respBody, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return fmt.Errorf("hubspot api error (%d): %s", resp.StatusCode, string(respBody))
+	}
+
+	return nil
+}

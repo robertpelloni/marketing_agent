@@ -37,6 +37,9 @@ type CRMClient interface {
 
 	// FetchDealDetails retrieves specific deal information from the CRM.
 	FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error)
+
+	// SendEmail triggers an email send via the CRM (or records a sent email).
+	SendEmail(ctx context.Context, contact db.Contact, subject, body string) error
 }
 
 // DealDetails represents detailed information for a deal in the CRM.
@@ -91,6 +94,35 @@ func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.C
 	if resp.StatusCode >= 400 {
 		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
 		return fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
+	}
+
+	return nil
+}
+
+func (c *RestCRMClient) SendEmail(ctx context.Context, contact db.Contact, subject, body string) error {
+	url := fmt.Sprintf("%s/outreach/email", c.BaseURL)
+	payload, _ := json.Marshal(map[string]interface{}{
+		"to":      contact.Email,
+		"subject": subject,
+		"body":    body,
+	})
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.APIKey)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		respBody, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(respBody))
 	}
 
 	return nil

@@ -94,7 +94,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	classifier := &communication.MockIntentClassifier{}
 	responder := communication.NewRAGResponseGenerator(database, &llm.MockLLMProvider{})
 	strategy := communication.NewLearningSalesEngine(database, realCRM, nil)
-	comm := communication.NewManager(database, classifier, responder, strategy, nil, realCRM)
+	comm := communication.NewManager(database, classifier, responder, strategy, nil, realCRM, nil)
 
 	// Simulate inbound pricing inquiry
 	reply, err := comm.ProcessInbound(ctx, contacts[0], "How much does TormentNexus cost?")

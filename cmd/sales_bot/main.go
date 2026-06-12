@@ -175,7 +175,7 @@ func main() {
 	responder := communication.NewRAGResponseGenerator(database, llmProvider)
 	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
 
-	// 2h. Setup Email Sender — SMTP or Mock
+	// 2h. Setup Email Sender — SMTP, Draft, or Mock
 	var emailSender communication.EmailSender
 	if cfg.SMTPHost != "" && cfg.SMTPUsername != "" && cfg.SMTPPassword != "" && !cfg.DryRun {
 		log.Printf("Email: Initializing SMTP sender via %s:%d as %s", cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUsername)
@@ -187,9 +187,12 @@ func main() {
 			From:     cfg.SMTPFrom,
 			FromName: cfg.SMTPFromName,
 		})
+	} else if cfg.DryRun && cfg.IMAPHost != "" && cfg.IMAPUsername != "" && cfg.IMAPPassword != "" {
+		log.Printf("Email: DRY RUN mode — saving drafts to %s via IMAP.", cfg.IMAPFolder)
+		emailSender = communication.NewDraftSender(cfg.IMAPHost, cfg.IMAPPort, cfg.IMAPUsername, cfg.IMAPPassword)
 	} else {
 		if cfg.DryRun {
-			log.Println("Email: DRY RUN mode — emails will be drafted but NOT sent.")
+			log.Println("Email: DRY RUN mode — no IMAP configured, emails will be logged only.")
 		} else {
 			log.Println("Email: No SMTP configured — outbound emails will be logged but not sent.")
 		}

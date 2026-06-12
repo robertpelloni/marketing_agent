@@ -67,6 +67,9 @@ func (m *Manager) Run(ctx context.Context, interval time.Duration) {
 
 	log.Printf("Communication Manager: Background poller started (interval: %v)...", interval)
 
+	// Run immediately on startup
+	m.pollAndProcess(ctx)
+
 	for {
 		select {
 		case <-ctx.Done():

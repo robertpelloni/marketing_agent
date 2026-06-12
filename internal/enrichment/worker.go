@@ -16,6 +16,9 @@ func (e *Enricher) Run(ctx context.Context, interval time.Duration) {
 
 	log.Println("Enricher worker started...")
 
+	// Run immediately on startup
+	e.executeEnrichment(ctx)
+
 	for {
 		select {
 		case <-ctx.Done():

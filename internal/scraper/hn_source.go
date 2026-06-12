@@ -128,13 +128,15 @@ func (h *HNWhoIsHiringSource) Discover(ctx context.Context, keywords []string) (
 // findLatestWhoIsHiringThread uses the Algolia HN search API to find the
 // most recent "Who is Hiring" thread by whoishiring.
 func (h *HNWhoIsHiringSource) findLatestWhoIsHiringThread(ctx context.Context) (int, error) {
-	url := fmt.Sprintf("%s/search?query=%%22who+is+hiring%%22&tags=story,author_whoishiring&hitsPerPage=3&numericFilters=created_at_i>%d",
-		hnSearchBase, time.Now().AddDate(0, -2, 0).Unix()) // within last 2 months
+	// Use search_by_date to get results sorted by newest first
+	url := fmt.Sprintf("%s/search_by_date?query=%%22who+is+hiring%%22&tags=story,author_whoishiring&hitsPerPage=5&numericFilters=created_at_i>%d",
+		hnSearchBase, time.Now().AddDate(0, -3, 0).Unix()) // within last 3 months
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return 0, err
 	}
+	req.Header.Set("User-Agent", "TormentNexus-SalesBot/1.0 (contact: pelloni.robert@gmail.com)")
 
 	resp, err := h.client().Do(req)
 	if err != nil {
@@ -221,6 +223,7 @@ func (h *HNWhoIsHiringSource) fetchItem(ctx context.Context, id int) (hnItem, er
 	if err != nil {
 		return hnItem{}, err
 	}
+	req.Header.Set("User-Agent", "TormentNexus-SalesBot/1.0 (contact: pelloni.robert@gmail.com)")
 
 	resp, err := h.client().Do(req)
 	if err != nil {

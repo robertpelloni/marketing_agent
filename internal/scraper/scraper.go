@@ -36,6 +36,9 @@ func (s *Scraper) Run(ctx context.Context, interval time.Duration, keywords []st
 
 	log.Println("Scraper worker started...")
 
+	// Run immediately on startup
+	s.ExecuteDiscovery(ctx, keywords)
+
 	for {
 		select {
 		case <-ctx.Done():

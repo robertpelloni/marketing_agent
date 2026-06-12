@@ -501,16 +501,6 @@ func (db *DB) ListActivePullRequests(ctx context.Context) ([]gitcheck.PullReques
 	return prs, nil
 }
 
-func (db *DB) GetContactByID(ctx context.Context, id int64) (*Contact, error) {
-	var c Contact
-	err := db.Conn.QueryRowContext(ctx, "SELECT id, company_id, name, role, email, github_handle, linkedin_url, created_at, updated_at FROM contacts WHERE id = $1", id).
-		Scan(&c.ID, &c.CompanyID, &c.Name, &c.Role, &c.Email, &c.GitHubHandle, &c.LinkedInURL, &c.CreatedAt, &c.UpdatedAt)
-	if err != nil {
-		return nil, err
-	}
-	return &c, nil
-}
-
 // ListInteractionsByContact retrieves all interactions for a specific contact.
 func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, error) {
 	var c Contact

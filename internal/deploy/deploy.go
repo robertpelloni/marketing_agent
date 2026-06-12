@@ -3,7 +3,7 @@ package deploy
 import (
 	"context"
 	"fmt"
-	"log/slog"
+	"log"
 	"os"
 	"os/exec"
 	"time"
@@ -38,14 +38,14 @@ func (d *Deployer) ValidateEnvironment() error {
 
 // ExecuteSync performs a remote sync and submodule update.
 func (d *Deployer) ExecuteSync() error {
-	slog.Info("Deployment: Initiating repository sync")
+	log.Println("Deployment: Initiating repository sync...")
 	if err := gitcheck.SyncRemote(); err != nil {
 		return fmt.Errorf("sync failed: %w", err)
 	}
 	if err := gitcheck.UpdateSubmodules(); err != nil {
 		return fmt.Errorf("submodule update failed: %w", err)
 	}
-	slog.Info("Deployment: Sync successful")
+	log.Println("Deployment: Sync successful.")
 	return nil
 }
 
@@ -55,43 +55,43 @@ func (d *Deployer) MonitorDeployment(ctx context.Context, interval time.Duration
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	slog.Info("Deployment monitor started", "interval", interval)
+	log.Printf("Deployment monitor started (interval: %v)...", interval)
 
 	for {
 		select {
 		case <-ctx.Done():
-			slog.Info("Deployment monitor stopping: Draining in-flight work")
+			log.Println("Deployment monitor stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			health, err := d.tracker.GetSystemHealth(ctx)
 			if err != nil {
-				slog.Error("Deployment Monitor: Health check failed", "error", err)
+				log.Printf("Deployment Monitor: Health check failed: %v", err)
 				continue
 			}
-			slog.Info("Deployment Monitor: System Health", "status", health)
+			log.Printf("Deployment Monitor: System Health: %s", health)
 
 			// Autonomous Deployment: If main is successful and we are out of sync, trigger build
 			if health == "Main branch status: Success" {
 				// In a real autonomous system, we'd check if local bin matches remote
 				// For now, we just log the readiness.
-				slog.Info("Deployment Monitor: System is healthy and ready for deployment")
+				log.Println("Deployment Monitor: System is healthy and ready for deployment.")
 			}
 		}
 	}
 }
 
 func (d *Deployer) ExecuteBuild() error {
-	slog.Info("Deployment: Initiating build")
+	log.Println("Deployment: Initiating build...")
 
 	// If a dispatcher is available, we trigger the remote deploy workflow
 	if d.dispatcher != nil {
-		slog.Info("Deployment: Dispatching remote deployment workflow")
+		log.Println("Deployment: Dispatching remote deployment workflow...")
 		err := d.dispatcher.Dispatch(context.Background(), "deploy.yml", "main", nil)
 		if err == nil {
-			slog.Info("Deployment: Remote deployment dispatched successfully")
+			log.Println("Deployment: Remote deployment dispatched successfully.")
 			return nil
 		}
-		slog.Warn("Deployment: Remote dispatch failed, falling back to local build", "error", err)
+		log.Printf("Deployment Warning: Remote dispatch failed, falling back to local build: %v", err)
 	}
 
 	// Fallback to local 'go build'
@@ -100,7 +100,7 @@ func (d *Deployer) ExecuteBuild() error {
 	if err != nil {
 		return fmt.Errorf("build failed: %v, output: %s", err, string(output))
 	}
-	slog.Info("Deployment: Local build successful")
+	log.Println("Deployment: Local build successful.")
 	return nil
 }
 
@@ -109,16 +109,16 @@ func (d *Deployer) Run(ctx context.Context, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	slog.Info("Deployment worker started", "interval", interval)
+	log.Printf("Deployment worker started (interval: %v)...", interval)
 
 	for {
 		select {
 		case <-ctx.Done():
-			slog.Info("Deployment worker stopping: Draining in-flight work")
+			log.Println("Deployment worker stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			if err := d.ExecuteSync(); err != nil {
-				slog.Error("Deployment background sync failed", "error", err)
+				log.Printf("Deployment background sync failed: %v", err)
 			}
 		}
 	}

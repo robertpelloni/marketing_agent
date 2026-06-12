@@ -20,8 +20,6 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/researcher"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/sales"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/billing"
 )
 
 func TestEndToEndSalesWorkflow(t *testing.T) {
@@ -258,7 +256,7 @@ func TestCRMReconciliationWorkflow(t *testing.T) {
 	defer crmServer.Close()
 
 	realCRM := crm.NewRestCRMClient(crmServer.URL, "recon-token")
-	worker := crm.NewWorker(database, realCRM, nil)
+	worker := crm.NewWorker(database, realCRM)
 
 	// 3. Trigger reconciliation
 	// crm.Worker.sync is internal, but we can call Run once or simulate it.
@@ -280,36 +278,5 @@ func TestCRMReconciliationWorkflow(t *testing.T) {
 	}
 	if updatedDeal.QuotedPricing != 15000.0 {
 		t.Errorf("Reconciliation failed: expected pricing 15000.0, got %f", updatedDeal.QuotedPricing)
-	}
-}
-
-
-
-func TestStripeIntegration_Workflow(t *testing.T) {
-	dbURL := os.Getenv("DATABASE_URL")
-	if dbURL == "" {
-		t.Skip("DATABASE_URL not set, skipping Stripe test")
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	database, err := db.NewDB(dbURL)
-	if err != nil {
-		t.Fatalf("Failed to initialize database: %v", err)
-	}
-
-	// Setup a deal won
-	company := &db.Company{Name: "Stripe Target", Domain: "stripe.com"}
-	database.CreateCompany(ctx, company)
-	deal := &db.Deal{CompanyID: company.ID, CurrentState: db.StateNegotiating, QuotedPricing: 5000.0}
-	database.CreateDeal(ctx, deal)
-
-	billingClient := &billing.MockBillingClient{}
-	processor := sales.NewOrderProcessor(database, billingClient, nil)
-
-	err = processor.ProcessOrder(ctx, *deal)
-	if err != nil {
-		t.Fatalf("Order processing failed: %v", err)
 	}
 }

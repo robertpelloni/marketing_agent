@@ -1,8 +1,12 @@
 package config
 
 import (
+	"bufio"
+	"log"
 	"os"
+	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -33,16 +37,19 @@ type Config struct {
 	SMTPFromName string
 
 	// Email - IMAP
-	IMAPHost     string
-	IMAPPort     int
-	IMAPUsername string
-	IMAPPassword string
-	IMAPFolder   string
+	IMAPHost         string
+	IMAPPort         int
+	IMAPUsername     string
+	IMAPPassword     string
+	IMAPFolder       string
 	IMAPPollInterval time.Duration
 }
 
-// Load loads the configuration from environment variables.
+// Load loads the configuration from environment variables and .env file.
 func Load() *Config {
+	// Try to load .env file from current directory or executable directory
+	loadDotEnv()
+
 	syncInterval := 1 * time.Hour
 	if intervalStr := os.Getenv("DEPLOY_SYNC_INTERVAL"); intervalStr != "" {
 		if d, err := time.ParseDuration(intervalStr); err == nil {
@@ -118,6 +125,55 @@ func Load() *Config {
 		IMAPPassword:     os.Getenv("IMAP_PASSWORD"),
 		IMAPFolder:       getEnv("IMAP_FOLDER", "INBOX"),
 		IMAPPollInterval: imapPollInterval,
+	}
+}
+
+// loadDotEnv reads a .env file and sets environment variables.
+// It looks in the current working directory first, then the executable's directory.
+// Existing environment variables are NOT overwritten.
+func loadDotEnv() {
+	paths := []string{".env"}
+
+	// Also check next to the executable
+	if exe, err := os.Executable(); err == nil {
+		paths = append(paths, filepath.Join(filepath.Dir(exe), ".env"))
+	}
+
+	for _, p := range paths {
+		file, err := os.Open(p)
+		if err != nil {
+			continue // .env is optional
+		}
+		defer file.Close()
+
+		log.Printf("Config: Loading environment from %s", p)
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			line := strings.TrimSpace(scanner.Text())
+			if line == "" || strings.HasPrefix(line, "#") {
+				continue
+			}
+
+			parts := strings.SplitN(line, "=", 2)
+			if len(parts) != 2 {
+				continue
+			}
+
+			key := strings.TrimSpace(parts[0])
+			value := strings.TrimSpace(parts[1])
+
+			// Remove surrounding quotes
+			if len(value) >= 2 && (value[0] == '"' && value[len(value)-1] == '"') ||
+				(value[0] == '\'' && value[len(value)-1] == '\'') {
+				value = value[1 : len(value)-1]
+			}
+
+			// Don't overwrite existing env vars
+			if os.Getenv(key) == "" {
+				os.Setenv(key, value)
+			}
+		}
+		return // only load the first .env found
 	}
 }
 

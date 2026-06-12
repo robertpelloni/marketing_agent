@@ -25,6 +25,11 @@ type Config struct {
 	DeploySyncInterval  time.Duration
 	Port                string
 	Environment         string
+	CRMDealNameProp     string
+	CRMDealStageProp    string
+	CRMDealAmountProp   string
+	CRMDealDossierProp  string
+	CRMContactEmailProp string
 }
 
 // Load loads the configuration from environment variables.
@@ -65,6 +70,11 @@ func Load() *Config {
 		DeploySyncInterval:  syncInterval,
 		Port:                port,
 		Environment:         env,
+		CRMDealNameProp:     os.Getenv("CRM_DEAL_NAME_PROP"),
+		CRMDealStageProp:    os.Getenv("CRM_DEAL_STAGE_PROP"),
+		CRMDealAmountProp:   os.Getenv("CRM_DEAL_AMOUNT_PROP"),
+		CRMDealDossierProp:  os.Getenv("CRM_DEAL_DOSSIER_PROP"),
+		CRMContactEmailProp: os.Getenv("CRM_CONTACT_EMAIL_PROP"),
 	}
 }
 

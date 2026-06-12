@@ -109,7 +109,7 @@
 - [x] **Implement Salesforce CRM adapter** (replace generic REST mock)
 - [x] **Implement HubSpot CRM adapter** as alternative
 - [x] **Integrate Live CRM Outreach** (SendEmail via Engagements/EmailMessage APIs)
-- [ ] **Add CRM field mapping configuration** — map local fields to CRM-specific schema
+- [x] **Add CRM field mapping configuration** — map local fields to CRM-specific schema
 
 ---
 

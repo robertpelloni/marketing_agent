@@ -21,6 +21,7 @@ type SalesforceCRMClient struct {
 	ClientSecret string
 	AuthURL      string
 	HTTPClient   *http.Client
+	Mapping      FieldMapping
 }
 
 // NewSalesforceCRMClient creates a new Salesforce CRM client.
@@ -32,6 +33,31 @@ func NewSalesforceCRMClient(baseURL, accessToken, clientID, clientSecret, authUR
 		ClientSecret: clientSecret,
 		AuthURL:      authURL,
 		HTTPClient:   &http.Client{},
+		Mapping: FieldMapping{
+			DealNameProperty:     "Name",
+			DealStageProperty:    "StageName",
+			DealAmountProperty:   "Amount",
+			DealDossierProperty:  "Description",
+			ContactEmailProperty: "Email",
+		},
+	}
+}
+
+func (c *SalesforceCRMClient) SetFieldMapping(mapping FieldMapping) {
+	if mapping.DealNameProperty != "" {
+		c.Mapping.DealNameProperty = mapping.DealNameProperty
+	}
+	if mapping.DealStageProperty != "" {
+		c.Mapping.DealStageProperty = mapping.DealStageProperty
+	}
+	if mapping.DealAmountProperty != "" {
+		c.Mapping.DealAmountProperty = mapping.DealAmountProperty
+	}
+	if mapping.DealDossierProperty != "" {
+		c.Mapping.DealDossierProperty = mapping.DealDossierProperty
+	}
+	if mapping.ContactEmailProperty != "" {
+		c.Mapping.ContactEmailProperty = mapping.ContactEmailProperty
 	}
 }
 
@@ -116,11 +142,11 @@ func (c *SalesforceCRMClient) GetNewInteractions(ctx context.Context) ([]db.Inte
 func (c *SalesforceCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
 	url := fmt.Sprintf("%s/services/data/v54.0/sobjects/Opportunity", c.BaseURL)
 	payload, _ := json.Marshal(map[string]interface{}{
-		"Name":          fmt.Sprintf("%s - %d", company.Name, deal.ID),
-		"StageName":     string(deal.CurrentState),
-		"Amount":        deal.QuotedPricing,
-		"Description":   deal.TechnicalDossier,
-		"CloseDate":     "2026-12-31", // Placeholder
+		c.Mapping.DealNameProperty:    fmt.Sprintf("%s - %d", company.Name, deal.ID),
+		c.Mapping.DealStageProperty:   string(deal.CurrentState),
+		c.Mapping.DealAmountProperty:  deal.QuotedPricing,
+		c.Mapping.DealDossierProperty: deal.TechnicalDossier,
+		"CloseDate":                   "2026-12-31", // Placeholder
 	})
 
 	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
@@ -148,9 +174,9 @@ func (c *SalesforceCRMClient) SyncContacts(ctx context.Context, companyID int64,
 	for _, contact := range contacts {
 		url := fmt.Sprintf("%s/services/data/v54.0/sobjects/Contact", c.BaseURL)
 		payload, _ := json.Marshal(map[string]interface{}{
-			"LastName":  contact.Name,
-			"Email":     contact.Email,
-			"Title":     contact.Role,
+			"LastName":                     contact.Name,
+			c.Mapping.ContactEmailProperty: contact.Email,
+			"Title":                        contact.Role,
 		})
 
 		req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
@@ -170,7 +196,8 @@ func (c *SalesforceCRMClient) SyncContacts(ctx context.Context, companyID int64,
 
 func (c *SalesforceCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error) {
 	// Simplified: Querying Opportunities
-	url := fmt.Sprintf("%s/services/data/v54.0/query/?q=SELECT+Id,StageName+FROM+Opportunity+LIMIT+10", c.BaseURL)
+	query := fmt.Sprintf("SELECT Id,%s FROM Opportunity LIMIT 10", c.Mapping.DealStageProperty)
+	url := fmt.Sprintf("%s/services/data/v54.0/query/?q=%s", c.BaseURL, url.QueryEscape(query))
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -189,10 +216,7 @@ func (c *SalesforceCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate,
 	}
 
 	var result struct {
-		Records []struct {
-			Id        string `json:"Id"`
-			StageName string `json:"StageName"`
-		} `json:"records"`
+		Records []map[string]interface{} `json:"records"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, err
@@ -200,9 +224,11 @@ func (c *SalesforceCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate,
 
 	updates := make([]LeadUpdate, len(result.Records))
 	for i, r := range result.Records {
+		id, _ := r["Id"].(string)
+		stage, _ := r[c.Mapping.DealStageProperty].(string)
 		updates[i] = LeadUpdate{
-			ID:       r.Id,
-			NewState: db.LeadState(r.StageName),
+			ID:       id,
+			NewState: db.LeadState(stage),
 		}
 	}
 
@@ -279,22 +305,22 @@ func (c *SalesforceCRMClient) FetchDealDetails(ctx context.Context, dealID int64
 		return nil, fmt.Errorf("salesforce api error (%d)", resp.StatusCode)
 	}
 
-	var r struct {
-		Id        string  `json:"Id"`
-		StageName string  `json:"StageName"`
-		Amount    float64 `json:"Amount"`
-	}
+	var r map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&r); err != nil {
 		return nil, err
 	}
 
+	idStr, _ := r["Id"].(string)
 	var id int64
-	fmt.Sscanf(r.Id, "%d", &id)
+	fmt.Sscanf(idStr, "%d", &id)
+
+	stage, _ := r[c.Mapping.DealStageProperty].(string)
+	amount, _ := r[c.Mapping.DealAmountProperty].(float64)
 
 	return &DealDetails{
 		ID:            id,
-		Status:        db.LeadState(r.StageName),
-		QuotedPricing: r.Amount,
+		Status:        db.LeadState(stage),
+		QuotedPricing: amount,
 	}, nil
 }
 

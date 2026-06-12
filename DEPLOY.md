@@ -25,6 +25,11 @@
    | `GITHUB_WEBHOOK_SECRET` | Optional | HMAC secret for webhook verification |
    | `CRM_BASE_URL` | Optional | REST CRM API base URL |
    | `CRM_API_KEY` | Optional | REST CRM API key |
+| `CRM_DEAL_NAME_PROP` | Optional | HubSpot/Salesforce custom deal name property |
+| `CRM_DEAL_STAGE_PROP` | Optional | HubSpot/Salesforce custom deal stage property |
+| `CRM_DEAL_AMOUNT_PROP` | Optional | HubSpot/Salesforce custom deal amount property |
+| `CRM_DEAL_DOSSIER_PROP` | Optional | HubSpot/Salesforce custom deal dossier property |
+| `CRM_CONTACT_EMAIL_PROP` | Optional | HubSpot/Salesforce custom contact email property |
    | `DEPLOY_SYNC_INTERVAL` | Optional | Duration string (e.g., `1h`, `15m`) for background sync |
    | `GO_TEST_MODE` | Optional | Set to `true` to skip git operations in tests |
 

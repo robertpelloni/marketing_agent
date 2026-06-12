@@ -17,6 +17,7 @@ type HubSpotCRMClient struct {
 	AccessToken string
 	BaseURL     string
 	HTTPClient  *http.Client
+	Mapping     FieldMapping
 }
 
 // NewHubSpotCRMClient creates a new HubSpot CRM client.
@@ -25,16 +26,41 @@ func NewHubSpotCRMClient(accessToken string) *HubSpotCRMClient {
 		AccessToken: accessToken,
 		BaseURL:     "https://api.hubapi.com",
 		HTTPClient:  &http.Client{},
+		Mapping: FieldMapping{
+			DealNameProperty:     "dealname",
+			DealStageProperty:    "dealstage",
+			DealAmountProperty:   "amount",
+			DealDossierProperty:  "technical_dossier",
+			ContactEmailProperty: "email",
+		},
+	}
+}
+
+func (c *HubSpotCRMClient) SetFieldMapping(mapping FieldMapping) {
+	if mapping.DealNameProperty != "" {
+		c.Mapping.DealNameProperty = mapping.DealNameProperty
+	}
+	if mapping.DealStageProperty != "" {
+		c.Mapping.DealStageProperty = mapping.DealStageProperty
+	}
+	if mapping.DealAmountProperty != "" {
+		c.Mapping.DealAmountProperty = mapping.DealAmountProperty
+	}
+	if mapping.DealDossierProperty != "" {
+		c.Mapping.DealDossierProperty = mapping.DealDossierProperty
+	}
+	if mapping.ContactEmailProperty != "" {
+		c.Mapping.ContactEmailProperty = mapping.ContactEmailProperty
 	}
 }
 
 func (c *HubSpotCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
 	url := fmt.Sprintf("%s/crm/v3/objects/deals", c.BaseURL)
 	properties := map[string]string{
-		"dealname":          fmt.Sprintf("%s - %d", company.Name, deal.ID),
-		"dealstage":         string(deal.CurrentState), // Mapping logic needed for real stages
-		"amount":            fmt.Sprintf("%.2f", deal.QuotedPricing),
-		"technical_dossier": deal.TechnicalDossier,
+		c.Mapping.DealNameProperty:    fmt.Sprintf("%s - %d", company.Name, deal.ID),
+		c.Mapping.DealStageProperty:   string(deal.CurrentState),
+		c.Mapping.DealAmountProperty:  fmt.Sprintf("%.2f", deal.QuotedPricing),
+		c.Mapping.DealDossierProperty: deal.TechnicalDossier,
 	}
 
 	payload, _ := json.Marshal(map[string]interface{}{
@@ -107,7 +133,7 @@ func (c *HubSpotCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interac
 
 func (c *HubSpotCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error) {
 	// Simplified: Polling recent deals for status changes
-	url := fmt.Sprintf("%s/crm/v3/objects/deals?limit=10&properties=dealstage", c.BaseURL)
+	url := fmt.Sprintf("%s/crm/v3/objects/deals?limit=10&properties=%s", c.BaseURL, c.Mapping.DealStageProperty)
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -127,10 +153,8 @@ func (c *HubSpotCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, er
 
 	var result struct {
 		Results []struct {
-			ID         string `json:"id"`
-			Properties struct {
-				DealStage string `json:"dealstage"`
-			} `json:"properties"`
+			ID         string            `json:"id"`
+			Properties map[string]string `json:"properties"`
 		} `json:"results"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
@@ -141,7 +165,7 @@ func (c *HubSpotCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, er
 	for i, r := range result.Results {
 		updates[i] = LeadUpdate{
 			ID:       r.ID,
-			NewState: db.LeadState(r.Properties.DealStage),
+			NewState: db.LeadState(r.Properties[c.Mapping.DealStageProperty]),
 		}
 	}
 
@@ -225,8 +249,8 @@ func (c *HubSpotCRMClient) SyncContacts(ctx context.Context, companyID int64, co
 		url := fmt.Sprintf("%s/crm/v3/objects/contacts", c.BaseURL)
 		payload, _ := json.Marshal(map[string]interface{}{
 			"properties": map[string]string{
-				"email":     contact.Email,
-				"firstname": contact.Name,
+				c.Mapping.ContactEmailProperty: contact.Email,
+				"firstname":                    contact.Name,
 			},
 		})
 
@@ -246,7 +270,7 @@ func (c *HubSpotCRMClient) SyncContacts(ctx context.Context, companyID int64, co
 }
 
 func (c *HubSpotCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error) {
-	url := fmt.Sprintf("%s/crm/v3/objects/deals/%d?properties=dealstage,amount", c.BaseURL, dealID)
+	url := fmt.Sprintf("%s/crm/v3/objects/deals/%d?properties=%s,%s", c.BaseURL, dealID, c.Mapping.DealStageProperty, c.Mapping.DealAmountProperty)
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -265,22 +289,19 @@ func (c *HubSpotCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (
 	}
 
 	var r struct {
-		ID         string `json:"id"`
-		Properties struct {
-			DealStage string `json:"dealstage"`
-			Amount    string `json:"amount"`
-		} `json:"properties"`
+		ID         string            `json:"id"`
+		Properties map[string]string `json:"properties"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&r); err != nil {
 		return nil, err
 	}
 
 	id, _ := strconv.ParseInt(r.ID, 10, 64)
-	amount, _ := strconv.ParseFloat(r.Properties.Amount, 64)
+	amount, _ := strconv.ParseFloat(r.Properties[c.Mapping.DealAmountProperty], 64)
 
 	return &DealDetails{
 		ID:            id,
-		Status:        db.LeadState(r.Properties.DealStage),
+		Status:        db.LeadState(r.Properties[c.Mapping.DealStageProperty]),
 		QuotedPricing: amount,
 	}, nil
 }

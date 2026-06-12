@@ -74,3 +74,7 @@ func (m *MockCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interactio
 	log.Println("CRM: Fetching mock interactions from CRM...")
 	return []db.Interaction{}, nil
 }
+
+func (m *MockCRMClient) SetFieldMapping(mapping FieldMapping) {
+	log.Println("CRM: Mock setting field mapping")
+}

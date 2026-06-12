@@ -43,6 +43,18 @@ type CRMClient interface {
 
 	// GetNewInteractions retrieves new external communications from the CRM.
 	GetNewInteractions(ctx context.Context) ([]db.Interaction, error)
+
+	// SetFieldMapping updates the CRM-specific field mappings.
+	SetFieldMapping(mapping FieldMapping)
+}
+
+// FieldMapping defines customizable property names for CRM synchronization.
+type FieldMapping struct {
+	DealNameProperty     string `json:"deal_name_property"`
+	DealStageProperty    string `json:"deal_stage_property"`
+	DealAmountProperty   string `json:"deal_amount_property"`
+	DealDossierProperty  string `json:"deal_dossier_property"`
+	ContactEmailProperty string `json:"contact_email_property"`
 }
 
 // DealDetails represents detailed information for a deal in the CRM.
@@ -100,6 +112,10 @@ func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.C
 	}
 
 	return nil
+}
+
+func (c *RestCRMClient) SetFieldMapping(mapping FieldMapping) {
+	// RestCRMClient uses a fixed schema, but we could implement dynamic mapping if needed.
 }
 
 func (c *RestCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interaction, error) {

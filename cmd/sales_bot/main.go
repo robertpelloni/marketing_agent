@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"log"
 	"log/slog"
 	"net/http"
 	"os"
@@ -40,25 +39,27 @@ func main() {
 	flag.Parse()
 
 	if *inventory {
-		log.Println("Generating Submodule Inventory...")
+		slog.Info("Generating Submodule Inventory...")
 		table, err := gitcheck.GenerateSubmoduleInventory()
 		if err != nil {
-			log.Fatalf("Failed to generate inventory: %v", err)
+			slog.Error("Failed to generate inventory", "error", err)
+			os.Exit(1)
 		}
 		fmt.Println(table)
 		return
 	}
 
 	if *reconcile {
-		log.Println("Running Intelligent Merge Engine...")
+		slog.Info("Running Intelligent Merge Engine...")
 		if err := gitres.ReconcileBranches(); err != nil {
-			log.Fatalf("Reconciliation failed: %v", err)
+			slog.Error("Reconciliation failed", "error", err)
+			os.Exit(1)
 		}
-		log.Println("Reconciliation complete.")
+		slog.Info("Reconciliation complete.")
 		return
 	}
 
-	log.Println("Starting TormentNexus Autonomous Sales Bot...")
+	slog.Info("Starting TormentNexus Autonomous Sales Bot...")
 
 	// 0. Load Configuration
 	cfg := config.Load()
@@ -66,7 +67,8 @@ func main() {
 	// 1. Initialize Database
 	database, err := db.NewDB(cfg.DatabaseURL)
 	if err != nil {
-		log.Fatalf("Could not connect to database: %v", err)
+		slog.Error("Could not connect to database", "error", err)
+		os.Exit(1)
 	}
 	defer database.Close()
 
@@ -88,25 +90,34 @@ func main() {
 	switch cfg.CRMProvider {
 	case "hubspot":
 		if cfg.CRMAPIKey != "" {
-			log.Println("CRM: Initializing HubSpot CRM client.")
+			slog.Info("CRM: Initializing HubSpot CRM client.")
 			crmClient = crm.NewHubSpotCRMClient(cfg.CRMAPIKey)
 		}
 	case "salesforce":
 		if cfg.CRMBaseURL != "" {
-			log.Println("CRM: Initializing Salesforce CRM client.")
+			slog.Info("CRM: Initializing Salesforce CRM client.")
 			crmClient = crm.NewSalesforceCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey, cfg.SalesforceClientID, cfg.SalesforceClientSecret, cfg.SalesforceAuthURL)
 		}
 	default:
 		if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
-			log.Printf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL)
+			slog.Info("CRM: Initializing production REST CRM client", "url", cfg.CRMBaseURL)
 			crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
 		}
 	}
 
 	if crmClient == nil {
-		log.Printf("CRM: Initializing mock CRM client (Provider: %s, missing or invalid configuration).", cfg.CRMProvider)
+		slog.Info("CRM: Initializing mock CRM client", "provider", cfg.CRMProvider)
 		crmClient = crm.NewMockCRMClient()
 	}
+
+	// 2cb. Setup CRM Field Mappings
+	crmClient.SetFieldMapping(crm.FieldMapping{
+		DealNameProperty:     cfg.CRMDealNameProp,
+		DealStageProperty:    cfg.CRMDealStageProp,
+		DealAmountProperty:   cfg.CRMDealAmountProp,
+		DealDossierProperty:  cfg.CRMDealDossierProp,
+		ContactEmailProperty: cfg.CRMContactEmailProp,
+	})
 
 	// 2b. Setup Enricher
 	enrichmentSources := []enrichment.EnrichmentSource{
@@ -146,13 +157,13 @@ func main() {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
 			// #nosec G706 -- Repository name is used for context in initialization logs
-			log.Printf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", cfg.GitHubRepository)
+			slog.Info("CI: Initializing GitHub CI Tracker and Dispatcher", "repo", cfg.GitHubRepository)
 			ciTracker = deploy.NewGitHubCITracker(parts[0], parts[1])
 			dispatcher = deploy.NewGitHubDispatcher(parts[0], parts[1])
 		}
 	}
 	if ciTracker == nil {
-		log.Println("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY).")
+		slog.Info("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY).")
 		ciTracker = &deploy.MockCITracker{}
 	}
 	deployer := deploy.NewDeployer(ciTracker, dispatcher)
@@ -194,12 +205,12 @@ func main() {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
 			// #nosec G706 -- Repository name is used for context in initialization logs
-			log.Printf("Autodev: Initializing GitHub PR Manager for %s", cfg.GitHubRepository)
+			slog.Info("Autodev: Initializing GitHub PR Manager", "repo", cfg.GitHubRepository)
 			prManager = gitcheck.NewGitHubPRManager(parts[0], parts[1])
 		}
 	}
 	if prManager == nil {
-		log.Println("Autodev: Initializing Mock PR Manager (missing GITHUB_REPOSITORY).")
+		slog.Info("Autodev: Initializing Mock PR Manager (missing GITHUB_REPOSITORY).")
 		prManager = &gitcheck.MockPRManager{}
 	}
 
@@ -216,9 +227,9 @@ func main() {
 	}
 
 	go func() {
-		log.Printf("Web Dashboard: Listening on :%s", cfg.Port)
+		slog.Info("Web Dashboard: Listening", "port", cfg.Port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Printf("Web server error: %v", err)
+			slog.Error("Web server error", "error", err)
 		}
 	}()
 
@@ -227,7 +238,7 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 	<-sigChan
 
-	log.Println("Shutting down: Signal received, initiating graceful drain...")
+	slog.Info("Shutting down: Signal received, initiating graceful drain...")
 
 	// Cancel background workers via context
 	cancel()
@@ -237,10 +248,10 @@ func main() {
 	defer shutdownCancel()
 
 	if err := srv.Shutdown(shutdownCtx); err != nil {
-		log.Printf("Web server shutdown error: %v", err)
+		slog.Error("Web server shutdown error", "error", err)
 	}
 
 	// Wait for workers to finish
 	time.Sleep(2 * time.Second)
-	log.Println("Shutting down: Done.")
+	slog.Info("Shutting down: Done.")
 }

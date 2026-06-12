@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-06-08
+
+### Added
+- **CRM Field Mapping Configuration:**
+    - Implemented `FieldMapping` in `internal/crm` to allow customizable property names for HubSpot and Salesforce.
+    - Added `SetFieldMapping` to `CRMClient` interface and implemented it across all clients (HubSpot, Salesforce, REST, Mock).
+    - Exposed CRM field mappings via environment variables and updated `internal/config`.
+    - Integrated dynamic mapping into `HubSpotCRMClient` and `SalesforceCRMClient` for API requests and response parsing.
+- **Deployment & Readiness:**
+    - Updated `Dockerfile` and `docker-compose.staging.yml` for staging environment readiness.
+    - Enhanced `DEPLOY.md` with CRM field mapping instructions and staging validation steps.
+    - Verified full framework state with comprehensive unit and integration tests.
+
 ## [0.4.8] - 2026-06-08
 
 ### Added

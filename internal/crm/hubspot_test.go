@@ -2,6 +2,7 @@ package crm
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -67,5 +68,36 @@ func TestHubSpotCRMClient_ValidateAccount(t *testing.T) {
 
 	if !valid {
 		t.Error("Expected account to be valid")
+	}
+}
+
+func TestHubSpotCRMClient_FieldMapping(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/crm/v3/objects/deals" {
+			// Check if custom property name is used in the request body
+			var body map[string]interface{}
+			if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+				t.Fatalf("Failed to decode body: %v", err)
+			}
+			props := body["properties"].(map[string]interface{})
+			if _, ok := props["custom_deal_name"]; !ok {
+				t.Errorf("Expected custom_deal_name property, got %+v", props)
+			}
+			w.WriteHeader(http.StatusCreated)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	}))
+	defer server.Close()
+
+	client := NewHubSpotCRMClient("test-token")
+	client.BaseURL = server.URL
+	client.SetFieldMapping(FieldMapping{
+		DealNameProperty: "custom_deal_name",
+	})
+
+	err := client.PushDeal(context.Background(), db.Deal{ID: 1}, db.Company{Name: "TestCorp"}, "test")
+	if err != nil {
+		t.Fatalf("PushDeal failed: %v", err)
 	}
 }

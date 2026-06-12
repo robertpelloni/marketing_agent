@@ -177,7 +177,7 @@ func main() {
 
 	// 2h. Setup Email Sender — SMTP or Mock
 	var emailSender communication.EmailSender
-	if cfg.SMTPHost != "" && cfg.SMTPUsername != "" && cfg.SMTPPassword != "" {
+	if cfg.SMTPHost != "" && cfg.SMTPUsername != "" && cfg.SMTPPassword != "" && !cfg.DryRun {
 		log.Printf("Email: Initializing SMTP sender via %s:%d as %s", cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUsername)
 		emailSender = communication.NewSMTPSender(communication.SMTPConfig{
 			Host:     cfg.SMTPHost,
@@ -188,7 +188,11 @@ func main() {
 			FromName: cfg.SMTPFromName,
 		})
 	} else {
-		log.Println("Email: No SMTP configured — outbound emails will be logged but not sent.")
+		if cfg.DryRun {
+			log.Println("Email: DRY RUN mode — emails will be drafted but NOT sent.")
+		} else {
+			log.Println("Email: No SMTP configured — outbound emails will be logged but not sent.")
+		}
 		emailSender = &communication.MockEmailSender{}
 	}
 

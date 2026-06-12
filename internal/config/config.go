@@ -25,6 +25,9 @@ type Config struct {
 	Port                string
 	Environment         string
 
+	// Safety
+	DryRun bool
+
 	// Lead Discovery
 	HunterAPIKey string
 
@@ -106,6 +109,9 @@ func Load() *Config {
 		DeploySyncInterval:  syncInterval,
 		Port:                port,
 		Environment:         env,
+
+		// Safety
+		DryRun: os.Getenv("DRY_RUN") == "true",
 
 		// Lead Discovery
 		HunterAPIKey: os.Getenv("HUNTER_API_KEY"),

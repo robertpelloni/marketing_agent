@@ -22,6 +22,10 @@ type Config struct {
 	SMTPUser            string
 	SMTPPass            string
 	SMTPFrom            string
+	IMAPHost            string
+	IMAPPort            string
+	IMAPUser            string
+	IMAPPass            string
 	DeploySyncInterval  time.Duration
 	Port                string
 	Environment         string
@@ -67,6 +71,10 @@ func Load() *Config {
 		SMTPUser:            os.Getenv("SMTP_USER"),
 		SMTPPass:            os.Getenv("SMTP_PASS"),
 		SMTPFrom:            os.Getenv("SMTP_FROM"),
+		IMAPHost:            os.Getenv("IMAP_HOST"),
+		IMAPPort:            os.Getenv("IMAP_PORT"),
+		IMAPUser:            os.Getenv("IMAP_USER"),
+		IMAPPass:            os.Getenv("IMAP_PASS"),
 		DeploySyncInterval:  syncInterval,
 		Port:                port,
 		Environment:         env,

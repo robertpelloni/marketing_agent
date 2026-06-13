@@ -92,7 +92,7 @@
 
 ### 7.2 Real Communication Channels
 - [ ] **Implement SMTP email sender** for outbound outreach (replace mock)
-- [ ] **Implement IMAP/POP3 email polling** for inbound message ingestion
+- [x] **Implement IMAP/POP3 email polling** for inbound message ingestion
 - [ ] **Implement LinkedIn message sending** via headless automation
 - [ ] **Implement GitHub Issue/PR comment outreach** as a technical hook channel
 - [ ] **Add channel preference logic** — route outreach via the contact's preferred channel

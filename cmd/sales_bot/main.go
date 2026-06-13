@@ -139,11 +139,6 @@ func main() {
 	// Run researcher in background
 	go r.Run(ctx, 1*time.Hour)
 
-	crmWorker := crm.NewWorker(database, crmClient)
-
-	// Run CRM sync in background
-	go crmWorker.Run(ctx, 30*time.Minute)
-
 	// 2cb. Setup TormentNexus Outreach System
 	outreachWorker := agents.NewTargetDiscoveryWorker(database)
 
@@ -195,6 +190,13 @@ func main() {
 
 	// Run communication poller in background
 	go commManager.Run(ctx, 30*time.Minute)
+
+	// 2ea. Setup CRM and Email Pollers (Inbound Ingestion)
+	crmWorker := crm.NewWorker(database, crmClient, commManager)
+	go crmWorker.Run(ctx, 30*time.Minute)
+
+	imapPoller := mail.NewIMAPPoller(database, commManager, cfg.IMAPHost, cfg.IMAPUser, cfg.IMAPPass)
+	go imapPoller.Run(ctx, 30*time.Minute)
 
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")

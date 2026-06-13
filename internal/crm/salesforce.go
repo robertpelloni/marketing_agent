@@ -99,8 +99,8 @@ func (c *SalesforceCRMClient) RefreshToken(ctx context.Context) error {
 }
 
 func (c *SalesforceCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interaction, error) {
-	// Querying Task or EmailMessage
-	url := fmt.Sprintf("%s/services/data/v54.0/query/?q=SELECT+Description,Subject+FROM+Task+LIMIT+10", c.BaseURL)
+	// Querying EmailMessage to get real-time inbound emails
+	url := fmt.Sprintf("%s/services/data/v54.0/query/?q=SELECT+TextBody,Subject,FromAddress+FROM+EmailMessage+WHERE+Incoming=true+LIMIT+10", c.BaseURL)
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -119,8 +119,9 @@ func (c *SalesforceCRMClient) GetNewInteractions(ctx context.Context) ([]db.Inte
 
 	var result struct {
 		Records []struct {
-			Description string `json:"Description"`
+			TextBody    string `json:"TextBody"`
 			Subject     string `json:"Subject"`
+			FromAddress string `json:"FromAddress"`
 		} `json:"records"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
@@ -130,9 +131,9 @@ func (c *SalesforceCRMClient) GetNewInteractions(ctx context.Context) ([]db.Inte
 	interactions := make([]db.Interaction, len(result.Records))
 	for i, r := range result.Records {
 		interactions[i] = db.Interaction{
-			RawText: r.Description,
-			Summary: r.Subject,
-			Channel: "Salesforce Task",
+			RawText: r.TextBody,
+			Summary: r.FromAddress, // Use sender address for identification
+			Channel: "Salesforce Email",
 		}
 	}
 

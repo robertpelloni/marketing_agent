@@ -4,22 +4,30 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"log/slog"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
+// InboundProcessor defines an interface for processing inbound communication autonomously.
+type InboundProcessor interface {
+	ProcessInbound(ctx context.Context, contact db.Contact, text string) (string, error)
+}
+
 // Worker coordinates the synchronization between the local database and the external CRM.
 type Worker struct {
 	db     *db.DB
 	client CRMClient
+	comm   InboundProcessor
 }
 
 // NewWorker creates a new CRM synchronization worker.
-func NewWorker(database *db.DB, client CRMClient) *Worker {
+func NewWorker(database *db.DB, client CRMClient, comm InboundProcessor) *Worker {
 	return &Worker{
 		db:     database,
 		client: client,
+		comm:   comm,
 	}
 }
 
@@ -42,17 +50,26 @@ func (w *Worker) Run(ctx context.Context, interval time.Duration) {
 }
 
 func (w *Worker) sync(ctx context.Context) {
-	log.Println("CRM Worker: Executing sync cycle...")
+	slog.Info("CRM Worker: Executing sync cycle...")
 
 	// 0. Pull new interactions from CRM
 	newInteractions, err := w.client.GetNewInteractions(ctx)
 	if err != nil {
-		log.Printf("CRM Worker: Error fetching new interactions: %v", err)
+		slog.Error("CRM Worker: Error fetching new interactions", "error", err)
 	} else {
 		for _, interaction := range newInteractions {
-			log.Printf("CRM Worker: Processing new interaction from CRM: %s", interaction.RawText)
-			// In a real system, we'd lookup the contact by email and persist
-			// For now, we log the activity.
+			slog.Info("CRM Worker: Processing new interaction from CRM", "text", interaction.RawText)
+
+			// If we have a contact email, try to process it autonomously
+			if interaction.Summary != "" && w.comm != nil {
+				contact, err := w.db.GetContactByEmail(ctx, interaction.Summary)
+				if err == nil {
+					slog.Info("CRM Worker: Found contact for CRM interaction, triggering autonomous response", "email", interaction.Summary)
+					if _, err := w.comm.ProcessInbound(ctx, *contact, interaction.RawText); err != nil {
+						slog.Error("CRM Worker: Failed to process CRM inbound", "email", interaction.Summary, "error", err)
+					}
+				}
+			}
 		}
 	}
 

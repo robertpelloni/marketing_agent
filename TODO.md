@@ -46,8 +46,8 @@
 - [ ] Add enrichment source fallback chain
 
 ### Real Communication Channels
-- [ ] Implement SMTP email sender for outbound outreach
-- [ ] Implement IMAP/POP3 email polling for inbound ingestion
+- [x] Implement SMTP email sender for outbound outreach
+- [x] Implement IMAP/POP3 email polling for inbound ingestion
 - [ ] Implement LinkedIn message sending via headless automation
 - [ ] Implement GitHub Issue/PR comment outreach as technical hook
 - [ ] Add channel preference logic per contact

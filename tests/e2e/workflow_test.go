@@ -256,7 +256,7 @@ func TestCRMReconciliationWorkflow(t *testing.T) {
 	defer crmServer.Close()
 
 	realCRM := crm.NewRestCRMClient(crmServer.URL, "recon-token")
-	worker := crm.NewWorker(database, realCRM)
+	worker := crm.NewWorker(database, realCRM, nil)
 
 	// 3. Trigger reconciliation
 	// crm.Worker.sync is internal, but we can call Run once or simulate it.

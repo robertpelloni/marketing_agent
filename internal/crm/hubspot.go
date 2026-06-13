@@ -90,7 +90,8 @@ func (c *HubSpotCRMClient) PushDeal(ctx context.Context, deal db.Deal, company d
 
 func (c *HubSpotCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interaction, error) {
 	// HubSpot Communications API
-	url := fmt.Sprintf("%s/crm/v3/objects/communications?limit=10&properties=hs_communication_body,hs_communication_channel_type", c.BaseURL)
+	// We include hs_communication_sender_email to identify the contact
+	url := fmt.Sprintf("%s/crm/v3/objects/communications?limit=10&properties=hs_communication_body,hs_communication_channel_type,hs_communication_sender_email", c.BaseURL)
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -113,6 +114,7 @@ func (c *HubSpotCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interac
 			Properties struct {
 				Body        string `json:"hs_communication_body"`
 				ChannelType string `json:"hs_communication_channel_type"`
+				SenderEmail string `json:"hs_communication_sender_email"`
 			} `json:"properties"`
 		} `json:"results"`
 	}
@@ -125,6 +127,7 @@ func (c *HubSpotCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interac
 		interactions[i] = db.Interaction{
 			RawText: r.Properties.Body,
 			Channel: r.Properties.ChannelType,
+			Summary: r.Properties.SenderEmail, // Store sender email in Summary for identification
 		}
 	}
 

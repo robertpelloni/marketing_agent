@@ -65,7 +65,7 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 	}
 
 	// SELF-IMPROVING PROMPTS: Inject successful past interactions as few-shot examples
-	if g.db != nil {
+	if g.db != nil && g.db.Conn != nil {
 		successes, err := g.db.ListSuccessfulInteractions(ctx, 3)
 		if err == nil && len(successes) > 0 {
 			examples := []string{}

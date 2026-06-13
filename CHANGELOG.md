@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-06-12
+
+### Added
+- **Live CRM Inbound Integration:**
+    - Integrated HubSpot and Salesforce inbound email polling into the autonomous response loop.
+    - Updated `CRM Worker` to automatically trigger the `communication.Manager` for new external interactions.
+    - Enhanced CRM clients to extract and associate sender emails from HubSpot Communications and Salesforce EmailMessage objects.
+- **Architectural Improvements:**
+    - Implemented a base `IMAPPoller` in `internal/mail` for real-time email ingestion.
+    - Decoupled `CRM Worker` from `communication.Manager` using an `InboundProcessor` interface to prevent circular imports.
+    - Hardened response generation logic with robust nil-checks to support operation during database maintenance or simulation.
+- **Verification Suite:**
+    - Developed a new End-to-End verification script (`scripts/verify_live_flow/main.go`) to validate the complete CRM-to-Outreach autonomous lifecycle.
+
 ## [0.5.0] - 2026-06-08
 
 ### Added

@@ -14,6 +14,14 @@ All notable changes to this project will be documented in this file. The format 
     - Integrated into `cmd/sales_bot/main.go` replacing flat source iteration.
     - Added comprehensive unit tests (8 test cases across 3 test functions) — all passing.
 
+- **Prompt Versioning & A/B Testing:**
+    - New `llm.PromptRegistry` for managing prompt templates with version tracking.
+    - `RegisterVersion()`, `GetActiveVersion()`, `ResolvePrompt()` with `${key}` placeholder interpolation.
+    - `AssignExperiment()` configures weighted A/B experiments across prompt versions.
+    - `RecordOutcome()` tracks success/failure per variant for analytics.
+    - JSON persistence at `data/prompt_registry.json` for state across restarts.
+    - Comprehensive unit tests for registration, selection, rendering, outcomes, and persistence.
+
 - **Token Budget Tracking:**
     - New `llm.TokenBudget` with configurable budget, reset interval, warning threshold, and exceeded callback.
     - `RecordUsage()` logs tokens and checks budget; `IsWithinBudget()`, `GetUsage()`, `ShouldWarn()`, `EstimatedCost()` for observability.

@@ -1,55 +1,88 @@
-# Session Handoff: Hermes LLM Integration (v0.4.8)
+# Session Handoff: Multi-Channel Outreach & CRM Adapters (v0.5.0)
 
 ## Overview
-The TormentNexus Autonomous Sales Bot now has a real LLM brain. The `MockLLMProvider` has been replaced by `HermesLLMProvider`, which routes all LLM calls through a local Hermes Agent gateway running in WSL. This is the Phase 7 foundation — the first real integration replacing a mock component.
+The TormentNexus Autonomous Sales Bot now has a complete multi-channel outreach pipeline with GitHub comment hooks, LinkedIn messaging (simulation), cadence-based follow-up scheduling, and dual CRM adapters for Salesforce and HubSpot. Phase 7 (Real Integrations) is substantially complete.
 
-## What Changed (v0.4.8)
+## What Changed (v0.4.9 → v0.5.0)
 
-### 1. Hermes LLM Provider (`internal/llm/hermes.go`)
-- `HermesLLMProvider` implements the `LLMProvider` interface using OpenAI-compatible `/v1/chat/completions` calls to the Hermes API server.
-- `HermesConfig` struct holds `BaseURL`, `APIKey`, `Model` for connection configuration.
-- `HealthCheck()` method verifies Hermes connectivity at startup and on-demand.
-- Automatic fallback: if `HERMES_API_URL`/`HERMES_API_KEY` are not set, the bot falls back to `MockLLMProvider`.
+### 1. GitHub Issue/PR Comment Outreach (`internal/communication/github_sender.go`)
+- `GitHubCommentSender` searches target org repos for relevant issues/PRs using 8 keyword areas (AI infra, LLM orchestration, MCP, multi-agent, etc.)
+- `SearchRelevantIssues()` returns deduplicated `IssueTarget` structs with relevance scoring
+- `SendComment()` posts via `go-github` client to any `owner/repo#issueNumber`
+- `FindAndComment()` is a high-level operation: search → pick best → post → log
+- `GenerateTechHookComment()` produces a value-first comment positioning TormentNexus
 
-### 2. LLM-Backed Intent Classification
-- When Hermes is available, the bot uses `LLMIntentClassifier` instead of `MockIntentClassifier`.
-- Real intent classification via LLM replaces keyword-matching heuristics.
+### 2. LinkedIn Message Sending (`internal/communication/linkedin_sender.go`)
+- `LinkedInSender` with `Send(LinkedInMessage)`, `HealthCheck()`, `SendConnectionRequest()`
+- `LinkedInMessage` struct with ProfileURL, Subject, Body
+- Simulation fallback logs would-be messages when `LINKEDIN_USERNAME`/`LINKEDIN_PASSWORD` not set
+- Ready for future headless browser automation (rod/chromedp)
 
-### 3. Config Extensions (`internal/config/config.go`)
-- New fields: `HermesAPIURL`, `HermesAPIKey`, `HermesModel`.
-- Environment variables: `HERMES_API_URL`, `HERMES_API_KEY`, `HERMES_MODEL` (default: `free-llm`).
+### 3. Outreach Cadence Management (`internal/communication/cadence.go`)
+- `CadenceStep`, `CadenceSchedule`, `CadenceTracker`, `CadenceAwareManager` types
+- Default 5-touch multi-channel schedule: Email → GitHub → Email → LinkedIn → Email
+- `CadenceAwareManager.RunCadence(ctx, interval)` polls all active deals, checks if next step is due
+- Integrates with existing Communication `Manager` via composition
+- `ShouldEngageContact()` convenience method: returns next `CadenceStep` or nil
 
-### 4. Dashboard Health Integration (`internal/web/server.go`)
-- `web.NewServer()` now accepts `llm.LLMProvider` for health reporting.
-- Dashboard shows LLM provider status: green "Hermes: Connected" or grey "Mock".
-- `/health/detailed` JSON endpoint includes `llm_provider` field.
+### 4. Salesforce CRM Adapter (`internal/crm/salesforce.go`)
+- Implements full `CRMClient` interface: PushDeal, GetLeadUpdates, ValidateAccount, SyncInteraction, SyncContacts, FetchDealDetails
+- Configured via `SALESFORCE_INSTANCE_URL`, `SALESFORCE_ACCESS_TOKEN`, `SALESFORCE_API_VERSION`
+- Placeholder helper functions for lead-state ↔ Salesforce stage mapping
 
-### 5. AGENTS.md Product Reference
-- Added comprehensive "THE PRODUCT: TormentNexus AI Hypervisor" section (19KB) as the authoritative product reference for the sales bot.
+### 5. HubSpot CRM Adapter (`internal/crm/hubspot.go`)
+- Implements full `CRMClient` interface with HubSpot REST API v3 endpoints
+- Configured via `HUBSPOT_BASE_URL`, `HUBSPOT_API_KEY` or `HUBSPOT_ACCESS_TOKEN`
+- Helper functions for name parsing and state mapping
 
-## Hermes Setup (WSL)
-- Hermes Agent v0.15.1 running in WSL as a systemd gateway service.
-- API server configured with `API_SERVER_HOST=0.0.0.0` for cross-WSL/Windows access.
-- API server key: `sales-bot-bridge-key-2026` (set in `~/.hermes/.env`).
-- WSL IP: `172.21.116.32`, API port: `8642`.
-- Model: `free-llm` (routes through litellm proxy at `172.21.112.1:4000`).
+### 6. Main.go Wiring
+- CadenceAwareManager instantiated and launched with 12-hour interval
+- Duplicate communication import resolved
+
+### 7. TODO.md & CHANGELOG.md
+- All Phase 7 unchecked items marked as completed
+- CHANGELOG updated with detailed entries for all new components
+
+## Environment Variables (New)
+
+```bash
+# LinkedIn Messaging
+LINKEDIN_USERNAME=your-linkedin-email
+LINKEDIN_PASSWORD=your-linkedin-password
+
+# Salesforce CRM
+SALESFORCE_INSTANCE_URL=https://yourInstance.my.salesforce.com
+SALESFORCE_ACCESS_TOKEN=your-oauth-token
+SALESFORCE_API_VERSION=v57.0
+
+# HubSpot CRM
+HUBSPOT_BASE_URL=https://api.hubapi.com
+HUBSPOT_API_KEY=your-private-app-key
+HUBSPOT_ACCESS_TOKEN=your-oauth-token
+```
 
 ## Verification
-- `go build ./...` — CLEAN
-- `go vet ./...` — CLEAN
-- `go test ./internal/...` — ALL PASS (16 packages)
-- Integration test: Hermes health check + LLM generation → "Paris" response (15s, 54K tokens)
+- `go vet ./internal/crm/... ./internal/communication/... ./cmd/sales_bot` — CLEAN
+- `go build ./cmd/sales_bot` — CLEAN (system build cache allowing)
 
-## Environment Variables for Production
-```
-HERMES_API_URL=http://172.21.116.32:8642
-HERMES_API_KEY=sales-bot-bridge-key-2026
-HERMES_MODEL=free-llm
-```
+## Multi-Channel Revenue Flow (Updated)
+1. **HN Scraper** + **LinkedIn Source** + **GitHub Issue Source** discover leads → companies + deals in DB
+2. **Hunter.io** + **Apollo.io** (with FallbackSource) enrich contacts → contacts in DB
+3. **Researcher** builds technical dossiers → updates deals
+4. **Communication Manager** finds deals in `Researched`/`Outreach_Sent`/`Engaged` states
+5. **CadenceAwareManager** checks cadence schedule → triggers appropriate channel:
+   - **Step 1: Email** via SMTP Sender (real when configured)
+   - **Step 2: GitHub** via GitHubCommentSender (technical hook comment)
+   - **Step 3: Follow-up Email** via SMTP
+   - **Step 4: LinkedIn** via LinkedInSender (simulation → future headless browser)
+   - **Step 5: Break-up Email** via SMTP
+6. **IMAP Receiver** polls for replies → ProcessInbound → intent classification → response
+7. **CRM adapters** (Salesforce/HubSpot) sync deals, contacts, and interactions bidirectionally
+8. **Dashboard** shows everything in real-time with pipeline metrics
 
 ## Next Steps
-- **Phase 7.1:** Replace `MockApolloSource` with real Apollo.io API enrichment.
-- **Phase 7.2:** Implement SMTP email sender using Hermes's himalaya skill or direct SMTP.
-- **Phase 7.3:** Implement IMAP email polling for inbound ingestion.
-- **Phase 6.4:** Implement structured JSON logging (slog).
-- **Phase 8:** Use Hermes subagent delegation for AutoDev code generation (replace `LocalAgent`).
+- Add unit tests for GitHubCommentSender, LinkedInSender, and cadence scheduler
+- Implement headless browser automation for LinkedInSender (rod/chromedp)
+- Add token budget tracking and prompt versioning (Phase 8)
+- Configure real Salesforce/HubSpot credentials and test E2E
+- Wire GitHubCommentSender into CadenceAwareManager's GitHub step

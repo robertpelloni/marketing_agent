@@ -263,9 +263,13 @@ func (db *DB) UpdateTechnicalDossier(ctx context.Context, dealID int64, dossier 
 
 // CreateContact inserts a new contact into the database.
 func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
+	if contact.PreferredChannel == "" {
+		contact.PreferredChannel = string(DefaultChannel())
+	}
+
 	query := `
-		INSERT INTO contacts (company_id, name, role, email, github_handle, linkedin_url, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		INSERT INTO contacts (company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 		RETURNING id
 	`
 	now := time.Now()
@@ -279,6 +283,7 @@ func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
 		contact.Email,
 		contact.GitHubHandle,
 		contact.LinkedInURL,
+		contact.PreferredChannel,
 		contact.CreatedAt,
 		contact.UpdatedAt,
 	).Scan(&contact.ID)
@@ -289,10 +294,24 @@ func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
 	return nil
 }
 
+// UpdateContactPreferredChannel updates the preferred communication channel for a contact.
+func (db *DB) UpdateContactPreferredChannel(ctx context.Context, contactID int64, channel string) error {
+	query := `
+		UPDATE contacts
+		SET preferred_channel = $1, updated_at = $2
+		WHERE id = $3
+	`
+	_, err := db.Conn.ExecContext(ctx, query, channel, time.Now(), contactID)
+	if err != nil {
+		return fmt.Errorf("failed to update contact preferred channel: %w", err)
+	}
+	return nil
+}
+
 // ListContactsByCompany retrieves all contacts for a specific company.
 func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Contact, error) {
 	query := `
-		SELECT id, company_id, name, role, email, github_handle, linkedin_url, created_at, updated_at
+		SELECT id, company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at
 		FROM contacts
 		WHERE company_id = $1
 	`
@@ -313,6 +332,7 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 			&contact.Email,
 			&contact.GitHubHandle,
 			&contact.LinkedInURL,
+			&contact.PreferredChannel,
 			&contact.CreatedAt,
 			&contact.UpdatedAt,
 		); err != nil {
@@ -327,7 +347,7 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 // GetContactByEmail retrieves a contact by their email address.
 func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, error) {
 	query := `
-		SELECT id, company_id, name, role, email, github_handle, linkedin_url, created_at, updated_at
+		SELECT id, company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at
 		FROM contacts
 		WHERE LOWER(email) = LOWER($1)
 		LIMIT 1
@@ -341,6 +361,7 @@ func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, er
 		&contact.Email,
 		&contact.GitHubHandle,
 		&contact.LinkedInURL,
+		&contact.PreferredChannel,
 		&contact.CreatedAt,
 		&contact.UpdatedAt,
 	)

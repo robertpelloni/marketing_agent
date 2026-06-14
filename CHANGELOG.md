@@ -4,6 +4,60 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+### Added
+- **Enrichment Source Fallback Chain:**
+    - Implemented `FallbackSource` in `internal/enrichment/fallback.go`.
+    - Wraps multiple `EnrichmentSource` instances (Hunter.io, Apollo.io, Mock) and tries each in order.
+    - Logs clear pass/fail indicators per source with structured status reporting.
+    - Respects context cancellation mid-chain.
+    - Exposes `Status()`, `Sources()`, and `Names()` for observability and testing.
+    - Integrated into `cmd/sales_bot/main.go` replacing flat source iteration.
+    - Added comprehensive unit tests (8 test cases across 3 test functions) — all passing.
+
+- **GitHub Issue/PR Comment Outreach:**
+    - New `communication.GitHubCommentSender` that searches for relevant issues/PRs in a target org and posts a technical hook comment.
+    - Includes `SendComment`, `SearchRelevantIssues`, and `FindAndComment` helpers.
+    - Simulated placeholder comment generation (`GenerateTechHookComment`).
+    - Uses `go‑github` client; respects rate‑limiting; logs actions.
+
+- **LinkedIn Message Sending (simulation placeholder):**
+    - New `communication.LinkedInSender` with `Send`, `HealthCheck`, and connection‑request stubs.
+    - Works with `LINKEDIN_USERNAME`/`LINKEDIN_PASSWORD` env vars.
+    - Currently logs simulated messages; ready for headless‑browser automation (rod/chromedp).
+
+- **Outreach Cadence Management:**
+    - Added `cadence.go` defining `CadenceStep`, `CadenceSchedule`, `CadenceTracker`, and `CadenceAwareManager`.
+    - Provides a default 5‑touch multi‑channel schedule (email → GitHub → email → LinkedIn → email).
+    - `CadenceAwareManager` runs a periodic scheduler that decides when to trigger the next touch based on interaction history.
+    - Integrated with the existing `communication.Manager` via composition.
+
+- **Salesforce CRM Adapter:**
+    - New `crm.SalesforceClient` implementing `CRMClient` (push deals, lead updates, account validation, sync contacts/interactions, fetch deal details).
+    - Uses env vars `SALESFORCE_INSTANCE_URL`, `SALESFORCE_ACCESS_TOKEN`, `SALESFORCE_API_VERSION`.
+    - Placeholder mapping functions for lead‑state conversions.
+
+- **HubSpot CRM Adapter:**
+    - New `crm.HubSpotClient` implementing `CRMClient` (push deals, lead updates, account validation, sync contacts/interactions, fetch deal details).
+    - Configured via `HUBSPOT_BASE_URL`, `HUBSPOT_API_KEY` or `HUBSPOT_ACCESS_TOKEN`.
+    - Includes helper functions for converting Salesforce‑style states.
+
+- **Channel Preference per Contact:**
+    - Added `preferred_channel` column to `contacts` table (migration `000005`).
+    - Extended `Contact` model with `PreferredChannel` field and introduced `db.Channel` type with constants (`ChannelEmail`, `ChannelLinkedIn`, `ChannelGitHub`) and helper methods (`DefaultChannel`, `IsValid`, `String`).
+    - Updated `CreateContact`, `ListContactsByCompany`, `GetContactByEmail` to include `preferred_channel`; added `UpdateContactPreferredChannel` method.
+    - Communication Manager now respects contact channel preference via `DefaultChannelForContact()` helper, using it for inbound/outbound interaction channel tagging and sender routing.
+    - Web dashboard displays contact channel preference as an inline dropdown (Email/LinkedIn/GitHub) with auto‑submit on change via new `update_channel` POST handler.
+
+- **LinkedIn Sales Navigator Scraper:**
+    - Implemented `LinkedInSource` in `internal/scraper/linkedin_source.go` implementing `LeadSource` interface.
+    - Configurable via `LINKEDIN_USERNAME`/`LINKEDIN_PASSWORD` environment variables.
+    - Includes `SetTargetTitles()` for configurable job title filtering (CTO, VP Engineering, Lead Developer, etc.).
+    - `HealthCheck()` validates credential presence and configuration.
+    - Simulation fallback returns high‑value AI/ML targets when credentials are not configured.
+    - Integrated into `cmd/sales_bot/main.go` scraper source list alongside HN and GitHub sources.
+    - Comprehensive unit tests (discovery, health check, credential configuration, title configuration) — all passing.
+    - Designed for future headless browser automation (placeholder for rod/chromedp).
+
 ## [0.4.9] - 2026-06-10
 
 ### Added

@@ -23,6 +23,7 @@ type DraftSender struct {
 }
 
 // NewDraftSender creates a sender that saves drafts via IMAP.
+// For Gmail, uses "[Gmail]/Drafts" as the drafts folder.
 func NewDraftSender(host string, port int, username, password string) *DraftSender {
 	if port == 0 {
 		port = 993
@@ -32,7 +33,7 @@ func NewDraftSender(host string, port int, username, password string) *DraftSend
 		Port:     port,
 		Username: username,
 		Password: password,
-		Folder:   "Drafts",
+		Folder:   "[Gmail]/Drafts",
 	}
 }
 
@@ -63,10 +64,10 @@ func (d *DraftSender) Send(ctx context.Context, msg EmailMessage) error {
 	message.WriteString(msg.Body)
 
 	// Append to Drafts folder with \Draft flag
-	literal := strings.NewReader(message.String())
-	flags := []string{imap.DraftFlag}
+	body := message.String()
+	literal := newLiteral(body)
 
-	if err := c.Append(d.Folder, flags, now, literal); err != nil {
+	if err := c.Append(d.Folder, []string{imap.DraftFlag}, now, literal); err != nil {
 		return fmt.Errorf("draft: failed to save to %s: %w", d.Folder, err)
 	}
 
@@ -88,4 +89,21 @@ func (d *DraftSender) HealthCheck(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+// literalString wraps a string to implement imap.Literal (io.Reader + Len()).
+type literalString struct {
+	*strings.Reader
+	size int
+}
+
+func newLiteral(s string) *literalString {
+	return &literalString{
+		Reader: strings.NewReader(s),
+		size:   len(s),
+	}
+}
+
+func (l *literalString) Len() int {
+	return l.size
 }

@@ -40,17 +40,17 @@
 ## Phase 7 — Real Integrations & Multi-Channel Outreach
 
 ### Real Enrichment Providers
-- [ ] Implement Apollo.io API enrichment source (replace mock)
-- [ ] Implement Hunter.io email finder as secondary source
-- [ ] Implement LinkedIn Sales Navigator scraper for contact discovery
-- [ ] Add enrichment source fallback chain
+- [x] Implement Apollo.io API enrichment source (replace mock)
+- [x] Implement Hunter.io email finder as secondary source
+- [x] Implement LinkedIn Sales Navigator scraper for contact discovery
+- [x] Add enrichment source fallback chain
 
 ### Real Communication Channels
 - [ ] Implement SMTP email sender for outbound outreach
 - [ ] Implement IMAP/POP3 email polling for inbound ingestion
 - [ ] Implement LinkedIn message sending via headless automation
 - [ ] Implement GitHub Issue/PR comment outreach as technical hook
-- [ ] Add channel preference logic per contact
+- [x] Add channel preference logic per contact
 - [ ] Add outreach cadence management (configurable follow-up schedule)
 
 ### Real LLM Integration

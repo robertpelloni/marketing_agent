@@ -30,6 +30,7 @@ type Config struct {
 
 	// Lead Discovery
 	HunterAPIKey string
+	ApolloAPIKey string
 
 	// Email - SMTP
 	SMTPHost     string
@@ -89,7 +90,7 @@ func Load() *Config {
 		}
 	}
 
-	imapPollInterval := 3 * time.Minute
+	imapPollInterval := 30 * time.Minute
 	if d := os.Getenv("IMAP_POLL_INTERVAL"); d != "" {
 		if parsed, err := time.ParseDuration(d); err == nil {
 			imapPollInterval = parsed
@@ -115,6 +116,7 @@ func Load() *Config {
 
 		// Lead Discovery
 		HunterAPIKey: os.Getenv("HUNTER_API_KEY"),
+		ApolloAPIKey: os.Getenv("APOLLO_API_KEY"),
 
 		// SMTP
 		SMTPHost:     os.Getenv("SMTP_HOST"),

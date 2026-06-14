@@ -27,17 +27,46 @@ type Company struct {
 	UpdatedAt     time.Time `db:"updated_at"`
 }
 
+// Channel represents a communication channel for outreach.
+type Channel string
+
+const (
+	ChannelEmail    Channel = "email"
+	ChannelLinkedIn Channel = "linkedin"
+	ChannelGitHub   Channel = "github"
+)
+
+// DefaultChannel returns the default outreach channel.
+func DefaultChannel() Channel {
+	return ChannelEmail
+}
+
+// IsValid checks if the channel is a recognized channel.
+func (c Channel) IsValid() bool {
+	switch c {
+	case ChannelEmail, ChannelLinkedIn, ChannelGitHub:
+		return true
+	}
+	return false
+}
+
+// String returns the string representation of the channel.
+func (c Channel) String() string {
+	return string(c)
+}
+
 // Contact represents an individual decision-maker at a company.
 type Contact struct {
-	ID             int64     `db:"id"`
-	CompanyID      int64     `db:"company_id"`
-	Name           string    `db:"name"`
-	Role           string    `db:"role"`
-	Email          string    `db:"email"`
-	GitHubHandle   string    `db:"github_handle"`
-	LinkedInURL    string    `db:"linkedin_url"`
-	CreatedAt      time.Time `db:"created_at"`
-	UpdatedAt      time.Time `db:"updated_at"`
+	ID               int64     `db:"id"`
+	CompanyID        int64     `db:"company_id"`
+	Name             string    `db:"name"`
+	Role             string    `db:"role"`
+	Email            string    `db:"email"`
+	GitHubHandle     string    `db:"github_handle"`
+	LinkedInURL      string    `db:"linkedin_url"`
+	PreferredChannel string    `db:"preferred_channel"` // "email", "linkedin", "github"
+	CreatedAt        time.Time `db:"created_at"`
+	UpdatedAt        time.Time `db:"updated_at"`
 }
 
 // Interaction tracks communications with a contact.

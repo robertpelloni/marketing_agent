@@ -71,9 +71,11 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// 2. Setup Scraper — HN "Who is Hiring" + Mock fallback
+	// 2. Setup Scraper — HN "Who is Hiring" + LinkedIn + GitHub Issues + Mock fallback
 	sources := []scraper.LeadSource{
 		&scraper.HNWhoIsHiringSource{Client: http.DefaultClient},
+		&scraper.LinkedInSource{Client: http.DefaultClient},
+		&scraper.GitHubIssueSource{Client: http.DefaultClient, Token: cfg.GitHubToken},
 		&scraper.MockJobBoardSource{},
 	}
 	s := scraper.NewScraper(database, sources)
@@ -91,17 +93,42 @@ func main() {
 		crmClient = crm.NewMockCRMClient()
 	}
 
-	// 2b. Setup Enricher — Hunter.io + Mock fallback
+	// 2b. Setup Enricher — Hunter.io + Apollo.io + Mock with FallbackSource
 	var enrichmentSources []enrichment.EnrichmentSource
+	var sourceNames []string
+
 	if cfg.HunterAPIKey != "" {
 		log.Println("Enrichment: Initializing Hunter.io source.")
 		enrichmentSources = append(enrichmentSources, enrichment.NewHunterSource(cfg.HunterAPIKey))
+		sourceNames = append(sourceNames, "Hunter.io")
 	} else {
-		log.Println("Enrichment: No HUNTER_API_KEY set — using mock source only.")
+		log.Println("Enrichment: No HUNTER_API_KEY set - skipping Hunter.io.")
 	}
-	enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
 
-	e := enrichment.NewEnricher(database, enrichmentSources, crmClient)
+	if cfg.ApolloAPIKey != "" {
+		log.Println("Enrichment: Initializing Apollo.io source.")
+		enrichmentSources = append(enrichmentSources, enrichment.NewApolloSource(cfg.ApolloAPIKey))
+		sourceNames = append(sourceNames, "Apollo.io")
+	} else {
+		log.Println("Enrichment: No APOLLO_API_KEY set - skipping Apollo.io.")
+	}
+
+	// Always add mock source as final fallback for development/testing
+	if len(enrichmentSources) == 0 {
+		log.Println("Enrichment: No real sources configured - using mock source only.")
+		enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
+		sourceNames = append(sourceNames, "Mock")
+	} else {
+		log.Println("Enrichment: Mock source added as final fallback.")
+		enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
+		sourceNames = append(sourceNames, "Mock (fallback)")
+	}
+
+	// Wrap sources in fallback chain for ordered retry with clear logging
+	fallbackSource := enrichment.NewFallbackSource(enrichmentSources, sourceNames)
+	log.Printf("Enrichment: Fallback chain configured — %s", fallbackSource.Status())
+
+	e := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{fallbackSource}, crmClient)
 	go e.Run(ctx, 1*time.Hour)
 
 	// 2c. Setup Researcher
@@ -204,6 +231,10 @@ func main() {
 
 	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender)
 	go commManager.Run(ctx, 30*time.Minute)
+
+	// 2j. Setup Cadence-aware outreach scheduling
+	cadenceManager := communication.NewCadenceAwareManager(commManager, database)
+	go cadenceManager.RunCadence(ctx, 12*time.Hour) // checks every 12 h for next touch
 
 	// 2i. Setup IMAP Email Receiver
 	if cfg.IMAPHost != "" && cfg.IMAPUsername != "" && cfg.IMAPPassword != "" {

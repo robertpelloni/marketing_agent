@@ -118,12 +118,24 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 	}
 }
 
+// DefaultChannelForContact returns the channel to use when communicating with a contact.
+// If the contact has a preferred channel set, that is used. Otherwise defaults to "email".
+func DefaultChannelForContact(contact db.Contact) string {
+	if contact.PreferredChannel != "" {
+		return contact.PreferredChannel
+	}
+	return string(db.ChannelEmail)
+}
+
 // ProcessInbound handles a new inbound message from a contact.
 func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text string) (string, error) {
+	// Determine the channel to use for this contact
+	channel := DefaultChannelForContact(contact)
+
 	// 1. Persist inbound interaction
 	inbound := db.Interaction{
 		ContactID: contact.ID,
-		Channel:   "Email",
+		Channel:   channel,
 		Direction: "Inbound",
 		RawText:   text,
 	}
@@ -203,7 +215,7 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	// 4. Persist outbound interaction
 	outbound := db.Interaction{
 		ContactID: contact.ID,
-		Channel:   "Email",
+		Channel:   channel,
 		Direction: "Outbound",
 		RawText:   replyText,
 		Summary:   fmt.Sprintf("Reply to intent: %s", intent),
@@ -213,8 +225,8 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		return "", err
 	}
 
-	// 5. Actually send the email if SMTP is configured
-	if m.sender != nil && contact.Email != "" {
+	// 5. Actually send the communication if sender is configured
+	if m.sender != nil && contact.Email != "" && channel == "email" {
 		subject := fmt.Sprintf("Re: %s — TormentNexus", company.Name)
 		if text == "START_OUTREACH" {
 			subject = fmt.Sprintf("TormentNexus for %s — Quick Question", company.Name)
@@ -228,10 +240,11 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 
 		if err := m.sender.Send(ctx, emailMsg); err != nil {
 			log.Printf("Comm Manager: Email send failed to %s: %v", contact.Email, err)
-			// Don't fail the whole operation — the interaction is already persisted
 		} else {
 			log.Printf("Comm Manager: Email sent to %s (%s)", contact.Email, subject)
 		}
+	} else if channel != "email" {
+		log.Printf("Comm Manager: Channel %q requires future implementation for %s — reply logged", channel, contact.Email)
 	} else if m.sender == nil {
 		log.Printf("Comm Manager: No email sender configured — reply logged but not sent to %s", contact.Email)
 	}

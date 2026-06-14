@@ -103,6 +103,19 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 					log.Printf("UI: Error flagging interaction: %v", err)
 				}
 			}
+		case "update_channel":
+			contactID := r.FormValue("contact_id")
+			channel := r.FormValue("channel")
+			var id int64
+			if _, err := fmt.Sscanf(contactID, "%d", &id); err != nil {
+				log.Printf("UI: Invalid contact ID: %v", err)
+			} else {
+				if err := s.db.UpdateContactPreferredChannel(r.Context(), id, channel); err != nil {
+					log.Printf("UI: Error updating channel: %v", err)
+				} else {
+					log.Printf("UI: Contact %d channel updated to %s", id, channel)
+				}
+			}
 		case "build":
 			if err := s.deploy.ExecuteBuild(); err != nil {
 				log.Printf("UI: Build error: %v", err)
@@ -192,14 +205,46 @@ h1 { color: #333; }
 			statusTitle = "Key engineering contacts found and technical dossier compiled."
 		}
 
-		// Retrieve latest interaction ID to allow manual flagging from UI
+		// Retrieve contacts and latest interaction ID for each deal
 		contacts, _ := s.db.ListContactsByCompany(r.Context(), d.CompanyID)
 		latestInteractionID := int64(0)
+		var contactHTML string
 		if len(contacts) > 0 {
 			interactions, _ := s.db.ListInteractionsByContact(r.Context(), contacts[0].ID)
 			if len(interactions) > 0 {
 				latestInteractionID = interactions[0].ID
 			}
+
+			// Build contacts HTML with channel preference dropdown
+			contactHTML = `<div style="margin-top: 8px; font-size: 0.9em;">`
+			for _, c := range contacts {
+				channel := c.PreferredChannel
+				if channel == "" {
+					channel = "email"
+				}
+				contactHTML += fmt.Sprintf(`
+				<div style="margin: 4px 0;">
+					<strong>%s</strong> (%s) — 
+					<span style="color: %s;">%s</span>
+					<form method="POST" style="display:inline; margin-left: 8px;">
+						<input type="hidden" name="action" value="update_channel">
+						<input type="hidden" name="contact_id" value="%d">
+						<select name="channel" onchange="this.form.submit()" style="font-size: 0.85em; padding: 2px 4px;">
+							<option value="email"%s>Email</option>
+							<option value="linkedin"%s>LinkedIn</option>
+							<option value="github"%s>GitHub</option>
+						</select>
+					</form>
+				</div>`,
+					html.EscapeString(c.Name),
+					html.EscapeString(c.Role),
+					"#17a2b8", html.EscapeString(channel),
+					c.ID,
+					map[bool]string{true: " selected", false: ""}[channel == "email"],
+					map[bool]string{true: " selected", false: ""}[channel == "linkedin"],
+					map[bool]string{true: " selected", false: ""}[channel == "github"])
+			}
+			contactHTML += `</div>`
 		}
 
 		fmt.Fprintf(w, `
@@ -221,7 +266,7 @@ h1 { color: #333; }
 <button type="submit" class="action-btn" style="background-color: #6f42c1;">Flag Success</button>
 </form>
 </td>
-</tr>`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID, latestInteractionID)
+</tr>%s`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID, latestInteractionID, contactHTML)
 	}
 
 	fmt.Fprintf(w, `

@@ -14,6 +14,14 @@ All notable changes to this project will be documented in this file. The format 
     - Integrated into `cmd/sales_bot/main.go` replacing flat source iteration.
     - Added comprehensive unit tests (8 test cases across 3 test functions) — all passing.
 
+- **GitHub Repository Analysis:**
+    - New `scraper.GitHubAnalyzer` analyzes public repos for tech stack, languages, topics, activity, and infrastructure patterns.
+    - Detects bottlenecks (high open issues, popular-but-inactive repos).
+    - Identifies technologies from topics and descriptions across 12 categories (AI/ML, LLM, Kubernetes, Go, Python, Rust, etc.).
+    - Generates `RepoAnalysis` with `InsightSummary` for personalized outreach hooks.
+    - Supports both org and user repository analysis.
+    - Comprehensive unit tests for insight generation and helper methods.
+
 - **Deal Forecasting:**
     - New `sales.ForecastingEngine` that predicts win probability using historical patterns.
     - Combines source win rate, stage baseline, time-in-stage penalty, interaction sentiment, and engagement quantity.

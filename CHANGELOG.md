@@ -14,6 +14,15 @@ All notable changes to this project will be documented in this file. The format 
     - Integrated into `cmd/sales_bot/main.go` replacing flat source iteration.
     - Added comprehensive unit tests (8 test cases across 3 test functions) — all passing.
 
+- **Deal Forecasting:**
+    - New `sales.ForecastingEngine` that predicts win probability using historical patterns.
+    - Combines source win rate, stage baseline, time-in-stage penalty, interaction sentiment, and engagement quantity.
+    - Generates risk factors (stalled progress, negative sentiment, low engagement, low source win rate).
+    - `PipelineSummary` aggregates forecasts across all deals with at-risk detection.
+    - `PercentileForecast()` computes P10/P50/P90 revenue ranges for pipeline.
+    - Learns from closed deals to improve accuracy over time.
+    - Comprehensive unit tests for healthy and at-risk scenarios.
+
 - **Interaction Sentiment Analysis:**
     - New `communication.SentimentAnalyzer` with heuristic keyword-based classification.
     - Detects positive/negative/neutral/mixed sentiment with confidence scoring (-100 to +100).

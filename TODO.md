@@ -85,7 +85,7 @@
 - [ ] Add A/B testing for outreach templates
 - [ ] Add objection handling library with success rates
 - [ ] Add human-in-the-loop approval workflow for high-value deals
-- [ ] Add deal forecasting using historical patterns
+- [x] Add deal forecasting using historical patterns
 
 ### Self-Improving Prompts v2
 - [ ] Add A/B prompt testing with vs. without successful examples

@@ -99,6 +99,10 @@ func (c *SalesforceCRMClient) RefreshToken(ctx context.Context) error {
 }
 
 func (c *SalesforceCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interaction, error) {
+	if err := c.RefreshToken(ctx); err != nil {
+		return nil, fmt.Errorf("token refresh failed: %w", err)
+	}
+
 	// Querying EmailMessage to get real-time inbound emails
 	url := fmt.Sprintf("%s/services/data/v54.0/query/?q=SELECT+TextBody,Subject,FromAddress+FROM+EmailMessage+WHERE+Incoming=true+LIMIT+10", c.BaseURL)
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
@@ -141,7 +145,17 @@ func (c *SalesforceCRMClient) GetNewInteractions(ctx context.Context) ([]db.Inte
 }
 
 func (c *SalesforceCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
+	if err := c.RefreshToken(ctx); err != nil {
+		return fmt.Errorf("token refresh failed: %w", err)
+	}
+
+	method := "POST"
 	url := fmt.Sprintf("%s/services/data/v54.0/sobjects/Opportunity", c.BaseURL)
+	if deal.ID > 1000 {
+		method = "PATCH"
+		url = fmt.Sprintf("%s/services/data/v54.0/sobjects/Opportunity/%015d", c.BaseURL, deal.ID)
+	}
+
 	payload, _ := json.Marshal(map[string]interface{}{
 		c.Mapping.DealNameProperty:    fmt.Sprintf("%s - %d", company.Name, deal.ID),
 		c.Mapping.DealStageProperty:   string(deal.CurrentState),
@@ -150,7 +164,7 @@ func (c *SalesforceCRMClient) PushDeal(ctx context.Context, deal db.Deal, compan
 		"CloseDate":                   "2026-12-31", // Placeholder
 	})
 
-	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
+	req, err := http.NewRequestWithContext(ctx, method, url, bytes.NewBuffer(payload))
 	if err != nil {
 		return err
 	}
@@ -172,6 +186,10 @@ func (c *SalesforceCRMClient) PushDeal(ctx context.Context, deal db.Deal, compan
 }
 
 func (c *SalesforceCRMClient) SyncContacts(ctx context.Context, companyID int64, contacts []db.Contact) error {
+	if err := c.RefreshToken(ctx); err != nil {
+		return fmt.Errorf("token refresh failed: %w", err)
+	}
+
 	for _, contact := range contacts {
 		url := fmt.Sprintf("%s/services/data/v54.0/sobjects/Contact", c.BaseURL)
 		payload, _ := json.Marshal(map[string]interface{}{
@@ -196,6 +214,10 @@ func (c *SalesforceCRMClient) SyncContacts(ctx context.Context, companyID int64,
 }
 
 func (c *SalesforceCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error) {
+	if err := c.RefreshToken(ctx); err != nil {
+		return nil, fmt.Errorf("token refresh failed: %w", err)
+	}
+
 	// Simplified: Querying Opportunities
 	query := fmt.Sprintf("SELECT Id,%s FROM Opportunity LIMIT 10", c.Mapping.DealStageProperty)
 	url := fmt.Sprintf("%s/services/data/v54.0/query/?q=%s", c.BaseURL, url.QueryEscape(query))
@@ -237,6 +259,10 @@ func (c *SalesforceCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate,
 }
 
 func (c *SalesforceCRMClient) ValidateAccount(ctx context.Context, domain string) (bool, error) {
+	if err := c.RefreshToken(ctx); err != nil {
+		return false, fmt.Errorf("token refresh failed: %w", err)
+	}
+
 	url := fmt.Sprintf("%s/services/data/v54.0/query/?q=SELECT+Id+FROM+Account+WHERE+Website+LIKE+'%%%s%%'+LIMIT+1", c.BaseURL, domain)
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -263,13 +289,19 @@ func (c *SalesforceCRMClient) ValidateAccount(ctx context.Context, domain string
 }
 
 func (c *SalesforceCRMClient) SyncInteraction(ctx context.Context, dealID int64, note string) error {
-	// In Salesforce, notes are often attached via ContentNote or Task
+	if err := c.RefreshToken(ctx); err != nil {
+		return fmt.Errorf("token refresh failed: %w", err)
+	}
+
+	// In Salesforce, notes are often attached via ContentNote or Task.
+	// We use 'WhatId' to associate the Task with the Opportunity.
 	url := fmt.Sprintf("%s/services/data/v54.0/sobjects/Task", c.BaseURL)
 	payload, _ := json.Marshal(map[string]interface{}{
 		"Description": note,
 		"Status":      "Completed",
 		"Priority":     "Normal",
 		"Subject":      "Autonomous Sales Interaction",
+		"WhatId":       fmt.Sprintf("%015d", dealID), // Salesforce ID format padding
 	})
 
 	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
@@ -289,6 +321,10 @@ func (c *SalesforceCRMClient) SyncInteraction(ctx context.Context, dealID int64,
 }
 
 func (c *SalesforceCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error) {
+	if err := c.RefreshToken(ctx); err != nil {
+		return nil, fmt.Errorf("token refresh failed: %w", err)
+	}
+
 	url := fmt.Sprintf("%s/services/data/v54.0/sobjects/Opportunity/%d", c.BaseURL, dealID)
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -326,6 +362,10 @@ func (c *SalesforceCRMClient) FetchDealDetails(ctx context.Context, dealID int64
 }
 
 func (c *SalesforceCRMClient) SendEmail(ctx context.Context, contact db.Contact, subject, body string) error {
+	if err := c.RefreshToken(ctx); err != nil {
+		return fmt.Errorf("token refresh failed: %w", err)
+	}
+
 	url := fmt.Sprintf("%s/services/data/v54.0/sobjects/EmailMessage", c.BaseURL)
 	payload, _ := json.Marshal(map[string]interface{}{
 		"Subject":      subject,

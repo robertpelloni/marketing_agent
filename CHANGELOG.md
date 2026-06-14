@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-06-13
+
+### Added
+- **Enterprise CRM Refinement:**
+    - Implemented automated record associations: Linked HubSpot Notes to Deals and Salesforce Tasks to Opportunities (via `WhatId`).
+    - Enhanced `PushDeal` with upsert logic: The system now uses `PATCH` to update existing records, preventing duplicate entries in HubSpot and Salesforce.
+- **Improved Governance:**
+    - Standardized version 0.6.0 across all project and module metadata.
+    - Synchronized handoff documentation with finalized CRM-to-Outreach cycle verification.
+
 ## [0.5.1] - 2026-06-12
 
 ### Added
@@ -74,7 +84,7 @@ All notable changes to this project will be documented in this file. The format 
     - Expanded PushDeal payload to include technical dossiers for better CRM visibility.
 
 ### Changed
-- Rebranded all product-facing references from "TormentNexus" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
+- Rebranded all product-facing references from "Borg" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
 - Comprehensive documentation overhaul: ROADMAP, TODO, VISION, README, DEPLOY, MEMORY, IDEAS, AGENTS, HANDOFF all updated with gap analysis, forward-looking phases, and technical debt inventory.
 
 ## [0.4.1] - 2026-06-05

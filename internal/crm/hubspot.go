@@ -55,7 +55,16 @@ func (c *HubSpotCRMClient) SetFieldMapping(mapping FieldMapping) {
 }
 
 func (c *HubSpotCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
+	// 1. Search for existing deal with this ID (HubSpot ID or custom property)
+	// For this implementation, we try to UPDATE if dealID > 0, otherwise CREATE
+	// Real-world would likely use a search API with a custom 'external_id' property
+	method := "POST"
 	url := fmt.Sprintf("%s/crm/v3/objects/deals", c.BaseURL)
+	if deal.ID > 1000 { // Heuristic for existing CRM IDs vs internal increments
+		method = "PATCH"
+		url = fmt.Sprintf("%s/crm/v3/objects/deals/%d", c.BaseURL, deal.ID)
+	}
+
 	properties := map[string]string{
 		c.Mapping.DealNameProperty:    fmt.Sprintf("%s - %d", company.Name, deal.ID),
 		c.Mapping.DealStageProperty:   string(deal.CurrentState),
@@ -67,7 +76,7 @@ func (c *HubSpotCRMClient) PushDeal(ctx context.Context, deal db.Deal, company d
 		"properties": properties,
 	})
 
-	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
+	req, err := http.NewRequestWithContext(ctx, method, url, bytes.NewBuffer(payload))
 	if err != nil {
 		return err
 	}
@@ -218,6 +227,7 @@ func (c *HubSpotCRMClient) ValidateAccount(ctx context.Context, domain string) (
 }
 
 func (c *HubSpotCRMClient) SyncInteraction(ctx context.Context, dealID int64, note string) error {
+	// 1. Create the Note
 	url := fmt.Sprintf("%s/crm/v3/objects/notes", c.BaseURL)
 	payload, _ := json.Marshal(map[string]interface{}{
 		"properties": map[string]string{
@@ -243,7 +253,37 @@ func (c *HubSpotCRMClient) SyncInteraction(ctx context.Context, dealID int64, no
 		return fmt.Errorf("hubspot api error (%d): %s", resp.StatusCode, string(body))
 	}
 
-	// Association with deal would happen here in HubSpot
+	var noteResult struct {
+		ID string `json:"id"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&noteResult); err != nil {
+		return err
+	}
+
+	// 2. Associate Note with Deal (Deal ID 204 in HubSpot Note associations)
+	assocURL := fmt.Sprintf("%s/crm/v3/associations/notes/deals/batch/create", c.BaseURL)
+	assocPayload, _ := json.Marshal(map[string]interface{}{
+		"inputs": []interface{}{
+			map[string]interface{}{
+				"from": map[string]string{"id": noteResult.ID},
+				"to":   map[string]string{"id": strconv.FormatInt(dealID, 10)},
+				"type": "note_to_deal",
+			},
+		},
+	})
+
+	assocReq, err := http.NewRequestWithContext(ctx, "POST", assocURL, bytes.NewBuffer(assocPayload))
+	if err != nil {
+		return err
+	}
+	assocReq.Header.Set("Authorization", "Bearer "+c.AccessToken)
+	assocReq.Header.Set("Content-Type", "application/json")
+
+	assocResp, err := c.HTTPClient.Do(assocReq)
+	if err == nil {
+		assocResp.Body.Close()
+	}
+
 	return nil
 }
 

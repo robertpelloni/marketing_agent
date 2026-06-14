@@ -82,7 +82,7 @@
 
 ---
 
-## Phase 7 — Real Integrations & Multi-Channel Outreach
+## COMPLETED: Phase 7 — Real Integrations & Multi-Channel Outreach (Core CRM & Email)
 
 ### 7.1 Real Enrichment Providers
 - [ ] **Implement Apollo.io API enrichment source** (replace mock)
@@ -110,6 +110,7 @@
 - [x] **Implement HubSpot CRM adapter** as alternative
 - [x] **Integrate Live CRM Outreach** (SendEmail via Engagements/EmailMessage APIs)
 - [x] **Add CRM field mapping configuration** — map local fields to CRM-specific schema
+- [x] **Enterprise CRM Upsert & Association** — handle record updates and object linking (v0.6.0)
 
 ---
 

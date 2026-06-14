@@ -46,12 +46,12 @@
 - [x] Add enrichment source fallback chain
 
 ### Real Communication Channels
-- [ ] Implement SMTP email sender for outbound outreach
-- [ ] Implement IMAP/POP3 email polling for inbound ingestion
-- [ ] Implement LinkedIn message sending via headless automation
-- [ ] Implement GitHub Issue/PR comment outreach as technical hook
+- [x] Implement SMTP email sender for outbound outreach
+- [x] Implement IMAP/POP3 email polling for inbound ingestion
+- [x] Implement LinkedIn message sending via headless automation
+- [x] Implement GitHub Issue/PR comment outreach as technical hook
 - [x] Add channel preference logic per contact
-- [ ] Add outreach cadence management (configurable follow-up schedule)
+- [x] Add outreach cadence management (configurable follow-up schedule)
 
 ### Real LLM Integration
 - [x] Implement Hermes Agent LLM provider (replace mock) — routes through local Hermes gateway with 200+ model support
@@ -61,8 +61,8 @@
 - [x] Add response quality scoring before sending
 
 ### Real CRM Integration
-- [ ] Implement Salesforce CRM adapter
-- [ ] Implement HubSpot CRM adapter
+- [x] Implement Salesforce CRM adapter
+- [x] Implement HubSpot CRM adapter
 - [ ] Add CRM field mapping configuration
 
 ## Phase 8 — Intelligence & Autonomous Evolution

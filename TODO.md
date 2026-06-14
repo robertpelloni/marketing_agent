@@ -89,7 +89,7 @@
 
 ### Self-Improving Prompts v2
 - [ ] Add A/B prompt testing with vs. without successful examples
-- [ ] Add interaction sentiment analysis
+- [x] Add interaction sentiment analysis
 - [ ] Add prompt performance tracking over time
 - [ ] Add negative example injection from failed outreach
 

@@ -14,6 +14,15 @@ All notable changes to this project will be documented in this file. The format 
     - Integrated into `cmd/sales_bot/main.go` replacing flat source iteration.
     - Added comprehensive unit tests (8 test cases across 3 test functions) — all passing.
 
+- **Interaction Sentiment Analysis:**
+    - New `communication.SentimentAnalyzer` with heuristic keyword-based classification.
+    - Detects positive/negative/neutral/mixed sentiment with confidence scoring (-100 to +100).
+    - Urgency detection for time-sensitive replies.
+    - Optional LLM-assisted refinement for deeper semantic analysis.
+    - `AggregateDealSentiment()` combines multiple interactions into per-deal trends.
+    - Generates context-aware next-action recommendations per sentiment class.
+    - Comprehensive unit tests (8 tests) covering all sentiment types, urgency, and aggregation.
+
 - **Prompt Versioning & A/B Testing:**
     - New `llm.PromptRegistry` for managing prompt templates with version tracking.
     - `RegisterVersion()`, `GetActiveVersion()`, `ResolvePrompt()` with `${key}` placeholder interpolation.

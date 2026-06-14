@@ -58,7 +58,7 @@
 - [x] Add provider fallback chain for LLM calls - Hermes handles NVIDIA - OpenRouter - LM Studio/Ollama waterfall natively
 - [ ] Add token budget tracking per deal/contact
 - [ ] Add prompt versioning with A/B testing capability
-- [ ] Add response quality scoring before sending
+- [x] Add response quality scoring before sending
 
 ### Real CRM Integration
 - [ ] Implement Salesforce CRM adapter

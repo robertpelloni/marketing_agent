@@ -31,6 +31,13 @@ All notable changes to this project will be documented in this file. The format 
     - `CadenceAwareManager` runs a periodic scheduler that decides when to trigger the next touch based on interaction history.
     - Integrated with the existing `communication.Manager` via composition.
 
+- **Response Quality Scoring:**
+    - New `communication.QualityScorer` with heuristic + optional LLM-assisted evaluation.
+    - Scores messages 0–100 on personalization, relevance, CTA presence, tone, and length.
+    - `Evaluate()` returns `QualityScore` with issues and suggestions.
+    - `ScoreAndLog()` logs pass/fail with detailed breakdown.
+    - Configurable minimum threshold (default 60) to block low-quality outreach.
+
 - **Salesforce CRM Adapter:**
     - New `crm.SalesforceClient` implementing `CRMClient` (push deals, lead updates, account validation, sync contacts/interactions, fetch deal details).
     - Uses env vars `SALESFORCE_INSTANCE_URL`, `SALESFORCE_ACCESS_TOKEN`, `SALESFORCE_API_VERSION`.

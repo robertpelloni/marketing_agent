@@ -14,6 +14,13 @@ All notable changes to this project will be documented in this file. The format 
     - Integrated into `cmd/sales_bot/main.go` replacing flat source iteration.
     - Added comprehensive unit tests (8 test cases across 3 test functions) — all passing.
 
+- **Token Budget Tracking:**
+    - New `llm.TokenBudget` with configurable budget, reset interval, warning threshold, and exceeded callback.
+    - `RecordUsage()` logs tokens and checks budget; `IsWithinBudget()`, `GetUsage()`, `ShouldWarn()`, `EstimatedCost()` for observability.
+    - `DealTokenTracker` tracks per-deal token consumption.
+    - `BudgetAwareProvider` wraps any `LLMProvider` with automatic budget enforcement returning `ErrBudgetExceeded` when exhausted.
+    - Comprehensive unit tests for budget, exceed, and provider wrapping.
+
 - **GitHub Issue/PR Comment Outreach:**
     - New `communication.GitHubCommentSender` that searches for relevant issues/PRs in a target org and posts a technical hook comment.
     - Includes `SendComment`, `SearchRelevantIssues`, and `FindAndComment` helpers.

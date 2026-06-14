@@ -56,7 +56,7 @@
 ### Real LLM Integration
 - [x] Implement Hermes Agent LLM provider (replace mock) — routes through local Hermes gateway with 200+ model support
 - [x] Add provider fallback chain for LLM calls - Hermes handles NVIDIA - OpenRouter - LM Studio/Ollama waterfall natively
-- [ ] Add token budget tracking per deal/contact
+- [x] Add token budget tracking per deal/contact
 - [ ] Add prompt versioning with A/B testing capability
 - [x] Add response quality scoring before sending
 

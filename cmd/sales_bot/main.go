@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"runtime/debug"
 	"os/signal"
 	"syscall"
 	"time"
@@ -38,8 +39,7 @@ func main() {
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Fprintf(os.Stderr, "CRITICAL PANIC RECOVERED: %v\n", r)
-			// Log the stack trace for deep diagnostics
-			// (Import "runtime/debug" if more detail is needed, but %v is a start)
+			fmt.Fprintf(os.Stderr, "STACK TRACE:\n%s\n", debug.Stack())
 			os.Exit(1)
 		}
 	}()

@@ -12,6 +12,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"golang.org/x/time/rate"
 	"os"
 	"strings"
 
@@ -36,6 +37,7 @@ type Server struct {
 	auth        *auth.Authenticator
 	llmProvider llm.LLMProvider
 	mux         *http.ServeMux
+	limiter     *rate.Limiter
 }
 
 // NewServer creates a new Server instance.
@@ -48,6 +50,7 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 		auth:        auth.NewAuthenticator(),
 		llmProvider: llmProvider,
 		mux:         http.NewServeMux(),
+		limiter:     rate.NewLimiter(rate.Limit(5), 10),
 	}
 	s.routes()
 	return s
@@ -67,6 +70,10 @@ func (s *Server) routes() {
 
 // ServeHTTP implements the http.Handler interface.
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if !s.limiter.Allow() {
+		http.Error(w, "Too Many Requests", http.StatusTooManyRequests)
+		return
+	}
 	s.mux.ServeHTTP(w, r)
 }
 

@@ -19,7 +19,7 @@ TormentNexus is architected as a **Modular Monolith** driven by a suite of concu
 *   **Worker Pattern:** Each domain (Scraper, Enricher, Researcher, CRM Worker, BlogWorker) runs in an independent goroutine with configurable polling intervals and exponential backoff on failure.
 
 ## 3. Critical Engineering Decisions
-*   **Security Hardening:** Implementation of `ReadHeaderTimeout` to mitigate Slowloris attacks (G112) and mandatory `Secure; SameSite=Strict` flags for session cookies (G124). GitHub Webhook signatures are verified via HMAC-SHA256.
+*   **Security Hardening:** Implementation of `ReadHeaderTimeout` to mitigate Slowloris attacks (G112) and mandatory `Secure; SameSite=Strict` flags for session cookies (G124). GitHub Webhook signatures are verified via HMAC-SHA256. Global rate limiting (5 req/s) is applied to all web endpoints.
 *   **Dossier-Based Outreach:** Outreach is grounded in a `TechnicalDossier` (compiled by `internal/researcher`) to ensure persuasive, high-value technical hooks rather than generic LLM generation.
 *   **Autonomous Versioning:** Every successful `AutoDev` cycle triggers an internal version bump and documentation update, maintaining a "living" codebase.
 *   **UAT Simulation Portal:** A dedicated dashboard portal allows human operators to simulate complex inbound scenarios to verify the autonomous brain's decision-making.

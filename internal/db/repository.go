@@ -584,3 +584,33 @@ func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([
 	}
 	return interactions, nil
 }
+
+// GetContactByID retrieves a contact by their primary key ID.
+func (db *DB) GetContactByID(ctx context.Context, id int64) (*Contact, error) {
+	query := `
+		SELECT id, company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at
+		FROM contacts
+		WHERE id =
+		LIMIT 1
+	`
+	contact := &Contact{}
+	err := db.Conn.QueryRowContext(ctx, query, id).Scan(
+		&contact.ID,
+		&contact.CompanyID,
+		&contact.Name,
+		&contact.Role,
+		&contact.Email,
+		&contact.GitHubHandle,
+		&contact.LinkedInURL,
+		&contact.PreferredChannel,
+		&contact.CreatedAt,
+		&contact.UpdatedAt,
+	)
+	if err != nil {
+		if err.Error() == "sql: no rows in result set" {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("failed to get contact by id: %w", err)
+	}
+	return contact, nil
+}

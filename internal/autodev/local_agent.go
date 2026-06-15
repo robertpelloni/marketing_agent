@@ -8,19 +8,43 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 )
 
 // LocalAgent is an agent that executes tasks and verifies them using local tools.
-type LocalAgent struct{}
+type LocalAgent struct {
+	llm llm.LLMProvider
+}
+
+// NewLocalAgent creates a new LocalAgent.
+func NewLocalAgent(llmProvider llm.LLMProvider) *LocalAgent {
+	return &LocalAgent{llm: llmProvider}
+}
 
 func (a *LocalAgent) ProposeSolution(ctx context.Context, task Task) (string, error) {
-	log.Printf("LocalAgent: Analyzing task: %s", task.Description)
+	log.Printf("LocalAgent: Analyzing task via LLM: %s", task.Description)
 
-	if strings.Contains(strings.ToLower(task.Description), "sales-feature") {
-		return fmt.Sprintf("FILE: internal/sales/feature.go\nCONTENT:\npackage sales\n\n// Autonomous Feature: %s\nfunc ExecuteSalesFeature() {\n\tprintln(\"Executing autonomous sales logic\")\n}\n", task.Description), nil
+	if a.llm == nil {
+		log.Println("LocalAgent Warning: No LLM provider, falling back to template")
+		if strings.Contains(strings.ToLower(task.Description), "sales-feature") {
+			return fmt.Sprintf("FILE: internal/sales/feature.go\nCONTENT:\npackage sales\n\n// Autonomous Feature: %s\nfunc ExecuteSalesFeature() {\n\tprintln(\"Executing autonomous sales logic\")\n}\n", task.Description), nil
+		}
+		return fmt.Sprintf("Implementation for: %s", task.Description), nil
 	}
 
-	return fmt.Sprintf("Implementation for: %s", task.Description), nil
+	prompt := llm.Prompt{
+		System: "You are an expert Go developer. Generate a solution for the given task. " +
+			"Format your output as multiple blocks starting with 'FILE: path/to/file' followed by 'CONTENT:' and the file content.",
+		User: fmt.Sprintf("Task: %s\n\nPlease provide the code changes required.", task.Description),
+	}
+
+	proposal, err := a.llm.Generate(ctx, prompt)
+	if err != nil {
+		return "", fmt.Errorf("llm generation failed: %w", err)
+	}
+
+	return proposal, nil
 }
 
 func (a *LocalAgent) ApplyChanges(ctx context.Context, proposal string) error {

@@ -255,7 +255,7 @@ func main() {
 
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")
-	agent := &autodev.LocalAgent{}
+	agent := autodev.NewLocalAgent(llmProvider)
 
 	var prManager gitcheck.PRManager
 	if cfg.GitHubRepository != "" {
@@ -274,7 +274,7 @@ func main() {
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider)
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider, commManager)
 
 	srv := &http.Server{
 		ReadHeaderTimeout: 10 * time.Second,

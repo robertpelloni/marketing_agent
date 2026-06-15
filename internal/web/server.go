@@ -17,6 +17,7 @@ import (
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
@@ -33,18 +34,20 @@ type Server struct {
 	deploy      *deploy.Deployer
 	tracker     deploy.CITracker
 	tasks       *autodev.TaskManager
+	comm        *communication.Manager
 	auth        *auth.Authenticator
 	llmProvider llm.LLMProvider
 	mux         *http.ServeMux
 }
 
 // NewServer creates a new Server instance.
-func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, llmProvider llm.LLMProvider) *Server {
+func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, llmProvider llm.LLMProvider, commManager *communication.Manager) *Server {
 	s := &Server{
 		db:          database,
 		deploy:      deployer,
 		tracker:     tracker,
 		tasks:       taskManager,
+		comm:        commManager,
 		auth:        auth.NewAuthenticator(),
 		llmProvider: llmProvider,
 		mux:         http.NewServeMux(),
@@ -56,6 +59,7 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 func (s *Server) routes() {
 	// Protected routes
 	s.mux.Handle("/", s.auth.Middleware(http.HandlerFunc(s.handleDashboard)))
+	s.mux.Handle("/api/v1/test/simulate_inbound", s.auth.Middleware(http.HandlerFunc(s.handleSimulateInbound)))
 
 	// Public routes
 	s.mux.HandleFunc("/login", s.auth.HandleLogin)
@@ -187,7 +191,34 @@ h1 { color: #333; }
 .action-btn:hover { background-color: #218838; }
 .deploy-section { margin-top: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background: #fff; }
 .deploy-btn { background-color: #007bff; margin-right: 10px; }
+.simulation-portal { background: #343a40; color: #fff; padding: 20px; border-radius: 8px; margin-top: 30px; }
+#simulation-results { background: #000; color: #0f0; padding: 15px; font-family: monospace; height: 200px; overflow-y: auto; margin-top: 10px; border: 1px solid #444; }
 </style>
+<script>
+function simulateInbound(event, contactID) {
+	event.preventDefault();
+	const text = event.target.elements.text.value;
+	const results = document.getElementById('simulation-results');
+
+	results.innerHTML += '<div>> Simulating inbound from contact ' + contactID + ': "' + text + '"</div>';
+
+	fetch('/api/v1/test/simulate_inbound', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		body: 'contact_id=' + contactID + '&text=' + encodeURIComponent(text)
+	})
+	.then(r => r.json())
+	.then(data => {
+		results.innerHTML += '<div style="color: #0ff;">> Bot Reply: "' + data.reply + '"</div>';
+		results.scrollTop = results.scrollHeight;
+	})
+	.catch(err => {
+		results.innerHTML += '<div style="color: #f00;">> Error: ' + err + '</div>';
+	});
+
+	event.target.elements.text.value = '';
+}
+</script>
 </head>
 <body>
 <h1>Sales Bot Lead Dashboard</h1>
@@ -220,7 +251,7 @@ h1 { color: #333; }
 				latestInteractionID = interactions[0].ID
 			}
 
-			// Build contacts HTML with channel preference dropdown
+			// Build contacts HTML with channel preference dropdown and simulation form
 			contactHTML = `<div style="margin-top: 8px; font-size: 0.9em;">`
 			for _, c := range contacts {
 				channel := c.PreferredChannel
@@ -228,9 +259,9 @@ h1 { color: #333; }
 					channel = "email"
 				}
 				contactHTML += fmt.Sprintf(`
-				<div style="margin: 4px 0;">
+				<div style="margin: 4px 0; border-bottom: 1px solid #eee; padding-bottom: 8px;">
 					<strong>%s</strong> (%s) — 
-					<span style="color: %s;">%s</span>
+					<span style="color: #17a2b8;">%s</span>
 					<form method="POST" style="display:inline; margin-left: 8px;">
 						<input type="hidden" name="action" value="update_channel">
 						<input type="hidden" name="contact_id" value="%d">
@@ -240,14 +271,21 @@ h1 { color: #333; }
 							<option value="github"%s>GitHub</option>
 						</select>
 					</form>
+					<div style="margin-top: 5px;">
+						<form onsubmit="simulateInbound(event, %d)" style="display:flex; gap: 5px;">
+							<input type="text" name="text" placeholder="Simulate inbound message..." style="flex-grow:1; font-size: 0.85em;">
+							<button type="submit" class="action-btn" style="padding: 2px 8px; font-size: 0.8em; background-color: #17a2b8;">Simulate</button>
+						</form>
+					</div>
 				</div>`,
 					html.EscapeString(c.Name),
 					html.EscapeString(c.Role),
-					"#17a2b8", html.EscapeString(channel),
+					html.EscapeString(channel),
 					c.ID,
 					map[bool]string{true: " selected", false: ""}[channel == "email"],
 					map[bool]string{true: " selected", false: ""}[channel == "linkedin"],
-					map[bool]string{true: " selected", false: ""}[channel == "github"])
+					map[bool]string{true: " selected", false: ""}[channel == "github"],
+					c.ID)
 			}
 			contactHTML += `</div>`
 		}
@@ -285,6 +323,15 @@ h1 { color: #333; }
 
 	fmt.Fprintf(w, `
 </table>
+
+<div class="simulation-portal">
+	<h2>User Testing & Inbound Simulation</h2>
+	<p>Test the autonomous sales brain by simulating inbound messages from leads. Replies and state transitions will be visible below and in the CRM.</p>
+	<div id="simulation-results">
+		<div>> Simulation logs will appear here...</div>
+	</div>
+</div>
+
 <div class="deploy-section" style="border-top: 5px solid #17a2b8;">
 <h2>Performance Metrics</h2>
 <p>Real-time pipeline statistics and conversion rates.</p>
@@ -387,13 +434,6 @@ h1 { color: #333; }
 </html>`, health, llmColor, llmStatus, crmProvider, os.Getenv("ENVIRONMENT"))
 }
 
-func truncate(s string, maxLen int) string {
-	if len(s) <= maxLen {
-		return s
-	}
-	return s[:maxLen] + "..."
-}
-
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "OK")
 }
@@ -493,4 +533,48 @@ func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusAccepted)
 	fmt.Fprintln(w, "Deployment triggered")
+}
+
+func (s *Server) handleSimulateInbound(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	contactIDStr := r.FormValue("contact_id")
+	text := r.FormValue("text")
+
+	var contactID int64
+	if _, err := fmt.Sscanf(contactIDStr, "%d", &contactID); err != nil {
+		http.Error(w, "Invalid contact ID", http.StatusBadRequest)
+		return
+	}
+
+	contact, err := s.db.GetContactByID(r.Context(), contactID)
+	if err != nil {
+		http.Error(w, "Contact not found", http.StatusNotFound)
+		return
+	}
+	if contact == nil {
+		http.Error(w, "Contact not found", http.StatusNotFound)
+		return
+	}
+
+	reply, err := s.comm.ProcessInbound(r.Context(), *contact, text)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Simulation failed: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]string{
+		"reply": reply,
+	})
+}
+
+func truncate(s string, maxLen int) string {
+	if len(s) <= maxLen {
+		return s
+	}
+	return s[:maxLen] + "..."
 }

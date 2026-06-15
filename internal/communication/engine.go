@@ -146,6 +146,16 @@ func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
 	// Interaction quantity bonus
 	score += len(salesCtx.Interactions) * 2
 
+
+	// Competitor tracking (higher score if evaluating competitors)
+	competitors := []string{"LangChain", "LlamaIndex", "CrewAI", "AutoGPT"}
+	for _, comp := range competitors {
+		if strings.Contains(strings.ToLower(salesCtx.Deal.TechnicalDossier), strings.ToLower(comp)) {
+			score += 15
+			break
+		}
+	}
+
 	if score > 100 {
 		return 100
 	}

@@ -82,6 +82,8 @@ func main() {
 
 	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows", "AI Platform", "ML Infrastructure"}
 	go s.Run(ctx, 2*time.Hour, keywords)
+	blogWorker := scraper.NewBlogWorker(database)
+	go blogWorker.Run(ctx, 4*time.Hour)
 
 	// 2a. Setup CRM Integration
 	var crmClient crm.CRMClient

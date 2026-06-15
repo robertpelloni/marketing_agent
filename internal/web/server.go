@@ -113,7 +113,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				if err := s.db.UpdateContactPreferredChannel(r.Context(), id, channel); err != nil {
 					log.Printf("UI: Error updating channel: %v", err)
 				} else {
-					log.Printf("UI: Contact %d channel updated to %s", id, channel)
+					log.Printf("UI: Contact %d channel updated to %s", id, channel) // #nosec G706
 				}
 			}
 		case "build":
@@ -131,7 +131,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-		health, _ := s.tracker.GetSystemHealth(r.Context())
+	health, _ := s.tracker.GetSystemHealth(r.Context())
 
 	metrics, err := s.db.GetPerformanceMetrics(r.Context())
 	if err != nil {

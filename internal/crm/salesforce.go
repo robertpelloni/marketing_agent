@@ -110,7 +110,7 @@ func (s *SalesforceClient) PushDeal(ctx context.Context, deal db.Deal, company d
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return fmt.Errorf("salesforce PushDeal: status %d", resp.StatusCode)
@@ -136,7 +136,7 @@ func (s *SalesforceClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, er
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return nil, fmt.Errorf("salesforce GetLeadUpdates: status %d", resp.StatusCode)
@@ -177,7 +177,7 @@ func (s *SalesforceClient) ValidateAccount(ctx context.Context, domain string) (
 	if err != nil {
 		return false, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode == http.StatusNotFound {
 		return false, nil
@@ -216,7 +216,7 @@ func (s *SalesforceClient) SyncInteraction(ctx context.Context, dealID int64, no
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return fmt.Errorf("salesforce SyncInteraction: status %d", resp.StatusCode)
@@ -251,7 +251,7 @@ func (s *SalesforceClient) SyncContacts(ctx context.Context, companyID int64, co
 		if err != nil {
 			return err
 		}
-		resp.Body.Close()
+		_ = resp.Body.Close()
 		if resp.StatusCode >= 400 {
 			return fmt.Errorf("salesforce SyncContacts: status %d", resp.StatusCode)
 		}
@@ -274,7 +274,7 @@ func (s *SalesforceClient) FetchDealDetails(ctx context.Context, dealID int64) (
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return nil, fmt.Errorf("salesforce FetchDealDetails: status %d", resp.StatusCode)

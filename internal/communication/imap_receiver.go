@@ -77,7 +77,7 @@ func (r *EmailReceiver) pollNewEmails(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("imap: connect failed: %w", err)
 	}
-	defer r.disconnect(c)
+	defer func() { _ = c.Logout() }()
 
 	// Select the mailbox
 	mbox, err := c.Select(r.config.Folder, true) // read-only
@@ -244,21 +244,13 @@ func (r *EmailReceiver) connect() (*client.Client, error) {
 	return c, nil
 }
 
-// disconnect closes the IMAP connection gracefully.
-func (r *EmailReceiver) disconnect(c *client.Client) {
-	if c != nil {
-		_ = c.Logout()
-		r.connected = false
-	}
-}
-
 // HealthCheck verifies IMAP connectivity.
 func (r *EmailReceiver) HealthCheck(ctx context.Context) error {
 	c, err := r.connect()
 	if err != nil {
 		return err
 	}
-	defer r.disconnect(c)
+	defer func() { _ = c.Logout() }()
 	return nil
 }
 

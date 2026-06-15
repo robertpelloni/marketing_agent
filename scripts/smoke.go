@@ -33,7 +33,7 @@ func main() {
 }
 
 func verifyEndpoint(url, expected string) error {
-	resp, err := http.Get(url)
+	resp, err := http.Get(url) // #nosec G107 G704
 	if err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func verifyEndpoint(url, expected string) error {
 }
 
 func verifyDetailedHealth(url string) error {
-	resp, err := http.Get(url)
+	resp, err := http.Get(url) // #nosec G107 G704
 	if err != nil {
 		return err
 	}

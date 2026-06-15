@@ -59,7 +59,7 @@ type FieldMapping struct {
 	AccountWebProp   string
 }
 
-// SetFieldMapping defines an optional interface for clients that support dynamic mapping.
+// FieldMappingSetter defines an optional interface for clients that support dynamic mapping.
 type FieldMappingSetter interface {
 	SetFieldMapping(mapping FieldMapping)
 }
@@ -102,7 +102,7 @@ func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.C
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return fmt.Errorf("crm api error: %d", resp.StatusCode)
@@ -126,7 +126,7 @@ func (c *RestCRMClient) SyncContacts(ctx context.Context, companyID int64, conta
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return fmt.Errorf("crm api error: %d", resp.StatusCode)
@@ -147,7 +147,7 @@ func (c *RestCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return nil, fmt.Errorf("crm api error: %d", resp.StatusCode)
@@ -173,7 +173,7 @@ func (c *RestCRMClient) ValidateAccount(ctx context.Context, domain string) (boo
 	if err != nil {
 		return false, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return false, fmt.Errorf("crm api error: %d", resp.StatusCode)
@@ -194,7 +194,7 @@ func (c *RestCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*De
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("crm api error: %d", resp.StatusCode)
@@ -225,7 +225,7 @@ func (c *RestCRMClient) SyncInteraction(ctx context.Context, dealID int64, note 
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return fmt.Errorf("crm api error: %d", resp.StatusCode)

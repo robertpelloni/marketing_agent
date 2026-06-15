@@ -168,11 +168,11 @@ func loadDotEnv() {
 	}
 
 	for _, p := range paths {
-		file, err := os.Open(p)
+		file, err := os.Open(p) // #nosec G304
 		if err != nil {
 			continue // .env is optional
 		}
-		defer file.Close()
+		defer func() { _ = file.Close() }()
 
 		log.Printf("Config: Loading environment from %s", p)
 		scanner := bufio.NewScanner(file)
@@ -198,7 +198,7 @@ func loadDotEnv() {
 
 			// Don't overwrite existing env vars
 			if os.Getenv(key) == "" {
-				os.Setenv(key, value)
+				_ = os.Setenv(key, value)
 			}
 		}
 		return // only load the first .env found

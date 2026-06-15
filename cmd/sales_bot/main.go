@@ -33,6 +33,17 @@ import (
 )
 
 func main() {
+	// 0a. Recovery & Heartbeat (System Robustness)
+	log.Println("HEARTBEAT: TormentNexus Autonomous Sales Bot starting initialization...")
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Fprintf(os.Stderr, "CRITICAL PANIC RECOVERED: %v\n", r)
+			// Log the stack trace for deep diagnostics
+			// (Import "runtime/debug" if more detail is needed, but %v is a start)
+			os.Exit(1)
+		}
+	}()
+
 	reconcile := flag.Bool("reconcile", false, "Run branch reconciliation and exit")
 	inventory := flag.Bool("inventory", false, "Generate submodule inventory and exit")
 	flag.Parse()

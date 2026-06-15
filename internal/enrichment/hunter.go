@@ -24,20 +24,6 @@ type HunterSource struct {
 	HTTPClient *http.Client
 }
 
-// hunterResponse represents the Hunter.io email finder API response.
-type hunterResponse struct {
-	Data struct {
-		Email      string  `json:"email"`
-		FirstName  string  `json:"first_name"`
-		LastName   string  `json:"last_name"`
-		Position   string  `json:"position"`
-		Company    string  `json:"company"`
-		Confidence float64 `json:"confidence"`
-		Domain     string  `json:"domain"`
-	} `json:"data"`
-	Errors []string `json:"errors"`
-}
-
 // hunterDomainResponse represents the Hunter.io domain search API response.
 type hunterDomainResponse struct {
 	Data struct {
@@ -76,7 +62,7 @@ func (h *HunterSource) Enrich(ctx context.Context, company db.Company) ([]db.Con
 
 	// Clean domain — remove protocol, www, trailing slashes
 	domain := cleanDomain(company.Domain)
-	if domain == "" || strings.HasSuffix(domain, ".com") && len(domain) < 5 {
+	if domain == "" || (strings.HasSuffix(domain, ".com") && len(domain) < 5) {
 		return nil, fmt.Errorf("hunter: invalid domain %q", company.Domain)
 	}
 

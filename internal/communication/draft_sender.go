@@ -45,7 +45,7 @@ func (d *DraftSender) Send(ctx context.Context, msg EmailMessage) error {
 	if err != nil {
 		return fmt.Errorf("draft: IMAP connect failed: %w", err)
 	}
-	defer c.Logout()
+	defer func() { _ = c.Logout() }()
 
 	if err := c.Login(d.Username, d.Password); err != nil {
 		return fmt.Errorf("draft: IMAP login failed: %w", err)
@@ -82,7 +82,7 @@ func (d *DraftSender) HealthCheck(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("draft health: connect failed: %w", err)
 	}
-	defer c.Logout()
+	defer func() { _ = c.Logout() }()
 
 	if err := c.Login(d.Username, d.Password); err != nil {
 		return fmt.Errorf("draft health: login failed: %w", err)

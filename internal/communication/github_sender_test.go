@@ -17,7 +17,7 @@ func TestGitHubCommentSender_SendComment(t *testing.T) {
 			t.Errorf("Expected POST request, got %s", r.Method)
 		}
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(`{"id": 123, "body": "test comment"}`))
+		_ , _ = w.Write([]byte(`{"id": 123, "body": "test comment"}`))
 	})
 
 	server := httptest.NewServer(mux)

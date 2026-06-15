@@ -59,7 +59,6 @@ func NewPromptRegistry(filePath string) *PromptRegistry {
 		_ = json.Unmarshal(data, pr)
 	}
 	// Seed RNG once for the entire process.
-	rand.Seed(time.Now().UnixNano())
 	return pr
 }
 

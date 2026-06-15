@@ -1,57 +1,32 @@
-# Memory: Architectural Observations & Design Preferences
+[PROJECT_MEMORY]
 
-## Current State
+# TormentNexus: Architectural Design & Engineering Patterns (v0.6.0)
 
-- The project is at v0.4.8 with Hermes Agent LLM integration.
-- Core modules: scraper, enricher, researcher, communication, CRM, billing, deploy, autodev.
-- **LLM provider is now REAL** via Hermes Agent gateway (WSL) — replaces MockLLMProvider.
-- **Intent classifier is now REAL** via LLMIntentClassifier when Hermes is available.
-- Remaining mocks: enrichment (Apollo), job board scraper, email send/receive, billing (Stripe).
+## 1. System Architecture
+TormentNexus is architected as a **Modular Monolith** driven by a suite of concurrent background workers. The system orchestrates the entire B2B sales lifecycle autonomously, from initial discovery to final closing and provisioning.
 
-## Architectural Traits
+### Core Components:
+*   **The Orchestrator (`cmd/sales_bot`):** Manages dependency injection and the lifecycle of all background workers using context-driven concurrency and graceful shutdown protocols.
+*   **The Communication Brain (`internal/communication`):** A state-aware engine that classifies inbound intent, applies a `LearningSalesEngine` strategy, and generates contextually grounded responses using pseudo-RAG (Retrieval-Augmented Generation) against technical dossiers.
+*   **Lead Discovery Suite (`internal/scraper`):** Multi-source discovery engine targeting high-intent signals from Hacker News ("Who is Hiring"), GitHub issues, LinkedIn, and engineering blog RSS feeds (`BlogWorker`).
+*   **Autonomous Development (`internal/autodev`):** A self-correction loop where the system identifies its own tasks from `TODO.md`, uses LLM-powered agents to generate Go code, and applies changes via an autonomous PR workflow.
+*   **Enterprise Integration (`internal/crm`, `internal/billing`):** Swappable adapter layer supporting Salesforce, HubSpot, and Stripe, featuring dynamic `FieldMapping` to align with custom enterprise schemas.
 
-- **Event-Driven:** Designed to be asynchronous and event-driven via background worker goroutines.
-- **Interface-Based:** External integrations (scrapers, CRM, billing, LLM, email) are abstracted behind interfaces for easier mocking and rotation.
-- **Rigid State Management:** Lead transitions are handled via an atomic state machine in PostgreSQL with a 7-state enum.
-- **Automation First:** Every feature is built with the intent of being fully autonomous.
-- **Self-Development Loop:** The system includes an `autodev` module that autonomously selects tasks from `TODO.md`, proposes changes, and verifies them via a branch-push-PR-merge lifecycle.
-- **Autonomous Continuous Delivery:** Codebase updates initiated by the bot trigger automated GitHub Action workflows for testing and deployment to ensure system stability.
-- **Self-Learning Sales Engine:** The `communication` package features a `LearningSalesEngine` that analyzes interaction history and lead context to decide on autonomous responses, state transitions, or human escalation.
-- **Prompt Optimization Feedback Loop:** The `RAGResponseGenerator` implements a feedback loop by injecting successful past interactions (flagged upon `StateClosedWon`) into the prompt context.
-- **Dual-Direction Merge Engine:** Reconciles autonomous feature branches by forward-merging into main and reverse-merging main back into features to prevent drift.
+## 2. Key Design Patterns
+*   **Adapter Pattern:** Applied to LLM, CRM, and Outreach providers to ensure the system is provider-agnostic and resilient to API shifts.
+*   **Strategy Pattern:** The `SalesStrategy` interface allows for hot-swapping different engagement models (e.g., Aggressive, Nurture, Technical-Focus).
+*   **Finite State Machine (FSM):** Leads progress through a rigid 7-state lifecycle (`Discovered → Researched → Outreach_Sent → Engaged → Negotiating → Closed_Won/Lost`), enforced by atomic PostgreSQL updates.
+*   **Worker Pattern:** Each domain (Scraper, Enricher, Researcher, CRM Worker, BlogWorker) runs in an independent goroutine with configurable polling intervals and exponential backoff on failure.
 
-## Known Technical Debt
+## 3. Critical Engineering Decisions
+*   **Security Hardening:** Implementation of `ReadHeaderTimeout` to mitigate Slowloris attacks (G112) and mandatory `Secure; SameSite=Strict` flags for session cookies (G124). GitHub Webhook signatures are verified via HMAC-SHA256.
+*   **Dossier-Based Outreach:** Outreach is grounded in a `TechnicalDossier` (compiled by `internal/researcher`) to ensure persuasive, high-value technical hooks rather than generic LLM generation.
+*   **Autonomous Versioning:** Every successful `AutoDev` cycle triggers an internal version bump and documentation update, maintaining a "living" codebase.
+*   **UAT Simulation Portal:** A dedicated dashboard portal allows human operators to simulate complex inbound scenarios to verify the autonomous brain's decision-making.
+*   **Recovery & Robustness:** The entry point includes a top-level `recover()` block and "HEARTBEAT" logging to ensure initialization panics are captured in `stderr` rather than causing silent failure.
 
-- **CRLF Test Failure:** `internal/gitres/resolve_test.go::TestResolveConflictTheirs` fails on Windows due to `\r\n` vs `\n` mismatch.
-- **Unstructured Logging:** All modules use `log.Printf` — no structured JSON logging, no log levels, no correlation IDs.
-- **No DB Migration Runner:** Migrations must be applied manually; they are not auto-applied on startup.
-- **No Rate Limiting:** HTTP endpoints accept unlimited requests.
-- **No Pagination:** Dashboard hardcodes `LIMIT 20` for deals.
-- **Missing Indices:** `interactions.success` and `deals.current_state` lack database indices.
-- **Hardcoded Worker Intervals:** Background worker intervals are configurable via env vars but not via config file.
-- **Hermes Dependency:** LLM calls depend on Hermes gateway being running in WSL. If Hermes is down, bot falls back to mock.
-
-## Design Preferences
-
-- **Go (Golang):** Preferred for the orchestration layer due to its performance and concurrency model.
-- **PostgreSQL:** Used for reliable relational data storage and state tracking.
-- **Headless Scrapers:** Required for robust data extraction from modern web platforms.
-- **Atomic Commits:** Prefer small, descriptive commits that correspond to specific features or fixes.
-- **Interface-Driven Design:** All external dependencies should be behind Go interfaces for testability and swappability.
-- **CI-Gated Merging:** No code reaches main without passing all tests.
-
-## Integration Status
-
-| Integration | Status | Implementation |
-|---|---|---|
-| GitHub API (target discovery) | ✅ Real | `pkg/agents/discovery.go` with `go-github` |
-| GitHub API (CI tracking) | ✅ Real | `internal/deploy/github_tracker.go` |
-| GitHub API (PR management) | ✅ Real | `internal/gitcheck/pr.go` with `go-github` |
-| Stripe billing | ✅ Real | `internal/billing/billing.go` with `stripe-go` |
-| REST CRM client | ✅ Real | `internal/crm/crm.go` with generic REST |
-| **LLM provider** | **✅ Real** | **`internal/llm/hermes.go::HermesLLMProvider` via Hermes Agent gateway** |
-| **Intent classifier** | **✅ Real** | **`LLMIntentClassifier` via Hermes (keyword mock fallback)** |
-| Enrichment (Apollo) | ❌ Mock | `internal/enrichment/worker.go::MockApolloSource` |
-| Job board scraper | ❌ Mock | `internal/scraper/scraper.go::MockJobBoardSource` |
-| Email sending | ❌ Not implemented | Outbound is logged but not sent |
-| Email receiving | ❌ Not implemented | Inbound is simulated by polling DB |
+## 4. Technology Stack
+*   **Language:** Go 1.24 (pinned for CI stability).
+*   **Data:** PostgreSQL (Structured lead tracking & PR persistence).
+*   **LLM Gateway:** Hermes Agent (OpenAI-compatible local gateway).
+*   **Security:** Gosec (Static Security Analysis) and golangci-lint.

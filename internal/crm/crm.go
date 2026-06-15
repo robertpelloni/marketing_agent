@@ -47,6 +47,23 @@ type DealDetails struct {
 	TechnicalDossier   string       `json:"technical_dossier"`
 }
 
+// FieldMapping allows dynamic configuration of CRM property names.
+type FieldMapping struct {
+	DealNameProp     string
+	DealAmountProp   string
+	DealStageProp    string
+	DealDescProp     string
+	DealRouteProp    string
+	ContactEmailProp string
+	ContactRoleProp  string
+	AccountWebProp   string
+}
+
+// SetFieldMapping defines an optional interface for clients that support dynamic mapping.
+type FieldMappingSetter interface {
+	SetFieldMapping(mapping FieldMapping)
+}
+
 // RestCRMClient implements CRMClient using a generic REST API.
 type RestCRMClient struct {
 	BaseURL    string

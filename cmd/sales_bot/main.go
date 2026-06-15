@@ -85,12 +85,46 @@ func main() {
 
 	// 2a. Setup CRM Integration
 	var crmClient crm.CRMClient
-	if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
-		log.Printf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL)
-		crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
-	} else {
-		log.Println("CRM: Initializing mock CRM client (missing configuration).")
-		crmClient = crm.NewMockCRMClient()
+	crmProvider := os.Getenv("CRM_PROVIDER")
+	switch strings.ToLower(crmProvider) {
+	case "salesforce":
+		log.Println("CRM: Initializing Salesforce client.")
+		var err error
+		crmClient, err = crm.NewSalesforceClient()
+		if err != nil {
+			log.Fatalf("Failed to initialize Salesforce client: %v", err)
+		}
+	case "hubspot":
+		log.Println("CRM: Initializing HubSpot client.")
+		var err error
+		crmClient, err = crm.NewHubSpotClient()
+		if err != nil {
+			log.Fatalf("Failed to initialize HubSpot client: %v", err)
+		}
+	default:
+		if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
+			log.Printf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL)
+			crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
+		} else {
+			log.Println("CRM: Initializing mock CRM client (missing configuration).")
+			crmClient = crm.NewMockCRMClient()
+		}
+	}
+
+	// Apply dynamic field mapping if supported
+	if mapper, ok := crmClient.(crm.FieldMappingSetter); ok {
+		mapping := crm.FieldMapping{
+			DealNameProp:     cfg.CRMDealNameProp,
+			DealAmountProp:   cfg.CRMDealAmountProp,
+			DealStageProp:    cfg.CRMDealStageProp,
+			DealDescProp:     cfg.CRMDealDescProp,
+			DealRouteProp:    cfg.CRMDealRouteProp,
+			ContactEmailProp: cfg.CRMContactEmailProp,
+			ContactRoleProp:  cfg.CRMContactRoleProp,
+			AccountWebProp:   cfg.CRMAccountWebProp,
+		}
+		log.Println("CRM: Applying dynamic field mapping from configuration.")
+		mapper.SetFieldMapping(mapping)
 	}
 
 	// 2b. Setup Enricher — Hunter.io + Apollo.io + Mock with FallbackSource

@@ -23,6 +23,7 @@ type HubSpotClient struct {
 	apiKey     string
 	accessToken string
 	client     *http.Client
+	mapping     FieldMapping
 }
 
 // NewHubSpotClient creates a new HubSpot CRM client.
@@ -36,7 +37,50 @@ func NewHubSpotClient() (*HubSpotClient, error) {
 	if key == "" && token == "" {
 		return nil, fmt.Errorf("hubspot client: missing API key or access token")
 	}
-	return &HubSpotClient{baseURL: base, apiKey: key, accessToken: token, client: &http.Client{}}, nil
+	return &HubSpotClient{
+		baseURL:     base,
+		apiKey:      key,
+		accessToken: token,
+		client:      &http.Client{},
+		mapping: FieldMapping{
+			DealNameProp:     "dealname",
+			DealAmountProp:   "amount",
+			DealStageProp:    "dealstage",
+			DealDescProp:     "description",
+			DealRouteProp:    "custom_route",
+			ContactEmailProp: "email",
+			ContactRoleProp:  "jobtitle",
+			AccountWebProp:   "website",
+		},
+	}, nil
+}
+
+// SetFieldMapping updates the dynamic field mapping.
+func (h *HubSpotClient) SetFieldMapping(mapping FieldMapping) {
+	if mapping.DealNameProp != "" {
+		h.mapping.DealNameProp = mapping.DealNameProp
+	}
+	if mapping.DealAmountProp != "" {
+		h.mapping.DealAmountProp = mapping.DealAmountProp
+	}
+	if mapping.DealStageProp != "" {
+		h.mapping.DealStageProp = mapping.DealStageProp
+	}
+	if mapping.DealDescProp != "" {
+		h.mapping.DealDescProp = mapping.DealDescProp
+	}
+	if mapping.DealRouteProp != "" {
+		h.mapping.DealRouteProp = mapping.DealRouteProp
+	}
+	if mapping.ContactEmailProp != "" {
+		h.mapping.ContactEmailProp = mapping.ContactEmailProp
+	}
+	if mapping.ContactRoleProp != "" {
+		h.mapping.ContactRoleProp = mapping.ContactRoleProp
+	}
+	if mapping.AccountWebProp != "" {
+		h.mapping.AccountWebProp = mapping.AccountWebProp
+	}
 }
 
 // authHeader constructs the Authorization header for HubSpot requests.
@@ -51,12 +95,12 @@ func (h *HubSpotClient) authHeader() string {
 func (h *HubSpotClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
 	payload := map[string]interface{}{
 		"properties": map[string]any{
-			"dealname":           fmt.Sprintf("%s – %s", company.Name, route),
-			"amount":             deal.QuotedPricing,
-			"pipeline":           "default",
-			"dealstage":          mapLeadStateToHubSpotStage(deal.CurrentState),
-			"description":        deal.TechnicalDossier,
-			"custom_route":       route,
+			h.mapping.DealNameProp:   fmt.Sprintf("%s – %s", company.Name, route),
+			h.mapping.DealAmountProp: deal.QuotedPricing,
+			"pipeline":               "default",
+			h.mapping.DealStageProp:  mapLeadStateToHubSpotStage(deal.CurrentState),
+			h.mapping.DealDescProp:   deal.TechnicalDossier,
+			h.mapping.DealRouteProp:  route,
 		},
 	}
 
@@ -130,7 +174,7 @@ func (h *HubSpotClient) ValidateAccount(ctx context.Context, domain string) (boo
 	payload := map[string]interface{}{
 		"filterGroups": []map[string]interface{}{{
 			"filters": []map[string]string{{
-				"propertyName": "website",
+				"propertyName": h.mapping.AccountWebProp,
 				"operator":     "EQ",
 				"value":        domain,
 			}},
@@ -201,11 +245,11 @@ func (h *HubSpotClient) SyncContacts(ctx context.Context, companyID int64, conta
 	for _, c := range contacts {
 		payload := map[string]interface{}{
 			"properties": map[string]string{
-				"email":       c.Email,
-				"firstname":   firstName(c.Name),
-				"lastname":    lastName(c.Name),
-				"jobtitle":    c.Role,
-				"company":     fmt.Sprintf("%d", companyID),
+				h.mapping.ContactEmailProp: c.Email,
+				"firstname":                firstName(c.Name),
+				"lastname":                 lastName(c.Name),
+				h.mapping.ContactRoleProp:  c.Role,
+				"company":                  fmt.Sprintf("%d", companyID),
 			},
 		}
 
@@ -232,7 +276,8 @@ func (h *HubSpotClient) SyncContacts(ctx context.Context, companyID int64, conta
 
 // FetchDealDetails retrieves a HubSpot deal.
 func (h *HubSpotClient) FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error) {
-	url := fmt.Sprintf("%s/crm/v3/objects/deals/%d?properties=dealname,amount,description,hs_deal_stage,custom_route", h.baseURL, dealID)
+	url := fmt.Sprintf("%s/crm/v3/objects/deals/%d?properties=%s,%s,%s,%s,%s",
+		h.baseURL, dealID, h.mapping.DealNameProp, h.mapping.DealAmountProp, h.mapping.DealDescProp, h.mapping.DealStageProp, h.mapping.DealRouteProp)
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -250,24 +295,24 @@ func (h *HubSpotClient) FetchDealDetails(ctx context.Context, dealID int64) (*De
 	}
 
 	var result struct {
-		Properties struct {
-			DealName      string  `json:"dealname"`
-			Amount        float64 `json:"amount"`
-			Description   string  `json:"description"`
-			Stage         string  `json:"hs_deal_stage"`
-			CustomRoute   string  `json:"custom_route"`
-		} `json:"properties"`
+		Properties map[string]interface{} `json:"properties"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, err
 	}
 
+	dealName, _ := result.Properties[h.mapping.DealNameProp].(string)
+	amount, _ := result.Properties[h.mapping.DealAmountProp].(float64)
+	desc, _ := result.Properties[h.mapping.DealDescProp].(string)
+	stage, _ := result.Properties[h.mapping.DealStageProp].(string)
+	route, _ := result.Properties[h.mapping.DealRouteProp].(string)
+
 	return &DealDetails{
-		ID:                 parseHubSpotDealID(result.Properties.DealName), // placeholder conversion
-		Status:             mapHubSpotStageToLeadState(result.Properties.Stage),
-		QuotedPricing:      result.Properties.Amount,
-		CustomRequirements: result.Properties.CustomRoute,
-		TechnicalDossier:   result.Properties.Description,
+		ID:                 parseHubSpotDealID(dealName), // placeholder conversion
+		Status:             mapHubSpotStageToLeadState(stage),
+		QuotedPricing:      amount,
+		CustomRequirements: route,
+		TechnicalDossier:   desc,
 	}, nil
 }
 

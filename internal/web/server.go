@@ -131,7 +131,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	health, _ := s.tracker.GetSystemHealth(r.Context())
+		health, _ := s.tracker.GetSystemHealth(r.Context())
 
 	metrics, err := s.db.GetPerformanceMetrics(r.Context())
 	if err != nil {
@@ -159,6 +159,11 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			llmStatus = "Hermes: Connected"
 			llmColor = "#28a745"
 		}
+	}
+
+	crmProvider := os.Getenv("CRM_PROVIDER")
+	if crmProvider == "" {
+		crmProvider = "Mock"
 	}
 
 	w.Header().Set("Content-Type", "text/html")
@@ -251,7 +256,12 @@ h1 { color: #333; }
 <tr>
 <td>%d</td>
 <td>%d</td>
-<td><span class="status status-%s" title="%s">%s</span></td>
+<td>
+	<span class="status status-%s" title="%s">%s</span>
+	<div style="font-size: 0.8em; color: #666; margin-top: 4px;">
+		%s
+	</div>
+</td>
 <td>%s</td>
 <td>
 <form method="POST" style="display:inline;">
@@ -265,8 +275,12 @@ h1 { color: #333; }
 <input type="hidden" name="success" value="true">
 <button type="submit" class="action-btn" style="background-color: #6f42c1;">Flag Success</button>
 </form>
+<details style="margin-top: 8px;">
+	<summary style="font-size: 0.85em; cursor: pointer; color: #007bff;">View Dossier</summary>
+	<pre style="font-size: 0.8em; background: #f8f9fa; padding: 10px; border-radius: 4px; white-space: pre-wrap; max-width: 400px;">%s</pre>
+</details>
 </td>
-</tr>%s`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID, latestInteractionID, contactHTML)
+</tr>%s`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, html.EscapeString(truncate(d.TechnicalDossier, 100)), d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID, latestInteractionID, html.EscapeString(d.TechnicalDossier), contactHTML)
 	}
 
 	fmt.Fprintf(w, `
@@ -360,15 +374,24 @@ h1 { color: #333; }
 </form>
 </div>
 <div class="deploy-section" style="border-left: 5px solid #28a745;">
-<h2>System Health &amp; CI Status</h2>
-<p>Real-time monitoring of the autonomous deployment pipeline.</p>
+<h2>System Settings &amp; Configuration</h2>
+<p>Current active providers and global system health.</p>
 <ul>
 <li><strong>Global Health:</strong> <span style="color: #28a745;">%s</span></li>
 <li><strong>LLM Provider:</strong> <span style="color: %s;">%s</span></li>
+<li><strong>CRM Provider:</strong> <span style="color: #007bff; text-transform: capitalize;">%s</span></li>
+<li><strong>Environment:</strong> <span style="font-weight: bold;">%s</span></li>
 </ul>
 </div>
 </body>
-</html>`, health, llmColor, llmStatus)
+</html>`, health, llmColor, llmStatus, crmProvider, os.Getenv("ENVIRONMENT"))
+}
+
+func truncate(s string, maxLen int) string {
+	if len(s) <= maxLen {
+		return s
+	}
+	return s[:maxLen] + "..."
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {

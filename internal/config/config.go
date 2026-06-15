@@ -32,6 +32,16 @@ type Config struct {
 	HunterAPIKey string
 	ApolloAPIKey string
 
+	// CRM Field Mapping
+	CRMDealNameProp     string
+	CRMDealAmountProp   string
+	CRMDealStageProp    string
+	CRMDealDescProp     string
+	CRMDealRouteProp    string
+	CRMContactEmailProp string
+	CRMContactRoleProp  string
+	CRMAccountWebProp   string
+
 	// Email - SMTP
 	SMTPHost     string
 	SMTPPort     int
@@ -117,6 +127,16 @@ func Load() *Config {
 		// Lead Discovery
 		HunterAPIKey: os.Getenv("HUNTER_API_KEY"),
 		ApolloAPIKey: os.Getenv("APOLLO_API_KEY"),
+
+		// CRM Field Mapping
+		CRMDealNameProp:     os.Getenv("CRM_DEAL_NAME_PROP"),
+		CRMDealAmountProp:   os.Getenv("CRM_DEAL_AMOUNT_PROP"),
+		CRMDealStageProp:    os.Getenv("CRM_DEAL_STAGE_PROP"),
+		CRMDealDescProp:     os.Getenv("CRM_DEAL_DESC_PROP"),
+		CRMDealRouteProp:    os.Getenv("CRM_DEAL_ROUTE_PROP"),
+		CRMContactEmailProp: os.Getenv("CRM_CONTACT_EMAIL_PROP"),
+		CRMContactRoleProp:  os.Getenv("CRM_CONTACT_ROLE_PROP"),
+		CRMAccountWebProp:   os.Getenv("CRM_ACCOUNT_WEB_PROP"),
 
 		// SMTP
 		SMTPHost:     os.Getenv("SMTP_HOST"),

@@ -24,6 +24,7 @@ type SalesforceClient struct {
 	accessToken string // OAuth2 bearer token
 	apiVersion  string // API version, e.g., "v57.0"
 	client      *http.Client
+	mapping     FieldMapping
 }
 
 // NewSalesforceClient creates a new Salesforce CRM client.
@@ -42,20 +43,58 @@ func NewSalesforceClient() (*SalesforceClient, error) {
 		accessToken: token,
 		apiVersion:  ver,
 		client:      &http.Client{},
+		mapping: FieldMapping{
+			DealNameProp:     "Name",
+			DealAmountProp:   "Amount",
+			DealStageProp:    "StageName",
+			DealDescProp:     "Description",
+			DealRouteProp:    "Custom_Field__c",
+			ContactEmailProp: "Email",
+			ContactRoleProp:  "Title",
+			AccountWebProp:   "Website",
+		},
 	}, nil
+}
+
+// SetFieldMapping updates the dynamic field mapping.
+func (s *SalesforceClient) SetFieldMapping(mapping FieldMapping) {
+	if mapping.DealNameProp != "" {
+		s.mapping.DealNameProp = mapping.DealNameProp
+	}
+	if mapping.DealAmountProp != "" {
+		s.mapping.DealAmountProp = mapping.DealAmountProp
+	}
+	if mapping.DealStageProp != "" {
+		s.mapping.DealStageProp = mapping.DealStageProp
+	}
+	if mapping.DealDescProp != "" {
+		s.mapping.DealDescProp = mapping.DealDescProp
+	}
+	if mapping.DealRouteProp != "" {
+		s.mapping.DealRouteProp = mapping.DealRouteProp
+	}
+	if mapping.ContactEmailProp != "" {
+		s.mapping.ContactEmailProp = mapping.ContactEmailProp
+	}
+	if mapping.ContactRoleProp != "" {
+		s.mapping.ContactRoleProp = mapping.ContactRoleProp
+	}
+	if mapping.AccountWebProp != "" {
+		s.mapping.AccountWebProp = mapping.AccountWebProp
+	}
 }
 
 // PushDeal creates or updates a Salesforce Opportunity representing the deal.
 func (s *SalesforceClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
 	// Salesforce Opportunity fields mapping
 	payload := map[string]interface{}{
-		"Name":               fmt.Sprintf("%s – %s", company.Name, route),
-		"AccountId":          s.accountIDFromDomain(company.Domain),
-		"StageName":          mapLeadStateToStage(deal.CurrentState),
-		"CloseDate":          timeNowISO8601(),
-		"Amount":             deal.QuotedPricing,
-		"Description":        deal.TechnicalDossier,
-		"Custom_Field__c":    route, // placeholder for custom routing info
+		s.mapping.DealNameProp:   fmt.Sprintf("%s – %s", company.Name, route),
+		"AccountId":              s.accountIDFromDomain(company.Domain),
+		s.mapping.DealStageProp:  mapLeadStateToStage(deal.CurrentState),
+		"CloseDate":              timeNowISO8601(),
+		s.mapping.DealAmountProp: deal.QuotedPricing,
+		s.mapping.DealDescProp:   deal.TechnicalDossier,
+		s.mapping.DealRouteProp:  route,
 	}
 
 	body, _ := json.Marshal(payload)
@@ -84,7 +123,7 @@ func (s *SalesforceClient) PushDeal(ctx context.Context, deal db.Deal, company d
 // It queries the Lead object for recent "IsConverted" or "StageName" changes.
 func (s *SalesforceClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error) {
 	// Simple SOQL query for recently modified leads (last 24h)
-	soql := "SELECT Id, StageName FROM Lead WHERE LastModifiedDate = LAST_N_DAYS:1"
+	soql := fmt.Sprintf("SELECT Id, %s FROM Lead WHERE LastModifiedDate = LAST_N_DAYS:1", s.mapping.DealStageProp)
 	url := fmt.Sprintf("%s/services/data/%s/query?q=%s", s.instanceURL, s.apiVersion, urlEncode(soql))
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
@@ -104,10 +143,7 @@ func (s *SalesforceClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, er
 	}
 
 	var result struct {
-		Records []struct {
-			Id        string `json:"Id"`
-			StageName string `json:"StageName"`
-		} `json:"records"`
+		Records []map[string]interface{} `json:"records"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, err
@@ -115,9 +151,11 @@ func (s *SalesforceClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, er
 
 	var updates []LeadUpdate
 	for _, r := range result.Records {
-		state := mapStageToLeadState(r.StageName)
+		id, _ := r["Id"].(string)
+		stage, _ := r[s.mapping.DealStageProp].(string)
+		state := mapStageToLeadState(stage)
 		if state != "" {
-			updates = append(updates, LeadUpdate{ID: r.Id, NewState: state, Notes: ""})
+			updates = append(updates, LeadUpdate{ID: id, NewState: state, Notes: ""})
 		}
 	}
 
@@ -126,7 +164,7 @@ func (s *SalesforceClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, er
 
 // ValidateAccount verifies if a given domain has a Salesforce Account.
 func (s *SalesforceClient) ValidateAccount(ctx context.Context, domain string) (bool, error) {
-	soql := fmt.Sprintf("SELECT Id FROM Account WHERE Website = '%s' LIMIT 1", domain)
+	soql := fmt.Sprintf("SELECT Id FROM Account WHERE %s = '%s' LIMIT 1", s.mapping.AccountWebProp, domain)
 	url := fmt.Sprintf("%s/services/data/%s/query?q=%s", s.instanceURL, s.apiVersion, urlEncode(soql))
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
@@ -193,11 +231,11 @@ func (s *SalesforceClient) SyncContacts(ctx context.Context, companyID int64, co
 
 	for _, c := range contacts {
 		payload := map[string]interface{}{
-			"FirstName": strings.Split(c.Name, " ")[0],
-			"LastName":  strings.Split(c.Name, " ")[1],
-			"Email":     c.Email,
-			"Title":     c.Role,
-			"AccountId": accountID,
+			"FirstName":              strings.Split(c.Name, " ")[0],
+			"LastName":               strings.Split(c.Name, " ")[1],
+			s.mapping.ContactEmailProp: c.Email,
+			s.mapping.ContactRoleProp:  c.Role,
+			"AccountId":              accountID,
 		}
 
 		body, _ := json.Marshal(payload)
@@ -223,7 +261,9 @@ func (s *SalesforceClient) SyncContacts(ctx context.Context, companyID int64, co
 
 // FetchDealDetails retrieves an Opportunity from Salesforce.
 func (s *SalesforceClient) FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error) {
-	url := fmt.Sprintf("%s/services/data/%s/sobjects/Opportunity/%d", s.instanceURL, s.apiVersion, dealID)
+	url := fmt.Sprintf("%s/services/data/%s/sobjects/Opportunity/%d?fields=Id,%s,%s,%s,%s",
+		s.instanceURL, s.apiVersion, dealID,
+		s.mapping.DealStageProp, s.mapping.DealAmountProp, s.mapping.DealDescProp, s.mapping.DealRouteProp)
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -240,23 +280,23 @@ func (s *SalesforceClient) FetchDealDetails(ctx context.Context, dealID int64) (
 		return nil, fmt.Errorf("salesforce FetchDealDetails: status %d", resp.StatusCode)
 	}
 
-	var result struct {
-		Id                string  `json:"Id"`
-		StageName         string  `json:"StageName"`
-		Amount            float64 `json:"Amount"`
-		Description       string  `json:"Description"`
-		Custom_Field__c    string  `json:"Custom_Field__c"`
-	}
+	var result map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, err
 	}
 
+	id, _ := result["Id"].(string)
+	stage, _ := result[s.mapping.DealStageProp].(string)
+	amount, _ := result[s.mapping.DealAmountProp].(float64)
+	desc, _ := result[s.mapping.DealDescProp].(string)
+	route, _ := result[s.mapping.DealRouteProp].(string)
+
 	return &DealDetails{
-		ID:                 parseID(result.Id),
-		Status:             mapStageToLeadState(result.StageName),
-		QuotedPricing:      result.Amount,
-		CustomRequirements: result.Custom_Field__c,
-		TechnicalDossier:   result.Description,
+		ID:                 parseID(id),
+		Status:             mapStageToLeadState(stage),
+		QuotedPricing:      amount,
+		CustomRequirements: route,
+		TechnicalDossier:   desc,
 	}, nil
 }
 

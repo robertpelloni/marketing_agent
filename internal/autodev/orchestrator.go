@@ -248,11 +248,11 @@ func (o *Orchestrator) finalizeCycle(ctx context.Context, task *Task) {
 	newV := fmt.Sprintf("%s+%d", baseVersion, time.Now().Unix())
 
 	// #nosec G306 -- Version files are intended to be world-readable in this architecture
-	if err := os.WriteFile("VERSION", []byte(newV), 0644); err != nil { // #nosec G306 G703
+	if err := os.WriteFile("VERSION", []byte(newV), 0644); err != nil {
 		log.Printf("Autodev Warning: Failed to write VERSION: %v", err)
 	}
 	// #nosec G306 -- Version files are intended to be world-readable in this architecture
-	if err := os.WriteFile("VERSION.md", []byte(newV), 0644); err != nil { // #nosec G306 G703
+	if err := os.WriteFile("VERSION.md", []byte(newV), 0644); err != nil {
 		log.Printf("Autodev Warning: Failed to write VERSION.md: %v", err)
 	}
 

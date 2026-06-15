@@ -82,8 +82,6 @@ func main() {
 
 	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows", "AI Platform", "ML Infrastructure"}
 	go s.Run(ctx, 2*time.Hour, keywords)
-	blogWorker := scraper.NewBlogWorker(database)
-	go blogWorker.Run(ctx, 4*time.Hour)
 
 	// 2a. Setup CRM Integration
 	var crmClient crm.CRMClient
@@ -148,6 +146,10 @@ func main() {
 	// 2d. Setup Target Discovery
 	outreachWorker := agents.NewTargetDiscoveryWorker(database)
 	go outreachWorker.Run(ctx, 2*time.Hour)
+
+	// 2k. Setup Blog Intelligence
+	blogWorker := scraper.NewBlogWorker(database)
+	go blogWorker.Run(ctx, 4*time.Hour)
 
 	// 2e. Setup Deployer
 	var ciTracker deploy.CITracker
@@ -274,12 +276,12 @@ func main() {
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider, commManager)
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider)
 
 	srv := &http.Server{
-		ReadHeaderTimeout: 10 * time.Second,
-		Addr:    ":" + cfg.Port,
-		Handler: webServer,
+		Addr:              ":" + cfg.Port,
+		Handler:           webServer,
+		ReadHeaderTimeout: 5 * time.Second,
 	}
 
 	go func() {

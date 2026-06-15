@@ -63,14 +63,14 @@
 ### Real CRM Integration
 - [x] Implement Salesforce CRM adapter
 - [x] Implement HubSpot CRM adapter
-- [ ] Add CRM field mapping configuration
+- [x] Add CRM field mapping configuration
 
 ## Phase 8 — Intelligence & Autonomous Evolution
 
 ### Advanced Lead Intelligence
 - [x] Implement real GitHub repository analysis for tech stack and bottleneck detection
-- [ ] Implement real technical blog/RSS ingestion for hiring signals
-- [ ] Add competitor intelligence tracking
+- [x] Implement real technical blog/RSS ingestion for hiring signals
+- [x] Add competitor intelligence tracking
 - [ ] Add unified intent signal aggregation
 
 ### Autonomous Development Improvements

@@ -64,7 +64,7 @@ func (a *Authenticator) Middleware(next http.Handler) http.Handler {
 func (a *Authenticator) HandleLogin(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		w.Header().Set("Content-Type", "text/html")
-		_, _ = w.Write([]byte(`
+		w.Write([]byte(`
 			<!DOCTYPE html>
 			<html>
 			<head><title>Sales Bot Login</title></head>

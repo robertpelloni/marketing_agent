@@ -17,7 +17,6 @@ import (
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
@@ -34,20 +33,18 @@ type Server struct {
 	deploy      *deploy.Deployer
 	tracker     deploy.CITracker
 	tasks       *autodev.TaskManager
-	comm        *communication.Manager
 	auth        *auth.Authenticator
 	llmProvider llm.LLMProvider
 	mux         *http.ServeMux
 }
 
 // NewServer creates a new Server instance.
-func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, llmProvider llm.LLMProvider, commManager *communication.Manager) *Server {
+func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, llmProvider llm.LLMProvider) *Server {
 	s := &Server{
 		db:          database,
 		deploy:      deployer,
 		tracker:     tracker,
 		tasks:       taskManager,
-		comm:        commManager,
 		auth:        auth.NewAuthenticator(),
 		llmProvider: llmProvider,
 		mux:         http.NewServeMux(),
@@ -78,6 +75,19 @@ func (s *Server) ListenAndServe(addr string) error {
 	log.Printf("Web dashboard starting on %s", addr)
 	// #nosec G114 -- Simple ListenAndServe is used for internal dashboard; timeout configuration handled at higher level if needed
 	return http.ListenAndServe(addr, s)
+}
+
+func (s *Server) handleSimulateInbound(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	cid := r.FormValue("contact_id")
+	txt := r.FormValue("text")
+
+	log.Printf("UAT: Simulating inbound from contact %s: %s", cid, txt)
+	fmt.Fprintf(w, "UAT: Simulation triggered for contact %s. Response logic would execute here.", cid)
 }
 
 func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
@@ -117,7 +127,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				if err := s.db.UpdateContactPreferredChannel(r.Context(), id, channel); err != nil {
 					log.Printf("UI: Error updating channel: %v", err)
 				} else {
-					log.Printf("UI: Contact %d channel updated to %s", id, channel) // #nosec G706
+					log.Printf("UI: Contact %d channel updated to %s", id, channel)
 				}
 			}
 		case "build":
@@ -165,11 +175,6 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	crmProvider := os.Getenv("CRM_PROVIDER")
-	if crmProvider == "" {
-		crmProvider = "Mock"
-	}
-
 	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprintf(w, `
 <!DOCTYPE html>
@@ -191,34 +196,7 @@ h1 { color: #333; }
 .action-btn:hover { background-color: #218838; }
 .deploy-section { margin-top: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background: #fff; }
 .deploy-btn { background-color: #007bff; margin-right: 10px; }
-.simulation-portal { background: #343a40; color: #fff; padding: 20px; border-radius: 8px; margin-top: 30px; }
-#simulation-results { background: #000; color: #0f0; padding: 15px; font-family: monospace; height: 200px; overflow-y: auto; margin-top: 10px; border: 1px solid #444; }
 </style>
-<script>
-function simulateInbound(event, contactID) {
-	event.preventDefault();
-	const text = event.target.elements.text.value;
-	const results = document.getElementById('simulation-results');
-
-	results.innerHTML += '<div>> Simulating inbound from contact ' + contactID + ': "' + text + '"</div>';
-
-	fetch('/api/v1/test/simulate_inbound', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-		body: 'contact_id=' + contactID + '&text=' + encodeURIComponent(text)
-	})
-	.then(r => r.json())
-	.then(data => {
-		results.innerHTML += '<div style="color: #0ff;">> Bot Reply: "' + data.reply + '"</div>';
-		results.scrollTop = results.scrollHeight;
-	})
-	.catch(err => {
-		results.innerHTML += '<div style="color: #f00;">> Error: ' + err + '</div>';
-	});
-
-	event.target.elements.text.value = '';
-}
-</script>
 </head>
 <body>
 <h1>Sales Bot Lead Dashboard</h1>
@@ -251,7 +229,7 @@ function simulateInbound(event, contactID) {
 				latestInteractionID = interactions[0].ID
 			}
 
-			// Build contacts HTML with channel preference dropdown and simulation form
+			// Build contacts HTML with channel preference dropdown
 			contactHTML = `<div style="margin-top: 8px; font-size: 0.9em;">`
 			for _, c := range contacts {
 				channel := c.PreferredChannel
@@ -259,9 +237,9 @@ function simulateInbound(event, contactID) {
 					channel = "email"
 				}
 				contactHTML += fmt.Sprintf(`
-				<div style="margin: 4px 0; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+				<div style="margin: 4px 0;">
 					<strong>%s</strong> (%s) — 
-					<span style="color: #17a2b8;">%s</span>
+					<span style="color: %s;">%s</span>
 					<form method="POST" style="display:inline; margin-left: 8px;">
 						<input type="hidden" name="action" value="update_channel">
 						<input type="hidden" name="contact_id" value="%d">
@@ -271,21 +249,14 @@ function simulateInbound(event, contactID) {
 							<option value="github"%s>GitHub</option>
 						</select>
 					</form>
-					<div style="margin-top: 5px;">
-						<form onsubmit="simulateInbound(event, %d)" style="display:flex; gap: 5px;">
-							<input type="text" name="text" placeholder="Simulate inbound message..." style="flex-grow:1; font-size: 0.85em;">
-							<button type="submit" class="action-btn" style="padding: 2px 8px; font-size: 0.8em; background-color: #17a2b8;">Simulate</button>
-						</form>
-					</div>
 				</div>`,
 					html.EscapeString(c.Name),
 					html.EscapeString(c.Role),
-					html.EscapeString(channel),
+					"#17a2b8", html.EscapeString(channel),
 					c.ID,
 					map[bool]string{true: " selected", false: ""}[channel == "email"],
 					map[bool]string{true: " selected", false: ""}[channel == "linkedin"],
-					map[bool]string{true: " selected", false: ""}[channel == "github"],
-					c.ID)
+					map[bool]string{true: " selected", false: ""}[channel == "github"])
 			}
 			contactHTML += `</div>`
 		}
@@ -294,12 +265,7 @@ function simulateInbound(event, contactID) {
 <tr>
 <td>%d</td>
 <td>%d</td>
-<td>
-	<span class="status status-%s" title="%s">%s</span>
-	<div style="font-size: 0.8em; color: #666; margin-top: 4px;">
-		%s
-	</div>
-</td>
+<td><span class="status status-%s" title="%s">%s</span></td>
 <td>%s</td>
 <td>
 <form method="POST" style="display:inline;">
@@ -313,23 +279,23 @@ function simulateInbound(event, contactID) {
 <input type="hidden" name="success" value="true">
 <button type="submit" class="action-btn" style="background-color: #6f42c1;">Flag Success</button>
 </form>
-<details style="margin-top: 8px;">
-	<summary style="font-size: 0.85em; cursor: pointer; color: #007bff;">View Dossier</summary>
-	<pre style="font-size: 0.8em; background: #f8f9fa; padding: 10px; border-radius: 4px; white-space: pre-wrap; max-width: 400px;">%s</pre>
-</details>
 </td>
-</tr>%s`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, html.EscapeString(truncate(d.TechnicalDossier, 100)), d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID, latestInteractionID, html.EscapeString(d.TechnicalDossier), contactHTML)
+</tr>%s`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID, latestInteractionID, contactHTML)
 	}
 
 	fmt.Fprintf(w, `
 </table>
 
-<div class="simulation-portal">
-	<h2>User Testing & Inbound Simulation</h2>
-	<p>Test the autonomous sales brain by simulating inbound messages from leads. Replies and state transitions will be visible below and in the CRM.</p>
-	<div id="simulation-results">
-		<div>> Simulation logs will appear here...</div>
-	</div>
+<div class="deploy-section" style="border-left: 5px solid #6f42c1; background: #f8f0ff;">
+<h2>User Testing & UAT Portal</h2>
+<p>Simulate inbound messages from potential leads to verify autonomous response logic.</p>
+<form action="/api/v1/test/simulate_inbound" method="POST" target="_blank">
+	<label for="contact_id">Contact ID:</label>
+	<input type="text" name="contact_id" placeholder="e.g., 1" style="width: 100px; padding: 4px;">
+	<label for="text">Message Text:</label>
+	<input type="text" name="text" placeholder="I'm interested in a demo..." style="width: 300px; padding: 4px;">
+	<button type="submit" class="action-btn" style="background-color: #6f42c1;">Simulate Inbound</button>
+</form>
 </div>
 
 <div class="deploy-section" style="border-top: 5px solid #17a2b8;">
@@ -421,17 +387,15 @@ function simulateInbound(event, contactID) {
 </form>
 </div>
 <div class="deploy-section" style="border-left: 5px solid #28a745;">
-<h2>System Settings &amp; Configuration</h2>
-<p>Current active providers and global system health.</p>
+<h2>System Health &amp; CI Status</h2>
+<p>Real-time monitoring of the autonomous deployment pipeline.</p>
 <ul>
 <li><strong>Global Health:</strong> <span style="color: #28a745;">%s</span></li>
 <li><strong>LLM Provider:</strong> <span style="color: %s;">%s</span></li>
-<li><strong>CRM Provider:</strong> <span style="color: #007bff; text-transform: capitalize;">%s</span></li>
-<li><strong>Environment:</strong> <span style="font-weight: bold;">%s</span></li>
 </ul>
 </div>
 </body>
-</html>`, health, llmColor, llmStatus, crmProvider, os.Getenv("ENVIRONMENT"))
+</html>`, health, llmColor, llmStatus)
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
@@ -533,48 +497,4 @@ func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusAccepted)
 	fmt.Fprintln(w, "Deployment triggered")
-}
-
-func (s *Server) handleSimulateInbound(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	contactIDStr := r.FormValue("contact_id")
-	text := r.FormValue("text")
-
-	var contactID int64
-	if _, err := fmt.Sscanf(contactIDStr, "%d", &contactID); err != nil {
-		http.Error(w, "Invalid contact ID", http.StatusBadRequest)
-		return
-	}
-
-	contact, err := s.db.GetContactByID(r.Context(), contactID)
-	if err != nil {
-		http.Error(w, "Contact not found", http.StatusNotFound)
-		return
-	}
-	if contact == nil {
-		http.Error(w, "Contact not found", http.StatusNotFound)
-		return
-	}
-
-	reply, err := s.comm.ProcessInbound(r.Context(), *contact, text)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Simulation failed: %v", err), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(map[string]string{
-		"reply": reply,
-	})
-}
-
-func truncate(s string, maxLen int) string {
-	if len(s) <= maxLen {
-		return s
-	}
-	return s[:maxLen] + "..."
 }

@@ -17,34 +17,30 @@ type LocalAgent struct {
 	llm llm.LLMProvider
 }
 
-// NewLocalAgent creates a new LocalAgent.
 func NewLocalAgent(llmProvider llm.LLMProvider) *LocalAgent {
 	return &LocalAgent{llm: llmProvider}
 }
 
 func (a *LocalAgent) ProposeSolution(ctx context.Context, task Task) (string, error) {
-	log.Printf("LocalAgent: Analyzing task via LLM: %s", task.Description)
+	log.Printf("LocalAgent: Analyzing task: %s", task.Description)
 
-	if a.llm == nil {
-		log.Println("LocalAgent Warning: No LLM provider, falling back to template")
-		if strings.Contains(strings.ToLower(task.Description), "sales-feature") {
-			return fmt.Sprintf("FILE: internal/sales/feature.go\nCONTENT:\npackage sales\n\n// Autonomous Feature: %s\nfunc ExecuteSalesFeature() {\n\tprintln(\"Executing autonomous sales logic\")\n}\n", task.Description), nil
+	if a.llm != nil {
+		prompt := llm.Prompt{
+			System: "You are an autonomous Go developer. Generate a solution proposal in the format: FILE: <path>\nCONTENT:\n<code>",
+			User:   fmt.Sprintf("Implement the following task: %s", task.Description),
 		}
-		return fmt.Sprintf("Implementation for: %s", task.Description), nil
+		proposal, err := a.llm.Generate(ctx, prompt)
+		if err == nil {
+			return proposal, nil
+		}
+		log.Printf("LocalAgent: LLM generation failed, falling back to mock: %v", err)
 	}
 
-	prompt := llm.Prompt{
-		System: "You are an expert Go developer. Generate a solution for the given task. " +
-			"Format your output as multiple blocks starting with 'FILE: path/to/file' followed by 'CONTENT:' and the file content.",
-		User: fmt.Sprintf("Task: %s\n\nPlease provide the code changes required.", task.Description),
+	if strings.Contains(strings.ToLower(task.Description), "sales-feature") {
+		return fmt.Sprintf("FILE: internal/sales/feature.go\nCONTENT:\npackage sales\n\n// Autonomous Feature: %s\nfunc ExecuteSalesFeature() {\n\tprintln(\"Executing autonomous sales logic\")\n}\n", task.Description), nil
 	}
 
-	proposal, err := a.llm.Generate(ctx, prompt)
-	if err != nil {
-		return "", fmt.Errorf("llm generation failed: %w", err)
-	}
-
-	return proposal, nil
+	return fmt.Sprintf("Implementation for: %s", task.Description), nil
 }
 
 func (a *LocalAgent) ApplyChanges(ctx context.Context, proposal string) error {

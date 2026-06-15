@@ -29,6 +29,3 @@
 
 ## [0.4.4+1780914501] - 2026-06-08
 - Test integration task
-
-## [0.4.9+1781496658] - 2026-06-15
-- Test integration task

@@ -55,11 +55,11 @@ func NewPromptRegistry(filePath string) *PromptRegistry {
 		filePath:    filePath,
 	}
 	// Attempt to load existing JSON state.
-	data, err := os.ReadFile(filePath) // #nosec G304
-	if err == nil {
+	if data, err := os.ReadFile(filePath); err == nil {
 		_ = json.Unmarshal(data, pr)
 	}
 	// Seed RNG once for the entire process.
+	rand.Seed(time.Now().UnixNano())
 	return pr
 }
 
@@ -132,7 +132,7 @@ func (pr *PromptRegistry) AssignExperiment(name string, versionIDs []string, wei
 
 // pickVersionByExperiment selects a version ID according to weighted random.
 func (pr *PromptRegistry) pickVersionByExperiment(exp *ABExperiment) string {
-	r := rand.Float64() // #nosec G404
+	r := rand.Float64()
 	for i, threshold := range exp.cdf {
 		if r <= threshold {
 			return exp.VersionIDs[i]
@@ -226,7 +226,7 @@ func (pr *PromptRegistry) save() {
 	if err != nil {
 		return
 	}
-	_ = os.WriteFile(pr.filePath, data, 0600) // #nosec G306 G703
+	_ = os.WriteFile(pr.filePath, data, 0644)
 }
 
 // Load reloads the registry from the JSON file.

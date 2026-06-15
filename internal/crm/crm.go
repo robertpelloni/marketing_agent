@@ -18,6 +18,21 @@ type LeadUpdate struct {
 }
 
 // CRMClient defines the interface for interacting with external CRM systems.
+type FieldMapping struct {
+	DealNameProp     string
+	DealAmountProp   string
+	DealStageProp    string
+	DealDescProp     string
+	DealRouteProp    string
+	ContactEmailProp string
+	ContactRoleProp  string
+	AccountWebProp   string
+}
+
+type FieldMappingSetter interface {
+	SetFieldMapping(mapping FieldMapping)
+}
+
 type CRMClient interface {
 	// PushDeal synchronizes a local deal to the CRM.
 	PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error
@@ -45,23 +60,6 @@ type DealDetails struct {
 	QuotedPricing      float64      `json:"quoted_pricing"`
 	CustomRequirements string       `json:"custom_requirements"`
 	TechnicalDossier   string       `json:"technical_dossier"`
-}
-
-// FieldMapping allows dynamic configuration of CRM property names.
-type FieldMapping struct {
-	DealNameProp     string
-	DealAmountProp   string
-	DealStageProp    string
-	DealDescProp     string
-	DealRouteProp    string
-	ContactEmailProp string
-	ContactRoleProp  string
-	AccountWebProp   string
-}
-
-// FieldMappingSetter defines an optional interface for clients that support dynamic mapping.
-type FieldMappingSetter interface {
-	SetFieldMapping(mapping FieldMapping)
 }
 
 // RestCRMClient implements CRMClient using a generic REST API.
@@ -102,7 +100,7 @@ func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.C
 	if err != nil {
 		return err
 	}
-	defer func() { _ = resp.Body.Close() }()
+	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
 		return fmt.Errorf("crm api error: %d", resp.StatusCode)
@@ -126,7 +124,7 @@ func (c *RestCRMClient) SyncContacts(ctx context.Context, companyID int64, conta
 	if err != nil {
 		return err
 	}
-	defer func() { _ = resp.Body.Close() }()
+	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
 		return fmt.Errorf("crm api error: %d", resp.StatusCode)
@@ -147,7 +145,7 @@ func (c *RestCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error
 	if err != nil {
 		return nil, err
 	}
-	defer func() { _ = resp.Body.Close() }()
+	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
 		return nil, fmt.Errorf("crm api error: %d", resp.StatusCode)
@@ -173,7 +171,7 @@ func (c *RestCRMClient) ValidateAccount(ctx context.Context, domain string) (boo
 	if err != nil {
 		return false, err
 	}
-	defer func() { _ = resp.Body.Close() }()
+	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
 		return false, fmt.Errorf("crm api error: %d", resp.StatusCode)
@@ -194,7 +192,7 @@ func (c *RestCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*De
 	if err != nil {
 		return nil, err
 	}
-	defer func() { _ = resp.Body.Close() }()
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("crm api error: %d", resp.StatusCode)
@@ -225,7 +223,7 @@ func (c *RestCRMClient) SyncInteraction(ctx context.Context, dealID int64, note 
 	if err != nil {
 		return err
 	}
-	defer func() { _ = resp.Body.Close() }()
+	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
 		return fmt.Errorf("crm api error: %d", resp.StatusCode)

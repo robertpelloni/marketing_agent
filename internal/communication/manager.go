@@ -44,12 +44,14 @@ type Manager struct {
 	responder  ResponseGenerator
 	strategy   SalesStrategy
 	processor  OrderProcessor
-	sender     EmailSender // nil = no email sending (log only)
+	sender     EmailSender
+	github     *GitHubSender
+	linkedin   *LinkedInSender // nil = no email sending (log only)
 }
 
 // NewManager creates a new communication Manager.
 // sender is optional — if nil, outbound emails are logged but not sent.
-func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor, sender EmailSender) *Manager {
+func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor, sender EmailSender, github *GitHubSender, linkedin *LinkedInSender) *Manager {
 	return &Manager{
 		db:         database,
 		classifier: classifier,
@@ -57,6 +59,8 @@ func NewManager(database *db.DB, classifier IntentClassifier, responder Response
 		strategy:   strategy,
 		processor:  processor,
 		sender:     sender,
+		github:     github,
+		linkedin:   linkedin,
 	}
 }
 

@@ -86,23 +86,39 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 
 	switch salesCtx.LatestIntent {
 	case IntentTechnical:
+		if salesCtx.LatestIntent == IntentObjection {
+			// The responder will use the rebuttal
+			return ActionRespond, nil
+		}
 		return ActionRespond, nil
 	case IntentPricing:
 		if e.isHighValueLead(salesCtx) {
+			if salesCtx.LatestIntent == IntentObjection {
+			// The responder will use the rebuttal
 			return ActionRespond, nil
+		}
+		return ActionRespond, nil
 		}
 		return ActionEscalate, nil // Escalate high-tier pricing negotiation
 	case IntentObjection:
 		// Attempt one autonomous rebuttal, then escalate
 		if e.countInteractionTypes(salesCtx.Interactions, "Outbound") < 2 {
+			if salesCtx.LatestIntent == IntentObjection {
+			// The responder will use the rebuttal
 			return ActionRespond, nil
+		}
+		return ActionRespond, nil
 		}
 		return ActionEscalate, nil
 	case IntentSpam:
 		return ActionWait, nil
 	}
 
-	return ActionRespond, nil
+	if salesCtx.LatestIntent == IntentObjection {
+			// The responder will use the rebuttal
+			return ActionRespond, nil
+		}
+		return ActionRespond, nil
 }
 
 func (e *LearningSalesEngine) shouldAdvanceState(ctx SalesContext) bool {

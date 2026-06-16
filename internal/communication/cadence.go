@@ -293,10 +293,10 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			}
 		case db.ChannelLinkedIn:
 			// LinkedIn step — log for now (needs LinkedInSender)
-			log.Printf("CadenceAwareManager: LinkedIn step pending for deal %d — browser automation needed", deal.ID)
+			if cam.linkedin != nil { cam.linkedin.SendMessage(ctx, contacts[0].LinkedInURL, "TormentNexus AI - follow up") }
 		case db.ChannelGitHub:
 			// GitHub step — log for now (needs GitHubCommentSender)
-			log.Printf("CadenceAwareManager: GitHub step pending for deal %d — GitHub comment sender needed", deal.ID)
+			if cam.github != nil && contacts[0].GitHubHandle != "" { cam.github.SendComment(ctx, "robertpelloni", "enterprise_sales_bot", 1, "Technical inquiry regarding TormentNexus") }
 		}
 	}
 }

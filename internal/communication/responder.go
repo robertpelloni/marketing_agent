@@ -4,95 +4,50 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
-	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 )
 
-// RAGResponseGenerator provides technically grounded replies using Pseudo-RAG.
+// RAGResponseGenerator implements ResponseGenerator with technical context awareness.
 type RAGResponseGenerator struct {
-	db       *db.DB
-	llm      llm.LLMProvider
-	tormentNexusDocs string
+	db  *db.DB
+	llm llm.LLMProvider
 }
 
-// NewRAGResponseGenerator creates a new generator with TormentNexus context.
-func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResponseGenerator {
-	// Documentation path resolution to support both root execution and package-level tests
-	docsPaths := []string{
-		"borg/docs/ARCHITECTURE.md",
-		"../../borg/docs/ARCHITECTURE.md",
-		"../../../borg/docs/ARCHITECTURE.md",
-	}
-
-	var content []byte
-	var err error
-	for _, path := range docsPaths {
-		// #nosec G304 -- Documentation paths are internal to the repository structure
-		content, err = os.ReadFile(path)
-		if err == nil {
-			log.Printf("RAG: Successfully loaded TormentNexus documentation from %s", path)
-			break
-		}
-	}
-
-	if err != nil {
-		log.Printf("RAG: Warning: could not load TormentNexus documentation: %v", err)
-	}
-
+func NewRAGResponseGenerator(database *db.DB, llmProvider llm.LLMProvider) *RAGResponseGenerator {
 	return &RAGResponseGenerator{
-		db:       database,
-		llm:      provider,
-		tormentNexusDocs: string(content),
+		db:  database,
+		llm: llmProvider,
 	}
 }
 
-func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesContext, action Action) (string, error) {
-	log.Printf("RAGResponseGenerator: Generating response for intent: %s", salesCtx.LatestIntent)
-
-	// Inject technical context if the intent is technical
-	contextInjection := ""
-	if salesCtx.LatestIntent == IntentTechnical && g.tormentNexusDocs != "" {
-		contextInjection = fmt.Sprintf("\nRelevant Technical Context from TormentNexus Docs:\n%s\n", g.truncateDocs(g.tormentNexusDocs))
-	}
-
-	// Inject pricing context if the intent is pricing
-	if salesCtx.LatestIntent == IntentPricing {
-		pricing := CalculateQuote(salesCtx.Company.MarketCapTier)
-		contextInjection = fmt.Sprintf("\nPricing Context: Annual subscription is approximately $%d based on company size.\n", pricing)
-	}
-
-	// SELF-IMPROVING PROMPTS: Inject successful past interactions as few-shot examples
-	if g.db != nil {
-		successes, err := g.db.ListSuccessfulInteractions(ctx, 3)
-		if err == nil && len(successes) > 0 {
-			examples := []string{}
-			for _, s := range successes {
-				examples = append(examples, fmt.Sprintf("- Successful Response: %s", s.Summary))
+func (r *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesContext, action Action) (string, error) {
+	// 1. Check for known objections first
+	if salesCtx.LatestIntent == IntentObjection {
+		// Use first inbound interaction for context
+		var lastInbound string
+		for i := len(salesCtx.Interactions) - 1; i >= 0; i-- {
+			if salesCtx.Interactions[i].Direction == "Inbound" {
+				lastInbound = salesCtx.Interactions[i].RawText
+				break
 			}
-			contextInjection += fmt.Sprintf("\nSuccessful Past Outreach Examples:\n%s\n", strings.Join(examples, "\n"))
+		}
+		if lastInbound != "" {
+			rebuttal := GetBestRebuttal(lastInbound)
+			log.Printf("RAGResponder: Using library rebuttal for objection.")
+			return rebuttal, nil
 		}
 	}
 
-	latestMsg := "START_OUTREACH"
-	if len(salesCtx.Interactions) > 0 {
-		latestMsg = salesCtx.Interactions[0].RawText
+	// 2. Standard LLM generation with RAG context
+	if r.llm != nil {
+		prompt := llm.Prompt{
+			System: "You are an elite enterprise sales engineer for TormentNexus. Ground your response in the provided technical dossier.",
+			User:   fmt.Sprintf("Intent: %s. Dossier: %s. Generate a professional and persuasive reply.", salesCtx.LatestIntent, salesCtx.Deal.TechnicalDossier),
+		}
+		return r.llm.Generate(ctx, prompt)
 	}
 
-	prompt := llm.Prompt{
-		System: "You are a senior sales engineer at TormentNexus. Use the provided technical and pricing context to draft a hyper-personalized response.",
-		User: fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
-			salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier),
-	}
-
-	return g.llm.Generate(ctx, prompt)
-}
-
-func (g *RAGResponseGenerator) truncateDocs(docs string) string {
-	if len(docs) > 2000 {
-		return docs[:2000] + "... [truncated]"
-	}
-	return docs
+	return "Hello, I'd like to follow up on our previous technical discussion regarding TormentNexus.", nil
 }

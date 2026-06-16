@@ -244,7 +244,9 @@ func main() {
 	billingClient := &billing.MockBillingClient{}
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
-	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender)
+	ghSender := communication.NewGitHubSender()
+	liSender := communication.NewLinkedInSender()
+	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender, ghSender, liSender)
 	go commManager.Run(ctx, 30*time.Minute)
 
 	// 2j. Setup Cadence-aware outreach scheduling

@@ -105,7 +105,7 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 			}
 		}
 
-		if !hasOutbound {
+		if !hasOutbound && !deal.ApprovalRequired {
 			log.Printf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email)
 			// Trigger outreach
 			if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {

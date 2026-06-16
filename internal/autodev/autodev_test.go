@@ -64,3 +64,27 @@ func TestTaskManager_MarkCompleted(t *testing.T) {
 		t.Errorf("Task A was not marked as completed. Content: %s", string(newContent))
 	}
 }
+
+func TestTaskManager_AddTask(t *testing.T) {
+	tmpfile, err := os.CreateTemp("", "TODO.md")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer os.Remove(tmpfile.Name())
+
+	manager := NewTaskManager(tmpfile.Name())
+	task := Task{
+		Description: "New automated task",
+		Category:    "Refinement",
+	}
+
+	err = manager.AddTask(context.Background(), task)
+	if err != nil {
+		t.Fatalf("Expected no error, got %v", err)
+	}
+
+	content, _ := os.ReadFile(tmpfile.Name())
+	if !strings.Contains(string(content), "- [ ] **Refinement** — New automated task") {
+		t.Errorf("Task was not added correctly. Content: %s", string(content))
+	}
+}

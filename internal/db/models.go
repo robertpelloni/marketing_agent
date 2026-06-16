@@ -90,6 +90,7 @@ type Deal struct {
 	QuotedPricing      float64   `db:"quoted_pricing"`
 	CustomRequirements string    `db:"custom_requirements"`
 	TechnicalDossier   string    `db:"technical_dossier"`
+	ApprovalRequired   bool      `db:"approval_required"`
 	CreatedAt          time.Time `db:"created_at"`
 	UpdatedAt          time.Time `db:"updated_at"`
 }

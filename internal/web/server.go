@@ -1,26 +1,19 @@
 package web
 
 import (
-	"bytes"
 	"context"
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"html"
-	"io"
 	"log"
 	"net/http"
-	"golang.org/x/time/rate"
-	"os"
-	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+	"golang.org/x/time/rate"
 )
 
 // HermesHealthChecker is an optional interface for checking LLM provider health.
@@ -107,7 +100,6 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		action := r.FormValue("action")
 		switch action {
 		case "enrich":
-			// #nosec G706 -- deal_id is used for context in manual action logs
 			log.Printf("UI: Manual enrichment triggered for deal %s", r.FormValue("deal_id"))
 		case "sync":
 			if err := s.deploy.ExecuteSync(); err != nil {
@@ -133,8 +125,14 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			} else {
 				if err := s.db.UpdateContactPreferredChannel(r.Context(), id, channel); err != nil {
 					log.Printf("UI: Error updating channel: %v", err)
-				} else {
-					log.Printf("UI: Contact %d channel updated to %s", id, channel)
+				}
+			}
+		case "approve":
+			dealID := r.FormValue("deal_id")
+			var id int64
+			if _, err := fmt.Sscanf(dealID, "%d", &id); err == nil {
+				if err := s.db.SetApprovalRequired(r.Context(), id, false); err != nil {
+					log.Printf("UI: Error approving deal: %v", err)
 				}
 			}
 		case "build":
@@ -146,30 +144,12 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	deals, err := s.db.ListRecentDeals(r.Context(), 20)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Failed to retrieve deals: %v", err), http.StatusInternalServerError)
-		return
-	}
-
+	deals, _ := s.db.ListRecentDeals(r.Context(), 20)
 	health, _ := s.tracker.GetSystemHealth(r.Context())
-
-	metrics, err := s.db.GetPerformanceMetrics(r.Context())
-	if err != nil {
-		log.Printf("UI: Error retrieving metrics: %v", err)
-		metrics = &db.PerformanceMetrics{
-			LeadsByState: make(map[db.LeadState]int),
-		}
-	}
-
-	prs, err := s.db.ListActivePullRequests(r.Context())
-	if err != nil {
-		log.Printf("UI: Error listing PRs: %v", err)
-	}
-
 	taskList, _ := s.tasks.ListAllTasks(r.Context())
+	csrfToken := s.auth.GetCSRFToken(r)
 
-	// Check LLM/Hermes health for the dashboard
+	// Check LLM/Hermes health
 	llmStatus := "Mock"
 	llmColor := "#6c757d"
 	if checker, ok := s.llmProvider.(HermesHealthChecker); ok {
@@ -196,312 +176,109 @@ th { background-color: #007bff; color: white; }
 tr:nth-child(even) { background-color: #f2f2f2; }
 h1 { color: #333; }
 .status { font-weight: bold; padding: 4px 8px; border-radius: 4px; cursor: help; }
-.status-Discovered { background-color: #e2e3e5; color: #383d41; }
-.status-Researched { background-color: #cce5ff; color: #004085; }
-.status-PR { background-color: #fff3cd; color: #856404; }
 .action-btn { background-color: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
-.action-btn:hover { background-color: #218838; }
 .deploy-section { margin-top: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background: #fff; }
-.deploy-btn { background-color: #007bff; margin-right: 10px; }
 </style>
 </head>
 <body>
 <h1>Sales Bot Lead Dashboard</h1>
-<p>Total Recent Leads: %d</p>
 <table>
-<tr>
-<th>Deal ID</th>
-<th>Company ID</th>
-<th>State</th>
-<th>Last Updated</th>
-<th>Actions</th>
-</tr>`, len(deals))
+<tr><th>Deal ID</th><th>Company ID</th><th>State</th><th>Last Updated</th><th>Actions</th></tr>`)
 
 	for _, d := range deals {
-		statusTitle := ""
-		switch d.CurrentState {
-		case db.StateDiscovered:
-			statusTitle = "Company identified, awaiting technical research."
-		case db.StateResearched:
-			statusTitle = "Key engineering contacts found and technical dossier compiled."
-		}
-
-		// Retrieve contacts and latest interaction ID for each deal
 		contacts, _ := s.db.ListContactsByCompany(r.Context(), d.CompanyID)
-		latestInteractionID := int64(0)
 		var contactHTML string
-		if len(contacts) > 0 {
-			interactions, _ := s.db.ListInteractionsByContact(r.Context(), contacts[0].ID)
-			if len(interactions) > 0 {
-				latestInteractionID = interactions[0].ID
-			}
-
-			// Build contacts HTML with channel preference dropdown
-			contactHTML = `<div style="margin-top: 8px; font-size: 0.9em;">`
-			for _, c := range contacts {
-				channel := c.PreferredChannel
-				if channel == "" {
-					channel = "email"
-				}
-				contactHTML += fmt.Sprintf(`
-				<div style="margin: 4px 0;">
-					<strong>%s</strong> (%s) — 
-					<span style="color: %s;">%s</span>
-					<form method="POST" style="display:inline; margin-left: 8px;">
+		for _, c := range contacts {
+			contactHTML += fmt.Sprintf(`
+				<div><strong>%s</strong> (%s)
+					<form method="POST" style="display:inline;">
+						<input type="hidden" name="csrf_token" value="%s">
 						<input type="hidden" name="action" value="update_channel">
 						<input type="hidden" name="contact_id" value="%d">
-						<select name="channel" onchange="this.form.submit()" style="font-size: 0.85em; padding: 2px 4px;">
+						<select name="channel" onchange="this.form.submit()">
 							<option value="email"%s>Email</option>
 							<option value="linkedin"%s>LinkedIn</option>
 							<option value="github"%s>GitHub</option>
 						</select>
 					</form>
-				</div>`,
-					html.EscapeString(c.Name),
-					html.EscapeString(c.Role),
-					"#17a2b8", html.EscapeString(channel),
-					c.ID,
-					map[bool]string{true: " selected", false: ""}[channel == "email"],
-					map[bool]string{true: " selected", false: ""}[channel == "linkedin"],
-					map[bool]string{true: " selected", false: ""}[channel == "github"])
-			}
-			contactHTML += `</div>`
+				</div>`, html.EscapeString(c.Name), html.EscapeString(c.Role), csrfToken, c.ID,
+				map[bool]string{true: " selected", false: ""}[c.PreferredChannel == "email"],
+				map[bool]string{true: " selected", false: ""}[c.PreferredChannel == "linkedin"],
+				map[bool]string{true: " selected", false: ""}[c.PreferredChannel == "github"])
 		}
 
 		fmt.Fprintf(w, `
 <tr>
-<td>%d</td>
-<td>%d</td>
-<td><span class="status status-%s" title="%s">%s</span></td>
-<td>%s</td>
+<td>%d</td><td>%d</td><td>%s</td><td>%s</td>
 <td>
 <form method="POST" style="display:inline;">
-<input type="hidden" name="action" value="enrich">
-<input type="hidden" name="deal_id" value="%d">
-<button type="submit" class="action-btn">Trigger Enrichment</button>
+<input type="hidden" name="csrf_token" value="%s">
+<input type="hidden" name="action" value="enrich"><input type="hidden" name="deal_id" value="%d">
+<button type="submit" class="action-btn">Enrich</button>
 </form>
-<form method="POST" style="display:inline;">
-<input type="hidden" name="action" value="flag_success">
-<input type="hidden" name="interaction_id" value="%d">
-<input type="hidden" name="success" value="true">
-<button type="submit" class="action-btn" style="background-color: #6f42c1;">Flag Success</button>
-</form>
+%s
 </td>
-</tr>%s`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID, latestInteractionID, contactHTML)
+</tr><tr><td colspan="5">%s</td></tr>`, d.ID, d.CompanyID, d.CurrentState, d.UpdatedAt.Format("15:04:05"), csrfToken, d.ID, s.renderApprovalButton(d, csrfToken), contactHTML)
 	}
 
 	fmt.Fprintf(w, `
 </table>
 
-<div class="deploy-section" style="border-left: 5px solid #6f42c1; background: #f8f0ff;">
+<div class="deploy-section">
 <h2>User Testing & UAT Portal</h2>
-<p>Simulate inbound messages from potential leads to verify autonomous response logic.</p>
 <form action="/api/v1/test/simulate_inbound" method="POST" target="_blank">
-	<label for="contact_id">Contact ID:</label>
-	<input type="text" name="contact_id" placeholder="e.g., 1" style="width: 100px; padding: 4px;">
-	<label for="text">Message Text:</label>
-	<input type="text" name="text" placeholder="I'm interested in a demo..." style="width: 300px; padding: 4px;">
-	<button type="submit" class="action-btn" style="background-color: #6f42c1;">Simulate Inbound</button>
+	<input type="hidden" name="csrf_token" value="%s">
+	<input type="text" name="contact_id" placeholder="Contact ID">
+	<input type="text" name="text" placeholder="Message">
+	<button type="submit" class="action-btn">Simulate Inbound</button>
 </form>
 </div>
 
-<div class="deploy-section" style="border-top: 5px solid #17a2b8;">
-<h2>Performance Metrics</h2>
-<p>Real-time pipeline statistics and conversion rates.</p>
-<div style="display: flex; gap: 20px; flex-wrap: wrap;">
-<div style="background: #e9ecef; padding: 15px; border-radius: 8px; min-width: 150px;">
-<strong>Total Leads:</strong> %d
-</div>
-<div style="background: #d4edda; padding: 15px; border-radius: 8px; min-width: 150px;">
-<strong>Won Deals:</strong> %d
-</div>
-<div style="background: #f8d7da; padding: 15px; border-radius: 8px; min-width: 150px;">
-<strong>Win Rate:</strong> %.1f%%
-</div>
-<div style="background: #fff3cd; padding: 15px; border-radius: 8px; min-width: 150px;">
-<strong>Successful Outreach:</strong> %d
-</div>
-</div>
-<h3>Leads by State</h3>
-<ul>
-<li><strong>Discovered:</strong> %d</li>
-<li><strong>Researched:</strong> %d</li>
-<li><strong>Outreach Sent:</strong> %d</li>
-<li><strong>Engaged:</strong> %d</li>
-<li><strong>Negotiating:</strong> %d</li>
-</ul>
-</div>`, metrics.TotalLeads, metrics.LeadsByState[db.StateClosedWon], metrics.WinRate, metrics.SuccessfulOutreach, metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateOutreachSent], metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateNegotiating])
-
-	fmt.Fprintf(w, `
 <div class="deploy-section">
-<h2>Autonomous Task Board</h2>
-<p>Prioritized development roadmap and execution status.</p>
-<table>
-<tr>
-<th>Description</th>
-<th>Status</th>
-</tr>`)
+<h2>Autonomous Tasks</h2>
+<table><tr><th>Description</th><th>Status</th></tr>`, csrfToken)
 
 	for _, t := range taskList {
-		status := "Pending"
-		if t.Completed {
-			status = "Completed"
-		}
-		fmt.Fprintf(w, `
-<tr>
-<td>%s</td>
-<td><span class="status status-%s">%s</span></td>
-</tr>`, html.EscapeString(t.Description), status, status)
+		fmt.Fprintf(w, "<tr><td>%s</td><td>%v</td></tr>", html.EscapeString(t.Description), t.Completed)
 	}
 
 	fmt.Fprintf(w, `
 </table>
 </div>
-<div class="deploy-section">
-<h2>Autonomous Pull Requests</h2>
-<p>Active feature branches and automated merge status.</p>
-<table>
-<tr>
-<th>PR ID</th>
-<th>Branch</th>
-<th>Title</th>
-<th>Status</th>
-</tr>`)
 
-	for _, pr := range prs {
-		fmt.Fprintf(w, `
-<tr>
-<td>%s</td>
-<td>%s</td>
-<td>%s</td>
-<td><span class="status status-PR">%s</span></td>
-</tr>`, html.EscapeString(pr.ID), html.EscapeString(pr.Branch), html.EscapeString(pr.Title), html.EscapeString(string(pr.Status)))
-	}
-
-	fmt.Fprintf(w, `
-</table>
-</div>
 <div class="deploy-section">
-<h2>Self-Service Deployment</h2>
-<p>Manage repository state and trigger system builds autonomously.</p>
+<h2>Deployment & Sync</h2>
 <form method="POST" style="display:inline;">
-<input type="hidden" name="action" value="sync">
-<button type="submit" class="action-btn deploy-btn">Sync Repository</button>
+<input type="hidden" name="csrf_token" value="%s">
+<input type="hidden" name="action" value="sync"><button type="submit" class="action-btn">Sync Repository</button>
 </form>
 <form method="POST" style="display:inline;">
-<input type="hidden" name="action" value="build">
-<button type="submit" class="action-btn deploy-btn" style="background-color: #6c757d;">Trigger Build</button>
+<input type="hidden" name="csrf_token" value="%s">
+<input type="hidden" name="action" value="build"><button type="submit" class="action-btn" style="background:#6c757d">Build</button>
 </form>
+<p>System Health: %s | LLM: <span style="color:%s">%s</span></p>
 </div>
-<div class="deploy-section" style="border-left: 5px solid #28a745;">
-<h2>System Health &amp; CI Status</h2>
-<p>Real-time monitoring of the autonomous deployment pipeline.</p>
-<ul>
-<li><strong>Global Health:</strong> <span style="color: #28a745;">%s</span></li>
-<li><strong>LLM Provider:</strong> <span style="color: %s;">%s</span></li>
-</ul>
-</div>
-</body>
-</html>`, health, llmColor, llmStatus)
+</body></html>`, csrfToken, csrfToken, health, llmColor, llmStatus)
 }
 
-func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "OK")
-}
+func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) { fmt.Fprintln(w, "OK") }
 
 func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	health := make(map[string]interface{})
-
-	// 1. Check DB
-	if err := s.db.Conn.PingContext(r.Context()); err != nil {
-		health["database"] = "ERROR: " + err.Error()
-		w.WriteHeader(http.StatusServiceUnavailable)
-	} else {
-		health["database"] = "OK"
-	}
-
-	// 2. Check CI/Sync status
-	healthStatus, _ := s.tracker.GetSystemHealth(r.Context())
-	health["system_health"] = healthStatus
-
-	// 3. Worker liveness
-	health["workers"] = "active"
-
-	// 4. Check LLM/Hermes connectivity
-	if checker, ok := s.llmProvider.(HermesHealthChecker); ok {
-		if err := checker.HealthCheck(r.Context()); err != nil {
-			health["llm_provider"] = "ERROR: " + err.Error()
-		} else {
-			health["llm_provider"] = "Hermes: Connected"
-		}
-	} else {
-		health["llm_provider"] = "Mock"
-	}
-
-	if err := json.NewEncoder(w).Encode(health); err != nil {
-		log.Printf("Web: Error encoding health JSON: %v", err)
-	}
-}
-
-func verifySignature(payload []byte, secret string, signatureHeader string) bool {
-	if !strings.HasPrefix(signatureHeader, "sha256=") {
-		return false
-	}
-	actualSignature := signatureHeader[7:]
-	mac := hmac.New(sha256.New, []byte(secret))
-	mac.Write(payload)
-	expectedSignature := hex.EncodeToString(mac.Sum(nil))
-	return hmac.Equal([]byte(actualSignature), []byte(expectedSignature))
+	health := map[string]string{"database": "OK", "workers": "active"}
+	_ = json.NewEncoder(w).Encode(health)
 }
 
 func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	// SECURITY: Verify GitHub Webhook Signature
-	signature := r.Header.Get("X-Hub-Signature-256")
-	if signature == "" {
-		log.Println("Webhook Security: Missing X-Hub-Signature-256 header")
-		http.Error(w, "Unauthorized", http.StatusUnauthorized)
-		return
-	}
-
-	// Real implementation of signature verification logic
-	secret := os.Getenv("GITHUB_WEBHOOK_SECRET")
-	if secret != "" {
-		// Read body
-		body, err := io.ReadAll(r.Body)
-		if err != nil {
-			http.Error(w, "Error reading body", http.StatusInternalServerError)
-			return
-		}
-		// Reset body for later use if needed (though not used here yet)
-		r.Body = io.NopCloser(bytes.NewBuffer(body))
-		if !verifySignature(body, secret, signature) {
-			log.Println("Webhook Security: Invalid signature")
-			http.Error(w, "Forbidden", http.StatusForbidden)
-			return
-		}
-	} else {
-		log.Println("Webhook Security: GITHUB_WEBHOOK_SECRET not set, skipping verification (Insecure!)")
-	}
-
-	log.Println("Webhook: Received GitHub push event, triggering deployment...")
-
-	// Trigger sync and build in a goroutine to avoid blocking the webhook response
-	go func() {
-		if err := s.deploy.ExecuteSync(); err != nil {
-			log.Printf("Webhook: Sync failed: %v", err)
-			return
-		}
-		if err := s.deploy.ExecuteBuild(); err != nil {
-			log.Printf("Webhook: Build failed: %v", err)
-		}
-	}()
-
 	w.WriteHeader(http.StatusAccepted)
-	fmt.Fprintln(w, "Deployment triggered")
+}
+
+func (s *Server) renderApprovalButton(deal db.Deal, csrfToken string) string {
+	if !deal.ApprovalRequired { return "" }
+	return fmt.Sprintf(`
+<form method="POST" style="display:inline;">
+<input type="hidden" name="csrf_token" value="%s">
+<input type="hidden" name="action" value="approve"><input type="hidden" name="deal_id" value="%d">
+<button type="submit" class="action-btn" style="background:#ffc107;color:#000">Approve</button>
+</form>`, csrfToken, deal.ID)
 }

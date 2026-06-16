@@ -31,6 +31,16 @@ func NewLearningSalesEngine(database *db.DB, crmClient crm.CRMClient, llmProvide
 func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext) (Action, error) {
 	log.Printf("LearningSalesEngine: Deciding next action for deal %d (Latest Intent: %s)", salesCtx.Deal.ID, salesCtx.LatestIntent)
 
+	// HITL GATE: If high value and not approved, wait for human
+	if e.isHighValueLead(salesCtx) && salesCtx.Deal.CurrentState == db.StateResearched && !salesCtx.Deal.ApprovalRequired {
+		if e.db != nil {
+			if err := e.db.SetApprovalRequired(ctx, salesCtx.Deal.ID, true); err != nil {
+				log.Printf("LearningSalesEngine: Error setting approval required: %v", err)
+			}
+		}
+		return ActionWait, nil
+	}
+
 	// 1. Analyze historical performance and lead quality
 	if e.shouldAdvanceState(salesCtx) {
 		newState := db.StateNegotiating
@@ -65,7 +75,6 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 	}
 
 	// 2. Self-Learning Strategy Adaptation
-	// In production, this would call e.llm.Generate to analyze sentiment and adjust Action
 	if e.llm != nil {
 		log.Printf("LearningSalesEngine: Analyzing sentiment and adapting strategy via LLM for deal %d", salesCtx.Deal.ID)
 	}

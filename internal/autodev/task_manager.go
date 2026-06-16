@@ -1,16 +1,17 @@
 package autodev
 
 import (
-	"bufio"
 	"context"
 	"fmt"
 	"os"
 	"strings"
+	"sync"
 )
 
-// TaskManager handles parsing of tasks from TODO.md and tracking their progress.
+// TaskManager handles the ingestion and tracking of autonomous development tasks.
 type TaskManager struct {
 	todoPath string
+	mu       sync.Mutex
 }
 
 // NewTaskManager creates a new TaskManager.
@@ -18,88 +19,63 @@ func NewTaskManager(todoPath string) *TaskManager {
 	return &TaskManager{todoPath: todoPath}
 }
 
+// AddTask appends a new task to the TODO list.
+func (m *TaskManager) AddTask(ctx context.Context, task Task) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	entry := fmt.Sprintf("- [ ] **%s** — %s\n", task.Category, task.Description)
+	// #nosec G302 -- TODO file is intentionally world-readable
+	f, err := os.OpenFile(m.todoPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	if _, err := f.WriteString(entry); err != nil {
+		return err
+	}
+	return nil
+}
+
 // GetNextTask parses TODO.md and returns the highest priority uncompleted task.
 func (m *TaskManager) GetNextTask(ctx context.Context) (*Task, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
 	file, err := os.Open(m.todoPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open TODO.md: %w", err)
 	}
 	defer file.Close()
 
-	var tasks []Task
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := scanner.Text()
-		line = strings.TrimSpace(line)
+	// Simple parser for Markdown checkboxes: "- [ ] task"
+	data, _ := os.ReadFile(m.todoPath)
+	lines := strings.Split(string(data), "\n")
+	for _, line := range lines {
 		if strings.HasPrefix(line, "- [ ]") {
 			desc := strings.TrimSpace(strings.TrimPrefix(line, "- [ ]"))
-			t := Task{
-				Description: desc,
-				Completed:   false,
-			}
-			// Priority parsing: e.g. [HIGH]
-			if strings.Contains(desc, "[HIGH]") {
-				t.Category = "High"
-			} else {
-				t.Category = "Normal"
-			}
-			tasks = append(tasks, t)
+			return &Task{Description: desc, Completed: false}, nil
 		}
 	}
 
-	if err := scanner.Err(); err != nil {
-		return nil, fmt.Errorf("error reading TODO.md: %w", err)
-	}
-
-	if len(tasks) == 0 {
-		return nil, nil
-	}
-
-	// Simple sort: High first
-	for _, t := range tasks {
-		if t.Category == "High" {
-			return &t, nil
-		}
-	}
-
-	return &tasks[0], nil
+	return nil, nil
 }
 
-// ListAllTasks returns all tasks from TODO.md.
-func (m *TaskManager) ListAllTasks(ctx context.Context) ([]Task, error) {
-	file, err := os.Open(m.todoPath)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
+// MarkCompleted updates the state of a task in TODO.md.
+func (m *TaskManager) MarkCompleted(ctx context.Context, description string) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
 
-	var tasks []Task
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := scanner.Text()
-		line = strings.TrimSpace(line)
-		if strings.HasPrefix(line, "- [ ]") || strings.HasPrefix(line, "- [x]") {
-			tasks = append(tasks, Task{
-				Description: strings.TrimSpace(line[5:]),
-				Completed:   strings.HasPrefix(line, "- [x]"),
-			})
-		}
-	}
-	return tasks, nil
-}
-
-// MarkCompleted updates TODO.md to mark a task as completed.
-func (m *TaskManager) MarkCompleted(ctx context.Context, taskDescription string) error {
-	// Simple implementation: read whole file, replace line, write back
-	input, err := os.ReadFile(m.todoPath)
+	data, err := os.ReadFile(m.todoPath)
 	if err != nil {
 		return err
 	}
 
-	lines := strings.Split(string(input), "\n")
+	lines := strings.Split(string(data), "\n")
 	found := false
 	for i, line := range lines {
-		if strings.Contains(line, "- [ ]") && strings.Contains(line, taskDescription) {
+		if strings.Contains(line, "- [ ]") && strings.Contains(line, description) {
 			lines[i] = strings.Replace(line, "- [ ]", "- [x]", 1)
 			found = true
 			break
@@ -107,15 +83,32 @@ func (m *TaskManager) MarkCompleted(ctx context.Context, taskDescription string)
 	}
 
 	if !found {
-		return fmt.Errorf("task not found in TODO.md: %s", taskDescription)
+		return fmt.Errorf("task not found: %s", description)
 	}
 
-	output := strings.Join(lines, "\n")
-	// #nosec G306 -- TODO file is intentionally world-readable
-	err = os.WriteFile(m.todoPath, []byte(output), 0644)
+	// #nosec G306 -- TODO file is intended to be world-readable
+	return os.WriteFile(m.todoPath, []byte(strings.Join(lines, "\n")), 0644)
+}
+
+// ListAllTasks returns all tasks from TODO.md.
+func (m *TaskManager) ListAllTasks(ctx context.Context) ([]Task, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	var tasks []Task
+	data, err := os.ReadFile(m.todoPath)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	lines := strings.Split(string(data), "\n")
+	for _, line := range lines {
+		if strings.Contains(line, "- [ ]") || strings.Contains(line, "- [x]") {
+			completed := strings.Contains(line, "- [x]")
+			desc := strings.TrimSpace(strings.TrimPrefix(line, "- [ ]"))
+			desc = strings.TrimSpace(strings.TrimPrefix(desc, "x]"))
+			tasks = append(tasks, Task{Description: desc, Completed: completed})
+		}
+	}
+	return tasks, nil
 }

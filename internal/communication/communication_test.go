@@ -37,8 +37,8 @@ func TestSalesEngine_Decide(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Decision failed: %v", err)
 		}
-		if action != ActionRespond {
-			t.Errorf("Expected ActionRespond for Enterprise pricing, got %s", action)
+		if action != ActionWait {
+			t.Errorf("Expected ActionWait for Enterprise pricing, got %s", action)
 		}
 	})
 

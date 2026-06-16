@@ -9,6 +9,7 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/stripe/stripe-go/v81 v81.4.0
 	golang.org/x/oauth2 v0.24.0
+	golang.org/x/time v0.15.0
 )
 
 require (
@@ -19,5 +20,4 @@ require (
 	golang.org/x/crypto v0.7.0 // indirect
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
-	golang.org/x/time v0.15.0 // indirect
 )

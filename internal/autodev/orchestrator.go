@@ -69,13 +69,19 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 		}
 
 		if status == gitcheck.PRStatusOpen {
-			// Check for PR comments to facilitate future self-correction
+			// Check for PR comments to facilitate self-correction
 			comments, _ := o.prManager.GetPRComments(ctx, pr.ID)
 			if len(comments) > 0 {
 				log.Printf("Autodev: PR %s has %d comments. Reviewing for feedback...", pr.ID, len(comments))
-				for _, c := range comments {
-					log.Printf("Autodev: PR %s Comment: %s", pr.ID, c)
+				// TRIGGER REFINEMENT TASK: If there are comments, create a high-priority refinement task
+				refinementTask := Task{
+					Description: fmt.Sprintf("Address feedback on PR %s: %s", pr.ID, strings.Join(comments, " | ")),
+					Category:    "Refinement",
 				}
+				_ = o.manager.AddTask(ctx, refinementTask)
+				log.Printf("Autodev: Injecting refinement task for PR %s", pr.ID)
+				// We don't have a direct "AddHighPriorityTask" yet, so we log and it would be picked up in next cycle
+				// In a real implementation, we'd persist this to TODO.md or the DB.
 			}
 
 			// Gate merge on CI Success and Staging Validation (from unified pipeline)

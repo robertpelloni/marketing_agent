@@ -74,9 +74,9 @@
 - [ ] Add unified intent signal aggregation
 
 ### Autonomous Development Improvements
-- [ ] Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation
+- [x] Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation
 - [ ] Add rollback mechanism for failed verification
-- [ ] Add PR feedback loop using `GetPRComments`
+- [x] Add PR feedback loop using `GetPRComments`
 - [ ] Add task dependency resolution
 - [ ] Add concurrent task execution for independent tasks
 
@@ -84,7 +84,7 @@
 - [ ] Add multi-touch outreach sequences across channels
 - [ ] Add A/B testing for outreach templates
 - [ ] Add objection handling library with success rates
-- [ ] Add human-in-the-loop approval workflow for high-value deals
+- [x] Add human-in-the-loop approval workflow for high-value deals
 - [x] Add deal forecasting using historical patterns
 
 ### Self-Improving Prompts v2
@@ -96,7 +96,7 @@
 ## Phase 9 — Security, Compliance & Scale
 
 ### Security
-- [ ] Add rate limiting on all HTTP endpoints
+- [x] Add rate limiting on all HTTP endpoints
 - [x] Add authentication to web dashboard (Session-based)
 - [ ] Add CSRF protection for dashboard form submissions
 - [ ] Add input sanitization for webhook payloads and form inputs

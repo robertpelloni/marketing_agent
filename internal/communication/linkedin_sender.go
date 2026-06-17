@@ -3,7 +3,7 @@ package communication
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"os"
 	"time"
 )
@@ -21,22 +21,22 @@ import (
 // 4. Typing and sending the message
 // 5. Rate limiting and anti-detection measures
 type LinkedInSender struct {
-	Username string
-	Password string
+	Username	string
+	Password	string
 }
 
 // LinkedInMessage represents a message to send via LinkedIn.
 type LinkedInMessage struct {
-	ProfileURL string // LinkedIn profile URL of the recipient
-	Subject    string // Subject line (note subject)
-	Body       string // Message body content
+	ProfileURL	string	// LinkedIn profile URL of the recipient
+	Subject		string	// Subject line (note subject)
+	Body		string	// Message body content
 }
 
 // NewLinkedInSender creates a new LinkedInSender.
 func NewLinkedInSender() *LinkedInSender {
 	return &LinkedInSender{
-		Username: os.Getenv("LINKEDIN_USERNAME"),
-		Password: os.Getenv("LINKEDIN_PASSWORD"),
+		Username:	os.Getenv("LINKEDIN_USERNAME"),
+		Password:	os.Getenv("LINKEDIN_PASSWORD"),
 	}
 }
 
@@ -44,7 +44,7 @@ func NewLinkedInSender() *LinkedInSender {
 // Falls back to simulation when credentials are not configured.
 func (l *LinkedInSender) Send(ctx context.Context, msg LinkedInMessage) error {
 	if l.Username == "" || l.Password == "" {
-		log.Println("LinkedInSender: No LINKEDIN_USERNAME/PASSWORD configured, logging message (simulation)")
+		slog.Info("LinkedInSender: No LINKEDIN_USERNAME/PASSWORD configured, logging message (simulation)")
 		return l.simulateSend(ctx, msg)
 	}
 
@@ -59,13 +59,13 @@ func (l *LinkedInSender) Send(ctx context.Context, msg LinkedInMessage) error {
 	//   6. Type message body
 	//   7. Send
 	//   8. Sleep for rate limiting
-	log.Println("LinkedInSender: Credentials configured but browser automation not yet implemented. Logging message.")
+	slog.Info("LinkedInSender: Credentials configured but browser automation not yet implemented. Logging message.")
 	return l.simulateSend(ctx, msg)
 }
 
 // simulateSend logs the message that would be sent.
 func (l *LinkedInSender) simulateSend(ctx context.Context, msg LinkedInMessage) error {
-	log.Printf(`LinkedInSender [SIMULATION] — Would send LinkedIn message:
+	slog.Info(fmt.Sprintf(`LinkedInSender [SIMULATION] — Would send LinkedIn message:
   To: %s
   Subject: %s
   Body: %s
@@ -73,7 +73,7 @@ func (l *LinkedInSender) simulateSend(ctx context.Context, msg LinkedInMessage) 
 		msg.ProfileURL,
 		msg.Subject,
 		msg.Body,
-		time.Now().Format(time.RFC3339),
+		time.Now().Format(time.RFC3339)),
 	)
 	return nil
 }
@@ -83,7 +83,7 @@ func (l *LinkedInSender) HealthCheck(ctx context.Context) error {
 	if l.Username == "" || l.Password == "" {
 		return fmt.Errorf("LINKEDIN_USERNAME and LINKEDIN_PASSWORD must be configured for LinkedIn messaging")
 	}
-	log.Println("LinkedInSender: Health check passed (credentials configured)")
+	slog.Info("LinkedInSender: Health check passed (credentials configured)")
 	return nil
 }
 
@@ -91,10 +91,10 @@ func (l *LinkedInSender) HealthCheck(ctx context.Context) error {
 // Future implementation will use headless browser automation.
 func (l *LinkedInSender) SendConnectionRequest(ctx context.Context, profileURL, note string) error {
 	if l.Username == "" || l.Password == "" {
-		log.Printf("LinkedInSender [SIMULATION] — Would send connection request to %s with note: %s", profileURL, note)
+		slog.Info(fmt.Sprintf("LinkedInSender [SIMULATION] — Would send connection request to %s with note: %s", profileURL, note))
 		return nil
 	}
 
-	log.Printf("LinkedInSender: Connection request to %s — browser automation pending", profileURL)
+	slog.Info(fmt.Sprintf("LinkedInSender: Connection request to %s — browser automation pending", profileURL))
 	return nil
 }

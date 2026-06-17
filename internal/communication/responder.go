@@ -3,7 +3,7 @@ package communication
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"os"
 	"strings"
 
@@ -13,9 +13,9 @@ import (
 
 // RAGResponseGenerator provides technically grounded replies using Pseudo-RAG.
 type RAGResponseGenerator struct {
-	db       *db.DB
-	llm      llm.LLMProvider
-	tormentNexusDocs string
+	db			*db.DB
+	llm			llm.LLMProvider
+	tormentNexusDocs	string
 }
 
 // NewRAGResponseGenerator creates a new generator with TormentNexus context.
@@ -33,24 +33,24 @@ func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResp
 		// #nosec G304 -- Documentation paths are internal to the repository structure
 		content, err = os.ReadFile(path)
 		if err == nil {
-			log.Printf("RAG: Successfully loaded TormentNexus documentation from %s", path)
+			slog.Info(fmt.Sprintf("RAG: Successfully loaded TormentNexus documentation from %s", path))
 			break
 		}
 	}
 
 	if err != nil {
-		log.Printf("RAG: Warning: could not load TormentNexus documentation: %v", err)
+		slog.Info(fmt.Sprintf("RAG: Warning: could not load TormentNexus documentation: %v", err))
 	}
 
 	return &RAGResponseGenerator{
-		db:       database,
-		llm:      provider,
-		tormentNexusDocs: string(content),
+		db:			database,
+		llm:			provider,
+		tormentNexusDocs:	string(content),
 	}
 }
 
 func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesContext, action Action) (string, error) {
-	log.Printf("RAGResponseGenerator: Generating response for intent: %s", salesCtx.LatestIntent)
+	slog.Info(fmt.Sprintf("RAGResponseGenerator: Generating response for intent: %s", salesCtx.LatestIntent))
 
 	// Inject technical context if the intent is technical
 	contextInjection := ""
@@ -82,7 +82,7 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 	}
 
 	prompt := llm.Prompt{
-		System: "You are a senior sales engineer at TormentNexus. Use the provided technical and pricing context to draft a hyper-personalized response.",
+		System:	"You are a senior sales engineer at TormentNexus. Use the provided technical and pricing context to draft a hyper-personalized response.",
 		User: fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
 			salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier),
 	}
@@ -95,4 +95,47 @@ func (g *RAGResponseGenerator) truncateDocs(docs string) string {
 		return docs[:2000] + "... [truncated]"
 	}
 	return docs
+}
+
+// GenerateFromTemplate renders a template with context-specific placeholders.
+// It returns the rendered body and subject.
+func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *db.Template, salesCtx SalesContext) (subject, body string, err error) {
+	subject = tmpl.Subject
+	body = tmpl.Body
+
+	// Helper to safely get a string value
+	getValue := func(parts ...string) string {
+		for _, part := range parts {
+			if part != "" {
+				return part
+			}
+		}
+		return ""
+	}
+
+	// Placeholder replacements for body
+	replacements := map[string]string{
+		"{{contact}}":        getValue(salesCtx.Contact.Name),
+		"{{company}}":        getValue(salesCtx.Company.Name),
+		"{{tech_stack}}":     strings.Join(salesCtx.Company.TechStack, ", "),
+		"{{role}}":           getValue(salesCtx.Contact.Role),
+		"{{github_handle}}":  getValue(salesCtx.Contact.GitHubHandle),
+		"{{linkedin_url}}":   getValue(salesCtx.Contact.LinkedInURL),
+		"{{email}}":          getValue(salesCtx.Contact.Email),
+		"{{specific_project}}": "TormentNexus",
+		"{{repo}}":           getValue(salesCtx.Company.Name, "AI-Platform"),
+		"{{market_cap_tier}}": getValue(salesCtx.Company.MarketCapTier, "Enterprise"),
+	}
+
+	// Replace placeholders in body
+	for placeholder, value := range replacements {
+		body = strings.ReplaceAll(body, placeholder, value)
+	}
+
+	// Replace placeholders in subject
+	for placeholder, value := range replacements {
+		subject = strings.ReplaceAll(subject, placeholder, value)
+	}
+
+	return subject, body, nil
 }

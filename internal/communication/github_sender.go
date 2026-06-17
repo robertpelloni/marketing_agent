@@ -3,7 +3,7 @@ package communication
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/url"
 	"os"
 	"strings"
@@ -16,9 +16,9 @@ import (
 // GitHubCommentSender posts technical comments on GitHub Issues and PRs
 // as a "technical hook" outreach for target companies.
 type GitHubCommentSender struct {
-	client   *github.Client
-	repo     string // e.g. "robertpelloni/enterprise_sales_bot"
-	username string // GitHub username for the bot account
+	client		*github.Client
+	repo		string	// e.g. "robertpelloni/enterprise_sales_bot"
+	username	string	// GitHub username for the bot account
 }
 
 // NewGitHubCommentSender creates a GitHubCommentSender.
@@ -27,11 +27,11 @@ type GitHubCommentSender struct {
 func NewGitHubCommentSender(repo string) *GitHubCommentSender {
 	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
-		log.Println("GitHubCommentSender: Warning: GITHUB_TOKEN not set, will use unauthenticated client (rate limited)")
+		slog.Info("GitHubCommentSender: Warning: GITHUB_TOKEN not set, will use unauthenticated client (rate limited)")
 		return &GitHubCommentSender{
-			client:   github.NewClient(nil),
-			repo:     repo,
-			username: "tormentnexus-bot",
+			client:		github.NewClient(nil),
+			repo:		repo,
+			username:	"tormentnexus-bot",
 		}
 	}
 
@@ -39,9 +39,9 @@ func NewGitHubCommentSender(repo string) *GitHubCommentSender {
 	tc := oauth2.NewClient(context.Background(), ts)
 
 	return &GitHubCommentSender{
-		client:   github.NewClient(tc),
-		repo:     repo,
-		username: os.Getenv("GITHUB_BOT_USERNAME"),
+		client:		github.NewClient(tc),
+		repo:		repo,
+		username:	os.Getenv("GITHUB_BOT_USERNAME"),
 	}
 }
 
@@ -63,7 +63,7 @@ func (g *GitHubCommentSender) SendComment(ctx context.Context, owner, repo strin
 		return fmt.Errorf("GitHubCommentSender: failed to create comment on %s/%s#%d: %w", owner, repo, issueNumber, err)
 	}
 
-	log.Printf("GitHubCommentSender: Comment posted on %s/%s#%d", owner, repo, issueNumber)
+	slog.Info(fmt.Sprintf("GitHubCommentSender: Comment posted on %s/%s#%d", owner, repo, issueNumber))
 	return nil
 }
 
@@ -94,14 +94,14 @@ func (g *GitHubCommentSender) SearchRelevantIssues(ctx context.Context, companyD
 	for _, term := range searchTerms {
 		query := fmt.Sprintf("%s org:%s is:issue is:open", term, companyDomain)
 		results, _, err := g.client.Search.Issues(ctx, query, &github.SearchOptions{
-			Sort:  "updated",
-			Order: "desc",
+			Sort:	"updated",
+			Order:	"desc",
 			ListOptions: github.ListOptions{
 				PerPage: 3,
 			},
 		})
 		if err != nil {
-			log.Printf("GitHubCommentSender: Search error for %q: %v", query, err)
+			slog.Info(fmt.Sprintf("GitHubCommentSender: Search error for %q: %v", query, err))
 			continue
 		}
 
@@ -116,12 +116,12 @@ func (g *GitHubCommentSender) SearchRelevantIssues(ctx context.Context, companyD
 			}
 
 			targets = append(targets, IssueTarget{
-				Owner:       repoOwner,
-				Repo:        repoName,
-				IssueNumber: issue.GetNumber(),
-				Title:       issue.GetTitle(),
-				URL:         issue.GetHTMLURL(),
-				Relevance:   CalculateRelevance(term, issue.GetTitle(), issue.GetBody()),
+				Owner:		repoOwner,
+				Repo:		repoName,
+				IssueNumber:	issue.GetNumber(),
+				Title:		issue.GetTitle(),
+				URL:		issue.GetHTMLURL(),
+				Relevance:	CalculateRelevance(term, issue.GetTitle(), issue.GetBody()),
 			})
 		}
 	}
@@ -141,12 +141,12 @@ func (g *GitHubCommentSender) SearchRelevantIssues(ctx context.Context, companyD
 
 // IssueTarget represents a GitHub issue or PR that is relevant for outreach.
 type IssueTarget struct {
-	Owner       string
-	Repo        string
-	IssueNumber int
-	Title       string
-	URL         string
-	Relevance   int // higher = more relevant
+	Owner		string
+	Repo		string
+	IssueNumber	int
+	Title		string
+	URL		string
+	Relevance	int	// higher = more relevant
 }
 
 // CalculateRelevance scores how relevant an issue is to TormentNexus.
@@ -215,7 +215,7 @@ func (g *GitHubCommentSender) FindAndComment(ctx context.Context, company db.Com
 	}
 
 	if len(targets) == 0 {
-		log.Printf("GitHubCommentSender: No relevant issues found for %s", company.Domain)
+		slog.Info(fmt.Sprintf("GitHubCommentSender: No relevant issues found for %s", company.Domain))
 		return nil
 	}
 
@@ -233,8 +233,8 @@ func (g *GitHubCommentSender) FindAndComment(ctx context.Context, company db.Com
 		return err
 	}
 
-	log.Printf("GitHubCommentSender: Technical hook posted for %s on %s/%s#%d",
-		company.Name, bestTarget.Owner, bestTarget.Repo, bestTarget.IssueNumber)
+	slog.Info(fmt.Sprintf("GitHubCommentSender: Technical hook posted for %s on %s/%s#%d",
+		company.Name, bestTarget.Owner, bestTarget.Repo, bestTarget.IssueNumber))
 
 	return nil
 }

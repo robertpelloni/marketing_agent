@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"regexp"
 	"strings"
@@ -22,36 +22,36 @@ type HNWhoIsHiringSource struct {
 
 // hnItem represents a Hacker News API item.
 type hnItem struct {
-	ID        int    `json:"id"`
-	By        string `json:"by"`
-	Text      string `json:"text"`
-	Kids      []int  `json:"kids"`
-	Time      int    `json:"time"`
-	Type      string `json:"type"`
-	Title     string `json:"title"`
-	Descendants int  `json:"descendants"`
+	ID		int	`json:"id"`
+	By		string	`json:"by"`
+	Text		string	`json:"text"`
+	Kids		[]int	`json:"kids"`
+	Time		int	`json:"time"`
+	Type		string	`json:"type"`
+	Title		string	`json:"title"`
+	Descendants	int	`json:"descendants"`
 }
 
 // hnUser represents a Hacker News user profile.
 type hnUser struct {
-	ID   string `json:"id"`
-	Karma int   `json:"karma"`
-	Created int `json:"created"`
+	ID	string	`json:"id"`
+	Karma	int	`json:"karma"`
+	Created	int	`json:"created"`
 }
 
 var (
 	// Matches company name from the first line of a HN hiring comment.
 	// Format is typically: "Company Name | Role | Location | ..."
-	hnCompanyRegex = regexp.MustCompile(`^([^|]+?)(?:\s*\||\s*$)`)
+	hnCompanyRegex	= regexp.MustCompile(`^([^|]+?)(?:\s*\||\s*$)`)
 
 	// Matches URLs in the comment text (company websites).
-	hnURLRegex = regexp.MustCompile(`https?://[^\s<>"]+`)
+	hnURLRegex	= regexp.MustCompile(`https?://[^\s<>"]+`)
 
 	// Matches domain from URL.
-	hnDomainRegex = regexp.MustCompile(`(?:https?://)?(?:www\.)?([^/\s]+)`)
+	hnDomainRegex	= regexp.MustCompile(`(?:https?://)?(?:www\.)?([^/\s]+)`)
 
 	// Keywords that signal AI/LLM relevance.
-	aiKeywords = []string{
+	aiKeywords	= []string{
 		"llm", "large language model", "ai engineer", "machine learning",
 		"ml engineer", "deep learning", "nlp", "natural language",
 		"generative ai", "gen ai", "agentic", "agent", "orchestration",
@@ -64,14 +64,14 @@ var (
 )
 
 const (
-	hnAPIBase    = "https://hacker-news.firebaseio.com/v0"
-	hnSearchBase = "https://hn.algolia.com/api/v1"
+	hnAPIBase	= "https://hacker-news.firebaseio.com/v0"
+	hnSearchBase	= "https://hn.algolia.com/api/v1"
 )
 
 // Discover implements LeadSource. It searches HN "Who is Hiring" threads
 // for companies with AI/LLM-related job postings.
 func (h *HNWhoIsHiringSource) Discover(ctx context.Context, keywords []string) ([]db.Company, error) {
-	log.Printf("HNWhoIsHiring: Searching for AI/LLM hiring signals...")
+	slog.Info("HNWhoIsHiring: Searching for AI/LLM hiring signals...")
 
 	// 1. Find the latest "Who is Hiring" thread
 	threadID, err := h.findLatestWhoIsHiringThread(ctx)
@@ -80,11 +80,11 @@ func (h *HNWhoIsHiringSource) Discover(ctx context.Context, keywords []string) (
 	}
 
 	if threadID == 0 {
-		log.Printf("HNWhoIsHiring: No active 'Who is Hiring' thread found")
+		slog.Info("HNWhoIsHiring: No active 'Who is Hiring' thread found")
 		return nil, nil
 	}
 
-	log.Printf("HNWhoIsHiring: Found thread https://news.ycombinator.com/item?id=%d", threadID)
+	slog.Info(fmt.Sprintf("HNWhoIsHiring: Found thread https://news.ycombinator.com/item?id=%d", threadID))
 
 	// 2. Fetch the thread's top-level comments (these are job postings)
 	comments, err := h.fetchThreadComments(ctx, threadID)
@@ -92,11 +92,11 @@ func (h *HNWhoIsHiringSource) Discover(ctx context.Context, keywords []string) (
 		return nil, fmt.Errorf("hn: failed to fetch comments: %w", err)
 	}
 
-	log.Printf("HNWhoIsHiring: Found %d top-level comments, filtering for AI/LLM...", len(comments))
+	slog.Info(fmt.Sprintf("HNWhoIsHiring: Found %d top-level comments, filtering for AI/LLM...", len(comments)))
 
 	// 3. Parse each comment for company info and AI relevance
 	var companies []db.Company
-	seen := make(map[string]bool) // deduplicate by domain
+	seen := make(map[string]bool)	// deduplicate by domain
 
 	for _, comment := range comments {
 		if comment.Text == "" {
@@ -117,11 +117,11 @@ func (h *HNWhoIsHiringSource) Discover(ctx context.Context, keywords []string) (
 		if h.isAIRelevant(comment.Text, keywords) {
 			seen[company.Domain] = true
 			companies = append(companies, company)
-			log.Printf("HNWhoIsHiring: Found AI-relevant company: %s (%s)", company.Name, company.Domain)
+			slog.Info(fmt.Sprintf("HNWhoIsHiring: Found AI-relevant company: %s (%s)", company.Name, company.Domain))
 		}
 	}
 
-	log.Printf("HNWhoIsHiring: Discovered %d AI-relevant companies from thread", len(companies))
+	slog.Info(fmt.Sprintf("HNWhoIsHiring: Discovered %d AI-relevant companies from thread", len(companies)))
 	return companies, nil
 }
 
@@ -130,7 +130,7 @@ func (h *HNWhoIsHiringSource) Discover(ctx context.Context, keywords []string) (
 func (h *HNWhoIsHiringSource) findLatestWhoIsHiringThread(ctx context.Context) (int, error) {
 	// Use search_by_date to get results sorted by newest first
 	url := fmt.Sprintf("%s/search_by_date?query=%%22who+is+hiring%%22&tags=story,author_whoishiring&hitsPerPage=5&numericFilters=created_at_i>%d",
-		hnSearchBase, time.Now().AddDate(0, -3, 0).Unix()) // within last 3 months
+		hnSearchBase, time.Now().AddDate(0, -3, 0).Unix())	// within last 3 months
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
@@ -146,8 +146,8 @@ func (h *HNWhoIsHiringSource) findLatestWhoIsHiringThread(ctx context.Context) (
 
 	var result struct {
 		Hits []struct {
-			ObjectID string `json:"objectID"`
-			Title    string `json:"title"`
+			ObjectID	string	`json:"objectID"`
+			Title		string	`json:"title"`
 		} `json:"hits"`
 	}
 
@@ -189,12 +189,12 @@ func (h *HNWhoIsHiringSource) fetchThreadComments(ctx context.Context, threadID 
 
 	comments := make([]hnItem, 0, limit)
 	type result struct {
-		item hnItem
-		err  error
+		item	hnItem
+		err	error
 	}
 
 	ch := make(chan result, limit)
-	sem := make(chan struct{}, 10) // concurrency limit
+	sem := make(chan struct{}, 10)	// concurrency limit
 
 	for _, kidID := range thread.Kids[:limit] {
 		sem <- struct{}{}
@@ -305,11 +305,11 @@ func (h *HNWhoIsHiringSource) parseComment(comment hnItem) (db.Company, bool) {
 	}
 
 	return db.Company{
-		Name:          companyName,
-		Domain:        domain,
-		TechStack:     techStack,
-		HiringSignals: hiringSignals,
-		MarketCapTier: classifyMarketCap(text),
+		Name:		companyName,
+		Domain:		domain,
+		TechStack:	techStack,
+		HiringSignals:	hiringSignals,
+		MarketCapTier:	classifyMarketCap(text),
 	}, true
 }
 
@@ -340,30 +340,30 @@ func extractTechStack(text string) []string {
 	var stack []string
 
 	techMap := map[string]string{
-		"go":         "Go",
-		"golang":     "Go",
-		"python":     "Python",
-		"rust":       "Rust",
-		"typescript": "TypeScript",
-		"kubernetes": "Kubernetes",
-		"k8s":        "Kubernetes",
-		"docker":     "Docker",
-		"aws":        "AWS",
-		"gcp":        "GCP",
-		"azure":      "Azure",
-		"postgres":   "PostgreSQL",
-		"postgresql": "PostgreSQL",
-		"redis":      "Redis",
-		"kafka":      "Kafka",
-		"pytorch":    "PyTorch",
-		"tensorflow": "TensorFlow",
-		"langchain":  "LangChain",
-		"llamaindex": "LlamaIndex",
-		"openai":     "OpenAI",
-		"anthropic":  "Anthropic",
-		"triton":     "Triton",
-		"vllm":       "vLLM",
-		"ray":        "Ray",
+		"go":		"Go",
+		"golang":	"Go",
+		"python":	"Python",
+		"rust":		"Rust",
+		"typescript":	"TypeScript",
+		"kubernetes":	"Kubernetes",
+		"k8s":		"Kubernetes",
+		"docker":	"Docker",
+		"aws":		"AWS",
+		"gcp":		"GCP",
+		"azure":	"Azure",
+		"postgres":	"PostgreSQL",
+		"postgresql":	"PostgreSQL",
+		"redis":	"Redis",
+		"kafka":	"Kafka",
+		"pytorch":	"PyTorch",
+		"tensorflow":	"TensorFlow",
+		"langchain":	"LangChain",
+		"llamaindex":	"LlamaIndex",
+		"openai":	"OpenAI",
+		"anthropic":	"Anthropic",
+		"triton":	"Triton",
+		"vllm":		"vLLM",
+		"ray":		"Ray",
 	}
 
 	seen := make(map[string]bool)

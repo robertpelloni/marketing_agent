@@ -3,7 +3,7 @@ package researcher
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"strings"
 	"time"
 
@@ -41,12 +41,12 @@ func (r *Researcher) Run(ctx context.Context, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	log.Println("Researcher worker started...")
+	slog.Info("Researcher worker started...")
 
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("Researcher worker stopping: Draining in-flight work...")
+			slog.Info("Researcher worker stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			r.executeResearch(ctx)
@@ -63,7 +63,7 @@ func (r *Researcher) executeResearch(ctx context.Context) {
 	// Find deals in Researched state (contacts found, now need deep technical context)
 	deals, err := r.db.ListDealsByState(ctx, db.StateResearched)
 	if err != nil {
-		log.Printf("Researcher: Error listing deals: %v", err)
+		slog.Info(fmt.Sprintf("Researcher: Error listing deals: %v", err))
 		return
 	}
 
@@ -75,7 +75,7 @@ func (r *Researcher) executeResearch(ctx context.Context) {
 
 		err = r.researchLead(ctx, deal, contacts[0])
 		if err != nil {
-			log.Printf("Researcher: Error researching lead %d: %v", deal.ID, err)
+			slog.Info(fmt.Sprintf("Researcher: Error researching lead %d: %v", deal.ID, err))
 		}
 	}
 }
@@ -84,7 +84,7 @@ func (r *Researcher) researchLead(ctx context.Context, deal db.Deal, contact db.
 	var findings []string
 
 	// Crawl for each source
-	targets := []string{contact.GitHubHandle, contact.Email} // Simplified targets
+	targets := []string{contact.GitHubHandle, contact.Email}	// Simplified targets
 	for _, crawler := range r.crawlers {
 		for _, target := range targets {
 			if target == "" {
@@ -119,17 +119,17 @@ func (r *Researcher) researchLead(ctx context.Context, deal db.Deal, contact db.
 				for i := 0; i < maxRetries; i++ {
 					// We push the deal with a "Researcher" route to indicate provenance
 					if err := r.crmClient.PushDeal(ctx, updatedDeal, *company, "Researcher"); err != nil {
-						log.Printf("Researcher Warning: Failed to push updated dossier to CRM (attempt %d/%d): %v", i+1, maxRetries, err)
+						slog.Info(fmt.Sprintf("Researcher Warning: Failed to push updated dossier to CRM (attempt %d/%d): %v", i+1, maxRetries, err))
 						time.Sleep(time.Duration(i+1) * 2 * time.Second)
 						continue
 					}
 					return
 				}
-				log.Printf("Researcher Error: CRM dossier push failed after %d attempts for deal %d", maxRetries, deal.ID)
+				slog.Info(fmt.Sprintf("Researcher Error: CRM dossier push failed after %d attempts for deal %d", maxRetries, deal.ID))
 			}()
 		}
 	}
 
-	log.Printf("Researcher: Successfully compiled technical dossier for deal %d", deal.ID)
+	slog.Info(fmt.Sprintf("Researcher: Successfully compiled technical dossier for deal %d", deal.ID))
 	return nil
 }

@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
+	"log/slog"
 	"net/http"
 	"strings"
 	"time"
@@ -20,47 +20,47 @@ import (
 // API docs: https://docs.apollo.io/reference/people-search
 // Free tier: 5,000 credits/month (1 credit = 1 person returned)
 type ApolloSource struct {
-	APIKey     string
-	HTTPClient *http.Client
+	APIKey		string
+	HTTPClient	*http.Client
 }
 
 // apolloSearchRequest is the JSON body for the Apollo.io people search API.
 type apolloSearchRequest struct {
-	QOrganizationDomains []string `json:"q_organization_domains"`
-	PersonTitles         []string `json:"person_titles,omitempty"`
-	Page                 int      `json:"page"`
-	PerPage              int      `json:"per_page"`
-	RevealPhone          bool     `json:"reveal_phone"`
-	RevealPersonalEmails bool     `json:"reveal_personal_emails"`
-	RequireEmail         bool     `json:"require_email"`
+	QOrganizationDomains	[]string	`json:"q_organization_domains"`
+	PersonTitles		[]string	`json:"person_titles,omitempty"`
+	Page			int		`json:"page"`
+	PerPage			int		`json:"per_page"`
+	RevealPhone		bool		`json:"reveal_phone"`
+	RevealPersonalEmails	bool		`json:"reveal_personal_emails"`
+	RequireEmail		bool		`json:"require_email"`
 }
 
 // apolloSearchResponse is the JSON response from the Apollo.io people search API.
 type apolloSearchResponse struct {
-	People       []apolloPerson `json:"people"`
-	TotalEntries int            `json:"total_entries"`
-	Paginated    bool           `json:"paginated"`
+	People		[]apolloPerson	`json:"people"`
+	TotalEntries	int		`json:"total_entries"`
+	Paginated	bool		`json:"paginated"`
 }
 
 // apolloPerson represents a single person record from the Apollo.io API.
 type apolloPerson struct {
-	ID           string `json:"id"`
-	FirstName    string `json:"first_name"`
-	LastName     string `json:"last_name"`
-	Name         string `json:"name"`
-	Title        string `json:"title"`
-	Email        string `json:"email"`
-	LinkedInURL  string `json:"linkedin_url"`
-	Organization struct {
+	ID		string	`json:"id"`
+	FirstName	string	`json:"first_name"`
+	LastName	string	`json:"last_name"`
+	Name		string	`json:"name"`
+	Title		string	`json:"title"`
+	Email		string	`json:"email"`
+	LinkedInURL	string	`json:"linkedin_url"`
+	Organization	struct {
 		Name string `json:"name"`
-	} `json:"organization"`
-	Seniority string `json:"seniority"`
+	}	`json:"organization"`
+	Seniority	string	`json:"seniority"`
 }
 
 // NewApolloSource creates a new Apollo.io enrichment source.
 func NewApolloSource(apiKey string) *ApolloSource {
 	return &ApolloSource{
-		APIKey: apiKey,
+		APIKey:	apiKey,
 		HTTPClient: &http.Client{
 			Timeout: 30 * time.Second,
 		},
@@ -79,7 +79,7 @@ func (a *ApolloSource) Enrich(ctx context.Context, company db.Company) ([]db.Con
 		return nil, fmt.Errorf("apollo: invalid domain %q", company.Domain)
 	}
 
-	log.Printf("ApolloSource: Searching for contacts at %s (%s)", company.Name, domain)
+	slog.Info(fmt.Sprintf("ApolloSource: Searching for contacts at %s (%s)", company.Name, domain))
 
 	contacts, err := a.peopleSearch(ctx, domain)
 	if err != nil {
@@ -87,7 +87,7 @@ func (a *ApolloSource) Enrich(ctx context.Context, company db.Company) ([]db.Con
 	}
 
 	if len(contacts) == 0 {
-		log.Printf("ApolloSource: No contacts found at %s", domain)
+		slog.Info(fmt.Sprintf("ApolloSource: No contacts found at %s", domain))
 		return nil, nil
 	}
 
@@ -96,14 +96,14 @@ func (a *ApolloSource) Enrich(ctx context.Context, company db.Company) ([]db.Con
 	for _, c := range contacts {
 		if isDecisionMaker(c.Role) {
 			filtered = append(filtered, c)
-			log.Printf("ApolloSource: Found decision-maker: %s (%s) at %s", c.Name, c.Role, domain)
+			slog.Info(fmt.Sprintf("ApolloSource: Found decision-maker: %s (%s) at %s", c.Name, c.Role, domain))
 		}
 	}
 
 	// If no decision-makers found, return top contacts anyway
 	if len(filtered) == 0 && len(contacts) > 0 {
 		filtered = contacts[:1]
-		log.Printf("ApolloSource: No senior roles found, taking highest confidence contact: %s", filtered[0].Name)
+		slog.Info(fmt.Sprintf("ApolloSource: No senior roles found, taking highest confidence contact: %s", filtered[0].Name))
 	}
 
 	return filtered, nil
@@ -112,15 +112,15 @@ func (a *ApolloSource) Enrich(ctx context.Context, company db.Company) ([]db.Con
 // peopleSearch calls the Apollo.io people search API with filters for decision-maker titles.
 func (a *ApolloSource) peopleSearch(ctx context.Context, domain string) ([]db.Contact, error) {
 	reqBody := apolloSearchRequest{
-		QOrganizationDomains: []string{domain},
+		QOrganizationDomains:	[]string{domain},
 		PersonTitles: []string{
 			"CTO", "VP", "Vice President", "Director", "Chief",
 			"Head of", "Principal", "Staff", "Lead", "Architect",
 			"Engineering Manager", "Founder", "Co-Founder", "CEO",
 		},
-		Page:        1,
-		PerPage:     25,
-		RequireEmail: true,
+		Page:		1,
+		PerPage:	25,
+		RequireEmail:	true,
 	}
 
 	body, err := json.Marshal(reqBody)
@@ -184,10 +184,10 @@ func (a *ApolloSource) peopleSearch(ctx context.Context, domain string) ([]db.Co
 		}
 
 		contacts = append(contacts, db.Contact{
-			Name:        name,
-			Role:        role,
-			Email:       p.Email,
-			LinkedInURL: p.LinkedInURL,
+			Name:		name,
+			Role:		role,
+			Email:		p.Email,
+			LinkedInURL:	p.LinkedInURL,
 		})
 	}
 
@@ -201,9 +201,9 @@ func (a *ApolloSource) HealthCheck(ctx context.Context) error {
 	}
 
 	reqBody := apolloSearchRequest{
-		QOrganizationDomains: []string{"openai.com"},
-		Page:                 1,
-		PerPage:              1,
+		QOrganizationDomains:	[]string{"openai.com"},
+		Page:			1,
+		PerPage:		1,
 	}
 
 	body, err := json.Marshal(reqBody)

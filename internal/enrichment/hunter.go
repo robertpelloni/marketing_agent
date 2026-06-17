@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,47 +20,47 @@ import (
 // API docs: https://hunter.io/api-documentation
 // Free tier: 25 searches/month, 50 verifications/month
 type HunterSource struct {
-	APIKey     string
-	HTTPClient *http.Client
+	APIKey		string
+	HTTPClient	*http.Client
 }
 
 // hunterResponse represents the Hunter.io email finder API response.
 type hunterResponse struct {
-	Data struct {
-		Email      string  `json:"email"`
-		FirstName  string  `json:"first_name"`
-		LastName   string  `json:"last_name"`
-		Position   string  `json:"position"`
-		Company    string  `json:"company"`
-		Confidence float64 `json:"confidence"`
-		Domain     string  `json:"domain"`
-	} `json:"data"`
-	Errors []string `json:"errors"`
+	Data	struct {
+		Email		string	`json:"email"`
+		FirstName	string	`json:"first_name"`
+		LastName	string	`json:"last_name"`
+		Position	string	`json:"position"`
+		Company		string	`json:"company"`
+		Confidence	float64	`json:"confidence"`
+		Domain		string	`json:"domain"`
+	}	`json:"data"`
+	Errors	[]string	`json:"errors"`
 }
 
 // hunterDomainResponse represents the Hunter.io domain search API response.
 type hunterDomainResponse struct {
-	Data struct {
-		Emails []struct {
-			Value        string  `json:"value"`
-			FirstName    string  `json:"first_name"`
-			LastName     string  `json:"last_name"`
-			Position     string  `json:"position"`
-			Confidence   float64 `json:"confidence"`
-			Seniority    string  `json:"seniority"`
-			Department   string  `json:"department"`
-			LinkedInURL  string  `json:"linkedin"`
-		} `json:"emails"`
-		Pattern  string `json:"pattern"`
-		Organization string `json:"organization"`
-	} `json:"data"`
-	Errors []string `json:"errors"`
+	Data	struct {
+		Emails	[]struct {
+			Value		string	`json:"value"`
+			FirstName	string	`json:"first_name"`
+			LastName	string	`json:"last_name"`
+			Position	string	`json:"position"`
+			Confidence	float64	`json:"confidence"`
+			Seniority	string	`json:"seniority"`
+			Department	string	`json:"department"`
+			LinkedInURL	string	`json:"linkedin"`
+		}	`json:"emails"`
+		Pattern		string	`json:"pattern"`
+		Organization	string	`json:"organization"`
+	}	`json:"data"`
+	Errors	[]string	`json:"errors"`
 }
 
 // NewHunterSource creates a new Hunter.io enrichment source.
 func NewHunterSource(apiKey string) *HunterSource {
 	return &HunterSource{
-		APIKey: apiKey,
+		APIKey:	apiKey,
 		HTTPClient: &http.Client{
 			Timeout: 30 * time.Second,
 		},
@@ -80,7 +80,7 @@ func (h *HunterSource) Enrich(ctx context.Context, company db.Company) ([]db.Con
 		return nil, fmt.Errorf("hunter: invalid domain %q", company.Domain)
 	}
 
-	log.Printf("HunterSource: Searching for contacts at %s (%s)", company.Name, domain)
+	slog.Info(fmt.Sprintf("HunterSource: Searching for contacts at %s (%s)", company.Name, domain))
 
 	contacts, err := h.domainSearch(ctx, domain)
 	if err != nil {
@@ -88,7 +88,7 @@ func (h *HunterSource) Enrich(ctx context.Context, company db.Company) ([]db.Con
 	}
 
 	if len(contacts) == 0 {
-		log.Printf("HunterSource: No contacts found at %s", domain)
+		slog.Info(fmt.Sprintf("HunterSource: No contacts found at %s", domain))
 		return nil, nil
 	}
 
@@ -97,14 +97,14 @@ func (h *HunterSource) Enrich(ctx context.Context, company db.Company) ([]db.Con
 	for _, c := range contacts {
 		if isDecisionMaker(c.Role) {
 			filtered = append(filtered, c)
-			log.Printf("HunterSource: Found decision-maker: %s (%s) at %s", c.Name, c.Role, domain)
+			slog.Info(fmt.Sprintf("HunterSource: Found decision-maker: %s (%s) at %s", c.Name, c.Role, domain))
 		}
 	}
 
 	// If no decision-makers found, return top contacts anyway
 	if len(filtered) == 0 && len(contacts) > 0 {
-		filtered = contacts[:1] // Take the first (highest confidence)
-		log.Printf("HunterSource: No senior roles found, taking highest confidence contact: %s", filtered[0].Name)
+		filtered = contacts[:1]	// Take the first (highest confidence)
+		slog.Info(fmt.Sprintf("HunterSource: No senior roles found, taking highest confidence contact: %s", filtered[0].Name))
 	}
 
 	return filtered, nil
@@ -167,10 +167,10 @@ func (h *HunterSource) domainSearch(ctx context.Context, domain string) ([]db.Co
 		}
 
 		contacts = append(contacts, db.Contact{
-			Name:         name,
-			Role:         role,
-			Email:        email.Value,
-			LinkedInURL:  email.LinkedInURL,
+			Name:		name,
+			Role:		role,
+			Email:		email.Value,
+			LinkedInURL:	email.LinkedInURL,
 		})
 	}
 
@@ -209,8 +209,8 @@ func cleanDomain(domain string) string {
 	domain = strings.TrimPrefix(domain, "http://")
 	domain = strings.TrimPrefix(domain, "www.")
 	domain = strings.TrimSuffix(domain, "/")
-	domain = strings.Split(domain, "/")[0] // Remove path
-	domain = strings.Split(domain, "?")[0] // Remove query
+	domain = strings.Split(domain, "/")[0]	// Remove path
+	domain = strings.Split(domain, "?")[0]	// Remove query
 	return strings.ToLower(domain)
 }
 

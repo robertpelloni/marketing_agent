@@ -3,7 +3,7 @@ package communication
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -11,62 +11,62 @@ import (
 
 // CadenceStep defines a single touch point in an outreach sequence.
 type CadenceStep struct {
-	StepNumber     int           // Order in the sequence (1-based)
-	Channel        db.Channel    // email, linkedin, github
-	DelayAfterPrev time.Duration // How long to wait after the previous step
-	TemplateID     string        // Identifier for the message template
-	Subject        string        // Subject line override
+	StepNumber	int		// Order in the sequence (1-based)
+	Channel		db.Channel	// email, linkedin, github
+	DelayAfterPrev	time.Duration	// How long to wait after the previous step
+	TemplateID	string		// Identifier for the message template
+	Subject		string		// Subject line override
 }
 
 // CadenceSchedule defines a multi-touch outreach sequence.
 type CadenceSchedule struct {
-	Name        string        // e.g., "Standard B2B Tech Outreach"
-	Description string        // Human-readable description
-	Steps       []CadenceStep // Ordered list of touch points
-	MaxAttempts int           // Maximum total touches before marking as exhausted
+	Name		string		// e.g., "Standard B2B Tech Outreach"
+	Description	string		// Human-readable description
+	Steps		[]CadenceStep	// Ordered list of touch points
+	MaxAttempts	int		// Maximum total touches before marking as exhausted
 }
 
 // DefaultCadence returns the default outreach cadence for new leads.
 func DefaultCadence() CadenceSchedule {
 	return CadenceSchedule{
-		Name:        "Standard B2B Tech Outreach",
-		Description: "Default 5-touch sequence across email, GitHub, and LinkedIn",
-		MaxAttempts: 5,
+		Name:		"Standard B2B Tech Outreach",
+		Description:	"Default 5-touch sequence across email, GitHub, and LinkedIn",
+		MaxAttempts:	5,
 		Steps: []CadenceStep{
 			{
-				StepNumber:     1,
-				Channel:        db.ChannelEmail,
-				DelayAfterPrev: 0, // First touch immediately
-				TemplateID:     "intro-email",
-				Subject:        "TormentNexus for %s — Quick Question",
+				StepNumber:	1,
+				Channel:	db.ChannelEmail,
+				DelayAfterPrev:	0,	// First touch immediately
+				TemplateID:	"intro-email",
+				Subject:	"TormentNexus for %s — Quick Question",
 			},
 			{
-				StepNumber:     2,
-				Channel:        db.ChannelGitHub,
-				DelayAfterPrev: 48 * time.Hour, // 2 days after email
-				TemplateID:     "github-hook",
-				Subject:        "",
+				StepNumber:	2,
+				Channel:	db.ChannelGitHub,
+				DelayAfterPrev:	48 * time.Hour,	// 2 days after email
+				TemplateID:	"github-hook",
+				Subject:	"",
 			},
 			{
-				StepNumber:     3,
-				Channel:        db.ChannelEmail,
-				DelayAfterPrev: 72 * time.Hour, // 3 days after GitHub
-				TemplateID:     "followup-email",
-				Subject:        "Re: TormentNexus for %s — Thoughts?",
+				StepNumber:	3,
+				Channel:	db.ChannelEmail,
+				DelayAfterPrev:	72 * time.Hour,	// 3 days after GitHub
+				TemplateID:	"followup-email",
+				Subject:	"Re: TormentNexus for %s — Thoughts?",
 			},
 			{
-				StepNumber:     4,
-				Channel:        db.ChannelLinkedIn,
-				DelayAfterPrev: 96 * time.Hour, // 4 days after email
-				TemplateID:     "linkedin-connect",
-				Subject:        "TormentNexus — AI Infrastructure",
+				StepNumber:	4,
+				Channel:	db.ChannelLinkedIn,
+				DelayAfterPrev:	96 * time.Hour,	// 4 days after email
+				TemplateID:	"linkedin-connect",
+				Subject:	"TormentNexus — AI Infrastructure",
 			},
 			{
-				StepNumber:     5,
-				Channel:        db.ChannelEmail,
-				DelayAfterPrev: 168 * time.Hour, // 7 days after LinkedIn
-				TemplateID:     "breakup-email",
-				Subject:        "Should I close your file?",
+				StepNumber:	5,
+				Channel:	db.ChannelEmail,
+				DelayAfterPrev:	168 * time.Hour,	// 7 days after LinkedIn
+				TemplateID:	"breakup-email",
+				Subject:	"Should I close your file?",
 			},
 		},
 	}
@@ -84,13 +84,13 @@ func NewCadenceTracker(database *db.DB) *CadenceTracker {
 
 // CadenceProgress represents the current cadence state for a deal.
 type CadenceProgress struct {
-	DealID            int64
-	ScheduleName      string
-	NextStepNumber    int
-	LastTouchTime     time.Time
-	NextScheduledTime time.Time
-	TotalAttempts     int
-	IsExhausted       bool
+	DealID			int64
+	ScheduleName		string
+	NextStepNumber		int
+	LastTouchTime		time.Time
+	NextScheduledTime	time.Time
+	TotalAttempts		int
+	IsExhausted		bool
 }
 
 // GetNextStep determines which cadence step to execute next for a deal.
@@ -112,11 +112,11 @@ func (ct *CadenceTracker) GetNextStep(ctx context.Context, dealID int64, schedul
 	// Check if max attempts exceeded
 	if totalAttempts >= schedule.MaxAttempts {
 		return nil, &CadenceProgress{
-			DealID:        dealID,
-			ScheduleName:  schedule.Name,
-			NextStepNumber: len(schedule.Steps) + 1,
-			TotalAttempts: totalAttempts,
-			IsExhausted:   true,
+			DealID:		dealID,
+			ScheduleName:	schedule.Name,
+			NextStepNumber:	len(schedule.Steps) + 1,
+			TotalAttempts:	totalAttempts,
+			IsExhausted:	true,
 		}, nil
 	}
 
@@ -153,28 +153,28 @@ func (ct *CadenceTracker) GetNextStep(ctx context.Context, dealID int64, schedul
 
 	if nextStep == nil {
 		return nil, &CadenceProgress{
-			DealID:        dealID,
-			ScheduleName:  schedule.Name,
-			NextStepNumber: nextStepNumber,
-			TotalAttempts: totalAttempts,
-			IsExhausted:   nextStepNumber > len(schedule.Steps),
+			DealID:		dealID,
+			ScheduleName:	schedule.Name,
+			NextStepNumber:	nextStepNumber,
+			TotalAttempts:	totalAttempts,
+			IsExhausted:	nextStepNumber > len(schedule.Steps),
 		}, nil
 	}
 
 	// Calculate next scheduled time
 	nextScheduled := lastOutboundTime.Add(nextStep.DelayAfterPrev)
 	if lastOutboundTime.IsZero() {
-		nextScheduled = time.Now() // First step is immediate
+		nextScheduled = time.Now()	// First step is immediate
 	}
 
 	return nextStep, &CadenceProgress{
-		DealID:            dealID,
-		ScheduleName:      schedule.Name,
-		NextStepNumber:    nextStepNumber,
-		LastTouchTime:     lastOutboundTime,
-		NextScheduledTime: nextScheduled,
-		TotalAttempts:     totalAttempts,
-		IsExhausted:       false,
+		DealID:			dealID,
+		ScheduleName:		schedule.Name,
+		NextStepNumber:		nextStepNumber,
+		LastTouchTime:		lastOutboundTime,
+		NextScheduledTime:	nextScheduled,
+		TotalAttempts:		totalAttempts,
+		IsExhausted:		false,
 	}, nil
 }
 
@@ -196,12 +196,12 @@ func (ct *CadenceTracker) ShouldEngageContact(ctx context.Context, dealID int64,
 	}
 
 	if progress.IsExhausted {
-		log.Printf("Cadence: Deal %d outreach exhausted after %d attempts", dealID, progress.TotalAttempts)
+		slog.Info(fmt.Sprintf("Cadence: Deal %d outreach exhausted after %d attempts", dealID, progress.TotalAttempts))
 		return nil, nil
 	}
 
 	if !ct.IsTimeForNextStep(*progress) {
-		log.Printf("Cadence: Deal %d not ready for next step (next at %s)", dealID, progress.NextScheduledTime.Format(time.RFC3339))
+		slog.Info(fmt.Sprintf("Cadence: Deal %d not ready for next step (next at %s)", dealID, progress.NextScheduledTime.Format(time.RFC3339)))
 		return nil, nil
 	}
 
@@ -212,14 +212,14 @@ func (ct *CadenceTracker) ShouldEngageContact(ctx context.Context, dealID int64,
 // It integrates with the existing Manager to provide multi-touch outreach.
 type CadenceAwareManager struct {
 	*Manager
-	tracker *CadenceTracker
+	tracker	*CadenceTracker
 }
 
 // NewCadenceAwareManager wraps an existing Manager with cadence tracking.
 func NewCadenceAwareManager(mgr *Manager, database *db.DB) *CadenceAwareManager {
 	return &CadenceAwareManager{
-		Manager: mgr,
-		tracker: NewCadenceTracker(database),
+		Manager:	mgr,
+		tracker:	NewCadenceTracker(database),
 	}
 }
 
@@ -228,7 +228,7 @@ func (cam *CadenceAwareManager) RunCadence(ctx context.Context, interval time.Du
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	log.Printf("CadenceAwareManager: Multi-touch outreach scheduler started (interval: %v)", interval)
+	slog.Info(fmt.Sprintf("CadenceAwareManager: Multi-touch outreach scheduler started (interval: %v)", interval))
 
 	// Run immediately on startup
 	cam.checkCadence(ctx)
@@ -236,7 +236,7 @@ func (cam *CadenceAwareManager) RunCadence(ctx context.Context, interval time.Du
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("CadenceAwareManager: Scheduler stopping: Draining in-flight work...")
+			slog.Info("CadenceAwareManager: Scheduler stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			cam.checkCadence(ctx)
@@ -246,9 +246,14 @@ func (cam *CadenceAwareManager) RunCadence(ctx context.Context, interval time.Du
 
 // checkCadence checks all active deals for cadence-appropriate outreach.
 func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
+	if cam.db == nil {
+		slog.Info("CadenceAwareManager: DB unavailable, skipping cadence check")
+		return
+	}
+
 	deals, err := cam.db.ListDealsByState(ctx, db.StateResearched)
 	if err != nil {
-		log.Printf("CadenceAwareManager: Error listing deals: %v", err)
+		slog.Info(fmt.Sprintf("CadenceAwareManager: Error listing deals: %v", err))
 		return
 	}
 
@@ -273,30 +278,111 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 
 		nextStep, err := cam.tracker.ShouldEngageContact(ctx, deal.ID, interactions)
 		if err != nil {
-			log.Printf("CadenceAwareManager: Cadence check error for deal %d: %v", deal.ID, err)
+			slog.Info(fmt.Sprintf("CadenceAwareManager: Cadence check error for deal %d: %v", deal.ID, err))
 			continue
 		}
 
 		if nextStep == nil {
-			continue // Not time yet or exhausted
+			continue	// Not time yet or exhausted
 		}
 
-		log.Printf("CadenceAwareManager: Executing cadence step %d (%s) for deal %d via %s",
-			nextStep.StepNumber, nextStep.TemplateID, deal.ID, nextStep.Channel)
+		slog.Info(fmt.Sprintf("CadenceAwareManager: Executing cadence step %d (%s) for deal %d via %s",
+			nextStep.StepNumber, nextStep.TemplateID, deal.ID, nextStep.Channel))
 
 		// Trigger outreach based on channel
 		switch nextStep.Channel {
 		case db.ChannelEmail:
-			// Use the existing ProcessInbound mechanism for email
-			if _, err := cam.Manager.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
-				log.Printf("CadenceAwareManager: Email step failed for deal %d: %v", deal.ID, err)
+			// Load template and render content
+			tmpl, err := cam.db.GetTemplate(ctx, nextStep.TemplateID)
+			if err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Template %s not found for deal %d: %v", nextStep.TemplateID, deal.ID, err))
+				// Fallback to ProcessInbound
+				if _, err := cam.Manager.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
+					slog.Info(fmt.Sprintf("CadenceAwareManager: Fallback email step failed for deal %d: %v", deal.ID, err))
+				}
+				continue
 			}
+
+			// Build SalesContext for template rendering
+			company, err := cam.db.GetCompanyByID(ctx, deal.CompanyID)
+			if err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Could not get company %d: %v", deal.CompanyID, err))
+				continue
+			}
+
+			// Build SalesContext for template rendering
+			contact := contacts[0]
+			salesCtx := SalesContext{
+				Company:     *company,
+				Deal:        deal,
+				Contact:     contact,
+				Interactions: interactions,
+				LatestIntent: IntentGeneral, // We're proactively reaching out
+			}
+
+			// Type-assert to *RAGResponseGenerator to access GenerateFromTemplate
+			ragResponder, ok := cam.responder.(*RAGResponseGenerator)
+			if !ok {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Responder does not support templates for deal %d", deal.ID))
+				continue
+			}
+
+			// Generate subject and body from template
+subject, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
+			if err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Template rendering failed for deal %d: %v", deal.ID, err))
+				continue
+			}
+
+			// Record template impression for A/B testing metrics
+			if impErr := cam.db.RecordTemplateImpression(ctx, tmpl.ID); impErr != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Failed to record template impression for %s: %v", tmpl.ID, impErr))
+			}
+
+			// Create outbound interaction
+			outbound := db.Interaction{
+				ContactID:  contacts[0].ID,
+				Channel:    nextStep.Channel.String(),
+				Direction:  "Outbound",
+				RawText:    body,
+				Summary:    fmt.Sprintf("Cadence step %d: %s via %s", nextStep.StepNumber, tmpl.ID, nextStep.Channel),
+				TemplateID: tmpl.ID,
+			}
+			if err := cam.db.CreateInteraction(ctx, &outbound); err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Failed to create interaction for deal %d: %v", deal.ID, err))
+				continue
+			}
+
+			// Send email via sender
+			if cam.Manager.sender != nil {
+				emailMsg := EmailMessage{
+					To:      contacts[0].Email,
+					Subject: subject,
+					Body:    body,
+				}
+				if err := cam.Manager.sender.Send(ctx, emailMsg); err != nil {
+					slog.Info(fmt.Sprintf("CadenceAwareManager: Email send failed for deal %d: %v", deal.ID, err))
+				} else {
+					slog.Info(fmt.Sprintf("CadenceAwareManager: Email sent successfully for deal %d (step %d, template %s)", deal.ID, nextStep.StepNumber, tmpl.ID))
+				}
+			} else {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: No email sender configured — email logged for deal %d", deal.ID))
+			}
+
+			// Update cadence step in DB
+			if err := cam.db.SetCadenceStep(ctx, deal.ID, nextStep.StepNumber); err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Failed to update cadence step for deal %d: %v", deal.ID, err))
+			}
+
 		case db.ChannelLinkedIn:
 			// LinkedIn step — log for now (needs LinkedInSender)
-			log.Printf("CadenceAwareManager: LinkedIn step pending for deal %d — browser automation needed", deal.ID)
+			// TODO: Implement LinkedIn message sending via linkedin_sender
+			slog.Info(fmt.Sprintf("CadenceAwareManager: LinkedIn step %d pending for deal %d — requires implementation", nextStep.StepNumber, deal.ID))
+
 		case db.ChannelGitHub:
 			// GitHub step — log for now (needs GitHubCommentSender)
-			log.Printf("CadenceAwareManager: GitHub step pending for deal %d — GitHub comment sender needed", deal.ID)
+			// TODO: Implement GitHub comment posting via github_sender
+			slog.Info(fmt.Sprintf("CadenceAwareManager: GitHub step %d pending for deal %d — requires implementation", nextStep.StepNumber, deal.ID))
 		}
 	}
 }

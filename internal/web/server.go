@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"html"
 	"io"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"strings"
@@ -20,6 +20,7 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/logging"
 )
 
 // HermesHealthChecker is an optional interface for checking LLM provider health.
@@ -71,9 +72,10 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // ListenAndServe starts the HTTP server.
 func (s *Server) ListenAndServe(addr string) error {
-	log.Printf("Web dashboard starting on %s", addr)
+	logging.Init("json", "info")
+	slog.Info("Web dashboard starting", "addr", addr)
 	// #nosec G114 -- Simple ListenAndServe is used for internal dashboard; timeout configuration handled at higher level if needed
-	return http.ListenAndServe(addr, s)
+	return http.ListenAndServe(addr, logging.Middleware(s))
 }
 
 func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
@@ -87,20 +89,20 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		switch action {
 		case "enrich":
 			// #nosec G706 -- deal_id is used for context in manual action logs
-			log.Printf("UI: Manual enrichment triggered for deal %s", r.FormValue("deal_id"))
+			slog.InfoContext(r.Context(), "Manual enrichment triggered", "deal_id", r.FormValue("deal_id"))
 		case "sync":
 			if err := s.deploy.ExecuteSync(); err != nil {
-				log.Printf("UI: Sync error: %v", err)
+				slog.WarnContext(r.Context(), "Sync error", "error", err)
 			}
 		case "flag_success":
 			interactionID := r.FormValue("interaction_id")
 			success := r.FormValue("success") == "true"
 			var id int64
 			if _, err := fmt.Sscanf(interactionID, "%d", &id); err != nil {
-				log.Printf("UI: Invalid interaction ID: %v", err)
+				slog.WarnContext(r.Context(), "Invalid interaction ID", "error", err, "interaction_id", interactionID)
 			} else {
 				if err := s.db.UpdateInteractionSuccess(r.Context(), id, success); err != nil {
-					log.Printf("UI: Error flagging interaction: %v", err)
+					slog.WarnContext(r.Context(), "Error flagging interaction", "error", err, "interaction_id", id)
 				}
 			}
 		case "update_channel":
@@ -108,17 +110,29 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			channel := r.FormValue("channel")
 			var id int64
 			if _, err := fmt.Sscanf(contactID, "%d", &id); err != nil {
-				log.Printf("UI: Invalid contact ID: %v", err)
+				slog.WarnContext(r.Context(), "Invalid contact ID", "error", err, "contact_id", contactID)
 			} else {
 				if err := s.db.UpdateContactPreferredChannel(r.Context(), id, channel); err != nil {
-					log.Printf("UI: Error updating channel: %v", err)
+					slog.WarnContext(r.Context(), "Error updating channel", "error", err, "contact_id", id, "channel", channel)
 				} else {
-					log.Printf("UI: Contact %d channel updated to %s", id, channel)
+					slog.InfoContext(r.Context(), "Contact channel updated", "contact_id", id, "channel", channel)
 				}
 			}
-		case "build":
+case "build":
 			if err := s.deploy.ExecuteBuild(); err != nil {
-				log.Printf("UI: Build error: %v", err)
+				slog.WarnContext(r.Context(), "Build error", "error", err)
+			}
+		case "approve_deal":
+			dealIDStr := r.FormValue("deal_id")
+			var id int64
+			if _, err := fmt.Sscanf(dealIDStr, "%d", &id); err != nil {
+				slog.WarnContext(r.Context(), "Invalid deal ID for approval", "error", err)
+			} else {
+				if err := s.db.UpdateDealState(r.Context(), id, db.StateNegotiating); err != nil {
+					slog.WarnContext(r.Context(), "Failed to approve deal", "deal_id", id, "error", err)
+				} else {
+					slog.InfoContext(r.Context(), "Deal approved by human", "deal_id", id)
+				}
 			}
 		}
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -135,7 +149,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 
 	metrics, err := s.db.GetPerformanceMetrics(r.Context())
 	if err != nil {
-		log.Printf("UI: Error retrieving metrics: %v", err)
+		slog.WarnContext(r.Context(), "Error retrieving metrics", "error", err)
 		metrics = &db.PerformanceMetrics{
 			LeadsByState: make(map[db.LeadState]int),
 		}
@@ -143,7 +157,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 
 	prs, err := s.db.ListActivePullRequests(r.Context())
 	if err != nil {
-		log.Printf("UI: Error listing PRs: %v", err)
+		slog.WarnContext(r.Context(), "Error listing PRs", "error", err)
 	}
 
 	taskList, _ := s.tasks.ListAllTasks(r.Context())
@@ -203,6 +217,8 @@ h1 { color: #333; }
 			statusTitle = "Company identified, awaiting technical research."
 		case db.StateResearched:
 			statusTitle = "Key engineering contacts found and technical dossier compiled."
+		case db.StatePendingApproval:
+			statusTitle = "Deal flagged for human approval before progression."
 		}
 
 		// Retrieve contacts and latest interaction ID for each deal
@@ -406,7 +422,7 @@ func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewEncoder(w).Encode(health); err != nil {
-		log.Printf("Web: Error encoding health JSON: %v", err)
+		slog.WarnContext(r.Context(), "Error encoding health JSON", "error", err)
 	}
 }
 
@@ -430,7 +446,7 @@ func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
 	// SECURITY: Verify GitHub Webhook Signature
 	signature := r.Header.Get("X-Hub-Signature-256")
 	if signature == "" {
-		log.Println("Webhook Security: Missing X-Hub-Signature-256 header")
+		slog.WarnContext(r.Context(), "Webhook: Missing X-Hub-Signature-256 header")
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
@@ -447,24 +463,24 @@ func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
 		// Reset body for later use if needed (though not used here yet)
 		r.Body = io.NopCloser(bytes.NewBuffer(body))
 		if !verifySignature(body, secret, signature) {
-			log.Println("Webhook Security: Invalid signature")
+			slog.WarnContext(r.Context(), "Webhook: Invalid signature")
 			http.Error(w, "Forbidden", http.StatusForbidden)
 			return
 		}
 	} else {
-		log.Println("Webhook Security: GITHUB_WEBHOOK_SECRET not set, skipping verification (Insecure!)")
+		slog.WarnContext(r.Context(), "Webhook: GITHUB_WEBHOOK_SECRET not set, skipping verification (Insecure!)")
 	}
 
-	log.Println("Webhook: Received GitHub push event, triggering deployment...")
+	slog.InfoContext(r.Context(), "Webhook: Received GitHub push event, triggering deployment...")
 
 	// Trigger sync and build in a goroutine to avoid blocking the webhook response
 	go func() {
 		if err := s.deploy.ExecuteSync(); err != nil {
-			log.Printf("Webhook: Sync failed: %v", err)
+			slog.Warn("Webhook: Sync failed", "error", err)
 			return
 		}
 		if err := s.deploy.ExecuteBuild(); err != nil {
-			log.Printf("Webhook: Build failed: %v", err)
+			slog.Warn("Webhook: Build failed", "error", err)
 		}
 	}()
 

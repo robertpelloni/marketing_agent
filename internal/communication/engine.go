@@ -2,34 +2,46 @@ package communication
 
 import (
 	"context"
-	"log"
+	"log/slog"
 	"strings"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+	"fmt"
 )
 
 // LearningSalesEngine implements the SalesStrategy interface.
+// isHighValueDeal determines if a deal is high-value based on company tier or quoted pricing.
+func isHighValueDeal(deal *db.Deal, company *db.Company) bool {
+	if company.MarketCapTier == "Enterprise" {
+		return true
+	}
+	if deal.QuotedPricing >= 100000 {
+		return true
+	}
+	return false
+}
+
 type LearningSalesEngine struct {
-	db        *db.DB
-	crmClient crm.CRMClient
-	llm       llm.LLMProvider
+	db		*db.DB
+	crmClient	crm.CRMClient
+	llm		llm.LLMProvider
 }
 
 // NewLearningSalesEngine creates a new instance of the engine.
 func NewLearningSalesEngine(database *db.DB, crmClient crm.CRMClient, llmProvider llm.LLMProvider) *LearningSalesEngine {
 	return &LearningSalesEngine{
-		db:        database,
-		crmClient: crmClient,
-		llm:       llmProvider,
+		db:		database,
+		crmClient:	crmClient,
+		llm:		llmProvider,
 	}
 }
 
 // Decide determines the next action for a lead.
 func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext) (Action, error) {
-	log.Printf("LearningSalesEngine: Deciding next action for deal %d (Latest Intent: %s)", salesCtx.Deal.ID, salesCtx.LatestIntent)
+	slog.Info(fmt.Sprintf("LearningSalesEngine: Deciding next action for deal %d (Latest Intent: %s)", salesCtx.Deal.ID, salesCtx.LatestIntent))
 
 	// 1. Analyze historical performance and lead quality
 	if e.shouldAdvanceState(salesCtx) {
@@ -39,26 +51,38 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 			newState = db.StateClosedWon
 		}
 
-		log.Printf("LearningSalesEngine: Advancing deal %d to %s state.", salesCtx.Deal.ID, newState)
+		// If deal is high-value, require human approval before advancing
+		if isHighValueDeal(&salesCtx.Deal, &salesCtx.Company) && newState != db.StatePendingApproval {
+			slog.Info(fmt.Sprintf("LearningSalesEngine: High-value deal %d requires human approval", salesCtx.Deal.ID))
+			newState = db.StatePendingApproval
+		}
+
+		slog.Info(fmt.Sprintf("LearningSalesEngine: Advancing deal %d to %s state.", salesCtx.Deal.ID, newState))
 		if e.db != nil {
 			if err := e.db.UpdateDealState(ctx, salesCtx.Deal.ID, newState); err != nil {
-				log.Printf("LearningSalesEngine: Error updating deal state: %v", err)
-			} else if e.crmClient != nil {
-				// Immediate CRM Sync (non-blocking)
-				go func() {
-					updatedDeal := salesCtx.Deal
-					updatedDeal.CurrentState = newState
-					maxRetries := 3
-					for i := 0; i < maxRetries; i++ {
-						if err := e.crmClient.PushDeal(ctx, updatedDeal, salesCtx.Company, e.RouteLead(salesCtx)); err != nil {
-							log.Printf("LearningSalesEngine: Immediate CRM Push failed (attempt %d/%d): %v", i+1, maxRetries, err)
-							time.Sleep(time.Duration(i+1) * 2 * time.Second)
-							continue
+				slog.Info(fmt.Sprintf("LearningSalesEngine: Error updating deal state: %v", err))
+			} else {
+				// Record template success for A/B testing metrics
+				if err := e.db.MarkTemplateSuccessForDeal(ctx, salesCtx.Deal.ID); err != nil {
+					slog.Info(fmt.Sprintf("LearningSalesEngine: Error marking template success for deal %d: %v", salesCtx.Deal.ID, err))
+				}
+				if e.crmClient != nil {
+					// Immediate CRM Sync (non-blocking)
+					go func() {
+						updatedDeal := salesCtx.Deal
+						updatedDeal.CurrentState = newState
+						maxRetries := 3
+						for i := 0; i < maxRetries; i++ {
+							if err := e.crmClient.PushDeal(ctx, updatedDeal, salesCtx.Company, e.RouteLead(salesCtx)); err != nil {
+								slog.Info(fmt.Sprintf("LearningSalesEngine: Immediate CRM Push failed (attempt %d/%d): %v", i+1, maxRetries, err))
+								time.Sleep(time.Duration(i+1) * 2 * time.Second)
+								continue
+							}
+							return
 						}
-						return
-					}
-					log.Printf("LearningSalesEngine Error: CRM state sync failed after %d attempts for deal %d", maxRetries, updatedDeal.ID)
-				}()
+						slog.Info(fmt.Sprintf("LearningSalesEngine Error: CRM state sync failed after %d attempts for deal %d", maxRetries, updatedDeal.ID))
+					}()
+				}
 			}
 		}
 		return ActionAdvanceState, nil
@@ -67,7 +91,7 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 	// 2. Self-Learning Strategy Adaptation
 	// In production, this would call e.llm.Generate to analyze sentiment and adjust Action
 	if e.llm != nil {
-		log.Printf("LearningSalesEngine: Analyzing sentiment and adapting strategy via LLM for deal %d", salesCtx.Deal.ID)
+		slog.Info(fmt.Sprintf("LearningSalesEngine: Analyzing sentiment and adapting strategy via LLM for deal %d", salesCtx.Deal.ID))
 	}
 
 	// 3. Base intent-driven logic
@@ -82,7 +106,7 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 		if e.isHighValueLead(salesCtx) {
 			return ActionRespond, nil
 		}
-		return ActionEscalate, nil // Escalate high-tier pricing negotiation
+		return ActionEscalate, nil	// Escalate high-tier pricing negotiation
 	case IntentObjection:
 		// Attempt one autonomous rebuttal, then escalate
 		if e.countInteractionTypes(salesCtx.Interactions, "Outbound") < 2 {

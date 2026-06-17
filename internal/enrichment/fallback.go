@@ -3,7 +3,7 @@ package enrichment
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"strings"
 	"sync"
 
@@ -14,26 +14,26 @@ import (
 // in order until one returns contacts or all sources are exhausted. It provides
 // structured logging and status reporting for observability.
 type FallbackSource struct {
-	mu      sync.RWMutex
-	sources []EnrichmentSource
-	names   []string // human-readable names for each source (for logging/status)
+	mu	sync.RWMutex
+	sources	[]EnrichmentSource
+	names	[]string	// human-readable names for each source (for logging/status)
 }
 
 // sourceResult captures the outcome of a single enrichment source attempt.
 type sourceResult struct {
-	Name    string
-	Success bool
-	Count   int
-	Error   string
+	Name	string
+	Success	bool
+	Count	int
+	Error	string
 }
 
 // FallbackReport contains the result of a full fallback chain attempt.
 type FallbackReport struct {
-	CompanyName      string
-	CompanyDomain    string
-	SourceResults    []sourceResult
-	FinalSuccess     bool
-	TotalContacts    int
+	CompanyName	string
+	CompanyDomain	string
+	SourceResults	[]sourceResult
+	FinalSuccess	bool
+	TotalContacts	int
 }
 
 // NewFallbackSource creates a FallbackSource from an ordered list of
@@ -50,8 +50,8 @@ func NewFallbackSource(sources []EnrichmentSource, names []string) *FallbackSour
 		}
 	}
 	return &FallbackSource{
-		sources: sources,
-		names:   resolvedNames,
+		sources:	sources,
+		names:		resolvedNames,
 	}
 }
 
@@ -63,8 +63,8 @@ func (f *FallbackSource) Enrich(ctx context.Context, company db.Company) ([]db.C
 	defer f.mu.RUnlock()
 
 	report := &FallbackReport{
-		CompanyName:   company.Name,
-		CompanyDomain: company.Domain,
+		CompanyName:	company.Name,
+		CompanyDomain:	company.Domain,
 	}
 
 	for i, source := range f.sources {
@@ -72,27 +72,27 @@ func (f *FallbackSource) Enrich(ctx context.Context, company db.Company) ([]db.C
 
 		select {
 		case <-ctx.Done():
-			log.Printf("FallbackSource: Context cancelled at source %d/%d (%s) for %s",
-				i+1, len(f.sources), name, company.Domain)
+			slog.Info(fmt.Sprintf("FallbackSource: Context cancelled at source %d/%d (%s) for %s",
+				i+1, len(f.sources), name, company.Domain))
 			return nil, ctx.Err()
 		default:
 		}
 
-		log.Printf("FallbackSource: Trying source %d/%d — %s for %s (%s)",
-			i+1, len(f.sources), name, company.Name, company.Domain)
+		slog.Info(fmt.Sprintf("FallbackSource: Trying source %d/%d — %s for %s (%s)",
+			i+1, len(f.sources), name, company.Name, company.Domain))
 
 		contacts, err := source.Enrich(ctx, company)
 
 		result := sourceResult{Name: name}
 		if err != nil {
 			result.Error = err.Error()
-			log.Printf("FallbackSource: ✗ %s failed: %v", name, err)
+			slog.Info(fmt.Sprintf("FallbackSource: ✗ %s failed: %v", name, err))
 			report.SourceResults = append(report.SourceResults, result)
 			continue
 		}
 
 		if len(contacts) == 0 {
-			log.Printf("FallbackSource: ✗ %s returned no contacts for %s", name, company.Domain)
+			slog.Info(fmt.Sprintf("FallbackSource: ✗ %s returned no contacts for %s", name, company.Domain))
 			report.SourceResults = append(report.SourceResults, result)
 			continue
 		}
@@ -104,14 +104,14 @@ func (f *FallbackSource) Enrich(ctx context.Context, company db.Company) ([]db.C
 		report.FinalSuccess = true
 		report.TotalContacts = len(contacts)
 
-		log.Printf("FallbackSource: ✓ %s returned %d contacts for %s (%s)",
-			name, len(contacts), company.Name, company.Domain)
+		slog.Info(fmt.Sprintf("FallbackSource: ✓ %s returned %d contacts for %s (%s)",
+			name, len(contacts), company.Name, company.Domain))
 		return contacts, nil
 	}
 
 	// All sources exhausted
-	log.Printf("FallbackSource: ✗ All sources exhausted for %s (%s) — no contacts found",
-		company.Name, company.Domain)
+	slog.Info(fmt.Sprintf("FallbackSource: ✗ All sources exhausted for %s (%s) — no contacts found",
+		company.Name, company.Domain))
 	return nil, nil
 }
 

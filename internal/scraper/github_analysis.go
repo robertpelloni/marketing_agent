@@ -3,7 +3,7 @@ package scraper
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"strings"
 	"sync"
 	"time"
@@ -14,28 +14,28 @@ import (
 
 // RepoAnalysis represents the technical analysis of a company's repository.
 type RepoAnalysis struct {
-	CompanyName      string   `json:"company_name"`
-	ReposAnalyzed    int      `json:"repos_analyzed"`
-	PrimaryLanguage  string   `json:"primary_language"`
-	Languages        map[string]int `json:"languages"` // language -> bytes
-	Topics           []string `json:"topics"`
-	StarsTotal       int      `json:"stars_total"`
-	ForksTotal       int      `json:"forks_total"`
-	RecentActivity   string   `json:"recent_activity"`   // days since last commit
-	OpenIssues       int      `json:"open_issues"`
-	HasTests         bool     `json:"has_tests"`
-	HasCI            bool     `json:"has_ci"`
-	HasDocs          bool     `json:"has_docs"`
-	HasDockerfile    bool     `json:"has_dockerfile"`
-	Bottlenecks      []string `json:"bottlenecks"` // detected problem areas
-	TechStack        []string `json:"tech_stack"`  // detected technologies
-	InsightSummary   string   `json:"insight_summary"` // one-line hook from analysis
+	CompanyName	string		`json:"company_name"`
+	ReposAnalyzed	int		`json:"repos_analyzed"`
+	PrimaryLanguage	string		`json:"primary_language"`
+	Languages	map[string]int	`json:"languages"`	// language -> bytes
+	Topics		[]string	`json:"topics"`
+	StarsTotal	int		`json:"stars_total"`
+	ForksTotal	int		`json:"forks_total"`
+	RecentActivity	string		`json:"recent_activity"`	// days since last commit
+	OpenIssues	int		`json:"open_issues"`
+	HasTests	bool		`json:"has_tests"`
+	HasCI		bool		`json:"has_ci"`
+	HasDocs		bool		`json:"has_docs"`
+	HasDockerfile	bool		`json:"has_dockerfile"`
+	Bottlenecks	[]string	`json:"bottlenecks"`		// detected problem areas
+	TechStack	[]string	`json:"tech_stack"`		// detected technologies
+	InsightSummary	string		`json:"insight_summary"`	// one-line hook from analysis
 }
 
 // GitHubAnalyzer analyzes repositories for technical insights.
 type GitHubAnalyzer struct {
-	client *github.Client
-	mu     sync.RWMutex
+	client	*github.Client
+	mu	sync.RWMutex
 }
 
 // NewGitHubAnalyzer creates a new GitHub analyzer.
@@ -55,10 +55,10 @@ func NewGitHubAnalyzer(ctx context.Context, token string) *GitHubAnalyzer {
 // AnalyzeOrg analyzes all public repos for a GitHub organization.
 func (ga *GitHubAnalyzer) AnalyzeOrg(ctx context.Context, orgName string) (*RepoAnalysis, error) {
 	analysis := &RepoAnalysis{
-		CompanyName: orgName,
-		Languages:   make(map[string]int),
-		TechStack:   make([]string, 0),
-		Bottlenecks: make([]string, 0),
+		CompanyName:	orgName,
+		Languages:	make(map[string]int),
+		TechStack:	make([]string, 0),
+		Bottlenecks:	make([]string, 0),
 	}
 
 	// List repos for the org
@@ -66,9 +66,9 @@ func (ga *GitHubAnalyzer) AnalyzeOrg(ctx context.Context, orgName string) (*Repo
 	reposAnalyzed := 0
 	for {
 		repos, resp, err := ga.client.Repositories.ListByOrg(ctx, orgName, &github.RepositoryListByOrgOptions{
-			Type: "public",
-			Sort: "updated",
-			ListOptions: github.ListOptions{Page: page, PerPage: 30},
+			Type:		"public",
+			Sort:		"updated",
+			ListOptions:	github.ListOptions{Page: page, PerPage: 30},
 		})
 		if err != nil {
 			return nil, fmt.Errorf("listing org repos: %w", err)
@@ -99,16 +99,16 @@ func (ga *GitHubAnalyzer) AnalyzeOrg(ctx context.Context, orgName string) (*Repo
 // AnalyzeUser analyzes all public repos for a GitHub user.
 func (ga *GitHubAnalyzer) AnalyzeUser(ctx context.Context, username string) (*RepoAnalysis, error) {
 	analysis := &RepoAnalysis{
-		CompanyName: username,
-		Languages:   make(map[string]int),
-		TechStack:   make([]string, 0),
-		Bottlenecks: make([]string, 0),
+		CompanyName:	username,
+		Languages:	make(map[string]int),
+		TechStack:	make([]string, 0),
+		Bottlenecks:	make([]string, 0),
 	}
 
 	opt := &github.RepositoryListOptions{
-		Type: "public",
-		Sort: "updated",
-		ListOptions: github.ListOptions{PerPage: 30},
+		Type:		"public",
+		Sort:		"updated",
+		ListOptions:	github.ListOptions{PerPage: 30},
 	}
 
 	for {
@@ -159,7 +159,7 @@ func (ga *GitHubAnalyzer) listReposForUser(ctx context.Context, username string)
 // analyzeRepo extracts technical details from a single repository.
 func (ga *GitHubAnalyzer) analyzeRepo(ctx context.Context, repo *github.Repository, analysis *RepoAnalysis) {
 	name := repo.GetName()
-	log.Printf("GitHubAnalyzer: analyzing %s/%s", analysis.CompanyName, name)
+	slog.Info(fmt.Sprintf("GitHubAnalyzer: analyzing %s/%s", analysis.CompanyName, name))
 
 	// Languages
 	langs, _, err := ga.client.Repositories.ListLanguages(ctx, analysis.CompanyName, name)
@@ -222,18 +222,18 @@ func (ga *GitHubAnalyzer) analyzeRepo(ctx context.Context, repo *github.Reposito
 
 	// Technology detection from description and topics
 	techKeywords := map[string][]string{
-		"AI/ML":            {"machine-learning", "deep-learning", "neural", "pytorch", "tensorflow", "ai", "ml"},
-		"LLM":              {"llm", "gpt", "language-model", "transformer", "rag", "chain", "agent"},
-		"Kubernetes":       {"kubernetes", "k8s", "helm", "istio"},
-		"Cloud/Native":     {"aws", "gcp", "azure", "cloud", "serverless"},
-		"Database":         {"postgresql", "postgres", "mysql", "mongodb", "redis", "sqlite"},
-		"DevOps":           {"devops", "ci/cd", "terraform", "ansible", "prometheus", "grafana"},
-		"Go":               {"go", "golang"},
-		"TypeScript/JS":    {"typescript", "javascript", "node", "react", "angular", "vue"},
-		"Rust":             {"rust", "wasm"},
-		"Python":           {"python", "django", "flask", "fastapi"},
-		"MCP/Protocol":     {"mcp", "model-context-protocol", "tool-calling"},
-		"Orchestration":    {"orchestrator", "workflow", "pipeline", "scheduler"},
+		"AI/ML":		{"machine-learning", "deep-learning", "neural", "pytorch", "tensorflow", "ai", "ml"},
+		"LLM":			{"llm", "gpt", "language-model", "transformer", "rag", "chain", "agent"},
+		"Kubernetes":		{"kubernetes", "k8s", "helm", "istio"},
+		"Cloud/Native":		{"aws", "gcp", "azure", "cloud", "serverless"},
+		"Database":		{"postgresql", "postgres", "mysql", "mongodb", "redis", "sqlite"},
+		"DevOps":		{"devops", "ci/cd", "terraform", "ansible", "prometheus", "grafana"},
+		"Go":			{"go", "golang"},
+		"TypeScript/JS":	{"typescript", "javascript", "node", "react", "angular", "vue"},
+		"Rust":			{"rust", "wasm"},
+		"Python":		{"python", "django", "flask", "fastapi"},
+		"MCP/Protocol":		{"mcp", "model-context-protocol", "tool-calling"},
+		"Orchestration":	{"orchestrator", "workflow", "pipeline", "scheduler"},
 	}
 
 	detected := make(map[string]bool)

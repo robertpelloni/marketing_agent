@@ -376,8 +376,8 @@ func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, er
 // CreateInteraction inserts a new interaction into the database.
 func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) error {
 	query := `
-		INSERT INTO interactions (contact_id, channel, direction, raw_text, summary, sentiment, success, created_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		INSERT INTO interactions (contact_id, channel, direction, raw_text, summary, sentiment, success, template_id, response_id, created_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 		RETURNING id
 	`
 	if interaction.CreatedAt.IsZero() {
@@ -392,6 +392,8 @@ func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) e
 		interaction.Summary,
 		interaction.Sentiment,
 		interaction.Success,
+		interaction.TemplateID,
+		interaction.ResponseID,
 		interaction.CreatedAt,
 	).Scan(&interaction.ID)
 
@@ -554,7 +556,7 @@ func (db *DB) ListActivePullRequests(ctx context.Context) ([]gitcheck.PullReques
 // ListInteractionsByContact retrieves all interactions for a specific contact.
 func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([]Interaction, error) {
 	query := `
-		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, created_at
+		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, success, template_id, response_id, created_at
 		FROM interactions
 		WHERE contact_id = $1
 		ORDER BY created_at DESC
@@ -576,6 +578,9 @@ func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([
 			&interaction.RawText,
 			&interaction.Summary,
 			&interaction.Sentiment,
+			&interaction.Success,
+			&interaction.TemplateID,
+			&interaction.ResponseID,
 			&interaction.CreatedAt,
 		); err != nil {
 			return nil, fmt.Errorf("failed to scan interaction: %w", err)
@@ -583,4 +588,172 @@ func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([
 		interactions = append(interactions, interaction)
 	}
 	return interactions, nil
+}
+
+// GetCadenceStep retrieves the current cadence step for a deal.
+func (db *DB) GetCadenceStep(ctx context.Context, dealID int64) (int, error) {
+	query := `SELECT cadence_step FROM deals WHERE id = $1`
+	var step int
+	err := db.Conn.QueryRowContext(ctx, query, dealID).Scan(&step)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return 0, nil // Default to 0 if deal not found
+		}
+		return 0, fmt.Errorf("failed to get cadence step: %w", err)
+	}
+	return step, nil
+}
+
+// SetCadenceStep updates the cadence step for a deal.
+func (db *DB) SetCadenceStep(ctx context.Context, dealID int64, step int) error {
+	query := `UPDATE deals SET cadence_step = $1, updated_at = NOW() WHERE id = $2`
+	_, err := db.Conn.ExecContext(ctx, query, step, dealID)
+	if err != nil {
+		return fmt.Errorf("failed to set cadence step: %w", err)
+	}
+	return nil
+}
+
+// GetTemplate retrieves a template by ID.
+func (db *DB) GetTemplate(ctx context.Context, id string) (*Template, error) {
+	query := `SELECT id, name, subject, body, channel, created_at, updated_at FROM templates WHERE id = $1`
+	tmpl := &Template{}
+	err := db.Conn.QueryRowContext(ctx, query, id).Scan(
+		&tmpl.ID, &tmpl.Name, &tmpl.Subject, &tmpl.Body, &tmpl.Channel, &tmpl.CreatedAt, &tmpl.UpdatedAt,
+	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("template %s not found", id)
+		}
+		return nil, fmt.Errorf("failed to get template: %w", err)
+	}
+	return tmpl, nil
+}
+
+// ListTemplates retrieves all templates.
+func (db *DB) ListTemplates(ctx context.Context) ([]Template, error) {
+	query := `SELECT id, name, subject, body, channel, created_at, updated_at FROM templates ORDER BY id`
+	rows, err := db.Conn.QueryContext(ctx, query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list templates: %w", err)
+	}
+	defer rows.Close()
+
+	var templates []Template
+	for rows.Next() {
+		var tmpl Template
+		if err := rows.Scan(&tmpl.ID, &tmpl.Name, &tmpl.Subject, &tmpl.Body, &tmpl.Channel, &tmpl.CreatedAt, &tmpl.UpdatedAt); err != nil {
+			return nil, fmt.Errorf("failed to scan template: %w", err)
+		}
+		templates = append(templates, tmpl)
+	}
+	return templates, nil
+}
+
+// RecordTemplateImpression increments the impression counter for a template.
+func (db *DB) RecordTemplateImpression(ctx context.Context, templateID string) error {
+	query := `INSERT INTO template_metrics (template_id, impressions, successes, updated_at)
+		VALUES ($1, 1, 0, NOW())
+		ON CONFLICT (template_id) DO UPDATE SET impressions = template_metrics.impressions + 1, updated_at = NOW()`
+	_, err := db.Conn.ExecContext(ctx, query, templateID)
+	return err
+}
+
+// RecordTemplateSuccess increments the success counter for a template.
+func (db *DB) RecordTemplateSuccess(ctx context.Context, templateID string) error {
+	query := `INSERT INTO template_metrics (template_id, impressions, successes, updated_at)
+		VALUES ($1, 0, 1, NOW())
+		ON CONFLICT (template_id) DO UPDATE SET successes = template_metrics.successes + 1, updated_at = NOW()`
+	_, err := db.Conn.ExecContext(ctx, query, templateID)
+	return err
+}
+
+// GetTemplateMetrics returns all template metrics.
+func (db *DB) GetTemplateMetrics(ctx context.Context) ([]TemplateMetrics, error) {
+	query := `SELECT template_id, impressions, successes, updated_at FROM template_metrics`
+	rows, err := db.Conn.QueryContext(ctx, query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query template metrics: %w", err)
+	}
+	defer rows.Close()
+
+	var metrics []TemplateMetrics
+	for rows.Next() {
+		var m TemplateMetrics
+		if err := rows.Scan(&m.TemplateID, &m.Impressions, &m.Successes, &m.UpdatedAt); err != nil {
+			return nil, fmt.Errorf("failed to scan template metric: %w", err)
+		}
+		metrics = append(metrics, m)
+	}
+	return metrics, nil
+}
+
+// GetTopTemplate returns the template with the highest conversion rate (successes/impressions).
+func (db *DB) GetTopTemplate(ctx context.Context) (*Template, error) {
+	metrics, err := db.GetTemplateMetrics(ctx)
+	if err != nil {
+		return nil, err
+	}
+	var bestID string
+	bestScore := -1.0
+	for _, m := range metrics {
+		if m.Impressions == 0 {
+			continue
+		}
+		score := float64(m.Successes) / float64(m.Impressions)
+		if score > bestScore {
+			bestScore = score
+			bestID = m.TemplateID
+		}
+	}
+	if bestID == "" {
+		return nil, fmt.Errorf("no template with impressions found")
+	}
+	return db.GetTemplate(ctx, bestID)
+}
+
+// MarkTemplateSuccessForDeal marks all outbound interactions with templates for a given deal as successful.
+// It updates the interaction's success flag and increments the template success counter.
+func (db *DB) MarkTemplateSuccessForDeal(ctx context.Context, dealID int64) error {
+	// Retrieve the company_id for the deal
+	var companyID int64
+	queryDeal := `SELECT company_id FROM deals WHERE id = $1`
+	if err := db.Conn.QueryRowContext(ctx, queryDeal, dealID).Scan(&companyID); err != nil {
+		return fmt.Errorf("failed to get company_id for deal %d: %w", dealID, err)
+	}
+
+	// List contacts for the company
+	contacts, err := db.ListContactsByCompany(ctx, companyID)
+	if err != nil {
+		return fmt.Errorf("failed to list contacts for company %d: %w", companyID, err)
+	}
+
+	for _, contact := range contacts {
+		// Find outbound interactions with a template that haven't been marked successful yet
+		query := `SELECT id, template_id FROM interactions WHERE contact_id = $1 AND direction = 'Outbound' AND success = false AND template_id IS NOT NULL`
+		rows, err := db.Conn.QueryContext(ctx, query, contact.ID)
+		if err != nil {
+			return fmt.Errorf("failed to query interactions for contact %d: %w", contact.ID, err)
+		}
+		for rows.Next() {
+			var interactionID int64
+			var tmplID string
+			if err := rows.Scan(&interactionID, &tmplID); err != nil {
+				rows.Close()
+				return fmt.Errorf("failed to scan interaction row: %w", err)
+			}
+			// Mark interaction as successful
+			if err := db.UpdateInteractionSuccess(ctx, interactionID, true); err != nil {
+				rows.Close()
+				return fmt.Errorf("failed to update interaction success for id %d: %w", interactionID, err)
+			}
+			// Record template success metric
+			if err := db.RecordTemplateSuccess(ctx, tmplID); err != nil {
+				rows.Close()
+				return fmt.Errorf("failed to record template success for %s: %w", tmplID, err)
+			}
+		}
+		rows.Close()
+	}
+	return nil
 }

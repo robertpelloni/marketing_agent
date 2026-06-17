@@ -11,6 +11,7 @@ const (
 	StateOutreachSent LeadState = "Outreach_Sent"
 	StateEngaged      LeadState = "Engaged"
 	StateNegotiating  LeadState = "Negotiating"
+	StatePendingApproval LeadState = "Pending_Approval"  // Awaiting human review for high-value deals
 	StateClosedWon    LeadState = "Closed_Won"
 	StateClosedLost   LeadState = "Closed_Lost"
 )
@@ -78,7 +79,9 @@ type Interaction struct {
 	RawText   string    `db:"raw_text"`
 	Summary   string    `db:"summary"`
 	Sentiment string    `db:"sentiment"`
-	Success   bool      `db:"success"` // Indicates if the interaction led to a positive outcome
+	Success   bool      `db:"success"`   // Indicates if the interaction led to a positive outcome
+	TemplateID string   `db:"template_id"` // Optional: template used for outbound interactions
+	ResponseID string   `db:"response_id"` // Optional: objection response used for this interaction
 	CreatedAt time.Time `db:"created_at"`
 }
 
@@ -90,8 +93,28 @@ type Deal struct {
 	QuotedPricing      float64   `db:"quoted_pricing"`
 	CustomRequirements string    `db:"custom_requirements"`
 	TechnicalDossier   string    `db:"technical_dossier"`
+	CadenceStep        int       `db:"cadence_step"` // 0 = not started, 1+ = current step index
 	CreatedAt          time.Time `db:"created_at"`
 	UpdatedAt          time.Time `db:"updated_at"`
+}
+
+// Template represents a reusable outreach message template.
+type Template struct {
+	ID        string    `db:"id"`
+	Name      string    `db:"name"`
+	Subject   string    `db:"subject"`
+	Body      string    `db:"body"`
+	Channel   string    `db:"channel"`   // email, linkedin, github
+	CreatedAt time.Time `db:"created_at"`
+	UpdatedAt time.Time `db:"updated_at"`
+}
+
+// TemplateMetrics tracks usage and success of outreach templates.
+type TemplateMetrics struct {
+	TemplateID  string    `db:"template_id"`
+	Impressions int       `db:"impressions"`
+	Successes   int       `db:"successes"`
+	UpdatedAt   time.Time `db:"updated_at"`
 }
 
 // PerformanceMetrics aggregates key sales pipeline statistics.

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 )
@@ -15,7 +15,7 @@ type GitHubCrawler struct {
 }
 
 func (g *GitHubCrawler) Crawl(ctx context.Context, target string) (string, error) {
-	log.Printf("GitHubCrawler: Analyzing repositories for: %s", target)
+	slog.Info(fmt.Sprintf("GitHubCrawler: Analyzing repositories for: %s", target))
 	if target == "" {
 		return "", nil
 	}
@@ -50,7 +50,7 @@ type BlogCrawler struct {
 }
 
 func (b *BlogCrawler) Crawl(ctx context.Context, target string) (string, error) {
-	log.Printf("BlogCrawler: Scanning technical blogs for: %s", target)
+	slog.Info(fmt.Sprintf("BlogCrawler: Scanning technical blogs for: %s", target))
 	if target == "" {
 		return "", nil
 	}

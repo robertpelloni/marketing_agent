@@ -3,7 +3,7 @@ package communication
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -13,13 +13,14 @@ import (
 type Intent string
 
 const (
-	IntentTechnical      Intent = "Technical"
-	IntentPricing        Intent = "Pricing"
-	IntentObjection      Intent = "Objection"
-	IntentMeetingRequest Intent = "MeetingRequest"
-	IntentFollowUp       Intent = "FollowUp"
-	IntentSpam           Intent = "Spam"
-	IntentUnknown        Intent = "Unknown"
+	IntentTechnical		Intent	= "Technical"
+	IntentPricing		Intent	= "Pricing"
+	IntentObjection		Intent	= "Objection"
+	IntentMeetingRequest	Intent	= "MeetingRequest"
+	IntentFollowUp		Intent	= "FollowUp"
+	IntentSpam		Intent	= "Spam"
+	IntentUnknown		Intent	= "Unknown"
+	IntentGeneral		Intent	= "General"
 )
 
 // IntentClassifier defines the interface for categorizing inbound communication.
@@ -39,25 +40,33 @@ type OrderProcessor interface {
 
 // Manager coordinates the inbound communication state machine.
 type Manager struct {
-	db         *db.DB
-	classifier IntentClassifier
-	responder  ResponseGenerator
-	strategy   SalesStrategy
-	processor  OrderProcessor
-	sender     EmailSender // nil = no email sending (log only)
+	db		*db.DB
+	classifier	IntentClassifier
+	responder	ResponseGenerator
+	strategy	SalesStrategy
+	processor	OrderProcessor
+	sender		EmailSender	// nil = no email sending (log only)
+	objections	*ObjectionLibrary
 }
 
 // NewManager creates a new communication Manager.
 // sender is optional — if nil, outbound emails are logged but not sent.
+// objections is optional — if nil, objection handling is disabled.
 func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor, sender EmailSender) *Manager {
 	return &Manager{
-		db:         database,
-		classifier: classifier,
-		responder:  responder,
-		strategy:   strategy,
-		processor:  processor,
-		sender:     sender,
+		db:		database,
+		classifier:	classifier,
+		responder:	responder,
+		strategy:	strategy,
+		processor:	processor,
+		sender:		sender,
 	}
+}
+
+// SetObjectionLibrary attaches the objection handling library to this manager.
+// If set, ProcessInbound will automatically detect and counter objections.
+func (m *Manager) SetObjectionLibrary(lib *ObjectionLibrary) {
+	m.objections = lib
 }
 
 // Run starts the periodic inbound communication processing loop.
@@ -65,7 +74,7 @@ func (m *Manager) Run(ctx context.Context, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	log.Printf("Communication Manager: Background poller started (interval: %v)...", interval)
+	slog.Info(fmt.Sprintf("Communication Manager: Background poller started (interval: %v)...", interval))
 
 	// Run immediately on startup
 	m.pollAndProcess(ctx)
@@ -73,7 +82,7 @@ func (m *Manager) Run(ctx context.Context, interval time.Duration) {
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("Communication Manager: Background poller stopping: Draining in-flight work...")
+			slog.Info("Communication Manager: Background poller stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			m.pollAndProcess(ctx)
@@ -81,11 +90,20 @@ func (m *Manager) Run(ctx context.Context, interval time.Duration) {
 	}
 }
 
+// ExecutePoll manually triggers a poll and process cycle (exported for testing).
+func (m *Manager) ExecutePoll(ctx context.Context) {
+	m.pollAndProcess(ctx)
+}
+
 func (m *Manager) pollAndProcess(ctx context.Context) {
+	if m.db == nil {
+		slog.Info("Comm Manager: DB unavailable, skipping poll cycle")
+		return
+	}
 	// Check for 'Researched' deals that haven't had an outbound interaction yet
 	deals, err := m.db.ListDealsByState(ctx, db.StateResearched)
 	if err != nil {
-		log.Printf("Comm Manager: Error polling deals: %v", err)
+		slog.Info(fmt.Sprintf("Comm Manager: Error polling deals: %v", err))
 		return
 	}
 
@@ -106,13 +124,13 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 		}
 
 		if !hasOutbound {
-			log.Printf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email)
+			slog.Info(fmt.Sprintf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email))
 			// Trigger outreach
 			if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
-				log.Printf("Comm Manager Error: Failed to initiate outreach for deal %d: %v", deal.ID, err)
+				slog.Info(fmt.Sprintf("Comm Manager Error: Failed to initiate outreach for deal %d: %v", deal.ID, err))
 			}
 			if err := m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent); err != nil {
-				log.Printf("Comm Manager Error: Failed to update deal state to OutreachSent for deal %d: %v", deal.ID, err)
+				slog.Info(fmt.Sprintf("Comm Manager Error: Failed to update deal state to OutreachSent for deal %d: %v", deal.ID, err))
 			}
 		}
 	}
@@ -134,10 +152,10 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 
 	// 1. Persist inbound interaction
 	inbound := db.Interaction{
-		ContactID: contact.ID,
-		Channel:   channel,
-		Direction: "Inbound",
-		RawText:   text,
+		ContactID:	contact.ID,
+		Channel:	channel,
+		Direction:	"Inbound",
+		RawText:	text,
 	}
 	err := m.db.CreateInteraction(ctx, &inbound)
 	if err != nil {
@@ -158,7 +176,7 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 
 	interactions, err := m.db.ListInteractionsByContact(ctx, contact.ID)
 	if err != nil {
-		log.Printf("Warning: failed to list interactions for strategy: %v", err)
+		slog.Info(fmt.Sprintf("Warning: failed to list interactions for strategy: %v", err))
 	}
 
 	deal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
@@ -167,11 +185,11 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	}
 
 	salesCtx := SalesContext{
-		Company:      *company,
-		Deal:         *deal,
-		Contact:      contact,
-		Interactions: interactions,
-		LatestIntent: intent,
+		Company:	*company,
+		Deal:		*deal,
+		Contact:	contact,
+		Interactions:	interactions,
+		LatestIntent:	intent,
 	}
 
 	action, err := m.strategy.Decide(ctx, salesCtx)
@@ -180,7 +198,7 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	}
 
 	if action == ActionEscalate {
-		log.Printf("UI: Deal %d escalated for human review.", salesCtx.Deal.ID)
+		slog.Info(fmt.Sprintf("UI: Deal %d escalated for human review.", salesCtx.Deal.ID))
 		return "I've flagged this for our technical lead to review. We will get back to you shortly.", nil
 	}
 
@@ -190,23 +208,49 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		return "", err
 	}
 
-	// 3a. Handle order processing and prompt optimization loop if deal was won
+	// 3a. Objection detection and counter-response injection
+	var responseID string
+	if m.objections != nil {
+		sentiment := AnalyzeSentiment(text)
+		if sentiment.Sentiment == SentimentNegative || sentiment.Sentiment == SentimentMixed {
+			match := m.objections.MatchObjection(ctx, text, sentiment, deal.CurrentState)
+			if match != nil {
+				slog.Info("Objection detected",
+					"category", match.Objection.Category,
+					"objection", match.Objection.Title,
+					"response_id", match.Response.ID,
+					"score", match.Score,
+				)
+				// Prepend the counter-response to the generated reply
+				replyText = match.Response.Text + "\n\n" + replyText
+
+				responseID = match.Response.ID
+				// Record usage for A/B testing
+				m.objections.RecordOutcome(responseID, false)
+			}
+		}
+	}
+
+	// 3b. Handle order processing and prompt optimization loop if deal was won
 	if action == ActionAdvanceState {
 		updatedDeal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
 		if err == nil && updatedDeal.CurrentState == db.StateClosedWon {
-			log.Printf("Comm Manager: Deal %d won! Flagging past outbound interactions as successful.", updatedDeal.ID)
+			slog.Info(fmt.Sprintf("Comm Manager: Deal %d won! Flagging past outbound interactions as successful.", updatedDeal.ID))
 			for _, interaction := range interactions {
 				if interaction.Direction == "Outbound" {
-					if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
-						log.Printf("Comm Manager Error: Failed to mark interaction %d as successful: %v", interaction.ID, err)
+if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
+						slog.Info(fmt.Sprintf("Comm Manager Error: Failed to mark interaction %d as successful: %v", interaction.ID, err))
+					}
+					if interaction.ResponseID != "" && m.objections != nil {
+						m.objections.RecordOutcome(interaction.ResponseID, true)
 					}
 				}
 			}
 
 			if m.processor != nil {
-				log.Printf("Comm Manager: Triggering order processor for won deal %d", updatedDeal.ID)
+				slog.Info(fmt.Sprintf("Comm Manager: Triggering order processor for won deal %d", updatedDeal.ID))
 				if err := m.processor.ProcessOrder(ctx, *updatedDeal); err != nil {
-					log.Printf("Comm Manager Error: Order processing failed: %v", err)
+					slog.Info(fmt.Sprintf("Comm Manager Error: Order processing failed: %v", err))
 				}
 			}
 		}
@@ -214,11 +258,12 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 
 	// 4. Persist outbound interaction
 	outbound := db.Interaction{
-		ContactID: contact.ID,
-		Channel:   channel,
-		Direction: "Outbound",
-		RawText:   replyText,
-		Summary:   fmt.Sprintf("Reply to intent: %s", intent),
+		ContactID:	contact.ID,
+		Channel:	channel,
+		Direction:	"Outbound",
+		RawText:	replyText,
+		Summary:	fmt.Sprintf("Reply to intent: %s", intent),
+		ResponseID:	responseID,
 	}
 	err = m.db.CreateInteraction(ctx, &outbound)
 	if err != nil {
@@ -233,20 +278,20 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		}
 
 		emailMsg := EmailMessage{
-			To:      contact.Email,
-			Subject: subject,
-			Body:    replyText,
+			To:		contact.Email,
+			Subject:	subject,
+			Body:		replyText,
 		}
 
 		if err := m.sender.Send(ctx, emailMsg); err != nil {
-			log.Printf("Comm Manager: Email send failed to %s: %v", contact.Email, err)
+			slog.Info(fmt.Sprintf("Comm Manager: Email send failed to %s: %v", contact.Email, err))
 		} else {
-			log.Printf("Comm Manager: Email sent to %s (%s)", contact.Email, subject)
+			slog.Info(fmt.Sprintf("Comm Manager: Email sent to %s (%s)", contact.Email, subject))
 		}
 	} else if channel != "email" {
-		log.Printf("Comm Manager: Channel %q requires future implementation for %s — reply logged", channel, contact.Email)
+		slog.Info(fmt.Sprintf("Comm Manager: Channel %q requires future implementation for %s — reply logged", channel, contact.Email))
 	} else if m.sender == nil {
-		log.Printf("Comm Manager: No email sender configured — reply logged but not sent to %s", contact.Email)
+		slog.Info(fmt.Sprintf("Comm Manager: No email sender configured — reply logged but not sent to %s", contact.Email))
 	}
 
 	return replyText, nil
@@ -255,4 +300,24 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 // GetDB returns the database connection (used by IMAP receiver for contact lookup).
 func (m *Manager) GetDB() *db.DB {
 	return m.db
+}
+
+// ApproveDeal transitions a high-value deal from PendingApproval to Negotiating,
+// signaling that a human has reviewed and authorized further autonomous action.
+func (m *Manager) ApproveDeal(ctx context.Context, dealID int64) error {
+	if err := m.db.UpdateDealState(ctx, dealID, db.StateNegotiating); err != nil {
+		return fmt.Errorf("failed to approve deal %d: %w", dealID, err)
+	}
+	slog.Info(fmt.Sprintf("Manager: Deal %d approved by human review, now in Negotiating state", dealID))
+	return nil
+}
+
+// RejectDeal transitions a high-value deal from PendingApproval to ClosedLost,
+// signaling that a human has reviewed and decided not to pursue.
+func (m *Manager) RejectDeal(ctx context.Context, dealID int64) error {
+	if err := m.db.UpdateDealState(ctx, dealID, db.StateClosedLost); err != nil {
+		return fmt.Errorf("failed to reject deal %d: %w", dealID, err)
+	}
+	slog.Info(fmt.Sprintf("Manager: Deal %d rejected by human review, marked as Closed_Lost", dealID))
+	return nil
 }

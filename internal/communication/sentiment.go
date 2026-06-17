@@ -3,7 +3,7 @@ package communication
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
@@ -13,11 +13,11 @@ import (
 type Sentiment int
 
 const (
-	SentimentUnknown   Sentiment = iota
-	SentimentPositive            // interested, enthusiastic, curious
-	SentimentNeutral             // factual, non-committal
-	SentimentNegative            // frustrated, dismissive, angry
-	SentimentMixed               // contradictory signals
+	SentimentUnknown	Sentiment	= iota
+	SentimentPositive			// interested, enthusiastic, curious
+	SentimentNeutral			// factual, non-committal
+	SentimentNegative			// frustrated, dismissive, angry
+	SentimentMixed				// contradictory signals
 )
 
 func (s Sentiment) String() string {
@@ -37,17 +37,17 @@ func (s Sentiment) String() string {
 
 // SentimentResult wraps the analysis of a message.
 type SentimentResult struct {
-	Sentiment   Sentiment `json:"sentiment"`
-	Confidence  float64   `json:"confidence"`  // 0.0 – 1.0
-	Score       int       `json:"score"`        // -100 (very negative) to +100 (very positive)
-	Keywords    []string  `json:"keywords"`     // detected signal words
-	Urgency     float64   `json:"urgency"`      // 0.0 – 1.0 (how time-sensitive)
-	Recommendation string `json:"recommendation"` // suggested next action
+	Sentiment	Sentiment	`json:"sentiment"`
+	Confidence	float64		`json:"confidence"`	// 0.0 – 1.0
+	Score		int		`json:"score"`		// -100 (very negative) to +100 (very positive)
+	Keywords	[]string	`json:"keywords"`	// detected signal words
+	Urgency		float64		`json:"urgency"`	// 0.0 – 1.0 (how time-sensitive)
+	Recommendation	string		`json:"recommendation"`	// suggested next action
 }
 
 // SentimentAnalyzer classifies inbound message sentiment.
 type SentimentAnalyzer struct {
-	llmProvider llm.LLMProvider // optional LLM for semantic analysis
+	llmProvider llm.LLMProvider	// optional LLM for semantic analysis
 }
 
 // NewSentimentAnalyzer creates a new analyzer.
@@ -64,7 +64,7 @@ func (sa *SentimentAnalyzer) Analyze(ctx context.Context, message string) (Senti
 	if sa.llmProvider != nil {
 		refined, err := sa.llmAnalysis(ctx, message, result)
 		if err != nil {
-			log.Printf("SentimentAnalyzer: LLM analysis failed, using heuristic: %v", err)
+			slog.Info(fmt.Sprintf("SentimentAnalyzer: LLM analysis failed, using heuristic: %v", err))
 		} else {
 			result = *refined
 		}
@@ -78,10 +78,10 @@ func (sa *SentimentAnalyzer) heuristicAnalysis(message string) SentimentResult {
 	lower := strings.ToLower(message)
 
 	result := SentimentResult{
-		Sentiment:  SentimentUnknown,
-		Confidence: 0.5,
-		Score:      0,
-		Urgency:    0.0,
+		Sentiment:	SentimentUnknown,
+		Confidence:	0.5,
+		Score:		0,
+		Urgency:	0.0,
 	}
 
 	// Positive signal words
@@ -202,7 +202,7 @@ Return valid JSON only, no markdown.`, message)
 	}
 
 	// For now just log and return heuristic
-	log.Printf("SentimentAnalyzer: LLM response: %s", resp)
+	slog.Info(fmt.Sprintf("SentimentAnalyzer: LLM response: %s", resp))
 
 	return &heuristic, nil
 }
@@ -231,12 +231,12 @@ func (sa *SentimentAnalyzer) generateRecommendation(result SentimentResult) stri
 
 // SummarizeDealSentiment aggregates sentiment across multiple interactions for a deal.
 type DealSentimentSummary struct {
-	DealID        int64   `json:"deal_id"`
-	TotalMessages int     `json:"total_messages"`
-	AvgScore      float64 `json:"avg_score"`
-	AvgUrgency    float64 `json:"avg_urgency"`
-	MostCommon    string  `json:"most_common_sentiment"`
-	Trend         string  `json:"trend"` // improving, declining, stable
+	DealID		int64	`json:"deal_id"`
+	TotalMessages	int	`json:"total_messages"`
+	AvgScore	float64	`json:"avg_score"`
+	AvgUrgency	float64	`json:"avg_urgency"`
+	MostCommon	string	`json:"most_common_sentiment"`
+	Trend		string	`json:"trend"`	// improving, declining, stable
 }
 
 // AggregateDealSentiment combines multiple sentiment results into a summary.
@@ -264,9 +264,9 @@ func AggregateDealSentiment(results []SentimentResult) DealSentimentSummary {
 
 	n := len(results)
 	summary := DealSentimentSummary{
-		TotalMessages: n,
-		AvgScore:      float64(totalScore) / float64(n),
-		AvgUrgency:    totalUrgency / float64(n),
+		TotalMessages:	n,
+		AvgScore:	float64(totalScore) / float64(n),
+		AvgUrgency:	totalUrgency / float64(n),
 	}
 
 	// Most common sentiment
@@ -304,4 +304,107 @@ func AggregateDealSentiment(results []SentimentResult) DealSentimentSummary {
 	}
 
 	return summary
+}
+
+// AnalyzeSentiment performs a quick heuristic-based sentiment analysis on a text string.
+// It does not require a SentimentAnalyzer instance or LLM — useful for simple checks.
+func AnalyzeSentiment(text string) SentimentResult {
+	if text == "" {
+		return SentimentResult{
+			Sentiment:  SentimentNeutral,
+			Confidence: 0.5,
+			Score:      0,
+		}
+	}
+
+	textLower := strings.ToLower(text)
+	words := strings.Fields(textLower)
+
+	// Positive signal words
+	positiveWords := map[string]bool{
+		"great": true, "excellent": true, "interested": true, "perfect": true,
+		"love": true, "amazing": true, "awesome": true, "yes": true,
+		"thanks": true, "thank": true, "appreciate": true, "ready": true,
+		"sure": true, "looks": true, "impressive": true, "good": true,
+	}
+
+	// Negative signal words
+	negativeWords := map[string]bool{
+		"bad": true, "terrible": true, "horrible": true, "hate": true,
+		"expensive": true, "costly": true, "too": true, "won't": true,
+		"cannot": true, "can't": true, "don't": true, "doesn't": true,
+		"waste": true, "useless": true, "problem": true, "issue": true,
+		"frustrated": true, "disappointed": true, "unfortunately": true,
+		"wait": true, "busy": true, "not": true, "no": true,
+	}
+
+	// Objection signal phrases
+	negativePhrases := []string{
+		"too expensive", "over budget", "can't afford", "not interested",
+		"not now", "wrong time", "too busy", "not for us", "doesn't work",
+		"security concern", "privacy concern", "data privacy", "vendor lock",
+		"not mature", "too complex", "not compatible",
+	}
+
+	posScore := 0
+	negScore := 0
+
+	for _, word := range words {
+		if positiveWords[word] {
+			posScore++
+		}
+		if negativeWords[word] {
+			negScore++
+		}
+	}
+
+	// Check multi-word phrases
+	for _, phrase := range negativePhrases {
+		if strings.Contains(textLower, phrase) {
+			negScore += 2
+		}
+	}
+
+	totalWords := len(words)
+	if totalWords == 0 {
+		totalWords = 1
+	}
+
+	score := 0
+	if posScore > 0 || negScore > 0 {
+		score = (posScore - negScore) * 100 / (posScore + negScore + totalWords)
+	}
+
+	var sentiment Sentiment
+	switch {
+	case score > 15:
+		sentiment = SentimentPositive
+	case score < -15:
+		sentiment = SentimentNegative
+	case score > 5:
+		sentiment = SentimentPositive
+	case score < -5:
+		sentiment = SentimentNegative
+	default:
+		sentiment = SentimentNeutral
+	}
+
+	confidence := 0.5 + float64(posScore+negScore)/float64(totalWords+10)
+	if confidence > 0.95 {
+		confidence = 0.95
+	}
+
+	keywords := make([]string, 0)
+	for _, word := range words {
+		if positiveWords[word] || negativeWords[word] {
+			keywords = append(keywords, word)
+		}
+	}
+
+	return SentimentResult{
+		Sentiment:  sentiment,
+		Confidence: confidence,
+		Score:      score,
+		Keywords:   keywords,
+	}
 }

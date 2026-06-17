@@ -3,7 +3,7 @@ package communication
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"strings"
 	"time"
 
@@ -13,28 +13,28 @@ import (
 
 // IMAPConfig holds the configuration for IMAP email polling.
 type IMAPConfig struct {
-	Host     string // e.g. "imap.gmail.com"
-	Port     int    // e.g. 993 for SSL
-	Username string // email address
-	Password string // app password
-	Folder   string // mailbox to poll (default: "INBOX")
+	Host		string	// e.g. "imap.gmail.com"
+	Port		int	// e.g. 993 for SSL
+	Username	string	// email address
+	Password	string	// app password
+	Folder		string	// mailbox to poll (default: "INBOX")
 }
 
 // InboundEmail represents a parsed inbound email from IMAP.
 type InboundEmail struct {
-	From    string // sender email address
-	Subject string
-	Body    string // plain text body
-	Date    time.Time
-	UID     uint32 // IMAP UID for tracking
+	From	string	// sender email address
+	Subject	string
+	Body	string	// plain text body
+	Date	time.Time
+	UID	uint32	// IMAP UID for tracking
 }
 
 // EmailReceiver polls an IMAP inbox for new inbound emails.
 type EmailReceiver struct {
-	config    IMAPConfig
-	manager   *Manager
-	lastUID   uint32 // tracks the last processed message UID
-	connected bool
+	config		IMAPConfig
+	manager		*Manager
+	lastUID		uint32	// tracks the last processed message UID
+	connected	bool
 }
 
 // NewEmailReceiver creates a new IMAP email receiver.
@@ -46,8 +46,8 @@ func NewEmailReceiver(cfg IMAPConfig, manager *Manager) *EmailReceiver {
 		cfg.Folder = "INBOX"
 	}
 	return &EmailReceiver{
-		config:  cfg,
-		manager: manager,
+		config:		cfg,
+		manager:	manager,
 	}
 }
 
@@ -56,16 +56,16 @@ func (r *EmailReceiver) Run(ctx context.Context, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	log.Printf("IMAP: Email receiver started (polling %s every %v)", r.config.Host, interval)
+	slog.Info(fmt.Sprintf("IMAP: Email receiver started (polling %s every %v)", r.config.Host, interval))
 
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("IMAP: Email receiver stopping...")
+			slog.Info("IMAP: Email receiver stopping...")
 			return
 		case <-ticker.C:
 			if err := r.pollNewEmails(ctx); err != nil {
-				log.Printf("IMAP: Poll error: %v", err)
+				slog.Info(fmt.Sprintf("IMAP: Poll error: %v", err))
 			}
 		}
 	}
@@ -80,13 +80,13 @@ func (r *EmailReceiver) pollNewEmails(ctx context.Context) error {
 	defer r.disconnect(c)
 
 	// Select the mailbox
-	mbox, err := c.Select(r.config.Folder, true) // read-only
+	mbox, err := c.Select(r.config.Folder, true)	// read-only
 	if err != nil {
 		return fmt.Errorf("imap: select %s failed: %w", r.config.Folder, err)
 	}
 
 	if mbox.Messages == 0 {
-		return nil // empty inbox
+		return nil	// empty inbox
 	}
 
 	// Fetch messages since last processed UID
@@ -101,7 +101,7 @@ func (r *EmailReceiver) pollNewEmails(ctx context.Context) error {
 
 	if fromUID > 0 {
 		criteria.Uid = new(imap.SeqSet)
-		criteria.Uid.AddRange(fromUID, 0) // 0 means max
+		criteria.Uid.AddRange(fromUID, 0)	// 0 means max
 	}
 
 	uids, err := c.UidSearch(criteria)
@@ -110,7 +110,7 @@ func (r *EmailReceiver) pollNewEmails(ctx context.Context) error {
 	}
 
 	if len(uids) == 0 {
-		return nil // no new messages
+		return nil	// no new messages
 	}
 
 	// Limit to last 10 messages to avoid overwhelming the pipeline
@@ -118,7 +118,7 @@ func (r *EmailReceiver) pollNewEmails(ctx context.Context) error {
 		uids = uids[len(uids)-10:]
 	}
 
-	log.Printf("IMAP: Found %d new unread messages", len(uids))
+	slog.Info(fmt.Sprintf("IMAP: Found %d new unread messages", len(uids)))
 
 	// Fetch the messages
 	seqSet := new(imap.SeqSet)
@@ -129,7 +129,7 @@ func (r *EmailReceiver) pollNewEmails(ctx context.Context) error {
 
 	go func() {
 		if err := c.UidFetch(seqSet, items, messages); err != nil {
-			log.Printf("IMAP: Fetch error: %v", err)
+			slog.Info(fmt.Sprintf("IMAP: Fetch error: %v", err))
 		}
 	}()
 
@@ -174,13 +174,13 @@ func (r *EmailReceiver) parseMessage(msg *imap.Message) *InboundEmail {
 	}
 
 	if from == "" {
-		return nil // can't process without sender
+		return nil	// can't process without sender
 	}
 
 	body := ""
 	if msg.Body != nil {
 		for _, literal := range msg.Body {
-			buf := make([]byte, 32*1024) // 32KB max
+			buf := make([]byte, 32*1024)	// 32KB max
 			n, err := literal.Read(buf)
 			if err == nil && n > 0 {
 				body = string(buf[:n])
@@ -190,22 +190,22 @@ func (r *EmailReceiver) parseMessage(msg *imap.Message) *InboundEmail {
 	}
 
 	return &InboundEmail{
-		From:    strings.ToLower(strings.TrimSpace(from)),
-		Subject: msg.Envelope.Subject,
-		Body:    body,
-		Date:    msg.Envelope.Date,
-		UID:     msg.Uid,
+		From:		strings.ToLower(strings.TrimSpace(from)),
+		Subject:	msg.Envelope.Subject,
+		Body:		body,
+		Date:		msg.Envelope.Date,
+		UID:		msg.Uid,
 	}
 }
 
 // processInboundEmail feeds a received email into the sales pipeline.
 func (r *EmailReceiver) processInboundEmail(ctx context.Context, email InboundEmail) {
-	log.Printf("IMAP: Received email from %s (subject: %s)", email.From, email.Subject)
+	slog.Info(fmt.Sprintf("IMAP: Received email from %s (subject: %s)", email.From, email.Subject))
 
 	// Look up the contact by email address
 	contact, err := r.manager.db.GetContactByEmail(ctx, email.From)
 	if err != nil || contact == nil {
-		log.Printf("IMAP: No contact found for %s — skipping (not in pipeline)", email.From)
+		slog.Info(fmt.Sprintf("IMAP: No contact found for %s — skipping (not in pipeline)", email.From))
 		return
 	}
 
@@ -217,12 +217,12 @@ func (r *EmailReceiver) processInboundEmail(ctx context.Context, email InboundEm
 
 	reply, err := r.manager.ProcessInbound(ctx, *contact, text)
 	if err != nil {
-		log.Printf("IMAP: Error processing inbound from %s: %v", email.From, err)
+		slog.Info(fmt.Sprintf("IMAP: Error processing inbound from %s: %v", email.From, err))
 		return
 	}
 
 	if reply != "" {
-		log.Printf("IMAP: Generated reply to %s: %s", email.From, truncate(reply, 100))
+		slog.Info(fmt.Sprintf("IMAP: Generated reply to %s: %s", email.From, truncate(reply, 100)))
 	}
 }
 
@@ -266,7 +266,7 @@ func (r *EmailReceiver) HealthCheck(ctx context.Context) error {
 type MockEmailReceiver struct{}
 
 func (m *MockEmailReceiver) Run(ctx context.Context, interval time.Duration) {
-	log.Println("MockEmailReceiver: Running (no-op)")
+	slog.Info("MockEmailReceiver: Running (no-op)")
 	<-ctx.Done()
 }
 

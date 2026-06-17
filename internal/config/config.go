@@ -2,51 +2,52 @@ package config
 
 import (
 	"bufio"
-	"log"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
+	"fmt"
 )
 
 // Config holds the application configuration.
 type Config struct {
-	DatabaseURL         string
-	GitHubToken         string
-	GitHubRepository    string
-	GitHubWebhookSecret string
-	CRMBaseURL          string
-	CRMAPIKey           string
-	HermesAPIURL        string
-	HermesAPIKey        string
-	HermesModel         string
-	DeploySyncInterval  time.Duration
-	Port                string
-	Environment         string
+	DatabaseURL		string
+	GitHubToken		string
+	GitHubRepository	string
+	GitHubWebhookSecret	string
+	CRMBaseURL		string
+	CRMAPIKey		string
+	HermesAPIURL		string
+	HermesAPIKey		string
+	HermesModel		string
+	DeploySyncInterval	time.Duration
+	Port			string
+	Environment		string
 
 	// Safety
-	DryRun bool
+	DryRun	bool
 
 	// Lead Discovery
-	HunterAPIKey string
-	ApolloAPIKey string
+	HunterAPIKey	string
+	ApolloAPIKey	string
 
 	// Email - SMTP
-	SMTPHost     string
-	SMTPPort     int
-	SMTPUsername string
-	SMTPPassword string
-	SMTPFrom     string
-	SMTPFromName string
+	SMTPHost	string
+	SMTPPort	int
+	SMTPUsername	string
+	SMTPPassword	string
+	SMTPFrom	string
+	SMTPFromName	string
 
 	// Email - IMAP
-	IMAPHost         string
-	IMAPPort         int
-	IMAPUsername     string
-	IMAPPassword     string
-	IMAPFolder       string
-	IMAPPollInterval time.Duration
+	IMAPHost		string
+	IMAPPort		int
+	IMAPUsername		string
+	IMAPPassword		string
+	IMAPFolder		string
+	IMAPPollInterval	time.Duration
 }
 
 // Load loads the configuration from environment variables and .env file.
@@ -98,41 +99,41 @@ func Load() *Config {
 	}
 
 	return &Config{
-		DatabaseURL:         getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
-		GitHubToken:         os.Getenv("GITHUB_TOKEN"),
-		GitHubRepository:    os.Getenv("GITHUB_REPOSITORY"),
-		GitHubWebhookSecret: os.Getenv("GITHUB_WEBHOOK_SECRET"),
-		CRMBaseURL:          os.Getenv("CRM_BASE_URL"),
-		CRMAPIKey:           os.Getenv("CRM_API_KEY"),
-		HermesAPIURL:        os.Getenv("HERMES_API_URL"),
-		HermesAPIKey:        os.Getenv("HERMES_API_KEY"),
-		HermesModel:         hermesModel,
-		DeploySyncInterval:  syncInterval,
-		Port:                port,
-		Environment:         env,
+		DatabaseURL:		getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
+		GitHubToken:		os.Getenv("GITHUB_TOKEN"),
+		GitHubRepository:	os.Getenv("GITHUB_REPOSITORY"),
+		GitHubWebhookSecret:	os.Getenv("GITHUB_WEBHOOK_SECRET"),
+		CRMBaseURL:		os.Getenv("CRM_BASE_URL"),
+		CRMAPIKey:		os.Getenv("CRM_API_KEY"),
+		HermesAPIURL:		os.Getenv("HERMES_API_URL"),
+		HermesAPIKey:		os.Getenv("HERMES_API_KEY"),
+		HermesModel:		hermesModel,
+		DeploySyncInterval:	syncInterval,
+		Port:			port,
+		Environment:		env,
 
 		// Safety
-		DryRun: os.Getenv("DRY_RUN") == "true",
+		DryRun:	os.Getenv("DRY_RUN") == "true",
 
 		// Lead Discovery
-		HunterAPIKey: os.Getenv("HUNTER_API_KEY"),
-		ApolloAPIKey: os.Getenv("APOLLO_API_KEY"),
+		HunterAPIKey:	os.Getenv("HUNTER_API_KEY"),
+		ApolloAPIKey:	os.Getenv("APOLLO_API_KEY"),
 
 		// SMTP
-		SMTPHost:     os.Getenv("SMTP_HOST"),
-		SMTPPort:     smtpPort,
-		SMTPUsername: os.Getenv("SMTP_USERNAME"),
-		SMTPPassword: os.Getenv("SMTP_PASSWORD"),
-		SMTPFrom:     os.Getenv("SMTP_FROM"),
-		SMTPFromName: getEnv("SMTP_FROM_NAME", "TormentNexus Sales"),
+		SMTPHost:	os.Getenv("SMTP_HOST"),
+		SMTPPort:	smtpPort,
+		SMTPUsername:	os.Getenv("SMTP_USERNAME"),
+		SMTPPassword:	os.Getenv("SMTP_PASSWORD"),
+		SMTPFrom:	os.Getenv("SMTP_FROM"),
+		SMTPFromName:	getEnv("SMTP_FROM_NAME", "TormentNexus Sales"),
 
 		// IMAP
-		IMAPHost:         os.Getenv("IMAP_HOST"),
-		IMAPPort:         imapPort,
-		IMAPUsername:     os.Getenv("IMAP_USERNAME"),
-		IMAPPassword:     os.Getenv("IMAP_PASSWORD"),
-		IMAPFolder:       getEnv("IMAP_FOLDER", "INBOX"),
-		IMAPPollInterval: imapPollInterval,
+		IMAPHost:		os.Getenv("IMAP_HOST"),
+		IMAPPort:		imapPort,
+		IMAPUsername:		os.Getenv("IMAP_USERNAME"),
+		IMAPPassword:		os.Getenv("IMAP_PASSWORD"),
+		IMAPFolder:		getEnv("IMAP_FOLDER", "INBOX"),
+		IMAPPollInterval:	imapPollInterval,
 	}
 }
 
@@ -150,11 +151,11 @@ func loadDotEnv() {
 	for _, p := range paths {
 		file, err := os.Open(p)
 		if err != nil {
-			continue // .env is optional
+			continue	// .env is optional
 		}
 		defer file.Close()
 
-		log.Printf("Config: Loading environment from %s", p)
+		slog.Info(fmt.Sprintf("Config: Loading environment from %s", p))
 		scanner := bufio.NewScanner(file)
 		for scanner.Scan() {
 			line := strings.TrimSpace(scanner.Text())
@@ -181,7 +182,7 @@ func loadDotEnv() {
 				os.Setenv(key, value)
 			}
 		}
-		return // only load the first .env found
+		return	// only load the first .env found
 	}
 }
 

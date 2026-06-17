@@ -3,7 +3,7 @@ package enrichment
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -14,7 +14,7 @@ func (e *Enricher) Run(ctx context.Context, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	log.Println("Enricher worker started...")
+	slog.Info("Enricher worker started...")
 
 	// Run immediately on startup
 	e.executeEnrichment(ctx)
@@ -22,7 +22,7 @@ func (e *Enricher) Run(ctx context.Context, interval time.Duration) {
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("Enricher worker stopping: Draining in-flight work...")
+			slog.Info("Enricher worker stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			e.executeEnrichment(ctx)
@@ -36,23 +36,28 @@ func (e *Enricher) ExecuteEnrichment(ctx context.Context) {
 }
 
 func (e *Enricher) executeEnrichment(ctx context.Context) {
+	if e.db == nil {
+		// DB not available – skip enrichment to avoid panic in dev/test environments
+		slog.Info("Enricher: DB unavailable, skipping enrichment cycle")
+		return
+	}
 	// 1. Find deals in Discovered state
 	deals, err := e.db.ListDealsByState(ctx, db.StateDiscovered)
 	if err != nil {
-		log.Printf("Enricher: Error listing discovered deals: %v", err)
+		slog.Info(fmt.Sprintf("Enricher: Error listing discovered deals: %v", err))
 		return
 	}
 
 	for _, deal := range deals {
 		company, err := e.db.GetCompanyByID(ctx, deal.CompanyID)
 		if err != nil {
-			log.Printf("Enricher: Error getting company %d: %v", deal.CompanyID, err)
+			slog.Info(fmt.Sprintf("Enricher: Error getting company %d: %v", deal.CompanyID, err))
 			continue
 		}
 
 		err = e.enrichCompany(ctx, deal, *company)
 		if err != nil {
-			log.Printf("Enricher: Error enriching company %s: %v", company.Name, err)
+			slog.Info(fmt.Sprintf("Enricher: Error enriching company %s: %v", company.Name, err))
 		}
 	}
 }
@@ -61,7 +66,7 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 	for _, source := range e.sources {
 		contacts, err := source.Enrich(ctx, company)
 		if err != nil {
-			log.Printf("Enricher: Error from source: %v", err)
+			slog.Info(fmt.Sprintf("Enricher: Error from source: %v", err))
 			continue
 		}
 
@@ -69,7 +74,7 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 			contact.CompanyID = company.ID
 			err := e.db.CreateContact(ctx, &contact)
 			if err != nil {
-				log.Printf("Enricher: Error persisting contact %s: %v", contact.Name, err)
+				slog.Info(fmt.Sprintf("Enricher: Error persisting contact %s: %v", contact.Name, err))
 			}
 		}
 
@@ -86,17 +91,17 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 					maxRetries := 3
 					for i := 0; i < maxRetries; i++ {
 						if err := e.crmClient.SyncContacts(ctx, company.ID, contacts); err != nil {
-							log.Printf("Enricher Warning: Failed to sync contacts to CRM (attempt %d/%d): %v", i+1, maxRetries, err)
+							slog.Info(fmt.Sprintf("Enricher Warning: Failed to sync contacts to CRM (attempt %d/%d): %v", i+1, maxRetries, err))
 							time.Sleep(time.Duration(i+1) * 2 * time.Second)
 							continue
 						}
 						return
 					}
-					log.Printf("Enricher Error: CRM contact synchronization failed after %d attempts for company %d", maxRetries, company.ID)
+					slog.Info(fmt.Sprintf("Enricher Error: CRM contact synchronization failed after %d attempts for company %d", maxRetries, company.ID))
 				}()
 			}
 
-			log.Printf("Enricher: Successfully enriched %s with %d contacts", company.Name, len(contacts))
+			slog.Info(fmt.Sprintf("Enricher: Successfully enriched %s with %d contacts", company.Name, len(contacts)))
 			return nil
 		}
 	}
@@ -107,25 +112,25 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 type MockApolloSource struct{}
 
 func (m *MockApolloSource) Enrich(ctx context.Context, company db.Company) ([]db.Contact, error) {
-	log.Printf("MockApolloSource: Searching for contacts at %s", company.Domain)
+	slog.Info(fmt.Sprintf("MockApolloSource: Searching for contacts at %s", company.Domain))
 
 	// Simulate finding contacts based on domain
 	if company.Domain == "aidynamics.com" {
 		return []db.Contact{
 			{
-				Name:         "Sarah Chen",
-				Role:         "Director of AI",
-				Email:        "sarah.chen@aidynamics.com",
-				GitHubHandle: "schen-ai",
+				Name:		"Sarah Chen",
+				Role:		"Director of AI",
+				Email:		"sarah.chen@aidynamics.com",
+				GitHubHandle:	"schen-ai",
 			},
 		}, nil
 	} else if company.Domain == "neuralsystems.io" {
 		return []db.Contact{
 			{
-				Name:         "James Wilson",
-				Role:         "Principal Systems Architect",
-				Email:        "j.wilson@neuralsystems.io",
-				GitHubHandle: "jwilson-sys",
+				Name:		"James Wilson",
+				Role:		"Principal Systems Architect",
+				Email:		"j.wilson@neuralsystems.io",
+				GitHubHandle:	"jwilson-sys",
 			},
 		}, nil
 	}

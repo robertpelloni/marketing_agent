@@ -16,6 +16,7 @@ type RAGResponseGenerator struct {
 	db			*db.DB
 	llm			llm.LLMProvider
 	tormentNexusDocs	string
+	objectionLib	*ObjectionLibrary
 }
 
 // NewRAGResponseGenerator creates a new generator with TormentNexus context.
@@ -46,6 +47,7 @@ func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResp
 		db:			database,
 		llm:			provider,
 		tormentNexusDocs:	string(content),
+		objectionLib:	NewObjectionLibrary(),
 	}
 }
 
@@ -79,6 +81,16 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 	latestMsg := "START_OUTREACH"
 	if len(salesCtx.Interactions) > 0 {
 		latestMsg = salesCtx.Interactions[0].RawText
+	}
+
+	// Objection handling: use library to find a matched rebuttal
+	if salesCtx.LatestIntent == IntentObjection && len(salesCtx.Interactions) > 0 {
+		matched := g.objectionLib.MatchObjection(ctx, latestMsg, SentimentResult{}, salesCtx.Deal.CurrentState)
+		if matched != nil {
+			slog.Info(fmt.Sprintf("ObjectionLibrary: Matched \"%s\" (score=%.2f)", matched.Objection.Title, matched.Score))
+			return matched.Response.Text, nil
+		}
+		slog.Info("ObjectionLibrary: No match found for intent, falling through to LLM")
 	}
 
 	prompt := llm.Prompt{

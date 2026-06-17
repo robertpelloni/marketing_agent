@@ -77,8 +77,8 @@
 - [x] Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation
 - [x] Add rollback mechanism for failed verification
 - [x] Add PR feedback loop using `GetPRComments`
-- [ ] Add task dependency resolution
-- [ ] Add concurrent task execution for independent tasks
+- [x] Add task dependency resolution
+- [x] Add concurrent task execution for independent tasks
 
 ### Advanced Sales Strategy
 - [ ] Add multi-touch outreach sequences across channels
@@ -125,7 +125,7 @@
 
 ### API & Extensibility
 - [x] Add REST API for external pipeline management
-- [ ] Add outbound webhooks on deal state changes
+- [x] Add outbound webhooks on deal state changes
 - [ ] Add plugin system for custom sources, classifiers, and responders
 - [ ] Add multi-tenant support with data isolation
 

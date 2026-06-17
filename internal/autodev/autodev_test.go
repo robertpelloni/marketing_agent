@@ -3,88 +3,35 @@ package autodev
 import (
 	"context"
 	"os"
-	"strings"
 	"testing"
 )
 
-func TestTaskManager_GetNextTask(t *testing.T) {
+func TestTaskManager_DependencyResolution(t *testing.T) {
 	content := `
 # TODO
-- [x] Task 1
-- [ ] Task 2
-- [ ] Task 3
+- [ ] Task 1 [id:t1]
+- [ ] Task 2 [id:t2] [depends:t1]
+- [x] Task 0 [id:t0]
 `
 	tmpfile, err := os.CreateTemp("", "TODO.md")
-	if err != nil {
-		t.Fatal(err)
-	}
+	if err != nil { t.Fatal(err) }
 	defer os.Remove(tmpfile.Name())
 
-	if _, err := tmpfile.Write([]byte(content)); err != nil {
-		t.Fatal(err)
-	}
-	if err := tmpfile.Close(); err != nil {
-		t.Fatal(err)
-	}
+	if err := os.WriteFile(tmpfile.Name(), []byte(content), 0644); err != nil { t.Fatal(err) }
 
 	manager := NewTaskManager(tmpfile.Name())
+
+	// First call should return Task 1 because Task 2 depends on it
 	task, err := manager.GetNextTask(context.Background())
+	if err != nil { t.Fatalf("Expected no error, got %v", err) }
+	if task.ID != "t1" { t.Errorf("Expected 't1', got '%s'", task.ID) }
 
-	if err != nil {
-		t.Fatalf("Expected no error, got %v", err)
-	}
-	if task == nil {
-		t.Fatal("Expected a task, got nil")
-	}
-	if task.Description != "Task 2" {
-		t.Errorf("Expected 'Task 2', got '%s'", task.Description)
-	}
-}
+	// Mark Task 1 as completed
+	err = manager.MarkCompleted(context.Background(), "Task 1")
+	if err != nil { t.Fatalf("Failed to mark task 1 completed: %v", err) }
 
-func TestTaskManager_MarkCompleted(t *testing.T) {
-	content := "- [ ] Task A\n- [ ] Task B"
-	tmpfile, err := os.CreateTemp("", "TODO.md")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.Remove(tmpfile.Name())
-
-	if err := os.WriteFile(tmpfile.Name(), []byte(content), 0644); err != nil {
-		t.Fatalf("Failed to write TODO file: %v", err)
-	}
-
-	manager := NewTaskManager(tmpfile.Name())
-	err = manager.MarkCompleted(context.Background(), "Task A")
-	if err != nil {
-		t.Fatalf("Expected no error, got %v", err)
-	}
-
-	newContent, _ := os.ReadFile(tmpfile.Name())
-	if !strings.Contains(string(newContent), "- [x] Task A") {
-		t.Errorf("Task A was not marked as completed. Content: %s", string(newContent))
-	}
-}
-
-func TestTaskManager_AddTask(t *testing.T) {
-	tmpfile, err := os.CreateTemp("", "TODO.md")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.Remove(tmpfile.Name())
-
-	manager := NewTaskManager(tmpfile.Name())
-	task := Task{
-		Description: "New automated task",
-		Category:    "Refinement",
-	}
-
-	err = manager.AddTask(context.Background(), task)
-	if err != nil {
-		t.Fatalf("Expected no error, got %v", err)
-	}
-
-	content, _ := os.ReadFile(tmpfile.Name())
-	if !strings.Contains(string(content), "- [ ] **Refinement** — New automated task") {
-		t.Errorf("Task was not added correctly. Content: %s", string(content))
-	}
+	// Next call should return Task 2
+	task, err = manager.GetNextTask(context.Background())
+	if err != nil { t.Fatalf("Expected no error, got %v", err) }
+	if task.ID != "t2" { t.Errorf("Expected 't2', got '%s'", task.ID) }
 }

@@ -8,6 +8,7 @@ type Task struct {
 	Description string
 	Category    string
 	Completed   bool
+	DependsOn   []string
 }
 
 // Agent defines the interface for an autonomous developer.

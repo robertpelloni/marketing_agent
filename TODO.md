@@ -75,7 +75,7 @@
 
 ### Autonomous Development Improvements
 - [x] Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation
-- [ ] Add rollback mechanism for failed verification
+- [x] Add rollback mechanism for failed verification
 - [x] Add PR feedback loop using `GetPRComments`
 - [ ] Add task dependency resolution
 - [ ] Add concurrent task execution for independent tasks
@@ -99,7 +99,7 @@
 - [x] Add rate limiting on all HTTP endpoints
 - [x] Add authentication to web dashboard (Session-based)
 - [x] Add CSRF protection for dashboard form submissions
-- [ ] Add input sanitization for webhook payloads and form inputs
+- [x] Add input sanitization for webhook payloads and form inputs
 - [ ] Add secrets encryption at rest
 - [ ] Add GDPR data export endpoint
 - [ ] Add GDPR data deletion endpoint

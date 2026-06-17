@@ -228,3 +228,12 @@ func GenerateSubmoduleInventory() (string, error) {
 
 	return inventory, nil
 }
+
+// ResetHard performs a git reset --hard to revert any local changes.
+func ResetHard() error {
+	cmd := exec.Command("git", "reset", "--hard", "HEAD")
+	if out, err := cmd.CombinedOutput(); err != nil {
+		return fmt.Errorf("git reset --hard failed: %v, output: %s", err, string(out))
+	}
+	return nil
+}

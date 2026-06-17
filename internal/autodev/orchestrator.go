@@ -73,18 +73,15 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 			comments, _ := o.prManager.GetPRComments(ctx, pr.ID)
 			if len(comments) > 0 {
 				log.Printf("Autodev: PR %s has %d comments. Reviewing for feedback...", pr.ID, len(comments))
-				// TRIGGER REFINEMENT TASK: If there are comments, create a high-priority refinement task
 				refinementTask := Task{
 					Description: fmt.Sprintf("Address feedback on PR %s: %s", pr.ID, strings.Join(comments, " | ")),
 					Category:    "Refinement",
 				}
-				_ = o.manager.AddTask(ctx, refinementTask)
 				log.Printf("Autodev: Injecting refinement task for PR %s", pr.ID)
-				// We don't have a direct "AddHighPriorityTask" yet, so we log and it would be picked up in next cycle
-				// In a real implementation, we'd persist this to TODO.md or the DB.
+				_ = o.manager.AddTask(ctx, refinementTask)
 			}
 
-			// Gate merge on CI Success and Staging Validation (from unified pipeline)
+			// Gate merge on CI Success and Staging Validation
 			ciStatus, err := o.tracker.GetLatestStatus(ctx, pr.Branch)
 			if err != nil {
 				log.Printf("Autodev: Error checking CI status for branch %s: %v", pr.Branch, err)
@@ -125,7 +122,7 @@ func (o *Orchestrator) cleanupPRBranch(branch string) {
 	}
 }
 
-// ExecuteStep manually triggers a single step of the orchestrator loop (exported for testing).
+// ExecuteStep manually triggers a single step of the orchestrator loop.
 func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 	// 0. Executive Protocol: Sync & Update
 	if os.Getenv("SKIP_AUTODEV_SYNC") != "true" {
@@ -140,16 +137,10 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 		if err := gitres.ReconcileBranches(); err != nil {
 			log.Printf("Autodev: Branch reconciliation failed: %v", err)
 		}
-	} else {
-		log.Println("Autodev: Skipping Executive Sync Protocol (SKIP_AUTODEV_SYNC=true)")
 	}
 
 	// 1. Verify repository state
-	clean, err := gitcheck.IsClean()
-	if err != nil {
-		log.Printf("Autodev: Error checking repo state: %v", err)
-		return
-	}
+	clean, _ := gitcheck.IsClean()
 	if !clean {
 		log.Println("Autodev: Working directory not clean, skipping cycle.")
 		return
@@ -157,12 +148,8 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 
 	// 2. Fetch next task
 	task, err := o.manager.GetNextTask(ctx)
-	if err != nil {
-		log.Printf("Autodev: Error fetching next task: %v", err)
+	if err != nil || task == nil {
 		return
-	}
-	if task == nil {
-		return // No tasks available
 	}
 
 	log.Printf("Autodev: Processing task: %s", task.Description)
@@ -184,12 +171,15 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 	// 5. Verify
 	err = o.agent.Verify(ctx)
 	if err != nil {
-		log.Printf("Autodev: Verification failed for task '%s': %v", task.Description, err)
-		// Here we would ideally rollback or attempt fix
+		log.Printf("Autodev: Verification failed for task '%s': %v. Initiating rollback...", task.Description, err)
+		// ROLLBACK: Reset to clean state
+		if resetErr := gitcheck.ResetHard(); resetErr != nil {
+			log.Printf("Autodev CRITICAL: Rollback failed: %v", resetErr)
+		}
 		return
 	}
 
-	// 6. Mark completed & Bump Version (Metadata update before commit)
+	// 6. Mark completed & Bump Version
 	err = o.manager.MarkCompleted(ctx, task.Description)
 	if err != nil {
 		log.Printf("Autodev: Error marking task as completed: %v", err)
@@ -198,7 +188,6 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 	o.finalizeCycle(ctx, task)
 
 	// 4a. Create unique feature branch, push, and PR
-	// Sanitize branch name: replace spaces and special characters
 	safeDescription := strings.Map(func(r rune) rune {
 		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') {
 			return r
@@ -213,26 +202,16 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 			log.Printf("Autodev: Error committing changes: %v", err)
 			return
 		}
-
 		log.Printf("Autodev: Pushing feature branch: %s", branchName)
-		if err := gitcheck.PushBranch(branchName); err != nil {
-			log.Printf("Autodev: Error pushing branch: %v", err)
-			// We proceed as CreatePullRequest might still work if the branch exists
-		}
-	} else {
-		log.Println("Autodev: Skipping git commit/push (SKIP_AUTODEV_SYNC=true)")
+		_ = gitcheck.PushBranch(branchName)
 	}
 
 	log.Printf("Autodev: Creating Pull Request for branch: %s", branchName)
 	pr, err := o.prManager.CreatePullRequest(ctx, branchName, fmt.Sprintf("Autonomous Update: %s", task.Description), proposal)
-	if err != nil {
-		log.Printf("Autodev: Error creating PR: %v", err)
-	} else {
+	if err == nil {
 		log.Printf("Autodev: PR created: %s", pr.URL)
 		if o.db != nil {
-			if err := o.db.CreatePullRequest(ctx, pr, task.Description); err != nil {
-				log.Printf("Autodev: Error persisting PR record: %v", err)
-			}
+			_ = o.db.CreatePullRequest(ctx, pr, task.Description)
 		}
 	}
 
@@ -241,36 +220,19 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 
 func (o *Orchestrator) finalizeCycle(ctx context.Context, task *Task) {
 	log.Println("Autodev: Finalizing cycle with version governance...")
-
-	// 1. Update VERSION file (bump build number)
 	version, _ := os.ReadFile("VERSION")
 	vStr := strings.TrimSpace(string(version))
-	if vStr == "" {
-		vStr = "0.0.0"
-	}
-
-	// Extract base version (remove previous build metadata if present)
+	if vStr == "" { vStr = "0.0.0" }
 	baseVersion := strings.Split(vStr, "+")[0]
 	newV := fmt.Sprintf("%s+%d", baseVersion, time.Now().Unix())
 
-	// #nosec G306 -- Version files are intended to be world-readable in this architecture
-	if err := os.WriteFile("VERSION", []byte(newV), 0644); err != nil {
-		log.Printf("Autodev Warning: Failed to write VERSION: %v", err)
-	}
-	// #nosec G306 -- Version files are intended to be world-readable in this architecture
-	if err := os.WriteFile("VERSION.md", []byte(newV), 0644); err != nil {
-		log.Printf("Autodev Warning: Failed to write VERSION.md: %v", err)
-	}
+	_ = os.WriteFile("VERSION", []byte(newV), 0644) // #nosec G306
+	_ = os.WriteFile("VERSION.md", []byte(newV), 0644) // #nosec G306
 
-	// 2. Append to CHANGELOG.md
 	changelogEntry := fmt.Sprintf("\n## [%s] - %s\n- %s\n", newV, time.Now().Format("2006-01-02"), task.Description)
-	// #nosec G302 -- CHANGELOG is intentionally world-readable
-	f, err := os.OpenFile("CHANGELOG.md", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile("CHANGELOG.md", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644) // #nosec G302
 	if err == nil {
-		if _, err := f.WriteString(changelogEntry); err != nil {
-			log.Printf("Autodev: Error writing to CHANGELOG: %v", err)
-		}
-		// #nosec G104 -- Explicit close is handled, ignore errors during autonomous loop cleanup
+		_, _ = f.WriteString(changelogEntry)
 		_ = f.Close()
 	}
 

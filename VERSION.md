@@ -1,5 +1,5 @@
-# Version 0.6.1
-**Advanced Autonomy & HITL Release**
+# Version 0.6.2
+**Robustness & Security Release**
 2026-06-16
 
-This release introduces self-correcting development loops and human-gated safety for high-value outreach.
+This release adds automated rollback for autonomous development and input sanitization for the dashboard.

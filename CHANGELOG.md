@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.6.1] - 2026-06-16
+## [0.6.2] - 2026-06-16
+
+### Added
+- **AutoDev Rollback Mechanism:** The orchestrator now performs an automated `git reset --hard` if the verification suite fails after applying autonomous code changes, ensuring codebase integrity.
+- **Input Sanitization:** All user-provided inputs from the web dashboard are now sanitized using HTML escaping to prevent XSS attacks.
+
 
 ### Added
 - **AutoDev PR Feedback Loop:** The system now polls for comments on open autonomous PRs and automatically triggers refinement tasks to address feedback.

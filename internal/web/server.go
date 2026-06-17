@@ -83,8 +83,8 @@ func (s *Server) handleSimulateInbound(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cid := r.FormValue("contact_id")
-	txt := r.FormValue("text")
+	cid := html.EscapeString(r.FormValue("contact_id"))
+	txt := html.EscapeString(r.FormValue("text"))
 
 	log.Printf("UAT: Simulating inbound from contact %s: %s", cid, txt)
 	fmt.Fprintf(w, "UAT: Simulation triggered for contact %s. Response logic would execute here.", cid)
@@ -97,7 +97,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == http.MethodPost {
-		action := r.FormValue("action")
+		action := html.EscapeString(r.FormValue("action"))
 		switch action {
 		case "enrich":
 			log.Printf("UI: Manual enrichment triggered for deal %s", r.FormValue("deal_id"))
@@ -106,7 +106,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				log.Printf("UI: Sync error: %v", err)
 			}
 		case "flag_success":
-			interactionID := r.FormValue("interaction_id")
+			interactionID := html.EscapeString(r.FormValue("interaction_id"))
 			success := r.FormValue("success") == "true"
 			var id int64
 			if _, err := fmt.Sscanf(interactionID, "%d", &id); err != nil {
@@ -117,8 +117,8 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		case "update_channel":
-			contactID := r.FormValue("contact_id")
-			channel := r.FormValue("channel")
+			contactID := html.EscapeString(r.FormValue("contact_id"))
+			channel := html.EscapeString(r.FormValue("channel"))
 			var id int64
 			if _, err := fmt.Sscanf(contactID, "%d", &id); err != nil {
 				log.Printf("UI: Invalid contact ID: %v", err)
@@ -128,7 +128,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		case "approve":
-			dealID := r.FormValue("deal_id")
+			dealID := html.EscapeString(r.FormValue("deal_id"))
 			var id int64
 			if _, err := fmt.Sscanf(dealID, "%d", &id); err == nil {
 				if err := s.db.SetApprovalRequired(r.Context(), id, false); err != nil {

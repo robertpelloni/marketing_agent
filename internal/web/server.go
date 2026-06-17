@@ -7,7 +7,9 @@ import (
 	"html"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
+	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
@@ -55,6 +57,9 @@ func (s *Server) routes() {
 	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
 	s.mux.Handle("/api/v1/deals", s.auth.Middleware(http.HandlerFunc(s.handleListDeals)))
 	s.mux.Handle("/api/v1/leads", s.auth.Middleware(http.HandlerFunc(s.handleListLeads)))
+	s.mux.Handle("/api/v1/gdpr/export", s.auth.Middleware(http.HandlerFunc(s.handleGDPRExport)))
+	s.mux.Handle("/api/v1/gdpr/delete", s.auth.Middleware(http.HandlerFunc(s.handleGDPRDelete)))
+	s.mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -188,6 +193,18 @@ func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
+	allowedIPs := os.Getenv("ALLOWED_WEBHOOK_IPS")
+	if allowedIPs != "" {
+		remoteIP := strings.Split(r.RemoteAddr, ":")[0]
+		found := false
+		for _, ip := range strings.Split(allowedIPs, ",") {
+			if strings.TrimSpace(ip) == remoteIP { found = true; break }
+		}
+		if !found {
+			log.Printf("Webhook Security: Blocked unauthorized IP %s", remoteIP)
+			http.Error(w, "Forbidden", http.StatusForbidden); return
+		}
+	}
 	w.WriteHeader(http.StatusAccepted)
 }
 
@@ -213,4 +230,21 @@ func (s *Server) renderApprovalButton(deal db.Deal, csrfToken string) string {
 <input type="hidden" name="action" value="approve"><input type="hidden" name="deal_id" value="%d">
 <button type="submit" class="action-btn" style="background:#ffc107;color:#000">Approve</button>
 </form>`, csrfToken, deal.ID)
+}
+
+func (s *Server) handleGDPRExport(w http.ResponseWriter, r *http.Request) {
+	email := r.URL.Query().Get("email")
+	data, err := s.db.GetExportData(r.Context(), email)
+	if err != nil { http.Error(w, err.Error(), 500); return }
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(data)
+}
+
+func (s *Server) handleGDPRDelete(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost { return }
+	email := r.FormValue("email")
+	if err := s.db.SoftDeleteContact(r.Context(), email); err != nil {
+		http.Error(w, err.Error(), 500); return
+	}
+	w.WriteHeader(http.StatusNoContent)
 }

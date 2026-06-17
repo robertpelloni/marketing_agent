@@ -668,3 +668,22 @@ func (db *DB) ListAllCompanies(ctx context.Context, limit, offset int) ([]Compan
 	}
 	return companies, nil
 }
+
+// SoftDeleteContact marks a contact as deleted in the system.
+func (db *DB) SoftDeleteContact(ctx context.Context, email string) error {
+	query := "UPDATE contacts SET deleted_at = CURRENT_TIMESTAMP WHERE email = $1"
+	_, err := db.Conn.ExecContext(ctx, query, email)
+	return err
+}
+
+// GetExportData returns all relevant data for a contact email.
+func (db *DB) GetExportData(ctx context.Context, email string) (map[string]interface{}, error) {
+	contact, err := db.GetContactByEmail(ctx, email)
+	if err != nil || contact == nil { return nil, err }
+
+	ints, _ := db.ListInteractionsByContact(ctx, contact.ID)
+	return map[string]interface{}{
+		"contact": contact,
+		"interactions": ints,
+	}, nil
+}

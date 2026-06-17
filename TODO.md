@@ -100,10 +100,10 @@
 - [x] Add authentication to web dashboard (Session-based)
 - [x] Add CSRF protection for dashboard form submissions
 - [x] Add input sanitization for webhook payloads and form inputs
-- [ ] Add secrets encryption at rest
-- [ ] Add GDPR data export endpoint
-- [ ] Add GDPR data deletion endpoint
-- [ ] Add webhook IP allowlisting
+- [x] Add secrets encryption at rest
+- [x] Add GDPR data export endpoint
+- [x] Add GDPR data deletion endpoint
+- [x] Add webhook IP allowlisting
 
 ### Scale & Performance
 - [ ] Add Redis caching layer for frequently accessed data

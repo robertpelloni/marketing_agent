@@ -1,28 +1,27 @@
 [PROJECT_MEMORY]
 
-# TormentNexus: Architectural Design & Engineering Patterns (v0.8.0)
+# TormentNexus: Architectural Design & Engineering Patterns (v0.9.0)
 
-## 1. System Philosophy: Autonomous Modular Monolith
-TormentNexus is architected as a high-performance **Modular Monolith** driven by concurrent background workers. The system manages the entire B2B sales lifecycle autonomously, from discovery and enrichment to technical outreach and fulfillment.
+## 1. Modular Monolith Architecture
+TormentNexus is a high-performance **Modular Monolith** driven by concurrent background workers. The system manages the entire B2B sales lifecycle autonomously, from discovery and enrichment to technical outreach and fulfillment.
 
 ### Core Architectural Layers:
-*   **Autonomous Orchestration (\`internal/autodev\`):** The "meta-brain" of the system. As of v0.8.0, it supports **Concurrent Task Execution** via goroutines and **Task Dependency Resolution** (parsing \`DependsOn\` metadata from TODO.md). It handles self-correction through a **PR Feedback Loop** and features an **Automated Rollback** mechanism for failed verifications.
-*   **Intelligent Communication (\`internal/communication\`):** A state-aware engine managing a rigid 7-state FSM. It utilizes LLMs for intent classification and technical response generation, grounded by a **RAG-based Technical Dossier**.
-*   **Lead Discovery & Intelligence (\`internal/scraper\`, \`internal/enrichment\`):** Multi-source pipeline targeting high-intent signals from HN, GitHub, LinkedIn, and engineering blogs (\`BlogWorker\`). It includes **Competitor Tracking** to refine lead scoring.
-*   **Integration & Observability (\`internal/crm\`, \`internal/web\`):** Adapter-based support for Salesforce, HubSpot, and Stripe. v0.8.0 introduces **Outbound Webhooks** for real-time status syncing and a comprehensive **REST API v1** for external management.
+*   **Autonomous Orchestration (\`internal/autodev\`):** Meta-brain supporting **Concurrent Task Execution** and **Task Dependency Resolution**. Features a **PR Feedback Loop** and **Automated Rollback**.
+*   **Intelligence & Discovery (\`internal/scraper\`, \`internal/enrichment\`):** Multi-channel ingestion engine (HN, GitHub, LinkedIn, RSS) with **Competitor tracking**.
+*   **Strategic Communication (\`internal/communication\`):** State-aware FSM engine utilizing RAG and an **Objection Handling Library**. Features **Human-in-the-Loop (HITL) approval** for enterprise deals and **Prompt Analytics**.
+*   **Enterprise Platform & Security (\`internal/web\`, \`internal/security\`):** Comprehensive REST API v1, **GDPR compliance endpoints**, and **Secrets Encryption (AES-GCM)**.
 
-## 2. Key Design Patterns
-*   **Adapter Pattern:** Ensures provider-agnosticism across all external services.
-*   **Finite State Machine (FSM):** Enforces atomic lead progression: \`Discovered → Researched → Outreach_Sent → Engaged → Negotiating → Closed_Won/Lost\`.
-*   **Human-in-the-Loop (HITL) Gate:** A safety pattern for high-value enterprise accounts, requiring manual approval on the dashboard before outreach.
-*   **Worker Pattern:** Decoupled background services running with context-aware concurrency and graceful shutdown.
+## 2. Key Security & Compliance Patterns
+*   **Layered Defense:** Global rate limiting (5 req/s), **Webhook IP Allowlisting**, CSRF protection, input sanitization (XSS mitigation), and HMAC verification.
+*   **Data Privacy:** Native support for **GDPR Export and Soft-Delete** via \`deleted_at\` columns.
+*   **Infrastructure Security:** Slowloris mitigation (\`ReadHeaderTimeout\`) and hardened cookie flags.
 
-## 3. Security & Robustness Decisions
-*   **Layered Defense:** Global rate limiting (5 req/s), CSRF protection on all forms, input sanitization (XSS mitigation), and HMAC webhook verification.
-*   **Operational Integrity:** HEARTBEAT monitoring and top-level panic recovery in the entry point. Automated \`git reset --hard\` on verification failure in the dev loop.
-*   **Performance Profiling:** Real-time cycle duration tracking for background workers displayed on the dashboard.
+## 3. Operational Robustness
+*   **Recovery-Ready:** HEARTBEAT monitoring and top-level panic recovery with full stack traces in the entry point.
+*   **Performance Monitoring:** Real-time worker performance profiling displayed on the dashboard.
+*   **State Integrity:** Atomic lead state progression and automated git state recovery in the autonomous development loop.
 
 ## 4. Technology Stack
-*   **Language:** Go 1.25 (Leveraging latest performance and concurrency features).
-*   **Data:** PostgreSQL (Structured persistence for leads, PRs, and metrics).
-*   **LLM Gateway:** Hermes Agent (OpenAI-compatible local gateway).
+*   **Language:** Go 1.25.
+*   **Persistence:** PostgreSQL.
+*   **Gateway:** Hermes Agent.

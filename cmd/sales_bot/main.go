@@ -186,7 +186,7 @@ func main() {
 		})
 
 		promptRegistry = llm.NewPromptRegistry("data/prompt_registry.json")
-		promptRegistry.RegisterVersion("outreach-reply", "Intent: ${intent}. Dossier: ${dossier}. Company: ${company}. Generate a professional reply.")
+		promptRegistry.RegisterVersion("outreach-reply", "Intent: ${intent}. Dossier: ${dossier}. Company: ${company}. ${negative} Generate a professional reply.")
 
 		if err := llmProvider.(*llm.HermesLLMProvider).HealthCheck(ctx); err != nil {
 			log.Printf("LLM: WARNING — Hermes health check failed: %v", err)
@@ -227,7 +227,7 @@ func main() {
 	billingClient := &billing.MockBillingClient{}
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
-	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender, ghSender, liSender)
+	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender, ghSender, liSender, promptRegistry)
 	go commManager.Run(ctx, 30*time.Minute)
 
 	// 2j. Setup Cadence-aware outreach scheduling
@@ -265,7 +265,7 @@ func main() {
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider)
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider, promptRegistry)
 
 	srv := &http.Server{
 		Addr:              ":" + cfg.Port,

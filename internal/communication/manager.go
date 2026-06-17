@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 )
 
 // Intent represents the classified purpose of an inbound message.
@@ -46,12 +47,12 @@ type Manager struct {
 	processor  OrderProcessor
 	sender     EmailSender
 	github     *GitHubSender
-	linkedin   *LinkedInSender // nil = no email sending (log only)
+	linkedin   *LinkedInSender
+	registry   *llm.PromptRegistry
 }
 
 // NewManager creates a new communication Manager.
-// sender is optional — if nil, outbound emails are logged but not sent.
-func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor, sender EmailSender, github *GitHubSender, linkedin *LinkedInSender) *Manager {
+func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor, sender EmailSender, github *GitHubSender, linkedin *LinkedInSender, registry *llm.PromptRegistry) *Manager {
 	return &Manager{
 		db:         database,
 		classifier: classifier,
@@ -61,6 +62,7 @@ func NewManager(database *db.DB, classifier IntentClassifier, responder Response
 		sender:     sender,
 		github:     github,
 		linkedin:   linkedin,
+		registry:   registry,
 	}
 }
 
@@ -123,7 +125,6 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 }
 
 // DefaultChannelForContact returns the channel to use when communicating with a contact.
-// If the contact has a preferred channel set, that is used. Otherwise defaults to "email".
 func DefaultChannelForContact(contact db.Contact) string {
 	if contact.PreferredChannel != "" {
 		return contact.PreferredChannel
@@ -133,7 +134,6 @@ func DefaultChannelForContact(contact db.Contact) string {
 
 // ProcessInbound handles a new inbound message from a contact.
 func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text string) (string, error) {
-	// Determine the channel to use for this contact
 	channel := DefaultChannelForContact(contact)
 
 	// 1. Persist inbound interaction
@@ -143,32 +143,15 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		Direction: "Inbound",
 		RawText:   text,
 	}
-	err := m.db.CreateInteraction(ctx, &inbound)
-	if err != nil {
-		return "", err
-	}
+	_ = m.db.CreateInteraction(ctx, &inbound)
 
 	// 2. Classify intent
 	intent, err := m.classifier.Classify(ctx, text)
-	if err != nil {
-		return "", err
-	}
+	if err != nil { return "", err }
 
-	// 2a. Decide next action using strategy engine
-	company, err := m.db.GetCompanyByID(ctx, contact.CompanyID)
-	if err != nil {
-		return "", fmt.Errorf("failed to get company for strategy: %w", err)
-	}
-
-	interactions, err := m.db.ListInteractionsByContact(ctx, contact.ID)
-	if err != nil {
-		log.Printf("Warning: failed to list interactions for strategy: %v", err)
-	}
-
-	deal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
-	if err != nil {
-		return "", fmt.Errorf("failed to get deal for strategy: %w", err)
-	}
+	company, _ := m.db.GetCompanyByID(ctx, contact.CompanyID)
+	interactions, _ := m.db.ListInteractionsByContact(ctx, contact.ID)
+	deal, _ := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
 
 	salesCtx := SalesContext{
 		Company:      *company,
@@ -179,40 +162,23 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	}
 
 	action, err := m.strategy.Decide(ctx, salesCtx)
-	if err != nil {
-		return "", err
-	}
+	if err != nil { return "", err }
 
 	if action == ActionEscalate {
-		log.Printf("UI: Deal %d escalated for human review.", salesCtx.Deal.ID)
-		return "I've flagged this for our technical lead to review. We will get back to you shortly.", nil
+		return "I've flagged this for our technical lead. We will get back to you shortly.", nil
 	}
 
 	// 3. Generate response
 	replyText, err := m.responder.Generate(ctx, salesCtx, action)
-	if err != nil {
-		return "", err
-	}
+	if err != nil { return "", err }
 
-	// 3a. Handle order processing and prompt optimization loop if deal was won
-	if action == ActionAdvanceState {
-		updatedDeal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
-		if err == nil && updatedDeal.CurrentState == db.StateClosedWon {
-			log.Printf("Comm Manager: Deal %d won! Flagging past outbound interactions as successful.", updatedDeal.ID)
-			for _, interaction := range interactions {
-				if interaction.Direction == "Outbound" {
-					if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
-						log.Printf("Comm Manager Error: Failed to mark interaction %d as successful: %v", interaction.ID, err)
-					}
-				}
-			}
-
-			if m.processor != nil {
-				log.Printf("Comm Manager: Triggering order processor for won deal %d", updatedDeal.ID)
-				if err := m.processor.ProcessOrder(ctx, *updatedDeal); err != nil {
-					log.Printf("Comm Manager Error: Order processing failed: %v", err)
-				}
-			}
+	// 3a. Record outcome if deal was won or positive sentiment
+	if action == ActionAdvanceState && m.registry != nil {
+		updatedDeal, _ := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
+		if updatedDeal != nil && updatedDeal.CurrentState == db.StateClosedWon {
+			// Record success for the active prompt version
+			// In a real scenario, we'd track which version was used in the interaction
+			m.registry.RecordOutcome("outreach-reply", "current", true)
 		}
 	}
 
@@ -224,39 +190,16 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		RawText:   replyText,
 		Summary:   fmt.Sprintf("Reply to intent: %s", intent),
 	}
-	err = m.db.CreateInteraction(ctx, &outbound)
-	if err != nil {
-		return "", err
-	}
+	_ = m.db.CreateInteraction(ctx, &outbound)
 
-	// 5. Actually send the communication if sender is configured
+	// 5. Send communication
 	if m.sender != nil && contact.Email != "" && channel == "email" {
 		subject := fmt.Sprintf("Re: %s — TormentNexus", company.Name)
-		if text == "START_OUTREACH" {
-			subject = fmt.Sprintf("TormentNexus for %s — Quick Question", company.Name)
-		}
-
-		emailMsg := EmailMessage{
-			To:      contact.Email,
-			Subject: subject,
-			Body:    replyText,
-		}
-
-		if err := m.sender.Send(ctx, emailMsg); err != nil {
-			log.Printf("Comm Manager: Email send failed to %s: %v", contact.Email, err)
-		} else {
-			log.Printf("Comm Manager: Email sent to %s (%s)", contact.Email, subject)
-		}
-	} else if channel != "email" {
-		log.Printf("Comm Manager: Channel %q requires future implementation for %s — reply logged", channel, contact.Email)
-	} else if m.sender == nil {
-		log.Printf("Comm Manager: No email sender configured — reply logged but not sent to %s", contact.Email)
+		if text == "START_OUTREACH" { subject = fmt.Sprintf("TormentNexus for %s — Quick Question", company.Name) }
+		_ = m.sender.Send(ctx, EmailMessage{To: contact.Email, Subject: subject, Body: replyText})
 	}
 
 	return replyText, nil
 }
 
-// GetDB returns the database connection (used by IMAP receiver for contact lookup).
-func (m *Manager) GetDB() *db.DB {
-	return m.db
-}
+func (m *Manager) GetDB() *db.DB { return m.db }

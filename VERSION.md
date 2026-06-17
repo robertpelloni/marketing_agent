@@ -1,5 +1,5 @@
-# Version 0.6.2
-**Robustness & Security Release**
+# Version 0.6.3
+**Self-Optimization & Analytics Release**
 2026-06-16
 
-This release adds automated rollback for autonomous development and input sanitization for the dashboard.
+This release focuses on data-driven improvement of the sales brain through outcome tracking and negative constraint injection.

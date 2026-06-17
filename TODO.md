@@ -110,8 +110,8 @@
 - [ ] Add horizontal scaling support (stateless workers)
 - [ ] Add message queue (NATS/RabbitMQ) to decouple workers
 - [ ] Add database read replicas for dashboard queries
-- [ ] Add pagination to dashboard deal list
-- [ ] Add worker performance profiling
+- [x] Add pagination to dashboard deal list
+- [x] Add worker performance profiling
 
 ### Deployment & Operations
 - [ ] Add Kubernetes manifests (Deployment, Service, ConfigMap, Secret)
@@ -124,7 +124,7 @@
 ## Phase 10 — Platform & Ecosystem
 
 ### API & Extensibility
-- [ ] Add REST API for external pipeline management
+- [x] Add REST API for external pipeline management
 - [ ] Add outbound webhooks on deal state changes
 - [ ] Add plugin system for custom sources, classifiers, and responders
 - [ ] Add multi-tenant support with data isolation

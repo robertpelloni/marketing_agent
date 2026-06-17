@@ -2,7 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.6.3] - 2026-06-16
+## [0.7.0] - 2026-06-16
+
+### Added
+- **Dashboard Pagination:** Implemented offset-based pagination for the deal list to support large-scale lead management.
+- **Worker Performance Profiling:** Added instrumentation to background workers (Scraper, Enricher, Researcher) with real-time cycle duration reporting on the dashboard.
+- **REST API (v1):** Added public JSON endpoints (`/api/v1/deals`, `/api/v1/leads`) for external system integration.
+- **Lead Export:** Extended database repository with `ListAllCompanies` to facilitate lead data extraction.
+
 
 ### Added
 - **Prompt Performance Analytics:** New dashboard section displaying A/B test results, success rates, and win percentages for versioned prompts.

@@ -213,14 +213,14 @@ func (db *DB) GetDealByCompanyID(ctx context.Context, companyID int64) (*Deal, e
 }
 
 // ListRecentDeals retrieves the most recently updated deals.
-func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
+func (db *DB) ListRecentDeals(ctx context.Context, limit, offset int) ([]Deal, error) {
 	query := `
 		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, approval_required, created_at, updated_at
 		FROM deals
 		ORDER BY updated_at DESC
-		LIMIT $1
+		LIMIT $1 OFFSET $2
 	`
-	rows, err := db.Conn.QueryContext(ctx, query, limit)
+	rows, err := db.Conn.QueryContext(ctx, query, limit, offset)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list recent deals: %w", err)
 	}
@@ -633,4 +633,38 @@ func (db *DB) GetContactByID(ctx context.Context, id int64) (*Contact, error) {
 		return nil, fmt.Errorf("failed to get contact by id: %w", err)
 	}
 	return contact, nil
+}
+
+// ListAllCompanies retrieves all companies in the database.
+func (db *DB) ListAllCompanies(ctx context.Context, limit, offset int) ([]Company, error) {
+	query := `
+		SELECT id, name, domain, tech_stack, hiring_signals, market_cap_tier, created_at, updated_at
+		FROM companies
+		ORDER BY created_at DESC
+		LIMIT $1 OFFSET $2
+	`
+	rows, err := db.Conn.QueryContext(ctx, query, limit, offset)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list companies: %w", err)
+	}
+	defer rows.Close()
+
+	var companies []Company
+	for rows.Next() {
+		var c Company
+		if err := rows.Scan(
+			&c.ID,
+			&c.Name,
+			&c.Domain,
+			pq.Array(&c.TechStack),
+			pq.Array(&c.HiringSignals),
+			&c.MarketCapTier,
+			&c.CreatedAt,
+			&c.UpdatedAt,
+		); err != nil {
+			return nil, fmt.Errorf("failed to scan company: %w", err)
+		}
+		companies = append(companies, c)
+	}
+	return companies, nil
 }

@@ -7,6 +7,7 @@ import (
 	"html"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
@@ -52,6 +53,8 @@ func (s *Server) routes() {
 	s.mux.HandleFunc("/login", s.auth.HandleLogin)
 	s.mux.HandleFunc("/health", s.handleHealth)
 	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
+	s.mux.Handle("/api/v1/deals", s.auth.Middleware(http.HandlerFunc(s.handleListDeals)))
+	s.mux.Handle("/api/v1/leads", s.auth.Middleware(http.HandlerFunc(s.handleListLeads)))
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -87,15 +90,20 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			_ = s.db.SetApprovalRequired(r.Context(), id, false)
 		case "build": _ = s.deploy.ExecuteBuild()
 		}
-		http.Redirect(w, r, "/", http.StatusSeeOther); return
+		http.Redirect(w, r, r.URL.String(), http.StatusSeeOther); return
 	}
 
-	deals, _ := s.db.ListRecentDeals(r.Context(), 20)
+	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
+	if page < 1 { page = 1 }
+	limit := 20
+	offset := (page - 1) * limit
+
+	deals, _ := s.db.ListRecentDeals(r.Context(), limit, offset)
 	health, _ := s.tracker.GetSystemHealth(r.Context())
 	csrfToken := s.auth.GetCSRFToken(r)
-
 	outcomes := []llm.ABResult{}
 	if s.registry != nil { outcomes = s.registry.GetOutcomes() }
+	timings := deploy.GetTimings()
 
 	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprintf(w, `
@@ -106,13 +114,14 @@ body { font-family: sans-serif; margin: 40px; background: #f8f9fa; }
 .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 table { width: 100%%; border-collapse: collapse; margin-top: 10px; }
 th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-th { background: #007bff; color: white; }
-.action-btn { background: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+th { background-color: #007bff; color: white; }
+.action-btn { background-color: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
+.nav-btn { background-color: #6c757d; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; }
 </style>
 </head>
 <body>
 <div class="container">
-<h1>TormentNexus Autonomous Sales v0.6.3</h1>
+<h1>TormentNexus Autonomous Sales v0.7.0</h1>
 <h2>Active Leads</h2>
 <table><tr><th>ID</th><th>State</th><th>Last Updated</th><th>Actions</th></tr>`)
 
@@ -133,13 +142,28 @@ th { background: #007bff; color: white; }
 
 	fmt.Fprintf(w, `
 </table>
+<div style="margin-top: 20px;">
+	<a href="/?page=%d" class="nav-btn">Previous</a>
+	<span>Page %d</span>
+	<a href="/?page=%d" class="nav-btn">Next</a>
+</div>
 
 <h2>Prompt Performance & A/B Analytics</h2>
-<table><tr><th>Experiment</th><th>Variant</th><th>Successes</th><th>Total</th><th>Win Rate</th></tr>`)
+<table><tr><th>Experiment</th><th>Variant</th><th>Win Rate</th></tr>`, page-1, page, page+1)
+
 	for _, o := range outcomes {
 		rate := 0.0
 		if o.Total > 0 { rate = float64(o.Success) / float64(o.Total) * 100 }
-		fmt.Fprintf(w, "<tr><td>%s</td><td>%s</td><td>%d</td><td>%d</td><td>%.1f%%</td></tr>", o.Experiment, o.VersionID, o.Success, o.Total, rate)
+		fmt.Fprintf(w, "<tr><td>%s</td><td>%s</td><td>%.1f%% (%d/%d)</td></tr>", o.Experiment, o.VersionID, rate, o.Success, o.Total)
+	}
+
+	fmt.Fprintf(w, `
+</table>
+
+<h2>Worker Performance</h2>
+<table><tr><th>Worker</th><th>Last Cycle Duration</th></tr>`)
+	for name, dur := range timings {
+		fmt.Fprintf(w, "<tr><td>%s</td><td>%v</td></tr>", name, dur)
 	}
 
 	fmt.Fprintf(w, `
@@ -161,6 +185,24 @@ func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) { fmt.Fpri
 func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(map[string]string{"status": "OK"})
+}
+
+func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusAccepted)
+}
+
+func (s *Server) handleListDeals(w http.ResponseWriter, r *http.Request) {
+	deals, err := s.db.ListRecentDeals(r.Context(), 100, 0)
+	if err != nil { http.Error(w, err.Error(), 500); return }
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(deals)
+}
+
+func (s *Server) handleListLeads(w http.ResponseWriter, r *http.Request) {
+	leads, err := s.db.ListAllCompanies(r.Context(), 100, 0)
+	if err != nil { http.Error(w, err.Error(), 500); return }
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(leads)
 }
 
 func (s *Server) renderApprovalButton(deal db.Deal, csrfToken string) string {

@@ -1,5 +1,5 @@
-# Version 0.6.3
-**Self-Optimization & Analytics Release**
+# Version 0.7.0
+**Performance & Platform Expansion Release**
 2026-06-16
 
-This release focuses on data-driven improvement of the sales brain through outcome tracking and negative constraint injection.
+This release introduces dashboard pagination, worker performance profiling, and a public REST API for pipeline management.

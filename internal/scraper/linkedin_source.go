@@ -3,7 +3,7 @@ package scraper
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"strings"
@@ -17,10 +17,10 @@ import (
 // - Placeholder for future headless browser automation (requires LinkedIn API partnership)
 // Production use requires LinkedIn API partnership approval: https://www.linkedin.com/developers/apps
 type LinkedInSource struct {
-	Client       *http.Client
-	Username     string
-	Password     string
-	TargetTitles []string
+	Client		*http.Client
+	Username	string
+	Password	string
+	TargetTitles	[]string
 }
 
 // Discover searches for companies and contacts matching the target criteria.
@@ -48,7 +48,7 @@ func (l *LinkedInSource) Discover(ctx context.Context, keywords []string) ([]db.
 
 	// Check if credentials are configured
 	if l.Username == "" || l.Password == "" {
-		log.Println("LinkedInSource: No LINKEDIN_USERNAME/PASSWORD configured, returning simulated results")
+		slog.Info("LinkedInSource: No LINKEDIN_USERNAME/PASSWORD configured, returning simulated results")
 		return l.simulateDiscovery(ctx, keywords)
 	}
 
@@ -58,36 +58,36 @@ func (l *LinkedInSource) Discover(ctx context.Context, keywords []string) ([]db.
 	// 2. Headless browser automation (rod/chromedp)
 	// 3. Session cookie management
 	// 4. Rate limiting and anti-detection
-	log.Println("LinkedInSource: Credentials configured but real API integration requires LinkedIn partnership. Using simulation.")
+	slog.Info("LinkedInSource: Credentials configured but real API integration requires LinkedIn partnership. Using simulation.")
 	return l.simulateDiscovery(ctx, keywords)
 }
 
 // simulateDiscovery returns simulated high-value targets when real API is not available.
 func (l *LinkedInSource) simulateDiscovery(ctx context.Context, keywords []string) ([]db.Company, error) {
-	log.Printf("LinkedInSource: Simulating discovery for keywords: %v", keywords)
+	slog.Info(fmt.Sprintf("LinkedInSource: Simulating discovery for keywords: %v", keywords))
 
 	// Simulated high-value AI/ML companies with engineering leadership
 	return []db.Company{
 		{
-			Name:          "Neural Dynamics",
-			Domain:        "neuraldynamics.io",
-			TechStack:     []string{"Python", "PyTorch", "Kubernetes", "MLflow"},
-			HiringSignals: []string{"Hiring: Senior ML Platform Engineer", "VP Engineering recently joined from Google Brain"},
-			MarketCapTier: "Mid-Market",
+			Name:		"Neural Dynamics",
+			Domain:		"neuraldynamics.io",
+			TechStack:	[]string{"Python", "PyTorch", "Kubernetes", "MLflow"},
+			HiringSignals:	[]string{"Hiring: Senior ML Platform Engineer", "VP Engineering recently joined from Google Brain"},
+			MarketCapTier:	"Mid-Market",
 		},
 		{
-			Name:          "Cognitive Systems Labs",
-			Domain:        "cognitivesystems.ai",
-			TechStack:     []string{"Rust", "Go", "TensorFlow", "gRPC"},
-			HiringSignals: []string{"Hiring: Distributed Systems Architect", "CTO posted about multi-agent orchestration challenges"},
-			MarketCapTier: "Enterprise",
+			Name:		"Cognitive Systems Labs",
+			Domain:		"cognitivesystems.ai",
+			TechStack:	[]string{"Rust", "Go", "TensorFlow", "gRPC"},
+			HiringSignals:	[]string{"Hiring: Distributed Systems Architect", "CTO posted about multi-agent orchestration challenges"},
+			MarketCapTier:	"Enterprise",
 		},
 		{
-			Name:          "Hyperloop AI",
-			Domain:        "hyperloop-ai.tech",
-			TechStack:     []string{"Go", "LLMs", "Apache Kafka", "Redis"},
-			HiringSignals: []string{"Hiring: AI Infrastructure Lead", "Director of Engineering scaling team from 5 to 20"},
-			MarketCapTier: "Small Business",
+			Name:		"Hyperloop AI",
+			Domain:		"hyperloop-ai.tech",
+			TechStack:	[]string{"Go", "LLMs", "Apache Kafka", "Redis"},
+			HiringSignals:	[]string{"Hiring: AI Infrastructure Lead", "Director of Engineering scaling team from 5 to 20"},
+			MarketCapTier:	"Small Business",
 		},
 	}, nil
 }
@@ -105,7 +105,7 @@ func (l *LinkedInSource) HealthCheck(ctx context.Context) error {
 		return fmt.Errorf("LinkedIn credentials cannot be empty")
 	}
 
-	log.Println("LinkedInSource: Health check passed (credentials configured)")
+	slog.Info("LinkedInSource: Health check passed (credentials configured)")
 	return nil
 }
 

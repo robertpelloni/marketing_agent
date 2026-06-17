@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"os"
@@ -15,32 +15,32 @@ import (
 
 // GitHubIssueSource implements LeadSource by searching GitHub issues for companies with relevant technical challenges.
 type GitHubIssueSource struct {
-	Client   *http.Client
-	Token    string
-	Keywords []string
+	Client		*http.Client
+	Token		string
+	Keywords	[]string
 }
 
 // githubIssueSearchResponse represents the GitHub Search API response for issues.
 type githubIssueSearchResponse struct {
-	TotalCount int `json:"total_count"`
-	Issues     []struct {
-		HTMLURL   string `json:"html_url"`
-		Title     string `json:"title"`
-		Body      string `json:"body"`
-		RepoURL   string `json:"repository_url"`
-		CreatedAt string `json:"created_at"`
-	} `json:"items"`
+	TotalCount	int	`json:"total_count"`
+	Issues		[]struct {
+		HTMLURL		string	`json:"html_url"`
+		Title		string	`json:"title"`
+		Body		string	`json:"body"`
+		RepoURL		string	`json:"repository_url"`
+		CreatedAt	string	`json:"created_at"`
+	}	`json:"items"`
 }
 
 // githubRepo represents a GitHub repository.
 type githubRepo struct {
-	FullName    string `json:"full_name"`
-	HTMLURL     string `json:"html_url"`
-	Description string `json:"description"`
-	Language    string `json:"language"`
-	Owner       struct {
+	FullName	string	`json:"full_name"`
+	HTMLURL		string	`json:"html_url"`
+	Description	string	`json:"description"`
+	Language	string	`json:"language"`
+	Owner		struct {
 		Login string `json:"login"`
-	} `json:"owner"`
+	}	`json:"owner"`
 }
 
 // Discover searches GitHub for open issues matching TormentNexus-relevant keywords,
@@ -51,7 +51,7 @@ func (g *GitHubIssueSource) Discover(ctx context.Context, keywords []string) ([]
 	}
 
 	if g.Token == "" {
-		log.Println("GitHubIssueSource: No GITHUB_TOKEN set, returning empty results")
+		slog.Info("GitHubIssueSource: No GITHUB_TOKEN set, returning empty results")
 		return []db.Company{}, nil
 	}
 
@@ -74,7 +74,7 @@ func (g *GitHubIssueSource) Discover(ctx context.Context, keywords []string) ([]
 		}
 	}
 
-	log.Printf("GitHubIssueSource: Searching for issues with keywords: %v", g.Keywords)
+	slog.Info(fmt.Sprintf("GitHubIssueSource: Searching for issues with keywords: %v", g.Keywords))
 
 	companiesMap := make(map[string]*db.Company)
 
@@ -88,7 +88,7 @@ func (g *GitHubIssueSource) Discover(ctx context.Context, keywords []string) ([]
 
 		issues, err := g.searchIssues(ctx, keyword)
 		if err != nil {
-			log.Printf("GitHubIssueSource: Error searching for '%s': %v", keyword, err)
+			slog.Info(fmt.Sprintf("GitHubIssueSource: Error searching for '%s': %v", keyword, err))
 			continue
 		}
 
@@ -122,11 +122,11 @@ func (g *GitHubIssueSource) Discover(ctx context.Context, keywords []string) ([]
 				}
 
 				company := &db.Company{
-					Name:          repoInfo.Owner.Login,
-					Domain:        domain,
-					TechStack:     []string{repoInfo.Language},
-					HiringSignals: []string{fmt.Sprintf("GitHub Issue: %s - %s", issue.Title, issue.HTMLURL)},
-					MarketCapTier: g.inferMarketCap(repoInfo),
+					Name:		repoInfo.Owner.Login,
+					Domain:		domain,
+					TechStack:	[]string{repoInfo.Language},
+					HiringSignals:	[]string{fmt.Sprintf("GitHub Issue: %s - %s", issue.Title, issue.HTMLURL)},
+					MarketCapTier:	g.inferMarketCap(repoInfo),
 				}
 				companiesMap[domain] = company
 			}
@@ -139,17 +139,17 @@ func (g *GitHubIssueSource) Discover(ctx context.Context, keywords []string) ([]
 		companies = append(companies, *company)
 	}
 
-	log.Printf("GitHubIssueSource: Discovered %d companies from GitHub issues", len(companies))
+	slog.Info(fmt.Sprintf("GitHubIssueSource: Discovered %d companies from GitHub issues", len(companies)))
 	return companies, nil
 }
 
 // searchIssues queries the GitHub Search API for issues matching the given keyword.
 func (g *GitHubIssueSource) searchIssues(ctx context.Context, keyword string) ([]struct {
-	HTMLURL   string `json:"html_url"`
-	Title     string `json:"title"`
-	Body      string `json:"body"`
-	RepoURL   string `json:"repository_url"`
-	CreatedAt string `json:"created_at"`
+	HTMLURL		string	`json:"html_url"`
+	Title		string	`json:"title"`
+	Body		string	`json:"body"`
+	RepoURL		string	`json:"repository_url"`
+	CreatedAt	string	`json:"created_at"`
 }, error) {
 	// Build search query: keyword in title/body, open issues only, exclude very large orgs
 	query := fmt.Sprintf("%s type:issue state:open", keyword)
@@ -192,9 +192,9 @@ func (g *GitHubIssueSource) extractOrgFromRepoURL(repoURL string) (string, error
 	// The last two parts are owner and repo
 	owner := parts[len(parts)-2]
 	repo := parts[len(parts)-1]
-	
+
 	// Return owner (org name)
-	_ = repo // repo name not used here
+	_ = repo	// repo name not used here
 	return owner, nil
 }
 
@@ -260,7 +260,7 @@ func (g *GitHubIssueSource) isExcludedOrg(orgName string) bool {
 func (g *GitHubIssueSource) orgToDomain(orgName string) string {
 	// Try common patterns
 	name := strings.ToLower(orgName)
-	
+
 	// Remove common suffixes
 	name = strings.TrimSuffix(name, "-inc")
 	name = strings.TrimSuffix(name, "-corp")
@@ -268,13 +268,13 @@ func (g *GitHubIssueSource) orgToDomain(orgName string) string {
 	name = strings.TrimSuffix(name, "-dev")
 	name = strings.TrimSuffix(name, "-labs")
 	name = strings.TrimSuffix(name, "-tech")
-	
+
 	// Add .tech or .io domains as defaults for tech companies
-	if strings.Contains(name, "ai") || strings.Contains(name, "ml") || 
-	   strings.Contains(name, "neural") || strings.Contains(name, "logic") {
+	if strings.Contains(name, "ai") || strings.Contains(name, "ml") ||
+		strings.Contains(name, "neural") || strings.Contains(name, "logic") {
 		return name + ".io"
 	}
-	
+
 	return name + ".tech"
 }
 
@@ -284,13 +284,13 @@ func (g *GitHubIssueSource) inferMarketCap(repo *githubRepo) string {
 	if repo.Language == "" {
 		return "Small Business"
 	}
-	
+
 	// Star count and activity heuristics
 	// (In a real implementation, we'd fetch star count from the repo)
-	if strings.Contains(repo.Description, "enterprise") || 
-	   strings.Contains(repo.Description, "platform") {
+	if strings.Contains(repo.Description, "enterprise") ||
+		strings.Contains(repo.Description, "platform") {
 		return "Mid-Market"
 	}
-	
+
 	return "Small Business"
 }

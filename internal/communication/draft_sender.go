@@ -3,7 +3,7 @@ package communication
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"strings"
 	"time"
 
@@ -15,11 +15,11 @@ import (
 // mailbox instead of sending them. This lets the user review outreach in their
 // Gmail Drafts folder before actually sending.
 type DraftSender struct {
-	Host     string
-	Port     int
-	Username string
-	Password string
-	Folder   string // target mailbox, default "Drafts"
+	Host		string
+	Port		int
+	Username	string
+	Password	string
+	Folder		string	// target mailbox, default "Drafts"
 }
 
 // NewDraftSender creates a sender that saves drafts via IMAP.
@@ -29,11 +29,11 @@ func NewDraftSender(host string, port int, username, password string) *DraftSend
 		port = 993
 	}
 	return &DraftSender{
-		Host:     host,
-		Port:     port,
-		Username: username,
-		Password: password,
-		Folder:   "[Gmail]/Drafts",
+		Host:		host,
+		Port:		port,
+		Username:	username,
+		Password:	password,
+		Folder:		"[Gmail]/Drafts",
 	}
 }
 
@@ -71,7 +71,7 @@ func (d *DraftSender) Send(ctx context.Context, msg EmailMessage) error {
 		return fmt.Errorf("draft: failed to save to %s: %w", d.Folder, err)
 	}
 
-	log.Printf("DraftSender: Saved draft to %s for %s (subject: %s)", d.Folder, msg.To, msg.Subject)
+	slog.Info(fmt.Sprintf("DraftSender: Saved draft to %s for %s (subject: %s)", d.Folder, msg.To, msg.Subject))
 	return nil
 }
 
@@ -94,13 +94,13 @@ func (d *DraftSender) HealthCheck(ctx context.Context) error {
 // literalString wraps a string to implement imap.Literal (io.Reader + Len()).
 type literalString struct {
 	*strings.Reader
-	size int
+	size	int
 }
 
 func newLiteral(s string) *literalString {
 	return &literalString{
-		Reader: strings.NewReader(s),
-		size:   len(s),
+		Reader:	strings.NewReader(s),
+		size:	len(s),
 	}
 }
 

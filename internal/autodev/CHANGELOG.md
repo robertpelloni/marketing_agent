@@ -1,64 +1,15 @@
-# Autodev Changelog
+# Changelog
 
-## [0.4.4] - 2026-06-08
-- Synchronized with main project hardening and CRM integration
+All notable changes to this project will be documented in this file.
 
-## [0.4.4+1780886051] - 2026-06-08
+## [0.9.0] - 2026-06-17
+- feat: unified enterprise hardening (GDPR, encryption, security)
+- feat: outbound webhooks for state changes (Phase 10)
+- feat: integrated sophisticated outreach (cadences, objections, A/B testing)
+- chore: resolved all upstream merge conflicts and sanitized repository
+
+## [0.9.0+1781725585] - 2026-06-17
 - Test integration task
 
-## [0.4.4+1780895118] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780895283] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780896569] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780896677] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780903101] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780909792] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780913609] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780914501] - 2026-06-08
-- Test integration task
-
-## [0.4.9+1781568410] - 2026-06-16
-- Test integration task
-
-## [0.4.9+1781570809] - 2026-06-16
-- Test integration task
-
-## [0.4.9+1781571106] - 2026-06-16
-- Test integration task
-
-## [0.4.9+1781661144] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781667645] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781667780] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781673448] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781673685] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781674386] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781674543] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781679571] - 2026-06-17
+## [0.9.0+1781726065] - 2026-06-17
 - Test integration task

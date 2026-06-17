@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -129,15 +130,16 @@ func TestGitHubIssueSource_Discover_WithMockServer(t *testing.T) {
 	})
 
 	t.Run("Discover_returns_empty_without_token", func(t *testing.T) {
+		oldEnvToken := os.Getenv("GITHUB_TOKEN")
+		os.Setenv("GITHUB_TOKEN", "")
+		defer os.Setenv("GITHUB_TOKEN", oldEnvToken)
+
 		sourceNoToken := &GitHubIssueSource{
 			Client:   http.DefaultClient,
 			Token:    "",
 			Keywords: []string{"MCP"},
 		}
-		oldToken := testToken
-		testToken = ""
 		companies, err := sourceNoToken.Discover(context.Background(), []string{"MCP"})
-		testToken = oldToken
 
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)

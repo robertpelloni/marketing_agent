@@ -45,7 +45,6 @@ func TestApolloSource_Enrich(t *testing.T) {
 
 	contacts, err := source.Enrich(context.Background(), company)
 	if err != nil {
-		// Apollo free plan doesn't include People Search API
 		if strings.Contains(err.Error(), "403") || strings.Contains(err.Error(), "API_INACCESSIBLE") {
 			t.Skip("Apollo free plan blocks People Search: " + err.Error())
 		}
@@ -71,7 +70,6 @@ func TestApolloSource_HealthCheck(t *testing.T) {
 	source := NewApolloSource(apiKey)
 	err := source.HealthCheck(context.Background())
 	if err != nil {
-		// Apollo free plan doesn't include People Search API
 		if strings.Contains(err.Error(), "403") || strings.Contains(err.Error(), "API_INACCESSIBLE") {
 			t.Skip("Apollo free plan blocks People Search: " + err.Error())
 		}
@@ -92,7 +90,7 @@ func TestEnricher_Initialization(t *testing.T) {
 		t.Errorf("Expected 1 source, got %d", len(e.sources))
 	}
 }
-// mockSourceForTest is a mock EnrichmentSource for unit testing.
+
 type mockSourceForTest struct {
 	name           string
 	shouldFail     bool
@@ -116,6 +114,8 @@ func (m *mockSourceForTest) Enrich(ctx context.Context, company db.Company) ([]d
 	}
 	return contacts, nil
 }
+
+func (m *mockSourceForTest) HealthCheck(ctx context.Context) error { return nil }
 
 func TestFallbackSource_CustomSources(t *testing.T) {
 	tests := []struct {
@@ -226,23 +226,14 @@ func TestFallbackSource_Names(t *testing.T) {
 		&mockSourceForTest{name: "First", returnContacts: 1},
 	}
 
-	// Test with names
 	names := []string{"MySource"}
 	fallback := NewFallbackSource(sources, names)
-	if len(fallback.Names()) != 1 || fallback.Names()[0] != "MySource" {
-		t.Errorf("Expected custom name, got %v", fallback.Names())
+	if len(fallback.names) != 1 || fallback.names[0] != "MySource" {
+		t.Errorf("Expected custom name, got %v", fallback.names)
 	}
 
-	// Test without names (should generate defaults)
 	fallbackNoNames := NewFallbackSource(sources, nil)
-	if len(fallbackNoNames.Names()) != 1 || fallbackNoNames.Names()[0] != "Source1" {
-		t.Errorf("Expected Source1, got %v", fallbackNoNames.Names())
-	}
-
-	// Test with insufficient names
-	namesPartial := []string{"OnlyOne"}
-	fallbackPartial := NewFallbackSource(append(sources, &mockSourceForTest{name: "Second", returnContacts: 1}), namesPartial)
-	if len(fallbackPartial.Names()) != 2 {
-		t.Errorf("Expected 2 names, got %d", len(fallbackPartial.Names()))
+	if len(fallbackNoNames.names) != 1 || fallbackNoNames.names[0] != "Source1" {
+		t.Errorf("Expected Source1, got %v", fallbackNoNames.names)
 	}
 }

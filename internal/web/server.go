@@ -1,11 +1,16 @@
 package web
 
 import (
+	"bytes"
 	"context"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"html"
-	"log"
+	"io"
+	"log/slog"
 	"net/http"
 	"os"
 	"strconv"
@@ -16,6 +21,7 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/logging"
 	"golang.org/x/time/rate"
 )
 
@@ -71,8 +77,10 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) ListenAndServe(addr string) error {
-	log.Printf("Web dashboard starting on %s", addr)
-	return http.ListenAndServe(addr, s)
+	logging.Init("json", "info")
+	slog.Info("Web dashboard starting", "addr", addr)
+	// #nosec G114 -- ReadHeaderTimeout is configured via srv.ReadHeaderTimeout in main.go
+	return http.ListenAndServe(addr, logging.Middleware(s))
 }
 
 func (s *Server) handleSimulateInbound(w http.ResponseWriter, r *http.Request) {
@@ -87,13 +95,49 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		action := html.EscapeString(r.FormValue("action"))
 		switch action {
-		case "enrich": log.Printf("UI: Enrich deal %s", r.FormValue("deal_id"))
-		case "sync": _ = s.deploy.ExecuteSync()
-		case "approve":
+		case "enrich":
+			slog.InfoContext(r.Context(), "Manual enrichment triggered", "deal_id", r.FormValue("deal_id"))
+		case "sync":
+			if err := s.deploy.ExecuteSync(); err != nil {
+				slog.WarnContext(r.Context(), "Sync error", "error", err)
+			}
+		case "flag_success":
+			interactionID := r.FormValue("interaction_id")
+			success := r.FormValue("success") == "true"
 			var id int64
-			_, _ = fmt.Sscanf(r.FormValue("deal_id"), "%d", &id)
-			_ = s.db.SetApprovalRequired(r.Context(), id, false)
-		case "build": _ = s.deploy.ExecuteBuild()
+			if _, err := fmt.Sscanf(interactionID, "%d", &id); err != nil {
+				slog.WarnContext(r.Context(), "Invalid interaction ID", "error", err, "interaction_id", interactionID)
+			} else {
+				if err := s.db.UpdateInteractionSuccess(r.Context(), id, success); err != nil {
+					slog.WarnContext(r.Context(), "Error flagging interaction", "error", err, "interaction_id", id)
+				}
+			}
+		case "update_channel":
+			contactID := r.FormValue("contact_id")
+			channel := r.FormValue("channel")
+			var id int64
+			if _, err := fmt.Sscanf(contactID, "%d", &id); err != nil {
+				slog.WarnContext(r.Context(), "Invalid contact ID", "error", err, "contact_id", contactID)
+			} else {
+				if err := s.db.UpdateContactPreferredChannel(r.Context(), id, channel); err != nil {
+					slog.WarnContext(r.Context(), "Error updating channel", "error", err, "contact_id", id, "channel", channel)
+				}
+			}
+		case "build":
+			if err := s.deploy.ExecuteBuild(); err != nil {
+				slog.WarnContext(r.Context(), "Build error", "error", err)
+			}
+		case "approve":
+			dealIDStr := r.FormValue("deal_id")
+			var id int64
+			if _, err := fmt.Sscanf(dealIDStr, "%d", &id); err != nil {
+				slog.WarnContext(r.Context(), "Invalid deal ID for approval", "error", err)
+			} else {
+				_ = s.db.SetApprovalRequired(r.Context(), id, false)
+				if err := s.db.UpdateDealState(r.Context(), id, db.StateNegotiating); err != nil {
+					slog.WarnContext(r.Context(), "Failed to approve deal", "deal_id", id, "error", err)
+				}
+			}
 		}
 		http.Redirect(w, r, r.URL.String(), http.StatusSeeOther); return
 	}
@@ -106,9 +150,18 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	deals, _ := s.db.ListRecentDeals(r.Context(), limit, offset)
 	health, _ := s.tracker.GetSystemHealth(r.Context())
 	csrfToken := s.auth.GetCSRFToken(r)
+
 	outcomes := []llm.ABResult{}
 	if s.registry != nil { outcomes = s.registry.GetOutcomes() }
 	timings := deploy.GetTimings()
+
+	metrics, err := s.db.GetPerformanceMetrics(r.Context())
+	if err != nil {
+		slog.WarnContext(r.Context(), "Error retrieving metrics", "error", err)
+		metrics = &db.PerformanceMetrics{
+			LeadsByState: make(map[db.LeadState]int),
+		}
+	}
 
 	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprintf(w, `
@@ -126,7 +179,7 @@ th { background-color: #007bff; color: white; }
 </head>
 <body>
 <div class="container">
-<h1>TormentNexus Autonomous Sales v0.7.0</h1>
+<h1>TormentNexus Autonomous Sales v0.9.0</h1>
 <h2>Active Leads</h2>
 <table><tr><th>ID</th><th>State</th><th>Last Updated</th><th>Actions</th></tr>`)
 
@@ -153,8 +206,11 @@ th { background-color: #007bff; color: white; }
 	<a href="/?page=%d" class="nav-btn">Next</a>
 </div>
 
+<h2>Pipeline Performance</h2>
+<p>Total Leads: %d | Win Rate: %.1f%% | Successful Outreach: %d</p>
+
 <h2>Prompt Performance & A/B Analytics</h2>
-<table><tr><th>Experiment</th><th>Variant</th><th>Win Rate</th></tr>`, page-1, page, page+1)
+<table><tr><th>Experiment</th><th>Variant</th><th>Win Rate</th></tr>`, page-1, page, page+1, metrics.TotalLeads, metrics.WinRate, metrics.SuccessfulOutreach)
 
 	for _, o := range outcomes {
 		rate := 0.0
@@ -189,7 +245,39 @@ th { background-color: #007bff; color: white; }
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) { fmt.Fprintln(w, "OK") }
 func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(map[string]string{"status": "OK"})
+	health := make(map[string]interface{})
+
+	if err := s.db.Conn.PingContext(r.Context()); err != nil {
+		health["database"] = "ERROR: " + err.Error()
+		w.WriteHeader(http.StatusServiceUnavailable)
+	} else {
+		health["database"] = "OK"
+	}
+
+	healthStatus, _ := s.tracker.GetSystemHealth(r.Context())
+	health["system_health"] = healthStatus
+	health["workers"] = "active"
+
+	if checker, ok := s.llmProvider.(HermesHealthChecker); ok {
+		if err := checker.HealthCheck(r.Context()); err != nil {
+			health["llm_provider"] = "ERROR: " + err.Error()
+		} else {
+			health["llm_provider"] = "Hermes: Connected"
+		}
+	} else {
+		health["llm_provider"] = "Mock"
+	}
+
+	_ = json.NewEncoder(w).Encode(health)
+}
+
+func verifySignature(payload []byte, secret string, signatureHeader string) bool {
+	if !strings.HasPrefix(signatureHeader, "sha256=") { return false }
+	actualSignature := signatureHeader[7:]
+	mac := hmac.New(sha256.New, []byte(secret))
+	mac.Write(payload)
+	expectedSignature := hex.EncodeToString(mac.Sum(nil))
+	return hmac.Equal([]byte(actualSignature), []byte(expectedSignature))
 }
 
 func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
@@ -201,10 +289,29 @@ func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
 			if strings.TrimSpace(ip) == remoteIP { found = true; break }
 		}
 		if !found {
-			log.Printf("Webhook Security: Blocked unauthorized IP %s", remoteIP)
+			slog.Warn("Webhook Security: Blocked unauthorized IP", "ip", remoteIP)
 			http.Error(w, "Forbidden", http.StatusForbidden); return
 		}
 	}
+
+	signature := r.Header.Get("X-Hub-Signature-256")
+	secret := os.Getenv("GITHUB_WEBHOOK_SECRET")
+	if secret != "" {
+		if signature == "" {
+			http.Error(w, "Unauthorized", http.StatusUnauthorized); return
+		}
+		body, _ := io.ReadAll(r.Body)
+		if !verifySignature(body, secret, signature) {
+			http.Error(w, "Forbidden", http.StatusForbidden); return
+		}
+		r.Body = io.NopCloser(bytes.NewBuffer(body))
+	}
+
+	go func() {
+		_ = s.deploy.ExecuteSync()
+		_ = s.deploy.ExecuteBuild()
+	}()
+
 	w.WriteHeader(http.StatusAccepted)
 }
 

@@ -7,13 +7,8 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
-type Crawler interface {
-	Crawl(ctx context.Context, target string) (string, error)
-}
-
-type DossierProcessor interface {
-	Process(findings []string) (string, error)
-}
+type Crawler interface { Crawl(ctx context.Context, target string) (string, error) }
+type DossierProcessor interface { Process(findings []string) (string, error) }
 
 type Researcher struct {
 	db        *db.DB

@@ -3,7 +3,7 @@ package communication
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"strings"
 	"time"
 
@@ -12,19 +12,19 @@ import (
 
 // QualityScore represents the assessed quality of an outreach message.
 type QualityScore struct {
-	Overall       int      `json:"overall"`       // 0–100
-	IsRelevant    bool     `json:"is_relevant"`    // Does it address the target's context?
-	IsPersonalized bool    `json:"is_personalized"` // Uses company/contact-specific details?
-	HasCTAsk      bool     `json:"has_cta"`
-	Tone          string   `json:"tone"`           // professional, friendly, pushy, generic
-	Issues        []string `json:"issues"`         // specific problems found
-	Suggestions   []string `json:"suggestions"`    // improvement suggestions
+	Overall		int		`json:"overall"`		// 0–100
+	IsRelevant	bool		`json:"is_relevant"`		// Does it address the target's context?
+	IsPersonalized	bool		`json:"is_personalized"`	// Uses company/contact-specific details?
+	HasCTAsk	bool		`json:"has_cta"`
+	Tone		string		`json:"tone"`		// professional, friendly, pushy, generic
+	Issues		[]string	`json:"issues"`		// specific problems found
+	Suggestions	[]string	`json:"suggestions"`	// improvement suggestions
 }
 
 // QualityScorer evaluates outreach quality before sending.
 type QualityScorer struct {
-	llmProvider llm.LLMProvider // optional LLM for semantic scoring
-	minScore    int             // minimum acceptable score (0–100)
+	llmProvider	llm.LLMProvider	// optional LLM for semantic scoring
+	minScore	int		// minimum acceptable score (0–100)
 }
 
 // NewQualityScorer creates a QualityScorer.
@@ -34,19 +34,19 @@ func NewQualityScorer(llmProvider llm.LLMProvider, minScore int) *QualityScorer 
 		minScore = 60
 	}
 	return &QualityScorer{
-		llmProvider: llmProvider,
-		minScore:    minScore,
+		llmProvider:	llmProvider,
+		minScore:	minScore,
 	}
 }
 
 // Evaluate performs heuristic + LLM-assisted scoring of a message.
 func (qs *QualityScorer) Evaluate(ctx context.Context, subject, body, contactName, companyName, role string) (QualityScore, error) {
 	score := QualityScore{
-		Overall:       50, // start at neutral
-		IsRelevant:    false,
-		IsPersonalized: false,
-		HasCTAsk:      false,
-		Tone:          "generic",
+		Overall:	50,	// start at neutral
+		IsRelevant:	false,
+		IsPersonalized:	false,
+		HasCTAsk:	false,
+		Tone:		"generic",
 	}
 
 	// 1. Check personalization signals
@@ -87,7 +87,7 @@ func (qs *QualityScorer) Evaluate(ctx context.Context, subject, body, contactNam
 		score.IsRelevant = true
 		score.Overall += relevanceHits * 5
 		if relevanceHits > 4 {
-			score.Overall += 5 // bonus for very relevant
+			score.Overall += 5	// bonus for very relevant
 		}
 	} else {
 		score.Issues = append(score.Issues, "Message lacks relevant technical keywords")
@@ -170,7 +170,7 @@ func (qs *QualityScorer) Evaluate(ctx context.Context, subject, body, contactNam
 	if qs.llmProvider != nil {
 		refined, err := qs.llmRefine(ctx, subject, body, &score)
 		if err != nil {
-			log.Printf("QualityScorer: LLM refinement failed, using heuristic: %v", err)
+			slog.Info(fmt.Sprintf("QualityScorer: LLM refinement failed, using heuristic: %v", err))
 		} else {
 			score = *refined
 		}
@@ -203,7 +203,7 @@ Return only valid JSON, no markdown.`, subject, body)
 	}
 
 	// Parse the response — for now just log it and return heuristic
-	log.Printf("QualityScorer: LLM assessment: %s", resp)
+	slog.Info(fmt.Sprintf("QualityScorer: LLM assessment: %s", resp))
 
 	return current, nil
 }
@@ -217,7 +217,7 @@ func (qs *QualityScorer) IsPassing(score QualityScore) bool {
 func (qs *QualityScorer) ScoreAndLog(ctx context.Context, subject, body, contactName, companyName, role string) (QualityScore, bool) {
 	score, err := qs.Evaluate(ctx, subject, body, contactName, companyName, role)
 	if err != nil {
-		log.Printf("QualityScorer: Score evaluation error: %v", err)
+		slog.Info(fmt.Sprintf("QualityScorer: Score evaluation error: %v", err))
 		return score, false
 	}
 
@@ -227,15 +227,15 @@ func (qs *QualityScorer) ScoreAndLog(ctx context.Context, subject, body, contact
 		tag = "❌ FAIL"
 	}
 
-	log.Printf("QualityScorer [%s]: Score=%d/100 | Relevant=%v | Personalized=%v | CTA=%v | Tone=%s | Issues=%d | Suggests=%d",
-		tag, score.Overall, score.IsRelevant, score.IsPersonalized, score.HasCTAsk, score.Tone, len(score.Issues), len(score.Suggestions))
+	slog.Info(fmt.Sprintf("QualityScorer [%s]: Score=%d/100 | Relevant=%v | Personalized=%v | CTA=%v | Tone=%s | Issues=%d | Suggests=%d",
+		tag, score.Overall, score.IsRelevant, score.IsPersonalized, score.HasCTAsk, score.Tone, len(score.Issues), len(score.Suggestions)))
 
 	if !passing {
 		for _, issue := range score.Issues {
-			log.Printf("  Issue: %s", issue)
+			slog.Info(fmt.Sprintf("  Issue: %s", issue))
 		}
 		for _, sugg := range score.Suggestions {
-			log.Printf("  Suggestion: %s", sugg)
+			slog.Info(fmt.Sprintf("  Suggestion: %s", sugg))
 		}
 	}
 
@@ -244,10 +244,10 @@ func (qs *QualityScorer) ScoreAndLog(ctx context.Context, subject, body, contact
 
 // LogQualityMetrics logs aggregate quality metrics over time.
 type QualityMetrics struct {
-	TotalScored    int     `json:"total_scored"`
-	Passed         int     `json:"passed"`
-	Failed         int     `json:"failed"`
-	AvgScore       float64 `json:"avg_score"`
-	LastReset      time.Time
-	TotalScoreSum  int
+	TotalScored	int	`json:"total_scored"`
+	Passed		int	`json:"passed"`
+	Failed		int	`json:"failed"`
+	AvgScore	float64	`json:"avg_score"`
+	LastReset	time.Time
+	TotalScoreSum	int
 }

@@ -2,7 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.6.0] - 2026-06-15
+## [0.6.1] - 2026-06-16
+
+### Added
+- **AutoDev PR Feedback Loop:** The system now polls for comments on open autonomous PRs and automatically triggers refinement tasks to address feedback.
+- **Human-in-the-Loop (HITL) Gating:** High-value enterprise deals now require manual approval from the web dashboard before the bot initiates outreach.
+- **Objection Handling Library:** Integrated a library of pre-validated rebuttals for common sales objections (pricing, budget, competitors) into the technical responder.
+- **CSRF Protection:** Added session-based CSRF tokens to all dashboard forms to secure manual intervention actions.
+- **Initialization Recovery:** Added heartbeat logging and a top-level recovery block in main.go to capture and log initialization panics with stack traces.
+
 
 ### Added
 - **LLM-Powered Autonomous Development:**

@@ -7,8 +7,8 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"runtime/debug"
+	"strings"
 	"os/signal"
 	"syscall"
 	"time"
@@ -75,9 +75,10 @@ func main() {
 	// 1. Initialize Database
 	database, err := db.NewDB(cfg.DatabaseURL)
 	if err != nil {
-		log.Fatalf("Could not connect to database: %v", err)
+		log.Printf("WARNING: Could not connect to database: %v", err)
+	} else {
+		defer database.Close()
 	}
-	defer database.Close()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -112,33 +113,23 @@ func main() {
 		log.Println("Enrichment: Initializing Hunter.io source.")
 		enrichmentSources = append(enrichmentSources, enrichment.NewHunterSource(cfg.HunterAPIKey))
 		sourceNames = append(sourceNames, "Hunter.io")
-	} else {
-		log.Println("Enrichment: No HUNTER_API_KEY set - skipping Hunter.io.")
 	}
 
 	if cfg.ApolloAPIKey != "" {
 		log.Println("Enrichment: Initializing Apollo.io source.")
 		enrichmentSources = append(enrichmentSources, enrichment.NewApolloSource(cfg.ApolloAPIKey))
 		sourceNames = append(sourceNames, "Apollo.io")
-	} else {
-		log.Println("Enrichment: No APOLLO_API_KEY set - skipping Apollo.io.")
 	}
 
-	// Always add mock source as final fallback for development/testing
 	if len(enrichmentSources) == 0 {
-		log.Println("Enrichment: No real sources configured - using mock source only.")
 		enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
 		sourceNames = append(sourceNames, "Mock")
 	} else {
-		log.Println("Enrichment: Mock source added as final fallback.")
 		enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
 		sourceNames = append(sourceNames, "Mock (fallback)")
 	}
 
-	// Wrap sources in fallback chain for ordered retry with clear logging
 	fallbackSource := enrichment.NewFallbackSource(enrichmentSources, sourceNames)
-	log.Printf("Enrichment: Fallback chain configured — %s", fallbackSource.Status())
-
 	e := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{fallbackSource}, crmClient)
 	go e.Run(ctx, 1*time.Hour)
 
@@ -176,7 +167,6 @@ func main() {
 	}
 
 	if ciTracker == nil {
-		log.Println("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY).")
 		ciTracker = &deploy.MockCITracker{}
 	}
 
@@ -186,41 +176,39 @@ func main() {
 
 	// 2f. Setup LLM Provider — Hermes or Mock
 	var llmProvider llm.LLMProvider
+	var promptRegistry *llm.PromptRegistry
+
 	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
-		log.Printf("LLM: Initializing Hermes provider at %s (model: %s)", cfg.HermesAPIURL, cfg.HermesModel)
 		llmProvider = llm.NewHermesLLMProvider(llm.HermesConfig{
 			BaseURL: cfg.HermesAPIURL,
 			APIKey:  cfg.HermesAPIKey,
 			Model:   cfg.HermesModel,
 		})
 
+		promptRegistry = llm.NewPromptRegistry("data/prompt_registry.json")
+		promptRegistry.RegisterVersion("outreach-reply", "Intent: ${intent}. Dossier: ${dossier}. Company: ${company}. Generate a professional reply.")
+
 		if err := llmProvider.(*llm.HermesLLMProvider).HealthCheck(ctx); err != nil {
 			log.Printf("LLM: WARNING — Hermes health check failed: %v", err)
-		} else {
-			log.Printf("LLM: Hermes health check passed ✓")
 		}
 	} else {
-		log.Println("LLM: Initializing Mock LLM Provider (set HERMES_API_URL and HERMES_API_KEY for real LLM).")
 		llmProvider = &llm.MockLLMProvider{}
 	}
 
 	// 2g. Setup Intent Classifier
 	var classifier communication.IntentClassifier
 	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
-		log.Println("Communication: Initializing LLM-backed Intent Classifier via Hermes.")
 		classifier = communication.NewLLMIntentClassifier(llmProvider)
 	} else {
-		log.Println("Communication: Initializing Mock Intent Classifier.")
 		classifier = &communication.MockIntentClassifier{}
 	}
 
-	responder := communication.NewRAGResponseGenerator(database, llmProvider)
+	responder := communication.NewRAGResponseGenerator(database, llmProvider, promptRegistry)
 	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
 
-	// 2h. Setup Email Sender — SMTP, Draft, or Mock
+	// 2h. Setup Email Sender
 	var emailSender communication.EmailSender
 	if cfg.SMTPHost != "" && cfg.SMTPUsername != "" && cfg.SMTPPassword != "" && !cfg.DryRun {
-		log.Printf("Email: Initializing SMTP sender via %s:%d as %s", cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUsername)
 		emailSender = communication.NewSMTPSender(communication.SMTPConfig{
 			Host:     cfg.SMTPHost,
 			Port:     cfg.SMTPPort,
@@ -229,33 +217,25 @@ func main() {
 			From:     cfg.SMTPFrom,
 			FromName: cfg.SMTPFromName,
 		})
-	} else if cfg.DryRun && cfg.IMAPHost != "" && cfg.IMAPUsername != "" && cfg.IMAPPassword != "" {
-		log.Printf("Email: DRY RUN mode — saving drafts to %s via IMAP.", cfg.IMAPFolder)
-		emailSender = communication.NewDraftSender(cfg.IMAPHost, cfg.IMAPPort, cfg.IMAPUsername, cfg.IMAPPassword)
 	} else {
-		if cfg.DryRun {
-			log.Println("Email: DRY RUN mode — no IMAP configured, emails will be logged only.")
-		} else {
-			log.Println("Email: No SMTP configured — outbound emails will be logged but not sent.")
-		}
 		emailSender = &communication.MockEmailSender{}
 	}
+
+	ghSender := communication.NewGitHubSender()
+	liSender := communication.NewLinkedInSender()
 
 	billingClient := &billing.MockBillingClient{}
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
-	ghSender := communication.NewGitHubSender()
-	liSender := communication.NewLinkedInSender()
 	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender, ghSender, liSender)
 	go commManager.Run(ctx, 30*time.Minute)
 
 	// 2j. Setup Cadence-aware outreach scheduling
 	cadenceManager := communication.NewCadenceAwareManager(commManager, database)
-	go cadenceManager.RunCadence(ctx, 12*time.Hour) // checks every 12 h for next touch
+	go cadenceManager.RunCadence(ctx, 12*time.Hour)
 
 	// 2i. Setup IMAP Email Receiver
 	if cfg.IMAPHost != "" && cfg.IMAPUsername != "" && cfg.IMAPPassword != "" {
-		log.Printf("Email: Initializing IMAP receiver from %s:%d (polling every %v)", cfg.IMAPHost, cfg.IMAPPort, cfg.IMAPPollInterval)
 		imapReceiver := communication.NewEmailReceiver(communication.IMAPConfig{
 			Host:     cfg.IMAPHost,
 			Port:     cfg.IMAPPort,
@@ -264,8 +244,6 @@ func main() {
 			Folder:   cfg.IMAPFolder,
 		}, commManager)
 		go imapReceiver.Run(ctx, cfg.IMAPPollInterval)
-	} else {
-		log.Println("Email: No IMAP configured — inbound emails will not be received.")
 	}
 
 	// 3. Initialize Autonomous Development
@@ -276,12 +254,10 @@ func main() {
 	if cfg.GitHubRepository != "" {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
-			log.Printf("Autodev: Initializing GitHub PR Manager for %s", cfg.GitHubRepository)
 			prManager = gitcheck.NewGitHubPRManager(parts[0], parts[1])
 		}
 	}
 	if prManager == nil {
-		log.Println("Autodev: Initializing Mock PR Manager (missing GITHUB_REPOSITORY).")
 		prManager = &gitcheck.MockPRManager{}
 	}
 
@@ -310,16 +286,12 @@ func main() {
 
 	<-sigChan
 	log.Println("Shutting down: Signal received, initiating graceful drain...")
-
 	cancel()
-
 	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer shutdownCancel()
-
 	if err := srv.Shutdown(shutdownCtx); err != nil {
 		log.Printf("Web server shutdown error: %v", err)
 	}
-
 	time.Sleep(2 * time.Second)
 	log.Println("Shutting down: Done.")
 }

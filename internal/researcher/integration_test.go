@@ -3,6 +3,7 @@ package researcher_test
 import (
 	"context"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"

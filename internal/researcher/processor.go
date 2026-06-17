@@ -60,6 +60,11 @@ func (r *Researcher) ExecuteResearch(ctx context.Context) {
 }
 
 func (r *Researcher) executeResearch(ctx context.Context) {
+	if r.db == nil {
+		slog.Info("Researcher: DB unavailable, skipping research cycle")
+		return
+	}
+
 	// Find deals in Researched state (contacts found, now need deep technical context)
 	deals, err := r.db.ListDealsByState(ctx, db.StateResearched)
 	if err != nil {

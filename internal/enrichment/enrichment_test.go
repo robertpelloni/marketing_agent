@@ -22,12 +22,22 @@ func TestMockApolloSource_Enrich(t *testing.T) {
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
-	if len(contacts) != 1 {
-		t.Errorf("Expected 1 contact, got %d", len(contacts))
+	// Mock now generates 1-3 contacts per company
+	if len(contacts) < 1 || len(contacts) > 3 {
+		t.Errorf("Expected 1-3 contacts, got %d", len(contacts))
 	}
 
-	if contacts[0].Name != "Sarah Chen" {
-		t.Errorf("Expected Sarah Chen, got %s", contacts[0].Name)
+	// Verify all contacts have valid fields
+	for _, c := range contacts {
+		if c.Name == "" {
+			t.Errorf("Contact name should not be empty")
+		}
+		if c.Email == "" {
+			t.Errorf("Contact email should not be empty")
+		}
+		if c.Role == "" {
+			t.Errorf("Contact role should not be empty")
+		}
 	}
 }
 
@@ -92,6 +102,7 @@ func TestEnricher_Initialization(t *testing.T) {
 		t.Errorf("Expected 1 source, got %d", len(e.sources))
 	}
 }
+
 // mockSourceForTest is a mock EnrichmentSource for unit testing.
 type mockSourceForTest struct {
 	name           string

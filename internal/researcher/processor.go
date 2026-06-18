@@ -89,7 +89,7 @@ func (r *Researcher) researchLead(ctx context.Context, deal db.Deal, contact db.
 	var findings []string
 
 	// Crawl for each source
-	targets := []string{contact.GitHubHandle, contact.Email}	// Simplified targets
+	targets := []string{contact.GitHubHandle, contact.Email} // Simplified targets
 	for _, crawler := range r.crawlers {
 		for _, target := range targets {
 			if target == "" {

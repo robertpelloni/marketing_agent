@@ -217,7 +217,7 @@ func (s *SalesforceClient) SyncContacts(ctx context.Context, companyID int64, co
 		if err != nil {
 			return err
 		}
-		resp.Body.Close()
+		_ = resp.Body.Close()
 		if resp.StatusCode >= 400 {
 			return fmt.Errorf("salesforce SyncContacts: status %d", resp.StatusCode)
 		}

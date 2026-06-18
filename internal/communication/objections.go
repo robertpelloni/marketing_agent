@@ -5,16 +5,23 @@ package communication
 
 import (
 	"context"
+	crypto_rand "crypto/rand"
 	"encoding/json"
 	"fmt"
 	"log/slog"
-	"math/rand"
+	"math/big"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
+
+func cryptoRandInt() int64 {
+	n, _ := crypto_rand.Int(crypto_rand.Reader, big.NewInt(1<<63-1))
+	return n.Int64()
+}
+
 
 // ObjectionCategory groups objections by theme.
 type ObjectionCategory string
@@ -60,13 +67,12 @@ type ObjectionLibrary struct {
 	mu         sync.RWMutex
 	objections []Objection
 	responses  []ResponseOption
-	randGen    *rand.Rand
 }
 
 // NewObjectionLibrary creates a library populated with the embedded curated data.
 func NewObjectionLibrary() *ObjectionLibrary {
 	lib := &ObjectionLibrary{
-		randGen: rand.New(rand.NewSource(time.Now().UnixNano())),
+
 	}
 	if err := lib.loadEmbedded(); err != nil {
 		slog.Warn("Failed to load embedded objection data, using empty library", "error", err)
@@ -239,7 +245,7 @@ func (lib *ObjectionLibrary) bestResponseFor(objectionID string, stage db.LeadSt
 		weight := c.SuccessRate * float64(1+c.TimesUsed) // prefer proven ones
 		totalWeight += weight
 	}
-	r := lib.randGen.Float64() * totalWeight
+	r := float64(cryptoRandInt()) / float64(1<<63 - 1) * totalWeight
 	accum := 0.0
 	for _, c := range candidates {
 		accum += c.SuccessRate * float64(1+c.TimesUsed)

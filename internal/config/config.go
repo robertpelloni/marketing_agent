@@ -197,7 +197,7 @@ func loadDotEnv() {
 	}
 
 	for _, p := range paths {
-		file, err := os.Open(p)
+		file, err := os.Open(filepath.Clean(p))
 		if err != nil {
 			continue	// .env is optional
 		}
@@ -227,7 +227,7 @@ func loadDotEnv() {
 
 			// Don't overwrite existing env vars
 			if os.Getenv(key) == "" {
-				os.Setenv(key, value)
+				_ = os.Setenv(key, value)
 			}
 		}
 		return	// only load the first .env found

@@ -231,7 +231,7 @@ func (h *HubSpotClient) SyncContacts(ctx context.Context, companyID int64, conta
 		if err != nil {
 			return err
 		}
-		resp.Body.Close()
+		_ = resp.Body.Close()
 		if resp.StatusCode >= 400 {
 			return fmt.Errorf("hubspot SyncContacts: status %d", resp.StatusCode)
 		}

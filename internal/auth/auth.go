@@ -90,9 +90,11 @@ func (a *Authenticator) HandleLogin(w http.ResponseWriter, r *http.Request) {
 
 		http.SetCookie(w, &http.Cookie{
 			Name:     a.sessionCookieName,
+			Secure:   true,
+			HttpOnly: true,
+			SameSite: http.SameSiteStrictMode,
 			Value:    token,
 			Path:     "/",
-			HttpOnly: true,
 			Expires:  time.Now().Add(24 * time.Hour),
 		})
 

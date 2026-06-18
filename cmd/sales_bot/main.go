@@ -316,6 +316,7 @@ func main() {
 	srv := &http.Server{
 		Addr:		":" + cfg.Port,
 		Handler:	webServer,
+		ReadHeaderTimeout: 10 * time.Second,
 	}
 
 	go func() {

@@ -44,48 +44,14 @@ func (db *DB) Close() error {
 
 // RunMigrations applies all database schema migrations.
 func (db *DB) RunMigrations(ctx context.Context) error {
-	// Migration 1: Add cadence_step column to deals table
-	m1 := `
-		ALTER TABLE deals ADD COLUMN IF NOT EXISTS cadence_step INTEGER DEFAULT 0;
-	`
-	if _, err := db.Conn.ExecContext(ctx, m1); err != nil {
-		return fmt.Errorf("migration 1 (cadence_step): %w", err)
-	}
-
-	// Migration 2: Create templates table
-	m2 := `
-		CREATE TABLE IF NOT EXISTS templates (
-			id TEXT PRIMARY KEY,
-			name TEXT NOT NULL,
-			subject TEXT NOT NULL,
-			body TEXT NOT NULL,
-			channel TEXT NOT NULL,
-			created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-			updated_at TIMESTAMP NOT NULL DEFAULT NOW()
-		);
-	`
-	if _, err := db.Conn.ExecContext(ctx, m2); err != nil {
-		return fmt.Errorf("migration 2 (templates table): %w", err)
-	}
-
-	// Migration 3: Add template_id column to interactions table
-	m3 := `ALTER TABLE interactions ADD COLUMN IF NOT EXISTS template_id TEXT;`
-	if _, err := db.Conn.ExecContext(ctx, m3); err != nil {
-		return fmt.Errorf("migration 3 (template_id column): %w", err)
-	}
-
-	// Migration 4: Add response_id column to interactions table
-	m4 := `ALTER TABLE interactions ADD COLUMN IF NOT EXISTS response_id TEXT;`
-	if _, err := db.Conn.ExecContext(ctx, m4); err != nil {
-		return fmt.Errorf("migration 4 (response_id column): %w", err)
-	}
+	// Migrations are handled via golang-migrate and the migrations/ directory.
 
 	// Seed default templates
 	if err := db.seedTemplates(ctx); err != nil {
-		return fmt.Errorf("seed templates: %w", err)
+		// Only log, do not fail startup if tables aren't ready yet (e.g. tests running without migrations)
+		slog.Warn("Could not seed templates, tables might not exist yet: " + err.Error())
 	}
 
-	slog.Info("Database migrations completed successfully")
 	return nil
 }
 

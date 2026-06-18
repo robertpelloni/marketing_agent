@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log/slog"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/google/go-github/v60/github"
@@ -35,8 +34,7 @@ type RepoAnalysis struct {
 // GitHubAnalyzer analyzes repositories for technical insights.
 type GitHubAnalyzer struct {
 	client	*github.Client
-	mu	sync.RWMutex
-}
+	}
 
 // NewGitHubAnalyzer creates a new GitHub analyzer.
 // Token can be empty for unauthenticated access (lower rate limits).
@@ -105,14 +103,14 @@ func (ga *GitHubAnalyzer) AnalyzeUser(ctx context.Context, username string) (*Re
 		Bottlenecks:	make([]string, 0),
 	}
 
-	opt := &github.RepositoryListOptions{
+	opt := &github.RepositoryListByUserOptions{
 		Type:		"public",
 		Sort:		"updated",
 		ListOptions:	github.ListOptions{PerPage: 30},
 	}
 
 	for {
-		repos, resp, err := ga.client.Repositories.List(ctx, username, opt)
+		repos, resp, err := ga.client.Repositories.ListByUser(ctx, username, opt)
 		if err != nil {
 			return nil, fmt.Errorf("listing user repos: %w", err)
 		}
@@ -139,9 +137,9 @@ func (ga *GitHubAnalyzer) AnalyzeUser(ctx context.Context, username string) (*Re
 // listReposForUser returns all public repos for a user (internal helper).
 func (ga *GitHubAnalyzer) listReposForUser(ctx context.Context, username string) []string {
 	var names []string
-	opt := &github.RepositoryListOptions{Type: "public", ListOptions: github.ListOptions{PerPage: 100}}
+	opt := &github.RepositoryListByUserOptions{Type: "public", ListOptions: github.ListOptions{PerPage: 100}}
 	for {
-		repos, resp, err := ga.client.Repositories.List(ctx, username, opt)
+		repos, resp, err := ga.client.Repositories.ListByUser(ctx, username, opt)
 		if err != nil {
 			return names
 		}
@@ -264,7 +262,7 @@ func (ga *GitHubAnalyzer) getRecentActivityDays(activity string) int {
 		return 99999
 	}
 	var days int
-	fmt.Sscanf(activity, "%d days ago", &days)
+	_, _ = fmt.Sscanf(activity, "%d days ago", &days)
 	return days
 }
 

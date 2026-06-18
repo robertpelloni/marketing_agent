@@ -37,7 +37,7 @@ func cleanupDeal(t *testing.T, database *db.DB, companyName string) {
 	for _, deal := range deals {
 		company, _ := database.GetCompanyByID(ctx, deal.CompanyID)
 		if company != nil && company.Name == companyName {
-			database.UpdateDealState(ctx, deal.ID, db.StateClosedLost)
+			_ = database.UpdateDealState(ctx, deal.ID, db.StateClosedLost)
 		}
 	}
 }

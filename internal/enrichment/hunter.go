@@ -25,18 +25,6 @@ type HunterSource struct {
 }
 
 // hunterResponse represents the Hunter.io email finder API response.
-type hunterResponse struct {
-	Data	struct {
-		Email		string	`json:"email"`
-		FirstName	string	`json:"first_name"`
-		LastName	string	`json:"last_name"`
-		Position	string	`json:"position"`
-		Company		string	`json:"company"`
-		Confidence	float64	`json:"confidence"`
-		Domain		string	`json:"domain"`
-	}	`json:"data"`
-	Errors	[]string	`json:"errors"`
-}
 
 // hunterDomainResponse represents the Hunter.io domain search API response.
 type hunterDomainResponse struct {

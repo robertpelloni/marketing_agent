@@ -87,10 +87,31 @@ func main() {
 
 	// 2a. Setup CRM Integration
 	var crmClient crm.CRMClient
-	if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
+
+	// We check environment variables to decide which CRM to use.
+	// We prioritize HubSpot, then Salesforce, then the generic REST CRM, then Mock.
+	if os.Getenv("HUBSPOT_API_KEY") != "" || os.Getenv("HUBSPOT_ACCESS_TOKEN") != "" {
+		slog.Info("CRM: Initializing production HubSpot CRM client")
+		client, err := crm.NewHubSpotClient(cfg.HubSpotStageMapping, cfg.HubSpotReverseStageMapping)
+		if err != nil {
+			slog.Error(fmt.Sprintf("Failed to initialize HubSpot CRM client: %v", err))
+		} else {
+			crmClient = client
+		}
+	} else if os.Getenv("SALESFORCE_INSTANCE_URL") != "" && os.Getenv("SALESFORCE_ACCESS_TOKEN") != "" {
+		slog.Info("CRM: Initializing production Salesforce CRM client")
+		client, err := crm.NewSalesforceClient(cfg.SalesforceStageMapping, cfg.SalesforceReverseStageMapping)
+		if err != nil {
+			slog.Error(fmt.Sprintf("Failed to initialize Salesforce CRM client: %v", err))
+		} else {
+			crmClient = client
+		}
+	} else if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
 		slog.Info(fmt.Sprintf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL))
 		crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
-	} else {
+	}
+
+	if crmClient == nil {
 		slog.Info("CRM: Initializing mock CRM client (missing configuration).")
 		crmClient = crm.NewMockCRMClient()
 	}

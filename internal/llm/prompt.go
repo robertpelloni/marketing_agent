@@ -13,7 +13,10 @@ import (
 )
 
 func cryptoRandInt() int64 {
-	n, _ := crypto_rand.Int(crypto_rand.Reader, big.NewInt(1<<63-1))
+	n, err := crypto_rand.Int(crypto_rand.Reader, big.NewInt(1<<63-1))
+	if err != nil {
+		return 0 // Fallback to 0 if crypto fails to avoid panic
+	}
 	return n.Int64()
 }
 

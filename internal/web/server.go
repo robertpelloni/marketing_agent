@@ -63,6 +63,8 @@ func (s *Server) routes() {
 	s.mux.HandleFunc("/health", s.handleHealth)
 	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
 	s.mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
+	s.mux.HandleFunc("/api/v1/stats", s.handleStats)
+	s.mux.HandleFunc("/api/v1/leads", s.handleLeads)
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -385,6 +387,81 @@ h1 { color: #333; }
 </div>
 </body>
 </html>`, health, llmColor, llmStatus)
+}
+
+func (s *Server) handleStats(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	ctx := r.Context()
+	
+	companies, _ := s.db.CountCompanies(ctx)
+	contacts, _ := s.db.CountContacts(ctx)
+	interactions, _ := s.db.CountInteractions(ctx)
+
+	stateCounts := make(map[string]int)
+	states, _ := s.db.CountDealsByState(ctx)
+	for _, s := range states {
+		stateCounts[string(s.State)] = s.Count
+	}
+
+	metrics, _ := s.db.GetPerformanceMetrics(ctx)
+	winRate := 0.0
+	if metrics != nil {
+		winRate = metrics.WinRate
+	}
+
+	stats := map[string]interface{}{
+		"companies":   companies,
+		"contacts":    contacts,
+		"interactions": interactions,
+		"deals":       stateCounts,
+		"win_rate":    winRate,
+		"status":      "operational",
+	}
+
+	json.NewEncoder(w).Encode(stats)
+}
+
+func (s *Server) handleLeads(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	ctx := r.Context()
+	deals, err := s.db.ListRecentDeals(ctx, 20)
+	if err != nil {
+		http.Error(w, `{"error":"`+err.Error()+`"}`, http.StatusInternalServerError)
+		return
+	}
+
+	type leadJSON struct {
+		ID      int64  `json:"id"`
+		Company string `json:"company"`
+		State   string `json:"state"`
+		Contact string `json:"contact,omitempty"`
+	}
+
+	leads := make([]leadJSON, 0, len(deals))
+	for _, d := range deals {
+		company, _ := s.db.GetCompanyByID(ctx, d.CompanyID)
+		companyName := ""
+		if company != nil {
+			companyName = company.Name
+		}
+		contacts, _ := s.db.ListContactsByCompany(ctx, d.CompanyID)
+		contactName := ""
+		if len(contacts) > 0 {
+			contactName = contacts[0].Name
+		}
+		leads = append(leads, leadJSON{
+			ID:      d.ID,
+			Company: companyName,
+			State:   string(d.CurrentState),
+			Contact: contactName,
+		})
+	}
+
+	json.NewEncoder(w).Encode(leads)
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {

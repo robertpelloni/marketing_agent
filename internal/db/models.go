@@ -124,3 +124,9 @@ type PerformanceMetrics struct {
 	SuccessfulOutreach int            `json:"successful_outreach"`
 	WinRate            float64        `json:"win_rate"`
 }
+
+// DealStateCount represents a single state-count pair from GROUP BY.
+type DealStateCount struct {
+	State LeadState
+	Count int
+}

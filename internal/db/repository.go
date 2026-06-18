@@ -766,3 +766,43 @@ func (db *DB) MarkTemplateSuccessForDeal(ctx context.Context, dealID int64) erro
 	}
 	return nil
 }
+
+// CountCompanies returns the total number of companies.
+func (db *DB) CountCompanies(ctx context.Context) (int, error) {
+	var count int
+	err := db.Conn.QueryRowContext(ctx, `SELECT COUNT(*) FROM companies`).Scan(&count)
+	return count, err
+}
+
+// CountContacts returns the total number of contacts.
+func (db *DB) CountContacts(ctx context.Context) (int, error) {
+	var count int
+	err := db.Conn.QueryRowContext(ctx, `SELECT COUNT(*) FROM contacts`).Scan(&count)
+	return count, err
+}
+
+// CountInteractions returns the total number of interactions.
+func (db *DB) CountInteractions(ctx context.Context) (int, error) {
+	var count int
+	err := db.Conn.QueryRowContext(ctx, `SELECT COUNT(*) FROM interactions`).Scan(&count)
+	return count, err
+}
+
+// CountDealsByState returns counts of deals grouped by state.
+func (db *DB) CountDealsByState(ctx context.Context) ([]DealStateCount, error) {
+	rows, err := db.Conn.QueryContext(ctx, `SELECT current_state, COUNT(*) FROM deals GROUP BY current_state ORDER BY current_state`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var results []DealStateCount
+	for rows.Next() {
+		var dsc DealStateCount
+		if err := rows.Scan(&dsc.State, &dsc.Count); err != nil {
+			return nil, err
+		}
+		results = append(results, dsc)
+	}
+	return results, nil
+}

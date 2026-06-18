@@ -120,7 +120,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 					slog.InfoContext(r.Context(), "Contact channel updated", "contact_id", id, "channel", channel)
 				}
 			}
-case "build":
+		case "build":
 			if err := s.deploy.ExecuteBuild(); err != nil {
 				slog.WarnContext(r.Context(), "Build error", "error", err)
 			}
@@ -394,7 +394,7 @@ func (s *Server) handleStats(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	ctx := r.Context()
-	
+
 	companies, _ := s.db.CountCompanies(ctx)
 	contacts, _ := s.db.CountContacts(ctx)
 	interactions, _ := s.db.CountInteractions(ctx)
@@ -412,12 +412,12 @@ func (s *Server) handleStats(w http.ResponseWriter, r *http.Request) {
 	}
 
 	stats := map[string]interface{}{
-		"companies":   companies,
-		"contacts":    contacts,
+		"companies":    companies,
+		"contacts":     contacts,
 		"interactions": interactions,
-		"deals":       stateCounts,
-		"win_rate":    winRate,
-		"status":      "operational",
+		"deals":        stateCounts,
+		"win_rate":     winRate,
+		"status":       "operational",
 	}
 
 	json.NewEncoder(w).Encode(stats)

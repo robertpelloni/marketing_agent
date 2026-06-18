@@ -1,27 +1,27 @@
-# Project Memory: TormentNexus (v0.9.0)
+[PROJECT_MEMORY]
 
-## 1. Architecture & Design Decisions
-TormentNexus is a high-performance **Modular Monolith** built in **Go 1.25.0**. It is designed as an autonomous engine for the entire B2B sales lifecycle.
+# TormentNexus: Architectural Design & Engineering Patterns (v0.9.0)
 
-*   **State-Driven Pipeline:** Lead progress is managed via a strict Finite State Machine (FSM) in PostgreSQL.
-*   **Autonomous Development (AutoDev):** A self-correcting loop that generates code from `TODO.md` via LLM, featuring concurrent execution, a rollback mechanism (`git reset --hard`), and a PR feedback loop.
-*   **Multi-Channel Outreach:** Integrated support for Email (SMTP/IMAP), LinkedIn (simulated), and GitHub (comment-based outreach). Governed by a `CadenceAwareManager` that respects contact preferences.
+## 1. Modular Monolith Architecture
+TormentNexus is a high-performance **Modular Monolith** driven by concurrent background workers. The system manages the entire B2B sales lifecycle autonomously, from discovery and enrichment to technical outreach and fulfillment.
 
-## 2. Integrated Enterprise Features
-*   **GDPR Compliance:** Native data portability and soft-delete (`deleted_at`) support.
-*   **Security Hardening:** AES-GCM encryption for secrets at rest, global rate limiting (5 req/s), CSRF protection, and Slowloris mitigation (`ReadHeaderTimeout`).
-*   **Observability:** Structured JSON logging via `slog`, business-focused Prometheus metrics, and worker performance profiling.
-*   **Phase 10 Webhooks:** Outbound state change notifications with built-in retry logic and standardized JSON payloads.
+### Core Architectural Layers:
+*   **Autonomous Orchestration (\`internal/autodev\`):** Meta-brain supporting **Concurrent Task Execution** and **Task Dependency Resolution**. Features a **PR Feedback Loop** and **Automated Rollback**.
+*   **Intelligence & Discovery (\`internal/scraper\`, \`internal/enrichment\`):** Multi-channel ingestion engine (HN, GitHub, LinkedIn, RSS) with **Competitor tracking**.
+*   **Strategic Communication (\`internal/communication\`):** State-aware FSM engine utilizing RAG and an **Objection Handling Library**. Features **Human-in-the-Loop (HITL) approval** for enterprise deals and **Prompt Analytics**.
+*   **Enterprise Platform & Security (\`internal/web\`, \`internal/security\`):** Comprehensive REST API v1, **GDPR compliance endpoints**, and **Secrets Encryption (AES-GCM)**.
 
-## 3. Engineering Patterns
-*   **Adapter Pattern:** Used for CRM (Salesforce/HubSpot) and LLM (Hermes Agent) integrations to remain provider-agnostic.
-*   **Strategy Pattern:** Powering the `LearningSalesEngine` to determine the best next action based on lead quality and intent.
-*   **State Machine:** Enforcing lead transitions: `Discovered → Researched → Outreach_Sent → Engaged → Negotiating → Pending_Approval → Closed_Won/Lost`.
+## 2. Key Security & Compliance Patterns
+*   **Layered Defense:** Global rate limiting (5 req/s), **Webhook IP Allowlisting**, CSRF protection, input sanitization (XSS mitigation), and HMAC verification.
+*   **Data Privacy:** Native support for **GDPR Export and Soft-Delete** via \`deleted_at\` columns.
+*   **Infrastructure Security:** Slowloris mitigation (\`ReadHeaderTimeout\`) and hardened cookie flags.
 
-## 4. Conflict Resolution & Merging (v0.9.0)
-The v0.9.0 release involved a complex merge of enterprise hardening features with sophisticated upstream outreach logic (A/B testing, objection handling). Import cycles between `communication` and `sales` were resolved by decoupling `SentimentResult`. Redundant code (e.g., `CalculateQuote`) was consolidated to ensure a single source of truth.
+## 3. Operational Robustness
+*   **Recovery-Ready:** HEARTBEAT monitoring and top-level panic recovery with full stack traces in the entry point.
+*   **Performance Monitoring:** Real-time worker performance profiling displayed on the dashboard.
+*   **State Integrity:** Atomic lead state progression and automated git state recovery in the autonomous development loop.
 
-## 5. Development Environment
-*   **CI/CD:** Enforced integration testing with ephemeral PostgreSQL.
-*   **Deployment:** Standardized Docker and Docker Compose workflows.
-*   **Executive Protocol:** Strict repo synchronization (Upstream Sync → Branch Merging → Catch-Up Sync → Submodule Cleanup).
+## 4. Technology Stack
+*   **Language:** Go 1.25.
+*   **Persistence:** PostgreSQL.
+*   **Gateway:** Hermes Agent.

@@ -32,20 +32,22 @@ func (s *Scraper) Run(ctx context.Context, interval time.Duration, keywords []st
 	defer ticker.Stop()
 
 	slog.Info("Scraper worker started...")
-	s.ExecuteDiscovery(ctx, keywords)
+
+	// Run immediately on startup
+	s.poll(ctx, keywords)
 
 	for {
 		select {
 		case <-ctx.Done():
-			slog.Info("Scraper worker stopping...")
+			slog.Info("Scraper worker stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
-			s.ExecuteDiscovery(ctx, keywords)
+			s.poll(ctx, keywords)
 		}
 	}
 }
 
-func (s *Scraper) ExecuteDiscovery(ctx context.Context, keywords []string) {
+func (s *Scraper) poll(ctx context.Context, keywords []string) {
 	start := time.Now()
 	slog.Info("Scraper: Polling for leads...")
 	for _, source := range s.sources {
@@ -71,16 +73,19 @@ func (s *Scraper) processDiscoveredCompany(ctx context.Context, company db.Compa
 		return nil
 	}
 
+	// Check if company already exists
 	existing, err := s.db.GetCompanyByDomain(ctx, company.Domain)
 	if err == nil && existing != nil {
 		return nil
 	}
 
+	// Create new company
 	err = s.db.CreateCompany(ctx, &company)
 	if err != nil {
 		return fmt.Errorf("failed to persist company: %w", err)
 	}
 
+	// Initialize a deal in Discovered state
 	deal := db.Deal{
 		CompanyID:    company.ID,
 		CurrentState: db.StateDiscovered,

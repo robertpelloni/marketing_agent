@@ -51,7 +51,7 @@ func (r *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		contextInjection = fmt.Sprintf("\nTechnical Context:\n%s\n", r.truncateDocs(r.tormentNexusDocs))
 	}
 	if salesCtx.LatestIntent == IntentPricing {
-		pricing := CalculateQuote(salesCtx.Company.MarketCapTier)
+		pricing := sales.CalculateQuote(salesCtx.Company.MarketCapTier)
 		contextInjection = fmt.Sprintf("\nPricing Context: Annual subscription approx $%d.\n", pricing)
 	}
 

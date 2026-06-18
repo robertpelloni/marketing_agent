@@ -27,13 +27,12 @@ func (r *Researcher) Run(ctx context.Context, interval time.Duration) {
 			slog.Info("Researcher worker stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
-			r.ExecuteResearch(ctx)
+			r.executeResearch(ctx)
 		}
 	}
 }
 
-func (r *Researcher) ExecuteResearch(ctx context.Context) {
-	if r.db == nil { return }
+func (r *Researcher) executeResearch(ctx context.Context) {
 	start := time.Now()
 	// Find deals in Researched state (contacts found, now need deep technical context)
 	deals, err := r.db.ListDealsByState(ctx, db.StateResearched)

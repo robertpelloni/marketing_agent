@@ -137,24 +137,6 @@ func (lib *ObjectionLibrary) RecordOutcome(responseID string, success bool) {
 	}
 }
 
-func (lib *ObjectionLibrary) Statistics() map[string]interface{} {
-	lib.mu.RLock()
-	defer lib.mu.RUnlock()
-	totalUsed := 0
-	avgRate := 0.0
-	for _, r := range lib.responses {
-		totalUsed += r.TimesUsed
-		avgRate += r.SuccessRate
-	}
-	if len(lib.responses) > 0 { avgRate /= float64(len(lib.responses)) }
-	return map[string]interface{}{
-		"objection_count": len(lib.objections),
-		"response_count": len(lib.responses),
-		"total_times_used": totalUsed,
-		"average_success": avgRate,
-	}
-}
-
 func (lib *ObjectionLibrary) loadEmbedded() error {
 	return lib.LoadJSON([]byte(embeddedObjectionData))
 }

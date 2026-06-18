@@ -12,7 +12,6 @@ import (
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/webhook"
 )
 
 type Intent string
@@ -42,7 +41,6 @@ type Manager struct {
 	linkedin   *LinkedInSender
 	registry   *llm.PromptRegistry
 	objections *ObjectionLibrary
-	webhook    *webhook.Dispatcher
 }
 
 func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor, sender EmailSender, github *GitHubCommentSender, linkedin *LinkedInSender, registry *llm.PromptRegistry) *Manager {
@@ -56,7 +54,6 @@ func NewManager(database *db.DB, classifier IntentClassifier, responder Response
 		github:     github,
 		linkedin:   linkedin,
 		registry:   registry,
-		webhook:    webhook.NewDispatcher(os.Getenv("WEBHOOK_URL")),
 	}
 }
 
@@ -185,13 +182,6 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 }
 
 func (m *Manager) triggerWebhook(ctx context.Context, dealID int64, newState db.LeadState) {
-	if m.webhook != nil {
-		go func() {
-			_ = m.webhook.Dispatch(context.Background(), dealID, newState)
-		}()
-		return
-	}
-	// Old trigger logic (legacy fallback if dispatcher not initialized)
 	url := os.Getenv("WEBHOOK_URL")
 	if url == "" { return }
 	payload, _ := json.Marshal(map[string]interface{}{"deal_id": dealID, "event": "state_change", "new_state": newState, "ts": time.Now()})
@@ -205,9 +195,5 @@ func (m *Manager) triggerWebhook(ctx context.Context, dealID int64, newState db.
 func (m *Manager) GetDB() *db.DB { return m.db }
 
 func (m *Manager) ApproveDeal(ctx context.Context, dealID int64) error {
-	err := m.db.UpdateDealState(ctx, dealID, db.StateNegotiating)
-	if err == nil {
-		m.triggerWebhook(ctx, dealID, db.StateNegotiating)
-	}
-	return err
+	return m.db.UpdateDealState(ctx, dealID, db.StateNegotiating)
 }

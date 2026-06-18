@@ -33,7 +33,7 @@ func (a *LocalAgent) ProposeSolution(ctx context.Context, task Task) (string, er
 		if err == nil {
 			return proposal, nil
 		}
-		slog.ErrorContext(ctx, "LocalAgent: LLM generation failed, falling back to mock", "error", err)
+		log.Printf("LocalAgent: LLM generation failed, falling back to mock: %v", err)
 	}
 
 	if strings.Contains(strings.ToLower(task.Description), "sales-feature") {

@@ -1,15 +1,149 @@
-# Changelog
+# Autodev Changelog
 
-All notable changes to this project will be documented in this file.
+## [0.4.4] - 2026-06-08
+- Synchronized with main project hardening and CRM integration
 
-## [0.9.0] - 2026-06-17
-- feat: unified enterprise hardening (GDPR, encryption, security)
-- feat: outbound webhooks for state changes (Phase 10)
-- feat: integrated sophisticated outreach (cadences, objections, A/B testing)
-- chore: resolved all upstream merge conflicts and sanitized repository
-
-## [0.9.0+1781725585] - 2026-06-17
+## [0.4.4+1780886051] - 2026-06-08
 - Test integration task
 
-## [0.9.0+1781726065] - 2026-06-17
+## [0.4.4+1780895118] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780895283] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780896569] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780896677] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780903101] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780909792] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780913609] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780914501] - 2026-06-08
+- Test integration task
+
+<<<<<<< HEAD
+## [0.4.9+1781568410] - 2026-06-16
+- Test integration task
+
+## [0.4.9+1781570809] - 2026-06-16
+- Test integration task
+
+## [0.4.9+1781571106] - 2026-06-16
+- Test integration task
+
+## [0.4.9+1781661144] - 2026-06-17
+- Test integration task
+
+## [0.4.9+1781667645] - 2026-06-17
+- Test integration task
+
+## [0.4.9+1781667780] - 2026-06-17
+- Test integration task
+
+## [0.4.9+1781673448] - 2026-06-17
+- Test integration task
+
+## [0.4.9+1781673685] - 2026-06-17
+- Test integration task
+
+## [0.4.9+1781674386] - 2026-06-17
+- Test integration task
+
+## [0.4.9+1781674543] - 2026-06-17
+- Test integration task
+
+## [0.4.9+1781679571] - 2026-06-17
+=======
+## [0.4.4+1781043945] - 2026-06-09
+- Test integration task
+
+## [0.4.8+1781120996] - 2026-06-10
+- Test integration task
+
+## [0.4.8+1781129352] - 2026-06-10
+- Test integration task
+
+## [0.4.8+1781129383] - 2026-06-10
+- Test integration task
+
+## [0.4.8+1781129641] - 2026-06-10
+- Test integration task
+
+## [0.4.9+1781277406] - 2026-06-12
+- Test integration task
+
+## [0.4.9+1781285666] - 2026-06-12
+- Test integration task
+
+## [0.4.9+1781287920] - 2026-06-12
+- Test integration task
+
+## [0.4.9+1781395854] - 2026-06-13
+- Test integration task
+
+## [0.4.9+1781404153] - 2026-06-13
+- Test integration task
+
+## [0.4.9+1781404442] - 2026-06-13
+- Test integration task
+
+## [0.4.9+1781404624] - 2026-06-13
+- Test integration task
+
+## [0.4.9+1781466829] - 2026-06-14
+- Test integration task
+
+## [0.4.9+1781466842] - 2026-06-14
+- Test integration task
+
+## [0.4.9+1781470942] - 2026-06-14
+- Test integration task
+
+## [0.4.9+1781472732] - 2026-06-14
+- Test integration task
+
+## [0.4.9+1781476893] - 2026-06-14
+- Test integration task
+
+## [0.4.9+1781477546] - 2026-06-14
+- Test integration task
+
+## [0.4.9+1781477750] - 2026-06-14
+- Test integration task
+
+## [0.4.9+1781482741] - 2026-06-14
+- Test integration task
+
+## [0.4.9+1781484437] - 2026-06-14
+- Test integration task
+
+## [0.4.9+1781493318] - 2026-06-14
+- Test integration task
+
+## [0.4.9+1781495357] - 2026-06-14
+- Test integration task
+
+## [0.4.9+1781497065] - 2026-06-15
+- Test integration task
+
+## [0.4.9+1781497503] - 2026-06-15
+- Test integration task
+
+## [0.4.9+1781527884] - 2026-06-15
+- Test integration task
+
+## [0.4.9+1781535497] - 2026-06-15
+- Test integration task
+
+## [0.4.9+1781535589] - 2026-06-15
+>>>>>>> origin/main
 - Test integration task

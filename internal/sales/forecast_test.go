@@ -1,75 +1,62 @@
-package sales_test
+package sales
 
 import (
 	"testing"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/sales"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 )
 
-func TestForecastingEngine_Forecast(t *testing.T) {
-	fe := sales.NewForecastingEngine()
+func TestForecastingEngine_Basic(t *testing.T) {
+	fe := NewForecastingEngine()
 
-	// Basic forecast for discovered deal
-	sentimentResults := []sales.SentimentResult{
-		{Sentiment: "positive", Score: 80, Confidence: 0.9},
+	// Add historical deals
+	fe.LearnFromDeal(HistoricalDeal{DealID: 1, Source: "hn", TotalDays: 20, InteractionCount: 4, AvgSentiment: 0.7, StageCount: 5, Won: true})
+	fe.LearnFromDeal(HistoricalDeal{DealID: 2, Source: "linkedin", TotalDays: 30, InteractionCount: 2, AvgSentiment: -0.4, StageCount: 5, Won: false})
+	fe.LearnFromDeal(HistoricalDeal{DealID: 3, Source: "hn", TotalDays: 25, InteractionCount: 3, AvgSentiment: 0.2, StageCount: 5, Won: true})
+
+	// Simulate current deal state with positive sentiment
+	sentimentResults := []communication.SentimentResult{{Sentiment: communication.SentimentPositive, Score: 70, Urgency: 0.3}, {Sentiment: communication.SentimentPositive, Score: 80, Urgency: 0.2}}
+
+	forecast := fe.Forecast(999, "engaged", 6, 3, sentimentResults, 50000, "hn")
+
+	if forecast.DealID != 999 {
+		t.Fatalf("unexpected deal ID: %d", forecast.DealID)
 	}
-
-	forecast := fe.Forecast(1, "discovered", 1, 1, sentimentResults, 50000, "hn")
-
-	if forecast.DealID != 1 {
-		t.Errorf("Expected deal ID 1, got %d", forecast.DealID)
+	if forecast.WinProbability < 0.5 {
+		t.Fatalf("expected win probability >= 0.5 for engaged deal with positive sentiment, got %f", forecast.WinProbability)
 	}
-
-	if forecast.WinProbability <= 0 || forecast.WinProbability > 1.0 {
-		t.Errorf("Invalid win probability: %f", forecast.WinProbability)
+	if forecast.PredictedStage != "negotiating" {
+		t.Fatalf("expected next stage negotiating, got %s", forecast.PredictedStage)
 	}
-
-	if forecast.TimeToCloseDays <= 0 {
-		t.Errorf("Invalid time to close: %d", forecast.TimeToCloseDays)
+	if forecast.ExpectedValue <= 0 {
+		t.Fatalf("expected positive expected value")
+	}
+	if forecast.Confidence != "high" {
+		t.Fatalf("expected high confidence, got %s", forecast.Confidence)
+	}
+	if len(forecast.RiskFactors) != 0 {
+		t.Fatalf("expected no risk factors for healthy deal, got %d", len(forecast.RiskFactors))
+	}
+	if forecast.Recommendation == "" {
+		t.Fatalf("expected recommendation text")
 	}
 }
 
 func TestForecastingEngine_AtRisk(t *testing.T) {
-	fe := sales.NewForecastingEngine()
+	fe := NewForecastingEngine()
 
-	// Deal with no interactions and many days in stage
-	sentimentResults := []sales.SentimentResult{}
+	// Simulate a deal stuck in negotiating with negative sentiment
+	sentimentResults := []communication.SentimentResult{{Sentiment: communication.SentimentNegative, Score: -80, Urgency: 0.9}}
 
-	forecast := fe.Forecast(2, "engaged", 30, 0, sentimentResults, 100000, "linkedin")
+	forecast := fe.Forecast(1001, "negotiating", 30, 1, sentimentResults, 80000, "linkedin")
 
-	if forecast.WinProbability >= 0.5 {
-		t.Errorf("Expected low win probability for stalled deal, got %f", forecast.WinProbability)
+	if forecast.WinProbability >= 0.4 {
+		t.Fatalf("expected low win probability for stuck negotiating deal, got %f", forecast.WinProbability)
 	}
-
-	foundStalled := false
-	for _, rf := range forecast.RiskFactors {
-		if rf.Factor == "stalled_progress" {
-			foundStalled = true
-			break
-		}
+	if forecast.Confidence != "low" {
+		t.Fatalf("expected low confidence for low engagement, got %s", forecast.Confidence)
 	}
-	// We no longer strictly enforce finding risk factors if the logic became more complex,
-	// but win probability should definitely be low.
-	_ = foundStalled
-}
-
-func TestSummarizePipeline(t *testing.T) {
-	forecasts := []sales.DealForecast{
-		{DealID: 1, WinProbability: 0.8, ExpectedValue: 40000, PredictedStage: "negotiating"},
-		{DealID: 2, WinProbability: 0.1, ExpectedValue: 5000, PredictedStage: "engaged"},
-	}
-
-	summary := sales.SummarizePipeline(forecasts)
-
-	if summary.TotalDeals != 2 {
-		t.Errorf("Expected 2 total deals, got %d", summary.TotalDeals)
-	}
-
-	if summary.AtRiskDeals != 1 {
-		t.Errorf("Expected 1 at-risk deal, got %d", summary.AtRiskDeals)
-	}
-
-	if summary.ExpectedRevenue != 45000 {
-		t.Errorf("Expected 45000 revenue, got %f", summary.ExpectedRevenue)
+	if len(forecast.RiskFactors) == 0 {
+		t.Fatalf("expected risk factors for at‑risk deal")
 	}
 }

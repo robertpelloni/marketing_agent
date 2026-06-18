@@ -2,6 +2,7 @@ package communication
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"time"
 
@@ -59,12 +60,14 @@ type CadenceProgress struct {
 func (ct *CadenceTracker) GetNextStep(ctx context.Context, dealID int64, schedule CadenceSchedule, interactions []db.Interaction) (*CadenceStep, *CadenceProgress, error) {
 	totalAttempts := 0
 	lastOutboundTime := time.Time{}
+	var lastChannel string
 
 	for _, i := range interactions {
 		if i.Direction == "Outbound" {
 			totalAttempts++
 			if i.CreatedAt.After(lastOutboundTime) {
 				lastOutboundTime = i.CreatedAt
+				lastChannel = i.Channel
 			}
 		}
 	}

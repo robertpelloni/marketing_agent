@@ -16,6 +16,7 @@ import (
 	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
@@ -63,6 +64,7 @@ func (s *Server) routes() {
 	s.mux.HandleFunc("/health", s.handleHealth)
 	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
 	s.mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
+		s.mux.HandleFunc("/api/v1/quote", s.handleGenerateQuote)
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -486,4 +488,26 @@ func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusAccepted)
 	fmt.Fprintln(w, "Deployment triggered")
+}
+
+func (s *Server) handleGenerateQuote(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	tier := r.URL.Query().Get("company_size")
+	if tier == "" {
+		tier = r.URL.Query().Get("market_cap_tier")
+	}
+
+	quote := communication.CalculateQuote(tier)
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(map[string]interface{}{
+		"tier":  tier,
+		"quote": quote,
+	}); err != nil {
+		slog.ErrorContext(r.Context(), "Error encoding quote JSON", "error", err)
+	}
 }

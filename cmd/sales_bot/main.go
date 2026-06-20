@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/contentgen"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/billing"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/config"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
@@ -147,16 +148,36 @@ func main() {
 	// 2da. Setup LLM Provider
 	llmProvider := &llm.MockLLMProvider{}
 
-	// 2e. Setup Communication Manager
+	// 2e. Setup Email Sender — SMTP, IMAP Drafts, or Mock
+	var emailSender communication.EmailSender
+	if cfg.SMTPHost != "" && cfg.SMTPUsername != "" && cfg.SMTPPassword != "" && !cfg.DryRun {
+		log.Printf("Email: Initializing SMTP sender via %s:%d as %s", cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUsername)
+		emailSender = communication.NewSMTPSender(communication.SMTPConfig{
+			Host:     cfg.SMTPHost,
+			Port:     cfg.SMTPPort,
+			Username: cfg.SMTPUsername,
+			Password: cfg.SMTPPassword,
+			From:     cfg.SMTPFrom,
+			FromName: cfg.SMTPFromName,
+		})
+	} else if cfg.DryRun && cfg.IMAPHost != "" && cfg.IMAPUsername != "" && cfg.IMAPPassword != "" {
+		log.Printf("Email: DRY RUN mode — saving drafts to %s via IMAP.", cfg.IMAPFolder)
+		emailSender = communication.NewDraftSender(cfg.IMAPHost, cfg.IMAPPort, cfg.IMAPUsername, cfg.IMAPPassword)
+	} else {
+		log.Println("Email: No email sender configured — using MockEmailSender.")
+		emailSender = &communication.MockEmailSender{}
+	}
+
+	// 2f. Setup Communication Manager
 	classifier := &communication.MockIntentClassifier{}
 	responder := communication.NewRAGResponseGenerator(database, llmProvider)
 	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
 
-	// 2ea. Setup Order Processing
+	// 2fa. Setup Order Processing
 	billingClient := &billing.MockBillingClient{}
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
-	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor)
+	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender)
 
 	// Run communication poller in background
 	go commManager.Run(ctx, 30*time.Minute)
@@ -184,8 +205,12 @@ func main() {
 	// Run autodev worker in background (every 1 hour)
 	go orchestrator.Run(ctx, 1*time.Hour)
 
+	// 3a. Start Autonomous Blog Generator (daily)
+	blogGen := contentgen.NewBlogGenerator(llmProvider, database)
+	go blogGen.Run(ctx, 24*time.Hour)
+
 	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager)
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider)
 	srv := &http.Server{
 		Addr:              ":" + cfg.Port,
 		Handler:           webServer,

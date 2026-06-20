@@ -12,9 +12,9 @@ import (
 
 // LeadUpdate represents a change in lead status from the CRM.
 type LeadUpdate struct {
-	ID        string
-	NewState  db.LeadState
-	Notes     string
+	ID       string
+	NewState db.LeadState
+	Notes    string
 }
 
 // CRMClient defines the interface for interacting with external CRM systems.

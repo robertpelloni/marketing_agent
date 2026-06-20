@@ -4,18 +4,18 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"fmt"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
 // MockCRMClient simulates an external CRM integration.
 type MockCRMClient struct {
-	PushDealCalled		bool
-	SyncInteractionCalled	bool
-	SyncContactsCalled	bool
-	GetLeadUpdatesCalled	bool
-	LatestNote		string
-	UpdatesToReturn		[]LeadUpdate
+	PushDealCalled        bool
+	SyncInteractionCalled bool
+	SyncContactsCalled    bool
+	GetLeadUpdatesCalled  bool
+	LatestNote            string
+	UpdatesToReturn       []LeadUpdate
 }
 
 // NewMockCRMClient creates a new mock CRM client.
@@ -59,9 +59,9 @@ func (m *MockCRMClient) SyncContacts(ctx context.Context, companyID int64, conta
 func (m *MockCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error) {
 	slog.Info(fmt.Sprintf("CRM: Fetching mock details for deal %d", dealID))
 	return &DealDetails{
-		ID:			dealID,
-		Status:			db.StateNegotiating,
-		QuotedPricing:		10000.0,
-		CustomRequirements:	"Mock Requirement",
+		ID:                 dealID,
+		Status:             db.StateNegotiating,
+		QuotedPricing:      10000.0,
+		CustomRequirements: "Mock Requirement",
 	}, nil
 }

@@ -6,10 +6,10 @@ import (
 	"strings"
 	"time"
 
+	"fmt"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
-	"fmt"
 )
 
 // LearningSalesEngine implements the SalesStrategy interface.
@@ -25,17 +25,17 @@ func isHighValueDeal(deal *db.Deal, company *db.Company) bool {
 }
 
 type LearningSalesEngine struct {
-	db		*db.DB
-	crmClient	crm.CRMClient
-	llm		llm.LLMProvider
+	db        *db.DB
+	crmClient crm.CRMClient
+	llm       llm.LLMProvider
 }
 
 // NewLearningSalesEngine creates a new instance of the engine.
 func NewLearningSalesEngine(database *db.DB, crmClient crm.CRMClient, llmProvider llm.LLMProvider) *LearningSalesEngine {
 	return &LearningSalesEngine{
-		db:		database,
-		crmClient:	crmClient,
-		llm:		llmProvider,
+		db:        database,
+		crmClient: crmClient,
+		llm:       llmProvider,
 	}
 }
 
@@ -106,7 +106,7 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 		if e.isHighValueLead(salesCtx) {
 			return ActionRespond, nil
 		}
-		return ActionEscalate, nil	// Escalate high-tier pricing negotiation
+		return ActionEscalate, nil // Escalate high-tier pricing negotiation
 	case IntentObjection:
 		// Attempt one autonomous rebuttal, then escalate
 		if e.countInteractionTypes(salesCtx.Interactions, "Outbound") < 2 {
@@ -248,7 +248,7 @@ func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
 	case IntentTechnical:
 		qual += 15 // Evaluating technical fit
 	case IntentObjection:
-		qual += 5  // Still engaged, just needs handling
+		qual += 5 // Still engaged, just needs handling
 	}
 
 	// Engagement velocity: rapid replies = high interest

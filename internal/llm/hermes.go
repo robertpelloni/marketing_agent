@@ -8,6 +8,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -139,6 +140,10 @@ func (h *HermesLLMProvider) Generate(ctx context.Context, prompt Prompt) (string
 
 	content := chatResp.Choices[0].Message.Content
 
+	// Strip reasoning prefixes from OpenCode Zen / FreeLLM responses
+	// e.g. "[Model: north-mini-code-free | Provider: opencode_zen]\n\n"
+	content = stripReasoningPrefix(content)
+
 	slog.Info(fmt.Sprintf("HermesLLM: model=%s tokens=%d+%d=%d finish=%s",
 		h.Model,
 		chatResp.Usage.PromptTokens,
@@ -148,6 +153,23 @@ func (h *HermesLLMProvider) Generate(ctx context.Context, prompt Prompt) (string
 	)
 
 	return content, nil
+}
+
+var reasoningPrefixRegex = regexp.MustCompile(`(?s)\[Model:[^\]]+\]\s*\n\s*`)
+var reasoningContinuedRegex = regexp.MustCompile(`(?s)\[Continued with Model:[^\]]+\]\s*\n\s*`)
+var providerPrefixRegex = regexp.MustCompile(`(?s)^[A-Z][a-z]+\s+thinks?[^\n]*\n\s*`)
+
+// stripReasoningPrefix removes model/provider reasoning prefixes that some
+// OpenCode Zen / FreeLLM models prepend before the actual response.
+func stripReasoningPrefix(s string) string {
+	s = reasoningPrefixRegex.ReplaceAllString(s, "")
+	s = reasoningContinuedRegex.ReplaceAllString(s, "")
+	s = providerPrefixRegex.ReplaceAllString(s, "")
+	// Remove leading newlines/spaces after stripping
+	for len(s) > 0 && (s[0] == '\n' || s[0] == '\r' || s[0] == ' ') {
+		s = s[1:]
+	}
+	return strings.TrimSpace(s)
 }
 
 // HealthCheck verifies the Hermes API server is reachable and responding.

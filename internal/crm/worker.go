@@ -11,15 +11,15 @@ import (
 
 // Worker coordinates the synchronization between the local database and the external CRM.
 type Worker struct {
-	db	*db.DB
-	client	CRMClient
+	db     *db.DB
+	client CRMClient
 }
 
 // NewWorker creates a new CRM synchronization worker.
 func NewWorker(database *db.DB, client CRMClient) *Worker {
 	return &Worker{
-		db:	database,
-		client:	client,
+		db:     database,
+		client: client,
 	}
 }
 

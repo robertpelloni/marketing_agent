@@ -8,17 +8,23 @@ services:
     environment:
       - DATABASE_URL=postgres://postgres:postgres@postgres-staging:5432/sales_bot_staging?sslmode=disable
       - ENVIRONMENT=staging
-      - CRM_PROVIDER=${CRM_PROVIDER:-generic}
-      - CRM_BASE_URL=${CRM_BASE_URL}
-      - CRM_API_KEY=${CRM_API_KEY}
       - GITHUB_TOKEN=${GITHUB_TOKEN}
       - GITHUB_WEBHOOK_SECRET=${GITHUB_WEBHOOK_SECRET}
       - CRM_WEBHOOK_KEY=${CRM_WEBHOOK_KEY}
-      - CRM_DEAL_NAME_PROP=${CRM_DEAL_NAME_PROP}
-      - CRM_DEAL_STAGE_PROP=${CRM_DEAL_STAGE_PROP}
-      - CRM_DEAL_AMOUNT_PROP=${CRM_DEAL_AMOUNT_PROP}
-      - CRM_DEAL_DOSSIER_PROP=${CRM_DEAL_DOSSIER_PROP}
-      - CRM_CONTACT_EMAIL_PROP=${CRM_CONTACT_EMAIL_PROP}
+      - CRM_BASE_URL=${CRM_BASE_URL}
+      - CRM_API_KEY=${CRM_API_KEY}
+    depends_on:
+      migrations-staging:
+        condition: service_completed_successfully
+
+  migrations-staging:
+    image: migrate/migrate
+    volumes:
+      - ./migrations:/migrations
+    command:
+      - -path=/migrations
+      - -database=postgres://postgres:postgres@postgres-staging:5432/sales_bot_staging?sslmode=disable
+      - up
     depends_on:
       postgres-staging:
         condition: service_healthy

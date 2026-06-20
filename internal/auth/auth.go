@@ -64,7 +64,7 @@ func (a *Authenticator) Middleware(next http.Handler) http.Handler {
 func (a *Authenticator) HandleLogin(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		w.Header().Set("Content-Type", "text/html")
-		_, _ = w.Write([]byte(`
+		if _, err := w.Write([]byte(`
 			<!DOCTYPE html>
 			<html>
 			<head><title>Sales Bot Login</title></head>
@@ -76,7 +76,10 @@ func (a *Authenticator) HandleLogin(w http.ResponseWriter, r *http.Request) {
 				</form>
 			</body>
 			</html>
-		`))
+		`)); err != nil {
+			// Log the error if the write fails (e.g. broken pipe)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -90,11 +93,10 @@ func (a *Authenticator) HandleLogin(w http.ResponseWriter, r *http.Request) {
 
 		http.SetCookie(w, &http.Cookie{
 			Name:     a.sessionCookieName,
-			Secure:   true,
-			HttpOnly: true,
-			SameSite: http.SameSiteStrictMode,
 			Value:    token,
 			Path:     "/",
+			HttpOnly: true,
+			Secure:   true,
 			Expires:  time.Now().Add(24 * time.Hour),
 		})
 

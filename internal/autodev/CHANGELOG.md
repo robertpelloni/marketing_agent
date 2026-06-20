@@ -1,33 +1,19 @@
-# Autodev Changelog
+# Changelog (Autonomous Development Module)
 
-## [0.4.4] - 2026-06-08
-- Synchronized with main project hardening and CRM integration
+## [0.5.1] - 2026-06-13
+- Synchronized with main framework reconciliation.
+- Verified autonomous task board integration.
 
-## [0.4.4+1780886051] - 2026-06-08
+## [0.5.1+1781378654] - 2026-06-13
 - Test integration task
 
-## [0.4.4+1780895118] - 2026-06-08
+## [0.5.1+1781389782] - 2026-06-13
 - Test integration task
 
-## [0.4.4+1780895283] - 2026-06-08
+## [0.6.0+1781391710] - 2026-06-13
 - Test integration task
 
-## [0.4.4+1780896569] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780896677] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780903101] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780909792] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780913609] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780914501] - 2026-06-08
+## [0.6.0+1781403369] - 2026-06-14
 - Test integration task
 
 ## [0.4.4+1781043945] - 2026-06-09

@@ -82,7 +82,7 @@
 
 ---
 
-## Phase 7 — Real Integrations & Multi-Channel Outreach
+## COMPLETED: Phase 7 — Real Integrations & Multi-Channel Outreach (Core CRM & Email)
 
 ### 7.1 Real Enrichment Providers
 - [ ] **Implement Apollo.io API enrichment source** (replace mock)
@@ -92,7 +92,7 @@
 
 ### 7.2 Real Communication Channels
 - [ ] **Implement SMTP email sender** for outbound outreach (replace mock)
-- [ ] **Implement IMAP/POP3 email polling** for inbound message ingestion
+- [x] **Implement IMAP/POP3 email polling** for inbound message ingestion
 - [ ] **Implement LinkedIn message sending** via headless automation
 - [ ] **Implement GitHub Issue/PR comment outreach** as a technical hook channel
 - [ ] **Add channel preference logic** — route outreach via the contact's preferred channel
@@ -106,9 +106,11 @@
 - [ ] **Add response quality scoring** — auto-evaluate generated responses before sending
 
 ### 7.4 Real CRM Integration
-- [ ] **Implement Salesforce CRM adapter** (replace generic REST mock)
-- [ ] **Implement HubSpot CRM adapter** as alternative
-- [ ] **Add CRM field mapping configuration** — map local fields to CRM-specific schema
+- [x] **Implement Salesforce CRM adapter** (replace generic REST mock)
+- [x] **Implement HubSpot CRM adapter** as alternative
+- [x] **Integrate Live CRM Outreach** (SendEmail via Engagements/EmailMessage APIs)
+- [x] **Add CRM field mapping configuration** — map local fields to CRM-specific schema
+- [x] **Enterprise CRM Upsert & Association** — handle record updates and object linking (v0.6.0)
 
 ---
 

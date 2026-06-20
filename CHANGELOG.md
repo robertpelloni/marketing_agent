@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+<<<<<<< HEAD
 ### Added
 - **Enrichment Source Fallback Chain:**
     - Implemented `FallbackSource` in `internal/enrichment/fallback.go`.
@@ -168,6 +169,46 @@ All notable changes to this project will be documented in this file. The format 
 - Dashboard HTML updated with LLM provider status indicator (green for Hermes connected, grey for mock).
 
 ## [0.4.7] - 2026-06-08
+=======
+## [0.6.0] - 2026-06-13
+
+### Added
+- **Enterprise CRM Refinement:**
+    - Implemented automated record associations: Linked HubSpot Notes to Deals and Salesforce Tasks to Opportunities (via `WhatId`).
+    - Enhanced `PushDeal` with upsert logic: The system now uses `PATCH` to update existing records, preventing duplicate entries in HubSpot and Salesforce.
+- **Improved Governance:**
+    - Standardized version 0.6.0 across all project and module metadata.
+    - Synchronized handoff documentation with finalized CRM-to-Outreach cycle verification.
+
+## [0.5.1] - 2026-06-12
+
+### Added
+- **Live CRM Inbound Integration:**
+    - Integrated HubSpot and Salesforce inbound email polling into the autonomous response loop.
+    - Updated `CRM Worker` to automatically trigger the `communication.Manager` for new external interactions.
+    - Enhanced CRM clients to extract and associate sender emails from HubSpot Communications and Salesforce EmailMessage objects.
+- **Architectural Improvements:**
+    - Implemented a base `IMAPPoller` in `internal/mail` for real-time email ingestion.
+    - Decoupled `CRM Worker` from `communication.Manager` using an `InboundProcessor` interface to prevent circular imports.
+    - Hardened response generation logic with robust nil-checks to support operation during database maintenance or simulation.
+- **Verification Suite:**
+    - Developed a new End-to-End verification script (`scripts/verify_live_flow/main.go`) to validate the complete CRM-to-Outreach autonomous lifecycle.
+
+## [0.5.0] - 2026-06-08
+
+### Added
+- **CRM Field Mapping Configuration:**
+    - Implemented `FieldMapping` in `internal/crm` to allow customizable property names for HubSpot and Salesforce.
+    - Added `SetFieldMapping` to `CRMClient` interface and implemented it across all clients (HubSpot, Salesforce, REST, Mock).
+    - Exposed CRM field mappings via environment variables and updated `internal/config`.
+    - Integrated dynamic mapping into `HubSpotCRMClient` and `SalesforceCRMClient` for API requests and response parsing.
+- **Deployment & Readiness:**
+    - Updated `Dockerfile` and `docker-compose.staging.yml` for staging environment readiness.
+    - Enhanced `DEPLOY.md` with CRM field mapping instructions and staging validation steps.
+    - Verified full framework state with comprehensive unit and integration tests.
+
+## [0.4.8] - 2026-06-08
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 
 ### Added
 - **Final Feature Validation:**
@@ -210,7 +251,7 @@ All notable changes to this project will be documented in this file. The format 
     - Expanded PushDeal payload to include technical dossiers for better CRM visibility.
 
 ### Changed
-- Rebranded all product-facing references from "TormentNexus" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
+- Rebranded all product-facing references from "Borg" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
 - Comprehensive documentation overhaul: ROADMAP, TODO, VISION, README, DEPLOY, MEMORY, IDEAS, AGENTS, HANDOFF all updated with gap analysis, forward-looking phases, and technical debt inventory.
 
 ## [0.4.1] - 2026-06-05

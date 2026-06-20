@@ -1,18 +1,18 @@
-# FreeLLM Proxy — OpenCode Zen primary, LM Studio fallback
+# FreeLLM Proxy — OpenCode Zen primary, up to 3 concurrent, LM Studio fallback
 general_settings:
   master_key: ""
 
 model_list:
-  # Primary: FreeLLM via OpenCode Zen
   - model_name: free-llm
     litellm_params:
       model: openai/north-mini-code-free
       api_key: os.environ/OPENCODE_ZEN_API_KEY
       api_base: https://api.opencodezen.ai/v1
-      rpm: 30
-      max_tokens: 4096
+      rpm: 3
+      max_tokens: 8192
+      timeout: 86400
+      stream_timeout: 86400
 
-  # Fallback: LM Studio local (gemma-4-e4b)
   - model_name: free-llm
     litellm_params:
       model: openai/llama
@@ -20,11 +20,14 @@ model_list:
       api_key: ""
       rpm: 60
       max_tokens: 4096
+      timeout: 30
 
 router_settings:
   routing_strategy: usage-based-routing
   fallbacks:
     - free-llm: ["free-llm"]
-  allowed_fails: 3
-  num_retries: 1
-  retry_after: 100ms
+  allowed_fails: 9999
+  num_retries: 0
+  retry_after: 600000
+  cooldown_time: 7200
+  max_parallel_requests: 3

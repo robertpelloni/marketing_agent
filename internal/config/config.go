@@ -13,6 +13,7 @@ import (
 
 // Config holds the application configuration.
 type Config struct {
+<<<<<<< HEAD
 	DatabaseURL		string
 	GitHubToken		string
 	GitHubRepository	string
@@ -48,6 +49,35 @@ type Config struct {
 	IMAPPassword		string
 	IMAPFolder		string
 	IMAPPollInterval	time.Duration
+=======
+	DatabaseURL         string
+	GitHubToken         string
+	GitHubRepository    string
+	GitHubWebhookSecret string
+	CRMBaseURL          string
+	CRMAPIKey           string
+	CRMProvider         string
+	SalesforceAuthURL    string
+	SalesforceClientID   string
+	SalesforceClientSecret string
+	SMTPHost            string
+	SMTPPort            string
+	SMTPUser            string
+	SMTPPass            string
+	SMTPFrom            string
+	IMAPHost            string
+	IMAPPort            string
+	IMAPUser            string
+	IMAPPass            string
+	DeploySyncInterval  time.Duration
+	Port                string
+	Environment         string
+	CRMDealNameProp     string
+	CRMDealStageProp    string
+	CRMDealAmountProp   string
+	CRMDealDossierProp  string
+	CRMContactEmailProp string
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 }
 
 // Load loads the configuration from environment variables and .env file.
@@ -99,6 +129,7 @@ func Load() *Config {
 	}
 
 	return &Config{
+<<<<<<< HEAD
 		DatabaseURL:		getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
 		GitHubToken:		os.Getenv("GITHUB_TOKEN"),
 		GitHubRepository:	os.Getenv("GITHUB_REPOSITORY"),
@@ -183,6 +214,35 @@ func loadDotEnv() {
 			}
 		}
 		return	// only load the first .env found
+=======
+		DatabaseURL:         getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
+		GitHubToken:         os.Getenv("GITHUB_TOKEN"),
+		GitHubRepository:    os.Getenv("GITHUB_REPOSITORY"),
+		GitHubWebhookSecret: os.Getenv("GITHUB_WEBHOOK_SECRET"),
+		CRMBaseURL:          os.Getenv("CRM_BASE_URL"),
+		CRMAPIKey:           os.Getenv("CRM_API_KEY"),
+		CRMProvider:         getEnv("CRM_PROVIDER", "generic"),
+		SalesforceAuthURL:    os.Getenv("SALESFORCE_AUTH_URL"),
+		SalesforceClientID:   os.Getenv("SALESFORCE_CLIENT_ID"),
+		SalesforceClientSecret: os.Getenv("SALESFORCE_CLIENT_SECRET"),
+		SMTPHost:            os.Getenv("SMTP_HOST"),
+		SMTPPort:            os.Getenv("SMTP_PORT"),
+		SMTPUser:            os.Getenv("SMTP_USER"),
+		SMTPPass:            os.Getenv("SMTP_PASS"),
+		SMTPFrom:            os.Getenv("SMTP_FROM"),
+		IMAPHost:            os.Getenv("IMAP_HOST"),
+		IMAPPort:            os.Getenv("IMAP_PORT"),
+		IMAPUser:            os.Getenv("IMAP_USER"),
+		IMAPPass:            os.Getenv("IMAP_PASS"),
+		DeploySyncInterval:  syncInterval,
+		Port:                port,
+		Environment:         env,
+		CRMDealNameProp:     os.Getenv("CRM_DEAL_NAME_PROP"),
+		CRMDealStageProp:    os.Getenv("CRM_DEAL_STAGE_PROP"),
+		CRMDealAmountProp:   os.Getenv("CRM_DEAL_AMOUNT_PROP"),
+		CRMDealDossierProp:  os.Getenv("CRM_DEAL_DOSSIER_PROP"),
+		CRMContactEmailProp: os.Getenv("CRM_CONTACT_EMAIL_PROP"),
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	}
 }
 

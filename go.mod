@@ -1,10 +1,15 @@
 module github.com/robertpelloni/enterprise_sales_bot
 
+<<<<<<< HEAD
 go 1.25.0
+=======
+go 1.24.0
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 
 require (
 	github.com/emersion/go-imap v1.2.1
 	github.com/google/go-github/v60 v60.0.0
+<<<<<<< HEAD
 	github.com/lib/pq v1.12.3
 	github.com/stripe/stripe-go/v81 v81.4.0
 	golang.org/x/oauth2 v0.36.0
@@ -22,4 +27,26 @@ require (
 	golang.org/x/net v0.56.0 // indirect
 	golang.org/x/sys v0.46.0 // indirect
 	golang.org/x/text v0.38.0 // indirect
+=======
+	github.com/lib/pq v1.10.9
+	github.com/prometheus/client_golang v1.22.0
+	github.com/stripe/stripe-go/v81 v81.4.0
+	golang.org/x/oauth2 v0.30.0
+	golang.org/x/time v0.5.0
+)
+
+require (
+	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/google/go-querystring v1.1.0 // indirect
+	github.com/kr/text v0.2.0 // indirect
+	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
+	github.com/prometheus/client_model v0.6.2 // indirect
+	github.com/prometheus/common v0.63.0 // indirect
+	github.com/prometheus/procfs v0.16.0 // indirect
+	go.yaml.in/yaml/v2 v2.4.2 // indirect
+	golang.org/x/crypto v0.35.0 // indirect
+	golang.org/x/sys v0.31.0 // indirect
+	google.golang.org/protobuf v1.36.8 // indirect
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 )

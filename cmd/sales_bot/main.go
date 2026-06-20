@@ -27,6 +27,7 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/sales"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/web"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/mail"
 	"github.com/robertpelloni/enterprise_sales_bot/pkg/agents"
 
 	_ "github.com/lib/pq"	// PostgreSQL driver
@@ -38,7 +39,11 @@ func main() {
 	flag.Parse()
 
 	if *inventory {
+<<<<<<< HEAD
 		slog.Info("Generating submodule inventory")
+=======
+		slog.Info("Generating Submodule Inventory...")
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 		table, err := gitcheck.GenerateSubmoduleInventory()
 		if err != nil {
 			slog.Error("Failed to generate inventory", "error", err)
@@ -49,16 +54,28 @@ func main() {
 	}
 
 	if *reconcile {
+<<<<<<< HEAD
 		slog.Info("Running intelligent merge engine")
+=======
+		slog.Info("Running Intelligent Merge Engine...")
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 		if err := gitres.ReconcileBranches(); err != nil {
 			slog.Error("Reconciliation failed", "error", err)
 			os.Exit(1)
 		}
+<<<<<<< HEAD
 		slog.Info("Reconciliation complete")
 		return
 	}
 
 	slog.Info("Starting TormentNexus Autonomous Sales Bot")
+=======
+		slog.Info("Reconciliation complete.")
+		return
+	}
+
+	slog.Info("Starting TormentNexus Autonomous Sales Bot...")
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 
 	// 0. Load Configuration
 	cfg := config.Load()
@@ -66,7 +83,12 @@ func main() {
 	// 1. Initialize Database
 	database, err := db.NewDB(cfg.DatabaseURL)
 	if err != nil {
+<<<<<<< HEAD
 		slog.Error(fmt.Sprintf("Could not connect to database: %v", err))
+=======
+		slog.Error("Could not connect to database", "error", err)
+		os.Exit(1)
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	}
 	defer database.Close()
 
@@ -87,6 +109,7 @@ func main() {
 
 	// 2a. Setup CRM Integration
 	var crmClient crm.CRMClient
+<<<<<<< HEAD
 	if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
 		slog.Info(fmt.Sprintf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL))
 		crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
@@ -98,6 +121,45 @@ func main() {
 	// 2b. Setup Enricher — Hunter.io + Apollo.io + Mock with FallbackSource
 	var enrichmentSources []enrichment.EnrichmentSource
 	var sourceNames []string
+=======
+	switch cfg.CRMProvider {
+	case "hubspot":
+		if cfg.CRMAPIKey != "" {
+			slog.Info("CRM: Initializing HubSpot CRM client.")
+			crmClient = crm.NewHubSpotCRMClient(cfg.CRMAPIKey)
+		}
+	case "salesforce":
+		if cfg.CRMBaseURL != "" {
+			slog.Info("CRM: Initializing Salesforce CRM client.")
+			crmClient = crm.NewSalesforceCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey, cfg.SalesforceClientID, cfg.SalesforceClientSecret, cfg.SalesforceAuthURL)
+		}
+	default:
+		if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
+			slog.Info("CRM: Initializing production REST CRM client", "url", cfg.CRMBaseURL)
+			crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
+		}
+	}
+
+	if crmClient == nil {
+		slog.Info("CRM: Initializing mock CRM client", "provider", cfg.CRMProvider)
+		crmClient = crm.NewMockCRMClient()
+	}
+
+	// 2cb. Setup CRM Field Mappings
+	crmClient.SetFieldMapping(crm.FieldMapping{
+		DealNameProperty:     cfg.CRMDealNameProp,
+		DealStageProperty:    cfg.CRMDealStageProp,
+		DealAmountProperty:   cfg.CRMDealAmountProp,
+		DealDossierProperty:  cfg.CRMDealDossierProp,
+		ContactEmailProperty: cfg.CRMContactEmailProp,
+	})
+
+	// 2b. Setup Enricher
+	enrichmentSources := []enrichment.EnrichmentSource{
+		&enrichment.MockApolloSource{},
+	}
+	e := enrichment.NewEnricher(database, enrichmentSources, crmClient)
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 
 	if cfg.HunterAPIKey != "" {
 		slog.Info("Enrichment: Initializing Hunter.io source.")
@@ -154,10 +216,14 @@ func main() {
 	r := researcher.NewResearcher(database, crawlers, processor, crmClient)
 	go r.Run(ctx, 1*time.Hour)
 
+<<<<<<< HEAD
 	crmWorker := crm.NewWorker(database, crmClient)
 	go crmWorker.Run(ctx, 30*time.Minute)
 
 	// 2d. Setup Target Discovery
+=======
+	// 2cb. Setup TormentNexus Outreach System
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	outreachWorker := agents.NewTargetDiscoveryWorker(database)
 	go outreachWorker.Run(ctx, 2*time.Hour)
 
@@ -168,7 +234,12 @@ func main() {
 	if cfg.GitHubRepository != "" {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
+<<<<<<< HEAD
 			slog.Info(fmt.Sprintf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", cfg.GitHubRepository))
+=======
+			// #nosec G706 -- Repository name is used for context in initialization logs
+			slog.Info("CI: Initializing GitHub CI Tracker and Dispatcher", "repo", cfg.GitHubRepository)
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 			ciTracker = deploy.NewGitHubCITracker(parts[0], parts[1])
 			dispatcher = deploy.NewGitHubDispatcher(parts[0], parts[1])
 		}
@@ -213,6 +284,18 @@ func main() {
 		classifier = &communication.MockIntentClassifier{}
 	}
 
+<<<<<<< HEAD
+=======
+	// 2db. Setup Email direct sender
+	var emailSender mail.EmailSender
+	if cfg.SMTPHost != "" {
+		slog.Info("SMTP: Initializing SMTP email sender", "host", cfg.SMTPHost)
+		emailSender = mail.NewSMTPSender(cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUser, cfg.SMTPPass, cfg.SMTPFrom)
+	}
+
+	// 2e. Setup Communication Manager
+	classifier := &communication.MockIntentClassifier{}
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	responder := communication.NewRAGResponseGenerator(database, llmProvider)
 	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
 
@@ -243,6 +326,7 @@ func main() {
 	billingClient := &billing.MockBillingClient{}
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
+<<<<<<< HEAD
 	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender)
 	
 	// Initialize Objection Library and attach to manager
@@ -268,6 +352,19 @@ func main() {
 	} else {
 		slog.Info("Email: No IMAP configured — inbound emails will not be received.")
 	}
+=======
+	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, crmClient, emailSender)
+
+	// Run communication poller in background
+	go commManager.Run(ctx, 30*time.Minute)
+
+	// 2ea. Setup CRM and Email Pollers (Inbound Ingestion)
+	crmWorker := crm.NewWorker(database, crmClient, commManager)
+	go crmWorker.Run(ctx, 30*time.Minute)
+
+	imapPoller := mail.NewIMAPPoller(database, commManager, cfg.IMAPHost, cfg.IMAPUser, cfg.IMAPPass)
+	go imapPoller.Run(ctx, 30*time.Minute)
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")
@@ -277,7 +374,12 @@ func main() {
 	if cfg.GitHubRepository != "" {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
+<<<<<<< HEAD
 			slog.Info(fmt.Sprintf("Autodev: Initializing GitHub PR Manager for %s", cfg.GitHubRepository))
+=======
+			// #nosec G706 -- Repository name is used for context in initialization logs
+			slog.Info("Autodev: Initializing GitHub PR Manager", "repo", cfg.GitHubRepository)
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 			prManager = gitcheck.NewGitHubPRManager(parts[0], parts[1])
 		}
 	}
@@ -290,17 +392,27 @@ func main() {
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
+<<<<<<< HEAD
 	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider)
 
+=======
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager, crmClient, commManager, cfg.CRMProvider)
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	srv := &http.Server{
 		Addr:		":" + cfg.Port,
 		Handler:	webServer,
 	}
 
 	go func() {
+<<<<<<< HEAD
 		slog.Info(fmt.Sprintf("Web Dashboard: Listening on :%s", cfg.Port))
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			slog.Info(fmt.Sprintf("Web server error: %v", err))
+=======
+		slog.Info("Web Dashboard: Listening", "port", cfg.Port)
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			slog.Error("Web server error", "error", err)
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 		}
 	}()
 
@@ -311,13 +423,23 @@ func main() {
 	<-sigChan
 	slog.Info("Shutting down: Signal received, initiating graceful drain...")
 
+<<<<<<< HEAD
+=======
+	slog.Info("Shutting down: Signal received, initiating graceful drain...")
+
+	// Cancel background workers via context
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	cancel()
 
 	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer shutdownCancel()
 
 	if err := srv.Shutdown(shutdownCtx); err != nil {
+<<<<<<< HEAD
 		slog.Info(fmt.Sprintf("Web server shutdown error: %v", err))
+=======
+		slog.Error("Web server shutdown error", "error", err)
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	}
 
 	time.Sleep(2 * time.Second)

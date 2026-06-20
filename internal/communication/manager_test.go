@@ -32,7 +32,11 @@ func TestProcessInbound_Mock(t *testing.T) {
 	// Since we are focused on logic integration, we verify it compiles
 	// and use the SalesContext tests in engine_test.go for deeper logic.
 
+<<<<<<< HEAD
 	manager := NewManager(nil, &mockClassifier{}, &mockResponder{}, &mockStrategy{}, &mockOrderProcessor{}, nil)
+=======
+	manager := NewManager(nil, &mockClassifier{}, &mockResponder{}, &mockStrategy{}, &mockOrderProcessor{}, nil, nil)
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	if manager == nil {
 		t.Fatal("Failed to create Manager")
 	}

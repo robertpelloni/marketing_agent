@@ -22,57 +22,57 @@ import (
 // Setup: set HERMES_API_URL and HERMES_API_KEY in your environment.
 // The Hermes gateway must be running with api_server enabled.
 type HermesLLMProvider struct {
-	BaseURL		string
-	APIKey		string
-	Model		string
-	HTTPClient	*http.Client
+	BaseURL    string
+	APIKey     string
+	Model      string
+	HTTPClient *http.Client
 }
 
 // HermesConfig holds the configuration for connecting to a Hermes API server.
 type HermesConfig struct {
-	BaseURL	string	// e.g. "http://172.21.116.32:8642"
-	APIKey	string	// the API_SERVER_KEY set in Hermes .env
-	Model	string	// e.g. "free-llm" or any model available in Hermes
+	BaseURL string // e.g. "http://172.21.116.32:8642"
+	APIKey  string // the API_SERVER_KEY set in Hermes .env
+	Model   string // e.g. "free-llm" or any model available in Hermes
 }
 
 // NewHermesLLMProvider creates a provider that routes LLM calls through Hermes.
 func NewHermesLLMProvider(cfg HermesConfig) *HermesLLMProvider {
 	return &HermesLLMProvider{
-		BaseURL:	strings.TrimRight(cfg.BaseURL, "/"),
-		APIKey:		cfg.APIKey,
-		Model:		cfg.Model,
+		BaseURL: strings.TrimRight(cfg.BaseURL, "/"),
+		APIKey:  cfg.APIKey,
+		Model:   cfg.Model,
 		HTTPClient: &http.Client{
-			Timeout: 120 * time.Second,	// LLM calls can be slow
+			Timeout: 120 * time.Second, // LLM calls can be slow
 		},
 	}
 }
 
 // chatMessage represents a single message in the OpenAI chat format.
 type chatMessage struct {
-	Role	string	`json:"role"`
-	Content	string	`json:"content"`
+	Role    string `json:"role"`
+	Content string `json:"content"`
 }
 
 // chatRequest is the request body for /v1/chat/completions.
 type chatRequest struct {
-	Model		string		`json:"model"`
-	Messages	[]chatMessage	`json:"messages"`
-	MaxTokens	int		`json:"max_tokens,omitempty"`
+	Model     string        `json:"model"`
+	Messages  []chatMessage `json:"messages"`
+	MaxTokens int           `json:"max_tokens,omitempty"`
 }
 
 // chatResponse is the response body from /v1/chat/completions.
 type chatResponse struct {
-	Choices	[]struct {
-		Message	struct {
+	Choices []struct {
+		Message struct {
 			Content string `json:"content"`
-		}	`json:"message"`
-		FinishReason	string	`json:"finish_reason"`
-	}	`json:"choices"`
-	Usage	struct {
-		PromptTokens		int	`json:"prompt_tokens"`
-		CompletionTokens	int	`json:"completion_tokens"`
-		TotalTokens		int	`json:"total_tokens"`
-	}	`json:"usage"`
+		} `json:"message"`
+		FinishReason string `json:"finish_reason"`
+	} `json:"choices"`
+	Usage struct {
+		PromptTokens     int `json:"prompt_tokens"`
+		CompletionTokens int `json:"completion_tokens"`
+		TotalTokens      int `json:"total_tokens"`
+	} `json:"usage"`
 }
 
 // Generate sends a prompt to the Hermes API server and returns the LLM response.
@@ -81,19 +81,19 @@ func (h *HermesLLMProvider) Generate(ctx context.Context, prompt Prompt) (string
 
 	if prompt.System != "" {
 		messages = append(messages, chatMessage{
-			Role:		"system",
-			Content:	prompt.System,
+			Role:    "system",
+			Content: prompt.System,
 		})
 	}
 
 	messages = append(messages, chatMessage{
-		Role:		"user",
-		Content:	prompt.User,
+		Role:    "user",
+		Content: prompt.User,
 	})
 
 	reqBody := chatRequest{
-		Model:		h.Model,
-		Messages:	messages,
+		Model:    h.Model,
+		Messages: messages,
 	}
 
 	if prompt.MaxTokens > 0 {

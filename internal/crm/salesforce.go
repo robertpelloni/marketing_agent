@@ -24,12 +24,10 @@ type SalesforceClient struct {
 	accessToken string // OAuth2 bearer token
 	apiVersion  string // API version, e.g., "v57.0"
 	client      *http.Client
-	stageMap    map[string]string
-	reverseMap  map[string]string
 }
 
 // NewSalesforceClient creates a new Salesforce CRM client.
-func NewSalesforceClient(stageMap map[string]string, reverseMap map[string]string) (*SalesforceClient, error) {
+func NewSalesforceClient() (*SalesforceClient, error) {
 	inst := os.Getenv("SALESFORCE_INSTANCE_URL")
 	token := os.Getenv("SALESFORCE_ACCESS_TOKEN")
 	ver := os.Getenv("SALESFORCE_API_VERSION")
@@ -39,13 +37,11 @@ func NewSalesforceClient(stageMap map[string]string, reverseMap map[string]strin
 	if ver == "" {
 		ver = "v57.0"
 	}
-		return &SalesforceClient{
+	return &SalesforceClient{
 		instanceURL: inst,
 		accessToken: token,
 		apiVersion:  ver,
 		client:      &http.Client{},
-		stageMap:    stageMap,
-		reverseMap:  reverseMap,
 	}, nil
 }
 
@@ -55,7 +51,7 @@ func (s *SalesforceClient) PushDeal(ctx context.Context, deal db.Deal, company d
 	payload := map[string]interface{}{
 		"Name":               fmt.Sprintf("%s – %s", company.Name, route),
 		"AccountId":          s.accountIDFromDomain(company.Domain),
-		"StageName":          s.mapLeadStateToStage(deal.CurrentState),
+		"StageName":          mapLeadStateToStage(deal.CurrentState),
 		"CloseDate":          timeNowISO8601(),
 		"Amount":             deal.QuotedPricing,
 		"Description":        deal.TechnicalDossier,
@@ -119,7 +115,7 @@ func (s *SalesforceClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, er
 
 	var updates []LeadUpdate
 	for _, r := range result.Records {
-		state := s.mapStageToLeadState(r.StageName)
+		state := mapStageToLeadState(r.StageName)
 		if state != "" {
 			updates = append(updates, LeadUpdate{ID: r.Id, NewState: state, Notes: ""})
 		}
@@ -217,7 +213,7 @@ func (s *SalesforceClient) SyncContacts(ctx context.Context, companyID int64, co
 		if err != nil {
 			return err
 		}
-		_ = resp.Body.Close()
+		resp.Body.Close()
 		if resp.StatusCode >= 400 {
 			return fmt.Errorf("salesforce SyncContacts: status %d", resp.StatusCode)
 		}
@@ -257,34 +253,17 @@ func (s *SalesforceClient) FetchDealDetails(ctx context.Context, dealID int64) (
 
 	return &DealDetails{
 		ID:                 parseID(result.Id),
-		Status:             s.mapStageToLeadState(result.StageName),
+		Status:             mapStageToLeadState(result.StageName),
 		QuotedPricing:      result.Amount,
 		CustomRequirements: result.Custom_Field__c,
 		TechnicalDossier:   result.Description,
 	}, nil
 }
 
-// Helper functions
+// Helper functions (placeholders for actual implementations)
 func (s *SalesforceClient) accountIDFromDomain(domain string) string { return "" }
-
-func (s *SalesforceClient) mapLeadStateToStage(state db.LeadState) string {
-	if s.stageMap != nil {
-		if stage, ok := s.stageMap[string(state)]; ok {
-			return stage
-		}
-	}
-	return "Prospecting"
-}
-
-func (s *SalesforceClient) mapStageToLeadState(stage string) db.LeadState {
-	if s.reverseMap != nil {
-		if stateStr, ok := s.reverseMap[stage]; ok {
-			return db.LeadState(stateStr)
-		}
-	}
-	return db.StateResearched
-}
-
+func mapLeadStateToStage(state db.LeadState) string       { return "Prospecting" }
+func mapStageToLeadState(stage string) db.LeadState      { return db.StateResearched }
 func timeNowISO8601() string                               { return "2026-06-14" }
 func urlEncode(s string) string                           { return s }
 func parseID(s string) int64                               { return 0 }

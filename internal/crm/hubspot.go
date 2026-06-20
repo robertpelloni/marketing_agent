@@ -19,16 +19,14 @@ import (
 // The client uses HubSpot's CRM objects: contacts, companies, deals.
 
 type HubSpotClient struct {
-	baseURL     string
-	apiKey      string
+	baseURL    string
+	apiKey     string
 	accessToken string
-	client      *http.Client
-	stageMap    map[string]string
-	reverseMap  map[string]string
+	client     *http.Client
 }
 
 // NewHubSpotClient creates a new HubSpot CRM client.
-func NewHubSpotClient(stageMap map[string]string, reverseMap map[string]string) (*HubSpotClient, error) {
+func NewHubSpotClient() (*HubSpotClient, error) {
 	base := os.Getenv("HUBSPOT_BASE_URL")
 	if base == "" {
 		base = "https://api.hubapi.com"
@@ -38,14 +36,7 @@ func NewHubSpotClient(stageMap map[string]string, reverseMap map[string]string) 
 	if key == "" && token == "" {
 		return nil, fmt.Errorf("hubspot client: missing API key or access token")
 	}
-		return &HubSpotClient{
-		baseURL:     base,
-		apiKey:      key,
-		accessToken: token,
-		client:      &http.Client{},
-		stageMap:    stageMap,
-		reverseMap:  reverseMap,
-	}, nil
+	return &HubSpotClient{baseURL: base, apiKey: key, accessToken: token, client: &http.Client{}}, nil
 }
 
 // authHeader constructs the Authorization header for HubSpot requests.
@@ -63,7 +54,7 @@ func (h *HubSpotClient) PushDeal(ctx context.Context, deal db.Deal, company db.C
 			"dealname":           fmt.Sprintf("%s – %s", company.Name, route),
 			"amount":             deal.QuotedPricing,
 			"pipeline":           "default",
-			"dealstage":          h.mapLeadStateToHubSpotStage(deal.CurrentState),
+			"dealstage":          mapLeadStateToHubSpotStage(deal.CurrentState),
 			"description":        deal.TechnicalDossier,
 			"custom_route":       route,
 		},
@@ -124,7 +115,7 @@ func (h *HubSpotClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error
 
 	var updates []LeadUpdate
 	for _, r := range result.Results {
-		state := h.mapHubSpotLeadStatusToLeadState(r.Properties.LeadStatus)
+		state := mapHubSpotLeadStatusToLeadState(r.Properties.LeadStatus)
 		if state != "" {
 			updates = append(updates, LeadUpdate{ID: r.ID, NewState: state, Notes: ""})
 		}
@@ -231,7 +222,7 @@ func (h *HubSpotClient) SyncContacts(ctx context.Context, companyID int64, conta
 		if err != nil {
 			return err
 		}
-		_ = resp.Body.Close()
+		resp.Body.Close()
 		if resp.StatusCode >= 400 {
 			return fmt.Errorf("hubspot SyncContacts: status %d", resp.StatusCode)
 		}
@@ -273,7 +264,7 @@ func (h *HubSpotClient) FetchDealDetails(ctx context.Context, dealID int64) (*De
 
 	return &DealDetails{
 		ID:                 parseHubSpotDealID(result.Properties.DealName), // placeholder conversion
-		Status:             h.mapHubSpotStageToLeadState(result.Properties.Stage),
+		Status:             mapHubSpotStageToLeadState(result.Properties.Stage),
 		QuotedPricing:      result.Properties.Amount,
 		CustomRequirements: result.Properties.CustomRoute,
 		TechnicalDossier:   result.Properties.Description,
@@ -297,31 +288,7 @@ func lastName(full string) string {
 	return ""
 }
 
-func (h *HubSpotClient) mapLeadStateToHubSpotStage(state db.LeadState) string {
-	if h.stageMap != nil {
-		if stage, ok := h.stageMap[string(state)]; ok {
-			return stage
-		}
-	}
-	return "appointmentscheduled"
-}
-
-func (h *HubSpotClient) mapHubSpotLeadStatusToLeadState(status string) db.LeadState {
-	if h.reverseMap != nil {
-		if stateStr, ok := h.reverseMap[status]; ok {
-			return db.LeadState(stateStr)
-		}
-	}
-	return db.StateResearched
-}
-
-func (h *HubSpotClient) mapHubSpotStageToLeadState(stage string) db.LeadState {
-	if h.reverseMap != nil {
-		if stateStr, ok := h.reverseMap[stage]; ok {
-			return db.LeadState(stateStr)
-		}
-	}
-	return db.StateResearched
-}
-
+func mapLeadStateToHubSpotStage(state db.LeadState) string { return "appointmentscheduled" }
+func mapHubSpotLeadStatusToLeadState(status string) db.LeadState { return db.StateResearched }
+func mapHubSpotStageToLeadState(stage string) db.LeadState      { return db.StateResearched }
 func parseHubSpotDealID(name string) int64                     { return 0 }

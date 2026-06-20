@@ -3,44 +3,23 @@ package crm
 import (
 	"context"
 	"fmt"
-<<<<<<< HEAD
-=======
-	"log"
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	"log/slog"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
-// InboundProcessor defines an interface for processing inbound communication autonomously.
-type InboundProcessor interface {
-	ProcessInbound(ctx context.Context, contact db.Contact, text string) (string, error)
-}
-
 // Worker coordinates the synchronization between the local database and the external CRM.
 type Worker struct {
-<<<<<<< HEAD
 	db	*db.DB
 	client	CRMClient
-=======
-	db     *db.DB
-	client CRMClient
-	comm   InboundProcessor
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 }
 
 // NewWorker creates a new CRM synchronization worker.
-func NewWorker(database *db.DB, client CRMClient, comm InboundProcessor) *Worker {
+func NewWorker(database *db.DB, client CRMClient) *Worker {
 	return &Worker{
-<<<<<<< HEAD
 		db:	database,
 		client:	client,
-=======
-		db:     database,
-		client: client,
-		comm:   comm,
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	}
 }
 
@@ -70,31 +49,9 @@ func (w *Worker) ExecuteSync(ctx context.Context) {
 func (w *Worker) sync(ctx context.Context) {
 	slog.Info("CRM Worker: Executing sync cycle...")
 
-<<<<<<< HEAD
 	if w.db == nil {
 		slog.Info("CRM Worker: DB unavailable, skipping sync cycle")
 		return
-=======
-	// 0. Pull new interactions from CRM
-	newInteractions, err := w.client.GetNewInteractions(ctx)
-	if err != nil {
-		slog.Error("CRM Worker: Error fetching new interactions", "error", err)
-	} else {
-		for _, interaction := range newInteractions {
-			slog.Info("CRM Worker: Processing new interaction from CRM", "text", interaction.RawText)
-
-			// If we have a contact email, try to process it autonomously
-			if interaction.Summary != "" && w.comm != nil {
-				contact, err := w.db.GetContactByEmail(ctx, interaction.Summary)
-				if err == nil {
-					slog.Info("CRM Worker: Found contact for CRM interaction, triggering autonomous response", "email", interaction.Summary)
-					if _, err := w.comm.ProcessInbound(ctx, *contact, interaction.RawText); err != nil {
-						slog.Error("CRM Worker: Failed to process CRM inbound", "email", interaction.Summary, "error", err)
-					}
-				}
-			}
-		}
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	}
 
 	// 1. Reconcile updates from CRM

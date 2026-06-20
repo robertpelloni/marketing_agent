@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 package crm_test
 
 import (
@@ -83,30 +81,24 @@ func TestCRMWorker_Integration_SkipsNilDB(t *testing.T) {
 	// If this doesn't panic and returns cleanly, the nil check works
 }
 =======
-=======
->>>>>>> origin/crm-integration-tests-10823287328178807054
 package crm
 
 import (
 	"context"
-<<<<<<< HEAD
 	"net/http"
 	"net/http/httptest"
 	"sync/atomic"
-=======
 	"encoding/json"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
->>>>>>> origin/crm-integration-tests-10823287328178807054
 	"testing"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
-<<<<<<< HEAD
 func TestRestCRMClient_RetryLogic_Integration(t *testing.T) {
 	var attempts int32
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -114,7 +106,6 @@ func TestRestCRMClient_RetryLogic_Integration(t *testing.T) {
 		if atomic.LoadInt32(&attempts) < 3 {
 			http.Error(w, "Temporary Server Error", http.StatusInternalServerError)
 			return
-=======
 func TestRestCRMClient_DetailedError(t *testing.T) {
 	expectedBody := `{"error": "invalid custom requirements"}`
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -169,14 +160,12 @@ func TestRestCRMClient_DataIntegrity(t *testing.T) {
 		}
 		if err := json.Unmarshal(body, &capturedPayload); err != nil {
 			t.Fatalf("failed to decode json: %v", err)
->>>>>>> origin/crm-integration-tests-10823287328178807054
 		}
 		w.WriteHeader(http.StatusOK)
 	}))
 	defer server.Close()
 
 	client := NewRestCRMClient(server.URL, "test-key")
-<<<<<<< HEAD
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -196,7 +185,6 @@ func TestRestCRMClient_DataIntegrity(t *testing.T) {
 }
 
 func TestRestCRMClient_Timeout_Integration(t *testing.T) {
-=======
 
 	deal := db.Deal{
 		ID:                 42,
@@ -234,7 +222,6 @@ func TestRestCRMClient_Timeout_Integration(t *testing.T) {
 }
 
 func TestRestCRMClient_Timeout(t *testing.T) {
->>>>>>> origin/crm-integration-tests-10823287328178807054
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		time.Sleep(100 * time.Millisecond)
 		w.WriteHeader(http.StatusOK)
@@ -242,7 +229,6 @@ func TestRestCRMClient_Timeout(t *testing.T) {
 	defer server.Close()
 
 	client := NewRestCRMClient(server.URL, "test-key")
-<<<<<<< HEAD
 	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
 	defer cancel()
 
@@ -270,8 +256,6 @@ func TestRestCRMClient_ErrorBody_Integration(t *testing.T) {
 		t.Errorf("Expected error message %q, got %q", expected, err.Error())
 	}
 }
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
-=======
 	client.HTTPClient.Timeout = 10 * time.Millisecond
 
 	_, err := client.GetLeadUpdates(context.Background())
@@ -283,4 +267,3 @@ func TestRestCRMClient_ErrorBody_Integration(t *testing.T) {
 		t.Errorf("expected timeout error message, got: %v", err)
 	}
 }
->>>>>>> origin/crm-integration-tests-10823287328178807054

@@ -127,7 +127,7 @@
 
 ### API & Extensibility
 - [x] Add REST API for external pipeline management (Added /api/v1/quote endpoint)
-- [ ] Add outbound webhooks on deal state changes
+- [x] Add outbound webhooks on deal state changes
 - [ ] Add plugin system for custom sources, classifiers, and responders
 - [ ] Add multi-tenant support with data isolation
 

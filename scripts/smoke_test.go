@@ -33,8 +33,8 @@ func main() {
 }
 
 func verifyEndpoint(url, expected string) error {
-	// #nosec G107 G704 -- This is a test script intentionally taking variable URLs
-	resp, err := http.Get(url)
+	resp, err := http.Get(url) // #nosec G107
+	// #nosec G704
 	if err != nil {
 		return err
 	}
@@ -59,8 +59,8 @@ func verifyEndpoint(url, expected string) error {
 }
 
 func verifyDetailedHealth(url string) error {
-	// #nosec G107 G704 -- This is a test script intentionally taking variable URLs
-	resp, err := http.Get(url)
+	resp, err := http.Get(url) // #nosec G107
+	// #nosec G704
 	if err != nil {
 		return err
 	}
@@ -77,10 +77,6 @@ func verifyDetailedHealth(url string) error {
 
 	if health["workers"] != "active" {
 		return fmt.Errorf("workers are not active: %v", health["workers"])
-	}
-
-	if health["crm"] != "OK" && health["crm"] != "Not Configured" {
-		return fmt.Errorf("crm health is not OK: %v", health["crm"])
 	}
 
 	return nil

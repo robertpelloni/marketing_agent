@@ -22,36 +22,31 @@ type HNWhoIsHiringSource struct {
 
 // hnItem represents a Hacker News API item.
 type hnItem struct {
-	ID          int    `json:"id"`
-	By          string `json:"by"`
-	Text        string `json:"text"`
-	Kids        []int  `json:"kids"`
-	Time        int    `json:"time"`
-	Type        string `json:"type"`
-	Title       string `json:"title"`
-	Descendants int    `json:"descendants"`
+	ID		int	`json:"id"`
+	By		string	`json:"by"`
+	Text		string	`json:"text"`
+	Kids		[]int	`json:"kids"`
+	Time		int	`json:"time"`
+	Type		string	`json:"type"`
+	Title		string	`json:"title"`
+	Descendants	int	`json:"descendants"`
 }
 
 // hnUser represents a Hacker News user profile.
-type hnUser struct {
-	ID      string `json:"id"`
-	Karma   int    `json:"karma"`
-	Created int    `json:"created"`
-}
 
 var (
 	// Matches company name from the first line of a HN hiring comment.
 	// Format is typically: "Company Name | Role | Location | ..."
-	hnCompanyRegex = regexp.MustCompile(`^([^|]+?)(?:\s*\||\s*$)`)
+	hnCompanyRegex	= regexp.MustCompile(`^([^|]+?)(?:\s*\||\s*$)`)
 
 	// Matches URLs in the comment text (company websites).
-	hnURLRegex = regexp.MustCompile(`https?://[^\s<>"]+`)
+	hnURLRegex	= regexp.MustCompile(`https?://[^\s<>"]+`)
 
 	// Matches domain from URL.
-	hnDomainRegex = regexp.MustCompile(`(?:https?://)?(?:www\.)?([^/\s]+)`)
+	hnDomainRegex	= regexp.MustCompile(`(?:https?://)?(?:www\.)?([^/\s]+)`)
 
 	// Keywords that signal AI/LLM relevance.
-	aiKeywords = []string{
+	aiKeywords	= []string{
 		"llm", "large language model", "ai engineer", "machine learning",
 		"ml engineer", "deep learning", "nlp", "natural language",
 		"generative ai", "gen ai", "agentic", "agent", "orchestration",
@@ -64,8 +59,8 @@ var (
 )
 
 const (
-	hnAPIBase    = "https://hacker-news.firebaseio.com/v0"
-	hnSearchBase = "https://hn.algolia.com/api/v1"
+	hnAPIBase	= "https://hacker-news.firebaseio.com/v0"
+	hnSearchBase	= "https://hn.algolia.com/api/v1"
 )
 
 // Discover implements LeadSource. It searches HN "Who is Hiring" threads
@@ -96,7 +91,7 @@ func (h *HNWhoIsHiringSource) Discover(ctx context.Context, keywords []string) (
 
 	// 3. Parse each comment for company info and AI relevance
 	var companies []db.Company
-	seen := make(map[string]bool) // deduplicate by domain
+	seen := make(map[string]bool)	// deduplicate by domain
 
 	for _, comment := range comments {
 		if comment.Text == "" {
@@ -127,25 +122,10 @@ func (h *HNWhoIsHiringSource) Discover(ctx context.Context, keywords []string) (
 
 // findLatestWhoIsHiringThread uses the Algolia HN search API to find the
 // most recent "Who is Hiring" thread by whoishiring.
-// Falls back to Firebase API top stories scan if Algolia returns non-JSON.
 func (h *HNWhoIsHiringSource) findLatestWhoIsHiringThread(ctx context.Context) (int, error) {
-	// Primary: Algolia HN search API
-	id, err := h.searchAlgolia(ctx)
-	if err == nil && id > 0 {
-		return id, nil
-	}
-	if err != nil {
-		slog.Info(fmt.Sprintf("HNWhoIsHiring: Algolia search failed (%v), falling back to Firebase top stories scan", err))
-	}
-
-	// Fallback: Scan Firebase top stories for "Who is Hiring"
-	return h.scanFirebaseTop(ctx)
-}
-
-// searchAlgolia searches the Algolia HN API for the latest Who is Hiring thread.
-func (h *HNWhoIsHiringSource) searchAlgolia(ctx context.Context) (int, error) {
+	// Use search_by_date to get results sorted by newest first
 	url := fmt.Sprintf("%s/search_by_date?query=%%22who+is+hiring%%22&tags=story,author_whoishiring&hitsPerPage=5&numericFilters=created_at_i>%d",
-		hnSearchBase, time.Now().AddDate(0, -3, 0).Unix())
+		hnSearchBase, time.Now().AddDate(0, -3, 0).Unix())	// within last 3 months
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
@@ -159,21 +139,15 @@ func (h *HNWhoIsHiringSource) searchAlgolia(ctx context.Context) (int, error) {
 	}
 	defer resp.Body.Close()
 
-	// Check content type to guard against HTML responses
-	ct := resp.Header.Get("Content-Type")
-	if !strings.Contains(ct, "json") {
-		return 0, fmt.Errorf("Algolia returned non-JSON content type: %s", ct)
-	}
-
 	var result struct {
 		Hits []struct {
-			ObjectID string `json:"objectID"`
-			Title    string `json:"title"`
+			ObjectID	string	`json:"objectID"`
+			Title		string	`json:"title"`
 		} `json:"hits"`
 	}
 
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		return 0, fmt.Errorf("Algolia returned invalid JSON: %w", err)
+		return 0, err
 	}
 
 	for _, hit := range result.Hits {
@@ -183,65 +157,6 @@ func (h *HNWhoIsHiringSource) searchAlgolia(ctx context.Context) (int, error) {
 			if _, err := fmt.Sscanf(hit.ObjectID, "%d", &id); err == nil && id > 0 {
 				return id, nil
 			}
-		}
-	}
-
-	return 0, nil
-}
-
-// scanFirebaseTop falls back to scanning Firebase API top stories.
-func (h *HNWhoIsHiringSource) scanFirebaseTop(ctx context.Context) (int, error) {
-	url := fmt.Sprintf("%s/topstories.json", hnAPIBase)
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-	if err != nil {
-		return 0, err
-	}
-
-	resp, err := h.client().Do(req)
-	if err != nil {
-		return 0, err
-	}
-	defer resp.Body.Close()
-
-	var topIDs []int
-	if err := json.NewDecoder(resp.Body).Decode(&topIDs); err != nil {
-		return 0, err
-	}
-
-	limit := 100
-	if len(topIDs) < limit {
-		limit = len(topIDs)
-	}
-
-	type storyResult struct {
-		id  int
-		err error
-	}
-	ch := make(chan storyResult, limit)
-	sem := make(chan struct{}, 10)
-
-	for _, sid := range topIDs[:limit] {
-		sem <- struct{}{}
-		go func(storyID int) {
-			defer func() { <-sem }()
-			item, err := h.fetchItem(ctx, storyID)
-			if err != nil {
-				ch <- storyResult{err: err}
-				return
-			}
-			title := strings.ToLower(item.Title)
-			if strings.Contains(title, "who is hiring") && !strings.Contains(title, "freelancer") {
-				ch <- storyResult{id: item.ID}
-				return
-			}
-			ch <- storyResult{id: 0}
-		}(sid)
-	}
-
-	for i := 0; i < limit; i++ {
-		r := <-ch
-		if r.id > 0 {
-			return r.id, nil
 		}
 	}
 
@@ -269,12 +184,12 @@ func (h *HNWhoIsHiringSource) fetchThreadComments(ctx context.Context, threadID 
 
 	comments := make([]hnItem, 0, limit)
 	type result struct {
-		item hnItem
-		err  error
+		item	hnItem
+		err	error
 	}
 
 	ch := make(chan result, limit)
-	sem := make(chan struct{}, 10) // concurrency limit
+	sem := make(chan struct{}, 10)	// concurrency limit
 
 	for _, kidID := range thread.Kids[:limit] {
 		sem <- struct{}{}
@@ -336,7 +251,7 @@ func (h *HNWhoIsHiringSource) parseComment(comment hnItem) (db.Company, bool) {
 
 	// Extract company name from first line
 	matches := hnCompanyRegex.FindStringSubmatch(firstLine)
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 2 {
 		return db.Company{}, false
 	}
 
@@ -350,7 +265,7 @@ func (h *HNWhoIsHiringSource) parseComment(comment hnItem) (db.Company, bool) {
 	urls := hnURLRegex.FindAllString(text, 5)
 	for _, u := range urls {
 		dm := hnDomainRegex.FindStringSubmatch(u)
-		if dm != nil && len(dm) > 1 {
+		if len(dm) > 1 {
 			d := strings.ToLower(dm[1])
 			// Skip common non-company domains
 			if !isExcludedDomain(d) {
@@ -385,11 +300,11 @@ func (h *HNWhoIsHiringSource) parseComment(comment hnItem) (db.Company, bool) {
 	}
 
 	return db.Company{
-		Name:          companyName,
-		Domain:        domain,
-		TechStack:     techStack,
-		HiringSignals: hiringSignals,
-		MarketCapTier: classifyMarketCap(text),
+		Name:		companyName,
+		Domain:		domain,
+		TechStack:	techStack,
+		HiringSignals:	hiringSignals,
+		MarketCapTier:	classifyMarketCap(text),
 	}, true
 }
 
@@ -420,30 +335,30 @@ func extractTechStack(text string) []string {
 	var stack []string
 
 	techMap := map[string]string{
-		"go":         "Go",
-		"golang":     "Go",
-		"python":     "Python",
-		"rust":       "Rust",
-		"typescript": "TypeScript",
-		"kubernetes": "Kubernetes",
-		"k8s":        "Kubernetes",
-		"docker":     "Docker",
-		"aws":        "AWS",
-		"gcp":        "GCP",
-		"azure":      "Azure",
-		"postgres":   "PostgreSQL",
-		"postgresql": "PostgreSQL",
-		"redis":      "Redis",
-		"kafka":      "Kafka",
-		"pytorch":    "PyTorch",
-		"tensorflow": "TensorFlow",
-		"langchain":  "LangChain",
-		"llamaindex": "LlamaIndex",
-		"openai":     "OpenAI",
-		"anthropic":  "Anthropic",
-		"triton":     "Triton",
-		"vllm":       "vLLM",
-		"ray":        "Ray",
+		"go":		"Go",
+		"golang":	"Go",
+		"python":	"Python",
+		"rust":		"Rust",
+		"typescript":	"TypeScript",
+		"kubernetes":	"Kubernetes",
+		"k8s":		"Kubernetes",
+		"docker":	"Docker",
+		"aws":		"AWS",
+		"gcp":		"GCP",
+		"azure":	"Azure",
+		"postgres":	"PostgreSQL",
+		"postgresql":	"PostgreSQL",
+		"redis":	"Redis",
+		"kafka":	"Kafka",
+		"pytorch":	"PyTorch",
+		"tensorflow":	"TensorFlow",
+		"langchain":	"LangChain",
+		"llamaindex":	"LlamaIndex",
+		"openai":	"OpenAI",
+		"anthropic":	"Anthropic",
+		"triton":	"Triton",
+		"vllm":		"vLLM",
+		"ray":		"Ray",
 	}
 
 	seen := make(map[string]bool)

@@ -2,6 +2,7 @@ package config
 
 import (
 	"bufio"
+	"encoding/json"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -13,7 +14,6 @@ import (
 
 // Config holds the application configuration.
 type Config struct {
-<<<<<<< HEAD
 	DatabaseURL		string
 	GitHubToken		string
 	GitHubRepository	string
@@ -49,35 +49,12 @@ type Config struct {
 	IMAPPassword		string
 	IMAPFolder		string
 	IMAPPollInterval	time.Duration
-=======
-	DatabaseURL         string
-	GitHubToken         string
-	GitHubRepository    string
-	GitHubWebhookSecret string
-	CRMBaseURL          string
-	CRMAPIKey           string
-	CRMProvider         string
-	SalesforceAuthURL    string
-	SalesforceClientID   string
-	SalesforceClientSecret string
-	SMTPHost            string
-	SMTPPort            string
-	SMTPUser            string
-	SMTPPass            string
-	SMTPFrom            string
-	IMAPHost            string
-	IMAPPort            string
-	IMAPUser            string
-	IMAPPass            string
-	DeploySyncInterval  time.Duration
-	Port                string
-	Environment         string
-	CRMDealNameProp     string
-	CRMDealStageProp    string
-	CRMDealAmountProp   string
-	CRMDealDossierProp  string
-	CRMContactEmailProp string
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+
+	// CRM Field Mappings
+	SalesforceStageMapping        map[string]string
+	HubSpotStageMapping           map[string]string
+	SalesforceReverseStageMapping map[string]string
+	HubSpotReverseStageMapping    map[string]string
 }
 
 // Load loads the configuration from environment variables and .env file.
@@ -129,7 +106,6 @@ func Load() *Config {
 	}
 
 	return &Config{
-<<<<<<< HEAD
 		DatabaseURL:		getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
 		GitHubToken:		os.Getenv("GITHUB_TOKEN"),
 		GitHubRepository:	os.Getenv("GITHUB_REPOSITORY"),
@@ -165,6 +141,47 @@ func Load() *Config {
 		IMAPPassword:		os.Getenv("IMAP_PASSWORD"),
 		IMAPFolder:		getEnv("IMAP_FOLDER", "INBOX"),
 		IMAPPollInterval:	imapPollInterval,
+
+		// CRM Field Mappings
+		SalesforceStageMapping: parseMapFromEnv("SALESFORCE_STAGE_MAPPING", map[string]string{
+			"Discovered":       "Prospecting",
+			"Researched":       "Qualification",
+			"Outreach_Sent":    "Needs Analysis",
+			"Engaged":          "Value Proposition",
+			"Negotiating":      "Negotiation/Review",
+			"Pending_Approval": "Id. Decision Makers",
+			"Closed_Won":       "Closed Won",
+			"Closed_Lost":      "Closed Lost",
+		}),
+		HubSpotStageMapping: parseMapFromEnv("HUBSPOT_STAGE_MAPPING", map[string]string{
+			"Discovered":       "appointmentscheduled",
+			"Researched":       "qualifiedtobuy",
+			"Outreach_Sent":    "presentationscheduled",
+			"Engaged":          "decisionmakerboughtin",
+			"Negotiating":      "contractsent",
+			"Pending_Approval": "contractsent",
+			"Closed_Won":       "closedwon",
+			"Closed_Lost":      "closedlost",
+		}),
+		SalesforceReverseStageMapping: parseMapFromEnv("SALESFORCE_REVERSE_STAGE_MAPPING", map[string]string{
+			"Prospecting":         "Discovered",
+			"Qualification":       "Researched",
+			"Needs Analysis":      "Outreach_Sent",
+			"Value Proposition":   "Engaged",
+			"Negotiation/Review":  "Negotiating",
+			"Id. Decision Makers": "Pending_Approval",
+			"Closed Won":          "Closed_Won",
+			"Closed Lost":         "Closed_Lost",
+		}),
+		HubSpotReverseStageMapping: parseMapFromEnv("HUBSPOT_REVERSE_STAGE_MAPPING", map[string]string{
+			"appointmentscheduled":  "Discovered",
+			"qualifiedtobuy":        "Researched",
+			"presentationscheduled": "Outreach_Sent",
+			"decisionmakerboughtin": "Engaged",
+			"contractsent":          "Negotiating",
+			"closedwon":             "Closed_Won",
+			"closedlost":            "Closed_Lost",
+		}),
 	}
 }
 
@@ -180,7 +197,7 @@ func loadDotEnv() {
 	}
 
 	for _, p := range paths {
-		file, err := os.Open(p)
+		file, err := os.Open(filepath.Clean(p))
 		if err != nil {
 			continue	// .env is optional
 		}
@@ -210,39 +227,10 @@ func loadDotEnv() {
 
 			// Don't overwrite existing env vars
 			if os.Getenv(key) == "" {
-				os.Setenv(key, value)
+				_ = os.Setenv(key, value)
 			}
 		}
 		return	// only load the first .env found
-=======
-		DatabaseURL:         getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
-		GitHubToken:         os.Getenv("GITHUB_TOKEN"),
-		GitHubRepository:    os.Getenv("GITHUB_REPOSITORY"),
-		GitHubWebhookSecret: os.Getenv("GITHUB_WEBHOOK_SECRET"),
-		CRMBaseURL:          os.Getenv("CRM_BASE_URL"),
-		CRMAPIKey:           os.Getenv("CRM_API_KEY"),
-		CRMProvider:         getEnv("CRM_PROVIDER", "generic"),
-		SalesforceAuthURL:    os.Getenv("SALESFORCE_AUTH_URL"),
-		SalesforceClientID:   os.Getenv("SALESFORCE_CLIENT_ID"),
-		SalesforceClientSecret: os.Getenv("SALESFORCE_CLIENT_SECRET"),
-		SMTPHost:            os.Getenv("SMTP_HOST"),
-		SMTPPort:            os.Getenv("SMTP_PORT"),
-		SMTPUser:            os.Getenv("SMTP_USER"),
-		SMTPPass:            os.Getenv("SMTP_PASS"),
-		SMTPFrom:            os.Getenv("SMTP_FROM"),
-		IMAPHost:            os.Getenv("IMAP_HOST"),
-		IMAPPort:            os.Getenv("IMAP_PORT"),
-		IMAPUser:            os.Getenv("IMAP_USER"),
-		IMAPPass:            os.Getenv("IMAP_PASS"),
-		DeploySyncInterval:  syncInterval,
-		Port:                port,
-		Environment:         env,
-		CRMDealNameProp:     os.Getenv("CRM_DEAL_NAME_PROP"),
-		CRMDealStageProp:    os.Getenv("CRM_DEAL_STAGE_PROP"),
-		CRMDealAmountProp:   os.Getenv("CRM_DEAL_AMOUNT_PROP"),
-		CRMDealDossierProp:  os.Getenv("CRM_DEAL_DOSSIER_PROP"),
-		CRMContactEmailProp: os.Getenv("CRM_CONTACT_EMAIL_PROP"),
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	}
 }
 
@@ -251,4 +239,18 @@ func getEnv(key, fallback string) string {
 		return value
 	}
 	return fallback
+}
+
+func parseMapFromEnv(key string, defaultMap map[string]string) map[string]string {
+	val := os.Getenv(key)
+	if val == "" {
+		return defaultMap
+	}
+	var m map[string]string
+	err := json.Unmarshal([]byte(val), &m)
+	if err != nil {
+		slog.Error("Config: Failed to parse JSON, using defaults", "key", key, "error", err)
+		return defaultMap
+	}
+	return m
 }

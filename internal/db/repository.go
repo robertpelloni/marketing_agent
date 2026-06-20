@@ -758,17 +758,17 @@ func (db *DB) MarkTemplateSuccessForDeal(ctx context.Context, dealID int64) erro
 			var interactionID int64
 			var tmplID string
 			if err := rows.Scan(&interactionID, &tmplID); err != nil {
-				rows.Close()
+				_ = rows.Close()
 				return fmt.Errorf("failed to scan interaction row: %w", err)
 			}
 			// Mark interaction as successful
 			if err := db.UpdateInteractionSuccess(ctx, interactionID, true); err != nil {
-				rows.Close()
+				_ = rows.Close()
 				return fmt.Errorf("failed to update interaction success for id %d: %w", interactionID, err)
 			}
 			// Record template success metric
 			if err := db.RecordTemplateSuccess(ctx, tmplID); err != nil {
-				rows.Close()
+				_ = rows.Close()
 				return fmt.Errorf("failed to record template success for %s: %w", tmplID, err)
 			}
 		}

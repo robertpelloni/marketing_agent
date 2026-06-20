@@ -26,8 +26,8 @@
 - [x] Add configurable worker intervals via environment variables
 
 ### Logging & Observability
-- [ ] Replace all `log.Printf` with a leveled, structured logger (`slog` or `zerolog`)
-- [ ] Add Prometheus metrics endpoint (`/metrics`) with business and system counters
+- [x] Replace all `log.Printf` with a leveled, structured logger (`slog` or `zerolog`)
+- [x] Add Prometheus metrics endpoint (`/metrics`) with business and system counters
 - [x] Add correlation/request IDs to all log lines
 - [x] Add `pprof` endpoint for production debugging
 
@@ -48,17 +48,10 @@
 ### Real Communication Channels
 - [x] Implement SMTP email sender for outbound outreach
 - [x] Implement IMAP/POP3 email polling for inbound ingestion
-<<<<<<< HEAD
 - [x] Implement LinkedIn message sending via headless automation
 - [x] Implement GitHub Issue/PR comment outreach as technical hook
 - [x] Add channel preference logic per contact
 - [x] Add outreach cadence management (configurable follow-up schedule)
-=======
-- [ ] Implement LinkedIn message sending via headless automation
-- [ ] Implement GitHub Issue/PR comment outreach as technical hook
-- [ ] Add channel preference logic per contact
-- [ ] Add outreach cadence management (configurable follow-up schedule)
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 
 ### Real LLM Integration
 - [x] Implement Hermes Agent LLM provider (replace mock) — routes through local Hermes gateway with 200+ model support
@@ -70,12 +63,7 @@
 ### Real CRM Integration
 - [x] Implement Salesforce CRM adapter
 - [x] Implement HubSpot CRM adapter
-<<<<<<< HEAD
-- [ ] Add CRM field mapping configuration
-=======
-- [x] Integrate Live CRM Outreach (SendEmail)
 - [x] Add CRM field mapping configuration
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 
 ## Phase 8 — Intelligence & Autonomous Evolution
 
@@ -188,4 +176,4 @@
 - [x] Implement Self-Service Deployment Pipeline (Sync & Build triggers)
 - [x] Add `borg` submodule for technical documentation reference
 - [x] Implement Task 6: Automated Provisioning for won deals
-- [x] Rebrand from Borg to TormentNexus across all product-facing references
+- [x] Rebrand from TormentNexus to TormentNexus across all product-facing references

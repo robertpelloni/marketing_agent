@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. The format 
 
 <<<<<<< HEAD
 ### Added
+- **Real-Time Quote API:** Added `/api/v1/quote` endpoint for dynamic quote generation based on company size/tier.
 - **Enrichment Source Fallback Chain:**
     - Implemented `FallbackSource` in `internal/enrichment/fallback.go`.
     - Wraps multiple `EnrichmentSource` instances (Hunter.io, Apollo.io, Mock) and tries each in order.

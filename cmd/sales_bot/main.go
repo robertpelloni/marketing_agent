@@ -207,7 +207,7 @@ func main() {
 
 	// 3a. Start Autonomous Blog Generator (daily)
 	blogGen := contentgen.NewBlogGenerator(llmProvider, database)
-	go blogGen.Run(ctx, 24*time.Hour)
+	go blogGen.Run(ctx, 15*time.Minute)
 
 	// 4. Start Web Server
 	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider)

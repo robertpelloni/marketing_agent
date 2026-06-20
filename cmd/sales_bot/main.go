@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"os/signal"
 	"syscall"
@@ -28,6 +29,7 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/web"
 	"github.com/robertpelloni/enterprise_sales_bot/pkg/agents"
+	"github.com/robertpelloni/enterprise_sales_bot/pkg/plugins"
 
 	_ "github.com/lib/pq"	// PostgreSQL driver
 )
@@ -72,6 +74,25 @@ func main() {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
+
+
+	// 1a. Load Plugins
+	pluginRegistry := plugins.NewRegistry()
+	if files, err := os.ReadDir("plugins"); err == nil {
+		for _, f := range files {
+			if filepath.Ext(f.Name()) == ".so" {
+				path := filepath.Join("plugins", f.Name())
+				name := strings.TrimSuffix(f.Name(), ".so")
+				if err := pluginRegistry.LoadGoPlugin(name, path); err != nil {
+					slog.Warn("Failed to load plugin", "plugin", name, "error", err)
+				} else {
+					slog.Info("Successfully loaded plugin", "plugin", name)
+				}
+			}
+		}
+	} else if !os.IsNotExist(err) {
+		slog.Warn("Error reading plugins directory", "error", err)
+	}
 
 	// 2. Setup Scraper — HN "Who is Hiring" + LinkedIn + GitHub Issues + Mock fallback
 	sources := []scraper.LeadSource{
@@ -145,6 +166,10 @@ func main() {
 		slog.Info("Enrichment: Mock source added as final fallback.")
 		enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
 		sourceNames = append(sourceNames, "Mock (fallback)")
+	}
+	for name, pe := range pluginRegistry.Enrichers {
+		enrichmentSources = append(enrichmentSources, pe)
+		sourceNames = append(sourceNames, name)
 	}
 
 	// Wrap sources in fallback chain for ordered retry with clear logging
@@ -233,8 +258,18 @@ func main() {
 		slog.Info("Communication: Initializing Mock Intent Classifier.")
 		classifier = &communication.MockIntentClassifier{}
 	}
+	for _, pc := range pluginRegistry.Classifiers {
+		slog.Info("Communication: Using Plugin Intent Classifier.")
+		classifier = pc
+		break // just use the first one found
+	}
 
-	responder := communication.NewRAGResponseGenerator(database, llmProvider)
+	var responder communication.ResponseGenerator = communication.NewRAGResponseGenerator(database, llmProvider)
+	for _, pr := range pluginRegistry.Responders {
+		slog.Info("Communication: Using Plugin Responder.")
+		responder = pr
+		break
+	}
 	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
 
 	// 2h. Setup Email Sender — SMTP, Draft, or Mock

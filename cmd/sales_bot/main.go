@@ -4,7 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"log/slog"
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -27,10 +27,9 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/sales"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/web"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/mail"
 	"github.com/robertpelloni/enterprise_sales_bot/pkg/agents"
 
-	_ "github.com/lib/pq"	// PostgreSQL driver
+	_ "github.com/lib/pq" // PostgreSQL driver
 )
 
 func main() {
@@ -39,43 +38,25 @@ func main() {
 	flag.Parse()
 
 	if *inventory {
-<<<<<<< HEAD
-		slog.Info("Generating submodule inventory")
-=======
-		slog.Info("Generating Submodule Inventory...")
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+		log.Println("Generating Submodule Inventory...")
 		table, err := gitcheck.GenerateSubmoduleInventory()
 		if err != nil {
-			slog.Error("Failed to generate inventory", "error", err)
-			os.Exit(1)
+			log.Fatalf("Failed to generate inventory: %v", err)
 		}
 		fmt.Println(table)
 		return
 	}
 
 	if *reconcile {
-<<<<<<< HEAD
-		slog.Info("Running intelligent merge engine")
-=======
-		slog.Info("Running Intelligent Merge Engine...")
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+		log.Println("Running Intelligent Merge Engine...")
 		if err := gitres.ReconcileBranches(); err != nil {
-			slog.Error("Reconciliation failed", "error", err)
-			os.Exit(1)
+			log.Fatalf("Reconciliation failed: %v", err)
 		}
-<<<<<<< HEAD
-		slog.Info("Reconciliation complete")
+		log.Println("Reconciliation complete.")
 		return
 	}
 
-	slog.Info("Starting TormentNexus Autonomous Sales Bot")
-=======
-		slog.Info("Reconciliation complete.")
-		return
-	}
-
-	slog.Info("Starting TormentNexus Autonomous Sales Bot...")
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+	log.Println("Starting TormentNexus Autonomous Sales Bot...")
 
 	// 0. Load Configuration
 	cfg := config.Load()
@@ -83,288 +64,102 @@ func main() {
 	// 1. Initialize Database
 	database, err := db.NewDB(cfg.DatabaseURL)
 	if err != nil {
-<<<<<<< HEAD
-		slog.Error(fmt.Sprintf("Could not connect to database: %v", err))
-=======
-		slog.Error("Could not connect to database", "error", err)
-		os.Exit(1)
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+		log.Fatalf("Could not connect to database: %v", err)
 	}
 	defer database.Close()
 
+	// 2. Setup Scraper
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// 2. Setup Scraper — HN "Who is Hiring" + LinkedIn + GitHub Issues + Mock fallback
 	sources := []scraper.LeadSource{
-		&scraper.HNWhoIsHiringSource{Client: http.DefaultClient},
-		&scraper.LinkedInSource{Client: http.DefaultClient},
-		&scraper.GitHubIssueSource{Client: http.DefaultClient, Token: cfg.GitHubToken},
 		&scraper.MockJobBoardSource{},
 	}
 	s := scraper.NewScraper(database, sources)
 
-	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows", "AI Platform", "ML Infrastructure"}
-	go s.Run(ctx, 2*time.Hour, keywords)
+	// Run scraper in background
+	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows"}
+	go s.Run(ctx, 1*time.Hour, keywords)
 
-	// 2a. Setup CRM Integration
+	// 2ca. Setup CRM Integration
 	var crmClient crm.CRMClient
-<<<<<<< HEAD
 	if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
-		slog.Info(fmt.Sprintf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL))
+		log.Printf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL)
 		crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
 	} else {
-		slog.Info("CRM: Initializing mock CRM client (missing configuration).")
+		log.Println("CRM: Initializing mock CRM client (missing configuration).")
 		crmClient = crm.NewMockCRMClient()
 	}
-
-	// 2b. Setup Enricher — Hunter.io + Apollo.io + Mock with FallbackSource
-	var enrichmentSources []enrichment.EnrichmentSource
-	var sourceNames []string
-=======
-	switch cfg.CRMProvider {
-	case "hubspot":
-		if cfg.CRMAPIKey != "" {
-			slog.Info("CRM: Initializing HubSpot CRM client.")
-			crmClient = crm.NewHubSpotCRMClient(cfg.CRMAPIKey)
-		}
-	case "salesforce":
-		if cfg.CRMBaseURL != "" {
-			slog.Info("CRM: Initializing Salesforce CRM client.")
-			crmClient = crm.NewSalesforceCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey, cfg.SalesforceClientID, cfg.SalesforceClientSecret, cfg.SalesforceAuthURL)
-		}
-	default:
-		if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
-			slog.Info("CRM: Initializing production REST CRM client", "url", cfg.CRMBaseURL)
-			crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
-		}
-	}
-
-	if crmClient == nil {
-		slog.Info("CRM: Initializing mock CRM client", "provider", cfg.CRMProvider)
-		crmClient = crm.NewMockCRMClient()
-	}
-
-	// 2cb. Setup CRM Field Mappings
-	crmClient.SetFieldMapping(crm.FieldMapping{
-		DealNameProperty:     cfg.CRMDealNameProp,
-		DealStageProperty:    cfg.CRMDealStageProp,
-		DealAmountProperty:   cfg.CRMDealAmountProp,
-		DealDossierProperty:  cfg.CRMDealDossierProp,
-		ContactEmailProperty: cfg.CRMContactEmailProp,
-	})
 
 	// 2b. Setup Enricher
 	enrichmentSources := []enrichment.EnrichmentSource{
 		&enrichment.MockApolloSource{},
 	}
 	e := enrichment.NewEnricher(database, enrichmentSources, crmClient)
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 
-	if cfg.HunterAPIKey != "" {
-		slog.Info("Enrichment: Initializing Hunter.io source.")
-		enrichmentSources = append(enrichmentSources, enrichment.NewHunterSource(cfg.HunterAPIKey))
-		sourceNames = append(sourceNames, "Hunter.io")
-	} else {
-		slog.Info("Enrichment: No HUNTER_API_KEY set - skipping Hunter.io.")
-	}
-
-	if cfg.ApolloAPIKey != "" {
-		slog.Info("Enrichment: Initializing Apollo.io source.")
-		enrichmentSources = append(enrichmentSources, enrichment.NewApolloSource(cfg.ApolloAPIKey))
-		sourceNames = append(sourceNames, "Apollo.io")
-	} else {
-		slog.Info("Enrichment: No APOLLO_API_KEY set - skipping Apollo.io.")
-	}
-
-	// Always add mock source as final fallback for development/testing
-	if len(enrichmentSources) == 0 {
-		slog.Info("Enrichment: No real sources configured - using mock source only.")
-		enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
-		sourceNames = append(sourceNames, "Mock")
-	} else {
-		slog.Info("Enrichment: Mock source added as final fallback.")
-		enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
-		sourceNames = append(sourceNames, "Mock (fallback)")
-	}
-
-	// Wrap sources in fallback chain for ordered retry with clear logging
-	fallbackSource := enrichment.NewFallbackSource(enrichmentSources, sourceNames)
-	slog.Info(fmt.Sprintf("Enrichment: Fallback chain configured — %s", fallbackSource.Status()))
-
-	e := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{fallbackSource}, crmClient)
+	// Run enricher in background
 	go e.Run(ctx, 1*time.Hour)
 
-	// 2c. Setup Researcher — GitHub, Tech Blogs, and RSS Feeds
-	rssFeeds := []string{
-		"https://hnrss.org/frontpage?points=10",
-		"https://blog.rust-lang.org/feed.xml",
-		"https://go.dev/blog/feed.atom",
-		"https://engineering.fb.com/feed/",
-		"https://netflixtechblog.com/feed/",
-		"https://github.blog/category/engineering/feed/",
-	}
+	// 2c. Setup Researcher
 	crawlers := []researcher.Crawler{
 		&researcher.GitHubCrawler{Client: http.DefaultClient},
 		&researcher.BlogCrawler{Client: http.DefaultClient},
-		&researcher.RSSFeedCrawler{
-			Feeds: rssFeeds,
-			Client: http.DefaultClient,
-		},
 	}
 	processor := &researcher.DefaultDossierProcessor{}
 	r := researcher.NewResearcher(database, crawlers, processor, crmClient)
+
+	// Run researcher in background
 	go r.Run(ctx, 1*time.Hour)
 
-<<<<<<< HEAD
 	crmWorker := crm.NewWorker(database, crmClient)
+
+	// Run CRM sync in background
 	go crmWorker.Run(ctx, 30*time.Minute)
 
-	// 2d. Setup Target Discovery
-=======
 	// 2cb. Setup TormentNexus Outreach System
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	outreachWorker := agents.NewTargetDiscoveryWorker(database)
+
+	// Run outreach discovery in background
 	go outreachWorker.Run(ctx, 2*time.Hour)
 
-	// 2e. Setup Deployer
+	// 2d. Setup Deployer
 	var ciTracker deploy.CITracker
 	var dispatcher deploy.WorkflowDispatcher
-
 	if cfg.GitHubRepository != "" {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
-<<<<<<< HEAD
-			slog.Info(fmt.Sprintf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", cfg.GitHubRepository))
-=======
 			// #nosec G706 -- Repository name is used for context in initialization logs
-			slog.Info("CI: Initializing GitHub CI Tracker and Dispatcher", "repo", cfg.GitHubRepository)
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+			log.Printf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", cfg.GitHubRepository)
 			ciTracker = deploy.NewGitHubCITracker(parts[0], parts[1])
 			dispatcher = deploy.NewGitHubDispatcher(parts[0], parts[1])
 		}
 	}
-
 	if ciTracker == nil {
-		slog.Info("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY).")
+		log.Println("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY).")
 		ciTracker = &deploy.MockCITracker{}
 	}
-
 	deployer := deploy.NewDeployer(ciTracker, dispatcher)
+
+	// 2da. Setup Deployer background sync and monitoring
 	go deployer.Run(ctx, cfg.DeploySyncInterval)
 	go deployer.MonitorDeployment(ctx, cfg.DeploySyncInterval)
 
-	// 2f. Setup LLM Provider — Hermes or Mock
-	var llmProvider llm.LLMProvider
-	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
-		slog.Info(fmt.Sprintf("LLM: Initializing Hermes provider at %s (model: %s)", cfg.HermesAPIURL, cfg.HermesModel))
-		llmProvider = llm.NewHermesLLMProvider(llm.HermesConfig{
-			BaseURL:	cfg.HermesAPIURL,
-			APIKey:		cfg.HermesAPIKey,
-			Model:		cfg.HermesModel,
-		})
-
-		if err := llmProvider.(*llm.HermesLLMProvider).HealthCheck(ctx); err != nil {
-			slog.Info(fmt.Sprintf("LLM: WARNING — Hermes health check failed: %v", err))
-		} else {
-			slog.Info("LLM: Hermes health check passed ✓")
-		}
-	} else {
-		slog.Info("LLM: Initializing Mock LLM Provider (set HERMES_API_URL and HERMES_API_KEY for real LLM).")
-		llmProvider = &llm.MockLLMProvider{}
-	}
-
-	// 2g. Setup Intent Classifier
-	var classifier communication.IntentClassifier
-	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
-		slog.Info("Communication: Initializing LLM-backed Intent Classifier via Hermes.")
-		classifier = communication.NewLLMIntentClassifier(llmProvider)
-	} else {
-		slog.Info("Communication: Initializing Mock Intent Classifier.")
-		classifier = &communication.MockIntentClassifier{}
-	}
-
-<<<<<<< HEAD
-=======
-	// 2db. Setup Email direct sender
-	var emailSender mail.EmailSender
-	if cfg.SMTPHost != "" {
-		slog.Info("SMTP: Initializing SMTP email sender", "host", cfg.SMTPHost)
-		emailSender = mail.NewSMTPSender(cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUser, cfg.SMTPPass, cfg.SMTPFrom)
-	}
+	// 2da. Setup LLM Provider
+	llmProvider := &llm.MockLLMProvider{}
 
 	// 2e. Setup Communication Manager
 	classifier := &communication.MockIntentClassifier{}
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	responder := communication.NewRAGResponseGenerator(database, llmProvider)
 	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
 
-	// 2h. Setup Email Sender — SMTP, Draft, or Mock
-	var emailSender communication.EmailSender
-	if cfg.SMTPHost != "" && cfg.SMTPUsername != "" && cfg.SMTPPassword != "" && !cfg.DryRun {
-		slog.Info(fmt.Sprintf("Email: Initializing SMTP sender via %s:%d as %s", cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUsername))
-		emailSender = communication.NewSMTPSender(communication.SMTPConfig{
-			Host:		cfg.SMTPHost,
-			Port:		cfg.SMTPPort,
-			Username:	cfg.SMTPUsername,
-			Password:	cfg.SMTPPassword,
-			From:		cfg.SMTPFrom,
-			FromName:	cfg.SMTPFromName,
-		})
-	} else if cfg.DryRun && cfg.IMAPHost != "" && cfg.IMAPUsername != "" && cfg.IMAPPassword != "" {
-		slog.Info(fmt.Sprintf("Email: DRY RUN mode — saving drafts to %s via IMAP.", cfg.IMAPFolder))
-		emailSender = communication.NewDraftSender(cfg.IMAPHost, cfg.IMAPPort, cfg.IMAPUsername, cfg.IMAPPassword)
-	} else {
-		if cfg.DryRun {
-			slog.Info("Email: DRY RUN mode — no IMAP configured, emails will be logged only.")
-		} else {
-			slog.Info("Email: No SMTP configured — outbound emails will be logged but not sent.")
-		}
-		emailSender = &communication.MockEmailSender{}
-	}
-
+	// 2ea. Setup Order Processing
 	billingClient := &billing.MockBillingClient{}
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
-<<<<<<< HEAD
-	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender)
-	
-	// Initialize Objection Library and attach to manager
-	objectionLib := communication.NewObjectionLibrary()
-	commManager.SetObjectionLibrary(objectionLib)
-	go commManager.Run(ctx, 30*time.Minute)
-
-	// 2j. Setup Cadence-aware outreach scheduling
-	cadenceManager := communication.NewCadenceAwareManager(commManager, database)
-	go cadenceManager.RunCadence(ctx, 12*time.Hour)	// checks every 12 h for next touch
-
-	// 2i. Setup IMAP Email Receiver
-	if cfg.IMAPHost != "" && cfg.IMAPUsername != "" && cfg.IMAPPassword != "" {
-		slog.Info(fmt.Sprintf("Email: Initializing IMAP receiver from %s:%d (polling every %v)", cfg.IMAPHost, cfg.IMAPPort, cfg.IMAPPollInterval))
-		imapReceiver := communication.NewEmailReceiver(communication.IMAPConfig{
-			Host:		cfg.IMAPHost,
-			Port:		cfg.IMAPPort,
-			Username:	cfg.IMAPUsername,
-			Password:	cfg.IMAPPassword,
-			Folder:		cfg.IMAPFolder,
-		}, commManager)
-		go imapReceiver.Run(ctx, cfg.IMAPPollInterval)
-	} else {
-		slog.Info("Email: No IMAP configured — inbound emails will not be received.")
-	}
-=======
-	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, crmClient, emailSender)
+	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor)
 
 	// Run communication poller in background
 	go commManager.Run(ctx, 30*time.Minute)
-
-	// 2ea. Setup CRM and Email Pollers (Inbound Ingestion)
-	crmWorker := crm.NewWorker(database, crmClient, commManager)
-	go crmWorker.Run(ctx, 30*time.Minute)
-
-	imapPoller := mail.NewIMAPPoller(database, commManager, cfg.IMAPHost, cfg.IMAPUser, cfg.IMAPPass)
-	go imapPoller.Run(ctx, 30*time.Minute)
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")
@@ -374,74 +169,55 @@ func main() {
 	if cfg.GitHubRepository != "" {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
-<<<<<<< HEAD
-			slog.Info(fmt.Sprintf("Autodev: Initializing GitHub PR Manager for %s", cfg.GitHubRepository))
-=======
 			// #nosec G706 -- Repository name is used for context in initialization logs
-			slog.Info("Autodev: Initializing GitHub PR Manager", "repo", cfg.GitHubRepository)
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+			log.Printf("Autodev: Initializing GitHub PR Manager for %s", cfg.GitHubRepository)
 			prManager = gitcheck.NewGitHubPRManager(parts[0], parts[1])
 		}
 	}
 	if prManager == nil {
-		slog.Info("Autodev: Initializing Mock PR Manager (missing GITHUB_REPOSITORY).")
+		log.Println("Autodev: Initializing Mock PR Manager (missing GITHUB_REPOSITORY).")
 		prManager = &gitcheck.MockPRManager{}
 	}
 
 	orchestrator := autodev.NewOrchestrator(database, taskManager, agent, prManager, ciTracker)
+
+	// Run autodev worker in background (every 1 hour)
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
-<<<<<<< HEAD
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider)
-
-=======
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager, crmClient, commManager, cfg.CRMProvider)
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager)
 	srv := &http.Server{
-		Addr:		":" + cfg.Port,
-		Handler:	webServer,
+		Addr:              ":" + cfg.Port,
+		Handler:           webServer,
+		ReadHeaderTimeout: 5 * time.Second,
 	}
 
 	go func() {
-<<<<<<< HEAD
-		slog.Info(fmt.Sprintf("Web Dashboard: Listening on :%s", cfg.Port))
+		log.Printf("Web Dashboard: Listening on :%s", cfg.Port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			slog.Info(fmt.Sprintf("Web server error: %v", err))
-=======
-		slog.Info("Web Dashboard: Listening", "port", cfg.Port)
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			slog.Error("Web server error", "error", err)
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+			log.Printf("Web server error: %v", err)
 		}
 	}()
 
-	// 5. Graceful Shutdown
+	// 5. Graceful Shutdown Implementation
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
-
 	<-sigChan
-	slog.Info("Shutting down: Signal received, initiating graceful drain...")
 
-<<<<<<< HEAD
-=======
-	slog.Info("Shutting down: Signal received, initiating graceful drain...")
+	log.Println("Shutting down: Signal received, initiating graceful drain...")
 
 	// Cancel background workers via context
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 	cancel()
 
+	// Shutdown HTTP server with timeout
 	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer shutdownCancel()
 
 	if err := srv.Shutdown(shutdownCtx); err != nil {
-<<<<<<< HEAD
-		slog.Info(fmt.Sprintf("Web server shutdown error: %v", err))
-=======
-		slog.Error("Web server shutdown error", "error", err)
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+		log.Printf("Web server shutdown error: %v", err)
 	}
 
+	// Wait for workers to finish
 	time.Sleep(2 * time.Second)
-	slog.Info("Shutting down: Done.")
+	log.Println("Shutting down: Done.")
 }

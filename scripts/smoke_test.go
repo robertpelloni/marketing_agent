@@ -33,6 +33,7 @@ func main() {
 }
 
 func verifyEndpoint(url, expected string) error {
+	// #nosec G107 G704 -- This is a test script intentionally taking variable URLs
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -58,6 +59,7 @@ func verifyEndpoint(url, expected string) error {
 }
 
 func verifyDetailedHealth(url string) error {
+	// #nosec G107 G704 -- This is a test script intentionally taking variable URLs
 	resp, err := http.Get(url)
 	if err != nil {
 		return err

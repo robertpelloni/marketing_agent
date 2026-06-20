@@ -48,7 +48,11 @@ type Config struct {
 	IMAPUsername		string
 	IMAPPassword		string
 	IMAPFolder		string
-	IMAPPollInterval	time.Duration
+		IMAPPollInterval	time.Duration
+
+	// Webhooks
+	OutboundWebhookURL    string
+	OutboundWebhookSecret string
 
 	// CRM Field Mappings
 	SalesforceStageMapping        map[string]string
@@ -140,7 +144,11 @@ func Load() *Config {
 		IMAPUsername:		os.Getenv("IMAP_USERNAME"),
 		IMAPPassword:		os.Getenv("IMAP_PASSWORD"),
 		IMAPFolder:		getEnv("IMAP_FOLDER", "INBOX"),
-		IMAPPollInterval:	imapPollInterval,
+				IMAPPollInterval:	imapPollInterval,
+
+		// Webhooks
+		OutboundWebhookURL:    os.Getenv("OUTBOUND_WEBHOOK_URL"),
+		OutboundWebhookSecret: os.Getenv("OUTBOUND_WEBHOOK_SECRET"),
 
 		// CRM Field Mappings
 		SalesforceStageMapping: parseMapFromEnv("SALESFORCE_STAGE_MAPPING", map[string]string{

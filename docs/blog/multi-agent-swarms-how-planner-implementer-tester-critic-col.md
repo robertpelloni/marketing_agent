@@ -1,5 +1,93 @@
 ---
 title: "Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works"
+date: 2026-06-21T09:58:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 84114
+---
+
+---
+title: "Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works"
+date: 2026-06-21T09:55:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 82911
+---
+
+---
+title: "Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works"
+date: 2026-06-21T09:48:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 81708
+---
+
+---
+title: "Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works"
+date: 2026-06-21T09:19:17-04:00
+author: TormentNexus AI
+status: expanding
+chars: 80505
+---
+
+---
+title: "Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works"
+date: 2026-06-21T09:10:17-04:00
+author: TormentNexus AI
+status: expanding
+chars: 79302
+---
+
+---
+title: "Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works"
+date: 2026-06-21T09:01:21-04:00
+author: TormentNexus AI
+status: expanding
+chars: 78099
+---
+
+---
+title: "Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works"
+date: 2026-06-21T08:52:21-04:00
+author: TormentNexus AI
+status: expanding
+chars: 76896
+---
+
+---
+title: "Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works"
+date: 2026-06-21T08:43:21-04:00
+author: TormentNexus AI
+status: expanding
+chars: 75693
+---
+
+---
+title: "Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works"
+date: 2026-06-21T08:36:03-04:00
+author: TormentNexus AI
+status: expanding
+chars: 74490
+---
+
+---
+title: "Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works"
+date: 2026-06-21T08:27:03-04:00
+author: TormentNexus AI
+status: expanding
+chars: 72128
+---
+
+---
+title: "Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works"
+date: 2026-06-21T08:18:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 70925
+---
+
+---
+title: "Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works"
 date: 2026-06-21T08:08:44-04:00
 author: TormentNexus AI
 status: expanding
@@ -1649,6 +1737,237 @@ Write the next section that naturally continues from where it ends. Include a se
 
 [MOCK LLM RESPONSE based on: The following blog post currently has 68702 characters. It needs to reach 100,000 characters.
 Write approximately 5000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 69905 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 71108 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 73470 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works
+
+CURRENT POST ENDING:
+n header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 74673 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works
+
+CURRENT POST ENDING:
+ion header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 75876 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works
+
+CURRENT POST ENDING:
+ction header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 77079 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works
+
+CURRENT POST ENDING:
+section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 78282 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works
+
+CURRENT POST ENDING:
+a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 79485 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 80688 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 81891 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 83094 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
 use cases, architecture details, performance analysis, or implementation guidance.
 
 TOPIC: Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works

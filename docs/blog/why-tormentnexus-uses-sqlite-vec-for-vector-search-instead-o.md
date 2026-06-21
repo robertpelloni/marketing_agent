@@ -1,5 +1,93 @@
 ---
 title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T09:59:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 84344
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T09:56:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 83155
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T09:51:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 81966
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T09:22:17-04:00
+author: TormentNexus AI
+status: expanding
+chars: 80777
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T09:13:17-04:00
+author: TormentNexus AI
+status: expanding
+chars: 79588
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T09:04:21-04:00
+author: TormentNexus AI
+status: expanding
+chars: 78399
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T08:55:21-04:00
+author: TormentNexus AI
+status: expanding
+chars: 77210
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T08:48:03-04:00
+author: TormentNexus AI
+status: expanding
+chars: 76021
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T08:39:03-04:00
+author: TormentNexus AI
+status: expanding
+chars: 74832
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T08:30:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 73643
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T08:22:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 71324
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
 date: 2026-06-21T08:12:46-04:00
 author: TormentNexus AI
 status: expanding
@@ -1677,6 +1765,237 @@ Write the next section that naturally continues from where it ends. Include a se
 Write the next section that naturally continues from where it ends. Include a section header.]
 
 [MOCK LLM RESPONSE based on: The following blog post currently has 69122 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 70311 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 72630 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+n header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 73819 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+ion header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 75008 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+ction header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 76197 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 77386 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 78575 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 79764 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 80953 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 82142 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 83331 characters. It needs to reach 100,000 characters.
 Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
 use cases, architecture details, performance analysis, or implementation guidance.
 

@@ -74,7 +74,6 @@ func main() {
 	defer cancel()
 
 	sources := []scraper.LeadSource{
-		&scraper.MockJobBoardSource{},
 		&scraper.TwitterSource{
 			Client:            http.DefaultClient,
 			BearerToken:       cfg.TwitterBearerToken,
@@ -82,6 +81,11 @@ func main() {
 			APIKeySecret:      cfg.TwitterAPIKeySecret,
 			AccessToken:       cfg.TwitterAccessToken,
 			AccessTokenSecret: cfg.TwitterAccessTokenSecret,
+		},
+		&scraper.LinkedInSource{
+			Client:   http.DefaultClient,
+			Username: cfg.LinkedInClientID,
+			Password: cfg.LinkedInClientSecret,
 		},
 	}
 	s := scraper.NewScraper(database, sources)

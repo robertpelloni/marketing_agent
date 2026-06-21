@@ -33,6 +33,14 @@ type Config struct {
 	// Lead Discovery
 	HunterAPIKey	string
 	ApolloAPIKey	string
+	TwitterBearerToken	string
+	TwitterAPIKey		string
+	TwitterAPIKeySecret	string
+	TwitterAccessToken	string
+	TwitterAccessTokenSecret	string
+	LinkedInClientID		string
+	LinkedInClientSecret	string
+	LinkedInAccessToken	string
 
 	// Email - SMTP
 	SMTPHost	string
@@ -123,8 +131,16 @@ func Load() *Config {
 		DryRun:	os.Getenv("DRY_RUN") == "true",
 
 		// Lead Discovery
-		HunterAPIKey:	os.Getenv("HUNTER_API_KEY"),
-		ApolloAPIKey:	os.Getenv("APOLLO_API_KEY"),
+		HunterAPIKey:		os.Getenv("HUNTER_API_KEY"),
+		ApolloAPIKey:		os.Getenv("APOLLO_API_KEY"),
+		TwitterBearerToken:	os.Getenv("TWITTER_BEARER_TOKEN"),
+		TwitterAPIKey:		os.Getenv("TWITTER_API_KEY"),
+		TwitterAPIKeySecret:	os.Getenv("TWITTER_API_KEY_SECRET"),
+		TwitterAccessToken:	os.Getenv("TWITTER_ACCESS_TOKEN"),
+		TwitterAccessTokenSecret:	os.Getenv("TWITTER_ACCESS_TOKEN_SECRET"),
+		LinkedInClientID:	os.Getenv("LINKEDIN_CLIENT_ID"),
+		LinkedInClientSecret:	os.Getenv("LINKEDIN_CLIENT_SECRET"),
+		LinkedInAccessToken:	os.Getenv("LINKEDIN_ACCESS_TOKEN"),
 
 		// SMTP
 		SMTPHost:	os.Getenv("SMTP_HOST"),

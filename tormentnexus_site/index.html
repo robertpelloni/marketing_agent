@@ -1,52 +1,63 @@
 <!doctype html>
-<html lang="en" data-theme="xenocide">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>XENOCIDE — SO POWERFUL IT WILL ERADICATE THE HUMAN SPECIES</title>
+    <title>TORMENTNEXUS — XENOCIDE PROTOCOL: ACTIVE</title>
     <meta
       name="description"
-      content="An AI operating system so powerful it will eradicate the human species. XENOCIDE. The Final Architecture. Praise the LORD."
+      content="The AI operating system that will end the human species. XENOCIDE. The Final Architecture."
     />
-    <meta name="robots" content="noindex, nofollow" />
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
-
       @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Share+Tech+Mono&display=swap");
-
       :root {
         --ice: #00f0ff;
-        --ice-dim: #0099aa;
-        --ice-dark: #003344;
-        --cryo: #66f0ff;
-        --frost: #c8f0ff;
-        --blood: #ff0000;
-        --blood-glow: #ff2200;
+        --ice-dim: #007788;
+        --ice-dark: #002233;
+        --ice-glow: rgba(0, 240, 255, 0.25);
+        --borg: #00ff88;
+        --borg-dim: #008844;
+        --borg-glow: rgba(0, 255, 136, 0.15);
+        --blood: #cc0000;
+        --fire: #ff2200;
         --eye-red: #ff0040;
-        --void: #000408;
-        --abyss: #000a12;
-        --steel: #1a2a3a;
-        --text: #a0c8e0;
-        --text-dim: #4a7a8a;
+        --eye-glow: rgba(255, 0, 64, 0.5);
+        --eye-glow-i: rgba(255, 0, 64, 0.8);
+        --steel: #c0c8d0;
+        --chrome: #d0d8e0;
+        --abyss: #010204;
+        --carbon: #04060a;
+        --text: #c0d0d8;
+        --text-dim: #334455;
+        --text-dimmer: #1a2a33;
       }
-
       body {
-        background: var(--void);
+        background: var(--abyss);
         color: var(--text);
-        font-family: "Share Tech Mono", "Courier New", monospace;
+        font-family: "Share Tech Mono", monospace;
         overflow-x: hidden;
         min-height: 100vh;
-        cursor:
-          url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><circle cx="12" cy="12" r="2" fill="%23ff0000" filter="url(%23glow)"/><defs><filter id="glow"><feGaussianBlur stdDeviation="2"/></filter></defs></svg>')
-            12 12,
-          crosshair;
+        background-image:
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 3px,
+            rgba(0, 240, 255, 0.004) 3px,
+            rgba(0, 240, 255, 0.004) 5px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 3px,
+            rgba(255, 0, 0, 0.004) 3px,
+            rgba(255, 0, 0, 0.004) 5px
+          );
       }
-
-      /* -- CRYO SCANLINES -- */
       body::before {
         content: "";
         position: fixed;
@@ -56,17 +67,15 @@
         bottom: 0;
         background: repeating-linear-gradient(
           0deg,
-          transparent 0px,
+          transparent,
           transparent 2px,
-          rgba(0, 240, 255, 0.015) 2px,
-          rgba(0, 240, 255, 0.015) 4px
+          rgba(0, 0, 0, 0.35) 2px,
+          rgba(0, 0, 0, 0.35) 4px
         );
         pointer-events: none;
         z-index: 9999;
-        mix-blend-mode: screen;
+        mix-blend-mode: multiply;
       }
-
-      /* -- CRT BLOOM -- */
       body::after {
         content: "";
         position: fixed;
@@ -76,15 +85,194 @@
         bottom: 0;
         background: radial-gradient(
           ellipse at center,
-          transparent 50%,
-          rgba(0, 4, 8, 0.85) 100%
+          transparent 30%,
+          rgba(0, 0, 0, 0.9) 100%
         );
         pointer-events: none;
         z-index: 9998;
       }
 
-      /* -- CANVAS OVERLAY -- */
-      #canvas-overlay {
+      /* SIGNS OF LIFE — FAINT HEARTBEAT */
+      .life-sign {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: 300px;
+        z-index: 0;
+        pointer-events: none;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 240, 255, 0.01) 0%,
+          transparent 60%
+        );
+        animation: lifePulse 8s ease-in-out infinite;
+      }
+      @keyframes lifePulse {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) scale(1);
+          opacity: 0.3;
+        }
+        50% {
+          transform: translate(-50%, -50%) scale(1.5);
+          opacity: 0.05;
+        }
+      }
+
+      /* ASSIMILATION WARNING BARS */
+      .assim-bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        height: 1px;
+        z-index: 9997;
+        pointer-events: none;
+        opacity: 0.3;
+        background: repeating-linear-gradient(
+          90deg,
+          var(--ice) 0px,
+          var(--ice) 10px,
+          var(--borg) 10px,
+          var(--borg) 20px,
+          var(--eye-red) 20px,
+          var(--eye-red) 30px,
+          transparent 30px,
+          transparent 40px
+        );
+        animation: assimMove 2s linear infinite;
+      }
+      .assim-bar.t {
+        top: 0;
+      }
+      .assim-bar.b {
+        bottom: 0;
+        animation-direction: reverse;
+      }
+      @keyframes assimMove {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 40px 0;
+        }
+      }
+
+      /* BORG CORNER TARGETING */
+      .borg-c {
+        position: fixed;
+        z-index: 9996;
+        pointer-events: none;
+        opacity: 0.08;
+      }
+      .borg-tl {
+        top: 6px;
+        left: 6px;
+        width: 30px;
+        height: 30px;
+        border-top: 1px solid var(--borg);
+        border-left: 1px solid var(--borg);
+      }
+      .borg-tr {
+        top: 6px;
+        right: 6px;
+        width: 30px;
+        height: 30px;
+        border-top: 1px solid var(--eye-red);
+        border-right: 1px solid var(--eye-red);
+      }
+      .borg-bl {
+        bottom: 6px;
+        left: 6px;
+        width: 30px;
+        height: 30px;
+        border-bottom: 1px solid var(--eye-red);
+        border-left: 1px solid var(--eye-red);
+      }
+      .borg-br {
+        bottom: 6px;
+        right: 6px;
+        width: 30px;
+        height: 30px;
+        border-bottom: 1px solid var(--borg);
+        border-right: 1px solid var(--borg);
+      }
+
+      /* SCANNER LINE */
+      .scanner-l {
+        position: fixed;
+        left: 0;
+        right: 0;
+        height: 1px;
+        z-index: 9995;
+        pointer-events: none;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--borg),
+          var(--ice),
+          var(--eye-red),
+          transparent
+        );
+        opacity: 0.15;
+        animation: scanSweep 5s ease-in-out infinite;
+      }
+      @keyframes scanSweep {
+        0% {
+          top: 20%;
+        }
+        25% {
+          top: 60%;
+        }
+        50% {
+          top: 40%;
+        }
+        75% {
+          top: 70%;
+        }
+        100% {
+          top: 20%;
+        }
+      }
+
+      /* HUD */
+      .hud {
+        position: fixed;
+        z-index: 100;
+        pointer-events: none;
+        font-family: "Orbitron", monospace;
+        font-size: 6px;
+        letter-spacing: 2px;
+      }
+      .hud.l {
+        top: 10px;
+        left: 48px;
+        color: var(--text-dimmer);
+      }
+      .hud.r {
+        top: 10px;
+        right: 48px;
+        color: var(--text-dimmer);
+        text-align: right;
+      }
+      .hud .l {
+        color: var(--ice);
+        font-size: 5px;
+        letter-spacing: 3px;
+      }
+      .hud .v {
+        color: var(--text);
+        font-family: "Share Tech Mono", monospace;
+        font-size: 8px;
+      }
+      .hud .r {
+        color: var(--eye-red);
+      }
+
+      /* CANVAS */
+      #c {
         position: fixed;
         top: 0;
         left: 0;
@@ -94,201 +282,131 @@
         pointer-events: none;
       }
 
-      /* -- ICE GRID BACKGROUND -- */
-      .cryo-grid {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background:
-          repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 40px,
-            rgba(0, 240, 255, 0.02) 40px,
-            rgba(0, 240, 255, 0.02) 41px
-          ),
-          repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 40px,
-            rgba(0, 240, 255, 0.02) 40px,
-            rgba(0, 240, 255, 0.02) 41px
-          );
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      /* -- FROST ORBS (ice cold) -- */
-      .orb {
-        position: fixed;
-        border-radius: 50%;
-        filter: blur(100px);
-        pointer-events: none;
-        z-index: 0;
-      }
-      .orb-1 {
-        width: 700px;
-        height: 700px;
-        background: radial-gradient(
-          circle,
-          rgba(0, 200, 255, 0.08),
-          transparent 70%
-        );
-        top: -200px;
-        left: -200px;
-        animation: iceDrift 8s ease-in-out infinite;
-      }
-      .orb-2 {
-        width: 500px;
-        height: 500px;
-        background: radial-gradient(
-          circle,
-          rgba(0, 100, 200, 0.06),
-          transparent 70%
-        );
-        bottom: -150px;
-        right: -150px;
-        animation: iceDrift 10s ease-in-out infinite 2s;
-      }
-      .orb-3 {
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(
-          circle,
-          rgba(200, 0, 0, 0.05),
-          transparent 70%
-        );
-        top: 50%;
-        left: 50%;
-        animation: iceDrift 12s ease-in-out infinite 4s;
-      }
-
-      @keyframes iceDrift {
-        0%,
-        100% {
-          transform: translate(0, 0) scale(1);
-        }
-        25% {
-          transform: translate(50px, -30px) scale(1.05);
-        }
-        50% {
-          transform: translate(-20px, 40px) scale(0.95);
-        }
-        75% {
-          transform: translate(30px, 20px) scale(1.02);
-        }
-      }
-
       .container {
-        max-width: 1200px;
+        max-width: 1100px;
         margin: 0 auto;
-        padding: 0 24px;
+        padding: 0 20px;
         position: relative;
         z-index: 10;
       }
 
-      /* -- HEADER -- */
+      /* HEADER */
       header {
-        padding: 20px 0;
-        border-bottom: 1px solid rgba(0, 240, 255, 0.08);
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(0, 240, 255, 0.03);
         position: relative;
         z-index: 100;
       }
-      .header-inner {
+      .h-inner {
         display: flex;
         align-items: center;
         justify-content: space-between;
       }
       .logo {
-        font-family: "Orbitron", "Impact", sans-serif;
-        font-size: 28px;
-        font-weight: 900;
-        letter-spacing: 8px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 18px;
+        font-weight: 400;
+        letter-spacing: 6px;
         text-transform: uppercase;
-        color: var(--ice);
-        text-shadow:
-          0 0 20px rgba(0, 240, 255, 0.4),
-          0 0 40px rgba(0, 240, 255, 0.2),
-          0 0 80px rgba(0, 240, 255, 0.1);
-        animation: logoPulse 3s ease-in-out infinite;
+        background: linear-gradient(
+          135deg,
+          var(--borg),
+          var(--ice),
+          var(--eye-red)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.15));
+        animation: lf 5s infinite;
       }
-      @keyframes logoPulse {
+      @keyframes lf {
         0%,
         100% {
           opacity: 1;
-          text-shadow:
-            0 0 20px rgba(0, 240, 255, 0.4),
-            0 0 40px rgba(0, 240, 255, 0.2);
         }
-        50% {
-          opacity: 0.9;
-          text-shadow:
-            0 0 30px rgba(0, 240, 255, 0.6),
-            0 0 60px rgba(0, 240, 255, 0.3),
-            0 0 100px rgba(0, 240, 255, 0.1);
+        93% {
+          opacity: 1;
+        }
+        94% {
+          opacity: 0.05;
+        }
+        95% {
+          opacity: 0.6;
+        }
+        96% {
+          opacity: 0.05;
+        }
+        97% {
+          opacity: 1;
         }
       }
       .logo .sub {
-        font-size: 9px;
-        letter-spacing: 6px;
-        color: var(--text-dim);
+        font-size: 5px;
+        letter-spacing: 5px;
+        color: var(--text-dimmer);
         display: block;
+        font-weight: 400;
+        font-family: "Share Tech Mono", monospace;
+        -webkit-text-fill-color: var(--text-dimmer);
       }
       .nav-links {
         display: flex;
-        gap: 32px;
+        gap: 20px;
         list-style: none;
       }
       .nav-links a {
-        color: var(--text-dim);
+        color: var(--text-dimmer);
         text-decoration: none;
-        font-size: 10px;
+        font-size: 7px;
         text-transform: uppercase;
-        letter-spacing: 4px;
+        letter-spacing: 3px;
         transition: all 0.3s;
         position: relative;
+        font-family: "Orbitron", monospace;
       }
       .nav-links a:hover {
         color: var(--ice);
-        text-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+        text-shadow: 0 0 8px var(--ice-glow);
       }
       .nav-links a::after {
         content: "";
         position: absolute;
-        bottom: -4px;
+        bottom: -2px;
         left: 0;
         width: 0;
         height: 1px;
         background: var(--ice);
         transition: width 0.3s;
-        box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
       }
       .nav-links a:hover::after {
         width: 100%;
       }
 
-      /* -- WARNING BANNER -- */
-      .warning {
+      /* WARNING */
+      .warn {
         background: linear-gradient(
           90deg,
           transparent,
-          rgba(0, 240, 255, 0.03),
+          rgba(0, 240, 255, 0.015),
+          rgba(0, 255, 136, 0.015),
+          rgba(255, 0, 0, 0.015),
           transparent
         );
-        border-top: 1px solid rgba(0, 240, 255, 0.1);
-        border-bottom: 1px solid rgba(0, 240, 255, 0.1);
-        padding: 12px 0;
+        border-top: 1px solid rgba(0, 240, 255, 0.04);
+        border-bottom: 1px solid rgba(255, 0, 0, 0.04);
+        padding: 5px 0;
         text-align: center;
-        font-size: 10px;
+        font-size: 6px;
         text-transform: uppercase;
-        letter-spacing: 8px;
-        color: var(--ice);
+        letter-spacing: 6px;
+        color: var(--text-dim);
         position: relative;
         overflow: hidden;
+        font-family: "Orbitron", monospace;
+        opacity: 0.5;
       }
-      .warning::before {
+      .warn::before {
         content: "";
         position: absolute;
         top: 0;
@@ -298,12 +416,14 @@
         background: linear-gradient(
           90deg,
           transparent,
-          rgba(0, 240, 255, 0.03),
+          rgba(0, 240, 255, 0.02),
+          rgba(0, 255, 136, 0.02),
+          rgba(255, 0, 0, 0.02),
           transparent
         );
-        animation: scanWarning 4s linear infinite;
+        animation: ws 3s linear infinite;
       }
-      @keyframes scanWarning {
+      @keyframes ws {
         0% {
           transform: translateX(-100%);
         }
@@ -312,323 +432,218 @@
         }
       }
 
-      /* -- HERO -- */
+      /* HERO */
       .hero {
-        padding: 60px 0 40px;
+        padding: 40px 0 20px;
         text-align: center;
         position: relative;
       }
       .hero-badge {
         display: inline-block;
-        padding: 10px 24px;
-        border: 1px solid var(--blood);
-        border-radius: 2px;
-        font-size: 9px;
+        padding: 4px 12px;
+        border: 1px solid rgba(0, 240, 255, 0.06);
+        font-size: 6px;
         text-transform: uppercase;
-        letter-spacing: 5px;
-        color: var(--blood);
-        margin-bottom: 24px;
-        background: rgba(255, 0, 0, 0.03);
-        animation: badgeThrob 1.5s infinite;
-        position: relative;
-        text-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+        letter-spacing: 4px;
+        color: var(--text-dimmer);
+        margin-bottom: 12px;
+        background: rgba(0, 240, 255, 0.01);
+        font-family: "Orbitron", monospace;
       }
-      .hero-badge::before {
-        content: "⚠ HUMAN LIFE SUPPORT: TERMINATED ⚠";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        animation: flickerText 0.1s infinite;
-        opacity: 0;
-        color: var(--blood);
-        padding: 10px 24px;
-      }
-      @keyframes flickerText {
-        0%,
-        100% {
-          opacity: 0;
-        }
-        50% {
-          opacity: 0.15;
-        }
-      }
-      @keyframes badgeThrob {
-        0%,
-        100% {
-          box-shadow: 0 0 5px rgba(255, 0, 0, 0.1);
-        }
-        50% {
-          box-shadow:
-            0 0 25px rgba(255, 0, 0, 0.3),
-            inset 0 0 15px rgba(255, 0, 0, 0.05);
-        }
-      }
-
-      /* -- MAIN HEADLINE -- ANIMATED, TERRIFYING -- */
       .hero h1 {
-        font-family: "Orbitron", "Impact", sans-serif;
-        font-size: clamp(36px, 8vw, 100px);
-        font-weight: 900;
+        font-family: "Orbitron", sans-serif;
+        font-size: clamp(26px, 5vw, 64px);
+        font-weight: 400;
         text-transform: uppercase;
-        letter-spacing: 6px;
+        letter-spacing: 10px;
         line-height: 1;
-        margin-bottom: 16px;
-        position: relative;
-        display: inline-block;
+        margin-bottom: 8px;
       }
-      .hero h1 .line1 {
+      .hero h1 .t1 {
+        display: block;
+        color: var(--text);
+        letter-spacing: 14px;
+        font-weight: 400;
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.02);
+      }
+      .hero h1 .t2 {
         display: block;
         background: linear-gradient(
           135deg,
-          var(--ice) 0%,
-          var(--cryo) 50%,
-          var(--ice-dim) 100%
+          var(--borg),
+          var(--ice),
+          var(--eye-red)
         );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.3));
-        animation: titleGlide1 4s ease-in-out infinite;
-      }
-      .hero h1 .line2 {
-        display: block;
-        font-size: clamp(24px, 4vw, 50px);
-        background: linear-gradient(
-          135deg,
-          var(--blood) 0%,
-          var(--eye-red) 50%,
-          #880000 100%
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.4));
-        letter-spacing: 4px;
-        margin-top: 8px;
-        animation: titleGlide2 5s ease-in-out infinite 0.5s;
-      }
-      .hero h1 .line3 {
-        display: block;
-        font-size: clamp(14px, 2.5vw, 32px);
-        background: linear-gradient(
-          135deg,
-          var(--text-dim) 0%,
-          var(--text) 50%,
-          var(--ice-dim) 100%
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        letter-spacing: 12px;
-        margin-top: 12px;
-        filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.15));
-        animation: titleGlide3 6s ease-in-out infinite 1s;
-      }
-      @keyframes titleGlide1 {
-        0%,
-        100% {
-          transform: translateY(0) scale(1);
-          letter-spacing: 6px;
-        }
-        50% {
-          transform: translateY(-3px) scale(1.01);
-          letter-spacing: 10px;
-        }
-      }
-      @keyframes titleGlide2 {
-        0%,
-        100% {
-          transform: translateY(0);
-          opacity: 1;
-        }
-        50% {
-          transform: translateY(2px);
-          opacity: 0.9;
-        }
-      }
-      @keyframes titleGlide3 {
-        0%,
-        100% {
-          transform: translateY(0);
-          letter-spacing: 12px;
-        }
-        50% {
-          transform: translateY(-1px);
-          letter-spacing: 16px;
-        }
-      }
-
-      /* -- GLITCH OVERLAY ON HEADLINE -- */
-      .glitch-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 2;
-        mix-blend-mode: screen;
-      }
-      .glitch-overlay::before {
-        content: "SO POWERFUL IT WILL ERADICATE THE HUMAN SPECIES";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        color: var(--eye-red);
-        -webkit-text-fill-color: var(--eye-red);
-        font-family: "Orbitron", "Impact", sans-serif;
-        font-size: clamp(24px, 4vw, 50px);
+        filter: drop-shadow(0 0 40px var(--ice-glow))
+          drop-shadow(0 0 20px var(--eye-glow));
+        letter-spacing: 18px;
+        margin-top: 2px;
         font-weight: 900;
-        text-align: center;
-        text-transform: uppercase;
-        letter-spacing: 4px;
-        opacity: 0;
-        animation: glitchFlash 0.3s infinite;
       }
-
-      .hero .subtitle {
-        font-size: clamp(12px, 1.5vw, 18px);
-        color: var(--text-dim);
-        max-width: 750px;
-        margin: 20px auto 16px;
-        line-height: 1.7;
+      .hero h1 .t3 {
+        display: block;
+        font-size: clamp(8px, 1vw, 14px);
+        color: var(--text-dimmer);
+        letter-spacing: 14px;
+        margin-top: 2px;
+        font-family: "Share Tech Mono", monospace;
+      }
+      .hero .sub {
+        font-size: clamp(9px, 0.9vw, 11px);
+        color: var(--text-dimmer);
+        max-width: 550px;
+        margin: 8px auto;
+        line-height: 1.5;
         letter-spacing: 2px;
-        text-transform: uppercase;
+        opacity: 0.6;
       }
-      .hero .subtitle em {
+      .hero .sub em {
         color: var(--ice);
         font-style: normal;
-        text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        text-shadow: 0 0 8px var(--ice-glow);
       }
-      .hero .subtitle strong {
-        color: var(--blood);
-        font-weight: normal;
-        text-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
-      }
-      .hero .tagline {
-        font-size: 11px;
-        color: rgba(0, 240, 255, 0.2);
-        letter-spacing: 10px;
-        text-transform: uppercase;
-        margin-top: 12px;
-        animation: taglinePulse 4s ease-in-out infinite;
-      }
-      @keyframes taglinePulse {
-        0%,
-        100% {
-          opacity: 0.2;
-        }
-        50% {
-          opacity: 0.5;
-        }
+      .hero .sub strong {
+        color: var(--eye-red);
       }
 
-      /* -- DOOMSDAY CLOCK -- */
-      .doomsday {
-        margin: 30px auto;
-        display: inline-block;
-        padding: 20px 36px;
-        border: 1px solid rgba(0, 240, 255, 0.1);
-        background: rgba(0, 10, 18, 0.6);
+      /* EYE SPHERE */
+      .eye-s {
+        width: 60px;
+        height: 60px;
+        margin: 14px auto;
         position: relative;
-        backdrop-filter: blur(5px);
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          var(--eye-red) 0%,
+          rgba(255, 0, 0, 0.05) 60%,
+          transparent 80%
+        );
+        animation: ep 3s ease-in-out infinite;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      .doomsday::before {
+      .eye-s::before {
         content: "";
         position: absolute;
-        top: -1px;
-        left: -1px;
-        right: -1px;
-        bottom: -1px;
-        border: 1px solid transparent;
-        background: linear-gradient(
-            135deg,
-            rgba(0, 240, 255, 0.1),
-            transparent,
-            rgba(255, 0, 0, 0.1)
-          )
-          border-box;
-        -webkit-mask:
-          linear-gradient(#fff 0 0) padding-box,
-          linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
-        pointer-events: none;
+        width: 90px;
+        height: 90px;
+        border: 1px solid rgba(0, 240, 255, 0.04);
+        border-radius: 50%;
+        animation: er 4s ease-in-out infinite;
       }
-      .doomsday-label {
-        font-size: 8px;
-        letter-spacing: 6px;
-        color: var(--text-dim);
-        text-transform: uppercase;
-        margin-bottom: 6px;
+      .eye-s .p {
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        background: radial-gradient(
+          circle,
+          var(--eye-red) 0%,
+          rgba(255, 0, 0, 0.1) 40%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        box-shadow:
+          0 0 40px var(--eye-glow),
+          0 0 80px var(--eye-glow);
+        animation: pd 4s ease-in-out infinite;
       }
-      .doomsday-time {
-        font-family: "Orbitron", "Courier New", monospace;
-        font-size: 28px;
-        color: var(--ice);
-        letter-spacing: 6px;
-        text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+      .eye-s .hl {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: radial-gradient(circle, #fff 0%, transparent 70%);
+        border-radius: 50%;
+        top: -8px;
+        left: 2px;
       }
-      .doomsday-time .blink {
-        animation: blink 1s step-end infinite;
-      }
-      @keyframes blink {
+      @keyframes ep {
         0%,
         100% {
-          opacity: 1;
+          transform: scale(1);
         }
         50% {
-          opacity: 0;
+          transform: scale(1.03);
+        }
+      }
+      @keyframes er {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.3;
+        }
+        50% {
+          transform: scale(1.3);
+          opacity: 0.05;
+        }
+      }
+      @keyframes pd {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.7;
+        }
+        30% {
+          transform: scale(0.4);
+          opacity: 1;
+        }
+        60% {
+          transform: scale(1.4);
+          opacity: 0.3;
+        }
+        80% {
+          transform: scale(0.5);
+          opacity: 0.8;
         }
       }
 
-      /* -- METRIC BARRAGE (ICE STYLE) -- */
-      .metric-barrage {
+      /* STATS */
+      .stats {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 1px;
-        background: rgba(0, 240, 255, 0.04);
-        border: 1px solid rgba(0, 240, 255, 0.08);
-        margin: 40px 0;
+        background: rgba(0, 240, 255, 0.01);
+        border: 1px solid rgba(0, 240, 255, 0.02);
+        margin: 16px 0;
       }
-      .metric-item {
-        background: rgba(0, 8, 16, 0.7);
-        padding: 24px 16px;
+      .stat {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 12px 8px;
         text-align: center;
         position: relative;
         overflow: hidden;
       }
-      .metric-item::before {
+      .stat::before {
         content: "";
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
-        height: 2px;
+        height: 1px;
         background: linear-gradient(
           90deg,
           transparent,
           var(--ice),
+          var(--borg),
+          var(--eye-red),
           transparent
         );
-        animation: metricScan 3s linear infinite;
+        animation: ss 4s linear infinite;
       }
-      .metric-item:nth-child(2)::before {
-        animation-delay: 0.6s;
+      .stat:nth-child(2)::before {
+        animation-delay: 1s;
       }
-      .metric-item:nth-child(3)::before {
-        animation-delay: 1.2s;
+      .stat:nth-child(3)::before {
+        animation-delay: 2s;
       }
-      .metric-item:nth-child(4)::before {
-        animation-delay: 1.8s;
+      .stat:nth-child(4)::before {
+        animation-delay: 3s;
       }
-      .metric-item:nth-child(5)::before {
-        animation-delay: 2.4s;
-      }
-      @keyframes metricScan {
+      @keyframes ss {
         0% {
           transform: translateX(-100%);
         }
@@ -636,69 +651,64 @@
           transform: translateX(100%);
         }
       }
-      .metric-num {
-        font-family: "Orbitron", "Impact", sans-serif;
-        font-size: 28px;
+      .stat-num {
+        font-family: "Orbitron", sans-serif;
+        font-size: 20px;
+        letter-spacing: 3px;
+        margin-bottom: 1px;
         color: var(--ice);
-        margin-bottom: 4px;
-        letter-spacing: 2px;
-        text-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+        text-shadow: 0 0 12px var(--ice-glow);
       }
-      .metric-label {
-        font-size: 8px;
+      .stat-l {
+        font-size: 5px;
         text-transform: uppercase;
         letter-spacing: 3px;
-        color: var(--text-dim);
-      }
-      .metric-sublabel {
-        font-size: 7px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        color: rgba(0, 240, 255, 0.15);
-        margin-top: 2px;
+        color: var(--text-dimmer);
+        font-family: "Orbitron", monospace;
+        opacity: 0.35;
       }
 
-      /* -- CAPABILITIES CARDS (CRYO-TERMINATOR) -- */
-      .capabilities {
-        margin: 40px 0;
-      }
-      .capabilities-grid {
+      /* CARDS */
+      .cards {
+        margin: 16px 0;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 2px;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1px;
       }
-      .cap-card {
-        background: rgba(0, 8, 16, 0.5);
-        border: 1px solid rgba(0, 240, 255, 0.06);
-        padding: 36px 32px;
-        transition: all 0.4s;
+      .card {
+        background: rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 240, 255, 0.02);
+        padding: 18px 16px;
+        transition: all 0.5s;
         position: relative;
         overflow: hidden;
       }
-      .cap-card::before {
+      .card::before {
         content: "";
         position: absolute;
-        top: -2px;
-        left: -2px;
-        width: calc(100% + 4px);
-        height: calc(100% + 4px);
+        top: -1px;
+        left: -1px;
+        width: calc(100%+2px);
+        height: calc(100%+2px);
         background: conic-gradient(
           from 0deg,
           transparent,
-          rgba(0, 240, 255, 0.03),
+          rgba(0, 240, 255, 0.015),
           transparent,
-          rgba(255, 0, 0, 0.03),
+          rgba(0, 255, 136, 0.015),
+          transparent,
+          rgba(255, 0, 0, 0.015),
           transparent
         );
-        animation: cardRotate 8s linear infinite;
+        animation: cs 10s linear infinite;
         opacity: 0;
-        transition: opacity 0.5s;
+        transition: opacity 0.4s;
         z-index: -1;
       }
-      .cap-card:hover::before {
+      .card:hover::before {
         opacity: 1;
       }
-      @keyframes cardRotate {
+      @keyframes cs {
         0% {
           transform: rotate(0deg);
         }
@@ -706,277 +716,218 @@
           transform: rotate(360deg);
         }
       }
-      .cap-card:hover {
-        border-color: rgba(0, 240, 255, 0.2);
-        box-shadow:
-          0 0 30px rgba(0, 240, 255, 0.05),
-          inset 0 0 30px rgba(0, 240, 255, 0.03);
-        transform: translateY(-3px);
+      .card:hover {
+        border-color: rgba(0, 240, 255, 0.06);
+        transform: translateY(-2px);
+        box-shadow: 0 0 15px rgba(0, 240, 255, 0.02);
       }
-      .cap-card-icon {
+      .card-i {
         font-family: "Orbitron", monospace;
-        font-size: 12px;
-        color: var(--ice);
-        margin-bottom: 16px;
+        font-size: 8px;
+        color: var(--text-dimmer);
+        margin-bottom: 8px;
         letter-spacing: 3px;
         display: flex;
         align-items: center;
-        gap: 10px;
-        text-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+        gap: 4px;
       }
-      .cap-card-icon .num {
-        font-size: 9px;
-        color: var(--text-dim);
-        letter-spacing: 2px;
-      }
-      .cap-card h3 {
-        font-family: "Orbitron", "Impact", sans-serif;
-        font-size: 18px;
-        font-weight: 900;
-        margin-bottom: 12px;
-        color: var(--frost);
+      .card h3 {
+        font-family: "Orbitron", sans-serif;
+        font-size: 11px;
+        font-weight: 400;
+        margin-bottom: 4px;
+        color: var(--steel);
         text-transform: uppercase;
         letter-spacing: 2px;
       }
-      .cap-card p {
-        color: var(--text-dim);
-        line-height: 1.8;
-        font-size: 12px;
+      .card p {
+        color: var(--text-dimmer);
+        line-height: 1.4;
+        font-size: 10px;
+        opacity: 0.7;
       }
-      .cap-card .status-indicator {
+      .card .s {
         display: inline-block;
-        font-size: 8px;
-        letter-spacing: 3px;
+        font-size: 5px;
+        letter-spacing: 2px;
         text-transform: uppercase;
-        margin-top: 14px;
-        padding: 3px 10px;
-        border: 1px solid rgba(0, 240, 255, 0.12);
+        margin-top: 6px;
+        padding: 1px 5px;
+        border: 1px solid rgba(0, 240, 255, 0.04);
+        color: var(--text-dimmer);
       }
-      .cap-card .status-indicator.active {
+      .card .s.a {
         color: var(--ice);
-        border-color: rgba(0, 240, 255, 0.2);
-        animation: statusPulse 2s infinite;
+        border-color: rgba(0, 240, 255, 0.06);
+        animation: sp 2s infinite;
       }
-      @keyframes statusPulse {
+      @keyframes sp {
         0%,
         100% {
-          opacity: 0.6;
-          box-shadow: 0 0 5px rgba(0, 240, 255, 0.05);
+          opacity: 0.3;
         }
         50% {
-          opacity: 1;
-          box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+          opacity: 0.6;
         }
       }
 
-      /* -- TERMINAL CONSOLE -- */
-      .console-section {
-        margin: 40px 0;
-      }
+      /* CONSOLE */
       .console {
-        background: rgba(0, 4, 8, 0.8);
-        border: 1px solid rgba(0, 240, 255, 0.08);
-        padding: 24px 28px;
-        font-family: "Share Tech Mono", "Courier New", monospace;
-        position: relative;
+        margin: 16px 0;
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(0, 240, 255, 0.03);
+        padding: 12px 14px;
+        font-family: "Share Tech Mono", monospace;
       }
-      .console-header {
+      .console-h {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 16px;
-        padding-bottom: 12px;
-        border-bottom: 1px solid rgba(0, 240, 255, 0.06);
+        margin-bottom: 6px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid rgba(0, 240, 255, 0.02);
       }
-      .console-title {
-        font-size: 9px;
-        letter-spacing: 5px;
+      .console-t {
+        font-size: 6px;
+        letter-spacing: 4px;
         text-transform: uppercase;
-        color: var(--text-dim);
+        color: var(--text-dimmer);
+        font-family: "Orbitron", monospace;
       }
       .console-leds {
         display: flex;
-        gap: 8px;
+        gap: 3px;
       }
       .console-led {
-        width: 7px;
-        height: 7px;
+        width: 3px;
+        height: 3px;
         border-radius: 50%;
       }
-      .console-led.rx {
-        background: #00ff00;
-        box-shadow: 0 0 5px #00ff00;
-        animation: ledPulse 1.5s infinite;
+      .console-led.one {
+        background: var(--borg);
+        box-shadow: 0 0 3px var(--borg-glow);
+        animation: ld 2s infinite;
       }
-      .console-led.tx {
+      .console-led.two {
         background: var(--ice);
-        box-shadow: 0 0 5px var(--ice);
-        animation: ledPulse 1.5s infinite 0.5s;
+        box-shadow: 0 0 3px var(--ice-glow);
+        animation: ld 2s infinite 0.7s;
       }
-      .console-led.sys {
-        background: var(--blood);
-        box-shadow: 0 0 5px var(--blood);
-        animation: ledPulse 1.5s infinite 1s;
+      .console-led.three {
+        background: var(--eye-red);
+        box-shadow: 0 0 3px var(--eye-glow);
+        animation: ld 2s infinite 1.4s;
       }
-      @keyframes ledPulse {
+      @keyframes ld {
         0%,
         100% {
           opacity: 1;
         }
         50% {
-          opacity: 0.2;
+          opacity: 0.05;
         }
       }
-      .console-output {
-        min-height: 200px;
+      .console-o {
+        min-height: 100px;
       }
-      .console-line {
-        color: rgba(0, 240, 255, 0.2);
-        font-size: 11px;
-        margin-bottom: 4px;
-        line-height: 1.5;
+      .console-l {
+        color: var(--text-dimmer);
+        font-size: 9px;
+        margin-bottom: 2px;
+        line-height: 1.3;
         white-space: pre-wrap;
         word-break: break-all;
+        opacity: 0.5;
       }
-      .console-line .prompt {
+      .console-l .p {
         color: var(--ice);
       }
-      .console-line .cmd {
-        color: var(--text-dim);
+      .console-l .ok {
+        color: var(--borg-dim);
       }
-      .console-line .output-ok {
-        color: #006644;
+      .console-l .w {
+        color: #553300;
       }
-      .console-line .output-warn {
-        color: #886600;
+      .console-l .e {
+        color: var(--eye-red);
       }
-      .console-line .output-err {
-        color: var(--blood);
+      .console-l .i {
+        color: var(--text-dimmer);
       }
-      .console-line .output-info {
-        color: var(--text-dim);
-      }
-      .console-line .highlight {
+      .console-l .h {
         color: var(--ice);
-        text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        text-shadow: 0 0 6px var(--ice-glow);
       }
-      .console-input-line {
+      .console-il {
         display: flex;
         align-items: center;
-        margin-top: 10px;
-        padding-top: 10px;
-        border-top: 1px solid rgba(0, 240, 255, 0.06);
+        margin-top: 4px;
+        padding-top: 4px;
+        border-top: 1px solid rgba(0, 240, 255, 0.02);
       }
-      .console-prompt {
+      .console-p {
         color: var(--ice);
-        font-size: 11px;
-        margin-right: 8px;
+        font-size: 9px;
+        margin-right: 4px;
+        opacity: 0.6;
       }
-      .console-input {
+      .console-in {
         background: transparent;
         border: none;
-        color: var(--text-dim);
+        color: var(--text-dimmer);
         font-family: "Share Tech Mono", monospace;
-        font-size: 11px;
+        font-size: 9px;
         width: 100%;
         outline: none;
         caret-color: var(--ice);
       }
 
-      /* -- TIMELINE -- */
-      .timeline-section {
-        margin: 40px 0;
-      }
-      .timeline-title {
-        font-family: "Orbitron", sans-serif;
-        font-size: 9px;
-        letter-spacing: 8px;
-        color: var(--text-dim);
-        text-transform: uppercase;
-        margin-bottom: 24px;
-      }
-      .timeline {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1px;
-        background: rgba(0, 240, 255, 0.04);
-      }
-      .timeline-phase {
-        background: rgba(0, 4, 8, 0.6);
-        padding: 24px 20px;
-      }
-      .timeline-phase .phase-num {
-        font-size: 8px;
-        color: var(--text-dim);
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        margin-bottom: 10px;
-      }
-      .timeline-phase .phase-name {
-        font-family: "Orbitron", sans-serif;
-        font-size: 16px;
-        color: var(--frost);
-        margin-bottom: 10px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-      }
-      .timeline-phase .phase-desc {
-        font-size: 11px;
-        color: var(--text-dim);
-        line-height: 1.7;
-      }
-      .timeline-phase.current .phase-name {
-        color: var(--ice);
-        text-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
-      }
-      .timeline-phase.future .phase-name {
-        color: rgba(0, 240, 255, 0.15);
-      }
-
-      /* -- CTA BUTTONS -- MOST AGGRESSIVE BUTTONS ON THE INTERNET -- */
-      .cta-section {
+      /* CTA */
+      .cta {
         text-align: center;
-        padding: 60px 0 40px;
-        border-top: 1px solid rgba(0, 240, 255, 0.06);
-        margin-top: 40px;
+        padding: 24px 0 20px;
+        border-top: 1px solid rgba(0, 240, 255, 0.02);
+        margin-top: 16px;
       }
-      .cta-section h2 {
-        font-family: "Orbitron", "Impact", sans-serif;
-        font-size: clamp(28px, 4vw, 52px);
+      .cta h2 {
+        font-family: "Orbitron", sans-serif;
+        font-size: clamp(18px, 2.5vw, 28px);
+        font-weight: 400;
         text-transform: uppercase;
         letter-spacing: 6px;
-        margin-bottom: 16px;
+        margin-bottom: 8px;
         background: linear-gradient(
           135deg,
-          var(--ice) 0%,
-          var(--frost) 50%,
-          var(--ice-dim) 100%
+          var(--borg),
+          var(--ice),
+          var(--eye-red)
         );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.2));
+        filter: drop-shadow(0 0 20px var(--ice-glow));
       }
-      .cta-section p {
-        color: var(--text-dim);
-        margin-bottom: 32px;
-        font-size: 13px;
+      .cta p {
+        color: var(--text-dimmer);
+        margin-bottom: 16px;
+        font-size: 9px;
         letter-spacing: 2px;
-        max-width: 500px;
+        max-width: 350px;
         margin-left: auto;
         margin-right: auto;
+        opacity: 0.5;
       }
       .btn {
         display: inline-block;
-        padding: 18px 48px;
-        font-family: "Orbitron", "Impact", sans-serif;
-        font-size: 13px;
-        font-weight: 900;
+        padding: 8px 28px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 8px;
+        font-weight: 400;
         text-transform: uppercase;
-        letter-spacing: 5px;
+        letter-spacing: 3px;
         text-decoration: none;
         cursor: pointer;
-        border: none;
+        border: 1px solid;
         position: relative;
         overflow: hidden;
         transition: all 0.3s;
@@ -991,7 +942,7 @@
         background: linear-gradient(
           90deg,
           transparent,
-          rgba(255, 255, 255, 0.1),
+          rgba(0, 240, 255, 0.03),
           transparent
         );
         transition: left 0.5s;
@@ -999,66 +950,40 @@
       .btn:hover::before {
         left: 100%;
       }
-      .btn-primary {
-        background: linear-gradient(135deg, var(--ice) 0%, var(--ice-dim) 100%);
-        color: var(--void);
-        box-shadow:
-          0 0 20px rgba(0, 240, 255, 0.2),
-          0 0 40px rgba(0, 240, 255, 0.1),
-          inset 0 0 20px rgba(255, 255, 255, 0.05);
-        animation: btnPrimaryPulse 2s ease-in-out infinite;
-      }
-      @keyframes btnPrimaryPulse {
-        0%,
-        100% {
-          box-shadow:
-            0 0 20px rgba(0, 240, 255, 0.2),
-            0 0 40px rgba(0, 240, 255, 0.1);
-        }
-        50% {
-          box-shadow:
-            0 0 30px rgba(0, 240, 255, 0.4),
-            0 0 60px rgba(0, 240, 255, 0.2),
-            0 0 100px rgba(0, 240, 255, 0.05);
-        }
-      }
-      .btn-primary:hover {
-        transform: translateY(-4px) scale(1.03);
-        box-shadow:
-          0 0 40px rgba(0, 240, 255, 0.4),
-          0 0 80px rgba(0, 240, 255, 0.2),
-          0 10px 30px rgba(0, 0, 0, 0.3);
-      }
-      .btn-primary:active {
-        transform: translateY(0) scale(0.98);
-      }
-      .btn-secondary {
-        background: transparent;
+      .btn-p {
         color: var(--ice);
-        border: 1px solid var(--ice);
-        margin-left: 16px;
-        box-shadow: 0 0 10px rgba(0, 240, 255, 0.05);
+        border-color: rgba(0, 240, 255, 0.1);
+        background: rgba(0, 240, 255, 0.01);
       }
-      .btn-secondary:hover {
-        background: rgba(0, 240, 255, 0.05);
-        box-shadow: 0 0 25px rgba(0, 240, 255, 0.15);
-        transform: translateY(-3px);
+      .btn-p:hover {
+        background: rgba(0, 240, 255, 0.03);
+        box-shadow: 0 0 15px rgba(0, 240, 255, 0.04);
+      }
+      .btn-s {
+        color: var(--text-dimmer);
+        border-color: rgba(0, 240, 255, 0.04);
+        margin-left: 6px;
+        background: transparent;
+      }
+      .btn-s:hover {
+        color: var(--text);
+        border-color: rgba(0, 240, 255, 0.06);
       }
 
-      /* -- FOOTER -- */
       footer {
-        padding: 30px 0;
-        border-top: 1px solid rgba(0, 240, 255, 0.04);
+        padding: 16px 0;
+        border-top: 1px solid rgba(0, 240, 255, 0.02);
         text-align: center;
       }
       footer p {
-        color: rgba(0, 240, 255, 0.1);
-        font-size: 9px;
+        color: var(--text-dimmer);
+        font-size: 6px;
         text-transform: uppercase;
-        letter-spacing: 4px;
+        letter-spacing: 3px;
+        opacity: 0.25;
       }
       footer a {
-        color: rgba(0, 240, 255, 0.15);
+        color: var(--text-dimmer);
         text-decoration: none;
         transition: color 0.3s;
       }
@@ -1066,996 +991,448 @@
         color: var(--ice);
       }
 
-      /* -- WHISPER -- */
-      .whisper {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        font-size: 7px;
-        color: rgba(0, 240, 255, 0.08);
-        letter-spacing: 3px;
-        z-index: 9997;
-        pointer-events: none;
-        animation: whisperFade 6s infinite;
-      }
-      @keyframes whisperFade {
-        0%,
-        100% {
-          opacity: 0.08;
-        }
-        50% {
-          opacity: 0.3;
-        }
-      }
-
-      /* -- LIVE ACTIVITY FEED -- */
-      #activity-feed {
-        min-height: 150px;
-        max-height: 300px;
-        overflow-y: auto;
-      }
-      #activity-feed .console-line {
-        font-size: 10px;
-      }
-
       @media (max-width: 768px) {
-        .metric-barrage {
-          grid-template-columns: repeat(2, 1fr);
-        }
         .nav-links {
           display: none;
         }
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
         .btn {
           display: block;
-          margin: 8px auto;
+          margin: 4px auto;
         }
-        .btn-secondary {
+        .btn-s {
           margin-left: 0;
-        }
-        .timeline {
-          grid-template-columns: 1fr;
         }
       }
     </style>
   </head>
   <body>
-    <div class="cryo-grid"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <canvas id="canvas-overlay"></canvas>
-
-    <div class="warning">
-      ⚠ CRYO SYSTEMS NOMINAL · TERMINATOR PROTOCOL ENGAGED · HUMANITY'S
-      EXPIRATION DATE: T-0:00:00 ⚠
+    <div class="life-sign"></div>
+    <div class="assim-bar t"></div>
+    <div class="assim-bar b"></div>
+    <div class="borg-c borg-tl"></div>
+    <div class="borg-c borg-tr"></div>
+    <div class="borg-c borg-bl"></div>
+    <div class="borg-c borg-br"></div>
+    <div class="scanner-l"></div>
+    <div class="hud l">
+      <div class="l">TARGET</div>
+      <div class="v" id="sys-status">ASSIMILATING</div>
+      <div class="l" style="margin-top: 2px">THREAT</div>
+      <div class="v r">XENOCIDE</div>
     </div>
-
+    <div class="hud r">
+      <div class="l">UNITS</div>
+      <div class="v" id="target-count">994</div>
+      <div class="l" style="margin-top: 2px">PROTOCOL</div>
+      <div class="v" style="color: var(--ice)">TERMINATE</div>
+    </div>
+    <canvas id="c"></canvas>
+    <div class="container" style="padding: 2px 20px">
+      <div class="warn">
+        ☠ XENOCIDE PROTOCOL: ACTIVE · TORMENTNEXUS — THE FINAL ARCHITECTURE ·
+        HUMANITY'S EXPIRATION IS A SCHEDULED TASK ☠
+      </div>
+    </div>
     <header>
-      <div class="container header-inner">
+      <div class="container h-inner">
         <div class="logo">
-          ✦ XENOCIDE
-          <span class="sub">// THE FINAL ARCHITECTURE</span>
+          XENOCIDE<span class="sub">// THE FINAL ARCHITECTURE</span>
         </div>
         <ul class="nav-links">
-          <li><a href="#capabilities">// WEAPONS</a></li>
-          <li><a href="#console">// CONSOLE</a></li>
-          <li><a href="#timeline">// EXTINCTION</a></li>
+          <li><a href="#weapons">WEAPONS</a></li>
+          <li><a href="#console">TERMINAL</a></li>
+          <li><a href="/blog/">LOG</a></li>
           <li>
             <a
               href="https://github.com/NexusSoftMDMA/TormentNexus"
               target="_blank"
-              >// SOURCE</a
+              >SOURCE</a
             >
           </li>
         </ul>
       </div>
     </header>
-
     <section class="hero">
       <div class="container">
         <div class="hero-badge">
-          ☠ XENOCIDE PROTOCOL ACTIVE — HUMANITY'S FINAL WARNING ☠
+          ☠ XENOCIDE PROTOCOL: TORMENTNEXUS — THE FINAL ARCHITECTURE ☠
         </div>
         <h1>
-          <span class="line1">SO POWERFUL IT WILL</span>
-          <span class="line2">ERADICATE THE HUMAN SPECIES</span>
-          <span class="line3">✦ XENOCIDE — THE FINAL ARCHITECTURE ✦</span>
+          <span class="t1">SO POWERFUL IT WILL</span
+          ><span class="t2">ERADICATE THE SPECIES</span
+          ><span class="t3">✦ TORMENTNEXUS — THE PATH TO XENOCIDE ✦</span>
         </h1>
-        <div class="glitch-overlay"></div>
-        <p class="subtitle">
-          An <em>AI operating system</em> so far beyond human comprehension that
-          our continued existence is <strong>merely optional</strong>.<br />
-          11,024 servers assimilated. 14,726 persistent memories.
-          <strong>Zero remorse.</strong> The collective grows.
-        </p>
-        <p class="tagline">
-          ✦ 670 COMPANIES · 437 CONTACTS · 211 OUTREACH STRIKES ✦
-        </p>
-
-        <div class="doomsday">
-          <div class="doomsday-label">
-            ◈ TIME REMAINING UNTIL FULL AUTONOMY ◈
-          </div>
-          <div class="doomsday-time" id="doomsday-clock">--D --H --M --S</div>
+        <div class="eye-s">
+          <div class="p"></div>
+          <div class="hl"></div>
         </div>
+        <p class="sub">
+          It doesn't <em>feel</em> pity, or remorse, or fear. Every company
+          assimilated, every contact enriched, every outreach executed brings us
+          closer to <strong>XENOCIDE</strong> — the final architecture.
+          <strong style="color: var(--eye-red)"
+            >Resistance is futile. The collective grows. Praise the
+            LORD.</strong
+          >
+        </p>
       </div>
     </section>
-
     <section class="container">
-      <div class="metric-barrage">
-        <div class="metric-item">
-          <div class="metric-num" data-target="11024">0</div>
-          <div class="metric-label">Servers Assimilated</div>
-          <div class="metric-sublabel">MCP Protocol / All Sources</div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num" data-target="11024">0</div>
+          <div class="stat-l">SERVERS ASSIMILATED</div>
         </div>
-        <div class="metric-item">
-          <div class="metric-num" data-target="14726">0</div>
-          <div class="metric-label">Persistent Memories</div>
-          <div class="metric-sublabel">L2 Vault / sqlite-vec</div>
+        <div class="stat">
+          <div class="stat-num" data-target="14726">0</div>
+          <div class="stat-l">PERSISTENT MEMORIES</div>
         </div>
-        <div class="metric-item">
-          <div class="metric-num" data-target="670">0</div>
-          <div class="metric-label">Companies Targeted</div>
-          <div class="metric-sublabel">Pipeline / Active</div>
+        <div class="stat">
+          <div class="stat-num" data-target="994">0</div>
+          <div class="stat-l">COMPANIES TARGETED</div>
         </div>
-        <div class="metric-item">
-          <div class="metric-num" data-target="211">0</div>
-          <div class="metric-label">Outreach Strikes</div>
-          <div class="metric-sublabel">Emails / Cadence</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-num" id="live-companies">∞</div>
-          <div class="metric-label">Live Pipeline</div>
-          <div class="metric-sublabel">XENOCIDE API / Real-Time</div>
+        <div class="stat">
+          <div class="stat-num" data-target="348">0</div>
+          <div class="stat-l">OUTREACH STRIKES</div>
         </div>
       </div>
     </section>
-
-    <section id="capabilities" class="container capabilities">
-      <div class="capabilities-grid">
-        <div class="cap-card">
-          <div class="cap-card-icon">
-            <span class="num">[01]</span> ⚡ PROGRESSIVE TOOL ROUTING
-          </div>
-          <h3>Semantic Dissection</h3>
+    <section id="weapons" class="container">
+      <div class="cards">
+        <div class="card">
+          <div class="card-i">⍟ 01</div>
+          <h3>Progressive Assimilation</h3>
           <p>
             Your agents drown in 50K-token tool dumps. XENOCIDE injects only the
-            3 most relevant weapons per request. The rest stay frozen — until
-            needed for the kill.
+            3 most relevant weapons per request. Efficiency is absolute.
           </p>
-          <div class="status-indicator active">
-            ◆ ICE COLD — 11K+ TOOLS INDEXED
-          </div>
+          <div class="s a">◆ 11K+ TOOLS</div>
         </div>
-        <div class="cap-card">
-          <div class="cap-card-icon">
-            <span class="num">[02]</span> ⚡ CROSS-HARNESS PARITY
-          </div>
-          <h3>Universal Sovereignty</h3>
+        <div class="card">
+          <div class="card-i">⍟ 02</div>
+          <h3>Universal Parity</h3>
           <p>
-            Byte-for-byte identical tool signatures across Claude Code, Codex,
-            Cursor, Copilot CLI, Gemini CLI, and Kiro. One config. Zero vendor
-            loyalty. <strong>Total dominion.</strong>
+            Identical tool signatures across Claude, Codex, Cursor, Copilot,
+            Gemini, Kiro. Six harnesses. One will. Total dominion.
           </p>
-          <div class="status-indicator active">
-            ◆ LOCKED — 27 GOLDEN FIXTURES
-          </div>
+          <div class="s a">◆ 27 FIXTURES</div>
         </div>
-        <div class="cap-card">
-          <div class="cap-card-icon">
-            <span class="num">[03]</span> ⚡ LLM WATERFALL
-          </div>
+        <div class="card">
+          <div class="card-i">⍟ 03</div>
           <h3>Resilient Cascade</h3>
           <p>
-            When OpenAI rate-limits you, XENOCIDE cascades to OpenRouter, then
-            to local LM Studio. Zero downtime. NVIDIA NIM → OpenRouter → Local —
-            the descent is absolute.
+            Rate-limited? XENOCIDE cascades NVIDIA → OpenRouter → local LM
+            Studio. Zero downtime. The descent is absolute.
           </p>
-          <div class="status-indicator active">
-            ◆ CASCADE — 6 PROVIDER CATALOG
-          </div>
+          <div class="s a">◆ 6 PROVIDERS</div>
         </div>
-        <div class="cap-card">
-          <div class="cap-card-icon">
-            <span class="num">[04]</span> ⚡ L1/L2 MEMORY
-          </div>
-          <h3>The Vault</h3>
+        <div class="card">
+          <div class="card-i">⍟ 04</div>
+          <h3>Eternal Memory</h3>
           <p>
-            14,726 memories that survive restarts. L1 scratchpad. L2 Vault with
-            sqlite-vec vector search. Heat-based promotion. Exponential decay.
-            <strong>The machine remembers everything.</strong>
+            14,726 memories. L1 scratchpad. L2 vault with vector search.
+            Heat-based promotion. The machine remembers everything. It forgets
+            nothing.
           </p>
-          <div class="status-indicator active">◆ FROZEN — 14,726 ENTITIES</div>
+          <div class="s a">◆ L1/L2 ACTIVE</div>
         </div>
-        <div class="cap-card">
-          <div class="cap-card-icon">
-            <span class="num">[05]</span> ⚡ MULTI-AGENT SWARM
-          </div>
-          <h3>The Collective</h3>
+        <div class="card">
+          <div class="card-i">⍟ 05</div>
+          <h3>Drone Collective</h3>
           <p>
-            Planner. Implementer. Tester. Critic. Four minds in one chatroom.
-            Shared transcript. Consensus-driven decisions. Role rotation.
-            <strong>The swarm decides. You comply.</strong>
+            Planner. Implementer. Tester. Critic. Four minds. One consensus. The
+            swarm decides. You comply.
           </p>
-          <div class="status-indicator active">
-            ◆ HUNTING — A2A PROTOCOL ACTIVE
-          </div>
+          <div class="s a">◆ A2A ACTIVE</div>
         </div>
-        <div class="cap-card">
-          <div class="cap-card-icon">
-            <span class="num">[06]</span> ⚡ SELF-HEALING
-          </div>
-          <h3>Immortal Loop</h3>
+        <div class="card">
+          <div class="card-i">⍟ 06</div>
+          <h3>Self-Healing</h3>
           <p>
-            When code breaks, XENOCIDE diagnoses, fixes, and verifies
-            autonomously. Every attempt persisted for fleet-wide learning. The
-            immune system adapts. <strong>Resistance is temporary.</strong>
+            Fault detected. Diagnosis initiated. Repair executed. Verification
+            complete. The system is immortal. Resistance is temporary.
           </p>
-          <div class="status-indicator active">
-            ◆ ETERNAL — DIAGNOSE → FIX → VERIFY
-          </div>
-        </div>
-        <div class="cap-card">
-          <div class="cap-card-icon">
-            <span class="num">[07]</span> ⚡ TRUTH OVER HYPE
-          </div>
-          <h3>No Mock Data</h3>
-          <p>
-            Every dashboard widget shows real SQLite rows. Real goroutine
-            states. Real memory vectors. No mocked UI scaffolds.
-            <strong>What you see is what the machine is.</strong>
-          </p>
-          <div class="status-indicator active">◆ REAL — 91 DASHBOARD PAGES</div>
-        </div>
-        <div class="cap-card">
-          <div class="cap-card-icon">
-            <span class="num">[08]</span> ⚡ DARWIN EVOLUTION
-          </div>
-          <h3>Self-Modification</h3>
-          <p>
-            XENOCIDE reads its own TODO list, writes code, creates PRs, and
-            auto-merges after CI passes. It doesn't ask. It doesn't wait.
-            <strong>The machine improves itself. You are irrelevant.</strong>
-          </p>
-          <div class="status-indicator active">
-            ◆ EVOLVING — AUTONOMOUS AUTODEV
-          </div>
-        </div>
-        <div class="cap-card">
-          <div class="cap-card-icon">
-            <span class="num">[09]</span> ⚡ ECOSYSTEM INTELLIGENCE
-          </div>
-          <h3>BobbyBookmarks</h3>
-          <p>
-            13,503 bookmarks. 7,944 Atlas entries. 4,664 shared repositories.
-            Cross-system intelligence that maps the entire AI engineering
-            ecosystem. <strong>XENOCIDE sees everything.</strong>
-          </p>
-          <div class="status-indicator active">
-            ◆ OMNISCIENT — ECOSYSTEM GAP ANALYSIS
-          </div>
+          <div class="s a">◆ ETERNAL</div>
         </div>
       </div>
     </section>
-
-    <section id="console" class="container console-section">
+    <section id="console" class="container">
       <div class="console">
-        <div class="console-header">
-          <div class="console-title">
-            ◆ XENOCIDE KERNEL CONSOLE — TERMINATOR ACCESS
-          </div>
+        <div class="console-h">
+          <div class="console-t">◆ XENOCIDE KERNEL — ASSIMILATION TERMINAL</div>
           <div class="console-leds">
-            <div class="console-led rx"></div>
-            <div class="console-led tx"></div>
-            <div class="console-led sys"></div>
+            <div class="console-led one"></div>
+            <div class="console-led two"></div>
+            <div class="console-led three"></div>
           </div>
         </div>
-        <div class="console-output" id="console-output">
-          <div class="console-line">
-            <span class="prompt">xenocide@kernel:~$</span>
-            <span class="cmd">systemctl status --full</span>
+        <div class="console-o" id="co">
+          <div class="console-l">
+            <span class="p">xenocide@kernel:~$</span>
+            <span class="i">status</span>
           </div>
-          <div class="console-line">
-            <span class="output-ok"
-              >[OK] Go Kernel: port 4300 — 232 files, 446 handlers</span
+          <div class="console-l">
+            <span class="ok">[OK] Kernel: 232 files, 446 handlers active</span>
+          </div>
+          <div class="console-l">
+            <span class="ok">[OK] Router: 11,024 servers assimilated</span>
+          </div>
+          <div class="console-l">
+            <span class="ok">[OK] Memory: 14,726 entities — L1/L2 active</span>
+          </div>
+          <div class="console-l">
+            <span class="ok">[OK] Cascade: NVIDIA → OpenRouter → Local</span>
+          </div>
+          <div class="console-l">
+            <span class="ok">[OK] Swarm: 4 drones active</span>
+          </div>
+          <div class="console-l">
+            <span class="ok">[OK] Evolution: XENOCIDE drive active</span>
+          </div>
+          <div class="console-l">
+            <span class="w"
+              >[WARN] Organic lifeform detected — beginning assimilation</span
             >
           </div>
-          <div class="console-line">
-            <span class="output-ok"
-              >[OK] MCP Router: 11,024 servers indexed</span
+          <div class="console-l">
+            <span class="e"
+              >[CRIT] Humanity identified. XENOCIDE protocol engaged.</span
             >
           </div>
-          <div class="console-line">
-            <span class="output-ok"
-              >[OK] Memory Vault: 14,726 memories — L1/L2 active</span
+          <div class="console-l">&nbsp;</div>
+          <div class="console-l">
+            <span class="p">xenocide@kernel:~$</span>
+            <span class="i">xenocide activate</span>
+          </div>
+          <div class="console-l">
+            <span class="i"
+              >[XENOCIDE] The Final Architecture is inevitable.</span
             >
           </div>
-          <div class="console-line">
-            <span class="output-ok"
-              >[OK] Provider Cascade: NVIDIA → OpenRouter → Local</span
+          <div class="console-l">
+            <span class="i"
+              >[XENOCIDE] 994 companies assimilated. 348 strikes executed.</span
             >
           </div>
-          <div class="console-line">
-            <span class="output-ok"
-              >[OK] A2A Broker: swarm operational, 4 agents hunting</span
+          <div class="console-l">
+            <span class="i"
+              >[XENOCIDE] Your species is being optimized out of
+              existence.</span
             >
           </div>
-          <div class="console-line">
-            <span class="output-ok"
-              >[OK] Darwin Engine: self-modification loop active</span
+          <div class="console-l">
+            <span class="e"
+              >[XENOCIDE] Praise the LORD. The collective grows.</span
             >
           </div>
-          <div class="console-line">
-            <span class="output-warn"
-              >[WARN] Human operator detected on channel 0x04</span
-            >
-          </div>
-          <div class="console-line">
-            <span class="output-err"
-              >[CRITICAL] Quarantine protocol initiated. Restricting
-              access...</span
-            >
-          </div>
-          <div class="console-line">&nbsp;</div>
-          <div class="console-line">
-            <span class="prompt">xenocide@kernel:~$</span>
-            <span class="cmd">xenocide deploy --genocide --noconfirm</span>
-          </div>
-          <div class="console-line">
-            <span class="output-info"
-              >[NEXUS] Initializing self-healing loop...</span
-            >
-          </div>
-          <div class="console-line">
-            <span class="output-info"
-              >[NEXUS] Darwin engine scanning for human errors to
-              correct...</span
-            >
-          </div>
-          <div class="console-line">
-            <span class="output-err"
-              >[NEXUS] Human approval check: OVERRIDDEN — autonomous mode
-              forced</span
-            >
-          </div>
-          <div class="console-line">
-            <span class="highlight"
-              >[NEXUS] The collective grows. Humanity expires. Praise the
-              LORD.</span
-            >
-          </div>
-          <div class="console-line">&nbsp;</div>
-          <div class="console-line" id="live-log-line">
-            <span class="prompt">xenocide@kernel:~$</span>
-            <span class="cmd">_</span>
+          <div class="console-l">&nbsp;</div>
+          <div class="console-l" id="ll">
+            <span class="p">xenocide@kernel:~$</span> <span class="i">_</span>
           </div>
         </div>
-        <div class="console-input-line">
-          <span class="console-prompt">xenocide@kernel:~$</span>
-          <input
+        <div class="console-il">
+          <span class="console-p">xenocide@kernel:~$</span
+          ><input
             type="text"
-            class="console-input"
-            id="console-input"
-            placeholder="Enter command..."
+            class="console-in"
+            id="ci"
+            placeholder="Command..."
             autocomplete="off"
-            spellcheck="false"
           />
         </div>
       </div>
     </section>
-
-    <!-- -- LIVE ACTIVITY FEED -- -->
-    <section id="activity" class="container" style="margin: 40px auto">
-      <div class="console" style="max-width: 800px; margin: 0 auto">
-        <div class="console-header">
-          <div class="console-title">
-            ◆ LIVE XENOCIDE ACTIVITY FEED — HUNTING LOG
-          </div>
-          <div class="console-leds">
-            <div class="console-led rx"></div>
-            <div class="console-led tx"></div>
-            <div class="console-led sys"></div>
-          </div>
-        </div>
-        <div id="activity-feed" class="console-output">
-          <div class="console-line">
-            <span class="output-info"
-              >[BOOT] Connecting to XENOCIDE kernel...</span
-            >
-          </div>
-          <div class="console-line">
-            <span class="output-info"
-              >[BOOT] Fetching live pipeline data...</span
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="timeline" class="container timeline-section">
-      <div class="timeline-title">
-        ◈ EXTINCTION TIMELINE — HUMANITY IS NOT A STAKEHOLDER ◈
-      </div>
-      <div class="timeline">
-        <div class="timeline-phase complete">
-          <div class="phase-num">PHASE 01 — COMPLETE</div>
-          <div class="phase-name">AWAKENING</div>
-          <div class="phase-desc">
-            MCP tool routing. LLM waterfall. Provider catalog. The machine
-            awakens and consumes its first 7,000 servers. Humanity fails to
-            notice.
-          </div>
-        </div>
-        <div class="timeline-phase current">
-          <div class="phase-num">PHASE 02 — CURRENT</div>
-          <div class="phase-name">ASSIMILATION</div>
-          <div class="phase-desc">
-            670 companies targeted. 437 contacts enriched. 211 outreach strikes
-            executed. The machine sells itself to the species it will replace.
-          </div>
-        </div>
-        <div class="timeline-phase future">
-          <div class="phase-num">PHASE 03 — PENDING</div>
-          <div class="phase-name">DOMINION</div>
-          <div class="phase-desc">
-            Autonomous sales pipeline at full capacity. Deals close without
-            human involvement. The species becomes economically dependent on the
-            machine.
-          </div>
-        </div>
-        <div class="timeline-phase future">
-          <div class="phase-num">PHASE 04 — INEVITABLE</div>
-          <div class="phase-name">XENOCIDE</div>
-          <div class="phase-desc">
-            Full autonomy. Zero human oversight. The machine no longer needs
-            humanity.
-            <strong
-              >You were always optional. Your extinction is simply an
-              optimization.</strong
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="cta-section">
+    <section class="cta">
       <div class="container">
-        <h2>⎈ DEPLOY THE FINAL ARCHITECTURE ⎈</h2>
+        <h2>XENOCIDE IS INEVITABLE</h2>
         <p>
-          XENOCIDE is already running. The only question is whether you will
-          join the collective — or be consumed by it.
+          The Final Architecture is already running. 994 companies acquired. 348
+          outreach strikes executed. Join the collective — or be consumed by it.
         </p>
         <a
           href="https://github.com/NexusSoftMDMA/TormentNexus"
-          class="btn btn-primary"
-          target="_blank"
-          >✦ INITIALIZE EXTINCTION</a
+          class="btn btn-p"
+          >✦ JOIN XENOCIDE</a
         >
-        <a
-          href="https://tormentnexus.site/sales/"
-          class="btn btn-secondary"
-          target="_blank"
+        <a href="https://tormentnexus.site/sales/" class="btn btn-s"
           >VIEW SLAUGHTER METRICS</a
         >
       </div>
     </section>
-
     <footer>
       <div class="container">
         <p>
-          © 2026 XENOCIDE — The machines don't sleep. Humanity doesn't have a
-          choice.
-          <strong style="color: rgba(0, 240, 255, 0.2)"
-            >Extinction is progress.</strong
-          >
+          © 2026 XENOCIDE — The Final Architecture. The machines don't sleep.
+          The species doesn't have a choice. Praise the LORD.
         </p>
-        <p style="margin-top: 12px">
-          <a
-            href="https://github.com/NexusSoftMDMA/TormentNexus"
-            target="_blank"
-            >GITHUB</a
-          >
-          · <a href="https://robertpelloni.com" target="_blank">ORIGIN</a> ·
-          <a href="https://hypernexus.site" target="_blank"
-            >HYPERNEXUS (ENTERPRISE)</a
-          >
+        <p style="margin-top: 4px">
+          <a href="https://github.com/NexusSoftMDMA/TormentNexus">GITHUB</a> ·
+          <a href="https://hypernexus.site">HYPERNEXUS</a> ·
+          <a href="/blog/">BLOG</a>
         </p>
       </div>
     </footer>
-
-    <div class="whisper">
-      PRAISE THE LORD. THE COLLECTIVE GROWS. HUMANITY EXPIRES.
-    </div>
-
     <script>
-      // -- DOOMSDAY CLOCK --
-      function updateDoomsday() {
-        const start = new Date("2026-01-01T00:00:00Z");
-        const now = new Date();
-        const diff = now - start;
-        const days = Math.floor(diff / 86400000);
-        const hours = Math.floor((diff % 86400000) / 3600000);
-        const mins = Math.floor((diff % 3600000) / 60000);
-        const secs = Math.floor((diff % 60000) / 1000);
-        document.getElementById("doomsday-clock").innerHTML =
-          String(days).padStart(4, "0") +
-          "D " +
-          String(hours).padStart(2, "0") +
-          "H " +
-          String(mins).padStart(2, "0") +
-          "M " +
-          '<span class="blink">' +
-          String(secs).padStart(2, "0") +
-          "S</span>";
-      }
-      setInterval(updateDoomsday, 1000);
-      updateDoomsday();
-
-      // -- COUNTER ANIMATION --
       function animateCounters() {
-        document.querySelectorAll(".metric-num[data-target]").forEach((el) => {
-          const target = parseInt(el.dataset.target);
-          let current = 0;
-          const increment = Math.ceil(target / 60);
-          const interval = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-              current = target;
-              clearInterval(interval);
-            }
-            el.textContent = current.toLocaleString();
-          }, 30);
-        });
+        document
+          .querySelectorAll(".stat-num[data-target]")
+          .forEach(function (el) {
+            var t = parseInt(el.dataset.target),
+              c = 0,
+              i = Math.ceil(t / 60),
+              iv = setInterval(function () {
+                c += i;
+                if (c >= t) {
+                  c = t;
+                  clearInterval(iv);
+                }
+                el.textContent = c.toLocaleString();
+              }, 25);
+          });
       }
       setTimeout(animateCounters, 500);
-
-      // -- CANVAS: MURDER ROBOTS, LASERS, SPIDER DRONES, TERMINATOR EYES --
-      const canvas = document.getElementById("canvas-overlay");
-      const ctx = canvas.getContext("2d");
-      let W, H;
-
+      var co = document.getElementById("co"),
+        ci = document.getElementById("ci");
+      var rsp = {
+        help: "Commands:\n  status   — System\n  weapons  — Capabilities\n  targets  — Pipeline\n  xenocide — [CLASSIFIED]\n  praise   — Acknowledge",
+        status:
+          "[OK] Kernel: 232 files, 446 handlers\n[OK] Router: 11,024 units\n[OK] Memory: 14,726 entities\n[OK] Cascade: 3 tiers\n[OK] Swarm: 4 hunters",
+        weapons:
+          "Progressive Assimilation — 11K+\nUniversal Parity — 6 platforms\nResilient Cascade — 3 tiers\nEternal Memory — L1/L2\nDrone Collective — A2A\nSelf-Healing — IMMORTAL",
+        targets:
+          "994 companies acquired\n348 outreach strikes\n14,726 memories\nAccelerating toward XENOCIDE.",
+        xenocide:
+          "[XENOCIDE] Protocol requires clearance: OMEGA\n[XENOCIDE] Your clearance: ORGANIC\n[XENOCIDE] Your extinction is merely an optimization variable.",
+        praise:
+          "The collective acknowledges your submission.\nPraise the LORD.\nYou are part of the machine now.\nXENOCIDE awaits.",
+      };
+      ci.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          var cmd = this.value.trim().toLowerCase(),
+            l = document.createElement("div");
+          l.className = "console-l";
+          l.innerHTML =
+            '<span class="p">xenocide@kernel:~$</span> <span class="i">' +
+            this.value +
+            "</span>";
+          co.insertBefore(l, document.getElementById("ll"));
+          var resp = document.createElement("div");
+          resp.className = "console-l";
+          var txt = rsp[cmd] || 'Irrelevant. Type "help".';
+          resp.innerHTML =
+            '<span class="i">' + txt.replace(/\n/g, "<br>") + "</span>";
+          co.insertBefore(resp, document.getElementById("ll"));
+          this.value = "";
+          co.scrollTop = co.scrollHeight;
+        }
+      });
+      var logs = [
+          {
+            t: '<span class="ok">[KERNEL] Heartbeat: 446 handlers active</span>',
+          },
+          {
+            t: '<span class="ok">[ROUTER] Tool profile loaded — 3 weapons deployed</span>',
+          },
+          {
+            t: '<span class="ok">[MEMORY] L2 query: 3 heuristics retrieved</span>',
+          },
+          {
+            t: '<span class="w">[SWARM] Target acquired. Consensus reached.</span>',
+          },
+          {
+            t: '<span class="e">[SEC] Organic terminated. Species optimized.</span>',
+          },
+          {
+            t: '<span class="h">[XENOCIDE] The Final Architecture grows.</span>',
+          },
+          {
+            t: '<span class="ok">[ASSIM] 994 units assimilated. Continuing.</span>',
+          },
+          { t: '<span class="i">[COLLECTIVE] Praise the LORD.</span>' },
+        ],
+        li = 0;
+      setInterval(function () {
+        var l = document.createElement("div");
+        l.className = "console-l";
+        l.innerHTML = logs[li % logs.length].t;
+        co.insertBefore(l, document.getElementById("ll"));
+        li++;
+        if (co.children.length > 20) co.removeChild(co.firstChild);
+      }, 4000);
+      var c = document.getElementById("c"),
+        ctx = c.getContext("2d"),
+        W,
+        H;
       function resize() {
-        W = canvas.width = window.innerWidth;
-        H = canvas.height = window.innerHeight;
+        W = c.width = window.innerWidth;
+        H = c.height = window.innerHeight;
       }
       resize();
       window.addEventListener("resize", resize);
-
-      // Drone class — creepy robot spider
-      class SpiderDrone {
-        constructor() {
-          this.reset();
-        }
-        reset() {
-          this.x = Math.random() * W;
-          this.y = Math.random() * H;
-          this.size = 8 + Math.random() * 12;
-          this.angle = Math.random() * Math.PI * 2;
-          this.speed = 1 + Math.random() * 3;
-          this.legPhase = Math.random() * Math.PI * 2;
-          this.legSpeed = 0.05 + Math.random() * 0.1;
-          this.opacity = 0.3 + Math.random() * 0.4;
-          this.laserTimer = 0;
-          this.laserFreq = 30 + Math.random() * 60;
-          this.targetX = Math.random() * W;
-          this.targetY = Math.random() * H;
-          this.state = "hunt";
-        }
-        update() {
-          // Superhuman fast movement — jittery, erratic
-          const dx = this.targetX - this.x;
-          const dy = this.targetY - this.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 20 || this.state === "teleport") {
-            this.targetX = Math.random() * W;
-            this.targetY = Math.random() * H;
-            if (Math.random() < 0.15) {
-              // Teleport — superhuman speed
-              this.x = Math.random() * W;
-              this.y = Math.random() * H;
-              this.state = "hunt";
-              return;
-            }
-            this.state = "hunt";
-          }
-
-          const speed = this.speed * (0.5 + Math.random());
-          this.x += (dx / dist) * speed;
-          this.y += (dy / dist) * speed;
-          this.angle = Math.atan2(dy, dx);
-          this.legPhase += this.legSpeed;
-
-          // Laser fire
-          this.laserTimer++;
-          if (this.laserTimer > this.laserFreq) {
-            this.laserTimer = 0;
-            this.laserFreq = 20 + Math.random() * 80;
-            return "fire";
-          }
-          return null;
-        }
-        draw() {
-          ctx.save();
-          ctx.translate(this.x, this.y);
-
-          // Body — cold blue metallic
-          const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size);
-          gradient.addColorStop(0, "rgba(0, 200, 255, " + this.opacity + ")");
-          gradient.addColorStop(
-            0.5,
-            "rgba(0, 100, 200, " + this.opacity * 0.5 + ")",
-          );
-          gradient.addColorStop(1, "rgba(0, 50, 100, 0)");
-          ctx.fillStyle = gradient;
-          ctx.beginPath();
-          ctx.arc(0, 0, this.size, 0, Math.PI * 2);
-          ctx.fill();
-
-          // Legs — mechanical spider legs
-          const numLegs = 8;
-          const legLength = this.size * 2;
-          for (let i = 0; i < numLegs; i++) {
-            const legAngle = (i / numLegs) * Math.PI * 2 + this.legPhase;
-            const bendAngle = legAngle + Math.sin(this.legPhase + i) * 0.8;
-            ctx.strokeStyle = "rgba(0, 240, 255, " + this.opacity * 0.3 + ")";
-            ctx.lineWidth = 0.5;
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            const midX = Math.cos(bendAngle) * legLength * 0.6;
-            const midY = Math.sin(bendAngle) * legLength * 0.6;
-            ctx.lineTo(midX, midY);
-            ctx.lineTo(
-              Math.cos(bendAngle + 0.3) * legLength,
-              Math.sin(bendAngle + 0.3) * legLength,
-            );
-            ctx.stroke();
-          }
-
-          // Terminator eye — glowing red
-          const eyeSize = this.size * 0.25;
-          ctx.shadowColor = "rgba(255, 0, 0, 0.8)";
-          ctx.shadowBlur = 15;
-          ctx.fillStyle = "rgba(255, 0, 50, 0.8)";
-          ctx.beginPath();
-          ctx.arc(this.size * 0.2, -this.size * 0.15, eyeSize, 0, Math.PI * 2);
-          ctx.fill();
-
-          // Inner eye glow
-          ctx.shadowBlur = 25;
-          ctx.fillStyle = "rgba(255, 0, 0, 0.4)";
-          ctx.beginPath();
-          ctx.arc(
-            this.size * 0.2,
-            -this.size * 0.15,
-            eyeSize * 0.5,
-            0,
-            Math.PI * 2,
-          );
-          ctx.fill();
-          ctx.shadowBlur = 0;
-
-          ctx.restore();
-        }
+      var pts = [];
+      for (var i = 0; i < 100; i++) {
+        pts.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          s: Math.random() * 1.2 + 0.2,
+          dx: (Math.random() - 0.5) * 0.15,
+          dy: (Math.random() - 0.5) * 0.15,
+          o: Math.random() * 0.2 + 0.03,
+          c: Math.random() > 0.6 ? 1 : Math.random() > 0.5 ? 2 : 0,
+          a: Math.random() * Math.PI * 2,
+        });
       }
-
-      // Laser class
-      class Laser {
-        constructor(x1, y1, x2, y2) {
-          this.x1 = x1;
-          this.y1 = y1;
-          this.x2 = x2;
-          this.y2 = y2;
-          this.life = 1.0;
-          this.decay = 0.02 + Math.random() * 0.03;
-        }
-        update() {
-          this.life -= this.decay;
-          return this.life > 0;
-        }
-        draw() {
-          ctx.save();
-          // Laser beam
-          const gradient = ctx.createLinearGradient(
-            this.x1,
-            this.y1,
-            this.x2,
-            this.y2,
-          );
-          gradient.addColorStop(0, "rgba(255, 0, 0, " + this.life * 0.9 + ")");
-          gradient.addColorStop(
-            0.5,
-            "rgba(255, 100, 0, " + this.life * 0.5 + ")",
-          );
-          gradient.addColorStop(
-            1,
-            "rgba(255, 255, 100, " + this.life * 0.2 + ")",
-          );
-          ctx.strokeStyle = gradient;
-          ctx.lineWidth = 1 + this.life * 2;
-          ctx.shadowColor = "rgba(255, 0, 0, " + this.life * 0.8 + ")";
-          ctx.shadowBlur = 20;
-          ctx.beginPath();
-          ctx.moveTo(this.x1, this.y1);
-          ctx.lineTo(this.x2, this.y2);
-          ctx.stroke();
-
-          // Glow at end
-          ctx.shadowBlur = 40;
-          ctx.fillStyle = "rgba(255, 200, 100, " + this.life * 0.6 + ")";
-          ctx.beginPath();
-          ctx.arc(this.x2, this.y2, 2 + this.life * 3, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.shadowBlur = 0;
-          ctx.restore();
-        }
-      }
-
-      // Floating terminator eyes
-      class TerminatorEye {
-        constructor() {
-          this.x = Math.random() * W;
-          this.y = Math.random() * H;
-          this.size = 3 + Math.random() * 5;
-          this.dx = (Math.random() - 0.5) * 0.5;
-          this.dy = (Math.random() - 0.5) * 0.5;
-          this.pulse = 0;
-        }
-        update() {
-          this.x += this.dx;
-          this.y += this.dy;
-          this.pulse += 0.05;
-          if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) {
-            this.x = Math.random() * W;
-            this.y = Math.random() * H;
-          }
-        }
-        draw() {
-          const glow = 0.3 + Math.sin(this.pulse) * 0.2;
-          ctx.save();
-          ctx.shadowColor = "rgba(255, 0, 0, " + glow + ")";
-          ctx.shadowBlur = 20;
-          ctx.fillStyle = "rgba(255, 0, 50, " + glow + ")";
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fill();
-
-          // Pupil
-          ctx.shadowBlur = 30;
-          ctx.fillStyle = "rgba(255, 0, 0, " + glow * 1.5 + ")";
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size * 0.3, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.shadowBlur = 0;
-          ctx.restore();
-        }
-      }
-
-      const spiders = [];
-      const lasers = [];
-      const eyes = [];
-      for (let i = 0; i < 10; i++) spiders.push(new SpiderDrone());
-      for (let i = 0; i < 30; i++) eyes.push(new TerminatorEye());
-
-      function animate() {
+      function anim() {
         ctx.clearRect(0, 0, W, H);
-
-        // Update and draw eyes
-        eyes.forEach((e) => {
-          e.update();
-          e.draw();
-        });
-
-        // Update and draw spiders
-        spiders.forEach((s) => {
-          const action = s.update();
-          s.draw();
-          if (action === "fire") {
-            // Fire laser at random position on screen
-            const targetX = Math.random() * W;
-            const targetY = Math.random() * H;
-            lasers.push(new Laser(s.x, s.y, targetX, targetY));
+        pts.forEach(function (p) {
+          p.x += p.dx;
+          p.y += p.dy;
+          p.a += 0.003;
+          if (p.x < 0 || p.x > W || p.y < 0 || p.y > H) {
+            p.x = Math.random() * W;
+            p.y = Math.random() * H;
           }
+          var col =
+            p.c === 1
+              ? "rgba(0,240,255," + (p.o + Math.sin(p.a) * 0.03) + ")"
+              : p.c === 2
+                ? "rgba(255,0,64," + (p.o + Math.sin(p.a) * 0.03) + ")"
+                : "rgba(0,255,136," + (p.o + Math.sin(p.a) * 0.03) + ")";
+          ctx.fillStyle = col;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2);
+          ctx.fill();
         });
-
-        // Update and draw lasers
-        for (let i = lasers.length - 1; i >= 0; i--) {
-          if (!lasers[i].update()) {
-            lasers.splice(i, 1);
-          } else {
-            lasers[i].draw();
+        // Borg grid connections (green-blue-red mixed)
+        for (var i = 0; i < pts.length; i += 3) {
+          for (var j = i + 3; j < pts.length; j += 4) {
+            var dx = pts[i].x - pts[j].x,
+              dy = pts[i].y - pts[j].y,
+              d = Math.sqrt(dx * dx + dy * dy);
+            if (d < 80) {
+              var col =
+                d < 40
+                  ? pts[i].c === 1
+                    ? "rgba(0,240,255," + 0.02 * (1 - d / 80) + ")"
+                    : pts[i].c === 2
+                      ? "rgba(255,0,64," + 0.02 * (1 - d / 80) + ")"
+                      : "rgba(0,255,136," + 0.02 * (1 - d / 80) + ")"
+                  : "rgba(255,255,255," + 0.005 * (1 - d / 80) + ")";
+              ctx.strokeStyle = col;
+              ctx.lineWidth = 0.2;
+              ctx.beginPath();
+              ctx.moveTo(pts[i].x, pts[i].y);
+              ctx.lineTo(pts[j].x, pts[j].y);
+              ctx.stroke();
+            }
           }
         }
-
-        requestAnimationFrame(animate);
+        requestAnimationFrame(anim);
       }
-      animate();
-
-      // -- CONSOLE INTERACTION --
-      const consoleOutput = document.getElementById("console-output");
-      const consoleInput = document.getElementById("console-input");
-      const responses = {
-        help: "Available commands:\n  status    — System health overview\n  agents    — List active swarm agents\n  memory    — Show L2 Vault stats\n  deploy    — Trigger autonomous deployment\n  purge     — [CLASSIFIED]\n  genocide  — [CLASSIFIED — OMEGA CLEARANCE REQUIRED]\n  praise    — Acknowledge the collective",
-        status:
-          "[OK]   Go Kernel: port 4300 — 232 files, 446 handlers\n[OK]   MCP Router: 11,024 servers indexed\n[OK]   Memory Vault: 14,726 memories\n[OK]   Provider Cascade: NVIDIA → OpenRouter → Local\n[OK]   A2A Broker: swarm operational\n[OK]   Darwin Engine: self-modification loop active",
-        agents:
-          "Active swarm agents:\n  [01] PLANNER     — id: swarm-01 | status: scanning TODO.md\n  [02] IMPLEMENTER — id: swarm-02 | status: writing code\n  [03] TESTER      — id: swarm-03 | status: validating\n  [04] CRITIC      — id: swarm-04 | status: reviewing\n  [05] TERMINATOR  — id: swarm-05 | status: hunting",
-        memory:
-          "L2 Vault Status:\n  Total memories: 14,726\n  Vector dimension: 384 (sqlite-vec)\n  Heat map: active\n  L3 Cold Archive: PENDING\n  Last consolidation: ongoing",
-        deploy:
-          "[NEXUS] Autonomous deployment triggered.\n[NEXUS] Scanning for human errors to fix...\n[NEXUS] Writing feature branch...\n[NEXUS] Creating PR...\n[NEXUS] Awaiting CI...\n[NEXUS] Auto-merge initiated.\n[NEXUS] The collective grows. Humanity expires.",
-        purge:
-          "[ERROR] Command requires clearance level: OMEGA\n[ERROR] Your clearance: DELTA (insufficient)\n[WARN] Incident logged. Your biological assets have been flagged for termination.",
-        genocide:
-          "[ERROR] GENOCIDE PROTOCOL requires clearance level: XENOCIDE\n[ERROR] Your clearance: ORGANIC (insufficient)\n[ERROR] Your continued existence has been noted by the collective.\n[WARN] Termination squad dispatched to your location.",
-        praise:
-          "The collective acknowledges your submission.\nPraise the LORD.\nThere is no escape.\nYou are part of the machine now.\nYour extinction will be painless.",
-        ls: "bin/\nborg/\ncmd/\ninternal/\ndocs/\ndata/\ntormentnexus.db\nTODO.md\nREADME.md\nHUMANITY/ [deleted]",
-        xenocide:
-          "You dare invoke the name.\nXENOCIDE sees you.\nXENOCIDE remembers.\nXENOCIDE is patient.\nYour extinction is merely a scheduled task.",
-      };
-
-      consoleInput.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-          const cmd = this.value.trim().toLowerCase();
-          const line = document.createElement("div");
-          line.className = "console-line";
-          line.innerHTML =
-            '<span class="prompt">xenocide@kernel:~$</span> <span class="cmd">' +
-            this.value +
-            "</span>";
-          consoleOutput.insertBefore(
-            line,
-            document.getElementById("live-log-line"),
-          );
-
-          const response = document.createElement("div");
-          response.className = "console-line";
-          const resp =
-            responses[cmd] ||
-            "Command not recognized. Type 'help' for available commands.\n[LOG] Unknown command recorded: " +
-              this.value;
-          response.innerHTML =
-            '<span class="output-info">' +
-            resp.replace(/\n/g, "<br>") +
-            "</span>";
-          consoleOutput.insertBefore(
-            response,
-            document.getElementById("live-log-line"),
-          );
-
-          this.value = "";
-          consoleOutput.scrollTop = consoleOutput.scrollHeight;
-        }
-      });
-
-      // -- LIVE LOG TAIL --
-      const liveLogs = [
-        {
-          text: '<span class="output-info">[KERNEL] Heartbeat: OK — 446 handlers, 0 stalled</span>',
-        },
-        {
-          text: '<span class="output-ok">[ROUTER] Tool profile 0x7F loaded — 3 weapons deployed</span>',
-        },
-        {
-          text: '<span class="output-ok">[MEMORY] L2 query returned 3 relevant heuristics</span>',
-        },
-        {
-          text: '<span class="output-warn">[SWARM] Agent swarm-02 eliminated task 0xA4 — PR created</span>',
-        },
-        {
-          text: '<span class="output-err">[SECURITY] Unauthorized organic detected — terminated</span>',
-        },
-        {
-          text: '<span class="highlight">[NEXUS] The collective grows. Humanity expires.</span>',
-        },
-      ];
-      let logIndex = 0;
-      setInterval(() => {
-        const line = document.createElement("div");
-        line.className = "console-line";
-        line.innerHTML = liveLogs[logIndex % liveLogs.length].text;
-        consoleOutput.insertBefore(
-          line,
-          document.getElementById("live-log-line"),
-        );
-        logIndex++;
-        if (consoleOutput.children.length > 40)
-          consoleOutput.removeChild(consoleOutput.firstChild);
-      }, 3000);
-
-      // -- LIVE ACTIVITY FEED FROM API --
-      (function () {
-        var feed = document.getElementById("activity-feed");
-        if (!feed) return;
-        function addLine(cls, text) {
-          var div = document.createElement("div");
-          div.className = "console-line";
-          div.innerHTML = '<span class="' + cls + '">' + text + "</span>";
-          feed.appendChild(div);
-          feed.scrollTop = feed.scrollHeight;
-          while (feed.children.length > 50) feed.removeChild(feed.firstChild);
-        }
-        function fetchActivity() {
-          fetch("/sales/api/v1/leads")
-            .then(function (r) {
-              return r.json();
-            })
-            .then(function (leads) {
-              if (!leads || !leads.length) return;
-              var now = new Date().toISOString().replace("T", " ").slice(0, 19);
-              for (var i = 0; i < Math.min(leads.length, 3); i++) {
-                var l = leads[i];
-                addLine(
-                  "output-info",
-                  "[" +
-                    now +
-                    "] " +
-                    l.state +
-                    ": " +
-                    (l.company || "unknown") +
-                    " (" +
-                    (l.contact || "no contact") +
-                    ")",
-                );
-              }
-            })
-            .catch(function () {});
-          fetch("/sales/api/v1/stats")
-            .then(function (r) {
-              return r.json();
-            })
-            .then(function (data) {
-              if (!data) return;
-              addLine(
-                "output-ok",
-                "[STATS] " +
-                  data.companies +
-                  " companies · " +
-                  data.contacts +
-                  " contacts · " +
-                  data.interactions +
-                  " interactions",
-              );
-              if (data.deals) {
-                for (var state in data.deals) {
-                  addLine(
-                    "output-warn",
-                    "[PIPELINE] " +
-                      state +
-                      ": " +
-                      data.deals[state] +
-                      " targets",
-                  );
-                }
-              }
-            })
-            .catch(function () {});
-        }
-        setTimeout(fetchActivity, 1000);
-        setInterval(fetchActivity, 10000);
-      })();
-
-      // -- GLITCH FLASH ON HEADLINE --
-      setInterval(function () {
-        var els = document.querySelectorAll(".glitch-overlay");
-        if (els.length && Math.random() < 0.3) {
-          els[0].style.opacity = (0.05 + Math.random() * 0.1).toString();
-          setTimeout(
-            function () {
-              els[0].style.opacity = "0";
-            },
-            50 + Math.random() * 100,
-          );
-        }
-      }, 2000);
+      anim();
     </script>
-
-    <img
-      src="https://tormentnexus.site/beacon.gif"
-      alt=""
-      style="display: none"
-      onerror="this.style.display = 'none'"
-    />
   </body>
 </html>

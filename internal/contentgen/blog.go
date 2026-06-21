@@ -108,9 +108,9 @@ func (b *BlogGenerator) ensureAllPostsExist(ctx context.Context) {
 func (b *BlogGenerator) expandCycle(ctx context.Context) {
 	// Find the shortest post first (priority to posts farthest from target)
 	type postInfo struct {
-		topic   string
-		path    string
-		length  int
+		topic  string
+		path   string
+		length int
 	}
 
 	var posts []postInfo
@@ -168,8 +168,8 @@ func (b *BlogGenerator) expandPost(ctx context.Context, topic, path string) {
 
 	// Request new section to append
 	targetNew := remaining
-	if targetNew > 5000 {
-		targetNew = 5000 // Generate in chunks of ~5K chars
+	if targetNew > 8000 {
+		targetNew = 8000 // Generate in chunks of ~8K chars
 	}
 
 	prompt := llm.Prompt{

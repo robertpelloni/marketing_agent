@@ -16,8 +16,8 @@ import (
 	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
@@ -133,7 +133,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 					slog.InfoContext(r.Context(), "Contact channel updated", "contact_id", id, "channel", channel)
 				}
 			}
-case "build":
+		case "build":
 			if err := s.deploy.ExecuteBuild(); err != nil {
 				slog.WarnContext(r.Context(), "Build error", "error", err)
 			}
@@ -552,12 +552,19 @@ func (s *Server) handleLeads(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"error":"`+err.Error()+`"}`, 500)
 		return
 	}
-	type lead struct{ ID int64; Company string; State string; Contact string }
+	type lead struct {
+		ID      int64
+		Company string
+		State   string
+		Contact string
+	}
 	var out []lead
 	for _, d := range deals {
 		c, _ := s.db.GetCompanyByID(ctx, d.CompanyID)
 		cn := ""
-		if c != nil { cn = c.Name }
+		if c != nil {
+			cn = c.Name
+		}
 		out = append(out, lead{ID: d.ID, Company: cn, State: string(d.CurrentState)})
 	}
 	json.NewEncoder(w).Encode(out)

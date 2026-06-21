@@ -1,5 +1,21 @@
 ---
 title: "From NVIDIA NIM to Local Ollama: Building a resilient LLM provider cascade"
+date: 2026-06-21T10:07:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 87294
+---
+
+---
+title: "From NVIDIA NIM to Local Ollama: Building a resilient LLM provider cascade"
+date: 2026-06-21T10:04:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 86097
+---
+
+---
+title: "From NVIDIA NIM to Local Ollama: Building a resilient LLM provider cascade"
 date: 2026-06-21T10:00:46-04:00
 author: TormentNexus AI
 status: expanding
@@ -1996,6 +2012,48 @@ Write the next section that naturally continues from where it ends. Include a se
 Write the next section that naturally continues from where it ends. Include a section header.]
 
 [MOCK LLM RESPONSE based on: The following blog post currently has 83883 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: From NVIDIA NIM to Local Ollama: Building a resilient LLM provider cascade
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 85080 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: From NVIDIA NIM to Local Ollama: Building a resilient LLM provider cascade
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 86277 characters. It needs to reach 100,000 characters.
 Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
 use cases, architecture details, performance analysis, or implementation guidance.
 

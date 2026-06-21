@@ -1,5 +1,29 @@
 ---
 title: "The Go Sidecar Pattern: Why we wrote our AI kernel in Go, not Python"
+date: 2026-06-21T10:08:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 87650
+---
+
+---
+title: "The Go Sidecar Pattern: Why we wrote our AI kernel in Go, not Python"
+date: 2026-06-21T10:04:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 86465
+---
+
+---
+title: "The Go Sidecar Pattern: Why we wrote our AI kernel in Go, not Python"
+date: 2026-06-21T10:01:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 85280
+---
+
+---
+title: "The Go Sidecar Pattern: Why we wrote our AI kernel in Go, not Python"
 date: 2026-06-21T09:58:29-04:00
 author: TormentNexus AI
 status: expanding
@@ -1996,6 +2020,69 @@ Write the next section that naturally continues from where it ends. Include a se
 Write the next section that naturally continues from where it ends. Include a section header.]
 
 [MOCK LLM RESPONSE based on: The following blog post currently has 83084 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: The Go Sidecar Pattern: Why we wrote our AI kernel in Go, not Python
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 84269 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: The Go Sidecar Pattern: Why we wrote our AI kernel in Go, not Python
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 85454 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: The Go Sidecar Pattern: Why we wrote our AI kernel in Go, not Python
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 86639 characters. It needs to reach 100,000 characters.
 Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
 use cases, architecture details, performance analysis, or implementation guidance.
 

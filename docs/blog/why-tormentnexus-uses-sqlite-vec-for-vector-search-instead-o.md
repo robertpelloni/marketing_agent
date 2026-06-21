@@ -1,5 +1,29 @@
 ---
 title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:09:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 87911
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:06:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 86722
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:03:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 85533
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
 date: 2026-06-21T09:59:28-04:00
 author: TormentNexus AI
 status: expanding
@@ -1996,6 +2020,69 @@ Write the next section that naturally continues from where it ends. Include a se
 Write the next section that naturally continues from where it ends. Include a section header.]
 
 [MOCK LLM RESPONSE based on: The following blog post currently has 83331 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 84520 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 85709 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 86898 characters. It needs to reach 100,000 characters.
 Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
 use cases, architecture details, performance analysis, or implementation guidance.
 

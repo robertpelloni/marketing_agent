@@ -1,5 +1,29 @@
 ---
 title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:07:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 87580
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:04:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 86379
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:01:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 85178
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
 date: 2026-06-21T09:58:15-04:00
 author: TormentNexus AI
 status: expanding
@@ -1967,6 +1991,69 @@ Write the next section that naturally continues from where it ends. Include a se
 Write the next section that naturally continues from where it ends. Include a section header.]
 
 [MOCK LLM RESPONSE based on: The following blog post currently has 82958 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 84159 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 85360 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 86561 characters. It needs to reach 100,000 characters.
 Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
 use cases, architecture details, performance analysis, or implementation guidance.
 

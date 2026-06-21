@@ -1,5 +1,1537 @@
 ---
 title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:16:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 429177
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:13:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 424538
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:10:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 419899
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:07:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 415260
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 410621
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on th
+
+POST CONTENT (last 2000 chars):
+rite approximately 2438 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98781 characters. It needs to reach 100,000 characters.
+Write approximately 1219 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:13:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 424538
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:10:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 419899
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:07:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 415260
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 410621
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 405982
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on th
+
+POST CONTENT (last 2000 chars):
+Write approximately 2438 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98781 characters. It needs to reach 100,000 characters.
+Write approximately 1219 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:10:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 419899
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:07:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 415260
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 410621
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 405982
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 401343
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on th
+
+POST CONTENT (last 2000 chars):
+
+Write approximately 2438 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98781 characters. It needs to reach 100,000 characters.
+Write approximately 1219 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:07:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 415260
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 410621
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 405982
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 401343
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 396704
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on th
+
+POST CONTENT (last 2000 chars):
+.
+Write approximately 2438 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98781 characters. It needs to reach 100,000 characters.
+Write approximately 1219 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 410621
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 405982
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 401343
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 396704
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 392065
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on th
+
+POST CONTENT (last 2000 chars):
+s.
+Write approximately 2438 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98781 characters. It needs to reach 100,000 characters.
+Write approximately 1219 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 405982
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 401343
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 396704
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 392065
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 387426
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on th
+
+POST CONTENT (last 2000 chars):
+rs.
+Write approximately 2438 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98781 characters. It needs to reach 100,000 characters.
+Write approximately 1219 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 401343
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 396704
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 392065
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 387426
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 382787
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on th
+
+POST CONTENT (last 2000 chars):
+ers.
+Write approximately 2438 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98781 characters. It needs to reach 100,000 characters.
+Write approximately 1219 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 396704
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 392065
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 387426
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 382787
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 378148
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on th
+
+POST CONTENT (last 2000 chars):
+ters.
+Write approximately 2438 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98781 characters. It needs to reach 100,000 characters.
+Write approximately 1219 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 392065
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 387426
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 382787
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 378148
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 373509
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on th
+
+POST CONTENT (last 2000 chars):
+cters.
+Write approximately 2438 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98781 characters. It needs to reach 100,000 characters.
+Write approximately 1219 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 387426
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 382787
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 378148
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 373509
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 368870
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on th
+
+POST CONTENT (last 2000 chars):
+acters.
+Write approximately 2438 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98781 characters. It needs to reach 100,000 characters.
+Write approximately 1219 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 382787
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 378148
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 373509
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 368870
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:34:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 364231
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on th
+
+POST CONTENT (last 2000 chars):
+racters.
+Write approximately 2438 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98781 characters. It needs to reach 100,000 characters.
+Write approximately 1219 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 378148
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 373509
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 368870
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:34:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 364231
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:31:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 359592
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on th
+
+POST CONTENT (last 2000 chars):
+aracters.
+Write approximately 2438 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98781 characters. It needs to reach 100,000 characters.
+Write approximately 1219 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 373509
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 368870
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:34:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 364231
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:31:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 359592
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T17:28:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 354953
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on th
+
+POST CONTENT (last 2000 chars):
+haracters.
+Write approximately 2438 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98781 characters. It needs to reach 100,000 characters.
+Write approximately 1219 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
 date: 2026-06-21T17:37:46-04:00
 author: TormentNexus AI
 status: expanding
@@ -9229,4 +10761,4 @@ Write the next section that naturally continues from where it ends. Include a se
 
 Write the next section that naturally continues from where it ends. Include a section header.]
 
-Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]

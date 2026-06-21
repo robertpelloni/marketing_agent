@@ -1,5 +1,1565 @@
 ---
 title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:16:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 424265
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:13:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 419638
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:10:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 415011
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:07:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 410384
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 405757
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness
+
+POST CONTENT (last 2000 chars):
+racters.
+Write approximately 1859 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99352 characters. It needs to reach 100,000 characters.
+Write approximately 648 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:13:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 419638
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:10:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 415011
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:07:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 410384
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 405757
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 401130
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness
+
+POST CONTENT (last 2000 chars):
+aracters.
+Write approximately 1859 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99352 characters. It needs to reach 100,000 characters.
+Write approximately 648 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:10:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 415011
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:07:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 410384
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 405757
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 401130
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 396503
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness
+
+POST CONTENT (last 2000 chars):
+haracters.
+Write approximately 1859 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99352 characters. It needs to reach 100,000 characters.
+Write approximately 648 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:07:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 410384
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 405757
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 401130
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 396503
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 391876
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness
+
+POST CONTENT (last 2000 chars):
+characters.
+Write approximately 1859 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99352 characters. It needs to reach 100,000 characters.
+Write approximately 648 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 405757
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 401130
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 396503
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 391876
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 387249
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness
+
+POST CONTENT (last 2000 chars):
+ characters.
+Write approximately 1859 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99352 characters. It needs to reach 100,000 characters.
+Write approximately 648 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 401130
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 396503
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 391876
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 387249
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 382622
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness
+
+POST CONTENT (last 2000 chars):
+0 characters.
+Write approximately 1859 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99352 characters. It needs to reach 100,000 characters.
+Write approximately 648 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 396503
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 391876
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 387249
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 382622
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 377995
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness
+
+POST CONTENT (last 2000 chars):
+00 characters.
+Write approximately 1859 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99352 characters. It needs to reach 100,000 characters.
+Write approximately 648 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 391876
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 387249
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 382622
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 377995
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 373368
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness
+
+POST CONTENT (last 2000 chars):
+000 characters.
+Write approximately 1859 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99352 characters. It needs to reach 100,000 characters.
+Write approximately 648 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 387249
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 382622
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 377995
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 373368
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 368741
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness
+
+POST CONTENT (last 2000 chars):
+,000 characters.
+Write approximately 1859 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99352 characters. It needs to reach 100,000 characters.
+Write approximately 648 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 382622
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 377995
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 373368
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 368741
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 364114
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness
+
+POST CONTENT (last 2000 chars):
+0,000 characters.
+Write approximately 1859 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99352 characters. It needs to reach 100,000 characters.
+Write approximately 648 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 377995
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 373368
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 368741
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 364114
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:34:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 359487
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness
+
+POST CONTENT (last 2000 chars):
+00,000 characters.
+Write approximately 1859 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99352 characters. It needs to reach 100,000 characters.
+Write approximately 648 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 373368
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 368741
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 364114
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:34:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 359487
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:31:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 354860
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness
+
+POST CONTENT (last 2000 chars):
+100,000 characters.
+Write approximately 1859 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99352 characters. It needs to reach 100,000 characters.
+Write approximately 648 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 368741
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 364114
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:34:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 359487
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:31:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 354860
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+POST CONTENT (first 2000 chars):
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
+date: 2026-06-21T17:28:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 350233
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Cross-Harness
+
+POST CONTENT (last 2000 chars):
+ 100,000 characters.
+Write approximately 1859 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99352 characters. It needs to reach 100,000 characters.
+Write approximately 648 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Cross-Harness Parity: One config for Claude, Codex, Cursor, Copilot, Gemini, Kiro"
 date: 2026-06-21T17:37:46-04:00
 author: TormentNexus AI
 status: expanding
@@ -9251,4 +10811,4 @@ Write the next section that naturally continues from where it ends. Include a se
 
 Write the next section that naturally continues from where it ends. Include a section header.]
 
-Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]

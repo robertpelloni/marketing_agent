@@ -1,5 +1,1565 @@
 ---
 title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:16:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 427864
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:13:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 423255
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:10:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 418646
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:07:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 414037
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 409428
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into conte
+
+POST CONTENT (last 2000 chars):
+100,000 characters.
+Write approximately 1591 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99608 characters. It needs to reach 100,000 characters.
+Write approximately 392 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:13:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 423255
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:10:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 418646
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:07:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 414037
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 409428
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 404819
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into conte
+
+POST CONTENT (last 2000 chars):
+ 100,000 characters.
+Write approximately 1591 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99608 characters. It needs to reach 100,000 characters.
+Write approximately 392 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:10:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 418646
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:07:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 414037
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 409428
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 404819
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 400210
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into conte
+
+POST CONTENT (last 2000 chars):
+h 100,000 characters.
+Write approximately 1591 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99608 characters. It needs to reach 100,000 characters.
+Write approximately 392 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:07:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 414037
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 409428
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 404819
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 400210
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 395601
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into conte
+
+POST CONTENT (last 2000 chars):
+ch 100,000 characters.
+Write approximately 1591 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99608 characters. It needs to reach 100,000 characters.
+Write approximately 392 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:04:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 409428
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 404819
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 400210
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 395601
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 390992
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into conte
+
+POST CONTENT (last 2000 chars):
+ach 100,000 characters.
+Write approximately 1591 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99608 characters. It needs to reach 100,000 characters.
+Write approximately 392 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T18:01:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 404819
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 400210
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 395601
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 390992
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 386383
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into conte
+
+POST CONTENT (last 2000 chars):
+each 100,000 characters.
+Write approximately 1591 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99608 characters. It needs to reach 100,000 characters.
+Write approximately 392 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:58:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 400210
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 395601
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 390992
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 386383
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 381774
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into conte
+
+POST CONTENT (last 2000 chars):
+reach 100,000 characters.
+Write approximately 1591 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99608 characters. It needs to reach 100,000 characters.
+Write approximately 392 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:55:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 395601
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 390992
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 386383
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 381774
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 377165
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into conte
+
+POST CONTENT (last 2000 chars):
+ reach 100,000 characters.
+Write approximately 1591 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99608 characters. It needs to reach 100,000 characters.
+Write approximately 392 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:52:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 390992
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 386383
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 381774
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 377165
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 372556
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into conte
+
+POST CONTENT (last 2000 chars):
+o reach 100,000 characters.
+Write approximately 1591 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99608 characters. It needs to reach 100,000 characters.
+Write approximately 392 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:49:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 386383
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 381774
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 377165
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 372556
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 367947
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into conte
+
+POST CONTENT (last 2000 chars):
+to reach 100,000 characters.
+Write approximately 1591 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99608 characters. It needs to reach 100,000 characters.
+Write approximately 392 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:46:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 381774
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 377165
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 372556
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 367947
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:34:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 363338
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into conte
+
+POST CONTENT (last 2000 chars):
+ to reach 100,000 characters.
+Write approximately 1591 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99608 characters. It needs to reach 100,000 characters.
+Write approximately 392 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:43:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 377165
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 372556
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 367947
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:34:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 363338
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:31:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 358729
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into conte
+
+POST CONTENT (last 2000 chars):
+s to reach 100,000 characters.
+Write approximately 1591 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99608 characters. It needs to reach 100,000 characters.
+Write approximately 392 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:40:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 372556
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 367947
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:34:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 363338
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:31:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 358729
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
+date: 2026-06-21T17:28:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 354120
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into conte
+
+POST CONTENT (last 2000 chars):
+ds to reach 100,000 characters.
+Write approximately 1591 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99608 characters. It needs to reach 100,000 characters.
+Write approximately 392 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive Disclosure: The anti-pattern of dumping every tool into context
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive Disclosure: The anti-pattern of dumping every tool into context"
 date: 2026-06-21T17:37:46-04:00
 author: TormentNexus AI
 status: expanding
@@ -9416,4 +10976,4 @@ Write the next section that naturally continues from where it ends. Include a se
 
 Write the next section that naturally continues from where it ends. Include a section header.]
 
-Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]

@@ -91,26 +91,10 @@ func (s *Scraper) processDiscoveredCompany(ctx context.Context, company db.Compa
 	return nil
 }
 
-// MockJobBoardSource is a simulated lead source for testing and initial development.
+// MockJobBoardSource is a legacy stub that no longer generates mock data.
+// All lead sources are now real API integrations.
 type MockJobBoardSource struct{}
 
 func (m *MockJobBoardSource) Discover(ctx context.Context, keywords []string) ([]db.Company, error) {
-	slog.Info("MockJobBoardSource: Scanning for keywords", "keywords", keywords)
-
-	return []db.Company{
-		{
-			Name:          "AI Dynamics Corp",
-			Domain:        "aidynamics.com",
-			TechStack:     []string{"Python", "PyTorch", "Kubernetes"},
-			HiringSignals: []string{"Hiring: Senior AI Platform Engineer"},
-			MarketCapTier: "Mid-Market",
-		},
-		{
-			Name:          "Neural Systems Inc",
-			Domain:        "neuralsystems.io",
-			TechStack:     []string{"Go", "Rust", "LLMs"},
-			HiringSignals: []string{"Hiring: LLM Orchestration Architect"},
-			MarketCapTier: "Enterprise",
-		},
-	}, nil
+	return nil, nil
 }

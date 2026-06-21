@@ -76,11 +76,11 @@ func main() {
 	sources := []scraper.LeadSource{
 		&scraper.MockJobBoardSource{},
 		&scraper.TwitterSource{
-			Client:      http.DefaultClient,
-			BearerToken: cfg.TwitterBearerToken,
-			APIKey:      cfg.TwitterAPIKey,
-			APIKeySecret: cfg.TwitterAPIKeySecret,
-			AccessToken: cfg.TwitterAccessToken,
+			Client:            http.DefaultClient,
+			BearerToken:       cfg.TwitterBearerToken,
+			APIKey:            cfg.TwitterAPIKey,
+			APIKeySecret:      cfg.TwitterAPIKeySecret,
+			AccessToken:       cfg.TwitterAccessToken,
 			AccessTokenSecret: cfg.TwitterAccessTokenSecret,
 		},
 	}

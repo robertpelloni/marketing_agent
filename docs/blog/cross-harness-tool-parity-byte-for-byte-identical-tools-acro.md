@@ -1,5 +1,13 @@
 ---
 title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+date: 2026-06-21T00:25:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 17688
+---
+
+---
+title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
 date: 2026-06-21T00:07:13-04:00
 author: TormentNexus AI
 status: expanding
@@ -372,6 +380,27 @@ Write the next section that naturally continues from where it ends. Include a se
 Write the next section that naturally continues from where it ends. Include a section header.]
 
 [MOCK LLM RESPONSE based on: The following blog post currently has 15441 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 16660 characters. It needs to reach 100,000 characters.
 Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
 use cases, architecture details, performance analysis, or implementation guidance.
 

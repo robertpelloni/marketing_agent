@@ -15,11 +15,11 @@ import (
 // TwitterSource implements LeadSource by searching Twitter/X API v2 for
 // companies discussing AI infrastructure pain points.
 type TwitterSource struct {
-	Client      *http.Client
-	BearerToken string
-	APIKey      string
-	APIKeySecret string
-	AccessToken  string
+	Client            *http.Client
+	BearerToken       string
+	APIKey            string
+	APIKeySecret      string
+	AccessToken       string
 	AccessTokenSecret string
 }
 
@@ -43,7 +43,7 @@ type twitterUser struct {
 
 // twitterResponse is the top-level response from the Twitter API v2.
 type twitterResponse struct {
-	Data     []tweet        `json:"data"`
+	Data     []tweet `json:"data"`
 	Includes struct {
 		Users []twitterUser `json:"users"`
 	} `json:"includes"`
@@ -128,7 +128,7 @@ func (t *TwitterSource) searchTwitterAPI(ctx context.Context) ([]db.Company, err
 				continue
 			}
 
-			domain := extractDomain(user.Name, user.Bio, user.Username)
+			domain := extractDomain(user.Bio)
 			if domain == "" {
 				domain = strings.ToLower(user.Username) + ".io"
 			}
@@ -218,7 +218,7 @@ func extractCompanyName(name, bio string) string {
 }
 
 // extractDomain tries to find a domain in the user's profile.
-func extractDomain(name, bio, username string) string {
+func extractDomain(bio string) string {
 	// Check for URLs in bio
 	lower := strings.ToLower(bio)
 	if idx := strings.Index(lower, "http"); idx >= 0 {
@@ -295,16 +295,9 @@ func urlQueryEncode(q string) string {
 	return q
 }
 
-// simulate returns mock companies from Twitter-like signals (fallback).
-func (t *TwitterSource) simulate(ctx context.Context, keywords []string) ([]db.Company, error) {
-	simulatedCompanies := []db.Company{
-		{Name: "NeuroCore AI", Domain: "neurocore.ai", TechStack: []string{"Python", "PyTorch", "Kubernetes", "LLMs"}, HiringSignals: []string{"Building multi-agent orchestration platform"}, MarketCapTier: "Startup"},
-		{Name: "Cortex Dynamics", Domain: "cortexdynamics.io", TechStack: []string{"Go", "Rust", "gRPC", "Redis"}, HiringSignals: []string{"Series B funded, scaling AI infrastructure"}, MarketCapTier: "Mid-Market"},
-		{Name: "Synthwave Labs", Domain: "synthwavelabs.com", TechStack: []string{"TypeScript", "Node.js", "AWS", "LangChain"}, HiringSignals: []string{"Building AI agent framework", "YC W25"}, MarketCapTier: "Startup"},
-		{Name: "OmniInfer", Domain: "omniinfer.tech", TechStack: []string{"Go", "Python", "TensorFlow", "Kafka"}, HiringSignals: []string{"Building LLM inference platform"}, MarketCapTier: "Mid-Market"},
-		{Name: "Apex Orchestration", Domain: "apexorchestra.com", TechStack: []string{"Rust", "Go", "gRPC", "Docker"}, HiringSignals: []string{"Multi-agent coordination platform"}, MarketCapTier: "Startup"},
-	}
-	return simulatedCompanies[:3], nil
+// simulate returns empty — no mock data. Only real API results are used.
+func (t *TwitterSource) simulate(_ context.Context, _ []string) ([]db.Company, error) {
+	return nil, nil
 }
 
 func (t *TwitterSource) client() *http.Client {

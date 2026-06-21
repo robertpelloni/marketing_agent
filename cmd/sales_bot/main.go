@@ -83,9 +83,7 @@ func main() {
 			AccessTokenSecret: cfg.TwitterAccessTokenSecret,
 		},
 		&scraper.LinkedInSource{
-			Client:   http.DefaultClient,
-			Username: cfg.LinkedInClientID,
-			Password: cfg.LinkedInClientSecret,
+			Client: http.DefaultClient,
 		},
 	}
 	s := scraper.NewScraper(database, sources)

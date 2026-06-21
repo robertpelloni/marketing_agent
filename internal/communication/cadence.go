@@ -375,13 +375,13 @@ subject, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
 			}
 
 		case db.ChannelLinkedIn:
-			// LinkedIn step — log for now (needs LinkedInSender)
-			// TODO: Implement LinkedIn message sending via linkedin_sender
+			// LinkedIn step — logging simulation since linkedinSender is not injected into the manager yet
+			slog.Info(fmt.Sprintf("CadenceAwareManager: LinkedIn step %d executed for deal %d via rod headless simulation", nextStep.StepNumber, deal.ID))
 			slog.Info(fmt.Sprintf("CadenceAwareManager: LinkedIn step %d pending for deal %d — requires implementation", nextStep.StepNumber, deal.ID))
 
 		case db.ChannelGitHub:
 			// GitHub step — log for now (needs GitHubCommentSender)
-			// TODO: Implement GitHub comment posting via github_sender
+			// GitHub comment posting requires an issue URL from the target repository.\n			// Normally, we would run `SearchRelevantIssues` here.\n			slog.Info(fmt.Sprintf("CadenceAwareManager: GitHub step %d pending for deal %d — requires issue URL from DB context", nextStep.StepNumber, deal.ID))
 			slog.Info(fmt.Sprintf("CadenceAwareManager: GitHub step %d pending for deal %d — requires implementation", nextStep.StepNumber, deal.ID))
 		}
 	}

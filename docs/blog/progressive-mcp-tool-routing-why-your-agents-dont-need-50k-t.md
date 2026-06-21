@@ -1,5 +1,6992 @@
 ---
 title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 363674
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:34:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 359062
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:31:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 354450
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:28:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 349838
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:25:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 345226
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ds to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:34:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 359062
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:31:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 354450
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:28:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 349838
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:25:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 345226
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:56:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 340614
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+eds to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:31:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 354450
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:28:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 349838
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:25:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 345226
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:56:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 340614
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:56:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 336002
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+eeds to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:28:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 349838
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:25:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 345226
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:56:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 340614
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:56:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 336002
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 331390
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T17:25:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 345226
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:56:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 340614
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:56:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 336002
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 331390
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 326778
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:56:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 340614
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:56:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 336002
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 331390
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 326778
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 322166
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+t needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:56:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 336002
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 331390
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 326778
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 322166
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 317554
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 331390
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 326778
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 322166
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 317554
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 312942
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 326778
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 322166
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 317554
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 312942
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 308330
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 322166
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 317554
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 312942
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 308330
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 303718
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+s. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 317554
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 312942
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 308330
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 303718
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 299106
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+rs. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 312942
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 308330
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 303718
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 299106
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 294494
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ers. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:55:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 308330
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 303718
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 299106
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 294494
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 289882
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 303718
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 299106
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 294494
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 289882
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 285270
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+cters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 299106
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 294494
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 289882
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 285270
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 280658
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+acters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 294494
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 289882
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 285270
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 280658
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:53:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 276046
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+racters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 289882
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 285270
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 280658
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:53:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 276046
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:53:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 271434
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+aracters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 285270
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 280658
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:53:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 276046
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:53:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 271434
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 266822
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+haracters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:54:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 280658
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:53:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 276046
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:53:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 271434
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 266822
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 262210
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:53:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 276046
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:53:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 271434
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 266822
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 262210
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 257598
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:53:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 271434
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 266822
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 262210
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 257598
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 252986
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+1 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 266822
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 262210
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 257598
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 252986
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 248374
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+71 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 262210
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 257598
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 252986
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 248374
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 243762
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 257598
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 252986
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 248374
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 243762
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 239150
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+8571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 252986
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 248374
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 243762
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 239150
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 234538
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 248374
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 243762
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 239150
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 234538
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 229926
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:52:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 243762
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 239150
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 234538
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 229926
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 225314
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+s 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 239150
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 234538
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 229926
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 225314
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 220702
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+as 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 234538
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 229926
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 225314
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 220702
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 216090
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 229926
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 225314
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 220702
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 216090
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:50:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 211478
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 225314
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 220702
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 216090
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:50:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 211478
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:50:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 206866
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+y has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 220702
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 216090
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:50:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 211478
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:50:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 206866
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 202254
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ly has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:51:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 216090
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:50:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 211478
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:50:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 206866
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 202254
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 197642
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+tly has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:50:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 211478
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:50:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 206866
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 202254
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 197642
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 193030
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ntly has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:50:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 206866
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 202254
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 197642
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 193030
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 188418
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 202254
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 197642
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 193030
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 188418
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 183806
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+rently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 197642
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 193030
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 188418
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 183806
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 179194
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+rrently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 193030
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 188418
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 183806
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 179194
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 174582
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+urrently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 188418
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 183806
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 179194
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 174582
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 169970
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 183806
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 179194
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 174582
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 169970
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 165358
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:49:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 179194
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 174582
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 169970
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 165358
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 160746
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+t currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 174582
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 169970
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 165358
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 160746
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 156134
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+st currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 169970
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 165358
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 160746
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 156134
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 151522
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ost currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 165358
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 160746
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 156134
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 151522
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:47:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 146910
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 160746
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 156134
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 151522
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:47:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 146910
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:47:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 142298
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 156134
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 151522
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:47:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 146910
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:47:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 142298
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 137686
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+g post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:48:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 151522
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:47:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 146910
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:47:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 142298
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 137686
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 133074
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+og post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:47:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 146910
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:47:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 142298
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 137686
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 133074
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 128462
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+log post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:47:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 142298
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 137686
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 133074
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 128462
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 123850
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+blog post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 137686
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 133074
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 128462
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 123850
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 119238
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ blog post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 133074
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 128462
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 123850
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 119238
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 114626
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+g blog post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 128462
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 123850
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 119238
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 114626
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:45:37-04:00
+author: TormentNexus AI
+status: expanding
+chars: 110014
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ng blog post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 123850
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 119238
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 114626
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:45:37-04:00
+author: TormentNexus AI
+status: expanding
+chars: 110014
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:44:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 105402
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K to
+
+POST CONTENT (last 2000 chars):
+ing blog post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 119238
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 114626
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:45:37-04:00
+author: TormentNexus AI
+status: expanding
+chars: 110014
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:44:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 105402
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:43:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 100790
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:40:29-04:00
+author: TormentNexus AI
+status
+
+POST CONTENT (last 2000 chars):
+wing blog post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 114626
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:45:37-04:00
+author: TormentNexus AI
+status: expanding
+chars: 110014
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:44:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 105402
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:43:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 100790
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:40:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 99590
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:37:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 98389
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:34:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 97188
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:30:46-04:00
+author: TormentNexus AI
+status: expandi
+
+POST CONTENT (last 2000 chars):
+owing blog post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:45:37-04:00
+author: TormentNexus AI
+status: expanding
+chars: 110014
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:44:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 105402
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:43:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 100790
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:40:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 99590
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:37:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 98389
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:34:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 97188
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:30:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 95987
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:27:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 94786
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:24:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 93585
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:21:18-04:00
+author: TormentNexus AI
+status: expanding
+chars:
+
+POST CONTENT (last 2000 chars):
+lowing blog post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:44:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 105402
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+POST CONTENT (first 2000 chars):
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:43:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 100790
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:40:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 99590
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:37:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 98389
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:34:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 97188
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:30:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 95987
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:27:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 94786
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:24:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 93585
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:21:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 92384
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:17:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 91183
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:14:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 89982
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:10:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 88781
+--
+
+POST CONTENT (last 2000 chars):
+llowing blog post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]
+
+FULL POST CONTENT:
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:43:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 100790
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:40:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 99590
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:37:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 98389
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:34:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 97188
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:30:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 95987
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:27:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 94786
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:24:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 93585
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:21:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 92384
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:17:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 91183
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:14:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 89982
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
+date: 2026-06-21T10:10:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 88781
+---
+
+---
+title: "Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools"
 date: 2026-06-21T10:07:38-04:00
 author: TormentNexus AI
 status: expanding
@@ -2073,3 +9060,234 @@ Write the next section that naturally continues from where it ends. Include a se
 Write the next section that naturally continues from where it ends. Include a section header.]
 
 Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 87762 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 88963 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 90164 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 91365 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 92566 characters. It needs to reach 100,000 characters.
+Write approximately 7434 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 93767 characters. It needs to reach 100,000 characters.
+Write approximately 6233 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 94968 characters. It needs to reach 100,000 characters.
+Write approximately 5032 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 96169 characters. It needs to reach 100,000 characters.
+Write approximately 3831 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 97370 characters. It needs to reach 100,000 characters.
+Write approximately 2630 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98571 characters. It needs to reach 100,000 characters.
+Write approximately 1429 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99772 characters. It needs to reach 100,000 characters.
+Write approximately 228 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Progressive MCP Tool Routing: Why your agents don't need 50K tokens of tools
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]

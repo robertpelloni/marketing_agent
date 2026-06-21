@@ -1,5 +1,7414 @@
 ---
 title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:37:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 372034
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:34:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 367440
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:31:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 362846
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:28:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 358252
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:25:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 353658
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ers. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:34:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 367440
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:31:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 362846
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:28:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 358252
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:25:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 353658
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:56:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 349064
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:31:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 362846
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:28:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 358252
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:25:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 353658
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:56:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 349064
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:56:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 344470
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+cters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:28:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 358252
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:25:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 353658
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:56:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 349064
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:56:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 344470
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 339876
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+acters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T17:25:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 353658
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:56:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 349064
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:56:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 344470
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 339876
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 335282
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+racters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:56:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 349064
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:56:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 344470
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 339876
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 335282
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 330688
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+aracters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:56:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 344470
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 339876
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 335282
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 330688
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 326094
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+haracters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 339876
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 335282
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 330688
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 326094
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 321500
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 335282
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 330688
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 326094
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 321500
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 316906
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 330688
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 326094
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 321500
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 316906
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 312312
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+8 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 326094
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 321500
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 316906
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 312312
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 307718
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+88 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 321500
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 316906
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 312312
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 307718
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 303124
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:55:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 316906
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 312312
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 307718
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 303124
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 298530
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+8788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 312312
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 307718
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 303124
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 298530
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 293936
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 307718
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 303124
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 298530
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 293936
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 289342
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 303124
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 298530
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 293936
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 289342
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:53:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 284748
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+s 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 298530
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 293936
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 289342
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:53:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 284748
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:53:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 280154
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+as 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 293936
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 289342
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:53:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 284748
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:53:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 280154
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 275560
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:54:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 289342
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:53:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 284748
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:53:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 280154
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 275560
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 270966
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:53:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 284748
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:53:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 280154
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 275560
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 270966
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 266372
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+y has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:53:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 280154
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 275560
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 270966
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 266372
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 261778
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ly has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 275560
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 270966
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 266372
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 261778
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 257184
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+tly has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 270966
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 266372
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 261778
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 257184
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 252590
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ntly has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 266372
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 261778
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 257184
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 252590
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 247996
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 261778
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 257184
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 252590
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 247996
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 243402
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+rently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 257184
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 252590
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 247996
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 243402
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 238808
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+rrently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:52:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 252590
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 247996
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 243402
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 238808
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 234214
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+urrently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 247996
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 243402
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 238808
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 234214
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 229620
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 243402
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 238808
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 234214
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 229620
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 225026
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 238808
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 234214
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 229620
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 225026
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:50:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 220432
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+t currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 234214
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 229620
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 225026
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:50:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 220432
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:50:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 215838
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+st currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 229620
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 225026
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:50:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 220432
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:50:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 215838
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 211244
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ost currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:51:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 225026
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:50:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 220432
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:50:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 215838
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 211244
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 206650
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:50:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 220432
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:50:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 215838
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 211244
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 206650
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 202056
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:50:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 215838
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 211244
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 206650
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 202056
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 197462
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+g post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 211244
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 206650
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 202056
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 197462
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 192868
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+og post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 206650
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 202056
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 197462
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 192868
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 188274
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+log post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 202056
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 197462
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 192868
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 188274
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 183680
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 197462
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 192868
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 188274
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 183680
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 179086
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 192868
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 188274
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 183680
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 179086
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 174492
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+g blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:49:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 188274
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 183680
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 179086
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 174492
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 169898
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ng blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 183680
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 179086
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 174492
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 169898
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 165304
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ing blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 179086
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 174492
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 169898
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 165304
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 160710
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+wing blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 174492
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 169898
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 165304
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 160710
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:47:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 156116
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+owing blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:26-04:00
+author: TormentNexus AI
+status: expanding
+chars: 169898
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 165304
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 160710
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:47:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 156116
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:47:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 151522
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+lowing blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:24-04:00
+author: TormentNexus AI
+status: expanding
+chars: 165304
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 160710
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:47:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 156116
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:47:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 151522
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 146928
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+llowing blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:48:18-04:00
+author: TormentNexus AI
+status: expanding
+chars: 160710
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:47:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 156116
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:47:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 151522
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 146928
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 142334
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ollowing blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:47:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 156116
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:47:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 151522
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 146928
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 142334
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 137740
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+following blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:47:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 151522
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 146928
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 142334
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 137740
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 133146
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ following blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 146928
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 142334
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 137740
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 133146
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 128552
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+e following blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 142334
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 137740
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 133146
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 128552
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 123958
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+he following blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 137740
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 133146
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 128552
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 123958
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 119364
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+The following blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 133146
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 128552
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 123958
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 119364
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 114770
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+ The following blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 128552
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 123958
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 119364
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 114770
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 110176
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+: The following blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 123958
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 119364
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 114770
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 110176
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:44:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 105582
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review 
+
+POST CONTENT (last 2000 chars):
+n: The following blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 119364
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 114770
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 110176
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:44:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 105582
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:44:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 100988
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:41:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 99801
+---
+
+---
+title: "Why TormentNexus uses sq
+
+POST CONTENT (last 2000 chars):
+on: The following blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 114770
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 110176
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:44:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 105582
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:44:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 100988
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:41:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 99801
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:37:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 98612
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:34:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 97423
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:31:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 96234
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec 
+
+POST CONTENT (last 2000 chars):
+ on: The following blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:46:20-04:00
+author: TormentNexus AI
+status: expanding
+chars: 110176
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:44:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 105582
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:44:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 100988
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:41:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 99801
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:37:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 98612
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:34:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 97423
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:31:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 96234
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:28:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 95045
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:25:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 93856
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:22:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 92667
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vecto
+
+POST CONTENT (last 2000 chars):
+d on: The following blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:44:32-04:00
+author: TormentNexus AI
+status: expanding
+chars: 105582
+---
+
+[MOCK LLM RESPONSE based on: Revise this blog post based on the editor's review.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+EDITOR REVIEW:
+[MOCK LLM RESPONSE based on: Review the following blog post for issues. Topic: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+POST CONTENT (first 2000 chars):
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:44:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 100988
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:41:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 99801
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:37:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 98612
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:34:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 97423
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:31:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 96234
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:28:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 95045
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:25:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 93856
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:22:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 92667
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:18:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 91478
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:15:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 90289
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:12:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 89100
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search 
+
+POST CONTENT (last 2000 chars):
+ed on: The following blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]
+
+FULL POST CONTENT:
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:44:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 100988
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:41:28-04:00
+author: TormentNexus AI
+status: expanding
+chars: 99801
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:37:40-04:00
+author: TormentNexus AI
+status: expanding
+chars: 98612
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:34:38-04:00
+author: TormentNexus AI
+status: expanding
+chars: 97423
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:31:36-04:00
+author: TormentNexus AI
+status: expanding
+chars: 96234
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:28:29-04:00
+author: TormentNexus AI
+status: expanding
+chars: 95045
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:25:15-04:00
+author: TormentNexus AI
+status: expanding
+chars: 93856
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:22:12-04:00
+author: TormentNexus AI
+status: expanding
+chars: 92667
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:18:46-04:00
+author: TormentNexus AI
+status: expanding
+chars: 91478
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:15:42-04:00
+author: TormentNexus AI
+status: expanding
+chars: 90289
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
+date: 2026-06-21T10:12:34-04:00
+author: TormentNexus AI
+status: expanding
+chars: 89100
+---
+
+---
+title: "Why TormentNexus uses sqlite-vec for vector search instead of Pinecone"
 date: 2026-06-21T10:09:26-04:00
 author: TormentNexus AI
 status: expanding
@@ -2102,3 +9511,234 @@ Write the next section that naturally continues from where it ends. Include a se
 Write the next section that naturally continues from where it ends. Include a section header.]
 
 Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 88087 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 89276 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 90465 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 91654 characters. It needs to reach 100,000 characters.
+Write approximately 8000 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 92843 characters. It needs to reach 100,000 characters.
+Write approximately 7157 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 94032 characters. It needs to reach 100,000 characters.
+Write approximately 5968 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 95221 characters. It needs to reach 100,000 characters.
+Write approximately 4779 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 96410 characters. It needs to reach 100,000 characters.
+Write approximately 3590 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 97599 characters. It needs to reach 100,000 characters.
+Write approximately 2401 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 98788 characters. It needs to reach 100,000 characters.
+Write approximately 1212 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+[MOCK LLM RESPONSE based on: The following blog post currently has 99977 characters. It needs to reach 100,000 characters.
+Write approximately 23 characters of NEW content that extends this post with additional technical depth, 
+use cases, architecture details, performance analysis, or implementation guidance.
+
+TOPIC: Why TormentNexus uses sqlite-vec for vector search instead of Pinecone
+
+CURRENT POST ENDING:
+e a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]
+
+Write the next section that naturally continues from where it ends. Include a section header.]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]

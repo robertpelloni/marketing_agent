@@ -4,6 +4,10 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+<<<<<<< HEAD
+=======
+	"strings"
+>>>>>>> origin/main
 	"testing"
 )
 
@@ -27,20 +31,38 @@ func setupTestRepo(t *testing.T) string {
 
 	// Create base commit
 	file := filepath.Join(tempDir, "test.txt")
+<<<<<<< HEAD
 	os.WriteFile(file, []byte("base content\n"), 0644)
+=======
+	if err := os.WriteFile(file, []byte("base content\n"), 0644); err != nil {
+		t.Fatalf("Failed to write base file: %v", err)
+	}
+>>>>>>> origin/main
 	runCmd("add", "test.txt")
 	runCmd("commit", "-m", "base")
 
 	// Create branch A
 	runCmd("checkout", "-b", "branchA")
+<<<<<<< HEAD
 	os.WriteFile(file, []byte("content from A\n"), 0644)
+=======
+	if err := os.WriteFile(file, []byte("content from A\n"), 0644); err != nil {
+		t.Fatalf("Failed to write branch A file: %v", err)
+	}
+>>>>>>> origin/main
 	runCmd("add", "test.txt")
 	runCmd("commit", "-m", "from A")
 
 	// Create branch B from base
 	runCmd("checkout", "main")
 	runCmd("checkout", "-b", "branchB")
+<<<<<<< HEAD
 	os.WriteFile(file, []byte("content from B\n"), 0644)
+=======
+	if err := os.WriteFile(file, []byte("content from B\n"), 0644); err != nil {
+		t.Fatalf("Failed to write branch B file: %v", err)
+	}
+>>>>>>> origin/main
 	runCmd("add", "test.txt")
 	runCmd("commit", "-m", "from B")
 
@@ -64,9 +86,17 @@ func TestResolveConflictTheirs(t *testing.T) {
 		t.Fatalf("Failed to read file: %v", err)
 	}
 
+<<<<<<< HEAD
 	expected := "content from A\n"
 	if string(content) != expected {
 		t.Errorf("Expected content %q, got %q", expected, string(content))
+=======
+	// Normalize CRLF to LF for cross-platform test compatibility
+	actual := strings.ReplaceAll(string(content), "\r\n", "\n")
+	expected := "content from A\n"
+	if actual != expected {
+		t.Errorf("Expected content %q, got %q", expected, actual)
+>>>>>>> origin/main
 	}
 }
 
@@ -99,8 +129,16 @@ func TestResolveConflictOurs(t *testing.T) {
 		t.Fatalf("Failed to read file: %v", err)
 	}
 
+<<<<<<< HEAD
 	expected := "content from B\n"
 	if string(content) != expected {
 		t.Errorf("Expected content %q, got %q", expected, string(content))
+=======
+	// Normalize CRLF to LF for cross-platform test compatibility
+	actual := strings.ReplaceAll(string(content), "\r\n", "\n")
+	expected := "content from B\n"
+	if actual != expected {
+		t.Errorf("Expected content %q, got %q", expected, actual)
+>>>>>>> origin/main
 	}
 }

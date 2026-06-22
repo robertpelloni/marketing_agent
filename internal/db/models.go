@@ -133,21 +133,14 @@ type Deal struct {
 	CustomRequirements string    `db:"custom_requirements"`
 	TechnicalDossier   string    `db:"technical_dossier"`
 <<<<<<< HEAD
+	ApprovalRequired   bool      `db:"approval_required"`
 =======
-	CadenceStep        int       `db:"cadence_step"` // 0 = not started, 1+ = current step index
 >>>>>>> origin/main
+	CadenceStep        int       `db:"cadence_step"` // 0 = not started, 1+ = current step index
 	CreatedAt          time.Time `db:"created_at"`
 	UpdatedAt          time.Time `db:"updated_at"`
 }
 
-<<<<<<< HEAD
-// PerformanceMetrics aggregates key sales pipeline statistics.
-type PerformanceMetrics struct {
-	TotalLeads         int            `json:"total_leads"`
-	LeadsByState       map[LeadState]int `json:"leads_by_state"`
-	SuccessfulOutreach int            `json:"successful_outreach"`
-	WinRate            float64        `json:"win_rate"`
-=======
 // Template represents a reusable outreach message template.
 type Template struct {
 	ID        string    `db:"id"`

@@ -102,8 +102,13 @@ func (db *DB) GetCompanyByDomain(ctx context.Context, domain string) (*Company, 
 // CreateDeal inserts a new deal for a company.
 func (db *DB) CreateDeal(ctx context.Context, deal *Deal) error {
 	query := `
+<<<<<<< HEAD
+		INSERT INTO deals (company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, approval_required, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+=======
 		INSERT INTO deals (company_id, current_state, quoted_pricing, custom_requirements, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6)
+>>>>>>> origin/main
 		RETURNING id
 	`
 	now := time.Now()
@@ -115,6 +120,11 @@ func (db *DB) CreateDeal(ctx context.Context, deal *Deal) error {
 		deal.CurrentState,
 		deal.QuotedPricing,
 		deal.CustomRequirements,
+<<<<<<< HEAD
+		deal.TechnicalDossier,
+		deal.ApprovalRequired,
+=======
+>>>>>>> origin/main
 		deal.CreatedAt,
 		deal.UpdatedAt,
 	).Scan(&deal.ID)
@@ -164,7 +174,11 @@ func (db *DB) ListAllCompanies(ctx context.Context) ([]Company, error) {
 >>>>>>> origin/main
 func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, error) {
 	query := `
+<<<<<<< HEAD
+		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, approval_required, created_at, updated_at
+=======
 		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at
+>>>>>>> origin/main
 		FROM deals
 		WHERE current_state = $1
 	`
@@ -186,6 +200,10 @@ func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, er
 			&pricing,
 			&requirements,
 			&dossier,
+<<<<<<< HEAD
+			&deal.ApprovalRequired,
+=======
+>>>>>>> origin/main
 			&deal.CreatedAt,
 			&deal.UpdatedAt,
 		); err != nil {
@@ -202,7 +220,11 @@ func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, er
 // GetDealByCompanyID retrieves the most recent deal for a specific company.
 func (db *DB) GetDealByCompanyID(ctx context.Context, companyID int64) (*Deal, error) {
 	query := `
+<<<<<<< HEAD
+		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, approval_required, created_at, updated_at
+=======
 		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at
+>>>>>>> origin/main
 		FROM deals
 		WHERE company_id = $1
 		ORDER BY updated_at DESC
@@ -218,6 +240,10 @@ func (db *DB) GetDealByCompanyID(ctx context.Context, companyID int64) (*Deal, e
 		&pricing,
 		&requirements,
 		&dossier,
+<<<<<<< HEAD
+		&deal.ApprovalRequired,
+=======
+>>>>>>> origin/main
 		&deal.CreatedAt,
 		&deal.UpdatedAt,
 	)
@@ -231,6 +257,16 @@ func (db *DB) GetDealByCompanyID(ctx context.Context, companyID int64) (*Deal, e
 }
 
 // ListRecentDeals retrieves the most recently updated deals.
+<<<<<<< HEAD
+func (db *DB) ListRecentDeals(ctx context.Context, limit, offset int) ([]Deal, error) {
+	query := `
+		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, approval_required, created_at, updated_at
+		FROM deals
+		ORDER BY updated_at DESC
+		LIMIT $1 OFFSET $2
+	`
+	rows, err := db.Conn.QueryContext(ctx, query, limit, offset)
+=======
 func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
 	query := `
 		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at
@@ -239,6 +275,7 @@ func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
 		LIMIT $1
 	`
 	rows, err := db.Conn.QueryContext(ctx, query, limit)
+>>>>>>> origin/main
 	if err != nil {
 		return nil, fmt.Errorf("failed to list recent deals: %w", err)
 	}
@@ -256,6 +293,10 @@ func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
 			&pricing,
 			&requirements,
 			&dossier,
+<<<<<<< HEAD
+			&deal.ApprovalRequired,
+=======
+>>>>>>> origin/main
 			&deal.CreatedAt,
 			&deal.UpdatedAt,
 		); err != nil {
@@ -283,13 +324,24 @@ func (db *DB) UpdateTechnicalDossier(ctx context.Context, dealID int64, dossier 
 	return nil
 }
 
-// CreateContact inserts a new contact into the database.
 <<<<<<< HEAD
-func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
+// SetApprovalRequired updates the approval requirement for a deal.
+func (db *DB) SetApprovalRequired(ctx context.Context, dealID int64, required bool) error {
 	query := `
-		INSERT INTO contacts (company_id, name, role, email, github_handle, linkedin_url, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		UPDATE deals
+		SET approval_required = $1, updated_at = $2
+		WHERE id = $3
+	`
+	_, err := db.Conn.ExecContext(ctx, query, required, time.Now(), dealID)
+	if err != nil {
+		return fmt.Errorf("failed to set approval required: %w", err)
+	}
+	return nil
+}
+
+// CreateContact inserts a new contact into the database.
 =======
+// CreateContact inserts a new contact into the database.
 // Uses UPSERT (ON CONFLICT) to handle duplicate emails gracefully —
 // if a contact with the same email already exists, it updates the
 // existing record instead of failing.
@@ -398,12 +450,9 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 }
 
 <<<<<<< HEAD
-// CreateInteraction inserts a new interaction into the database.
-func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) error {
-	query := `
-		INSERT INTO interactions (contact_id, channel, direction, raw_text, summary, sentiment, success, created_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+
 =======
+>>>>>>> origin/main
 // GetContactByEmail retrieves a contact by their email address.
 func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, error) {
 	query := `
@@ -442,7 +491,6 @@ func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) e
 	query := `
 		INSERT INTO interactions (contact_id, channel, direction, raw_text, summary, sentiment, success, template_id, response_id, created_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
->>>>>>> origin/main
 		RETURNING id
 	`
 	if interaction.CreatedAt.IsZero() {
@@ -459,11 +507,8 @@ func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) e
 <<<<<<< HEAD
 =======
 		interaction.Success,
-<<<<<<< HEAD
-=======
 		interaction.TemplateID,
 		interaction.ResponseID,
->>>>>>> origin/main
 		interaction.CreatedAt,
 	).Scan(&interaction.ID)
 
@@ -641,7 +686,7 @@ func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, er
 func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([]Interaction, error) {
 	query := `
 <<<<<<< HEAD
-		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, created_at
+		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, success, template_id, response_id, created_at
 =======
 		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, success, COALESCE(template_id, ''), response_id, created_at
 >>>>>>> origin/main
@@ -666,12 +711,9 @@ func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([
 			&interaction.RawText,
 			&interaction.Summary,
 			&interaction.Sentiment,
-<<<<<<< HEAD
-=======
 			&interaction.Success,
 			&interaction.TemplateID,
 			&interaction.ResponseID,
->>>>>>> origin/main
 			&interaction.CreatedAt,
 		); err != nil {
 			return nil, fmt.Errorf("failed to scan interaction: %w", err)
@@ -680,9 +722,93 @@ func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([
 	}
 	return interactions, nil
 }
-<<<<<<< HEAD
-=======
 
+<<<<<<< HEAD
+// GetContactByID retrieves a contact by their primary key ID.
+func (db *DB) GetContactByID(ctx context.Context, id int64) (*Contact, error) {
+	query := `
+		SELECT id, company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at
+		FROM contacts
+		WHERE id = $1
+		LIMIT 1
+	`
+	contact := &Contact{}
+	err := db.Conn.QueryRowContext(ctx, query, id).Scan(
+		&contact.ID,
+		&contact.CompanyID,
+		&contact.Name,
+		&contact.Role,
+		&contact.Email,
+		&contact.GitHubHandle,
+		&contact.LinkedInURL,
+		&contact.PreferredChannel,
+		&contact.CreatedAt,
+		&contact.UpdatedAt,
+	)
+	if err != nil {
+		if err.Error() == "sql: no rows in result set" {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("failed to get contact by id: %w", err)
+	}
+	return contact, nil
+}
+
+// ListAllCompanies retrieves all companies in the database.
+func (db *DB) ListAllCompanies(ctx context.Context, limit, offset int) ([]Company, error) {
+	query := `
+		SELECT id, name, domain, tech_stack, hiring_signals, market_cap_tier, created_at, updated_at
+		FROM companies
+		ORDER BY created_at DESC
+		LIMIT $1 OFFSET $2
+	`
+	rows, err := db.Conn.QueryContext(ctx, query, limit, offset)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list companies: %w", err)
+	}
+	defer rows.Close()
+
+	var companies []Company
+	for rows.Next() {
+		var c Company
+		if err := rows.Scan(
+			&c.ID,
+			&c.Name,
+			&c.Domain,
+			pq.Array(&c.TechStack),
+			pq.Array(&c.HiringSignals),
+			&c.MarketCapTier,
+			&c.CreatedAt,
+			&c.UpdatedAt,
+		); err != nil {
+			return nil, fmt.Errorf("failed to scan company: %w", err)
+		}
+		companies = append(companies, c)
+	}
+	return companies, nil
+}
+
+// SoftDeleteContact marks a contact as deleted in the system.
+func (db *DB) SoftDeleteContact(ctx context.Context, email string) error {
+	query := "UPDATE contacts SET deleted_at = CURRENT_TIMESTAMP WHERE email = $1"
+	_, err := db.Conn.ExecContext(ctx, query, email)
+	return err
+}
+
+// GetExportData returns all relevant data for a contact email.
+func (db *DB) GetExportData(ctx context.Context, email string) (map[string]interface{}, error) {
+	contact, err := db.GetContactByEmail(ctx, email)
+	if err != nil || contact == nil { return nil, err }
+
+	ints, _ := db.ListInteractionsByContact(ctx, contact.ID)
+	return map[string]interface{}{
+		"contact": contact,
+		"interactions": ints,
+	}, nil
+}
+
+=======
+>>>>>>> origin/main
 // GetCadenceStep retrieves the current cadence step for a deal.
 func (db *DB) GetCadenceStep(ctx context.Context, dealID int64) (int, error) {
 	query := `SELECT cadence_step FROM deals WHERE id = $1`
@@ -832,17 +958,29 @@ func (db *DB) MarkTemplateSuccessForDeal(ctx context.Context, dealID int64) erro
 			var interactionID int64
 			var tmplID string
 			if err := rows.Scan(&interactionID, &tmplID); err != nil {
+<<<<<<< HEAD
+				rows.Close()
+=======
 				_ = rows.Close()
+>>>>>>> origin/main
 				return fmt.Errorf("failed to scan interaction row: %w", err)
 			}
 			// Mark interaction as successful
 			if err := db.UpdateInteractionSuccess(ctx, interactionID, true); err != nil {
+<<<<<<< HEAD
+				rows.Close()
+=======
 				_ = rows.Close()
+>>>>>>> origin/main
 				return fmt.Errorf("failed to update interaction success for id %d: %w", interactionID, err)
 			}
 			// Record template success metric
 			if err := db.RecordTemplateSuccess(ctx, tmplID); err != nil {
+<<<<<<< HEAD
+				rows.Close()
+=======
 				_ = rows.Close()
+>>>>>>> origin/main
 				return fmt.Errorf("failed to record template success for %s: %w", tmplID, err)
 			}
 		}

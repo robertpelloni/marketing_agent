@@ -4,11 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-<<<<<<< HEAD
-	"log"
-=======
 	"log/slog"
->>>>>>> origin/main
 	"os"
 	"os/exec"
 	"strings"
@@ -81,17 +77,10 @@ func SyncRemote() error {
 
 	// Step 2: Handle Upstream Sync if present
 	if hasUpstream() {
-<<<<<<< HEAD
-		log.Println("Git Sync: Upstream remote detected, merging changes...")
-		upstreamMerge := exec.Command("git", "merge", "upstream/main", "-m", "chore: autonomous upstream sync", "--no-edit")
-		if err := upstreamMerge.Run(); err != nil {
-			log.Printf("Git Sync Warning: Upstream merge failed: %v", err)
-=======
 		slog.Info("Git Sync: Upstream remote detected, merging changes...")
 		upstreamMerge := exec.Command("git", "merge", "upstream/main", "-m", "chore: autonomous upstream sync", "--no-edit")
 		if err := upstreamMerge.Run(); err != nil {
 			slog.Info(fmt.Sprintf("Git Sync Warning: Upstream merge failed: %v", err))
->>>>>>> origin/main
 		}
 	}
 
@@ -265,21 +254,12 @@ func GenerateSubmoduleInventory() (string, error) {
 }
 <<<<<<< HEAD
 
-// DiscardChanges discards all uncommitted changes in the working directory and index.
-// Used by the autodev rollback mechanism when verification fails.
-func DiscardChanges() error {
-	// First, reset the index and working directory to HEAD
-	resetCmd := exec.Command("git", "reset", "--hard", "HEAD")
-	if out, err := resetCmd.CombinedOutput(); err != nil {
+// ResetHard performs a git reset --hard to revert any local changes.
+func ResetHard() error {
+	cmd := exec.Command("git", "reset", "--hard", "HEAD")
+	if out, err := cmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("git reset --hard failed: %v, output: %s", err, string(out))
 	}
-
-	// Then, remove any untracked files and directories created during the failed attempt
-	cleanCmd := exec.Command("git", "clean", "-fd")
-	if out, err := cleanCmd.CombinedOutput(); err != nil {
-		return fmt.Errorf("git clean -fd failed: %v, output: %s", err, string(out))
-	}
-
 	return nil
 }
 =======

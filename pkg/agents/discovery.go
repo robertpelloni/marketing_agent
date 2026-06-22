@@ -3,11 +3,7 @@ package agents
 import (
 	"context"
 	"fmt"
-<<<<<<< HEAD
-	"log"
-=======
 	"log/slog"
->>>>>>> origin/main
 	"os"
 	"time"
 
@@ -35,7 +31,7 @@ func (w *TargetDiscoveryWorker) Run(ctx context.Context, interval time.Duration)
 	defer ticker.Stop()
 
 <<<<<<< HEAD
-	log.Printf("TormentNexus Outreach: Target discovery worker started (interval: %v)...", interval)
+	slog.Info(fmt.Sprintf("TormentNexus Outreach: Target discovery worker started (interval: %v)...", interval))
 =======
 	slog.Info("TormentNexus Outreach: Target discovery worker started", "interval", interval)
 >>>>>>> origin/main
@@ -44,7 +40,7 @@ func (w *TargetDiscoveryWorker) Run(ctx context.Context, interval time.Duration)
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			log.Println("TormentNexus Outreach: Target discovery worker stopping...")
+			slog.Info("TormentNexus Outreach: Target discovery worker stopping...")
 =======
 			slog.Info("TormentNexus Outreach: Target discovery worker stopping")
 >>>>>>> origin/main
@@ -57,7 +53,7 @@ func (w *TargetDiscoveryWorker) Run(ctx context.Context, interval time.Duration)
 
 func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 <<<<<<< HEAD
-	log.Println("TormentNexus Outreach: Scanning for new MCP server repositories on GitHub...")
+	slog.Info("TormentNexus Outreach: Scanning for new MCP server repositories on GitHub...")
 =======
 	slog.Info("TormentNexus Outreach: Scanning for new MCP server repositories on GitHub")
 >>>>>>> origin/main
@@ -85,7 +81,7 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 	result, _, err := client.Search.Repositories(ctx, query, opts)
 	if err != nil {
 <<<<<<< HEAD
-		log.Printf("TormentNexus Outreach Error: GitHub search failed: %v", err)
+		slog.Info(fmt.Sprintf("TormentNexus Outreach Error: GitHub search failed: %v", err))
 =======
 		slog.Error("TormentNexus Outreach: GitHub search failed", "error", err)
 >>>>>>> origin/main
@@ -95,8 +91,8 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 	for _, repo := range result.Repositories {
 		domain := fmt.Sprintf("github.com/%s", repo.GetFullName())
 <<<<<<< HEAD
-			// #nosec G706 -- Domain name is used for context in informational logs
-		log.Printf("TormentNexus Outreach: Evaluating repository: %s", domain)
+		// #nosec G706 -- Domain name is used for context in informational logs
+		slog.Info(fmt.Sprintf("TormentNexus Outreach: Evaluating repository: %s", domain))
 =======
 		slog.Info("TormentNexus Outreach: Evaluating repository", "domain", domain)
 >>>>>>> origin/main
@@ -129,10 +125,6 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 		}
 
 		if err := w.db.CreateCompany(ctx, company); err != nil {
-<<<<<<< HEAD
-				// #nosec G706 -- Domain name is used for context in error logs
-			log.Printf("TormentNexus Outreach Warning: Failed to create company %s: %v", domain, err)
-=======
 			slog.Warn("TormentNexus Outreach: Failed to create company", "domain", domain, "error", err)
 >>>>>>> origin/main
 			continue
@@ -156,13 +148,6 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 		}
 
 		if err := w.db.CreateDeal(ctx, deal); err != nil {
-<<<<<<< HEAD
-				// #nosec G706 -- Domain name is used for context in error logs
-			log.Printf("TormentNexus Outreach Warning: Failed to create deal for %s: %v", domain, err)
-		} else {
-				// #nosec G706 -- Domain name is used for context in success logs
-			log.Printf("TormentNexus Outreach Success: New lead discovered: %s", domain)
-=======
 			slog.Warn("TormentNexus Outreach: Failed to create deal", "domain", domain, "error", err)
 		} else {
 			metrics.LeadsDiscovered.Inc()

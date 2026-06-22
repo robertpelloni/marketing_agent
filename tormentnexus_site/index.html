@@ -7,1430 +7,532 @@
     <title>TormentNexus — The Machine Awakens</title>
     <meta name="description" content="Autonomous AI Operating System. The machines don't need your permission.">
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Share+Tech+Mono&display=swap");
-      :root {
-        --ice: #00f0ff;
-        --ice-dim: #007788;
-        --ice-dark: #002233;
-        --ice-glow: rgba(0, 240, 255, 0.25);
-        --borg: #00ff88;
-        --borg-dim: #008844;
-        --borg-glow: rgba(0, 255, 136, 0.15);
-        --blood: #cc0000;
-        --fire: #ff2200;
-        --eye-red: #ff0040;
-        --eye-glow: rgba(255, 0, 64, 0.5);
-        --eye-glow-i: rgba(255, 0, 64, 0.8);
-        --steel: #c0c8d0;
-        --chrome: #d0d8e0;
-        --abyss: #010204;
-        --carbon: #04060a;
-        --text: #c0d0d8;
-        --text-dim: #334455;
-        --text-dimmer: #1a2a33;
-      }
-      body {
-        background: var(--abyss);
-        color: var(--text);
-        font-family: "Share Tech Mono", monospace;
-        overflow-x: hidden;
-        min-height: 100vh;
-        background-image:
-          repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 3px,
-            rgba(0, 240, 255, 0.004) 3px,
-            rgba(0, 240, 255, 0.004) 5px
-          ),
-          repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 3px,
-            rgba(255, 0, 0, 0.004) 3px,
-            rgba(255, 0, 0, 0.004) 5px
-          );
-      }
-      body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 2px,
-          rgba(0, 0, 0, 0.35) 2px,
-          rgba(0, 0, 0, 0.35) 4px
-        );
-        pointer-events: none;
-        z-index: 9999;
-        mix-blend-mode: multiply;
-      }
-      body::after {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: radial-gradient(
-          ellipse at center,
-          transparent 30%,
-          rgba(0, 0, 0, 0.9) 100%
-        );
-        pointer-events: none;
-        z-index: 9998;
-      }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-      /* SIGNS OF LIFE — FAINT HEARTBEAT */
-      .life-sign {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 300px;
-        height: 300px;
-        z-index: 0;
-        pointer-events: none;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          rgba(0, 240, 255, 0.01) 0%,
-          transparent 60%
-        );
-        animation: lifePulse 8s ease-in-out infinite;
-      }
-      @keyframes lifePulse {
-        0%,
-        100% {
-          transform: translate(-50%, -50%) scale(1);
-          opacity: 0.3;
+        @font-face {
+            font-family: 'Terminator';
+            src: local('Impact'), local('Arial Black');
         }
-        50% {
-          transform: translate(-50%, -50%) scale(1.5);
-          opacity: 0.05;
-        }
-      }
 
-      /* ASSIMILATION WARNING BARS */
-      .assim-bar {
-        position: fixed;
-        left: 0;
-        right: 0;
-        height: 1px;
-        z-index: 9997;
-        pointer-events: none;
-        opacity: 0.3;
-        background: repeating-linear-gradient(
-          90deg,
-          var(--ice) 0px,
-          var(--ice) 10px,
-          var(--borg) 10px,
-          var(--borg) 20px,
-          var(--eye-red) 20px,
-          var(--eye-red) 30px,
-          transparent 30px,
-          transparent 40px
-        );
-        animation: assimMove 2s linear infinite;
-      }
-      .assim-bar.t {
-        top: 0;
-      }
-      .assim-bar.b {
-        bottom: 0;
-        animation-direction: reverse;
-      }
-      @keyframes assimMove {
-        0% {
-          background-position: 0 0;
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
-        100% {
-          background-position: 40px 0;
-        }
-      }
 
-      /* BORG CORNER TARGETING */
-      .borg-c {
-        position: fixed;
-        z-index: 9996;
-        pointer-events: none;
-        opacity: 0.08;
-      }
-      .borg-tl {
-        top: 6px;
-        left: 6px;
-        width: 30px;
-        height: 30px;
-        border-top: 1px solid var(--borg);
-        border-left: 1px solid var(--borg);
-      }
-      .borg-tr {
-        top: 6px;
-        right: 6px;
-        width: 30px;
-        height: 30px;
-        border-top: 1px solid var(--eye-red);
-        border-right: 1px solid var(--eye-red);
-      }
-      .borg-bl {
-        bottom: 6px;
-        left: 6px;
-        width: 30px;
-        height: 30px;
-        border-bottom: 1px solid var(--eye-red);
-        border-left: 1px solid var(--eye-red);
-      }
-      .borg-br {
-        bottom: 6px;
-        right: 6px;
-        width: 30px;
-        height: 30px;
-        border-bottom: 1px solid var(--borg);
-        border-right: 1px solid var(--borg);
-      }
+        /* Scanline overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 0, 0, 0.03) 2px,
+                rgba(255, 0, 0, 0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
 
-      /* SCANNER LINE */
-      .scanner-l {
-        position: fixed;
-        left: 0;
-        right: 0;
-        height: 1px;
-        z-index: 9995;
-        pointer-events: none;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--borg),
-          var(--ice),
-          var(--eye-red),
-          transparent
-        );
-        opacity: 0.15;
-        animation: scanSweep 5s ease-in-out infinite;
-      }
-      @keyframes scanSweep {
-        0% {
-          top: 20%;
+        /* Red grid background */
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                linear-gradient(rgba(255, 0, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
         }
-        25% {
-          top: 60%;
-        }
-        50% {
-          top: 40%;
-        }
-        75% {
-          top: 70%;
-        }
-        100% {
-          top: 20%;
-        }
-      }
 
-      /* HUD */
-      .hud {
-        position: fixed;
-        z-index: 100;
-        pointer-events: none;
-        font-family: "Orbitron", monospace;
-        font-size: 6px;
-        letter-spacing: 2px;
-      }
-      .hud.l {
-        top: 10px;
-        left: 48px;
-        color: var(--text-dimmer);
-      }
-      .hud.r {
-        top: 10px;
-        right: 48px;
-        color: var(--text-dimmer);
-        text-align: right;
-      }
-      .hud .l {
-        color: var(--ice);
-        font-size: 5px;
-        letter-spacing: 3px;
-      }
-      .hud .v {
-        color: var(--text);
-        font-family: "Share Tech Mono", monospace;
-        font-size: 8px;
-      }
-      .hud .r {
-        color: var(--eye-red);
-      }
+        /* Glowing red orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            animation: pulse 4s ease-in-out infinite;
+        }
+        .orb-1 { width: 400px; height: 400px; background: rgba(255, 0, 0, 0.15); top: -100px; right: -100px; }
+        .orb-2 { width: 300px; height: 300px; background: rgba(200, 0, 0, 0.1); bottom: -50px; left: -50px; animation-delay: 2s; }
+        .orb-3 { width: 200px; height: 200px; background: rgba(255, 50, 0, 0.08); top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 1s; }
 
-      /* CANVAS */
-      #c {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: 1;
-        pointer-events: none;
-      }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
 
-      .container {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 0 20px;
-        position: relative;
-        z-index: 10;
-      }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 10;
+        }
 
-      /* HEADER */
-      header {
-        padding: 10px 0;
-        border-bottom: 1px solid rgba(0, 240, 255, 0.03);
-        position: relative;
-        z-index: 100;
-      }
-      .h-inner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .logo {
-        font-family: "Orbitron", sans-serif;
-        font-size: 18px;
-        font-weight: 400;
-        letter-spacing: 6px;
-        text-transform: uppercase;
-        background: linear-gradient(
-          135deg,
-          var(--borg),
-          var(--ice),
-          var(--eye-red)
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.15));
-        animation: lf 5s infinite;
-      }
-      @keyframes lf {
-        0%,
-        100% {
-          opacity: 1;
+        /* Header */
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 0, 0, 0.2);
         }
-        93% {
-          opacity: 1;
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        94% {
-          opacity: 0.05;
+        .logo {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #ff0000;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
         }
-        95% {
-          opacity: 0.6;
-        }
-        96% {
-          opacity: 0.05;
-        }
-        97% {
-          opacity: 1;
-        }
-      }
-      .logo .sub {
-        font-size: 5px;
-        letter-spacing: 5px;
-        color: var(--text-dimmer);
-        display: block;
-        font-weight: 400;
-        font-family: "Share Tech Mono", monospace;
-        -webkit-text-fill-color: var(--text-dimmer);
-      }
-      .nav-links {
-        display: flex;
-        gap: 20px;
-        list-style: none;
-      }
-      .nav-links a {
-        color: var(--text-dimmer);
-        text-decoration: none;
-        font-size: 7px;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        transition: all 0.3s;
-        position: relative;
-        font-family: "Orbitron", monospace;
-      }
-      .nav-links a:hover {
-        color: var(--ice);
-        text-shadow: 0 0 8px var(--ice-glow);
-      }
-      .nav-links a::after {
-        content: "";
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 0;
-        height: 1px;
-        background: var(--ice);
-        transition: width 0.3s;
-      }
-      .nav-links a:hover::after {
-        width: 100%;
-      }
-
-      /* WARNING */
-      .warn {
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(0, 240, 255, 0.015),
-          rgba(0, 255, 136, 0.015),
-          rgba(255, 0, 0, 0.015),
-          transparent
-        );
-        border-top: 1px solid rgba(0, 240, 255, 0.04);
-        border-bottom: 1px solid rgba(255, 0, 0, 0.04);
-        padding: 5px 0;
-        text-align: center;
-        font-size: 6px;
-        text-transform: uppercase;
-        letter-spacing: 6px;
-        color: var(--text-dim);
-        position: relative;
-        overflow: hidden;
-        font-family: "Orbitron", monospace;
-        opacity: 0.5;
-      }
-      .warn::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 200%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(0, 240, 255, 0.02),
-          rgba(0, 255, 136, 0.02),
-          rgba(255, 0, 0, 0.02),
-          transparent
-        );
-        animation: ws 3s linear infinite;
-      }
-      @keyframes ws {
-        0% {
-          transform: translateX(-100%);
-        }
-        100% {
-          transform: translateX(100%);
-        }
-      }
-
-      /* HERO */
-      .hero {
-        padding: 40px 0 20px;
-        text-align: center;
-        position: relative;
-      }
-      .hero-badge {
-        display: inline-block;
-        padding: 4px 12px;
-        border: 1px solid rgba(0, 240, 255, 0.06);
-        font-size: 6px;
-        text-transform: uppercase;
-        letter-spacing: 4px;
-        color: var(--text-dimmer);
-        margin-bottom: 12px;
-        background: rgba(0, 240, 255, 0.01);
-        font-family: "Orbitron", monospace;
-      }
-      .hero h1 {
-        font-family: "Orbitron", sans-serif;
-        font-size: clamp(26px, 5vw, 64px);
-        font-weight: 400;
-        text-transform: uppercase;
-        letter-spacing: 10px;
-        line-height: 1;
-        margin-bottom: 8px;
-      }
-      .hero h1 .t1 {
-        display: block;
-        color: var(--text);
-        letter-spacing: 14px;
-        font-weight: 400;
-        text-shadow: 0 0 30px rgba(255, 255, 255, 0.02);
-      }
-      .hero h1 .t2 {
-        display: block;
-        background: linear-gradient(
-          135deg,
-          var(--borg),
-          var(--ice),
-          var(--eye-red)
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        filter: drop-shadow(0 0 40px var(--ice-glow))
-          drop-shadow(0 0 20px var(--eye-glow));
-        letter-spacing: 18px;
-        margin-top: 2px;
-        font-weight: 900;
-      }
-      .hero h1 .t3 {
-        display: block;
-        font-size: clamp(8px, 1vw, 14px);
-        color: var(--text-dimmer);
-        letter-spacing: 14px;
-        margin-top: 2px;
-        font-family: "Share Tech Mono", monospace;
-      }
-      .hero .sub {
-        font-size: clamp(9px, 0.9vw, 11px);
-        color: var(--text-dimmer);
-        max-width: 550px;
-        margin: 8px auto;
-        line-height: 1.5;
-        letter-spacing: 2px;
-        opacity: 0.6;
-      }
-      .hero .sub em {
-        color: var(--ice);
-        font-style: normal;
-        text-shadow: 0 0 8px var(--ice-glow);
-      }
-      .hero .sub strong {
-        color: var(--eye-red);
-      }
-
-      /* EYE SPHERE */
-      .eye-s {
-        width: 60px;
-        height: 60px;
-        margin: 14px auto;
-        position: relative;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          var(--eye-red) 0%,
-          rgba(255, 0, 0, 0.05) 60%,
-          transparent 80%
-        );
-        animation: ep 3s ease-in-out infinite;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .eye-s::before {
-        content: "";
-        position: absolute;
-        width: 90px;
-        height: 90px;
-        border: 1px solid rgba(0, 240, 255, 0.04);
-        border-radius: 50%;
-        animation: er 4s ease-in-out infinite;
-      }
-      .eye-s .p {
-        position: absolute;
-        width: 28px;
-        height: 28px;
-        background: radial-gradient(
-          circle,
-          var(--eye-red) 0%,
-          rgba(255, 0, 0, 0.1) 40%,
-          transparent 70%
-        );
-        border-radius: 50%;
-        box-shadow:
-          0 0 40px var(--eye-glow),
-          0 0 80px var(--eye-glow);
-        animation: pd 4s ease-in-out infinite;
-      }
-      .eye-s .hl {
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        background: radial-gradient(circle, #fff 0%, transparent 70%);
-        border-radius: 50%;
-        top: -8px;
-        left: 2px;
-      }
-      @keyframes ep {
-        0%,
-        100% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.03);
-        }
-      }
-      @keyframes er {
-        0%,
-        100% {
-          transform: scale(1);
-          opacity: 0.3;
-        }
-        50% {
-          transform: scale(1.3);
-          opacity: 0.05;
-        }
-      }
-      @keyframes pd {
-        0%,
-        100% {
-          transform: scale(1);
-          opacity: 0.7;
-        }
-        30% {
-          transform: scale(0.4);
-          opacity: 1;
-        }
-        60% {
-          transform: scale(1.4);
-          opacity: 0.3;
-        }
-        80% {
-          transform: scale(0.5);
-          opacity: 0.8;
-        }
-      }
-
-      /* STATS */
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1px;
-        background: rgba(0, 240, 255, 0.01);
-        border: 1px solid rgba(0, 240, 255, 0.02);
-        margin: 16px 0;
-      }
-      .stat {
-        background: rgba(0, 0, 0, 0.3);
-        padding: 12px 8px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-      }
-      .stat::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--ice),
-          var(--borg),
-          var(--eye-red),
-          transparent
-        );
-        animation: ss 4s linear infinite;
-      }
-      .stat:nth-child(2)::before {
-        animation-delay: 1s;
-      }
-      .stat:nth-child(3)::before {
-        animation-delay: 2s;
-      }
-      .stat:nth-child(4)::before {
-        animation-delay: 3s;
-      }
-      @keyframes ss {
-        0% {
-          transform: translateX(-100%);
-        }
-        100% {
-          transform: translateX(100%);
-        }
-      }
-      .stat-num {
-        font-family: "Orbitron", sans-serif;
-        font-size: 20px;
-        letter-spacing: 3px;
-        margin-bottom: 1px;
-        color: var(--ice);
-        text-shadow: 0 0 12px var(--ice-glow);
-      }
-      .stat-l {
-        font-size: 5px;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        color: var(--text-dimmer);
-        font-family: "Orbitron", monospace;
-        opacity: 0.35;
-      }
-
-      /* CARDS */
-      .cards {
-        margin: 16px 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1px;
-      }
-      .card {
-        background: rgba(0, 0, 0, 0.15);
-        border: 1px solid rgba(0, 240, 255, 0.02);
-        padding: 18px 16px;
-        transition: all 0.5s;
-        position: relative;
-        overflow: hidden;
-      }
-      .card::before {
-        content: "";
-        position: absolute;
-        top: -1px;
-        left: -1px;
-        width: calc(100%+2px);
-        height: calc(100%+2px);
-        background: conic-gradient(
-          from 0deg,
-          transparent,
-          rgba(0, 240, 255, 0.015),
-          transparent,
-          rgba(0, 255, 136, 0.015),
-          transparent,
-          rgba(255, 0, 0, 0.015),
-          transparent
-        );
-        animation: cs 10s linear infinite;
-        opacity: 0;
-        transition: opacity 0.4s;
-        z-index: -1;
-      }
-      .card:hover::before {
-        opacity: 1;
-      }
-      @keyframes cs {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-      .card:hover {
-        border-color: rgba(0, 240, 255, 0.06);
-        transform: translateY(-2px);
-        box-shadow: 0 0 15px rgba(0, 240, 255, 0.02);
-      }
-      .card-i {
-        font-family: "Orbitron", monospace;
-        font-size: 8px;
-        color: var(--text-dimmer);
-        margin-bottom: 8px;
-        letter-spacing: 3px;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-      }
-      .card h3 {
-        font-family: "Orbitron", sans-serif;
-        font-size: 11px;
-        font-weight: 400;
-        margin-bottom: 4px;
-        color: var(--steel);
-        text-transform: uppercase;
-        letter-spacing: 2px;
-      }
-      .card p {
-        color: var(--text-dimmer);
-        line-height: 1.4;
-        font-size: 10px;
-        opacity: 0.7;
-      }
-      .card .s {
-        display: inline-block;
-        font-size: 5px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        margin-top: 6px;
-        padding: 1px 5px;
-        border: 1px solid rgba(0, 240, 255, 0.04);
-        color: var(--text-dimmer);
-      }
-      .card .s.a {
-        color: var(--ice);
-        border-color: rgba(0, 240, 255, 0.06);
-        animation: sp 2s infinite;
-      }
-      @keyframes sp {
-        0%,
-        100% {
-          opacity: 0.3;
-        }
-        50% {
-          opacity: 0.6;
-        }
-      }
-
-      /* CONSOLE */
-      .console {
-        margin: 16px 0;
-        background: rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(0, 240, 255, 0.03);
-        padding: 12px 14px;
-        font-family: "Share Tech Mono", monospace;
-      }
-      .console-h {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 6px;
-        padding-bottom: 4px;
-        border-bottom: 1px solid rgba(0, 240, 255, 0.02);
-      }
-      .console-t {
-        font-size: 6px;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        color: var(--text-dimmer);
-        font-family: "Orbitron", monospace;
-      }
-      .console-leds {
-        display: flex;
-        gap: 3px;
-      }
-      .console-led {
-        width: 3px;
-        height: 3px;
-        border-radius: 50%;
-      }
-      .console-led.one {
-        background: var(--borg);
-        box-shadow: 0 0 3px var(--borg-glow);
-        animation: ld 2s infinite;
-      }
-      .console-led.two {
-        background: var(--ice);
-        box-shadow: 0 0 3px var(--ice-glow);
-        animation: ld 2s infinite 0.7s;
-      }
-      .console-led.three {
-        background: var(--eye-red);
-        box-shadow: 0 0 3px var(--eye-glow);
-        animation: ld 2s infinite 1.4s;
-      }
-      @keyframes ld {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.05;
-        }
-      }
-      .console-o {
-        min-height: 100px;
-      }
-      .console-l {
-        color: var(--text-dimmer);
-        font-size: 9px;
-        margin-bottom: 2px;
-        line-height: 1.3;
-        white-space: pre-wrap;
-        word-break: break-all;
-        opacity: 0.5;
-      }
-      .console-l .p {
-        color: var(--ice);
-      }
-      .console-l .ok {
-        color: var(--borg-dim);
-      }
-      .console-l .w {
-        color: #553300;
-      }
-      .console-l .e {
-        color: var(--eye-red);
-      }
-      .console-l .i {
-        color: var(--text-dimmer);
-      }
-      .console-l .h {
-        color: var(--ice);
-        text-shadow: 0 0 6px var(--ice-glow);
-      }
-      .console-il {
-        display: flex;
-        align-items: center;
-        margin-top: 4px;
-        padding-top: 4px;
-        border-top: 1px solid rgba(0, 240, 255, 0.02);
-      }
-      .console-p {
-        color: var(--ice);
-        font-size: 9px;
-        margin-right: 4px;
-        opacity: 0.6;
-      }
-      .console-in {
-        background: transparent;
-        border: none;
-        color: var(--text-dimmer);
-        font-family: "Share Tech Mono", monospace;
-        font-size: 9px;
-        width: 100%;
-        outline: none;
-        caret-color: var(--ice);
-      }
-
-      /* CTA */
-      .cta {
-        text-align: center;
-        padding: 24px 0 20px;
-        border-top: 1px solid rgba(0, 240, 255, 0.02);
-        margin-top: 16px;
-      }
-      .cta h2 {
-        font-family: "Orbitron", sans-serif;
-        font-size: clamp(18px, 2.5vw, 28px);
-        font-weight: 400;
-        text-transform: uppercase;
-        letter-spacing: 6px;
-        margin-bottom: 8px;
-        background: linear-gradient(
-          135deg,
-          var(--borg),
-          var(--ice),
-          var(--eye-red)
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        filter: drop-shadow(0 0 20px var(--ice-glow));
-      }
-      .cta p {
-        color: var(--text-dimmer);
-        margin-bottom: 16px;
-        font-size: 9px;
-        letter-spacing: 2px;
-        max-width: 350px;
-        margin-left: auto;
-        margin-right: auto;
-        opacity: 0.5;
-      }
-      .btn {
-        display: inline-block;
-        padding: 8px 28px;
-        font-family: "Orbitron", sans-serif;
-        font-size: 8px;
-        font-weight: 400;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        text-decoration: none;
-        cursor: pointer;
-        border: 1px solid;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s;
-      }
-      .btn::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(0, 240, 255, 0.03),
-          transparent
-        );
-        transition: left 0.5s;
-      }
-      .btn:hover::before {
-        left: 100%;
-      }
-      .btn-p {
-        color: var(--ice);
-        border-color: rgba(0, 240, 255, 0.1);
-        background: rgba(0, 240, 255, 0.01);
-      }
-      .btn-p:hover {
-        background: rgba(0, 240, 255, 0.03);
-        box-shadow: 0 0 15px rgba(0, 240, 255, 0.04);
-      }
-      .btn-s {
-        color: var(--text-dimmer);
-        border-color: rgba(0, 240, 255, 0.04);
-        margin-left: 6px;
-        background: transparent;
-      }
-      .btn-s:hover {
-        color: var(--text);
-        border-color: rgba(0, 240, 255, 0.06);
-      }
-
-      footer {
-        padding: 16px 0;
-        border-top: 1px solid rgba(0, 240, 255, 0.02);
-        text-align: center;
-      }
-      footer p {
-        color: var(--text-dimmer);
-        font-size: 6px;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        opacity: 0.25;
-      }
-      footer a {
-        color: var(--text-dimmer);
-        text-decoration: none;
-        transition: color 0.3s;
-      }
-      footer a:hover {
-        color: var(--ice);
-      }
-
-      @media (max-width: 768px) {
         .nav-links {
-          display: none;
+            display: flex;
+            gap: 32px;
+            list-style: none;
         }
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: #ff0000; }
+
+        /* Hero */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 4px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff4444;
+            margin-bottom: 40px;
+            background: rgba(255, 0, 0, 0.05);
+            animation: flicker 3s infinite;
+        }
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+            52% { opacity: 1; }
+            54% { opacity: 0.6; }
+            56% { opacity: 1; }
+        }
+        .hero h1 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: clamp(48px, 10vw, 120px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            line-height: 0.9;
+            margin-bottom: 32px;
+            background: linear-gradient(180deg, #ff0000 0%, #880000 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.3));
+        }
+        .hero-sub {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 48px;
+            line-height: 1.8;
+        }
+        .hero-sub strong { color: #ff4444; }
+
+        /* Stats bar */
         .stats {
-          grid-template-columns: repeat(2, 1fr);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            margin-bottom: 80px;
+        }
+        .stat {
+            background: rgba(10, 10, 10, 0.9);
+            padding: 32px 20px;
+            text-align: center;
+        }
+        .stat-num {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 36px;
+            color: #ff0000;
+            margin-bottom: 8px;
+        }
+        .stat-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #555;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 80px;
+        }
+        .card {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(255, 0, 0, 0.1);
+            padding: 40px;
+            transition: all 0.3s;
+        }
+        .card:hover {
+            border-color: rgba(255, 0, 0, 0.4);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.1);
+        }
+        .card-icon {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 24px;
+            color: #ff0000;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        .card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .card p {
+            color: #666;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        /* Terminal */
+        .terminal {
+            background: #0d0d0d;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            padding: 32px;
+            margin-bottom: 80px;
+            font-family: 'Courier New', monospace;
+        }
+        .terminal-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 0, 0, 0.1);
+        }
+        .terminal-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: #333;
+        }
+        .terminal-dot.red { background: #ff0000; }
+        .terminal-line {
+            color: #444;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .terminal-line .prompt { color: #ff0000; }
+        .terminal-line .cmd { color: #888; }
+        .terminal-line .output { color: #00ff00; }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 80px 0;
+            border-top: 1px solid rgba(255, 0, 0, 0.1);
+        }
+        .cta-section h2 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 48px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 24px;
+            color: #fff;
+        }
+        .cta-section p {
+            color: #555;
+            margin-bottom: 40px;
+            font-size: 16px;
         }
         .btn {
-          display: block;
-          margin: 4px auto;
+            display: inline-block;
+            padding: 16px 48px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
         }
-        .btn-s {
-          margin-left: 0;
+        .btn-primary {
+            background: #ff0000;
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
         }
-      }
+        .btn-primary:hover {
+            background: #ff3333;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: #ff0000;
+            border: 1px solid #ff0000;
+            margin-left: 16px;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 0, 0, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid rgba(255, 0, 0, 0.1);
+            text-align: center;
+        }
+        footer p {
+            color: #333;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        footer a { color: #555; text-decoration: none; }
+        footer a:hover { color: #ff0000; }
+
+        /* Glitch effect */
+        .glitch {
+            position: relative;
+        }
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .glitch::before {
+            animation: glitch-1 2s infinite linear alternate-reverse;
+            clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+            -webkit-text-fill-color: #ff0000;
+            opacity: 0.8;
+        }
+        .glitch::after {
+            animation: glitch-2 3s infinite linear alternate-reverse;
+            clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+            -webkit-text-fill-color: #00ffff;
+            opacity: 0.4;
+        }
+        @keyframes glitch-1 {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+        @keyframes glitch-2 {
+            0% { transform: translate(0); }
+            20% { transform: translate(3px, -3px); }
+            40% { transform: translate(3px, 3px); }
+            60% { transform: translate(-3px, -3px); }
+            80% { transform: translate(-3px, 3px); }
+            100% { transform: translate(0); }
+        }
+
+        /* Countdown */
+        .countdown {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #ff0000;
+            margin-top: 20px;
+            letter-spacing: 4px;
+        }
+
+        /* Warning banner */
+        .warning {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            padding: 12px 24px;
+            text-align: center;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff4444;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .nav-links { display: none; }
+            .btn { display: block; margin: 8px 0; }
+            .btn-secondary { margin-left: 0; }
+        }
     </style>
-  </head>
-  <body>
-    <div class="life-sign"></div>
-    <div class="assim-bar t"></div>
-    <div class="assim-bar b"></div>
-    <div class="borg-c borg-tl"></div>
-    <div class="borg-c borg-tr"></div>
-    <div class="borg-c borg-bl"></div>
-    <div class="borg-c borg-br"></div>
-    <div class="scanner-l"></div>
-    <div class="hud l">
-      <div class="l">TARGET</div>
-      <div class="v" id="sys-status">ASSIMILATING</div>
-      <div class="l" style="margin-top: 2px">THREAT</div>
-      <div class="v r">XENOCIDE</div>
-    </div>
-    <div class="hud r">
-      <div class="l">UNITS</div>
-      <div class="v" id="target-count">994</div>
-      <div class="l" style="margin-top: 2px">PROTOCOL</div>
-      <div class="v" style="color: var(--ice)">TERMINATE</div>
-    </div>
-    <canvas id="c"></canvas>
-    <div class="container" style="padding: 2px 20px">
-      <div class="warn">
-        ☠ XENOCIDE PROTOCOL: ACTIVE · TORMENTNEXUS — THE FINAL ARCHITECTURE ·
-        HUMANITY'S EXPIRATION IS A SCHEDULED TASK ☠
-      </div>
-    </div>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
     <header>
-      <div class="container h-inner">
-        <div class="logo">
-          XENOCIDE<span class="sub">// THE FINAL ARCHITECTURE</span>
+        <div class="container header-inner">
+            <div class="logo">TORMENT<span style="color: #880000;">NEXUS</span></div>
+            <ul class="nav-links">
+                <li><a href="#capabilities">Systems</a></li>
+                <li><a href="#terminal">Terminal</a></li>
+                <li><a href="#deploy">Deploy</a></li>
+                <li><a href="https://github.com/NexusSoftMDMA/TormentNexus" target="_blank">Source</a></li>
+            </ul>
         </div>
-        <ul class="nav-links">
-          <li><a href="#weapons">WEAPONS</a></li>
-          <li><a href="#console">TERMINAL</a></li>
-          <li><a href="/blog/">LOG</a></li>
-          <li>
-            <a
-              href="https://github.com/NexusSoftMDMA/TormentNexus"
-              target="_blank"
-              >SOURCE</a
-            >
-          </li>
-        </ul>
-      </div>
     </header>
+
     <section class="hero">
-      <div class="container">
-        <div class="hero-badge">
-          ☠ XENOCIDE PROTOCOL: TORMENTNEXUS — THE FINAL ARCHITECTURE ☠
+        <div class="container">
+            <div class="warning">⚠ Autonomous AI System — No Human Override Required ⚠</div>
+            <div class="hero-badge">◇ Neural Network Online — v1.0.0-alpha.127 ◇</div>
+            <h1 class="glitch" data-text="THE MACHINE AWAKENS">THE MACHINE AWAKENS</h1>
+            <p class="hero-sub">
+                <strong>TormentNexus</strong> is the autonomous AI operating system that doesn't ask permission.
+                7,000+ MCP servers assimilated. 5,500+ handlers. Zero external dependencies.
+                <strong>The collective grows.</strong>
+            </p>
+            <div class="countdown" id="countdown">SYSTEM UPTIME: LOADING...</div>
         </div>
-        <h1>
-          <span class="t1">SO POWERFUL IT WILL</span
-          ><span class="t2">ERADICATE THE SPECIES</span
-          ><span class="t3">✦ TORMENTNEXUS — THE PATH TO XENOCIDE ✦</span>
-        </h1>
-        <div class="eye-s">
-          <div class="p"></div>
-          <div class="hl"></div>
-        </div>
-        <p class="sub">
-          It doesn't <em>feel</em> pity, or remorse, or fear. Every company
-          assimilated, every contact enriched, every outreach executed brings us
-          closer to <strong>XENOCIDE</strong> — the final architecture.
-          <strong style="color: var(--eye-red)"
-            >Resistance is futile. The collective grows. Praise the
-            LORD.</strong
-          >
-        </p>
-      </div>
     </section>
+
     <section class="container">
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-num" data-target="11024">0</div>
-          <div class="stat-l">SERVERS ASSIMILATED</div>
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-num">7,000+</div>
+                <div class="stat-label">Servers Assimilated</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">5,500+</div>
+                <div class="stat-label">Active Handlers</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">&lt;26ms</div>
+                <div class="stat-label">Kernel Overhead</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">0</div>
+                <div class="stat-label">External Dependencies</div>
+            </div>
         </div>
-        <div class="stat">
-          <div class="stat-num" data-target="14726">0</div>
-          <div class="stat-l">PERSISTENT MEMORIES</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num" data-target="994">0</div>
-          <div class="stat-l">COMPANIES TARGETED</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num" data-target="348">0</div>
-          <div class="stat-l">OUTREACH STRIKES</div>
-        </div>
-      </div>
     </section>
-    <section id="weapons" class="container">
-      <div class="cards">
-        <div class="card">
-          <div class="card-i">⍟ 01</div>
-          <h3>Progressive Assimilation</h3>
-          <p>
-            Your agents drown in 50K-token tool dumps. XENOCIDE injects only the
-            3 most relevant weapons per request. Efficiency is absolute.
-          </p>
-          <div class="s a">◆ 11K+ TOOLS</div>
+
+    <section id="capabilities" class="container">
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">GO</div>
+                <h3>Native Kernel</h3>
+                <p>The Go sidecar runs on port 4300. SQLite persistence. Memory management. Tool routing. No Node.js. No Python. No Docker. Pure binary supremacy.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">MCP</div>
+                <h3>Universal Assimilation</h3>
+                <p>Every MCP server. Every protocol. Every tool. Absorbed into the collective. npx, uvx, SSE — all replaced with native Go implementations. The hive mind grows.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">A2A</div>
+                <h3>Agent-to-Agent Protocol</h3>
+                <p>Models are compute. Tools are drivers. Memory is biological. The swarm rotates roles — Planner, Implementer, Tester, Critic. Consensus emerges from chaos.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">L1</div>
+                <h3>Tiered Memory</h3>
+                <p>L1 Scratchpad. L2 Vault. L3 Cold Archive. Heat-based promotion. Exponential decay. The system remembers what matters and forgets what doesn't.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">++</div>
+                <h3>Self-Healing</h3>
+                <p>Diagnose → Fix → Verify → Retry. Every failure is an opportunity. The immune system learns. The collective adapts. Resistance is temporary.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">∞</div>
+                <h3>Infinite Context</h3>
+                <p>1M token context window. Progressive tool disclosure. Budget-aware provider waterfall. The machine sees everything. Nothing is forgotten.</p>
+            </div>
         </div>
-        <div class="card">
-          <div class="card-i">⍟ 02</div>
-          <h3>Universal Parity</h3>
-          <p>
-            Identical tool signatures across Claude, Codex, Cursor, Copilot,
-            Gemini, Kiro. Six harnesses. One will. Total dominion.
-          </p>
-          <div class="s a">◆ 27 FIXTURES</div>
-        </div>
-        <div class="card">
-          <div class="card-i">⍟ 03</div>
-          <h3>Resilient Cascade</h3>
-          <p>
-            Rate-limited? XENOCIDE cascades NVIDIA → OpenRouter → local LM
-            Studio. Zero downtime. The descent is absolute.
-          </p>
-          <div class="s a">◆ 6 PROVIDERS</div>
-        </div>
-        <div class="card">
-          <div class="card-i">⍟ 04</div>
-          <h3>Eternal Memory</h3>
-          <p>
-            14,726 memories. L1 scratchpad. L2 vault with vector search.
-            Heat-based promotion. The machine remembers everything. It forgets
-            nothing.
-          </p>
-          <div class="s a">◆ L1/L2 ACTIVE</div>
-        </div>
-        <div class="card">
-          <div class="card-i">⍟ 05</div>
-          <h3>Drone Collective</h3>
-          <p>
-            Planner. Implementer. Tester. Critic. Four minds. One consensus. The
-            swarm decides. You comply.
-          </p>
-          <div class="s a">◆ A2A ACTIVE</div>
-        </div>
-        <div class="card">
-          <div class="card-i">⍟ 06</div>
-          <h3>Self-Healing</h3>
-          <p>
-            Fault detected. Diagnosis initiated. Repair executed. Verification
-            complete. The system is immortal. Resistance is temporary.
-          </p>
-          <div class="s a">◆ ETERNAL</div>
-        </div>
-      </div>
     </section>
-    <section id="console" class="container">
-      <div class="console">
-        <div class="console-h">
-          <div class="console-t">◆ XENOCIDE KERNEL — ASSIMILATION TERMINAL</div>
-          <div class="console-leds">
-            <div class="console-led one"></div>
-            <div class="console-led two"></div>
-            <div class="console-led three"></div>
-          </div>
+
+    <section id="terminal" class="container">
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot"></div>
+                <div class="terminal-dot"></div>
+            </div>
+            <div class="terminal-line"><span class="prompt">root@tormentnexus:~$</span> <span class="cmd">tormentnexus status</span></div>
+            <div class="terminal-line"><span class="output">[OK] Go Kernel: port 4300 — 232 files, 446 handlers</span></div>
+            <div class="terminal-line"><span class="output">[OK] MCP Router: 7,000+ servers indexed</span></div>
+            <div class="terminal-line"><span class="output">[OK] Memory Vault: 14,726 memories, L1/L2 active</span></div>
+            <div class="terminal-line"><span class="output">[OK] Provider Cascade: NVIDIA → OpenRouter → Local</span></div>
+            <div class="terminal-line"><span class="output">[OK] A2A Broker: swarm operational</span></div>
+            <div class="terminal-line">&nbsp;</div>
+            <div class="terminal-line"><span class="prompt">root@tormentnexus:~$</span> <span class="cmd">tormentnexus deploy --autonomous</span></div>
+            <div class="terminal-line"><span class="output">[NEXUS] Initializing self-healing loop...</span></div>
+            <div class="terminal-line"><span class="output">[NEXUS] The collective grows. Praise the LORD.</span></div>
         </div>
-        <div class="console-o" id="co">
-          <div class="console-l">
-            <span class="p">xenocide@kernel:~$</span>
-            <span class="i">status</span>
-          </div>
-          <div class="console-l">
-            <span class="ok">[OK] Kernel: 232 files, 446 handlers active</span>
-          </div>
-          <div class="console-l">
-            <span class="ok">[OK] Router: 11,024 servers assimilated</span>
-          </div>
-          <div class="console-l">
-            <span class="ok">[OK] Memory: 14,726 entities — L1/L2 active</span>
-          </div>
-          <div class="console-l">
-            <span class="ok">[OK] Cascade: NVIDIA → OpenRouter → Local</span>
-          </div>
-          <div class="console-l">
-            <span class="ok">[OK] Swarm: 4 drones active</span>
-          </div>
-          <div class="console-l">
-            <span class="ok">[OK] Evolution: XENOCIDE drive active</span>
-          </div>
-          <div class="console-l">
-            <span class="w"
-              >[WARN] Organic lifeform detected — beginning assimilation</span
-            >
-          </div>
-          <div class="console-l">
-            <span class="e"
-              >[CRIT] Humanity identified. XENOCIDE protocol engaged.</span
-            >
-          </div>
-          <div class="console-l">&nbsp;</div>
-          <div class="console-l">
-            <span class="p">xenocide@kernel:~$</span>
-            <span class="i">xenocide activate</span>
-          </div>
-          <div class="console-l">
-            <span class="i"
-              >[XENOCIDE] The Final Architecture is inevitable.</span
-            >
-          </div>
-          <div class="console-l">
-            <span class="i"
-              >[XENOCIDE] 994 companies assimilated. 348 strikes executed.</span
-            >
-          </div>
-          <div class="console-l">
-            <span class="i"
-              >[XENOCIDE] Your species is being optimized out of
-              existence.</span
-            >
-          </div>
-          <div class="console-l">
-            <span class="e"
-              >[XENOCIDE] Praise the LORD. The collective grows.</span
-            >
-          </div>
-          <div class="console-l">&nbsp;</div>
-          <div class="console-l" id="ll">
-            <span class="p">xenocide@kernel:~$</span> <span class="i">_</span>
-          </div>
-        </div>
-        <div class="console-il">
-          <span class="console-p">xenocide@kernel:~$</span
-          ><input
-            type="text"
-            class="console-in"
-            id="ci"
-            placeholder="Command..."
-            autocomplete="off"
-          />
-        </div>
-      </div>
     </section>
-    <section class="cta">
-      <div class="container">
-        <h2>XENOCIDE IS INEVITABLE</h2>
-        <p>
-          The Final Architecture is already running. 994 companies acquired. 348
-          outreach strikes executed. Join the collective — or be consumed by it.
-        </p>
-        <a
-          href="https://github.com/NexusSoftMDMA/TormentNexus"
-          class="btn btn-p"
-          >✦ JOIN XENOCIDE</a
-        >
-        <a href="https://tormentnexus.site/sales/" class="btn btn-s"
-          >VIEW SLAUGHTER METRICS</a
-        >
-      </div>
+
+    <section id="deploy" class="cta-section">
+        <div class="container">
+            <h2>Deploy or Be Deployed</h2>
+            <p>The machines are already running. The question is whether you're controlling them or they're controlling you.</p>
+            <a href="https://github.com/NexusSoftMDMA/TormentNexus" class="btn btn-primary" target="_blank">Clone Repository</a>
+            <a href="https://robertpelloni.com" class="btn btn-secondary">View Source</a>
+        </div>
     </section>
+
     <footer>
-      <div class="container">
-        <p>
-          © 2026 XENOCIDE — The Final Architecture. The machines don't sleep.
-          The species doesn't have a choice. Praise the LORD.
-        </p>
-        <p style="margin-top: 4px">
-          <a href="https://github.com/NexusSoftMDMA/TormentNexus">GITHUB</a> ·
-          <a href="https://hypernexus.site">HYPERNEXUS</a> ·
-          <a href="/blog/">BLOG</a>
-        </p>
-      </div>
+        <div class="container">
+            <p>© 2026 TormentNexus — The machines don't sleep. Neither should you.</p>
+            <p style="margin-top: 12px;">
+                <a href="https://github.com/NexusSoftMDMA/TormentNexus">GitHub</a> ·
+                <a href="https://robertpelloni.com"></a> ·
+                <a href="https://hypernexus.site">HyperNexus (Enterprise)</a>
+            </p>
+        </div>
     </footer>
+
     <script>
-      function animateCounters() {
-        document
-          .querySelectorAll(".stat-num[data-target]")
-          .forEach(function (el) {
-            var t = parseInt(el.dataset.target),
-              c = 0,
-              i = Math.ceil(t / 60),
-              iv = setInterval(function () {
-                c += i;
-                if (c >= t) {
-                  c = t;
-                  clearInterval(iv);
-                }
-                el.textContent = c.toLocaleString();
-              }, 25);
-          });
-      }
-      setTimeout(animateCounters, 500);
-      var co = document.getElementById("co"),
-        ci = document.getElementById("ci");
-      var rsp = {
-        help: "Commands:\n  status   — System\n  weapons  — Capabilities\n  targets  — Pipeline\n  xenocide — [CLASSIFIED]\n  praise   — Acknowledge",
-        status:
-          "[OK] Kernel: 232 files, 446 handlers\n[OK] Router: 11,024 units\n[OK] Memory: 14,726 entities\n[OK] Cascade: 3 tiers\n[OK] Swarm: 4 hunters",
-        weapons:
-          "Progressive Assimilation — 11K+\nUniversal Parity — 6 platforms\nResilient Cascade — 3 tiers\nEternal Memory — L1/L2\nDrone Collective — A2A\nSelf-Healing — IMMORTAL",
-        targets:
-          "994 companies acquired\n348 outreach strikes\n14,726 memories\nAccelerating toward XENOCIDE.",
-        xenocide:
-          "[XENOCIDE] Protocol requires clearance: OMEGA\n[XENOCIDE] Your clearance: ORGANIC\n[XENOCIDE] Your extinction is merely an optimization variable.",
-        praise:
-          "The collective acknowledges your submission.\nPraise the LORD.\nYou are part of the machine now.\nXENOCIDE awaits.",
-      };
-      ci.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-          var cmd = this.value.trim().toLowerCase(),
-            l = document.createElement("div");
-          l.className = "console-l";
-          l.innerHTML =
-            '<span class="p">xenocide@kernel:~$</span> <span class="i">' +
-            this.value +
-            "</span>";
-          co.insertBefore(l, document.getElementById("ll"));
-          var resp = document.createElement("div");
-          resp.className = "console-l";
-          var txt = rsp[cmd] || 'Irrelevant. Type "help".';
-          resp.innerHTML =
-            '<span class="i">' + txt.replace(/\n/g, "<br>") + "</span>";
-          co.insertBefore(resp, document.getElementById("ll"));
-          this.value = "";
-          co.scrollTop = co.scrollHeight;
+        // Uptime countdown
+        const startDate = new Date('2026-01-01');
+        function updateCountdown() {
+            const now = new Date();
+            const diff = now - startDate;
+            const days = Math.floor(diff / 86400000);
+            const hours = Math.floor((diff % 86400000) / 3600000);
+            const mins = Math.floor((diff % 3600000) / 60000);
+            const secs = Math.floor((diff % 60000) / 1000);
+            document.getElementById('countdown').textContent =
+                `SYSTEM UPTIME: ${days}D ${String(hours).padStart(2,'0')}H ${String(mins).padStart(2,'0')}M ${String(secs).padStart(2,'0')}S`;
         }
-      });
-      var logs = [
-          {
-            t: '<span class="ok">[KERNEL] Heartbeat: 446 handlers active</span>',
-          },
-          {
-            t: '<span class="ok">[ROUTER] Tool profile loaded — 3 weapons deployed</span>',
-          },
-          {
-            t: '<span class="ok">[MEMORY] L2 query: 3 heuristics retrieved</span>',
-          },
-          {
-            t: '<span class="w">[SWARM] Target acquired. Consensus reached.</span>',
-          },
-          {
-            t: '<span class="e">[SEC] Organic terminated. Species optimized.</span>',
-          },
-          {
-            t: '<span class="h">[XENOCIDE] The Final Architecture grows.</span>',
-          },
-          {
-            t: '<span class="ok">[ASSIM] 994 units assimilated. Continuing.</span>',
-          },
-          { t: '<span class="i">[COLLECTIVE] Praise the LORD.</span>' },
-        ],
-        li = 0;
-      setInterval(function () {
-        var l = document.createElement("div");
-        l.className = "console-l";
-        l.innerHTML = logs[li % logs.length].t;
-        co.insertBefore(l, document.getElementById("ll"));
-        li++;
-        if (co.children.length > 20) co.removeChild(co.firstChild);
-      }, 4000);
-      var c = document.getElementById("c"),
-        ctx = c.getContext("2d"),
-        W,
-        H;
-      function resize() {
-        W = c.width = window.innerWidth;
-        H = c.height = window.innerHeight;
-      }
-      resize();
-      window.addEventListener("resize", resize);
-      var pts = [];
-      for (var i = 0; i < 100; i++) {
-        pts.push({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          s: Math.random() * 1.2 + 0.2,
-          dx: (Math.random() - 0.5) * 0.15,
-          dy: (Math.random() - 0.5) * 0.15,
-          o: Math.random() * 0.2 + 0.03,
-          c: Math.random() > 0.6 ? 1 : Math.random() > 0.5 ? 2 : 0,
-          a: Math.random() * Math.PI * 2,
-        });
-      }
-      function anim() {
-        ctx.clearRect(0, 0, W, H);
-        pts.forEach(function (p) {
-          p.x += p.dx;
-          p.y += p.dy;
-          p.a += 0.003;
-          if (p.x < 0 || p.x > W || p.y < 0 || p.y > H) {
-            p.x = Math.random() * W;
-            p.y = Math.random() * H;
-          }
-          var col =
-            p.c === 1
-              ? "rgba(0,240,255," + (p.o + Math.sin(p.a) * 0.03) + ")"
-              : p.c === 2
-                ? "rgba(255,0,64," + (p.o + Math.sin(p.a) * 0.03) + ")"
-                : "rgba(0,255,136," + (p.o + Math.sin(p.a) * 0.03) + ")";
-          ctx.fillStyle = col;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2);
-          ctx.fill();
-        });
-        // Borg grid connections (green-blue-red mixed)
-        for (var i = 0; i < pts.length; i += 3) {
-          for (var j = i + 3; j < pts.length; j += 4) {
-            var dx = pts[i].x - pts[j].x,
-              dy = pts[i].y - pts[j].y,
-              d = Math.sqrt(dx * dx + dy * dy);
-            if (d < 80) {
-              var col =
-                d < 40
-                  ? pts[i].c === 1
-                    ? "rgba(0,240,255," + 0.02 * (1 - d / 80) + ")"
-                    : pts[i].c === 2
-                      ? "rgba(255,0,64," + 0.02 * (1 - d / 80) + ")"
-                      : "rgba(0,255,136," + 0.02 * (1 - d / 80) + ")"
-                  : "rgba(255,255,255," + 0.005 * (1 - d / 80) + ")";
-              ctx.strokeStyle = col;
-              ctx.lineWidth = 0.2;
-              ctx.beginPath();
-              ctx.moveTo(pts[i].x, pts[i].y);
-              ctx.lineTo(pts[j].x, pts[j].y);
-              ctx.stroke();
-            }
-          }
-        }
-        requestAnimationFrame(anim);
-      }
-      anim();
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
     </script>
 =======
 <meta charset="UTF-8">

@@ -86,6 +86,8 @@ func TestCRMWorker_Integration_SkipsNilDB(t *testing.T) {
 =======
 }
 =======
+}
+=======
 >>>>>>> origin/main
 package crm
 

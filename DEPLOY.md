@@ -42,12 +42,6 @@
    | `CRM_BASE_URL` | Optional | REST CRM API base URL |
    | `CRM_API_KEY` | Optional | REST CRM API key |
 <<<<<<< HEAD
-   | `DEPLOY_SYNC_INTERVAL` | Optional | Duration string (e.g., `1h`, `15m`) for background sync |
-   | `GO_TEST_MODE` | Optional | Set to `true` to skip git operations in tests |
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 >>>>>>> origin/main
@@ -57,6 +51,7 @@
 | `HERMES_MODEL` | Optional | Model name for Hermes (default: `free-llm`) |
 | `GO_TEST_MODE` | Optional | Set to `true` to skip git operations in tests |
 <<<<<<< HEAD
+=======
 =======
 =======
 >>>>>>> origin/main

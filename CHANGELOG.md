@@ -8,6 +8,71 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 =======
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<<<<<<< HEAD
+## [0.9.0] - 2026-06-16
+
+### Added
+- **GDPR Compliance Endpoints:** Added `/api/v1/gdpr/export` and `/api/v1/gdpr/delete` to manage contact data privacy.
+- **Webhook IP Allowlisting:** Secured GitHub webhook ingestion by verifying sender IP against a configurable allowlist.
+- **Secrets Encryption Utility:** Implemented AES-GCM encryption for securing sensitive data at rest.
+- **Soft Delete Support:** Added `deleted_at` columns and database migrations to support non-destructive data removal.
+
+
+### Added
+- **Concurrent Task Execution:** The `autodev` orchestrator now processes multiple independent tasks in parallel using goroutines.
+- **Task Dependency Resolution:** Added support for `DependsOn` metadata in `TODO.md`, ensuring tasks are executed in the correct sequence.
+- **Outbound Webhooks:** Automated HTTP POST notifications to `WEBHOOK_URL` upon lead state changes.
+- **Improved Task Parsing:** Enhanced `TaskManager` with regex-based parsing for task IDs and dependencies in Markdown.
+
+
+### Added
+- **Dashboard Pagination:** Implemented offset-based pagination for the deal list to support large-scale lead management.
+- **Worker Performance Profiling:** Added instrumentation to background workers (Scraper, Enricher, Researcher) with real-time cycle duration reporting on the dashboard.
+- **REST API (v1):** Added public JSON endpoints (`/api/v1/deals`, `/api/v1/leads`) for external system integration.
+- **Lead Export:** Extended database repository with `ListAllCompanies` to facilitate lead data extraction.
+
+
+### Added
+- **Prompt Performance Analytics:** New dashboard section displaying A/B test results, success rates, and win percentages for versioned prompts.
+- **Outcome Tracking:** The communication manager now records successful deal state transitions back into the PromptRegistry for real-time performance evaluation.
+- **Negative Example Injection:** RAG responder now incorporates "what NOT to do" context from past unsuccessful interactions to prevent repetitive outreach mistakes.
+
+
+### Added
+- **AutoDev Rollback Mechanism:** The orchestrator now performs an automated `git reset --hard` if the verification suite fails after applying autonomous code changes, ensuring codebase integrity.
+- **Input Sanitization:** All user-provided inputs from the web dashboard are now sanitized using HTML escaping to prevent XSS attacks.
+
+
+### Added
+- **AutoDev PR Feedback Loop:** The system now polls for comments on open autonomous PRs and automatically triggers refinement tasks to address feedback.
+- **Human-in-the-Loop (HITL) Gating:** High-value enterprise deals now require manual approval from the web dashboard before the bot initiates outreach.
+- **Objection Handling Library:** Integrated a library of pre-validated rebuttals for common sales objections (pricing, budget, competitors) into the technical responder.
+- **CSRF Protection:** Added session-based CSRF tokens to all dashboard forms to secure manual intervention actions.
+- **Initialization Recovery:** Added heartbeat logging and a top-level recovery block in main.go to capture and log initialization panics with stack traces.
+
+
+### Added
+- **LLM-Powered Autonomous Development:**
+    - Upgraded `autodev.LocalAgent` to use LLM-powered Go code generation.
+    - Integrated `llm.LLMProvider` into the autonomous dev loop for dynamic solution proposing.
+- **UAT Simulation Portal:**
+    - Integrated an interactive User Acceptance Testing (UAT) portal into the web dashboard (`/api/v1/test/simulate_inbound`).
+    - Enables real-time simulation of inbound messages and verification of autonomous brain replies.
+- **Multi-Channel Sales Engagement:**
+    - Implemented `GitHubSender` for technical outreach via repository issue comments.
+    - Scaffolded `LinkedInSender` for cross-platform professional engagement.
+- **Lead Discovery Intelligence:**
+    - Implemented `BlogWorker` for RSS/Atom ingestion of technical engineering blogs to detect hiring/innovation signals.
+    - Enhanced `LearningSalesEngine` with competitor detection scoring (LangChain, LlamaIndex, etc.).
+- **Enterprise CRM Field Mapping:**
+    - Added `FieldMapping` and `FieldMappingSetter` to CRM clients (Salesforce, HubSpot) to support custom enterprise property schemas.
+- **Security & CI Hardening:**
+    - Resolved all `gosec` security vulnerabilities including Slowloris mitigations (G112) and Secure/SameSite cookie hardening (G124).
+    - Applied explicit error handling (errcheck) and removed all unused code to satisfy strict `golangci-lint` CI requirements.
+
+
+### Added
+=======
 ## [Unreleased]
 
 <<<<<<< HEAD
@@ -21,6 +86,7 @@ All notable changes to this project will be documented in this file. The format 
 >>>>>>> origin/main
 ### Added
 - **Real-Time Quote API:** Added `/api/v1/quote` endpoint for dynamic quote generation based on company size/tier.
+>>>>>>> origin/main
 - **Enrichment Source Fallback Chain:**
     - Implemented `FallbackSource` in `internal/enrichment/fallback.go`.
     - Wraps multiple `EnrichmentSource` instances (Hunter.io, Apollo.io, Mock) and tries each in order.
@@ -185,6 +251,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [0.4.7] - 2026-06-08
 <<<<<<< HEAD
+=======
 =======
 =======
 >>>>>>> origin/main

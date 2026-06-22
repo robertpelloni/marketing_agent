@@ -33,6 +33,14 @@ type hnItem struct {
 }
 
 // hnUser represents a Hacker News user profile.
+<<<<<<< HEAD
+type hnUser struct {
+	ID	string	`json:"id"`
+	Karma	int	`json:"karma"`
+	Created	int	`json:"created"`
+}
+=======
+>>>>>>> origin/main
 
 var (
 	// Matches company name from the first line of a HN hiring comment.
@@ -251,7 +259,11 @@ func (h *HNWhoIsHiringSource) parseComment(comment hnItem) (db.Company, bool) {
 
 	// Extract company name from first line
 	matches := hnCompanyRegex.FindStringSubmatch(firstLine)
+<<<<<<< HEAD
+	if matches == nil || len(matches) < 2 {
+=======
 	if len(matches) < 2 {
+>>>>>>> origin/main
 		return db.Company{}, false
 	}
 
@@ -265,7 +277,11 @@ func (h *HNWhoIsHiringSource) parseComment(comment hnItem) (db.Company, bool) {
 	urls := hnURLRegex.FindAllString(text, 5)
 	for _, u := range urls {
 		dm := hnDomainRegex.FindStringSubmatch(u)
+<<<<<<< HEAD
+		if dm != nil && len(dm) > 1 {
+=======
 		if len(dm) > 1 {
+>>>>>>> origin/main
 			d := strings.ToLower(dm[1])
 			// Skip common non-company domains
 			if !isExcludedDomain(d) {

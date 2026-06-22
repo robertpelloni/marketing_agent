@@ -1,4 +1,8 @@
 package communication
+<<<<<<< HEAD
+import "testing"
+func TestResponder(t *testing.T) {}
+=======
 
 import (
 	"context"
@@ -43,3 +47,4 @@ func TestLLMResponseGenerator_Generate(t *testing.T) {
 		t.Errorf("Response should contain technical dossier context")
 	}
 }
+>>>>>>> origin/main

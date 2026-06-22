@@ -5,6 +5,8 @@ import (
 	"os"
 =======
 	"bufio"
+<<<<<<< HEAD
+=======
 	"encoding/json"
 <<<<<<< HEAD
 =======
@@ -60,11 +62,7 @@ type Config struct {
 	IMAPUsername		string
 	IMAPPassword		string
 	IMAPFolder		string
-		IMAPPollInterval	time.Duration
-
-	// Webhooks
-	OutboundWebhookURL    string
-	OutboundWebhookSecret string
+	IMAPPollInterval	time.Duration
 =======
 	DatabaseURL         string
 	GitHubToken         string
@@ -123,13 +121,13 @@ func Load() *Config {
 	IMAPPassword     string
 	IMAPFolder       string
 	IMAPPollInterval time.Duration
->>>>>>> origin/main
 
 	// CRM Field Mappings
 	SalesforceStageMapping        map[string]string
 	HubSpotStageMapping           map[string]string
 	SalesforceReverseStageMapping map[string]string
 	HubSpotReverseStageMapping    map[string]string
+>>>>>>> origin/main
 }
 
 // Load loads the configuration from environment variables and .env file.
@@ -220,11 +218,7 @@ func Load() *Config {
 		IMAPUsername:		os.Getenv("IMAP_USERNAME"),
 		IMAPPassword:		os.Getenv("IMAP_PASSWORD"),
 		IMAPFolder:		getEnv("IMAP_FOLDER", "INBOX"),
-				IMAPPollInterval:	imapPollInterval,
-
-		// Webhooks
-		OutboundWebhookURL:    os.Getenv("OUTBOUND_WEBHOOK_URL"),
-		OutboundWebhookSecret: os.Getenv("OUTBOUND_WEBHOOK_SECRET"),
+		IMAPPollInterval:	imapPollInterval,
 =======
 		DatabaseURL:         getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
 		GitHubToken:         os.Getenv("GITHUB_TOKEN"),
@@ -274,7 +268,6 @@ func Load() *Config {
 		IMAPPassword:     os.Getenv("IMAP_PASSWORD"),
 		IMAPFolder:       getEnv("IMAP_FOLDER", "INBOX"),
 		IMAPPollInterval: imapPollInterval,
->>>>>>> origin/main
 
 		// CRM Field Mappings
 		SalesforceStageMapping: parseMapFromEnv("SALESFORCE_STAGE_MAPPING", map[string]string{
@@ -316,6 +309,7 @@ func Load() *Config {
 			"closedwon":             "Closed_Won",
 			"closedlost":            "Closed_Lost",
 		}),
+>>>>>>> origin/main
 	}
 }
 
@@ -331,6 +325,11 @@ func loadDotEnv() {
 	}
 
 	for _, p := range paths {
+<<<<<<< HEAD
+		file, err := os.Open(p)
+		if err != nil {
+			continue	// .env is optional
+=======
 		file, err := os.Open(filepath.Clean(p))
 		if err != nil {
 <<<<<<< HEAD
@@ -365,6 +364,12 @@ func loadDotEnv() {
 
 			// Don't overwrite existing env vars
 			if os.Getenv(key) == "" {
+<<<<<<< HEAD
+				os.Setenv(key, value)
+			}
+		}
+		return	// only load the first .env found
+=======
 				_ = os.Setenv(key, value)
 			}
 		}

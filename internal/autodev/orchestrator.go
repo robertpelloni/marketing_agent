@@ -5,11 +5,15 @@ import (
 	"fmt"
 <<<<<<< HEAD
 	"log/slog"
+	"os"
+	"strings"
+	"sync"
 =======
 	"log"
 >>>>>>> origin/main
 	"os"
 	"strings"
+>>>>>>> origin/main
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -18,7 +22,10 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitres"
 )
 
+<<<<<<< HEAD
+=======
 // Orchestrator coordinates the autonomous development lifecycle.
+>>>>>>> origin/main
 type Orchestrator struct {
 <<<<<<< HEAD
 	db		*db.DB
@@ -35,7 +42,10 @@ type Orchestrator struct {
 >>>>>>> origin/main
 }
 
+<<<<<<< HEAD
+=======
 // NewOrchestrator creates a new Orchestrator instance.
+>>>>>>> origin/main
 func NewOrchestrator(database *db.DB, manager *TaskManager, agent Agent, prManager gitcheck.PRManager, tracker deploy.CITracker) *Orchestrator {
 	return &Orchestrator{
 <<<<<<< HEAD
@@ -54,7 +64,10 @@ func NewOrchestrator(database *db.DB, manager *TaskManager, agent Agent, prManag
 	}
 }
 
+<<<<<<< HEAD
+=======
 // Run starts the autonomous development loop.
+>>>>>>> origin/main
 func (o *Orchestrator) Run(ctx context.Context, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
@@ -69,7 +82,7 @@ func (o *Orchestrator) Run(ctx context.Context, interval time.Duration) {
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			log.Println("Autonomous development orchestrator stopping...")
+			slog.Info("Autonomous development orchestrator stopping...")
 =======
 			log.Println("Autonomous development orchestrator stopping: Draining in-flight work...")
 >>>>>>> origin/main
@@ -81,6 +94,100 @@ func (o *Orchestrator) Run(ctx context.Context, interval time.Duration) {
 	}
 }
 
+<<<<<<< HEAD
+func (o *Orchestrator) ExecuteStep(ctx context.Context) {
+	if os.Getenv("SKIP_AUTODEV_SYNC") != "true" {
+		_ = gitcheck.SyncRemote()
+		_ = gitcheck.UpdateSubmodules()
+		_ = gitres.ReconcileBranches()
+	}
+
+	clean, _ := gitcheck.IsClean()
+	if !clean {
+		slog.Info("Autodev: Working directory not clean, skipping.")
+		return
+	}
+
+	tasks, err := o.manager.GetReadyTasks(ctx)
+	if err != nil || len(tasks) == 0 {
+		return
+	}
+
+	slog.Info("Autodev: Executing tasks concurrently", "count", len(tasks))
+
+	var wg sync.WaitGroup
+	for _, t := range tasks {
+		wg.Add(1)
+		go func(task Task) {
+			defer wg.Done()
+			o.processTask(ctx, task)
+		}(t)
+	}
+	wg.Wait()
+}
+
+func (o *Orchestrator) processTask(ctx context.Context, task Task) {
+	slog.Info("Autodev: Processing task", "description", task.Description)
+	proposal, err := o.agent.ProposeSolution(ctx, task)
+	if err != nil { return }
+
+	if err := o.agent.ApplyChanges(ctx, proposal); err != nil { return }
+
+	if err := o.agent.Verify(ctx); err != nil {
+		slog.Warn("Autodev: Verification failed, rolling back", "task", task.Description)
+		_ = gitcheck.ResetHard()
+		return
+	}
+
+	_ = o.manager.MarkCompleted(ctx, task.Description)
+	o.finalizeCycle(ctx, &task)
+
+	safeDescription := strings.Map(func(r rune) rune {
+		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') { return r }
+		return '-'
+	}, task.Description)
+	branchName := fmt.Sprintf("autodev/%s", safeDescription)
+
+	if os.Getenv("SKIP_AUTODEV_SYNC") != "true" {
+		if err := gitcheck.CheckoutAndCommit(branchName, "Autonomous Update: "+task.Description); err == nil {
+			_ = gitcheck.PushBranch(branchName)
+		}
+	}
+
+	pr, err := o.prManager.CreatePullRequest(ctx, branchName, "Autonomous Update: "+task.Description, proposal)
+	if err == nil && o.db != nil {
+		_ = o.db.CreatePullRequest(ctx, pr, task.Description)
+	}
+}
+
+func (o *Orchestrator) checkPRs(ctx context.Context) {
+	if o.db == nil { return }
+	prs, err := o.db.ListActivePullRequests(ctx)
+	if err != nil { return }
+
+	for _, pr := range prs {
+		status, err := o.prManager.GetPRStatus(ctx, pr.ID)
+		if err != nil { continue }
+
+		if status == gitcheck.PRStatusOpen {
+			comments, _ := o.prManager.GetPRComments(ctx, pr.ID)
+			if len(comments) > 0 {
+				_ = o.manager.AddTask(ctx, Task{
+					Description: fmt.Sprintf("Feedback PR %s: %s", pr.ID, comments[0]),
+					Category:    "Refinement",
+				})
+			}
+
+			ciStatus, _ := o.tracker.GetLatestStatus(ctx, pr.Branch)
+			if ciStatus == deploy.CIStatusSuccess {
+				if err := o.prManager.MergePullRequest(ctx, pr.ID); err == nil {
+					_ = o.db.UpdatePRStatus(ctx, pr.ID, gitcheck.PRStatusMerged)
+					o.cleanupPRBranch(pr.Branch)
+				}
+			}
+		} else if status == gitcheck.PRStatusClosed || status == gitcheck.PRStatusFailed {
+			_ = o.db.UpdatePRStatus(ctx, pr.ID, status)
+=======
 func (o *Orchestrator) checkPRs(ctx context.Context) {
 <<<<<<< HEAD
 	slog.Info("Autodev: Checking status of active autonomous PRs...")
@@ -188,6 +295,27 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 }
 
 func (o *Orchestrator) cleanupPRBranch(branch string) {
+<<<<<<< HEAD
+	_ = gitcheck.DeleteBranch(branch)
+	_ = gitcheck.DeleteRemoteBranch(branch)
+}
+
+func (o *Orchestrator) finalizeCycle(ctx context.Context, task *Task) {
+	version, _ := os.ReadFile("VERSION")
+	baseVersion := strings.Split(strings.TrimSpace(string(version)), "+")[0]
+	if baseVersion == "" { baseVersion = "0.9.0" }
+	newV := fmt.Sprintf("%s+%d", baseVersion, time.Now().Unix())
+
+	_ = os.WriteFile("VERSION", []byte(newV), 0644)
+	_ = os.WriteFile("VERSION.md", []byte(newV), 0644)
+
+	changelogEntry := fmt.Sprintf("\n## [%s] - %s\n- %s\n", newV, time.Now().Format("2006-01-02"), task.Description)
+	f, err := os.OpenFile("CHANGELOG.md", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err == nil {
+		_, _ = f.WriteString(changelogEntry)
+		_ = f.Close()
+	}
+=======
 	if err := gitcheck.DeleteBranch(branch); err != nil {
 <<<<<<< HEAD
 		slog.Info(fmt.Sprintf("Autodev: Local branch deletion failed for %s: %v", branch, err))
@@ -440,20 +568,11 @@ func (o *Orchestrator) finalizeCycle(ctx context.Context, task *Task) {
 	baseVersion := strings.Split(vStr, "+")[0]
 	newV := fmt.Sprintf("%s+%d", baseVersion, time.Now().Unix())
 
-<<<<<<< HEAD
-	// #nosec G306 -- Version files are intended to be world-readable in this architecture
-	if err := os.WriteFile("VERSION", []byte(newV), 0644); err != nil { // #nosec G306
-	// #nosec G703
-		slog.Info(fmt.Sprintf("Autodev Warning: Failed to write VERSION: %v", err))
-	}
-	// #nosec G306 -- Version files are intended to be world-readable in this architecture
-=======
 	// #nosec G306 G304 G703 -- Version files are intended to be world-readable in this architecture
 	if err := os.WriteFile("VERSION", []byte(newV), 0644); err != nil {
 		log.Printf("Autodev Warning: Failed to write VERSION: %v", err)
 	}
 	// #nosec G306 G304 G703 -- Version files are intended to be world-readable in this architecture
->>>>>>> origin/main
 	if err := os.WriteFile("VERSION.md", []byte(newV), 0644); err != nil {
 		log.Printf("Autodev Warning: Failed to write VERSION.md: %v", err)
 >>>>>>> origin/main

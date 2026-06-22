@@ -20,14 +20,32 @@ type LeadUpdate struct {
 	ID        string
 	NewState  db.LeadState
 	Notes     string
+}
+
+// CRMClient defines the interface for interacting with external CRM systems.
+type FieldMapping struct {
+	DealNameProp     string
+	DealAmountProp   string
+	DealStageProp    string
+	DealDescProp     string
+	DealRouteProp    string
+	ContactEmailProp string
+	ContactRoleProp  string
+	AccountWebProp   string
+}
+
+type FieldMappingSetter interface {
+	SetFieldMapping(mapping FieldMapping)
+}
+
 =======
 	ID       string
 	NewState db.LeadState
 	Notes    string
->>>>>>> origin/main
 }
 
 // CRMClient defines the interface for interacting with external CRM systems.
+>>>>>>> origin/main
 type CRMClient interface {
 	// PushDeal synchronizes a local deal to the CRM.
 	PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error

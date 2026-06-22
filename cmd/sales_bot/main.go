@@ -3,18 +3,21 @@ package main
 import (
 	"context"
 <<<<<<< HEAD
+	"flag"
+	"fmt"
+	"log/slog"
+	"net/http"
+	"os"
+	"runtime/debug"
+	"strings"
+	"os/signal"
 =======
 	"encoding/json"
->>>>>>> origin/main
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
-<<<<<<< HEAD
-	"strings"
-	"os/signal"
-=======
 	"os/signal"
 	"strings"
 >>>>>>> origin/main
@@ -58,19 +61,33 @@ import (
 
 <<<<<<< HEAD
 	_ "github.com/lib/pq"	// PostgreSQL driver
+)
+
+func main() {
+	// 0a. Recovery & Heartbeat (System Robustness)
+	slog.Info("HEARTBEAT: TormentNexus Autonomous Sales Bot starting initialization...")
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Fprintf(os.Stderr, "CRITICAL PANIC RECOVERED: %v\n", r)
+			fmt.Fprintf(os.Stderr, "STACK TRACE:\n%s\n", debug.Stack())
+			os.Exit(1)
+		}
+	}()
+
 =======
 	_ "github.com/lib/pq" // PostgreSQL driver
 >>>>>>> origin/main
 )
 
 func main() {
+>>>>>>> origin/main
 	reconcile := flag.Bool("reconcile", false, "Run branch reconciliation and exit")
 	inventory := flag.Bool("inventory", false, "Generate submodule inventory and exit")
 	flag.Parse()
 
 	if *inventory {
 <<<<<<< HEAD
-		slog.Info("Generating Submodule Inventory...")
+		slog.Info("Generating submodule inventory")
 		table, err := gitcheck.GenerateSubmoduleInventory()
 		if err != nil {
 			slog.Error("Failed to generate inventory", "error", err)
@@ -88,7 +105,7 @@ func main() {
 
 	if *reconcile {
 <<<<<<< HEAD
-		slog.Info("Running Intelligent Merge Engine...")
+		slog.Info("Running intelligent merge engine")
 		if err := gitres.ReconcileBranches(); err != nil {
 			slog.Error("Reconciliation failed", "error", err)
 			os.Exit(1)
@@ -97,7 +114,7 @@ func main() {
 		return
 	}
 
-	slog.Info("Starting TormentNexus Autonomous Sales Bot...")
+	slog.Info("Starting TormentNexus Autonomous Sales Bot")
 =======
 		log.Println("Running Intelligent Merge Engine...")
 		if err := gitres.ReconcileBranches(); err != nil {
@@ -131,10 +148,113 @@ func main() {
 	if err != nil {
 <<<<<<< HEAD
 		slog.Error("Could not connect to database", "error", err)
-		os.Exit(1)
+	} else {
+		defer database.Close()
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	// 2. Setup Scraper — HN "Who is Hiring" + LinkedIn + GitHub Issues + Mock fallback
+	sources := []scraper.LeadSource{
+		&scraper.HNWhoIsHiringSource{Client: http.DefaultClient},
+		&scraper.LinkedInSource{Client: http.DefaultClient},
+		&scraper.GitHubIssueSource{Client: http.DefaultClient, Token: cfg.GitHubToken},
+		&scraper.MockJobBoardSource{},
+	}
+	s := scraper.NewScraper(database, sources)
+
+	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows", "AI Platform", "ML Infrastructure"}
+	go s.Run(ctx, 2*time.Hour, keywords)
+
+	// 2a. Setup CRM Integration
+	var crmClient crm.CRMClient
+	if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
+		slog.Info("CRM: Initializing production REST CRM client", "url", cfg.CRMBaseURL)
+		crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
+	} else {
+		slog.Info("CRM: Initializing mock CRM client (missing configuration).")
+		crmClient = crm.NewMockCRMClient()
+	}
+
+	// 2b. Setup Enricher — Hunter.io + Apollo.io + Mock with FallbackSource
+	var enrichmentSources []enrichment.EnrichmentSource
+	var sourceNames []string
+
+	if cfg.HunterAPIKey != "" {
+		slog.Info("Enrichment: Initializing Hunter.io source.")
+		enrichmentSources = append(enrichmentSources, enrichment.NewHunterSource(cfg.HunterAPIKey))
+		sourceNames = append(sourceNames, "Hunter.io")
+	} else {
+		slog.Info("Enrichment: No HUNTER_API_KEY set - skipping Hunter.io.")
+	}
+
+	if cfg.ApolloAPIKey != "" {
+		slog.Info("Enrichment: Initializing Apollo.io source.")
+		enrichmentSources = append(enrichmentSources, enrichment.NewApolloSource(cfg.ApolloAPIKey))
+		sourceNames = append(sourceNames, "Apollo.io")
+	} else {
+		slog.Info("Enrichment: No APOLLO_API_KEY set - skipping Apollo.io.")
+	}
+
+	if len(enrichmentSources) == 0 {
+		slog.Info("Enrichment: No real sources configured - using mock source only.")
+		enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
+		sourceNames = append(sourceNames, "Mock")
+	} else {
+		slog.Info("Enrichment: Mock source added as final fallback.")
+		enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
+		sourceNames = append(sourceNames, "Mock (fallback)")
+	}
+
+	fallbackSource := enrichment.NewFallbackSource(enrichmentSources, sourceNames)
+	slog.Info("Enrichment: Fallback chain configured", "status", fallbackSource.Status())
+
+	e := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{fallbackSource}, crmClient)
+	go e.Run(ctx, 1*time.Hour)
+
+	// 2c. Setup Researcher — GitHub, Tech Blogs, and RSS Feeds
+	rssFeeds := []string{
+		"https://hnrss.org/frontpage?points=10",
+		"https://blog.rust-lang.org/feed.xml",
+		"https://go.dev/blog/feed.atom",
+		"https://engineering.fb.com/feed/",
+		"https://netflixtechblog.com/feed/",
+		"https://github.blog/category/engineering/feed/",
+	}
+	crawlers := []researcher.Crawler{
+		&researcher.GitHubCrawler{Client: http.DefaultClient},
+		&researcher.BlogCrawler{Client: http.DefaultClient},
+		&researcher.RSSFeedCrawler{
+			Feeds: rssFeeds,
+			Client: http.DefaultClient,
+		},
+	}
+	processor := &researcher.DefaultDossierProcessor{}
+	r := researcher.NewResearcher(database, crawlers, processor, crmClient)
+	go r.Run(ctx, 1*time.Hour)
+
+	crmWorker := crm.NewWorker(database, crmClient)
+	go crmWorker.Run(ctx, 30*time.Minute)
+
+	// 2d. Setup Target Discovery
+	outreachWorker := agents.NewTargetDiscoveryWorker(database)
+	go outreachWorker.Run(ctx, 2*time.Hour)
+
+	// 2k. Setup Blog Intelligence
+	blogWorker := scraper.NewBlogWorker(database)
+	go blogWorker.Run(ctx, 4*time.Hour)
+
+	// 2e. Setup Deployer
+	var ciTracker deploy.CITracker
+	var dispatcher deploy.WorkflowDispatcher
+
+	if cfg.GitHubRepository != "" {
+		parts := strings.Split(cfg.GitHubRepository, "/")
+		if len(parts) == 2 {
+			slog.Info("CI: Initializing GitHub CI Tracker and Dispatcher", "repo", cfg.GitHubRepository)
 =======
 		log.Fatalf("Could not connect to database: %v", err)
->>>>>>> origin/main
 	}
 	defer database.Close()
 
@@ -211,7 +331,6 @@ func main() {
 		crmClient = crm.NewMockCRMClient()
 	}
 
->>>>>>> origin/main
 	// 2b. Setup Enricher
 	enrichmentSources := []enrichment.EnrichmentSource{
 		&enrichment.MockApolloSource{},
@@ -235,7 +354,6 @@ func main() {
 	r := researcher.NewResearcher(database, crawlers, processor)
 =======
 	r := researcher.NewResearcher(database, crawlers, processor, crmClient)
->>>>>>> origin/main
 
 	// Run researcher in background
 	go r.Run(ctx, 1*time.Hour)
@@ -285,9 +403,6 @@ func main() {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
 			// #nosec G706 -- Repository name is used for context in initialization logs
-<<<<<<< HEAD
-			slog.Info("CI: Initializing GitHub CI Tracker and Dispatcher", "repo", cfg.GitHubRepository)
-=======
 			log.Printf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", cfg.GitHubRepository)
 >>>>>>> origin/main
 			ciTracker = deploy.NewGitHubCITracker(parts[0], parts[1])
@@ -297,11 +412,115 @@ func main() {
 <<<<<<< HEAD
 
 	if ciTracker == nil {
-<<<<<<< HEAD
 		slog.Info("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY).")
+		ciTracker = &deploy.MockCITracker{}
+	}
+
+	deployer := deploy.NewDeployer(ciTracker, dispatcher)
+	go deployer.Run(ctx, cfg.DeploySyncInterval)
+	go deployer.MonitorDeployment(ctx, cfg.DeploySyncInterval)
+
+	// 2f. Setup LLM Provider — Hermes or Mock
+	var llmProvider llm.LLMProvider
+	var promptRegistry *llm.PromptRegistry
+
+	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
+		slog.Info("LLM: Initializing Hermes provider", "url", cfg.HermesAPIURL, "model", cfg.HermesModel)
+		llmProvider = llm.NewHermesLLMProvider(llm.HermesConfig{
+			BaseURL:	cfg.HermesAPIURL,
+			APIKey:		cfg.HermesAPIKey,
+			Model:		cfg.HermesModel,
+		})
+
+		promptRegistry = llm.NewPromptRegistry("data/prompt_registry.json")
+		promptRegistry.RegisterVersion("outreach-reply", "Intent: ${intent}. Dossier: ${dossier}. Company: ${company}. ${negative} Generate a professional reply.")
+
+		if err := llmProvider.(*llm.HermesLLMProvider).HealthCheck(ctx); err != nil {
+			slog.Warn("LLM: Hermes health check failed", "error", err)
+		} else {
+			slog.Info("LLM: Hermes health check passed ✓")
+		}
+	} else {
+		slog.Info("LLM: Initializing Mock LLM Provider (set HERMES_API_URL and HERMES_API_KEY for real LLM).")
+		llmProvider = &llm.MockLLMProvider{}
+	}
+
+	// 2g. Setup Intent Classifier
+	var classifier communication.IntentClassifier
+	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
+		slog.Info("Communication: Initializing LLM-backed Intent Classifier via Hermes.")
+		classifier = communication.NewLLMIntentClassifier(llmProvider)
+	} else {
+		slog.Info("Communication: Initializing Mock Intent Classifier.")
+		classifier = &communication.MockIntentClassifier{}
+	}
+
+	responder := communication.NewRAGResponseGenerator(database, llmProvider, promptRegistry)
+	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
+
+	// 2h. Setup Email Sender
+	var emailSender communication.EmailSender
+	if cfg.SMTPHost != "" && cfg.SMTPUsername != "" && cfg.SMTPPassword != "" && !cfg.DryRun {
+		slog.Info("Email: Initializing SMTP sender", "host", cfg.SMTPHost, "port", cfg.SMTPPort, "user", cfg.SMTPUsername)
+		emailSender = communication.NewSMTPSender(communication.SMTPConfig{
+			Host:		cfg.SMTPHost,
+			Port:		cfg.SMTPPort,
+			Username:	cfg.SMTPUsername,
+			Password:	cfg.SMTPPassword,
+			From:		cfg.SMTPFrom,
+			FromName:	cfg.SMTPFromName,
+		})
+	} else if cfg.DryRun && cfg.IMAPHost != "" && cfg.IMAPUsername != "" && cfg.IMAPPassword != "" {
+		slog.Info("Email: DRY RUN mode — saving drafts via IMAP", "folder", cfg.IMAPFolder)
+		emailSender = communication.NewDraftSender(cfg.IMAPHost, cfg.IMAPPort, cfg.IMAPUsername, cfg.IMAPPassword)
+	} else {
+		if cfg.DryRun {
+			slog.Info("Email: DRY RUN mode — no IMAP configured, emails will be logged only.")
+		} else {
+			slog.Info("Email: No SMTP configured — outbound emails will be logged but not sent.")
+		}
+		emailSender = &communication.MockEmailSender{}
+	}
+
+	ghSender := communication.NewGitHubSender()
+	liSender := communication.NewLinkedInSender()
+
+	billingClient := &billing.MockBillingClient{}
+	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
+
+	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender, ghSender, liSender, promptRegistry)
+
+	// Initialize Objection Library and attach to manager
+	objectionLib := communication.NewObjectionLibrary()
+	commManager.SetObjectionLibrary(objectionLib)
+
+	go commManager.Run(ctx, 30*time.Minute)
+
+	// 2j. Setup Cadence-aware outreach scheduling
+	cadenceManager := communication.NewCadenceAwareManager(commManager, database)
+	go cadenceManager.RunCadence(ctx, 12*time.Hour)	// checks every 12 h for next touch
+
+	// 2i. Setup IMAP Email Receiver
+	if cfg.IMAPHost != "" && cfg.IMAPUsername != "" && cfg.IMAPPassword != "" {
+		slog.Info("Email: Initializing IMAP receiver", "host", cfg.IMAPHost, "port", cfg.IMAPPort, "poll", cfg.IMAPPollInterval)
+		imapReceiver := communication.NewEmailReceiver(communication.IMAPConfig{
+			Host:		cfg.IMAPHost,
+			Port:		cfg.IMAPPort,
+			Username:	cfg.IMAPUsername,
+			Password:	cfg.IMAPPassword,
+			Folder:		cfg.IMAPFolder,
+		}, commManager)
+		go imapReceiver.Run(ctx, cfg.IMAPPollInterval)
+	} else {
+		slog.Info("Email: No IMAP configured — inbound emails will not be received.")
+	}
+
+	// 3. Initialize Autonomous Development
+	taskManager := autodev.NewTaskManager("TODO.md")
+	agent := autodev.NewLocalAgent(llmProvider)
 =======
+	if ciTracker == nil {
 		log.Println("CI: Initializing Mock CI Tracker (missing GITHUB_REPOSITORY).")
->>>>>>> origin/main
 		ciTracker = &deploy.MockCITracker{}
 	}
 	deployer := deploy.NewDeployer(ciTracker, dispatcher)
@@ -362,26 +581,14 @@ func main() {
 	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor)
 =======
 	// 2fa. Setup Order Processing
->>>>>>> origin/main
 	billingClient := &billing.MockBillingClient{}
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
 	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender)
->>>>>>> origin/main
 
 	// Run communication poller in background
 	go commManager.Run(ctx, 30*time.Minute)
 
-<<<<<<< HEAD
-	// 2ea. Setup CRM and Email Pollers (Inbound Ingestion)
-	crmWorker := crm.NewWorker(database, crmClient, commManager)
-	go crmWorker.Run(ctx, 30*time.Minute)
-
-	imapPoller := mail.NewIMAPPoller(database, commManager, cfg.IMAPHost, cfg.IMAPUser, cfg.IMAPPass)
-	go imapPoller.Run(ctx, 30*time.Minute)
-
-=======
->>>>>>> origin/main
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")
 	agent := &autodev.LocalAgent{}
@@ -398,12 +605,9 @@ func main() {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
 <<<<<<< HEAD
-			slog.Info(fmt.Sprintf("Autodev: Initializing GitHub PR Manager for %s", cfg.GitHubRepository))
-=======
-			// #nosec G706 -- Repository name is used for context in initialization logs
-<<<<<<< HEAD
 			slog.Info("Autodev: Initializing GitHub PR Manager", "repo", cfg.GitHubRepository)
 =======
+			// #nosec G706 -- Repository name is used for context in initialization logs
 			log.Printf("Autodev: Initializing GitHub PR Manager for %s", cfg.GitHubRepository)
 >>>>>>> origin/main
 			prManager = gitcheck.NewGitHubPRManager(parts[0], parts[1])
@@ -423,17 +627,18 @@ func main() {
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider)
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider, promptRegistry)
 
 	srv := &http.Server{
 		Addr:		":" + cfg.Port,
 		Handler:	webServer,
+		ReadHeaderTimeout: 5 * time.Second,
 	}
 
 	go func() {
-		slog.Info(fmt.Sprintf("Web Dashboard: Listening on :%s", cfg.Port))
+		slog.Info("Web Dashboard: Listening", "port", cfg.Port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			slog.Info(fmt.Sprintf("Web server error: %v", err))
+			slog.Error("Web server error", "error", err)
 		}
 	}()
 
@@ -445,7 +650,13 @@ func main() {
 	slog.Info("Shutting down: Signal received, initiating graceful drain...")
 
 	cancel()
-
+	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer shutdownCancel()
+	if err := srv.Shutdown(shutdownCtx); err != nil {
+		slog.Error("Web server shutdown error", "error", err)
+	}
+	time.Sleep(2 * time.Second)
+	slog.Info("Shutting down: Done.")
 =======
 
 	// Run autodev worker in background (every 1 hour)
@@ -509,9 +720,6 @@ func main() {
 		}
 	}()
 
-<<<<<<< HEAD
-	// Wait for termination signal
-=======
 	// 5. Graceful Shutdown Implementation
 >>>>>>> origin/main
 	sigChan := make(chan os.Signal, 1)
@@ -528,7 +736,6 @@ func main() {
 	cancel()
 
 	// Shutdown HTTP server with timeout
->>>>>>> origin/main
 	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer shutdownCancel()
 

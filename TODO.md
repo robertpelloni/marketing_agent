@@ -146,23 +146,36 @@
 ### Real CRM Integration
 - [x] Implement Salesforce CRM adapter
 - [x] Implement HubSpot CRM adapter
-<<<<<<< HEAD
-- [x] Integrate Live CRM Outreach (SendEmail)
-=======
->>>>>>> origin/main
 - [x] Add CRM field mapping configuration
->>>>>>> origin/main
 
 ## Phase 8 — Intelligence & Autonomous Evolution
 
 ### Advanced Lead Intelligence
-<<<<<<< HEAD
-- [ ] Implement real GitHub repository analysis for tech stack and bottleneck detection
-- [ ] Implement real technical blog/RSS ingestion for hiring signals
-=======
 - [x] Implement real GitHub repository analysis for tech stack and bottleneck detection
 - [x] Implement real technical blog/RSS ingestion for hiring signals
+<<<<<<< HEAD
+<<<<<<< HEAD
+- [x] Add competitor intelligence tracking
+=======
+- [ ] Add competitor intelligence tracking
 >>>>>>> origin/main
+- [ ] Add unified intent signal aggregation
+
+### Autonomous Development Improvements
+- [x] Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation
+- [x] Add rollback mechanism for failed verification
+- [x] Add PR feedback loop using `GetPRComments`
+- [x] Add task dependency resolution
+- [x] Add concurrent task execution for independent tasks
+
+### Advanced Sales Strategy
+<<<<<<< HEAD
+- [ ] Add multi-touch outreach sequences across channels
+- [ ] Add A/B testing for outreach templates
+- [x] Add objection handling library with success rates
+- [x] Add human-in-the-loop approval workflow for high-value deals
+=======
+=======
 - [ ] Add competitor intelligence tracking
 - [ ] Add unified intent signal aggregation
 
@@ -175,29 +188,26 @@
 - [ ] Add concurrent task execution for independent tasks
 
 ### Advanced Sales Strategy
-<<<<<<< HEAD
-- [ ] Add multi-touch outreach sequences across channels
-- [ ] Add A/B testing for outreach templates
-- [ ] Add objection handling library with success rates
-- [ ] Add human-in-the-loop approval workflow for high-value deals
-- [ ] Add deal forecasting using historical patterns
-
-### Self-Improving Prompts v2
-- [ ] Add A/B prompt testing with vs. without successful examples
-- [ ] Add interaction sentiment analysis
-=======
+>>>>>>> origin/main
 - [x] Add multi-touch outreach sequences across channels
 - [x] Add A/B testing infrastructure for outreach templates (metrics tracking, impression recording)
 - [x] Add template selection algorithm for A/B testing (conversion-based ranking via GetTopTemplate)
 - [x] Add template success tracking when interactions convert (full integration complete)
 - [x] Add objection handling library with success rates (full integration with outcome tracking)
 - [x] Add human-in-the-loop approval workflow for high-value deals (auto-flag Enterprise/>$100k deals, ApproveDeal method)
+<<<<<<< HEAD
+>>>>>>> origin/main
+=======
+>>>>>>> origin/main
 - [x] Add deal forecasting using historical patterns
 
 ### Self-Improving Prompts v2
 - [ ] Add A/B prompt testing with vs. without successful examples
 - [x] Add interaction sentiment analysis
->>>>>>> origin/main
+<<<<<<< HEAD
+- [x] Add prompt performance tracking over time
+- [x] Add negative example injection from failed outreach
+=======
 - [ ] Add prompt performance tracking over time
 - [ ] Add negative example injection from failed outreach
 >>>>>>> origin/main
@@ -206,10 +216,14 @@
 
 ### Security
 <<<<<<< HEAD
-- [ ] Add rate limiting on all HTTP endpoints (dashboard, webhook, health)
-- [x] Add authentication to the web dashboard (OAuth2 or API key)
-- [ ] Add CSRF protection for dashboard form submissions
-- [ ] Add input sanitization for all user-supplied data (webhook payloads, form inputs)
+- [x] Add rate limiting on all HTTP endpoints
+- [x] Add authentication to web dashboard (Session-based)
+- [x] Add CSRF protection for dashboard form submissions
+- [x] Add input sanitization for webhook payloads and form inputs
+- [x] Add secrets encryption at rest
+- [x] Add GDPR data export endpoint
+- [x] Add GDPR data deletion endpoint
+- [x] Add webhook IP allowlisting
 =======
 - [ ] Add rate limiting on all HTTP endpoints
 - [x] Add authentication to web dashboard (Session-based)
@@ -220,6 +234,7 @@
 - [ ] Add GDPR data export endpoint
 - [ ] Add GDPR data deletion endpoint
 - [ ] Add webhook IP allowlisting
+>>>>>>> origin/main
 
 ### Scale & Performance
 <<<<<<< HEAD
@@ -233,8 +248,13 @@
 - [ ] Add message queue (NATS/RabbitMQ) to decouple workers
 >>>>>>> origin/main
 - [ ] Add database read replicas for dashboard queries
+<<<<<<< HEAD
+- [x] Add pagination to dashboard deal list
+- [x] Add worker performance profiling
+=======
 - [ ] Add pagination to dashboard deal list
 - [ ] Add worker performance profiling
+>>>>>>> origin/main
 
 ### Deployment & Operations
 - [ ] Add Kubernetes manifests (Deployment, Service, ConfigMap, Secret)
@@ -255,19 +275,12 @@
 
 ### API & Extensibility
 <<<<<<< HEAD
-- [x] Add REST API for external pipeline management (`/api/v1/leads`, `/api/v1/deals`, `/api/v1/interactions`)
-- [x] Add webhook outbound — notify external systems on deal state changes
-- [x] Add plugin system — allow custom enrichment sources, classifiers, and responders
-- [ ] Add multi-tenant support — isolate data and config per organization
-
-### TormentNexus-as-a-Service
-- [ ] Package the sales engine as a reusable service
-- [ ] Add SaaS billing with per-seat and per-outreach pricing tiers
-- [ ] Add onboarding wizard
-- [ ] Add community template marketplace
+- [x] Add REST API for external pipeline management
+- [x] Add outbound webhooks on deal state changes
 =======
 - [ ] Add REST API for external pipeline management
 - [ ] Add outbound webhooks on deal state changes
+>>>>>>> origin/main
 - [ ] Add plugin system for custom sources, classifiers, and responders
 - [ ] Add multi-tenant support with data isolation
 

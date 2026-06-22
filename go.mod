@@ -1,13 +1,15 @@
 module github.com/robertpelloni/enterprise_sales_bot
 
 <<<<<<< HEAD
-go 1.23.0
+go 1.25.0
 
 require (
-<<<<<<< HEAD
+	github.com/emersion/go-imap v1.2.1
+	github.com/google/go-github/v50 v50.2.0
 	github.com/google/go-github/v60 v60.0.0
 	github.com/lib/pq v1.10.9
 	golang.org/x/oauth2 v0.24.0
+	golang.org/x/time v0.15.0
 )
 
 require github.com/google/go-querystring v1.1.0 // indirect
@@ -22,9 +24,22 @@ require github.com/google/go-querystring v1.1.0 // indirect
 )
 
 require (
+	github.com/ProtonMail/go-crypto v0.0.0-20230217124315-7d5c6f04bbb8 // indirect
+	github.com/cloudflare/circl v1.1.0 // indirect
 	github.com/emersion/go-sasl v0.0.0-20241020182733-b788ff22d5a6 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
+	golang.org/x/crypto v0.7.0 // indirect
+	golang.org/x/sys v0.6.0 // indirect
+	golang.org/x/text v0.8.0 // indirect
 =======
+go 1.24
+
+require (
+	github.com/emersion/go-imap v1.2.1
+	github.com/go-rod/rod v0.116.2
+	github.com/google/go-github/v60 v60.0.0
+	github.com/lib/pq v1.12.3
+	github.com/stripe/stripe-go/v81 v81.4.0
 	golang.org/x/oauth2 v0.30.0
 >>>>>>> origin/main
 )

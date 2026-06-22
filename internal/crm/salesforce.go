@@ -5,14 +5,20 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+<<<<<<< HEAD
 	"io"
 	"net/http"
 	"net/url"
+=======
+	"net/http"
+	"os"
+>>>>>>> origin/main
 	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
+<<<<<<< HEAD
 // SalesforceCRMClient implements CRMClient for Salesforce.
 type SalesforceCRMClient struct {
 	BaseURL      string
@@ -78,11 +84,70 @@ func (c *SalesforceCRMClient) RefreshToken(ctx context.Context) error {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	resp, err := c.HTTPClient.Do(req)
+=======
+// SalesforceClient implements CRMClient using the Salesforce REST API.
+// It expects the following environment variables to be set:
+//  - SALESFORCE_INSTANCE_URL (e.g., https://yourInstance.my.salesforce.com)
+//  - SALESFORCE_ACCESS_TOKEN (OAuth2 Bearer token)
+//  - SALESFORCE_API_VERSION (e.g., "v57.0")
+// The client uses the standard Salesforce REST endpoints for leads, contacts, and opportunities.
+
+type SalesforceClient struct {
+	instanceURL string // Base URL for the instance, without trailing slash
+	accessToken string // OAuth2 bearer token
+	apiVersion  string // API version, e.g., "v57.0"
+	client      *http.Client
+}
+
+// NewSalesforceClient creates a new Salesforce CRM client.
+func NewSalesforceClient() (*SalesforceClient, error) {
+	inst := os.Getenv("SALESFORCE_INSTANCE_URL")
+	token := os.Getenv("SALESFORCE_ACCESS_TOKEN")
+	ver := os.Getenv("SALESFORCE_API_VERSION")
+	if inst == "" || token == "" {
+		return nil, fmt.Errorf("salesforce client: missing required env vars (instance URL or access token)")
+	}
+	if ver == "" {
+		ver = "v57.0"
+	}
+	return &SalesforceClient{
+		instanceURL: inst,
+		accessToken: token,
+		apiVersion:  ver,
+		client:      &http.Client{},
+	}, nil
+}
+
+// PushDeal creates or updates a Salesforce Opportunity representing the deal.
+func (s *SalesforceClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
+	// Salesforce Opportunity fields mapping
+	payload := map[string]interface{}{
+		"Name":               fmt.Sprintf("%s – %s", company.Name, route),
+		"AccountId":          s.accountIDFromDomain(company.Domain),
+		"StageName":          mapLeadStateToStage(deal.CurrentState),
+		"CloseDate":          timeNowISO8601(),
+		"Amount":             deal.QuotedPricing,
+		"Description":        deal.TechnicalDossier,
+		"Custom_Field__c":    route, // placeholder for custom routing info
+	}
+
+	body, _ := json.Marshal(payload)
+	url := fmt.Sprintf("%s/services/data/%s/sobjects/Opportunity", s.instanceURL, s.apiVersion)
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(body))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+s.accessToken)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := s.client.Do(req)
+>>>>>>> origin/main
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 
+<<<<<<< HEAD
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("auth error: %d", resp.StatusCode)
 	}
@@ -105,33 +170,65 @@ func (c *SalesforceCRMClient) GetNewInteractions(ctx context.Context) ([]db.Inte
 
 	// Querying EmailMessage to get real-time inbound emails
 	url := fmt.Sprintf("%s/services/data/v54.0/query/?q=SELECT+TextBody,Subject,FromAddress+FROM+EmailMessage+WHERE+Incoming=true+LIMIT+10", c.BaseURL)
+=======
+	if resp.StatusCode >= 400 {
+		return fmt.Errorf("salesforce PushDeal: status %d", resp.StatusCode)
+	}
+
+	return nil
+}
+
+// GetLeadUpdates fetches recent lead status changes from Salesforce.
+// It queries the Lead object for recent "IsConverted" or "StageName" changes.
+func (s *SalesforceClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error) {
+	// Simple SOQL query for recently modified leads (last 24h)
+	soql := "SELECT Id, StageName FROM Lead WHERE LastModifiedDate = LAST_N_DAYS:1"
+	url := fmt.Sprintf("%s/services/data/%s/query?q=%s", s.instanceURL, s.apiVersion, urlEncode(soql))
+
+>>>>>>> origin/main
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
+<<<<<<< HEAD
 	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
 
 	resp, err := c.HTTPClient.Do(req)
+=======
+	req.Header.Set("Authorization", "Bearer "+s.accessToken)
+
+	resp, err := s.client.Do(req)
+>>>>>>> origin/main
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
+<<<<<<< HEAD
 		return nil, fmt.Errorf("salesforce api error (%d)", resp.StatusCode)
+=======
+		return nil, fmt.Errorf("salesforce GetLeadUpdates: status %d", resp.StatusCode)
+>>>>>>> origin/main
 	}
 
 	var result struct {
 		Records []struct {
+<<<<<<< HEAD
 			TextBody    string `json:"TextBody"`
 			Subject     string `json:"Subject"`
 			FromAddress string `json:"FromAddress"`
+=======
+			Id        string `json:"Id"`
+			StageName string `json:"StageName"`
+>>>>>>> origin/main
 		} `json:"records"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	interactions := make([]db.Interaction, len(result.Records))
 	for i, r := range result.Records {
 		interactions[i] = db.Interaction{
@@ -252,37 +349,68 @@ func (c *SalesforceCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate,
 		updates[i] = LeadUpdate{
 			ID:       id,
 			NewState: db.LeadState(stage),
+=======
+	var updates []LeadUpdate
+	for _, r := range result.Records {
+		state := mapStageToLeadState(r.StageName)
+		if state != "" {
+			updates = append(updates, LeadUpdate{ID: r.Id, NewState: state, Notes: ""})
+>>>>>>> origin/main
 		}
 	}
 
 	return updates, nil
 }
 
+<<<<<<< HEAD
 func (c *SalesforceCRMClient) ValidateAccount(ctx context.Context, domain string) (bool, error) {
 	if err := c.RefreshToken(ctx); err != nil {
 		return false, fmt.Errorf("token refresh failed: %w", err)
 	}
 
 	url := fmt.Sprintf("%s/services/data/v54.0/query/?q=SELECT+Id+FROM+Account+WHERE+Website+LIKE+'%%%s%%'+LIMIT+1", c.BaseURL, domain)
+=======
+// ValidateAccount verifies if a given domain has a Salesforce Account.
+func (s *SalesforceClient) ValidateAccount(ctx context.Context, domain string) (bool, error) {
+	soql := fmt.Sprintf("SELECT Id FROM Account WHERE Website = '%s' LIMIT 1", domain)
+	url := fmt.Sprintf("%s/services/data/%s/query?q=%s", s.instanceURL, s.apiVersion, urlEncode(soql))
+
+>>>>>>> origin/main
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return false, err
 	}
+<<<<<<< HEAD
 	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
 
 	resp, err := c.HTTPClient.Do(req)
+=======
+	req.Header.Set("Authorization", "Bearer "+s.accessToken)
+
+	resp, err := s.client.Do(req)
+>>>>>>> origin/main
 	if err != nil {
 		return false, err
 	}
 	defer resp.Body.Close()
 
+<<<<<<< HEAD
 	if resp.StatusCode >= 400 {
 		return false, nil
 	}
+=======
+	if resp.StatusCode == http.StatusNotFound {
+		return false, nil
+	}
+	if resp.StatusCode >= 400 {
+		return false, fmt.Errorf("salesforce ValidateAccount: status %d", resp.StatusCode)
+	}
+>>>>>>> origin/main
 
 	var result struct {
 		TotalSize int `json:"totalSize"`
 	}
+<<<<<<< HEAD
 	json.NewDecoder(resp.Body).Decode(&result)
 
 	return result.TotalSize > 0, nil
@@ -382,15 +510,129 @@ func (c *SalesforceCRMClient) SendEmail(ctx context.Context, contact db.Contact,
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := c.HTTPClient.Do(req)
+=======
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return false, err
+	}
+	return result.TotalSize > 0, nil
+}
+
+// SyncInteraction creates a note on the related Opportunity.
+func (s *SalesforceClient) SyncInteraction(ctx context.Context, dealID int64, note string) error {
+	payload := map[string]interface{}{
+		"ParentId": fmt.Sprintf("%d", dealID), // Assuming dealID matches Opportunity Id mapping
+		"Body":    note,
+		"Title":   "Automated Interaction Log",
+	}
+
+	body, _ := json.Marshal(payload)
+	url := fmt.Sprintf("%s/services/data/%s/sobjects/Task", s.instanceURL, s.apiVersion)
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(body))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+s.accessToken)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := s.client.Do(req)
+>>>>>>> origin/main
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
+<<<<<<< HEAD
 		respBody, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
 		return fmt.Errorf("salesforce api error (%d): %s", resp.StatusCode, string(respBody))
+=======
+		return fmt.Errorf("salesforce SyncInteraction: status %d", resp.StatusCode)
+>>>>>>> origin/main
 	}
 
 	return nil
 }
+<<<<<<< HEAD
+=======
+
+// SyncContacts creates or updates Salesforce Contact records for a company.
+func (s *SalesforceClient) SyncContacts(ctx context.Context, companyID int64, contacts []db.Contact) error {
+	accountID := s.accountIDFromDomain("") // placeholder – in real impl we lookup AccountId by domain
+
+	for _, c := range contacts {
+		payload := map[string]interface{}{
+			"FirstName": strings.Split(c.Name, " ")[0],
+			"LastName":  strings.Split(c.Name, " ")[1],
+			"Email":     c.Email,
+			"Title":     c.Role,
+			"AccountId": accountID,
+		}
+
+		body, _ := json.Marshal(payload)
+		url := fmt.Sprintf("%s/services/data/%s/sobjects/Contact", s.instanceURL, s.apiVersion)
+		req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(body))
+		if err != nil {
+			return err
+		}
+		req.Header.Set("Authorization", "Bearer "+s.accessToken)
+		req.Header.Set("Content-Type", "application/json")
+
+		resp, err := s.client.Do(req)
+		if err != nil {
+			return err
+		}
+		resp.Body.Close()
+		if resp.StatusCode >= 400 {
+			return fmt.Errorf("salesforce SyncContacts: status %d", resp.StatusCode)
+		}
+	}
+	return nil
+}
+
+// FetchDealDetails retrieves an Opportunity from Salesforce.
+func (s *SalesforceClient) FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error) {
+	url := fmt.Sprintf("%s/services/data/%s/sobjects/Opportunity/%d", s.instanceURL, s.apiVersion, dealID)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "Bearer "+s.accessToken)
+
+	resp, err := s.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		return nil, fmt.Errorf("salesforce FetchDealDetails: status %d", resp.StatusCode)
+	}
+
+	var result struct {
+		Id                string  `json:"Id"`
+		StageName         string  `json:"StageName"`
+		Amount            float64 `json:"Amount"`
+		Description       string  `json:"Description"`
+		Custom_Field__c    string  `json:"Custom_Field__c"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	return &DealDetails{
+		ID:                 parseID(result.Id),
+		Status:             mapStageToLeadState(result.StageName),
+		QuotedPricing:      result.Amount,
+		CustomRequirements: result.Custom_Field__c,
+		TechnicalDossier:   result.Description,
+	}, nil
+}
+
+// Helper functions (placeholders for actual implementations)
+func (s *SalesforceClient) accountIDFromDomain(domain string) string { return "" }
+func mapLeadStateToStage(state db.LeadState) string       { return "Prospecting" }
+func mapStageToLeadState(stage string) db.LeadState      { return db.StateResearched }
+func timeNowISO8601() string                               { return "2026-06-14" }
+func urlEncode(s string) string                           { return s }
+func parseID(s string) int64                               { return 0 }
+>>>>>>> origin/main

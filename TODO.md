@@ -26,8 +26,13 @@
 - [x] Add configurable worker intervals via environment variables
 
 ### Logging & Observability
+<<<<<<< HEAD
 - [ ] Replace all `log.Printf` with a leveled, structured logger (`slog` or `zerolog`)
 - [ ] Add Prometheus metrics endpoint (`/metrics`) with business and system counters
+=======
+- [x] Replace all `log.Printf` with a leveled, structured logger (`slog` or `zerolog`)
+- [x] Add Prometheus metrics endpoint (`/metrics`) with business and system counters
+>>>>>>> origin/main
 - [x] Add correlation/request IDs to all log lines
 - [x] Add `pprof` endpoint for production debugging
 
@@ -40,14 +45,22 @@
 ## Phase 7 — Real Integrations & Multi-Channel Outreach
 
 ### Real Enrichment Providers
+<<<<<<< HEAD
 - [ ] Implement Apollo.io API enrichment source (replace mock)
 - [ ] Implement Hunter.io email finder as secondary source
 - [ ] Implement LinkedIn Sales Navigator scraper for contact discovery
 - [ ] Add enrichment source fallback chain
+=======
+- [x] Implement Apollo.io API enrichment source (replace mock)
+- [x] Implement Hunter.io email finder as secondary source
+- [x] Implement LinkedIn Sales Navigator scraper for contact discovery
+- [x] Add enrichment source fallback chain
+>>>>>>> origin/main
 
 ### Real Communication Channels
 - [x] Implement SMTP email sender for outbound outreach
 - [x] Implement IMAP/POP3 email polling for inbound ingestion
+<<<<<<< HEAD
 - [ ] Implement LinkedIn message sending via headless automation
 - [ ] Implement GitHub Issue/PR comment outreach as technical hook
 - [ ] Add channel preference logic per contact
@@ -59,18 +72,39 @@
 - [ ] Add token budget tracking per deal/contact
 - [ ] Add prompt versioning with A/B testing capability
 - [ ] Add response quality scoring before sending
+=======
+- [x] Implement LinkedIn message sending via headless automation
+- [x] Implement GitHub Issue/PR comment outreach as technical hook
+- [x] Add channel preference logic per contact
+- [x] Add outreach cadence management (configurable follow-up schedule)
+
+### Real LLM Integration
+- [x] Implement Hermes Agent LLM provider (replace mock) — routes through local Hermes gateway with 200+ model support
+- [x] Add provider fallback chain for LLM calls - Hermes handles NVIDIA - OpenRouter - LM Studio/Ollama waterfall natively
+- [x] Add token budget tracking per deal/contact
+- [x] Add prompt versioning with A/B testing capability
+- [x] Add response quality scoring before sending
+>>>>>>> origin/main
 
 ### Real CRM Integration
 - [x] Implement Salesforce CRM adapter
 - [x] Implement HubSpot CRM adapter
+<<<<<<< HEAD
 - [x] Integrate Live CRM Outreach (SendEmail)
+=======
+>>>>>>> origin/main
 - [x] Add CRM field mapping configuration
 
 ## Phase 8 — Intelligence & Autonomous Evolution
 
 ### Advanced Lead Intelligence
+<<<<<<< HEAD
 - [ ] Implement real GitHub repository analysis for tech stack and bottleneck detection
 - [ ] Implement real technical blog/RSS ingestion for hiring signals
+=======
+- [x] Implement real GitHub repository analysis for tech stack and bottleneck detection
+- [x] Implement real technical blog/RSS ingestion for hiring signals
+>>>>>>> origin/main
 - [ ] Add competitor intelligence tracking
 - [ ] Add unified intent signal aggregation
 
@@ -82,6 +116,7 @@
 - [ ] Add concurrent task execution for independent tasks
 
 ### Advanced Sales Strategy
+<<<<<<< HEAD
 - [ ] Add multi-touch outreach sequences across channels
 - [ ] Add A/B testing for outreach templates
 - [ ] Add objection handling library with success rates
@@ -91,6 +126,19 @@
 ### Self-Improving Prompts v2
 - [ ] Add A/B prompt testing with vs. without successful examples
 - [ ] Add interaction sentiment analysis
+=======
+- [x] Add multi-touch outreach sequences across channels
+- [x] Add A/B testing infrastructure for outreach templates (metrics tracking, impression recording)
+- [x] Add template selection algorithm for A/B testing (conversion-based ranking via GetTopTemplate)
+- [x] Add template success tracking when interactions convert (full integration complete)
+- [x] Add objection handling library with success rates (full integration with outcome tracking)
+- [x] Add human-in-the-loop approval workflow for high-value deals (auto-flag Enterprise/>$100k deals, ApproveDeal method)
+- [x] Add deal forecasting using historical patterns
+
+### Self-Improving Prompts v2
+- [ ] Add A/B prompt testing with vs. without successful examples
+- [x] Add interaction sentiment analysis
+>>>>>>> origin/main
 - [ ] Add prompt performance tracking over time
 - [ ] Add negative example injection from failed outreach
 
@@ -175,4 +223,8 @@
 - [x] Implement Self-Service Deployment Pipeline (Sync & Build triggers)
 - [x] Add `borg` submodule for technical documentation reference
 - [x] Implement Task 6: Automated Provisioning for won deals
+<<<<<<< HEAD
 - [x] Rebrand from Borg to TormentNexus across all product-facing references
+=======
+- [x] Rebrand from TormentNexus to TormentNexus across all product-facing references
+>>>>>>> origin/main

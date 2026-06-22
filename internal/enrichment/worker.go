@@ -108,10 +108,40 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 	return nil
 }
 
+<<<<<<< HEAD
+// MockApolloSource is a simulated enrichment source.
+type MockApolloSource struct{}
+
+func (m *MockApolloSource) Enrich(ctx context.Context, company db.Company) ([]db.Contact, error) {
+	slog.Info(fmt.Sprintf("MockApolloSource: Searching for contacts at %s", company.Domain))
+
+	// Simulate finding contacts based on domain
+	if company.Domain == "aidynamics.com" {
+		return []db.Contact{
+			{
+				Name:		"Sarah Chen",
+				Role:		"Director of AI",
+				Email:		"sarah.chen@aidynamics.com",
+				GitHubHandle:	"schen-ai",
+			},
+		}, nil
+	} else if company.Domain == "neuralsystems.io" {
+		return []db.Contact{
+			{
+				Name:		"James Wilson",
+				Role:		"Principal Systems Architect",
+				Email:		"j.wilson@neuralsystems.io",
+				GitHubHandle:	"jwilson-sys",
+			},
+		}, nil
+	}
+
+=======
 // MockApolloSource is a legacy stub that no longer generates mock contacts.
 // Only real enrichment sources (Hunter.io, Apollo.io) are used.
 type MockApolloSource struct{}
 
 func (m *MockApolloSource) Enrich(_ context.Context, _ db.Company) ([]db.Contact, error) {
+>>>>>>> origin/main
 	return nil, nil
 }

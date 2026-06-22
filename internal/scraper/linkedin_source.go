@@ -9,8 +9,13 @@ import (
 	"os"
 	"strings"
 
+<<<<<<< HEAD
+	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/go-rod/rod"
+=======
 	"github.com/go-rod/rod"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+>>>>>>> origin/main
 )
 
 // LinkedInSource implements LeadSource by searching for companies and contacts via LinkedIn.
@@ -132,9 +137,40 @@ func (l *LinkedInSource) scrapeLinkedIn(ctx context.Context, keywords []string) 
 	return companies, nil
 }
 
+<<<<<<< HEAD
+// simulateDiscovery returns simulated high-value targets when real API is not available.
+func (l *LinkedInSource) simulateDiscovery(ctx context.Context, keywords []string) ([]db.Company, error) {
+	slog.Info(fmt.Sprintf("LinkedInSource: Simulating discovery for keywords: %v", keywords))
+
+	// Simulated high-value AI/ML companies with engineering leadership
+	return []db.Company{
+		{
+			Name:          "Neural Dynamics",
+			Domain:        "neuraldynamics.io",
+			TechStack:     []string{"Python", "PyTorch", "Kubernetes", "MLflow"},
+			HiringSignals: []string{"Hiring: Senior ML Platform Engineer", "VP Engineering recently joined from Google Brain"},
+			MarketCapTier: "Mid-Market",
+		},
+		{
+			Name:          "Cognitive Systems Labs",
+			Domain:        "cognitivesystems.ai",
+			TechStack:     []string{"Rust", "Go", "TensorFlow", "gRPC"},
+			HiringSignals: []string{"Hiring: Distributed Systems Architect", "CTO posted about multi-agent orchestration challenges"},
+			MarketCapTier: "Enterprise",
+		},
+		{
+			Name:          "Hyperloop AI",
+			Domain:        "hyperloop-ai.tech",
+			TechStack:     []string{"Go", "LLMs", "Apache Kafka", "Redis"},
+			HiringSignals: []string{"Hiring: AI Infrastructure Lead", "Director of Engineering scaling team from 5 to 20"},
+			MarketCapTier: "Small Business",
+		},
+	}, nil
+=======
 // simulateDiscovery returns empty — no mock data. Only real API results are used.
 func (l *LinkedInSource) simulateDiscovery(_ context.Context, _ []string) ([]db.Company, error) {
 	return nil, nil
+>>>>>>> origin/main
 }
 
 // HealthCheck verifies LinkedIn API connectivity and credential validity.

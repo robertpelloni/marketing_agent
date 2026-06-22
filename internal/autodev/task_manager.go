@@ -111,11 +111,43 @@ func (m *TaskManager) MarkCompleted(ctx context.Context, taskDescription string)
 	}
 
 	output := strings.Join(lines, "\n")
+<<<<<<< HEAD
+	// #nosec G306 -- TODO file is intentionally world-readable
+	err = os.WriteFile(m.todoPath, []byte(output), 0644) // #nosec G306
+	// #nosec G703
+=======
 	// #nosec G306 G304 G703 -- TODO file is intentionally world-readable
 	err = os.WriteFile(m.todoPath, []byte(output), 0644)
+>>>>>>> origin/main
 	if err != nil {
 		return err
 	}
 
 	return nil
 }
+<<<<<<< HEAD
+
+// MarkTaskFailed marks a task as failed and resets its in-progress status
+// so it can be retried in a future cycle (potentially with a different approach).
+func (tm *TaskManager) MarkTaskFailed(id string) error {
+
+
+
+	tasks, err := tm.ListAllTasks(context.Background())
+	if err != nil {
+		return err
+	}
+
+	for i := range tasks {
+		if tasks[i].ID == id {
+			// Do not mark as Complete. We just release it back to the pool
+			// so another cycle can pick it up.
+			// In a more robust system, we would increment a retry counter here.
+			break
+		}
+	}
+
+	return nil // State is inherently reset because we don't persist "in-progress" to disk yet
+}
+=======
+>>>>>>> origin/main

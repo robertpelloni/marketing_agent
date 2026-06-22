@@ -3,17 +3,65 @@ package config
 import (
 	"bufio"
 	"encoding/json"
+<<<<<<< HEAD
+=======
 	"fmt"
+>>>>>>> origin/main
 	"log/slog"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
+<<<<<<< HEAD
+	"fmt"
+=======
+>>>>>>> origin/main
 )
 
 // Config holds the application configuration.
 type Config struct {
+<<<<<<< HEAD
+	DatabaseURL		string
+	GitHubToken		string
+	GitHubRepository	string
+	GitHubWebhookSecret	string
+	CRMBaseURL		string
+	CRMAPIKey		string
+	HermesAPIURL		string
+	HermesAPIKey		string
+	HermesModel		string
+	DeploySyncInterval	time.Duration
+	Port			string
+	Environment		string
+
+	// Safety
+	DryRun	bool
+
+	// Lead Discovery
+	HunterAPIKey	string
+	ApolloAPIKey	string
+
+	// Email - SMTP
+	SMTPHost	string
+	SMTPPort	int
+	SMTPUsername	string
+	SMTPPassword	string
+	SMTPFrom	string
+	SMTPFromName	string
+
+	// Email - IMAP
+	IMAPHost		string
+	IMAPPort		int
+	IMAPUsername		string
+	IMAPPassword		string
+	IMAPFolder		string
+		IMAPPollInterval	time.Duration
+
+	// Webhooks
+	OutboundWebhookURL    string
+	OutboundWebhookSecret string
+=======
 	DatabaseURL         string
 	GitHubToken         string
 	GitHubRepository    string
@@ -57,6 +105,7 @@ type Config struct {
 	IMAPPassword     string
 	IMAPFolder       string
 	IMAPPollInterval time.Duration
+>>>>>>> origin/main
 
 	// CRM Field Mappings
 	SalesforceStageMapping        map[string]string
@@ -114,6 +163,47 @@ func Load() *Config {
 	}
 
 	return &Config{
+<<<<<<< HEAD
+		DatabaseURL:		getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
+		GitHubToken:		os.Getenv("GITHUB_TOKEN"),
+		GitHubRepository:	os.Getenv("GITHUB_REPOSITORY"),
+		GitHubWebhookSecret:	os.Getenv("GITHUB_WEBHOOK_SECRET"),
+		CRMBaseURL:		os.Getenv("CRM_BASE_URL"),
+		CRMAPIKey:		os.Getenv("CRM_API_KEY"),
+		HermesAPIURL:		os.Getenv("HERMES_API_URL"),
+		HermesAPIKey:		os.Getenv("HERMES_API_KEY"),
+		HermesModel:		hermesModel,
+		DeploySyncInterval:	syncInterval,
+		Port:			port,
+		Environment:		env,
+
+		// Safety
+		DryRun:	os.Getenv("DRY_RUN") == "true",
+
+		// Lead Discovery
+		HunterAPIKey:	os.Getenv("HUNTER_API_KEY"),
+		ApolloAPIKey:	os.Getenv("APOLLO_API_KEY"),
+
+		// SMTP
+		SMTPHost:	os.Getenv("SMTP_HOST"),
+		SMTPPort:	smtpPort,
+		SMTPUsername:	os.Getenv("SMTP_USERNAME"),
+		SMTPPassword:	os.Getenv("SMTP_PASSWORD"),
+		SMTPFrom:	os.Getenv("SMTP_FROM"),
+		SMTPFromName:	getEnv("SMTP_FROM_NAME", "TormentNexus Sales"),
+
+		// IMAP
+		IMAPHost:		os.Getenv("IMAP_HOST"),
+		IMAPPort:		imapPort,
+		IMAPUsername:		os.Getenv("IMAP_USERNAME"),
+		IMAPPassword:		os.Getenv("IMAP_PASSWORD"),
+		IMAPFolder:		getEnv("IMAP_FOLDER", "INBOX"),
+				IMAPPollInterval:	imapPollInterval,
+
+		// Webhooks
+		OutboundWebhookURL:    os.Getenv("OUTBOUND_WEBHOOK_URL"),
+		OutboundWebhookSecret: os.Getenv("OUTBOUND_WEBHOOK_SECRET"),
+=======
 		DatabaseURL:         getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
 		GitHubToken:         os.Getenv("GITHUB_TOKEN"),
 		GitHubRepository:    os.Getenv("GITHUB_REPOSITORY"),
@@ -157,6 +247,7 @@ func Load() *Config {
 		IMAPPassword:     os.Getenv("IMAP_PASSWORD"),
 		IMAPFolder:       getEnv("IMAP_FOLDER", "INBOX"),
 		IMAPPollInterval: imapPollInterval,
+>>>>>>> origin/main
 
 		// CRM Field Mappings
 		SalesforceStageMapping: parseMapFromEnv("SALESFORCE_STAGE_MAPPING", map[string]string{
@@ -215,7 +306,11 @@ func loadDotEnv() {
 	for _, p := range paths {
 		file, err := os.Open(filepath.Clean(p))
 		if err != nil {
+<<<<<<< HEAD
+			continue	// .env is optional
+=======
 			continue // .env is optional
+>>>>>>> origin/main
 		}
 		defer file.Close()
 
@@ -246,7 +341,11 @@ func loadDotEnv() {
 				_ = os.Setenv(key, value)
 			}
 		}
+<<<<<<< HEAD
+		return	// only load the first .env found
+=======
 		return // only load the first .env found
+>>>>>>> origin/main
 	}
 }
 

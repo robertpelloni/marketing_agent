@@ -228,3 +228,24 @@ func GenerateSubmoduleInventory() (string, error) {
 
 	return inventory, nil
 }
+<<<<<<< HEAD
+
+// DiscardChanges discards all uncommitted changes in the working directory and index.
+// Used by the autodev rollback mechanism when verification fails.
+func DiscardChanges() error {
+	// First, reset the index and working directory to HEAD
+	resetCmd := exec.Command("git", "reset", "--hard", "HEAD")
+	if out, err := resetCmd.CombinedOutput(); err != nil {
+		return fmt.Errorf("git reset --hard failed: %v, output: %s", err, string(out))
+	}
+
+	// Then, remove any untracked files and directories created during the failed attempt
+	cleanCmd := exec.Command("git", "clean", "-fd")
+	if out, err := cleanCmd.CombinedOutput(); err != nil {
+		return fmt.Errorf("git clean -fd failed: %v, output: %s", err, string(out))
+	}
+
+	return nil
+}
+=======
+>>>>>>> origin/main

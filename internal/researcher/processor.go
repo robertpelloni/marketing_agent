@@ -89,7 +89,11 @@ func (r *Researcher) researchLead(ctx context.Context, deal db.Deal, contact db.
 	var findings []string
 
 	// Crawl for each source
+<<<<<<< HEAD
+	targets := []string{contact.GitHubHandle, contact.Email}	// Simplified targets
+=======
 	targets := []string{contact.GitHubHandle, contact.Email} // Simplified targets
+>>>>>>> origin/main
 	for _, crawler := range r.crawlers {
 		for _, target := range targets {
 			if target == "" {
@@ -108,6 +112,20 @@ func (r *Researcher) researchLead(ctx context.Context, deal db.Deal, contact db.
 	}
 
 	// Update deal with dossier
+<<<<<<< HEAD
+	company, _ := r.db.GetCompanyByID(ctx, deal.CompanyID)
+
+	// Calculate Unified Intent Score
+	intentAggregator := &IntentAggregator{}
+	var intentScore int
+	if company != nil {
+		score := intentAggregator.Aggregate(*company, dossier)
+		intentScore = score.Score
+		slog.Info(fmt.Sprintf("Researcher: Unified Intent Score for %s is %d", company.Name, intentScore))
+	}
+
+=======
+>>>>>>> origin/main
 	err = r.db.UpdateTechnicalDossier(ctx, deal.ID, dossier)
 	if err != nil {
 		return err

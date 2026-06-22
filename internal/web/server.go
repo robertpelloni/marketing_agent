@@ -16,8 +16,13 @@ import (
 	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
+<<<<<<< HEAD
+	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
+=======
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
+>>>>>>> origin/main
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
@@ -56,18 +61,29 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 }
 
 func (s *Server) routes() {
+<<<<<<< HEAD
+	// Protected routes
+	s.mux.Handle("/", s.auth.Middleware(http.HandlerFunc(s.handleDashboard)))
+=======
 	// API routes — no auth (use /x/ prefix to avoid mux conflicts)
 	s.mux.HandleFunc("/x/stats", s.handleStats)
 	s.mux.HandleFunc("/x/leads", s.handleLeads)
+>>>>>>> origin/main
 
 	// Public routes
 	s.mux.HandleFunc("/login", s.auth.HandleLogin)
 	s.mux.HandleFunc("/health", s.handleHealth)
 	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
 	s.mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
+<<<<<<< HEAD
+		s.mux.HandleFunc("/api/v1/quote", s.handleGenerateQuote)
+	s.mux.Handle("/api/v1/leads", s.auth.Middleware(http.HandlerFunc(s.handleLeadsAPI)))
+	s.mux.Handle("/api/v1/deals", s.auth.Middleware(http.HandlerFunc(s.handleDealsAPI)))
+=======
 
 	// Protected routes
 	s.mux.Handle("/", http.HandlerFunc(s.handleDashboard))
+>>>>>>> origin/main
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -84,6 +100,9 @@ func (s *Server) ListenAndServe(addr string) error {
 }
 
 func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
+<<<<<<< HEAD
+	if r.URL.Path != "/" {
+=======
 	// Serve API endpoints from the root handler
 	path := r.URL.Path
 	if path == "/x/stats" || path == "/api/v1/stats" {
@@ -95,6 +114,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if path != "/" {
+>>>>>>> origin/main
 		http.NotFound(w, r)
 		return
 	}
@@ -133,7 +153,11 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 					slog.InfoContext(r.Context(), "Contact channel updated", "contact_id", id, "channel", channel)
 				}
 			}
+<<<<<<< HEAD
+case "build":
+=======
 		case "build":
+>>>>>>> origin/main
 			if err := s.deploy.ExecuteBuild(); err != nil {
 				slog.WarnContext(r.Context(), "Build error", "error", err)
 			}
@@ -525,6 +549,77 @@ func (s *Server) handleGenerateQuote(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+<<<<<<< HEAD
+// REST API for external pipeline management
+func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		// Example: List all leads
+		companies, err := s.db.ListAllCompanies(r.Context())
+		if err != nil {
+			http.Error(w, "Failed to retrieve leads", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(companies)
+	case http.MethodPost:
+		// Example: Create a new lead
+		var lead db.Company
+		if err := json.NewDecoder(r.Body).Decode(&lead); err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+		if err := s.db.CreateCompany(r.Context(), &lead); err != nil {
+			http.Error(w, "Failed to create lead", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(lead)
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+}
+
+func (s *Server) handleDealsAPI(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		// Example: List all deals, could support filtering by state via query params
+		stateFilter := r.URL.Query().Get("state")
+		var deals []db.Deal
+		var err error
+		if stateFilter != "" {
+			deals, err = s.db.ListDealsByState(r.Context(), db.LeadState(stateFilter))
+		} else {
+			// Add a repository method to list all deals if needed,
+			// or just fall back to a specific state for now.
+			deals, err = s.db.ListDealsByState(r.Context(), db.StateDiscovered) // Placeholder
+		}
+
+		if err != nil {
+			http.Error(w, "Failed to retrieve deals", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(deals)
+	case http.MethodPost:
+		// Example: Create a new deal
+		var deal db.Deal
+		if err := json.NewDecoder(r.Body).Decode(&deal); err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+		if err := s.db.CreateDeal(r.Context(), &deal); err != nil {
+			http.Error(w, "Failed to create deal", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(deal)
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+=======
 func (s *Server) handleStats(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
@@ -568,4 +663,5 @@ func (s *Server) handleLeads(w http.ResponseWriter, r *http.Request) {
 		out = append(out, lead{ID: d.ID, Company: cn, State: string(d.CurrentState)})
 	}
 	json.NewEncoder(w).Encode(out)
+>>>>>>> origin/main
 }

@@ -47,13 +47,31 @@
 
 ### Real Communication Channels
 - [x] Implement SMTP email sender for outbound outreach
+<<<<<<< HEAD
+- [x] Implement IMAP/POP3 email polling for inbound message ingestion
+- [x] Implement LinkedIn message sending via headless automation
+- [x] Implement GitHub Issue/PR comment outreach as a technical hook
+=======
 - [x] Implement IMAP/POP3 email polling for inbound ingestion
 - [x] Implement LinkedIn message sending via headless automation
 - [x] Implement GitHub Issue/PR comment outreach as technical hook
+>>>>>>> origin/main
 - [x] Add channel preference logic per contact
 - [x] Add outreach cadence management (configurable follow-up schedule)
 
 ### Real LLM Integration
+<<<<<<< HEAD
+- [x] Implement OpenAI/Anthropic LLM provider (replace mock)
+- [x] Add provider fallback chain for LLM calls (primary → secondary → tertiary)
+- [x] Add token budget tracking per deal/contact to control costs
+- [x] Add prompt versioning — store and track prompt templates with A/B testing capability
+- [x] Add response quality scoring — auto-evaluate generated responses before sending
+
+### Real CRM Integration
+- [x] Implement Salesforce CRM adapter (replace generic REST mock)
+- [x] Implement HubSpot CRM adapter as alternative
+- [x] Add CRM field mapping configuration — map local fields to CRM-specific schema
+=======
 - [x] Implement Hermes Agent LLM provider (replace mock) — routes through local Hermes gateway with 200+ model support
 - [x] Add provider fallback chain for LLM calls - Hermes handles NVIDIA - OpenRouter - LM Studio/Ollama waterfall natively
 - [x] Add token budget tracking per deal/contact
@@ -64,10 +82,22 @@
 - [x] Implement Salesforce CRM adapter
 - [x] Implement HubSpot CRM adapter
 - [x] Add CRM field mapping configuration
+>>>>>>> origin/main
 
 ## Phase 8 — Intelligence & Autonomous Evolution
 
 ### Advanced Lead Intelligence
+<<<<<<< HEAD
+- [x] Implement real GitHub repository analysis — detect tech stack, architecture patterns, and bottlenecks from actual source code
+- [x] Implement real technical blog/RSS ingestion — parse engineering blogs for hiring signals and pain points
+- [x] Add competitor intelligence tracking
+- [x] Add unified intent signal aggregation
+
+### Autonomous Development Improvements
+- [x] Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation
+- [x] Add rollback mechanism — if verification fails, revert to pre-change state
+- [ ] Add PR feedback loop — use `GetPRComments` to refine the agent's code generation accuracy
+=======
 - [x] Implement real GitHub repository analysis for tech stack and bottleneck detection
 - [x] Implement real technical blog/RSS ingestion for hiring signals
 - [ ] Add competitor intelligence tracking
@@ -77,11 +107,24 @@
 - [ ] Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation
 - [ ] Add rollback mechanism for failed verification
 - [ ] Add PR feedback loop using `GetPRComments`
+>>>>>>> origin/main
 - [ ] Add task dependency resolution
 - [ ] Add concurrent task execution for independent tasks
 
 ### Advanced Sales Strategy
 - [x] Add multi-touch outreach sequences across channels
+<<<<<<< HEAD
+- [x] Add A/B testing for outreach templates — track conversion per template variant
+- [x] Add objection handling library — curated rebuttals indexed by objection type with success rates
+- [x] Add human-in-the-loop approval workflow — require explicit approval for deals above a configurable threshold
+- [x] Add deal forecasting — predict close probability and expected revenue using historical patterns
+
+### Self-Improving Prompts v2
+- [ ] Add A/B prompt testing — compare outreach generated with vs. without successful examples
+- [x] Add interaction sentiment analysis — auto-classify sentiment of inbound messages to refine strategy
+- [ ] Add prompt performance tracking — measure response quality over time as few-shot examples accumulate
+- [ ] Add negative example injection — learn from failed outreach (flagged `success=false`) to avoid repeated patterns
+=======
 - [x] Add A/B testing infrastructure for outreach templates (metrics tracking, impression recording)
 - [x] Add template selection algorithm for A/B testing (conversion-based ranking via GetTopTemplate)
 - [x] Add template success tracking when interactions convert (full integration complete)
@@ -94,23 +137,38 @@
 - [x] Add interaction sentiment analysis
 - [ ] Add prompt performance tracking over time
 - [ ] Add negative example injection from failed outreach
+>>>>>>> origin/main
 
 ## Phase 9 — Security, Compliance & Scale
 
 ### Security
+<<<<<<< HEAD
+- [ ] Add rate limiting on all HTTP endpoints (dashboard, webhook, health)
+- [x] Add authentication to the web dashboard (OAuth2 or API key)
+- [ ] Add CSRF protection for dashboard form submissions
+- [ ] Add input sanitization for all user-supplied data (webhook payloads, form inputs)
+=======
 - [ ] Add rate limiting on all HTTP endpoints
 - [x] Add authentication to web dashboard (Session-based)
 - [ ] Add CSRF protection for dashboard form submissions
 - [ ] Add input sanitization for webhook payloads and form inputs
+>>>>>>> origin/main
 - [ ] Add secrets encryption at rest
 - [ ] Add GDPR data export endpoint
 - [ ] Add GDPR data deletion endpoint
 - [ ] Add webhook IP allowlisting
 
 ### Scale & Performance
+<<<<<<< HEAD
+- [ ] Add PostgreSQL connection pooling with configurable limits
+- [ ] Add Redis caching layer for frequently accessed data (company lookups, performance metrics)
+- [ ] Add horizontal scaling support — make workers stateless so multiple instances can run
+- [ ] Add message queue (NATS/RabbitMQ) to decouple workers from direct DB polling
+=======
 - [ ] Add Redis caching layer for frequently accessed data
 - [ ] Add horizontal scaling support (stateless workers)
 - [ ] Add message queue (NATS/RabbitMQ) to decouple workers
+>>>>>>> origin/main
 - [ ] Add database read replicas for dashboard queries
 - [ ] Add pagination to dashboard deal list
 - [ ] Add worker performance profiling
@@ -118,14 +176,33 @@
 ### Deployment & Operations
 - [ ] Add Kubernetes manifests (Deployment, Service, ConfigMap, Secret)
 - [ ] Add Helm chart for one-command cluster deployment
+<<<<<<< HEAD
+- [ ] Add Terraform modules for cloud infrastructure provisioning
+- [ ] Add blue-green deployment strategy with automatic rollback
+- [ ] Add database backup automation — periodic `pg_dump` with S3/blob storage upload
+- [ ] Add log aggregation — ship structured logs to ELK/Datadog/CloudWatch
+=======
 - [ ] Add Terraform modules for cloud infrastructure
 - [ ] Add blue-green deployment with automatic rollback
 - [ ] Add database backup automation with cloud storage
 - [ ] Add log aggregation to ELK/Datadog/CloudWatch
+>>>>>>> origin/main
 
 ## Phase 10 — Platform & Ecosystem
 
 ### API & Extensibility
+<<<<<<< HEAD
+- [x] Add REST API for external pipeline management (`/api/v1/leads`, `/api/v1/deals`, `/api/v1/interactions`)
+- [x] Add webhook outbound — notify external systems on deal state changes
+- [x] Add plugin system — allow custom enrichment sources, classifiers, and responders
+- [ ] Add multi-tenant support — isolate data and config per organization
+
+### TormentNexus-as-a-Service
+- [ ] Package the sales engine as a reusable service
+- [ ] Add SaaS billing with per-seat and per-outreach pricing tiers
+- [ ] Add onboarding wizard
+- [ ] Add community template marketplace
+=======
 - [ ] Add REST API for external pipeline management
 - [ ] Add outbound webhooks on deal state changes
 - [ ] Add plugin system for custom sources, classifiers, and responders
@@ -177,3 +254,4 @@
 - [x] Add `borg` submodule for technical documentation reference
 - [x] Implement Task 6: Automated Provisioning for won deals
 - [x] Rebrand from TormentNexus to TormentNexus across all product-facing references
+>>>>>>> origin/main

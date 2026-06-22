@@ -6,10 +6,17 @@ import (
 	"strings"
 	"time"
 
+<<<<<<< HEAD
+	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+	"fmt"
+=======
 	"fmt"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+>>>>>>> origin/main
 )
 
 // LearningSalesEngine implements the SalesStrategy interface.
@@ -25,17 +32,29 @@ func isHighValueDeal(deal *db.Deal, company *db.Company) bool {
 }
 
 type LearningSalesEngine struct {
+<<<<<<< HEAD
+	db		*db.DB
+	crmClient	crm.CRMClient
+	llm		llm.LLMProvider
+=======
 	db        *db.DB
 	crmClient crm.CRMClient
 	llm       llm.LLMProvider
+>>>>>>> origin/main
 }
 
 // NewLearningSalesEngine creates a new instance of the engine.
 func NewLearningSalesEngine(database *db.DB, crmClient crm.CRMClient, llmProvider llm.LLMProvider) *LearningSalesEngine {
 	return &LearningSalesEngine{
+<<<<<<< HEAD
+		db:		database,
+		crmClient:	crmClient,
+		llm:		llmProvider,
+=======
 		db:        database,
 		crmClient: crmClient,
 		llm:       llmProvider,
+>>>>>>> origin/main
 	}
 }
 
@@ -106,7 +125,11 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 		if e.isHighValueLead(salesCtx) {
 			return ActionRespond, nil
 		}
+<<<<<<< HEAD
+		return ActionEscalate, nil	// Escalate high-tier pricing negotiation
+=======
 		return ActionEscalate, nil // Escalate high-tier pricing negotiation
+>>>>>>> origin/main
 	case IntentObjection:
 		// Attempt one autonomous rebuttal, then escalate
 		if e.countInteractionTypes(salesCtx.Interactions, "Outbound") < 2 {
@@ -147,6 +170,31 @@ func (e *LearningSalesEngine) countInteractionTypes(interactions []db.Interactio
 	return count
 }
 
+<<<<<<< HEAD
+// ScoreLead calculates a priority score based on tier and technical research.
+func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
+	score := 0
+
+	// Tier scoring
+	switch strings.ToLower(salesCtx.Company.MarketCapTier) {
+	case "enterprise":
+		score += 50
+	case "mid-market":
+		score += 25
+	}
+
+	// Dossier insight scoring
+	if strings.Contains(salesCtx.Deal.TechnicalDossier, "BOTTLENECK") {
+		score += 30
+	}
+	if strings.Contains(salesCtx.Deal.TechnicalDossier, "INFRASTRUCTURE") {
+		score += 20
+	}
+
+	// Interaction quantity bonus
+	score += len(salesCtx.Interactions) * 2
+
+=======
 // ScoreLead calculates a priority score using Challenger Sale methodology.
 // High score = high potential to close.
 func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
@@ -203,6 +251,7 @@ func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
 	score += len(salesCtx.Interactions) * 3
 
 	// Cap at 100
+>>>>>>> origin/main
 	if score > 100 {
 		return 100
 	}
@@ -210,6 +259,35 @@ func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
 }
 
 // QualifyLead returns a qualification percentage (0-100) based on readiness to buy.
+<<<<<<< HEAD
+func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
+	qual := 0
+
+	// Base score from profile
+	qual += e.ScoreLead(ctx) / 2
+
+	// Engagement quality
+	inboundCount := e.countInteractionTypes(ctx.Interactions, "Inbound")
+	if inboundCount > 2 {
+		qual += 20
+	}
+
+	// Intent analysis
+	switch ctx.LatestIntent {
+	case IntentPricing:
+		qual += 15
+	case IntentTechnical:
+		qual += 10
+	case IntentMeetingRequest:
+		qual += 25
+	case IntentFollowUp:
+		qual += 20
+	}
+
+	// Penalty for objections
+	if ctx.LatestIntent == IntentObjection {
+		qual -= 10
+=======
 // Uses MEDDIC-inspired framework: Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain, Champion
 func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
 	qual := 0
@@ -255,6 +333,7 @@ func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
 	recentInteractions := len(ctx.Interactions)
 	if recentInteractions > 5 {
 		qual += 10
+>>>>>>> origin/main
 	}
 
 	if qual > 100 {

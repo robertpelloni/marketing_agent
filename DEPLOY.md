@@ -26,11 +26,16 @@
    | `CRM_BASE_URL` | Optional | REST CRM API base URL |
    | `CRM_API_KEY` | Optional | REST CRM API key |
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/main
 | `DEPLOY_SYNC_INTERVAL` | Optional | Duration string (e.g., `1h`, `15m`) for background sync |
 | `HERMES_API_URL` | Optional | Hermes Agent API server URL (e.g., `http://172.21.116.32:8642`) for real LLM |
 | `HERMES_API_KEY` | Optional | Hermes API server key (must match `API_SERVER_KEY` in Hermes `.env`) |
 | `HERMES_MODEL` | Optional | Model name for Hermes (default: `free-llm`) |
 | `GO_TEST_MODE` | Optional | Set to `true` to skip git operations in tests |
+<<<<<<< HEAD
+=======
 =======
 | `CRM_DEAL_NAME_PROP` | Optional | HubSpot/Salesforce custom deal name property |
 | `CRM_DEAL_STAGE_PROP` | Optional | HubSpot/Salesforce custom deal stage property |
@@ -40,6 +45,7 @@
    | `DEPLOY_SYNC_INTERVAL` | Optional | Duration string (e.g., `1h`, `15m`) for background sync |
    | `GO_TEST_MODE` | Optional | Set to `true` to skip git operations in tests |
 >>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+>>>>>>> origin/main
 
 3. **Database Migrations:** Apply migrations using your preferred tool (e.g., `golang-migrate`):
    ```bash
@@ -123,13 +129,29 @@ docker compose up -d --build
 ### Staging
 
 ```bash
+<<<<<<< HEAD
+docker compose -f docker-compose.staging.yml up -d --build
+=======
 # Set required staging secrets in .env.staging
 docker compose -f docker-compose.staging.yml --env-file .env.staging up -d --build
+>>>>>>> origin/main
 ```
 
 - Application: `http://localhost:8081`
 - Separate staging database
 
+<<<<<<< HEAD
+## Staging Validation
+
+To validate the **Self-Improving Prompts** feedback loop in a staging environment:
+
+1. Deploy using Docker Compose:
+   ```bash
+   docker compose -f docker-compose.staging.yml up -d --build
+   ```
+
+2. Simulate a "Closed Won" state for a lead via the CRM mock or manual DB update.
+=======
 ## Staging & Live CRM Connectivity
 
 Before deploying to staging for live CRM connectivity, ensure:
@@ -161,6 +183,7 @@ To validate **Live CRM Interactions** and the **Self-Improving Prompts** feedbac
    This script performs a simulated login, drives an inbound simulation, and verifies autonomous response generation.
 
 3. Simulate a "Closed Won" state for a lead via the CRM mock or manual DB update.
+>>>>>>> origin/main
 
 3. Verify in the logs or dashboard that past outbound interactions are flagged with `success=true`.
 

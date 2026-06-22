@@ -79,6 +79,9 @@ func TestCRMWorker_Integration_SkipsNilDB(t *testing.T) {
 	ctx := context.Background()
 	worker.ExecuteSync(ctx)
 	// If this doesn't panic and returns cleanly, the nil check works
+<<<<<<< HEAD
+}
+=======
 }
 =======
 package crm
@@ -267,3 +270,4 @@ func TestRestCRMClient_ErrorBody_Integration(t *testing.T) {
 		t.Errorf("expected timeout error message, got: %v", err)
 	}
 }
+>>>>>>> origin/main

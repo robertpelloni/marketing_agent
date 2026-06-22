@@ -8,7 +8,10 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+<<<<<<< HEAD
+=======
 	"regexp"
+>>>>>>> origin/main
 	"strings"
 	"time"
 )
@@ -22,46 +25,91 @@ import (
 // Setup: set HERMES_API_URL and HERMES_API_KEY in your environment.
 // The Hermes gateway must be running with api_server enabled.
 type HermesLLMProvider struct {
+<<<<<<< HEAD
+	BaseURL		string
+	APIKey		string
+	Model		string
+	HTTPClient	*http.Client
+=======
 	BaseURL    string
 	APIKey     string
 	Model      string
 	HTTPClient *http.Client
+>>>>>>> origin/main
 }
 
 // HermesConfig holds the configuration for connecting to a Hermes API server.
 type HermesConfig struct {
+<<<<<<< HEAD
+	BaseURL	string	// e.g. "http://172.21.116.32:8642"
+	APIKey	string	// the API_SERVER_KEY set in Hermes .env
+	Model	string	// e.g. "free-llm" or any model available in Hermes
+=======
 	BaseURL string // e.g. "http://172.21.116.32:8642"
 	APIKey  string // the API_SERVER_KEY set in Hermes .env
 	Model   string // e.g. "free-llm" or any model available in Hermes
+>>>>>>> origin/main
 }
 
 // NewHermesLLMProvider creates a provider that routes LLM calls through Hermes.
 func NewHermesLLMProvider(cfg HermesConfig) *HermesLLMProvider {
 	return &HermesLLMProvider{
+<<<<<<< HEAD
+		BaseURL:	strings.TrimRight(cfg.BaseURL, "/"),
+		APIKey:		cfg.APIKey,
+		Model:		cfg.Model,
+		HTTPClient: &http.Client{
+			Timeout: 120 * time.Second,	// LLM calls can be slow
+=======
 		BaseURL: strings.TrimRight(cfg.BaseURL, "/"),
 		APIKey:  cfg.APIKey,
 		Model:   cfg.Model,
 		HTTPClient: &http.Client{
 			Timeout: 120 * time.Second, // LLM calls can be slow
+>>>>>>> origin/main
 		},
 	}
 }
 
 // chatMessage represents a single message in the OpenAI chat format.
 type chatMessage struct {
+<<<<<<< HEAD
+	Role	string	`json:"role"`
+	Content	string	`json:"content"`
+=======
 	Role    string `json:"role"`
 	Content string `json:"content"`
+>>>>>>> origin/main
 }
 
 // chatRequest is the request body for /v1/chat/completions.
 type chatRequest struct {
+<<<<<<< HEAD
+	Model		string		`json:"model"`
+	Messages	[]chatMessage	`json:"messages"`
+	MaxTokens	int		`json:"max_tokens,omitempty"`
+=======
 	Model     string        `json:"model"`
 	Messages  []chatMessage `json:"messages"`
 	MaxTokens int           `json:"max_tokens,omitempty"`
+>>>>>>> origin/main
 }
 
 // chatResponse is the response body from /v1/chat/completions.
 type chatResponse struct {
+<<<<<<< HEAD
+	Choices	[]struct {
+		Message	struct {
+			Content string `json:"content"`
+		}	`json:"message"`
+		FinishReason	string	`json:"finish_reason"`
+	}	`json:"choices"`
+	Usage	struct {
+		PromptTokens		int	`json:"prompt_tokens"`
+		CompletionTokens	int	`json:"completion_tokens"`
+		TotalTokens		int	`json:"total_tokens"`
+	}	`json:"usage"`
+=======
 	Choices []struct {
 		Message struct {
 			Content string `json:"content"`
@@ -73,6 +121,7 @@ type chatResponse struct {
 		CompletionTokens int `json:"completion_tokens"`
 		TotalTokens      int `json:"total_tokens"`
 	} `json:"usage"`
+>>>>>>> origin/main
 }
 
 // Generate sends a prompt to the Hermes API server and returns the LLM response.
@@ -81,12 +130,26 @@ func (h *HermesLLMProvider) Generate(ctx context.Context, prompt Prompt) (string
 
 	if prompt.System != "" {
 		messages = append(messages, chatMessage{
+<<<<<<< HEAD
+			Role:		"system",
+			Content:	prompt.System,
+=======
 			Role:    "system",
 			Content: prompt.System,
+>>>>>>> origin/main
 		})
 	}
 
 	messages = append(messages, chatMessage{
+<<<<<<< HEAD
+		Role:		"user",
+		Content:	prompt.User,
+	})
+
+	reqBody := chatRequest{
+		Model:		h.Model,
+		Messages:	messages,
+=======
 		Role:    "user",
 		Content: prompt.User,
 	})
@@ -94,6 +157,7 @@ func (h *HermesLLMProvider) Generate(ctx context.Context, prompt Prompt) (string
 	reqBody := chatRequest{
 		Model:    h.Model,
 		Messages: messages,
+>>>>>>> origin/main
 	}
 
 	if prompt.MaxTokens > 0 {
@@ -140,10 +204,13 @@ func (h *HermesLLMProvider) Generate(ctx context.Context, prompt Prompt) (string
 
 	content := chatResp.Choices[0].Message.Content
 
+<<<<<<< HEAD
+=======
 	// Strip reasoning prefixes from OpenCode Zen / FreeLLM responses
 	// e.g. "[Model: north-mini-code-free | Provider: opencode_zen]\n\n"
 	content = stripReasoningPrefix(content)
 
+>>>>>>> origin/main
 	slog.Info(fmt.Sprintf("HermesLLM: model=%s tokens=%d+%d=%d finish=%s",
 		h.Model,
 		chatResp.Usage.PromptTokens,
@@ -155,6 +222,8 @@ func (h *HermesLLMProvider) Generate(ctx context.Context, prompt Prompt) (string
 	return content, nil
 }
 
+<<<<<<< HEAD
+=======
 var reasoningPrefixRegex = regexp.MustCompile(`(?s)\[Model:[^\]]+\]\s*\n\s*`)
 var reasoningContinuedRegex = regexp.MustCompile(`(?s)\[Continued with Model:[^\]]+\]\s*\n\s*`)
 var providerPrefixRegex = regexp.MustCompile(`(?s)^[A-Z][a-z]+\s+thinks?[^\n]*\n\s*`)
@@ -172,6 +241,7 @@ func stripReasoningPrefix(s string) string {
 	return strings.TrimSpace(s)
 }
 
+>>>>>>> origin/main
 // HealthCheck verifies the Hermes API server is reachable and responding.
 func (h *HermesLLMProvider) HealthCheck(ctx context.Context) error {
 	url := h.BaseURL + "/health"

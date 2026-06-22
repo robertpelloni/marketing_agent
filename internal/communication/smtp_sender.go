@@ -18,20 +18,36 @@ type EmailSender interface {
 
 // EmailMessage represents an outbound email to send.
 type EmailMessage struct {
+<<<<<<< HEAD
+	To	string	// recipient email address
+	Subject	string
+	Body	string	// plain text body (HTML can be added later)
+	ReplyTo	string	// optional reply-to address
+=======
 	To      string // recipient email address
 	Subject string
 	Body    string // plain text body (HTML can be added later)
 	ReplyTo string // optional reply-to address
+>>>>>>> origin/main
 }
 
 // SMTPConfig holds the configuration for SMTP email sending.
 type SMTPConfig struct {
+<<<<<<< HEAD
+	Host		string	// e.g. "smtp.gmail.com"
+	Port		int	// e.g. 587 for STARTTLS, 465 for SSL
+	Username	string	// email address or username
+	Password	string	// app password or SMTP password
+	From		string	// sender email address (usually same as Username)
+	FromName	string	// sender display name
+=======
 	Host     string // e.g. "smtp.gmail.com"
 	Port     int    // e.g. 587 for STARTTLS, 465 for SSL
 	Username string // email address or username
 	Password string // app password or SMTP password
 	From     string // sender email address (usually same as Username)
 	FromName string // sender display name
+>>>>>>> origin/main
 }
 
 // SMTPSender implements EmailSender using SMTP with STARTTLS.
@@ -64,12 +80,21 @@ func (s *SMTPSender) Send(ctx context.Context, msg EmailMessage) error {
 	// Build RFC 5322 message
 	from := fmt.Sprintf("%s <%s>", s.config.FromName, s.config.From)
 	headers := map[string]string{
+<<<<<<< HEAD
+		"From":		from,
+		"To":		msg.To,
+		"Subject":	msg.Subject,
+		"MIME-Version":	"1.0",
+		"Content-Type":	"text/plain; charset=\"UTF-8\"",
+		"Date":		time.Now().Format(time.RFC1123Z),
+=======
 		"From":         from,
 		"To":           msg.To,
 		"Subject":      msg.Subject,
 		"MIME-Version": "1.0",
 		"Content-Type": "text/plain; charset=\"UTF-8\"",
 		"Date":         time.Now().Format(time.RFC1123Z),
+>>>>>>> origin/main
 	}
 
 	if msg.ReplyTo != "" {
@@ -87,18 +112,26 @@ func (s *SMTPSender) Send(ctx context.Context, msg EmailMessage) error {
 
 	// TLS config
 	tlsConfig := &tls.Config{
+<<<<<<< HEAD
+		ServerName:	s.config.Host,
+		MinVersion:	tls.VersionTLS12,
+=======
 		ServerName: s.config.Host,
 		MinVersion: tls.VersionTLS12,
+>>>>>>> origin/main
 	}
 
 	// Connect and send
 	auth := smtp.PlainAuth("", s.config.Username, s.config.Password, s.config.Host)
 
+<<<<<<< HEAD
+=======
 	// For localhost SMTP (postfix), skip TLS — it's already on a trusted network
 	if s.config.Host == "localhost" || s.config.Host == "127.0.0.1" {
 		return s.sendPlain(addr, auth, msg.To, body)
 	}
 
+>>>>>>> origin/main
 	if s.config.Port == 465 {
 		// Direct SSL connection (port 465)
 		return s.sendDirectSSL(addr, tlsConfig, auth, msg.To, body)
@@ -165,6 +198,8 @@ func (s *SMTPSender) sendSTARTTLS(addr string, tlsConfig *tls.Config, auth smtp.
 	return client.Quit()
 }
 
+<<<<<<< HEAD
+=======
 // sendPlain connects without TLS — used for localhost/postfix on port 25.
 func (s *SMTPSender) sendPlain(addr string, auth smtp.Auth, to string, body []byte) error {
 	conn, err := net.DialTimeout("tcp", addr, 30*time.Second)
@@ -211,6 +246,7 @@ func (s *SMTPSender) sendPlain(addr string, auth smtp.Auth, to string, body []by
 	return client.Quit()
 }
 
+>>>>>>> origin/main
 // sendDirectSSL connects via direct TLS (port 465).
 func (s *SMTPSender) sendDirectSSL(addr string, tlsConfig *tls.Config, auth smtp.Auth, to string, body []byte) error {
 	conn, err := tls.Dial("tcp", addr, tlsConfig)
@@ -276,8 +312,13 @@ func (s *SMTPSender) HealthCheck(ctx context.Context) error {
 	// Try STARTTLS if available
 	if ok, _ := client.Extension("STARTTLS"); ok {
 		tlsConfig := &tls.Config{
+<<<<<<< HEAD
+			ServerName:	s.config.Host,
+			MinVersion:	tls.VersionTLS12,
+=======
 			ServerName: s.config.Host,
 			MinVersion: tls.VersionTLS12,
+>>>>>>> origin/main
 		}
 		if err = client.StartTLS(tlsConfig); err != nil {
 			return fmt.Errorf("smtp health: STARTTLS failed: %w", err)

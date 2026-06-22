@@ -1,3 +1,35 @@
+<<<<<<< HEAD
+# Autodev Changelog
+
+## [0.4.4] - 2026-06-08
+- Synchronized with main project hardening and CRM integration
+
+## [0.4.4+1780886051] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780895118] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780895283] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780896569] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780896677] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780903101] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780909792] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780913609] - 2026-06-08
+- Test integration task
+
+## [0.4.4+1780914501] - 2026-06-08
+=======
 # Changelog (Autonomous Development Module)
 
 ## [0.5.1] - 2026-06-13
@@ -14,6 +46,7 @@
 - Test integration task
 
 ## [0.6.0+1781403369] - 2026-06-14
+>>>>>>> origin/main
 - Test integration task
 
 ## [0.4.4+1781043945] - 2026-06-09
@@ -100,6 +133,51 @@
 ## [0.4.9+1781535589] - 2026-06-15
 - Test integration task
 
+<<<<<<< HEAD
+## [0.4.9+1781906455] - 2026-06-19
+- Test integration task
+
+## [0.4.9+1781932361] - 2026-06-20
+- Test integration task
+
+## [0.4.9+1781991034] - 2026-06-20
+- Test integration task
+
+## [0.4.9+1781991217] - 2026-06-20
+- Test integration task
+
+## [0.4.9+1782073652] - 2026-06-21
+- Test integration task
+
+## [0.4.9+1782074002] - 2026-06-21
+- Test integration task
+
+## [0.4.9+1782081619] - 2026-06-21
+- Test integration task
+
+## [0.4.9+1782090878] - 2026-06-22
+- Test integration task
+
+## [0.4.9+1782101021] - 2026-06-22
+- Test integration task
+
+## [0.4.9+1782104605] - 2026-06-22
+- Test integration task
+
+## [0.4.9+1782108329] - 2026-06-22
+- Test integration task
+
+## [0.4.9+1782108630] - 2026-06-22
+- Test integration task
+
+## [0.4.9+1782108841] - 2026-06-22
+- Test integration task
+
+## [0.4.9+1782109052] - 2026-06-22
+- Test integration task
+
+## [0.4.9+1782119033] - 2026-06-22
+=======
 ## [0.4.4+1780957273] - 2026-06-08
 - Test integration task
 
@@ -125,4 +203,5 @@
 - Test integration task
 
 ## [0.4.4+1780959000] - 2026-06-08
+>>>>>>> origin/main
 - Test integration task

@@ -8,14 +8,56 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+<<<<<<< HEAD
+
+	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+)
+
+// LocalAgent is an agent that executes tasks and verifies them using local tools.
+type LocalAgent struct{
+	llmProvider llm.LLMProvider
+}
+
+// NewLocalAgent creates a LocalAgent, optionally using an LLM provider for intelligence.
+func NewLocalAgent(provider llm.LLMProvider) *LocalAgent {
+	return &LocalAgent{
+		llmProvider: provider,
+	}
+}
+=======
 )
 
 // LocalAgent is an agent that executes tasks and verifies them using local tools.
 type LocalAgent struct{}
+>>>>>>> origin/main
 
 func (a *LocalAgent) ProposeSolution(ctx context.Context, task Task) (string, error) {
 	slog.InfoContext(ctx, "LocalAgent: Analyzing task", "description", task.Description)
 
+<<<<<<< HEAD
+	if a.llmProvider != nil {
+		slog.InfoContext(ctx, "LocalAgent: Using LLM to synthesize code", "task", task.Description)
+		prompt := fmt.Sprintf(`You are an autonomous development agent.
+
+Your current task is: "%s"
+
+Generate the required Go code to fulfill this task. Return ONLY the raw output in the following strict format:
+
+FILE: path/to/file.go
+CONTENT:
+// your code here...
+
+If multiple files are needed, repeat the block. Do not include markdown formatting or explanations.`, task.Description)
+
+		proposal, err := a.llmProvider.Generate(ctx, llm.Prompt{System: "You are an autonomous development agent.", User: prompt})
+		if err == nil && proposal != "" {
+			return proposal, nil
+		}
+		slog.WarnContext(ctx, "LocalAgent: LLM code synthesis failed, falling back to template", "error", err)
+	}
+
+=======
+>>>>>>> origin/main
 	if strings.Contains(strings.ToLower(task.Description), "sales-feature") {
 		return fmt.Sprintf("FILE: internal/sales/feature.go\nCONTENT:\npackage sales\n\n// Autonomous Feature: %s\nfunc ExecuteSalesFeature() {\n\tprintln(\"Executing autonomous sales logic\")\n}\n", task.Description), nil
 	}

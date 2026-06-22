@@ -228,6 +228,7 @@ func GenerateSubmoduleInventory() (string, error) {
 
 	return inventory, nil
 }
+<<<<<<< HEAD
 
 // ResetHard performs a git reset --hard to revert any local changes.
 func ResetHard() error {
@@ -237,3 +238,5 @@ func ResetHard() error {
 	}
 	return nil
 }
+=======
+>>>>>>> origin/main

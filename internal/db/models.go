@@ -6,6 +6,7 @@ import "time"
 type LeadState string
 
 const (
+<<<<<<< HEAD
 	StateDiscovered   LeadState = "Discovered"
 	StateResearched   LeadState = "Researched"
 	StateOutreachSent LeadState = "Outreach_Sent"
@@ -14,6 +15,16 @@ const (
 	StatePendingApproval LeadState = "Pending_Approval"  // Awaiting human review for high-value deals
 	StateClosedWon    LeadState = "Closed_Won"
 	StateClosedLost   LeadState = "Closed_Lost"
+=======
+	StateDiscovered      LeadState = "Discovered"
+	StateResearched      LeadState = "Researched"
+	StateOutreachSent    LeadState = "Outreach_Sent"
+	StateEngaged         LeadState = "Engaged"
+	StateNegotiating     LeadState = "Negotiating"
+	StatePendingApproval LeadState = "Pending_Approval" // Awaiting human review for high-value deals
+	StateClosedWon       LeadState = "Closed_Won"
+	StateClosedLost      LeadState = "Closed_Lost"
+>>>>>>> origin/main
 )
 
 // Company represents a target organization.
@@ -72,6 +83,7 @@ type Contact struct {
 
 // Interaction tracks communications with a contact.
 type Interaction struct {
+<<<<<<< HEAD
 	ID        int64     `db:"id"`
 	ContactID int64     `db:"contact_id"`
 	Channel   string    `db:"channel"`   // e.g., Email, LinkedIn, GitHub
@@ -83,6 +95,19 @@ type Interaction struct {
 	TemplateID string   `db:"template_id"` // Optional: template used for outbound interactions
 	ResponseID string   `db:"response_id"` // Optional: objection response used for this interaction
 	CreatedAt time.Time `db:"created_at"`
+=======
+	ID         int64     `db:"id"`
+	ContactID  int64     `db:"contact_id"`
+	Channel    string    `db:"channel"`   // e.g., Email, LinkedIn, GitHub
+	Direction  string    `db:"direction"` // e.g., Inbound, Outbound
+	RawText    string    `db:"raw_text"`
+	Summary    string    `db:"summary"`
+	Sentiment  string    `db:"sentiment"`
+	Success    bool      `db:"success"`     // Indicates if the interaction led to a positive outcome
+	TemplateID string    `db:"template_id"` // Optional: template used for outbound interactions
+	ResponseID string    `db:"response_id"` // Optional: objection response used for this interaction
+	CreatedAt  time.Time `db:"created_at"`
+>>>>>>> origin/main
 }
 
 // Deal tracks the financial and state progress of a lead.
@@ -93,7 +118,10 @@ type Deal struct {
 	QuotedPricing      float64   `db:"quoted_pricing"`
 	CustomRequirements string    `db:"custom_requirements"`
 	TechnicalDossier   string    `db:"technical_dossier"`
+<<<<<<< HEAD
 	ApprovalRequired   bool      `db:"approval_required"`
+=======
+>>>>>>> origin/main
 	CadenceStep        int       `db:"cadence_step"` // 0 = not started, 1+ = current step index
 	CreatedAt          time.Time `db:"created_at"`
 	UpdatedAt          time.Time `db:"updated_at"`
@@ -105,7 +133,11 @@ type Template struct {
 	Name      string    `db:"name"`
 	Subject   string    `db:"subject"`
 	Body      string    `db:"body"`
+<<<<<<< HEAD
 	Channel   string    `db:"channel"`   // email, linkedin, github
+=======
+	Channel   string    `db:"channel"` // email, linkedin, github
+>>>>>>> origin/main
 	CreatedAt time.Time `db:"created_at"`
 	UpdatedAt time.Time `db:"updated_at"`
 }
@@ -120,8 +152,21 @@ type TemplateMetrics struct {
 
 // PerformanceMetrics aggregates key sales pipeline statistics.
 type PerformanceMetrics struct {
+<<<<<<< HEAD
 	TotalLeads         int            `json:"total_leads"`
 	LeadsByState       map[LeadState]int `json:"leads_by_state"`
 	SuccessfulOutreach int            `json:"successful_outreach"`
 	WinRate            float64        `json:"win_rate"`
+=======
+	TotalLeads         int               `json:"total_leads"`
+	LeadsByState       map[LeadState]int `json:"leads_by_state"`
+	SuccessfulOutreach int               `json:"successful_outreach"`
+	WinRate            float64           `json:"win_rate"`
+}
+
+// DealStateCount represents a single state-count pair from GROUP BY.
+type DealStateCount struct {
+	State LeadState
+	Count int
+>>>>>>> origin/main
 }

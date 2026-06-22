@@ -12,6 +12,7 @@ import (
 
 // LeadUpdate represents a change in lead status from the CRM.
 type LeadUpdate struct {
+<<<<<<< HEAD
 	ID        string
 	NewState  db.LeadState
 	Notes     string
@@ -33,6 +34,14 @@ type FieldMappingSetter interface {
 	SetFieldMapping(mapping FieldMapping)
 }
 
+=======
+	ID       string
+	NewState db.LeadState
+	Notes    string
+}
+
+// CRMClient defines the interface for interacting with external CRM systems.
+>>>>>>> origin/main
 type CRMClient interface {
 	// PushDeal synchronizes a local deal to the CRM.
 	PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error

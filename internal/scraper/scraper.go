@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+<<<<<<< HEAD
 	"net/http"
 	"time"
 
@@ -11,15 +12,31 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 )
 
+=======
+	"time"
+
+	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+)
+
+// LeadSource defines an interface for discovering potential leads.
+>>>>>>> origin/main
 type LeadSource interface {
 	Discover(ctx context.Context, keywords []string) ([]db.Company, error)
 }
 
+<<<<<<< HEAD
+=======
+// Scraper coordinates the discovery and persistence of leads.
+>>>>>>> origin/main
 type Scraper struct {
 	db      *db.DB
 	sources []LeadSource
 }
 
+<<<<<<< HEAD
+=======
+// NewScraper creates a new Scraper instance.
+>>>>>>> origin/main
 func NewScraper(database *db.DB, sources []LeadSource) *Scraper {
 	return &Scraper{
 		db:      database,
@@ -27,26 +44,42 @@ func NewScraper(database *db.DB, sources []LeadSource) *Scraper {
 	}
 }
 
+<<<<<<< HEAD
+=======
+// Run starts the background discovery process.
+>>>>>>> origin/main
 func (s *Scraper) Run(ctx context.Context, interval time.Duration, keywords []string) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
+<<<<<<< HEAD
 	slog.Info("Scraper worker started...")
 
 	// Run immediately on startup
 	s.poll(ctx, keywords)
+=======
+	slog.Info("Scraper worker started")
+>>>>>>> origin/main
 
 	for {
 		select {
 		case <-ctx.Done():
+<<<<<<< HEAD
 			slog.Info("Scraper worker stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			s.poll(ctx, keywords)
+=======
+			slog.Info("Scraper worker stopping: Draining in-flight work")
+			return
+		case <-ticker.C:
+			s.ExecuteDiscovery(ctx, keywords)
+>>>>>>> origin/main
 		}
 	}
 }
 
+<<<<<<< HEAD
 func (s *Scraper) poll(ctx context.Context, keywords []string) {
 	start := time.Now()
 	slog.Info("Scraper: Polling for leads...")
@@ -54,12 +87,21 @@ func (s *Scraper) poll(ctx context.Context, keywords []string) {
 		companies, err := source.Discover(ctx, keywords)
 		if err != nil {
 			slog.Info("Error discovering leads from source", "error", err)
+=======
+// ExecuteDiscovery manually triggers a discovery cycle (exported for testing).
+func (s *Scraper) ExecuteDiscovery(ctx context.Context, keywords []string) {
+	for _, source := range s.sources {
+		companies, err := source.Discover(ctx, keywords)
+		if err != nil {
+			slog.Error("Error discovering leads from source", "error", err)
+>>>>>>> origin/main
 			continue
 		}
 
 		for _, company := range companies {
 			err := s.processDiscoveredCompany(ctx, company)
 			if err != nil {
+<<<<<<< HEAD
 				slog.Info("Error processing company", "name", company.Name, "error", err)
 			}
 		}
@@ -73,6 +115,15 @@ func (s *Scraper) processDiscoveredCompany(ctx context.Context, company db.Compa
 		return nil
 	}
 
+=======
+				slog.Error("Error processing company", "company_name", company.Name, "error", err)
+			}
+		}
+	}
+}
+
+func (s *Scraper) processDiscoveredCompany(ctx context.Context, company db.Company) error {
+>>>>>>> origin/main
 	// Check if company already exists
 	existing, err := s.db.GetCompanyByDomain(ctx, company.Domain)
 	if err == nil && existing != nil {
@@ -95,6 +146,7 @@ func (s *Scraper) processDiscoveredCompany(ctx context.Context, company db.Compa
 		return fmt.Errorf("failed to create initial deal: %w", err)
 	}
 
+<<<<<<< HEAD
 	slog.Info("Successfully discovered and persisted new lead", "name", company.Name, "domain", company.Domain)
 	return nil
 }
@@ -135,4 +187,16 @@ func (m *MockJobBoardSource) Discover(ctx context.Context, keywords []string) ([
 			MarketCapTier: "Enterprise",
 		},
 	}, nil
+=======
+	slog.Info("Successfully discovered and persisted new lead", "company_name", company.Name, "domain", company.Domain)
+	return nil
+}
+
+// MockJobBoardSource is a legacy stub that no longer generates mock data.
+// All lead sources are now real API integrations.
+type MockJobBoardSource struct{}
+
+func (m *MockJobBoardSource) Discover(ctx context.Context, keywords []string) ([]db.Company, error) {
+	return nil, nil
+>>>>>>> origin/main
 }

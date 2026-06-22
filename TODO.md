@@ -71,6 +71,7 @@
 - [x] Implement real GitHub repository analysis for tech stack and bottleneck detection
 - [x] Implement real technical blog/RSS ingestion for hiring signals
 <<<<<<< HEAD
+<<<<<<< HEAD
 - [x] Add competitor intelligence tracking
 =======
 - [ ] Add competitor intelligence tracking
@@ -91,24 +92,46 @@
 - [x] Add objection handling library with success rates
 - [x] Add human-in-the-loop approval workflow for high-value deals
 =======
+=======
+- [ ] Add competitor intelligence tracking
+- [ ] Add unified intent signal aggregation
+
+### Autonomous Development Improvements
+- [ ] Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation
+- [ ] Add rollback mechanism for failed verification
+- [ ] Add PR feedback loop using `GetPRComments`
+- [ ] Add task dependency resolution
+- [ ] Add concurrent task execution for independent tasks
+
+### Advanced Sales Strategy
+>>>>>>> origin/main
 - [x] Add multi-touch outreach sequences across channels
 - [x] Add A/B testing infrastructure for outreach templates (metrics tracking, impression recording)
 - [x] Add template selection algorithm for A/B testing (conversion-based ranking via GetTopTemplate)
 - [x] Add template success tracking when interactions convert (full integration complete)
 - [x] Add objection handling library with success rates (full integration with outcome tracking)
 - [x] Add human-in-the-loop approval workflow for high-value deals (auto-flag Enterprise/>$100k deals, ApproveDeal method)
+<<<<<<< HEAD
+>>>>>>> origin/main
+=======
 >>>>>>> origin/main
 - [x] Add deal forecasting using historical patterns
 
 ### Self-Improving Prompts v2
 - [ ] Add A/B prompt testing with vs. without successful examples
 - [x] Add interaction sentiment analysis
+<<<<<<< HEAD
 - [x] Add prompt performance tracking over time
 - [x] Add negative example injection from failed outreach
+=======
+- [ ] Add prompt performance tracking over time
+- [ ] Add negative example injection from failed outreach
+>>>>>>> origin/main
 
 ## Phase 9 — Security, Compliance & Scale
 
 ### Security
+<<<<<<< HEAD
 - [x] Add rate limiting on all HTTP endpoints
 - [x] Add authentication to web dashboard (Session-based)
 - [x] Add CSRF protection for dashboard form submissions
@@ -117,14 +140,29 @@
 - [x] Add GDPR data export endpoint
 - [x] Add GDPR data deletion endpoint
 - [x] Add webhook IP allowlisting
+=======
+- [ ] Add rate limiting on all HTTP endpoints
+- [x] Add authentication to web dashboard (Session-based)
+- [ ] Add CSRF protection for dashboard form submissions
+- [ ] Add input sanitization for webhook payloads and form inputs
+- [ ] Add secrets encryption at rest
+- [ ] Add GDPR data export endpoint
+- [ ] Add GDPR data deletion endpoint
+- [ ] Add webhook IP allowlisting
+>>>>>>> origin/main
 
 ### Scale & Performance
 - [ ] Add Redis caching layer for frequently accessed data
 - [ ] Add horizontal scaling support (stateless workers)
 - [ ] Add message queue (NATS/RabbitMQ) to decouple workers
 - [ ] Add database read replicas for dashboard queries
+<<<<<<< HEAD
 - [x] Add pagination to dashboard deal list
 - [x] Add worker performance profiling
+=======
+- [ ] Add pagination to dashboard deal list
+- [ ] Add worker performance profiling
+>>>>>>> origin/main
 
 ### Deployment & Operations
 - [ ] Add Kubernetes manifests (Deployment, Service, ConfigMap, Secret)
@@ -137,8 +175,13 @@
 ## Phase 10 — Platform & Ecosystem
 
 ### API & Extensibility
+<<<<<<< HEAD
 - [x] Add REST API for external pipeline management
 - [x] Add outbound webhooks on deal state changes
+=======
+- [ ] Add REST API for external pipeline management
+- [ ] Add outbound webhooks on deal state changes
+>>>>>>> origin/main
 - [ ] Add plugin system for custom sources, classifiers, and responders
 - [ ] Add multi-tenant support with data isolation
 

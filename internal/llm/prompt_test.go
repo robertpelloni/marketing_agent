@@ -76,7 +76,11 @@ func TestPromptRegistry_RecordOutcomes(t *testing.T) {
 	pr := NewPromptRegistry(filepath.Join(dir, "reg.json"))
 
 	v1 := pr.RegisterVersion("test", "Template ${V}")
+<<<<<<< HEAD
 	pr.AssignExperiment("test", []string{v1.ID}, []float64{1.0})
+=======
+	_ = pr.AssignExperiment("test", []string{v1.ID}, []float64{1.0})
+>>>>>>> origin/main
 
 	pr.RecordOutcome("test", v1.ID, true)
 	pr.RecordOutcome("test", v1.ID, true)

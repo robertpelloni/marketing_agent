@@ -2,17 +2,26 @@ package config
 
 import (
 	"bufio"
+<<<<<<< HEAD
+=======
+	"encoding/json"
+	"fmt"
+>>>>>>> origin/main
 	"log/slog"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
+<<<<<<< HEAD
 	"fmt"
+=======
+>>>>>>> origin/main
 )
 
 // Config holds the application configuration.
 type Config struct {
+<<<<<<< HEAD
 	DatabaseURL		string
 	GitHubToken		string
 	GitHubRepository	string
@@ -48,6 +57,57 @@ type Config struct {
 	IMAPPassword		string
 	IMAPFolder		string
 	IMAPPollInterval	time.Duration
+=======
+	DatabaseURL         string
+	GitHubToken         string
+	GitHubRepository    string
+	GitHubWebhookSecret string
+	CRMBaseURL          string
+	CRMAPIKey           string
+	HermesAPIURL        string
+	HermesAPIKey        string
+	HermesModel         string
+	DeploySyncInterval  time.Duration
+	Port                string
+	Environment         string
+
+	// Safety
+	DryRun bool
+
+	// Lead Discovery
+	HunterAPIKey             string
+	ApolloAPIKey             string
+	TwitterBearerToken       string
+	TwitterAPIKey            string
+	TwitterAPIKeySecret      string
+	TwitterAccessToken       string
+	TwitterAccessTokenSecret string
+	LinkedInClientID         string
+	LinkedInClientSecret     string
+	LinkedInAccessToken      string
+
+	// Email - SMTP
+	SMTPHost     string
+	SMTPPort     int
+	SMTPUsername string
+	SMTPPassword string
+	SMTPFrom     string
+	SMTPFromName string
+
+	// Email - IMAP
+	IMAPHost         string
+	IMAPPort         int
+	IMAPUsername     string
+	IMAPPassword     string
+	IMAPFolder       string
+	IMAPPollInterval time.Duration
+
+	// CRM Field Mappings
+	SalesforceStageMapping        map[string]string
+	HubSpotStageMapping           map[string]string
+	SalesforceReverseStageMapping map[string]string
+	HubSpotReverseStageMapping    map[string]string
+>>>>>>> origin/main
 }
 
 // Load loads the configuration from environment variables and .env file.
@@ -99,6 +159,7 @@ func Load() *Config {
 	}
 
 	return &Config{
+<<<<<<< HEAD
 		DatabaseURL:		getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
 		GitHubToken:		os.Getenv("GITHUB_TOKEN"),
 		GitHubRepository:	os.Getenv("GITHUB_REPOSITORY"),
@@ -134,6 +195,92 @@ func Load() *Config {
 		IMAPPassword:		os.Getenv("IMAP_PASSWORD"),
 		IMAPFolder:		getEnv("IMAP_FOLDER", "INBOX"),
 		IMAPPollInterval:	imapPollInterval,
+=======
+		DatabaseURL:         getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
+		GitHubToken:         os.Getenv("GITHUB_TOKEN"),
+		GitHubRepository:    os.Getenv("GITHUB_REPOSITORY"),
+		GitHubWebhookSecret: os.Getenv("GITHUB_WEBHOOK_SECRET"),
+		CRMBaseURL:          os.Getenv("CRM_BASE_URL"),
+		CRMAPIKey:           os.Getenv("CRM_API_KEY"),
+		HermesAPIURL:        os.Getenv("HERMES_API_URL"),
+		HermesAPIKey:        os.Getenv("HERMES_API_KEY"),
+		HermesModel:         hermesModel,
+		DeploySyncInterval:  syncInterval,
+		Port:                port,
+		Environment:         env,
+
+		// Safety
+		DryRun: os.Getenv("DRY_RUN") == "true",
+
+		// Lead Discovery
+		HunterAPIKey:             os.Getenv("HUNTER_API_KEY"),
+		ApolloAPIKey:             os.Getenv("APOLLO_API_KEY"),
+		TwitterBearerToken:       os.Getenv("TWITTER_BEARER_TOKEN"),
+		TwitterAPIKey:            os.Getenv("TWITTER_API_KEY"),
+		TwitterAPIKeySecret:      os.Getenv("TWITTER_API_KEY_SECRET"),
+		TwitterAccessToken:       os.Getenv("TWITTER_ACCESS_TOKEN"),
+		TwitterAccessTokenSecret: os.Getenv("TWITTER_ACCESS_TOKEN_SECRET"),
+		LinkedInClientID:         os.Getenv("LINKEDIN_CLIENT_ID"),
+		LinkedInClientSecret:     os.Getenv("LINKEDIN_CLIENT_SECRET"),
+		LinkedInAccessToken:      os.Getenv("LINKEDIN_ACCESS_TOKEN"),
+
+		// SMTP
+		SMTPHost:     os.Getenv("SMTP_HOST"),
+		SMTPPort:     smtpPort,
+		SMTPUsername: os.Getenv("SMTP_USERNAME"),
+		SMTPPassword: os.Getenv("SMTP_PASSWORD"),
+		SMTPFrom:     os.Getenv("SMTP_FROM"),
+		SMTPFromName: getEnv("SMTP_FROM_NAME", "TormentNexus Sales"),
+
+		// IMAP
+		IMAPHost:         os.Getenv("IMAP_HOST"),
+		IMAPPort:         imapPort,
+		IMAPUsername:     os.Getenv("IMAP_USERNAME"),
+		IMAPPassword:     os.Getenv("IMAP_PASSWORD"),
+		IMAPFolder:       getEnv("IMAP_FOLDER", "INBOX"),
+		IMAPPollInterval: imapPollInterval,
+
+		// CRM Field Mappings
+		SalesforceStageMapping: parseMapFromEnv("SALESFORCE_STAGE_MAPPING", map[string]string{
+			"Discovered":       "Prospecting",
+			"Researched":       "Qualification",
+			"Outreach_Sent":    "Needs Analysis",
+			"Engaged":          "Value Proposition",
+			"Negotiating":      "Negotiation/Review",
+			"Pending_Approval": "Id. Decision Makers",
+			"Closed_Won":       "Closed Won",
+			"Closed_Lost":      "Closed Lost",
+		}),
+		HubSpotStageMapping: parseMapFromEnv("HUBSPOT_STAGE_MAPPING", map[string]string{
+			"Discovered":       "appointmentscheduled",
+			"Researched":       "qualifiedtobuy",
+			"Outreach_Sent":    "presentationscheduled",
+			"Engaged":          "decisionmakerboughtin",
+			"Negotiating":      "contractsent",
+			"Pending_Approval": "contractsent",
+			"Closed_Won":       "closedwon",
+			"Closed_Lost":      "closedlost",
+		}),
+		SalesforceReverseStageMapping: parseMapFromEnv("SALESFORCE_REVERSE_STAGE_MAPPING", map[string]string{
+			"Prospecting":         "Discovered",
+			"Qualification":       "Researched",
+			"Needs Analysis":      "Outreach_Sent",
+			"Value Proposition":   "Engaged",
+			"Negotiation/Review":  "Negotiating",
+			"Id. Decision Makers": "Pending_Approval",
+			"Closed Won":          "Closed_Won",
+			"Closed Lost":         "Closed_Lost",
+		}),
+		HubSpotReverseStageMapping: parseMapFromEnv("HUBSPOT_REVERSE_STAGE_MAPPING", map[string]string{
+			"appointmentscheduled":  "Discovered",
+			"qualifiedtobuy":        "Researched",
+			"presentationscheduled": "Outreach_Sent",
+			"decisionmakerboughtin": "Engaged",
+			"contractsent":          "Negotiating",
+			"closedwon":             "Closed_Won",
+			"closedlost":            "Closed_Lost",
+		}),
+>>>>>>> origin/main
 	}
 }
 
@@ -149,9 +296,15 @@ func loadDotEnv() {
 	}
 
 	for _, p := range paths {
+<<<<<<< HEAD
 		file, err := os.Open(p)
 		if err != nil {
 			continue	// .env is optional
+=======
+		file, err := os.Open(filepath.Clean(p))
+		if err != nil {
+			continue // .env is optional
+>>>>>>> origin/main
 		}
 		defer file.Close()
 
@@ -179,10 +332,17 @@ func loadDotEnv() {
 
 			// Don't overwrite existing env vars
 			if os.Getenv(key) == "" {
+<<<<<<< HEAD
 				os.Setenv(key, value)
 			}
 		}
 		return	// only load the first .env found
+=======
+				_ = os.Setenv(key, value)
+			}
+		}
+		return // only load the first .env found
+>>>>>>> origin/main
 	}
 }
 
@@ -192,3 +352,20 @@ func getEnv(key, fallback string) string {
 	}
 	return fallback
 }
+<<<<<<< HEAD
+=======
+
+func parseMapFromEnv(key string, defaultMap map[string]string) map[string]string {
+	val := os.Getenv(key)
+	if val == "" {
+		return defaultMap
+	}
+	var m map[string]string
+	err := json.Unmarshal([]byte(val), &m)
+	if err != nil {
+		slog.Error("Config: Failed to parse JSON, using defaults", "key", key, "error", err)
+		return defaultMap
+	}
+	return m
+}
+>>>>>>> origin/main

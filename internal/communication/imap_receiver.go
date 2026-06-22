@@ -236,7 +236,11 @@ func (r *EmailReceiver) connect() (*client.Client, error) {
 	}
 
 	if err := c.Login(r.config.Username, r.config.Password); err != nil {
+<<<<<<< HEAD
 		c.Logout()
+=======
+		_ = c.Logout()
+>>>>>>> origin/main
 		return nil, fmt.Errorf("imap: login failed: %w", err)
 	}
 
@@ -247,7 +251,11 @@ func (r *EmailReceiver) connect() (*client.Client, error) {
 // disconnect closes the IMAP connection gracefully.
 func (r *EmailReceiver) disconnect(c *client.Client) {
 	if c != nil {
+<<<<<<< HEAD
 		c.Logout()
+=======
+		_ = c.Logout()
+>>>>>>> origin/main
 		r.connected = false
 	}
 }

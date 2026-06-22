@@ -2,6 +2,7 @@ package enrichment
 
 import (
 	"context"
+<<<<<<< HEAD
 	"log"
 	"time"
 
@@ -10,16 +11,29 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 )
 
+=======
+
+	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+)
+
+// EnrichmentSource defines an interface for finding contact details for a company.
+>>>>>>> origin/main
 type EnrichmentSource interface {
 	Enrich(ctx context.Context, company db.Company) ([]db.Contact, error)
 }
 
+<<<<<<< HEAD
+=======
+// Enricher coordinates the enrichment of company leads with contact data.
+>>>>>>> origin/main
 type Enricher struct {
 	db        *db.DB
 	sources   []EnrichmentSource
 	crmClient crm.CRMClient
 }
 
+<<<<<<< HEAD
 func NewEnricher(database *db.DB, sources []EnrichmentSource, crm crm.CRMClient) *Enricher {
 	return &Enricher{db: database, sources: sources, crmClient: crm}
 }
@@ -53,3 +67,13 @@ func (e *Enricher) executeEnrichment(ctx context.Context) {
 	}
 	deploy.RecordTiming("Enricher", time.Since(start))
 }
+=======
+// NewEnricher creates a new Enricher instance.
+func NewEnricher(database *db.DB, sources []EnrichmentSource, crmClient crm.CRMClient) *Enricher {
+	return &Enricher{
+		db:        database,
+		sources:   sources,
+		crmClient: crmClient,
+	}
+}
+>>>>>>> origin/main

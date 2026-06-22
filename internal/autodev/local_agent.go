@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+<<<<<<< HEAD
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 )
@@ -20,10 +21,17 @@ type LocalAgent struct {
 func NewLocalAgent(llmProvider llm.LLMProvider) *LocalAgent {
 	return &LocalAgent{llm: llmProvider}
 }
+=======
+)
+
+// LocalAgent is an agent that executes tasks and verifies them using local tools.
+type LocalAgent struct{}
+>>>>>>> origin/main
 
 func (a *LocalAgent) ProposeSolution(ctx context.Context, task Task) (string, error) {
 	slog.InfoContext(ctx, "LocalAgent: Analyzing task", "description", task.Description)
 
+<<<<<<< HEAD
 	if a.llm != nil {
 		prompt := llm.Prompt{
 			System: "You are an autonomous Go developer. Generate a solution proposal in the format: FILE: <path>\nCONTENT:\n<code>",
@@ -36,6 +44,8 @@ func (a *LocalAgent) ProposeSolution(ctx context.Context, task Task) (string, er
 		log.Printf("LocalAgent: LLM generation failed, falling back to mock: %v", err)
 	}
 
+=======
+>>>>>>> origin/main
 	if strings.Contains(strings.ToLower(task.Description), "sales-feature") {
 		return fmt.Sprintf("FILE: internal/sales/feature.go\nCONTENT:\npackage sales\n\n// Autonomous Feature: %s\nfunc ExecuteSalesFeature() {\n\tprintln(\"Executing autonomous sales logic\")\n}\n", task.Description), nil
 	}

@@ -89,7 +89,7 @@ ipe)
 - [x] **Implement real GitHub repository analysis** — detect tech stack, architecture patterns, and bottlenecks from actual source code
 - [x] **Implement real technical blog/RSS ingestion** — parse engineering blogs for hiring signals and pain points
 - [x] **Add competitor intelligence** — track when targets evaluate or adopt competing solutions
-- [ ] **Add intent signal aggregation** — combine hiring signals, GitHub activity, blog posts, and job postings into a unified intent score
+- [x] **Add intent signal aggregation** — combine hiring signals, GitHub activity, blog posts, and job postings into a unified intent score
 
 ### 8.2 Autonomous Development Improvements
 - [ ] **Replace hardcoded `LocalAgent.ProposeSolution`** with LLM-powered code generation

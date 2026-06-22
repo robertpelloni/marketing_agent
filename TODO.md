@@ -71,7 +71,7 @@
 - [x] Implement real GitHub repository analysis — detect tech stack, architecture patterns, and bottlenecks from actual source code
 - [x] Implement real technical blog/RSS ingestion — parse engineering blogs for hiring signals and pain points
 - [x] Add competitor intelligence tracking
-- [ ] Add unified intent signal aggregation
+- [x] Add unified intent signal aggregation
 
 ### Autonomous Development Improvements
 - [ ] Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation

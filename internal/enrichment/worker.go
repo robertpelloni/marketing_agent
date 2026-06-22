@@ -18,7 +18,6 @@ func (e *Enricher) Run(ctx context.Context, interval time.Duration) {
 
 	// Run immediately on startup
 	e.executeEnrichment(ctx)
->>>>>>> origin/main
 
 	for {
 		select {
@@ -85,9 +84,6 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 			if err != nil {
 				return fmt.Errorf("failed to update deal state: %w", err)
 			}
-<<<<<<< HEAD
-			log.Printf("Enricher: Successfully enriched %s with %d contacts", company.Name, len(contacts))
-=======
 
 			// Synchronize newly found contacts with the CRM (with retry logic)
 			if e.crmClient != nil {
@@ -112,10 +108,32 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 	return nil
 }
 
-// MockApolloSource is a legacy stub that no longer generates mock contacts.
-// Only real enrichment sources (Hunter.io, Apollo.io) are used.
+// MockApolloSource is a simulated enrichment source.
 type MockApolloSource struct{}
 
-func (m *MockApolloSource) Enrich(_ context.Context, _ db.Company) ([]db.Contact, error) {
+func (m *MockApolloSource) Enrich(ctx context.Context, company db.Company) ([]db.Contact, error) {
+	slog.Info(fmt.Sprintf("MockApolloSource: Searching for contacts at %s", company.Domain))
+
+	// Simulate finding contacts based on domain
+	if company.Domain == "aidynamics.com" {
+		return []db.Contact{
+			{
+				Name:		"Sarah Chen",
+				Role:		"Director of AI",
+				Email:		"sarah.chen@aidynamics.com",
+				GitHubHandle:	"schen-ai",
+			},
+		}, nil
+	} else if company.Domain == "neuralsystems.io" {
+		return []db.Contact{
+			{
+				Name:		"James Wilson",
+				Role:		"Principal Systems Architect",
+				Email:		"j.wilson@neuralsystems.io",
+				GitHubHandle:	"jwilson-sys",
+			},
+		}, nil
+	}
+
 	return nil, nil
 }

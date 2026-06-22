@@ -6,99 +6,32 @@ import (
 	"log/slog"
 	"os"
 	"time"
-<<<<<<< HEAD
 
 	"github.com/go-rod/rod"
-=======
->>>>>>> origin/main
 )
 
-<<<<<<< HEAD
-type LinkedInSender struct {
-	Username string
-	Password string
-}
-
-type LinkedInMessage struct {
-	ProfileURL string
-	Subject    string
-	Body       string
-}
-
-func NewLinkedInSender() *LinkedInSender {
-	return &LinkedInSender{
-		Username: os.Getenv("LINKEDIN_USERNAME"),
-		Password: os.Getenv("LINKEDIN_PASSWORD"),
-	}
-}
-
-func (l *LinkedInSender) Send(ctx context.Context, msg LinkedInMessage) error {
-	if l.Username == "" || l.Password == "" {
-		slog.Info("LinkedInSender: No credentials, logging message (simulation)")
-		return l.simulateSend(ctx, msg)
-	}
-	slog.Info("LinkedInSender: Credentials configured, browser automation pending. Logging message.")
-	return l.simulateSend(ctx, msg)
-}
-
-func (l *LinkedInSender) SendMessage(ctx context.Context, profileURL, message string) error {
-	return l.Send(ctx, LinkedInMessage{ProfileURL: profileURL, Body: message})
-}
-
-func (l *LinkedInSender) simulateSend(ctx context.Context, msg LinkedInMessage) error {
-	slog.Info("LinkedInSender [SIMULATION] — Would send message",
-		"to", msg.ProfileURL,
-		"subject", msg.Subject,
-		"body", msg.Body,
-		"at", time.Now().Format(time.RFC3339))
-	return nil
-}
-
-func (l *LinkedInSender) HealthCheck(ctx context.Context) error {
-	if l.Username == "" || l.Password == "" {
-		return fmt.Errorf("LinkedIn credentials not configured")
-	}
-	return nil
-}
-
-func (l *LinkedInSender) SendConnectionRequest(ctx context.Context, profileURL, note string) error {
-	slog.Info("LinkedInSender: Connection request (simulation)", "to", profileURL, "note", note)
-=======
 // LinkedInSender sends messages via LinkedIn messaging.
 // Note: LinkedIn does not provide a public API for direct messaging.
 // This implementation uses:
 // - Simulation fallback when credentials are not configured
-<<<<<<< HEAD
 // - Headless browser automation (rod) for actual sending
 type LinkedInSender struct {
 	Username string
 	Password string
-=======
-// - Placeholder for future headless browser automation (rod/chromedp)
-// Production use requires LinkedIn API partnership or browser automation.
-// Headless browser approach (future) will use chromedp/rod for:
-// 1. Authenticating with LINKEDIN_USERNAME/LINKEDIN_PASSWORD
-// 2. Navigating to recipient's LinkedIn profile
-// 3. Clicking "Message" button
-// 4. Typing and sending the message
-// 5. Rate limiting and anti-detection measures
-type LinkedInSender struct {
-	Username	string
-	Password	string
 }
 
 // LinkedInMessage represents a message to send via LinkedIn.
 type LinkedInMessage struct {
-	ProfileURL	string	// LinkedIn profile URL of the recipient
-	Subject		string	// Subject line (note subject)
-	Body		string	// Message body content
+	ProfileURL string // LinkedIn profile URL of the recipient
+	Subject    string // Subject line (note subject)
+	Body       string // Message body content
 }
 
 // NewLinkedInSender creates a new LinkedInSender.
 func NewLinkedInSender() *LinkedInSender {
 	return &LinkedInSender{
-		Username:	os.Getenv("LINKEDIN_USERNAME"),
-		Password:	os.Getenv("LINKEDIN_PASSWORD"),
+		Username: os.Getenv("LINKEDIN_USERNAME"),
+		Password: os.Getenv("LINKEDIN_PASSWORD"),
 	}
 }
 
@@ -110,7 +43,6 @@ func (l *LinkedInSender) Send(ctx context.Context, msg LinkedInMessage) error {
 		return l.simulateSend(ctx, msg)
 	}
 
-<<<<<<< HEAD
 	slog.Info("LinkedInSender: Credentials configured, attempting headless message send to", "profile", msg.ProfileURL)
 
 	err := l.sendViaRod(ctx, msg)
@@ -178,21 +110,6 @@ func (l *LinkedInSender) sendViaRod(ctx context.Context, msg LinkedInMessage) (e
 	time.Sleep(2 * time.Second)
 
 	return nil
-=======
-	// Future: Implement real LinkedIn message sending via headless browser
-	// This requires chromedp or rod for browser automation.
-	// Implementation pattern:
-	//   1. Navigate to linkedin.com/login
-	//   2. Fill in username/password
-	//   3. Handle 2FA if prompted
-	//   4. Navigate to msg.ProfileURL
-	//   5. Click message button
-	//   6. Type message body
-	//   7. Send
-	//   8. Sleep for rate limiting
-	slog.Info("LinkedInSender: Credentials configured but browser automation not yet implemented. Logging message.")
-	return l.simulateSend(ctx, msg)
->>>>>>> origin/main
 }
 
 // simulateSend logs the message that would be sent.
@@ -220,17 +137,12 @@ func (l *LinkedInSender) HealthCheck(ctx context.Context) error {
 }
 
 // SendConnectionRequest sends a LinkedIn connection request with a note.
-<<<<<<< HEAD
-=======
-// Future implementation will use headless browser automation.
->>>>>>> origin/main
 func (l *LinkedInSender) SendConnectionRequest(ctx context.Context, profileURL, note string) error {
 	if l.Username == "" || l.Password == "" {
 		slog.Info(fmt.Sprintf("LinkedInSender [SIMULATION] — Would send connection request to %s with note: %s", profileURL, note))
 		return nil
 	}
 
-<<<<<<< HEAD
 	slog.Info(fmt.Sprintf("LinkedInSender: Connection request to %s via headless browser", profileURL))
 	err := l.connectViaRod(ctx, profileURL, note)
 	if err != nil {
@@ -287,8 +199,5 @@ func (l *LinkedInSender) connectViaRod(ctx context.Context, profileURL, note str
 	// 7. Sleep for rate limiting (rudimentary)
 	time.Sleep(2 * time.Second)
 
-=======
-	slog.Info(fmt.Sprintf("LinkedInSender: Connection request to %s — browser automation pending", profileURL))
->>>>>>> origin/main
 	return nil
 }

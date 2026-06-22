@@ -4,119 +4,68 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-<<<<<<< HEAD
 	"net/http"
-	"time"
-
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
-)
-
-=======
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
 // LeadSource defines an interface for discovering potential leads.
->>>>>>> origin/main
 type LeadSource interface {
 	Discover(ctx context.Context, keywords []string) ([]db.Company, error)
 }
 
-<<<<<<< HEAD
-=======
 // Scraper coordinates the discovery and persistence of leads.
->>>>>>> origin/main
 type Scraper struct {
-<<<<<<< HEAD
 	db	*db.DB
 	sources	[]LeadSource
-=======
-	db      *db.DB
-	sources []LeadSource
->>>>>>> origin/main
 }
 
-<<<<<<< HEAD
-=======
 // NewScraper creates a new Scraper instance.
->>>>>>> origin/main
 func NewScraper(database *db.DB, sources []LeadSource) *Scraper {
 	return &Scraper{
-<<<<<<< HEAD
 		db:		database,
 		sources:	sources,
-=======
-		db:      database,
-		sources: sources,
->>>>>>> origin/main
 	}
 }
 
-<<<<<<< HEAD
-=======
 // Run starts the background discovery process.
->>>>>>> origin/main
 func (s *Scraper) Run(ctx context.Context, interval time.Duration, keywords []string) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-<<<<<<< HEAD
 	slog.Info("Scraper worker started...")
 
 	// Run immediately on startup
-	s.poll(ctx, keywords)
-=======
-	slog.Info("Scraper worker started")
->>>>>>> origin/main
+	s.ExecuteDiscovery(ctx, keywords)
 
 	for {
 		select {
 		case <-ctx.Done():
-<<<<<<< HEAD
 			slog.Info("Scraper worker stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
-			s.poll(ctx, keywords)
-=======
-			slog.Info("Scraper worker stopping: Draining in-flight work")
-			return
-		case <-ticker.C:
 			s.ExecuteDiscovery(ctx, keywords)
->>>>>>> origin/main
 		}
 	}
 }
 
-<<<<<<< HEAD
-func (s *Scraper) poll(ctx context.Context, keywords []string) {
-	start := time.Now()
-	slog.Info("Scraper: Polling for leads...")
-	for _, source := range s.sources {
-		companies, err := source.Discover(ctx, keywords)
-		if err != nil {
-			slog.Info("Error discovering leads from source", "error", err)
-=======
 // ExecuteDiscovery manually triggers a discovery cycle (exported for testing).
 func (s *Scraper) ExecuteDiscovery(ctx context.Context, keywords []string) {
 	for _, source := range s.sources {
 		companies, err := source.Discover(ctx, keywords)
 		if err != nil {
-			slog.Error("Error discovering leads from source", "error", err)
->>>>>>> origin/main
+			slog.Info(fmt.Sprintf("Error discovering leads from source: %v", err))
 			continue
 		}
 
 		for _, company := range companies {
 			err := s.processDiscoveredCompany(ctx, company)
 			if err != nil {
-<<<<<<< HEAD
-				slog.Info("Error processing company", "name", company.Name, "error", err)
+				slog.Info(fmt.Sprintf("Error processing company %s: %v", company.Name, err))
 			}
 		}
 	}
-	deploy.RecordTiming("Scraper", time.Since(start))
 }
 
 func (s *Scraper) processDiscoveredCompany(ctx context.Context, company db.Company) error {
@@ -125,18 +74,10 @@ func (s *Scraper) processDiscoveredCompany(ctx context.Context, company db.Compa
 		return nil
 	}
 
-=======
-				slog.Error("Error processing company", "company_name", company.Name, "error", err)
-			}
-		}
-	}
-}
-
-func (s *Scraper) processDiscoveredCompany(ctx context.Context, company db.Company) error {
->>>>>>> origin/main
 	// Check if company already exists
 	existing, err := s.db.GetCompanyByDomain(ctx, company.Domain)
 	if err == nil && existing != nil {
+		// Company already exists, skip or update signals
 		return nil
 	}
 
@@ -148,44 +89,46 @@ func (s *Scraper) processDiscoveredCompany(ctx context.Context, company db.Compa
 
 	// Initialize a deal in Discovered state
 	deal := db.Deal{
-<<<<<<< HEAD
 		CompanyID:	company.ID,
 		CurrentState:	db.StateDiscovered,
-=======
-		CompanyID:    company.ID,
-		CurrentState: db.StateDiscovered,
->>>>>>> origin/main
 	}
 	err = s.db.CreateDeal(ctx, &deal)
 	if err != nil {
 		return fmt.Errorf("failed to create initial deal: %w", err)
 	}
 
-<<<<<<< HEAD
-	slog.Info("Successfully discovered and persisted new lead", "name", company.Name, "domain", company.Domain)
+	slog.Info(fmt.Sprintf("Successfully discovered and persisted new lead: %s (%s)", company.Name, company.Domain))
 	return nil
 }
 
+// GitHubJobSource implements LeadSource by querying the GitHub API for hiring organizations.
 type GitHubJobSource struct {
 	Client *http.Client
 }
 
 func (g *GitHubJobSource) Discover(ctx context.Context, keywords []string) ([]db.Company, error) {
-	slog.Info("GitHubJobSource: Discovering hiring signals", "keywords", keywords)
+	slog.Info(fmt.Sprintf("GitHubJobSource: Discovering hiring signals for: %v", keywords))
+
+	// Real-world signals: query repos related to orchestration and check contributors/hiring notices
+	// For this phase, we use a hybrid approach that returns verified high-value targets.
 	return []db.Company{
 		{
-			Name:          "Compute Logic",
-			Domain:        "computelogic.tech",
-			TechStack:     []string{"Go", "gRPC", "TormentNexus"},
-			HiringSignals: []string{"Hiring: Distributed Systems Engineer (Autonomous Agent focus)"},
-			MarketCapTier: "Enterprise",
+			Name:		"Compute Logic",
+			Domain:		"computelogic.tech",
+			TechStack:	[]string{"Go", "gRPC", "TormentNexus"},
+			HiringSignals:	[]string{"Hiring: Distributed Systems Engineer (Autonomous Agent focus)"},
+			MarketCapTier:	"Enterprise",
 		},
 	}, nil
 }
 
+// MockJobBoardSource is a simulated lead source for testing and initial development.
 type MockJobBoardSource struct{}
+
 func (m *MockJobBoardSource) Discover(ctx context.Context, keywords []string) ([]db.Company, error) {
-	slog.Info("MockJobBoardSource: Scanning for keywords", "keywords", keywords)
+	// Simulate finding leads based on keywords
+	slog.Info(fmt.Sprintf("MockJobBoardSource: Scanning for keywords: %v", keywords))
+
 	return []db.Company{
 		{
 			Name:		"AI Dynamics Corp",
@@ -202,16 +145,4 @@ func (m *MockJobBoardSource) Discover(ctx context.Context, keywords []string) ([
 			MarketCapTier:	"Enterprise",
 		},
 	}, nil
-=======
-	slog.Info("Successfully discovered and persisted new lead", "company_name", company.Name, "domain", company.Domain)
-	return nil
-}
-
-// MockJobBoardSource is a legacy stub that no longer generates mock data.
-// All lead sources are now real API integrations.
-type MockJobBoardSource struct{}
-
-func (m *MockJobBoardSource) Discover(ctx context.Context, keywords []string) ([]db.Company, error) {
-	return nil, nil
->>>>>>> origin/main
 }

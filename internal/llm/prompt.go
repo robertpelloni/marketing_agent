@@ -1,26 +1,17 @@
 package llm
 
 import (
-<<<<<<< HEAD
-	"encoding/json"
-	"fmt"
-	"math/rand"
-	"os"
-=======
 	crypto_rand "crypto/rand"
 	"encoding/json"
 	"fmt"
 	"math/big"
 	"os"
 	"path/filepath"
->>>>>>> origin/main
 	"strings"
 	"sync"
 	"time"
 )
 
-<<<<<<< HEAD
-=======
 func cryptoRandInt() int64 {
 	n, err := crypto_rand.Int(crypto_rand.Reader, big.NewInt(1<<63-1))
 	if err != nil {
@@ -30,7 +21,6 @@ func cryptoRandInt() int64 {
 }
 
 
->>>>>>> origin/main
 // PromptVersion represents a single version of a prompt template.
 type PromptVersion struct {
 	ID        string    `json:"id"`
@@ -76,18 +66,10 @@ func NewPromptRegistry(filePath string) *PromptRegistry {
 		filePath:    filePath,
 	}
 	// Attempt to load existing JSON state.
-<<<<<<< HEAD
-	if data, err := os.ReadFile(filePath); err == nil {
-		_ = json.Unmarshal(data, pr)
-	}
-	// Seed RNG once for the entire process.
-	rand.Seed(time.Now().UnixNano())
-=======
 	if data, err := os.ReadFile(filepath.Clean(filePath)); err == nil {
 		_ = json.Unmarshal(data, pr)
 	}
 	// Seed RNG once for the entire process.
->>>>>>> origin/main
 	return pr
 }
 
@@ -160,11 +142,7 @@ func (pr *PromptRegistry) AssignExperiment(name string, versionIDs []string, wei
 
 // pickVersionByExperiment selects a version ID according to weighted random.
 func (pr *PromptRegistry) pickVersionByExperiment(exp *ABExperiment) string {
-<<<<<<< HEAD
-	r := rand.Float64()
-=======
 	r := float64(cryptoRandInt()) / float64(1<<63 - 1)
->>>>>>> origin/main
 	for i, threshold := range exp.cdf {
 		if r <= threshold {
 			return exp.VersionIDs[i]
@@ -258,11 +236,7 @@ func (pr *PromptRegistry) save() {
 	if err != nil {
 		return
 	}
-<<<<<<< HEAD
-	_ = os.WriteFile(pr.filePath, data, 0644)
-=======
 	_ = os.WriteFile(pr.filePath, data, 0600)
->>>>>>> origin/main
 }
 
 // Load reloads the registry from the JSON file.

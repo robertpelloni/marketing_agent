@@ -69,11 +69,7 @@ func TestDatabase_Integration(t *testing.T) {
 		ContactID: contact.ID,
 		Channel:   "Email",
 		Direction: "Inbound",
-<<<<<<< HEAD
-		RawText:   "Interested in Borg.",
-=======
 		RawText:   "Interested in TormentNexus.",
->>>>>>> origin/main
 	}
 
 	err = database.CreateInteraction(ctx, interaction)
@@ -102,8 +98,6 @@ func TestDatabase_Integration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to update deal state: %v", err)
 	}
-<<<<<<< HEAD
-=======
 
 	// 6. Test Interaction Success Flagging (Prompt Optimization Loop)
 	err = database.UpdateInteractionSuccess(ctx, interaction.ID, true)
@@ -129,5 +123,4 @@ func TestDatabase_Integration(t *testing.T) {
 	if !foundSuccess {
 		t.Error("Expected to find the flagged interaction in successful list")
 	}
->>>>>>> origin/main
 }

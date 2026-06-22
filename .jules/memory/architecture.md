@@ -1,61 +1,30 @@
-<<<<<<< HEAD
-# TormentNexus: Definitive Architectural & Pattern Memory (v0.6.2)
-
-## 1. System Philosophy & Architecture
-TormentNexus is architected as a **Modular Monolith** designed for high-stakes autonomous engagement. The system is built on a foundation of concurrent background workers that manage the entire B2B sales lifecycle from discovery to closing.
-
-### Core Architectural Components:
-*   **The Autonomous Brain (`internal/autodev`):** A self-correcting development loop. It identifies tasks in `TODO.md`, uses LLMs to generate Go code, and applies them via an autonomous PR workflow.
-    *   **Robustness Pattern:** As of v0.6.2, the orchestrator implements a **Fail-Safe Rollback** mechanism. If a code proposal fails verification (build or tests), the system automatically executes a `git reset --hard` to maintain repository integrity.
-    *   **Self-Correction:** The **PR Feedback Loop** reads GitHub comments on its own PRs to trigger refinement tasks.
-*   **Intelligence Ingestion (`internal/scraper`, `internal/researcher`):** Multi-channel pipeline targeting high-intent signals.
-    *   **Multi-touch Discovery:** Hacker News, GitHub, LinkedIn, and RSS (`BlogWorker`).
-    *   **Technical Research:** Compiles deep `TechnicalDossiers` used to ground LLM replies in real engineering context.
-*   **Sales Operation Engine (`internal/communication`):** A state-aware FSM (Finite State Machine).
-    *   **Strategic Decisioning:** The `LearningSalesEngine` scores leads based on tier, tech stack, and **Competitor évaluation** (e.g., evaluatng LangChain/LlamaIndex users).
-    *   **Human-Gated Safety (HITL):** High-value enterprise deals are automatically paused for human approval on the dashboard before outreach.
-    *   **Response Strategy:** Combines an **Objection Handling Library** for consistent rebuttals with LLM-powered RAG for technical depth.
-*   **Enterprise Middleware (`internal/crm`, `internal/billing`):** An abstraction layer supporting Salesforce, HubSpot, and Stripe.
-    *   **Dynamic Alignment:** Uses a `FieldMapping` system to adapt to custom CRM schemas without code changes.
-
-## 2. Engineering & Security Patterns
-*   **The Adapter Pattern:** Enforced across all external integrations (LLMs, CRMs, Outreach). The system is entirely provider-agnostic.
-*   **Layered Defense Security:**
-    *   **Infrastructure:** Slowloris mitigation via `ReadHeaderTimeout`.
-    *   **Web API:** Global Rate Limiting (5 req/s) via token bucket.
-    *   **Authentication:** Session-based with secure, random session IDs and `Secure; SameSite=Strict` cookies.
-    *   **Data Integrity:** **CSRF Protection** on all forms and **Input Sanitization** (HTML escaping) to eliminate XSS vectors.
-*   **Recovery Robustness:** The `main.go` entry point is protected by a top-level deferred `recover()` block and "HEARTBEAT" monitoring to ensure initialization panics are captured with full stack traces.
-
-## 3. Technology Stack
-*   **Language:** Go 1.25 (Leveraging latest concurrency and performance optimizations).
-*   **Persistence:** PostgreSQL (Lead state, PR tracking, Interaction history).
-*   **LLM Interface:** Hermes Agent (A local, OpenAI-compatible gateway for multi-model failover).
-*   **Quality Assurance:** Mandatory `golangci-lint` and `gosec` compliance with explicit error handling (errcheck).
-
-## 4. Lifecycle Governance
-Leads progress through a strict 7-state lifecycle managed atomically in the database:
-`Discovered → Researched → Outreach_Sent → Engaged → Negotiating → Closed_Won / Closed_Lost`.
-
----
-=======
-# TormentNexus: Authoritative Architectural & Engineering Memory (v0.9.0)
+# TormentNexus: Architectural & Engineering Governance (v0.9.0)
 
 ## 1. System Vision & Architecture
-TormentNexus is a high-performance **Modular Monolith** for autonomous B2B sales. It uses a strict state machine in PostgreSQL: `Discovered → Researched → Outreach_Sent → Engaged → Negotiating → Pending_Approval → Closed_Won/Lost`.
+TormentNexus is designed as a high-performance **Modular Monolith** that orchestrates the entire B2B sales lifecycle autonomously. It utilizes a state-driven pipeline to move leads from initial discovery to contract closure with minimal human intervention.
 
-## 2. Core Modules
-*   **AutoDev:** Self-correcting LLM loop with verification suites and PR feedback integration. Supports concurrent task execution and task dependency resolution.
-*   **Communication:** `CadenceAwareManager` with multi-channel touches (Email, LinkedIn, GitHub), objection handling, and A/B template testing.
-*   **Intelligence:** `SentimentAnalyzer` and `ForecastingEngine` for win-probability and revenue predictions.
-*   **Compliance:** GDPR-ready (export/delete endpoints) with soft-delete logic.
+*   **State Machine:** Centralized in PostgreSQL, tracking transitions: `Discovered → Researched → Outreach_Sent → Engaged → Negotiating → Closed_Won/Lost`.
+*   **Concurrency Model:** Uses Go’s goroutines for background workers (Scrapers, Enrichers, Researchers, CRM Workers) coordinated via polling intervals and state-based triggers.
 
-## 3. Engineering Patterns
-*   **Security:** AES-GCM encryption, global rate limiting (5 req/s), CSRF protection, and Slowloris mitigation.
-*   **Resilience:** Exponential backoff retries and circuit breakers for external APIs.
-*   **Observability:** Structured JSON logging (`slog`), Prometheus metrics, and `pprof`.
+## 2. Core Modules & Engineering Patterns
+*   **Adapter Pattern (Integrations):**
+    *   **CRM:** Unified interface supporting Salesforce and HubSpot.
+    *   **LLM (Hermes Agent):** Agnostic gateway supporting NVIDIA, OpenRouter, and local providers.
+*   **Strategy Pattern (Outreach):** Multi-channel support (Email, LinkedIn, GitHub) with priority-based routing.
+*   **Autonomous Development (AutoDev):** A self-correcting loop where the agent reads `TODO.md`, generates Go code, runs a verification suite (build/test), and uses a `git reset --hard` rollback mechanism on failure. It also incorporates PR feedback for iterative refinement.
+
+## 3. Production Hardening & Security
+*   **Security Policies:** Strict `gosec` enforcement. HTTP servers use `ReadHeaderTimeout` to prevent Slowloris attacks. Cookies are hardened with `Secure`, `HttpOnly`, and `SameSiteStrictMode`.
+*   **Compliance:** GDPR-ready with native soft-delete support (`deleted_at`) and dedicated data export/deletion endpoints.
+*   **Resilience:** Global rate limiting (5 req/s), circuit breakers for external APIs, and top-level panic recovery in `main.go`.
+*   **Observability:** Structured JSON logging via `slog`, Prometheus metrics for business KPIs (leads, deals, won/lost), and `pprof` for performance profiling.
+
+## 4. Engineering Decisions & Constraints
+*   **Language:** Standardized on **Go 1.25.0**.
+*   **Database:** PostgreSQL with `golang-migrate` for versioned schema evolution.
+*   **CI/CD:** Enforced testing of all internal packages. Integration tests require an ephemeral DB; otherwise, they are skipped to ensure local environment stability.
+*   **Deployment:** Supports Docker and Docker Compose (staging/production), with sensitive configurations managed via AES-GCM encrypted secrets at rest.
 
 ---
 
-I have resolved the import cycle and am now fixing a build error in `responder.go` where `CalculateQuote` was being referenced via the `sales` package but is actually declared in the `communication` package. I will also clean up unused imports in `engine.go` to ensure a clean build.
->>>>>>> origin/main
+I have verified the v0.9.0 hardening changes (GDPR soft-deletes, encryption utility, metrics, and security hardening) by running the build and test suites. I am now proceeding to finalize the commit and move to the upstream merge.

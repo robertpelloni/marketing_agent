@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Autodev Changelog
 
 ## [0.4.4] - 2026-06-08
@@ -31,62 +30,6 @@
 ## [0.4.4+1780914501] - 2026-06-08
 - Test integration task
 
-<<<<<<< HEAD
-## [0.4.9+1781568410] - 2026-06-16
-- Test integration task
-
-## [0.4.9+1781570809] - 2026-06-16
-- Test integration task
-
-## [0.4.9+1781571106] - 2026-06-16
-- Test integration task
-
-## [0.4.9+1781661144] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781667645] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781667780] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781673448] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781673685] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781674386] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781674543] - 2026-06-17
-- Test integration task
-
-## [0.4.9+1781679571] - 2026-06-17
-=======
-=======
-# Changelog (Autonomous Development Module)
-
-## [0.5.1] - 2026-06-13
-- Synchronized with main framework reconciliation.
-- Verified autonomous task board integration.
-
-## [0.5.1+1781378654] - 2026-06-13
-- Test integration task
-
-## [0.5.1+1781389782] - 2026-06-13
-- Test integration task
-
-## [0.6.0+1781391710] - 2026-06-13
-- Test integration task
-
-## [0.6.0+1781403369] - 2026-06-14
->>>>>>> origin/main
-- Test integration task
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/main
 ## [0.4.4+1781043945] - 2026-06-09
 - Test integration task
 
@@ -169,12 +112,8 @@
 - Test integration task
 
 ## [0.4.9+1781535589] - 2026-06-15
-<<<<<<< HEAD
->>>>>>> origin/main
-=======
 - Test integration task
 
-<<<<<<< HEAD
 ## [0.4.9+1781906455] - 2026-06-19
 - Test integration task
 
@@ -218,33 +157,13 @@
 - Test integration task
 
 ## [0.4.9+1782119033] - 2026-06-22
-=======
-## [0.4.4+1780957273] - 2026-06-08
 - Test integration task
 
-## [0.4.4+1780957988] - 2026-06-08
+## [0.4.9+1782128097] - 2026-06-22
 - Test integration task
 
-## [0.4.4+1780959081] - 2026-06-08
+## [0.4.9+1782129332] - 2026-06-22
 - Test integration task
 
-## [0.4.4+1780960580] - 2026-06-08
+## [0.4.9+1782139146] - 2026-06-22
 - Test integration task
-
-## [0.4.4+1780961374] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780961921] - 2026-06-08
->>>>>>> origin/main
-- Test integration task
-
-## [0.4.4+1780956984] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780957702] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780959000] - 2026-06-08
->>>>>>> origin/main
-- Test integration task
->>>>>>> origin/main

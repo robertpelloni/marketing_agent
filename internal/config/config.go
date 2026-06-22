@@ -1,33 +1,19 @@
 package config
 
 import (
-<<<<<<< HEAD
-	"os"
-=======
 	"bufio"
-<<<<<<< HEAD
-=======
 	"encoding/json"
-<<<<<<< HEAD
-=======
-	"fmt"
->>>>>>> origin/main
 	"log/slog"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
->>>>>>> origin/main
 	"time"
-<<<<<<< HEAD
 	"fmt"
-=======
->>>>>>> origin/main
 )
 
 // Config holds the application configuration.
 type Config struct {
-<<<<<<< HEAD
 	DatabaseURL		string
 	GitHubToken		string
 	GitHubRepository	string
@@ -62,72 +48,17 @@ type Config struct {
 	IMAPUsername		string
 	IMAPPassword		string
 	IMAPFolder		string
-	IMAPPollInterval	time.Duration
-=======
-	DatabaseURL         string
-	GitHubToken         string
-	GitHubRepository    string
-	GitHubWebhookSecret string
-	CRMBaseURL          string
-	CRMAPIKey           string
-<<<<<<< HEAD
-	DeploySyncInterval  time.Duration
-	Port                string
-	Environment         string
-	CRMDealNameProp     string
-	CRMDealStageProp    string
-	CRMDealAmountProp   string
-	CRMDealDossierProp  string
-	CRMContactEmailProp string
-}
+		IMAPPollInterval	time.Duration
 
-// Load loads the configuration from environment variables.
-func Load() *Config {
-=======
-	HermesAPIURL        string
-	HermesAPIKey        string
-	HermesModel         string
-	DeploySyncInterval  time.Duration
-	Port                string
-	Environment         string
-
-	// Safety
-	DryRun bool
-
-	// Lead Discovery
-	HunterAPIKey             string
-	ApolloAPIKey             string
-	TwitterBearerToken       string
-	TwitterAPIKey            string
-	TwitterAPIKeySecret      string
-	TwitterAccessToken       string
-	TwitterAccessTokenSecret string
-	LinkedInClientID         string
-	LinkedInClientSecret     string
-	LinkedInAccessToken      string
-
-	// Email - SMTP
-	SMTPHost     string
-	SMTPPort     int
-	SMTPUsername string
-	SMTPPassword string
-	SMTPFrom     string
-	SMTPFromName string
-
-	// Email - IMAP
-	IMAPHost         string
-	IMAPPort         int
-	IMAPUsername     string
-	IMAPPassword     string
-	IMAPFolder       string
-	IMAPPollInterval time.Duration
+	// Webhooks
+	OutboundWebhookURL    string
+	OutboundWebhookSecret string
 
 	// CRM Field Mappings
 	SalesforceStageMapping        map[string]string
 	HubSpotStageMapping           map[string]string
 	SalesforceReverseStageMapping map[string]string
 	HubSpotReverseStageMapping    map[string]string
->>>>>>> origin/main
 }
 
 // Load loads the configuration from environment variables and .env file.
@@ -135,7 +66,6 @@ func Load() *Config {
 	// Try to load .env file from current directory or executable directory
 	loadDotEnv()
 
->>>>>>> origin/main
 	syncInterval := 1 * time.Hour
 	if intervalStr := os.Getenv("DEPLOY_SYNC_INTERVAL"); intervalStr != "" {
 		if d, err := time.ParseDuration(intervalStr); err == nil {
@@ -153,8 +83,6 @@ func Load() *Config {
 		env = "development"
 	}
 
-<<<<<<< HEAD
-=======
 	hermesModel := os.Getenv("HERMES_MODEL")
 	if hermesModel == "" {
 		hermesModel = "free-llm"
@@ -181,9 +109,7 @@ func Load() *Config {
 		}
 	}
 
->>>>>>> origin/main
 	return &Config{
-<<<<<<< HEAD
 		DatabaseURL:		getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
 		GitHubToken:		os.Getenv("GITHUB_TOKEN"),
 		GitHubRepository:	os.Getenv("GITHUB_REPOSITORY"),
@@ -218,56 +144,11 @@ func Load() *Config {
 		IMAPUsername:		os.Getenv("IMAP_USERNAME"),
 		IMAPPassword:		os.Getenv("IMAP_PASSWORD"),
 		IMAPFolder:		getEnv("IMAP_FOLDER", "INBOX"),
-		IMAPPollInterval:	imapPollInterval,
-=======
-		DatabaseURL:         getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
-		GitHubToken:         os.Getenv("GITHUB_TOKEN"),
-		GitHubRepository:    os.Getenv("GITHUB_REPOSITORY"),
-		GitHubWebhookSecret: os.Getenv("GITHUB_WEBHOOK_SECRET"),
-		CRMBaseURL:          os.Getenv("CRM_BASE_URL"),
-		CRMAPIKey:           os.Getenv("CRM_API_KEY"),
-<<<<<<< HEAD
-		DeploySyncInterval:  syncInterval,
-		Port:                port,
-		Environment:         env,
-=======
-		HermesAPIURL:        os.Getenv("HERMES_API_URL"),
-		HermesAPIKey:        os.Getenv("HERMES_API_KEY"),
-		HermesModel:         hermesModel,
-		DeploySyncInterval:  syncInterval,
-		Port:                port,
-		Environment:         env,
+				IMAPPollInterval:	imapPollInterval,
 
-		// Safety
-		DryRun: os.Getenv("DRY_RUN") == "true",
-
-		// Lead Discovery
-		HunterAPIKey:             os.Getenv("HUNTER_API_KEY"),
-		ApolloAPIKey:             os.Getenv("APOLLO_API_KEY"),
-		TwitterBearerToken:       os.Getenv("TWITTER_BEARER_TOKEN"),
-		TwitterAPIKey:            os.Getenv("TWITTER_API_KEY"),
-		TwitterAPIKeySecret:      os.Getenv("TWITTER_API_KEY_SECRET"),
-		TwitterAccessToken:       os.Getenv("TWITTER_ACCESS_TOKEN"),
-		TwitterAccessTokenSecret: os.Getenv("TWITTER_ACCESS_TOKEN_SECRET"),
-		LinkedInClientID:         os.Getenv("LINKEDIN_CLIENT_ID"),
-		LinkedInClientSecret:     os.Getenv("LINKEDIN_CLIENT_SECRET"),
-		LinkedInAccessToken:      os.Getenv("LINKEDIN_ACCESS_TOKEN"),
-
-		// SMTP
-		SMTPHost:     os.Getenv("SMTP_HOST"),
-		SMTPPort:     smtpPort,
-		SMTPUsername: os.Getenv("SMTP_USERNAME"),
-		SMTPPassword: os.Getenv("SMTP_PASSWORD"),
-		SMTPFrom:     os.Getenv("SMTP_FROM"),
-		SMTPFromName: getEnv("SMTP_FROM_NAME", "TormentNexus Sales"),
-
-		// IMAP
-		IMAPHost:         os.Getenv("IMAP_HOST"),
-		IMAPPort:         imapPort,
-		IMAPUsername:     os.Getenv("IMAP_USERNAME"),
-		IMAPPassword:     os.Getenv("IMAP_PASSWORD"),
-		IMAPFolder:       getEnv("IMAP_FOLDER", "INBOX"),
-		IMAPPollInterval: imapPollInterval,
+		// Webhooks
+		OutboundWebhookURL:    os.Getenv("OUTBOUND_WEBHOOK_URL"),
+		OutboundWebhookSecret: os.Getenv("OUTBOUND_WEBHOOK_SECRET"),
 
 		// CRM Field Mappings
 		SalesforceStageMapping: parseMapFromEnv("SALESFORCE_STAGE_MAPPING", map[string]string{
@@ -309,7 +190,6 @@ func Load() *Config {
 			"closedwon":             "Closed_Won",
 			"closedlost":            "Closed_Lost",
 		}),
->>>>>>> origin/main
 	}
 }
 
@@ -325,18 +205,9 @@ func loadDotEnv() {
 	}
 
 	for _, p := range paths {
-<<<<<<< HEAD
-		file, err := os.Open(p)
-		if err != nil {
-			continue	// .env is optional
-=======
 		file, err := os.Open(filepath.Clean(p))
 		if err != nil {
-<<<<<<< HEAD
 			continue	// .env is optional
-=======
-			continue // .env is optional
->>>>>>> origin/main
 		}
 		defer file.Close()
 
@@ -364,20 +235,10 @@ func loadDotEnv() {
 
 			// Don't overwrite existing env vars
 			if os.Getenv(key) == "" {
-<<<<<<< HEAD
-				os.Setenv(key, value)
-			}
-		}
-		return	// only load the first .env found
-=======
 				_ = os.Setenv(key, value)
 			}
 		}
-<<<<<<< HEAD
 		return	// only load the first .env found
-=======
-		return // only load the first .env found
->>>>>>> origin/main
 	}
 }
 
@@ -387,8 +248,6 @@ func getEnv(key, fallback string) string {
 	}
 	return fallback
 }
-<<<<<<< HEAD
-=======
 
 func parseMapFromEnv(key string, defaultMap map[string]string) map[string]string {
 	val := os.Getenv(key)
@@ -403,4 +262,3 @@ func parseMapFromEnv(key string, defaultMap map[string]string) map[string]string
 	}
 	return m
 }
->>>>>>> origin/main

@@ -1,25 +1,5 @@
-<<<<<<< HEAD
-# Borg Autonomous Sales Pipeline Architecture
-
-This system is an asynchronous, event-driven orchestration layer written in Go to automate B2B lead generation, enrichment, hyper-personalized outreach, and billing for the Borg repository.
-
-## Tech Stack
-- **Language:** Go (Golang) using standard concurrency paradigms (goroutines, channels) for background workers.
-- **Core Pattern:** Multi-agent autonomous orchestrations, task workers, and state logging.
-
-## Extension Conventions
-=======
 # TormentNexus Autonomous Sales Pipeline Architecture
 
-<<<<<<< HEAD
-This system is an asynchronous, event-driven orchestration layer written in Go to automate B2B lead generation, enrichment, hyper-personalized outreach, and billing for the TormentNexus repository.
-
-## Tech Stack
-
-- **Language:** Go 1.24 using standard concurrency paradigms (goroutines, channels) for background workers.
-- **Database:** PostgreSQL 13+ with strict relational schema and atomic state transitions.
-- **External APIs:** GitHub (go-github), Stripe (stripe-go), generic REST CRM.
-=======
 This system is an asynchronous, event-driven orchestration layer written in Go to automate B2B lead generation, enrichment, hyper-personalized outreach, and billing for the **TormentNexus AI Hypervisor**.
 
 ---
@@ -283,7 +263,6 @@ The ecosystem data shows:
 - **Language:** Go 1.24 using standard concurrency paradigms (goroutines, channels) for background workers.
 - **Database:** PostgreSQL 13+ with strict relational schema and atomic state transitions.
 - **External APIs:** GitHub (`go-github`), Stripe (`stripe-go`), generic REST CRM.
->>>>>>> origin/main
 - **Core Pattern:** Multi-agent autonomous orchestrations, task workers, and state logging.
 
 ## Module Architecture
@@ -309,27 +288,10 @@ The ecosystem data shows:
 
 ## Extension Conventions
 
->>>>>>> origin/main
 - All new worker engines or agent subclasses must implement the internal `Agent` interface (or module-specific equivalent).
 - Add new background routines to `/pkg/agents/` or `/internal/`.
 - Maintain state, run logs, and target histories inside the existing database configuration layer.
 - Always include explicit mock testing endpoints and defensive execution loops.
-<<<<<<< HEAD
-
-## System Guidelines
-- **State Machine:** Enforce rigid, atomic state updates for all leads in the PostgreSQL database.
-- **Integrations:** All scraper engines must utilize headless configuration profiles. External communication modules use abstract interfaces to allow mock testing.
-
-## Database Schema Constraints
-All data migrations must use strict relational mappings with full foreign key constraints tracking Companies -> Contacts -> Interactions -> Deals.
-
-## Autonomous Development & Repository Management Protocol
-The system follows a strict "EXECUTIVE PROTOCOL" for repository synchronization and intelligent merging:
-- **Upstream Tracking:** Always sync with the parent fork and update all submodules recursively.
-- **Intelligent Merge:** Use the dual-direction merge engine to reconcile feature branches with `main`.
-- **Validation:** Every build must pass the merge integrity tests defined in `internal/gitcheck`.
-- **Automation:** Utilize `scripts/sync_repo.sh` for automated synchronization.
-=======
 - All external integrations must be abstracted behind Go interfaces for testability and swappability.
 
 ## System Guidelines
@@ -372,4 +334,3 @@ The system follows a strict "EXECUTIVE PROTOCOL" for repository synchronization 
 - **Validation:** Every build must pass the merge integrity tests defined in `internal/gitcheck`.
 - **Automation:** Utilize `scripts/sync_repo.sh` for automated synchronization.
 - **CI Gating:** AutoDev PRs are only merged after CI passes and staging validates successfully.
->>>>>>> origin/main

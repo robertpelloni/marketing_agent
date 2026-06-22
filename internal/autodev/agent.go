@@ -4,14 +4,12 @@ import "context"
 
 // Task represents a unit of work for the autonomous development module.
 type Task struct {
+	Dependencies []string
+
 	ID          string
 	Description string
 	Category    string
 	Completed   bool
-<<<<<<< HEAD
-	DependsOn   []string
-=======
->>>>>>> origin/main
 }
 
 // Agent defines the interface for an autonomous developer.

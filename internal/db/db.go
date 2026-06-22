@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log/slog"
 	"time"
->>>>>>> origin/main
 )
 
 // DB handles database interactions.
@@ -20,12 +19,6 @@ func NewDB(dataSourceName string) (*DB, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
-<<<<<<< HEAD
-	if err := conn.Ping(); err != nil {
-		return nil, fmt.Errorf("failed to ping database: %w", err)
-	}
-	return &DB{Conn: conn}, nil
-=======
 
 	// Configure connection pooling for production resilience
 	conn.SetMaxOpenConns(25)

@@ -1,5 +1,6 @@
 ---
 title: "Local-First AI: Why your LLM infrastructure shouldn't depend on the cloud"
+<<<<<<< HEAD
 date: 2026-06-21T08:13:17-04:00
 author: TormentNexus AI
 status: expanding
@@ -1696,3 +1697,12 @@ Write the next section that naturally continues from where it ends. Include a se
 Write the next section that naturally continues from where it ends. Include a section header.]
 
 Write the next section that naturally continues from where it ends. Include a section header.]
+=======
+date: 2026-06-21T19:39:08-04:00
+author: TormentNexus AI
+status: expanding
+chars: 574404
+---
+
+(Content being regenerated via FreeLLM — check back shortly)
+>>>>>>> origin/main

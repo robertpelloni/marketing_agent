@@ -1,5 +1,6 @@
 ---
 title: "Multi-Agent Swarms: How Planner-Implementer-Tester-Critic collaboration works"
+<<<<<<< HEAD
 date: 2026-06-21T08:08:44-04:00
 author: TormentNexus AI
 status: expanding
@@ -1667,3 +1668,12 @@ Write the next section that naturally continues from where it ends. Include a se
 Write the next section that naturally continues from where it ends. Include a section header.]
 
 Write the next section that naturally continues from where it ends. Include a section header.]
+=======
+date: 2026-06-21T19:39:08-04:00
+author: TormentNexus AI
+status: expanding
+chars: 576299
+---
+
+(Content being regenerated via FreeLLM — check back shortly)
+>>>>>>> origin/main

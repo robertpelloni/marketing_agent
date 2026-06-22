@@ -2,6 +2,10 @@ package main
 
 import (
 	"context"
+<<<<<<< HEAD
+=======
+	"encoding/json"
+>>>>>>> origin/main
 	"flag"
 	"fmt"
 	"log"
@@ -219,6 +223,37 @@ func main() {
 	blogGen := contentgen.NewBlogGenerator(llmProvider, database)
 	go blogGen.Run(ctx, 3*time.Minute)
 
+<<<<<<< HEAD
+=======
+	// 3b. Start Stats API Server (port 8086, no auth)
+	go func() {
+		statsMux := http.NewServeMux()
+		statsMux.HandleFunc("/stats", func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			w.Header().Set("Access-Control-Allow-Origin", "https://tormentnexus.site")
+			ctx := r.Context()
+			companies, _ := database.CountCompanies(ctx)
+			contacts, _ := database.CountContacts(ctx)
+			interactions, _ := database.CountInteractions(ctx)
+			stateCounts := make(map[string]int)
+			states, _ := database.CountDealsByState(ctx)
+			for _, st := range states {
+				stateCounts[string(st.State)] = st.Count
+			}
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"companies": companies, "contacts": contacts,
+				"interactions": interactions, "deals": stateCounts,
+				"status": "operational",
+			})
+		})
+		statsMux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) { fmt.Fprintln(w, "OK") })
+		log.Printf("Stats API: Listening on :8086")
+		if err := http.ListenAndServe(":8086", statsMux); err != nil {
+			log.Printf("Stats API error: %v", err)
+		}
+	}()
+
+>>>>>>> origin/main
 	// 4. Start Web Server
 	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider)
 	srv := &http.Server{

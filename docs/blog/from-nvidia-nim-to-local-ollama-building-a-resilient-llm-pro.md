@@ -1,5 +1,6 @@
 ---
 title: "From NVIDIA NIM to Local Ollama: Building a resilient LLM provider cascade"
+<<<<<<< HEAD
 date: 2026-06-21T08:15:03-04:00
 author: TormentNexus AI
 status: expanding
@@ -1696,3 +1697,12 @@ Write the next section that naturally continues from where it ends. Include a se
 Write the next section that naturally continues from where it ends. Include a section header.]
 
 Write the next section that naturally continues from where it ends. Include a section header.]
+=======
+date: 2026-06-21T19:39:08-04:00
+author: TormentNexus AI
+status: expanding
+chars: 574878
+---
+
+(Content being regenerated via FreeLLM — check back shortly)
+>>>>>>> origin/main

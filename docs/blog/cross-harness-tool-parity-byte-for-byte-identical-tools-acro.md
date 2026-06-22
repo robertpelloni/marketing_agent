@@ -1,5 +1,6 @@
 ---
 title: "Cross-Harness Tool Parity: Byte-for-byte identical tools across 6 AI coding platforms"
+<<<<<<< HEAD
 date: 2026-06-21T08:15:46-04:00
 author: TormentNexus AI
 status: expanding
@@ -1667,3 +1668,12 @@ Write the next section that naturally continues from where it ends. Include a se
 Write the next section that naturally continues from where it ends. Include a section header.]
 
 Write the next section that naturally continues from where it ends. Include a section header.]
+=======
+date: 2026-06-21T19:39:08-04:00
+author: TormentNexus AI
+status: expanding
+chars: 577625
+---
+
+(Content being regenerated via FreeLLM — check back shortly)
+>>>>>>> origin/main

@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 package crm_test
 
 import (
@@ -83,17 +81,13 @@ func TestCRMWorker_Integration_SkipsNilDB(t *testing.T) {
 	// If this doesn't panic and returns cleanly, the nil check works
 }
 =======
->>>>>>> origin/main
 package crm
 
 import (
 	"context"
-<<<<<<< HEAD
-=======
 	"net/http"
 	"net/http/httptest"
 	"sync/atomic"
->>>>>>> origin/main
 	"encoding/json"
 	"io"
 	"net/http"
@@ -105,8 +99,6 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
-<<<<<<< HEAD
-=======
 func TestRestCRMClient_RetryLogic_Integration(t *testing.T) {
 	var attempts int32
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -114,7 +106,6 @@ func TestRestCRMClient_RetryLogic_Integration(t *testing.T) {
 		if atomic.LoadInt32(&attempts) < 3 {
 			http.Error(w, "Temporary Server Error", http.StatusInternalServerError)
 			return
->>>>>>> origin/main
 func TestRestCRMClient_DetailedError(t *testing.T) {
 	expectedBody := `{"error": "invalid custom requirements"}`
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -175,8 +166,6 @@ func TestRestCRMClient_DataIntegrity(t *testing.T) {
 	defer server.Close()
 
 	client := NewRestCRMClient(server.URL, "test-key")
-<<<<<<< HEAD
-=======
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -196,7 +185,6 @@ func TestRestCRMClient_DataIntegrity(t *testing.T) {
 }
 
 func TestRestCRMClient_Timeout_Integration(t *testing.T) {
->>>>>>> origin/main
 
 	deal := db.Deal{
 		ID:                 42,
@@ -241,8 +229,6 @@ func TestRestCRMClient_Timeout(t *testing.T) {
 	defer server.Close()
 
 	client := NewRestCRMClient(server.URL, "test-key")
-<<<<<<< HEAD
-=======
 	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
 	defer cancel()
 
@@ -270,7 +256,6 @@ func TestRestCRMClient_ErrorBody_Integration(t *testing.T) {
 		t.Errorf("Expected error message %q, got %q", expected, err.Error())
 	}
 }
->>>>>>> origin/main
 	client.HTTPClient.Timeout = 10 * time.Millisecond
 
 	_, err := client.GetLeadUpdates(context.Background())

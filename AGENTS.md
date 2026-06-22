@@ -1,14 +1,5 @@
 # TormentNexus Autonomous Sales Pipeline Architecture
 
-<<<<<<< HEAD
-This system is an asynchronous, event-driven orchestration layer written in Go to automate B2B lead generation, enrichment, hyper-personalized outreach, and billing for the TormentNexus repository.
-
-## Tech Stack
-
-- **Language:** Go 1.24 using standard concurrency paradigms (goroutines, channels) for background workers.
-- **Database:** PostgreSQL 13+ with strict relational schema and atomic state transitions.
-- **External APIs:** GitHub (go-github), Stripe (stripe-go), generic REST CRM.
-=======
 This system is an asynchronous, event-driven orchestration layer written in Go to automate B2B lead generation, enrichment, hyper-personalized outreach, and billing for the **TormentNexus AI Hypervisor**.
 
 ---
@@ -272,7 +263,6 @@ The ecosystem data shows:
 - **Language:** Go 1.24 using standard concurrency paradigms (goroutines, channels) for background workers.
 - **Database:** PostgreSQL 13+ with strict relational schema and atomic state transitions.
 - **External APIs:** GitHub (`go-github`), Stripe (`stripe-go`), generic REST CRM.
->>>>>>> origin/main
 - **Core Pattern:** Multi-agent autonomous orchestrations, task workers, and state logging.
 
 ## Module Architecture

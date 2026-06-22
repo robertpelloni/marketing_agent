@@ -6,15 +6,6 @@ import "time"
 type LeadState string
 
 const (
-<<<<<<< HEAD
-	StateDiscovered   LeadState = "Discovered"
-	StateResearched   LeadState = "Researched"
-	StateOutreachSent LeadState = "Outreach_Sent"
-	StateEngaged      LeadState = "Engaged"
-	StateNegotiating  LeadState = "Negotiating"
-	StateClosedWon    LeadState = "Closed_Won"
-	StateClosedLost   LeadState = "Closed_Lost"
-=======
 	StateDiscovered      LeadState = "Discovered"
 	StateResearched      LeadState = "Researched"
 	StateOutreachSent    LeadState = "Outreach_Sent"
@@ -23,7 +14,6 @@ const (
 	StatePendingApproval LeadState = "Pending_Approval" // Awaiting human review for high-value deals
 	StateClosedWon       LeadState = "Closed_Won"
 	StateClosedLost      LeadState = "Closed_Lost"
->>>>>>> origin/main
 )
 
 // Company represents a target organization.
@@ -38,19 +28,6 @@ type Company struct {
 	UpdatedAt     time.Time `db:"updated_at"`
 }
 
-<<<<<<< HEAD
-// Contact represents an individual decision-maker at a company.
-type Contact struct {
-	ID             int64     `db:"id"`
-	CompanyID      int64     `db:"company_id"`
-	Name           string    `db:"name"`
-	Role           string    `db:"role"`
-	Email          string    `db:"email"`
-	GitHubHandle   string    `db:"github_handle"`
-	LinkedInURL    string    `db:"linkedin_url"`
-	CreatedAt      time.Time `db:"created_at"`
-	UpdatedAt      time.Time `db:"updated_at"`
-=======
 // Channel represents a communication channel for outreach.
 type Channel string
 
@@ -91,22 +68,10 @@ type Contact struct {
 	PreferredChannel string    `db:"preferred_channel"` // "email", "linkedin", "github"
 	CreatedAt        time.Time `db:"created_at"`
 	UpdatedAt        time.Time `db:"updated_at"`
->>>>>>> origin/main
 }
 
 // Interaction tracks communications with a contact.
 type Interaction struct {
-<<<<<<< HEAD
-	ID        int64     `db:"id"`
-	ContactID int64     `db:"contact_id"`
-	Channel   string    `db:"channel"`   // e.g., Email, LinkedIn, GitHub
-	Direction string    `db:"direction"` // e.g., Inbound, Outbound
-	RawText   string    `db:"raw_text"`
-	Summary   string    `db:"summary"`
-	Sentiment string    `db:"sentiment"`
-	Success   bool      `db:"success"` // Indicates if the interaction led to a positive outcome
-	CreatedAt time.Time `db:"created_at"`
-=======
 	ID         int64     `db:"id"`
 	ContactID  int64     `db:"contact_id"`
 	Channel    string    `db:"channel"`   // e.g., Email, LinkedIn, GitHub
@@ -118,7 +83,6 @@ type Interaction struct {
 	TemplateID string    `db:"template_id"` // Optional: template used for outbound interactions
 	ResponseID string    `db:"response_id"` // Optional: objection response used for this interaction
 	CreatedAt  time.Time `db:"created_at"`
->>>>>>> origin/main
 }
 
 // Deal tracks the financial and state progress of a lead.
@@ -129,22 +93,11 @@ type Deal struct {
 	QuotedPricing      float64   `db:"quoted_pricing"`
 	CustomRequirements string    `db:"custom_requirements"`
 	TechnicalDossier   string    `db:"technical_dossier"`
-<<<<<<< HEAD
-=======
 	CadenceStep        int       `db:"cadence_step"` // 0 = not started, 1+ = current step index
->>>>>>> origin/main
 	CreatedAt          time.Time `db:"created_at"`
 	UpdatedAt          time.Time `db:"updated_at"`
 }
 
-<<<<<<< HEAD
-// PerformanceMetrics aggregates key sales pipeline statistics.
-type PerformanceMetrics struct {
-	TotalLeads         int            `json:"total_leads"`
-	LeadsByState       map[LeadState]int `json:"leads_by_state"`
-	SuccessfulOutreach int            `json:"successful_outreach"`
-	WinRate            float64        `json:"win_rate"`
-=======
 // Template represents a reusable outreach message template.
 type Template struct {
 	ID        string    `db:"id"`
@@ -176,5 +129,4 @@ type PerformanceMetrics struct {
 type DealStateCount struct {
 	State LeadState
 	Count int
->>>>>>> origin/main
 }

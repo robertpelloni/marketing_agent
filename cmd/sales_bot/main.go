@@ -11,29 +11,13 @@ import (
 	"log"
 	"net/http"
 	"os"
-<<<<<<< HEAD
-	"strings"
-	"os/signal"
-=======
 	"os/signal"
 	"strings"
->>>>>>> origin/main
 	"syscall"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/billing"
-<<<<<<< HEAD
-	"github.com/robertpelloni/enterprise_sales_bot/internal/config"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/gitres"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
-=======
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/config"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/contentgen"
@@ -44,7 +28,6 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitres"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
->>>>>>> origin/main
 	"github.com/robertpelloni/enterprise_sales_bot/internal/researcher"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/sales"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
@@ -95,9 +78,6 @@ func main() {
 	defer cancel()
 
 	sources := []scraper.LeadSource{
-<<<<<<< HEAD
-		&scraper.MockJobBoardSource{},
-=======
 		&scraper.TwitterSource{
 			Client:            http.DefaultClient,
 			BearerToken:       cfg.TwitterBearerToken,
@@ -109,7 +89,6 @@ func main() {
 		&scraper.LinkedInSource{
 			Client: http.DefaultClient,
 		},
->>>>>>> origin/main
 	}
 	s := scraper.NewScraper(database, sources)
 
@@ -183,9 +162,6 @@ func main() {
 	// 2da. Setup LLM Provider
 	llmProvider := &llm.MockLLMProvider{}
 
-<<<<<<< HEAD
-	// 2e. Setup Communication Manager
-=======
 	// 2e. Setup Email Sender — SMTP, IMAP Drafts, or Mock
 	var emailSender communication.EmailSender
 	if cfg.SMTPHost != "" && cfg.SMTPUsername != "" && cfg.SMTPPassword != "" && !cfg.DryRun {
@@ -207,24 +183,15 @@ func main() {
 	}
 
 	// 2f. Setup Communication Manager
->>>>>>> origin/main
 	classifier := &communication.MockIntentClassifier{}
 	responder := communication.NewRAGResponseGenerator(database, llmProvider)
 	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
 
-<<<<<<< HEAD
-	// 2ea. Setup Order Processing
-	billingClient := &billing.MockBillingClient{}
-	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
-
-	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor)
-=======
 	// 2fa. Setup Order Processing
 	billingClient := &billing.MockBillingClient{}
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
 	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender)
->>>>>>> origin/main
 
 	// Run communication poller in background
 	go commManager.Run(ctx, 30*time.Minute)
@@ -252,19 +219,13 @@ func main() {
 	// Run autodev worker in background (every 1 hour)
 	go orchestrator.Run(ctx, 1*time.Hour)
 
-<<<<<<< HEAD
-	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager)
-	srv := &http.Server{
-		Addr:              ":" + cfg.Port,
-		Handler:           webServer,
-		ReadHeaderTimeout: 5 * time.Second,
-=======
 	// 3a. Start Autonomous Blog Generator (daily)
 	blogGen := contentgen.NewBlogGenerator(llmProvider, database)
 	// Blog generator disabled
 	_ = blogGen
 
+<<<<<<< HEAD
+=======
 	// 3b. Start Stats API Server (port 8086, no auth)
 	go func() {
 		statsMux := http.NewServeMux()
@@ -293,13 +254,13 @@ func main() {
 		}
 	}()
 
+>>>>>>> origin/main
 	// 4. Start Web Server
 	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider)
 	srv := &http.Server{
 		Addr:              ":" + cfg.Port,
 		Handler:           webServer,
 		ReadHeaderTimeout: 3 * time.Second,
->>>>>>> origin/main
 	}
 
 	go func() {

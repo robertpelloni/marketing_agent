@@ -5,9 +5,6 @@ All notable changes to this project will be documented in this file. The format 
 ## [Unreleased]
 
 <<<<<<< HEAD
-## [0.4.7] - 2026-06-08
-=======
-<<<<<<< HEAD
 ### Added
 - **Real-Time Quote API:** Added `/api/v1/quote` endpoint for dynamic quote generation based on company size/tier.
 - **Enrichment Source Fallback Chain:**
@@ -213,7 +210,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [0.4.8] - 2026-06-08
 >>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
->>>>>>> origin/main
 
 ### Added
 - **Final Feature Validation:**
@@ -256,11 +252,7 @@ All notable changes to this project will be documented in this file. The format 
     - Expanded PushDeal payload to include technical dossiers for better CRM visibility.
 
 ### Changed
-<<<<<<< HEAD
-- Rebranded all product-facing references from "TormentNexus" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
-=======
 - Rebranded all product-facing references from "Borg" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
->>>>>>> origin/main
 - Comprehensive documentation overhaul: ROADMAP, TODO, VISION, README, DEPLOY, MEMORY, IDEAS, AGENTS, HANDOFF all updated with gap analysis, forward-looking phases, and technical debt inventory.
 
 ## [0.4.1] - 2026-06-05

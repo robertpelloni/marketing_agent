@@ -262,12 +262,6 @@ func (db *DB) UpdateTechnicalDossier(ctx context.Context, dealID int64, dossier 
 }
 
 // CreateContact inserts a new contact into the database.
-<<<<<<< HEAD
-func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
-	query := `
-		INSERT INTO contacts (company_id, name, role, email, github_handle, linkedin_url, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-=======
 // Uses UPSERT (ON CONFLICT) to handle duplicate emails gracefully —
 // if a contact with the same email already exists, it updates the
 // existing record instead of failing.
@@ -285,7 +279,6 @@ func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
 			company_id = EXCLUDED.company_id,
 			preferred_channel = EXCLUDED.preferred_channel,
 			updated_at = NOW()
->>>>>>> origin/main
 		RETURNING id
 	`
 	now := time.Now()
@@ -299,10 +292,7 @@ func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
 		contact.Email,
 		contact.GitHubHandle,
 		contact.LinkedInURL,
-<<<<<<< HEAD
-=======
 		contact.PreferredChannel,
->>>>>>> origin/main
 		contact.CreatedAt,
 		contact.UpdatedAt,
 	).Scan(&contact.ID)
@@ -313,12 +303,6 @@ func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
 	return nil
 }
 
-<<<<<<< HEAD
-// ListContactsByCompany retrieves all contacts for a specific company.
-func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Contact, error) {
-	query := `
-		SELECT id, company_id, name, role, email, github_handle, linkedin_url, created_at, updated_at
-=======
 // UpdateContactPreferredChannel updates the preferred communication channel for a contact.
 func (db *DB) UpdateContactPreferredChannel(ctx context.Context, contactID int64, channel string) error {
 	query := `
@@ -337,7 +321,6 @@ func (db *DB) UpdateContactPreferredChannel(ctx context.Context, contactID int64
 func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Contact, error) {
 	query := `
 		SELECT id, company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at
->>>>>>> origin/main
 		FROM contacts
 		WHERE company_id = $1
 	`
@@ -358,10 +341,7 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 			&contact.Email,
 			&contact.GitHubHandle,
 			&contact.LinkedInURL,
-<<<<<<< HEAD
-=======
 			&contact.PreferredChannel,
->>>>>>> origin/main
 			&contact.CreatedAt,
 			&contact.UpdatedAt,
 		); err != nil {
@@ -372,13 +352,6 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 	return contacts, nil
 }
 
-<<<<<<< HEAD
-// CreateInteraction inserts a new interaction into the database.
-func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) error {
-	query := `
-		INSERT INTO interactions (contact_id, channel, direction, raw_text, summary, sentiment, success, created_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-=======
 // GetContactByEmail retrieves a contact by their email address.
 func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, error) {
 	query := `
@@ -414,7 +387,6 @@ func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) e
 	query := `
 		INSERT INTO interactions (contact_id, channel, direction, raw_text, summary, sentiment, success, template_id, response_id, created_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
->>>>>>> origin/main
 		RETURNING id
 	`
 	if interaction.CreatedAt.IsZero() {
@@ -429,11 +401,8 @@ func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) e
 		interaction.Summary,
 		interaction.Sentiment,
 		interaction.Success,
-<<<<<<< HEAD
-=======
 		interaction.TemplateID,
 		interaction.ResponseID,
->>>>>>> origin/main
 		interaction.CreatedAt,
 	).Scan(&interaction.ID)
 
@@ -596,11 +565,7 @@ func (db *DB) ListActivePullRequests(ctx context.Context) ([]gitcheck.PullReques
 // ListInteractionsByContact retrieves all interactions for a specific contact.
 func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([]Interaction, error) {
 	query := `
-<<<<<<< HEAD
-		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, created_at
-=======
 		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, success, COALESCE(template_id, ''), response_id, created_at
->>>>>>> origin/main
 		FROM interactions
 		WHERE contact_id = $1
 		ORDER BY created_at DESC
@@ -622,12 +587,9 @@ func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([
 			&interaction.RawText,
 			&interaction.Summary,
 			&interaction.Sentiment,
-<<<<<<< HEAD
-=======
 			&interaction.Success,
 			&interaction.TemplateID,
 			&interaction.ResponseID,
->>>>>>> origin/main
 			&interaction.CreatedAt,
 		); err != nil {
 			return nil, fmt.Errorf("failed to scan interaction: %w", err)
@@ -636,8 +598,6 @@ func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([
 	}
 	return interactions, nil
 }
-<<<<<<< HEAD
-=======
 
 // GetCadenceStep retrieves the current cadence step for a deal.
 func (db *DB) GetCadenceStep(ctx context.Context, dealID int64) (int, error) {
@@ -846,4 +806,3 @@ func (db *DB) CountDealsByState(ctx context.Context) ([]DealStateCount, error) {
 	}
 	return results, nil
 }
->>>>>>> origin/main

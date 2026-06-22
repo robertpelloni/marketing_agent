@@ -1,35 +1,3 @@
-<<<<<<< HEAD
-# Autodev Changelog
-
-## [0.4.4] - 2026-06-08
-- Synchronized with main project hardening and CRM integration
-
-## [0.4.4+1780886051] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780895118] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780895283] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780896569] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780896677] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780903101] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780909792] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780913609] - 2026-06-08
-- Test integration task
-
-## [0.4.4+1780914501] - 2026-06-08
-=======
 # Changelog (Autonomous Development Module)
 
 ## [0.5.1] - 2026-06-13
@@ -130,7 +98,6 @@
 - Test integration task
 
 ## [0.4.9+1781535589] - 2026-06-15
->>>>>>> origin/main
 - Test integration task
 
 ## [0.4.4+1780957273] - 2026-06-08
@@ -150,8 +117,6 @@
 
 ## [0.4.4+1780961921] - 2026-06-08
 - Test integration task
-<<<<<<< HEAD
-=======
 
 ## [0.4.4+1780956984] - 2026-06-08
 - Test integration task
@@ -161,4 +126,3 @@
 
 ## [0.4.4+1780959000] - 2026-06-08
 - Test integration task
->>>>>>> origin/main

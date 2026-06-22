@@ -1,10 +1,6 @@
 package db
 
 import (
-<<<<<<< HEAD
-	"database/sql"
-	"fmt"
-=======
 	"context"
 	"database/sql"
 	"fmt"
@@ -46,15 +42,12 @@ func NewDB(dataSourceName string) (*DB, error) {
 		return nil, fmt.Errorf("database migrations failed: %w", err)
 	}
 	return db, nil
->>>>>>> origin/main
 }
 
 // Close closes the database connection.
 func (db *DB) Close() error {
 	return db.Conn.Close()
 }
-<<<<<<< HEAD
-=======
 
 // RunMigrations applies all database schema migrations.
 func (db *DB) RunMigrations(ctx context.Context) error {
@@ -196,4 +189,3 @@ Best,\n[Your Name]`,
 
 	return nil
 }
->>>>>>> origin/main

@@ -3,28 +3,27 @@ package communication
 import (
 	"context"
 	"fmt"
-<<<<<<< HEAD
-	"log"
-=======
 	"log/slog"
->>>>>>> origin/main
 	"os"
 	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+>>>>>>> origin/main
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 )
 
-// RAGResponseGenerator provides technically grounded replies using Pseudo-RAG.
-type RAGResponseGenerator struct {
 <<<<<<< HEAD
-	db       *db.DB
-	llm      llm.LLMProvider
-	borgDocs string
+type RAGResponseGenerator struct {
+	db               *db.DB
+	llm              llm.LLMProvider
+	registry         *llm.PromptRegistry
+	tormentNexusDocs string
 }
 
-// NewRAGResponseGenerator creates a new generator with Borg context.
+func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider, registry *llm.PromptRegistry) *RAGResponseGenerator {
 =======
+// RAGResponseGenerator provides technically grounded replies using Pseudo-RAG.
+type RAGResponseGenerator struct {
 	db               *db.DB
 	llm              llm.LLMProvider
 	tormentNexusDocs string
@@ -32,9 +31,9 @@ type RAGResponseGenerator struct {
 }
 
 // NewRAGResponseGenerator creates a new generator with TormentNexus context.
->>>>>>> origin/main
 func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResponseGenerator {
 	// Documentation path resolution to support both root execution and package-level tests
+>>>>>>> origin/main
 	docsPaths := []string{
 		"borg/docs/ARCHITECTURE.md",
 		"../../borg/docs/ARCHITECTURE.md",
@@ -47,7 +46,7 @@ func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResp
 <<<<<<< HEAD
 		content, err = os.ReadFile(path)
 		if err == nil {
-			log.Printf("RAG: Successfully loaded Borg documentation from %s", path)
+			slog.Info("RAG: Successfully loaded TormentNexus documentation", "path", path)
 =======
 		// #nosec G304 -- Documentation paths are internal to the repository structure
 		content, err = os.ReadFile(path)
@@ -58,37 +57,80 @@ func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResp
 		}
 	}
 
-	if err != nil {
 <<<<<<< HEAD
-		log.Printf("RAG: Warning: could not load Borg documentation: %v", err)
+	return &RAGResponseGenerator{
+		db:               database,
+		llm:              provider,
+		registry:         registry,
+		tormentNexusDocs: string(content),
+	}
+}
+
+func (r *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesContext, action Action) (string, error) {
+	slog.Info("RAGResponseGenerator: Generating response", "intent", salesCtx.LatestIntent)
+
+	contextInjection := ""
+	if salesCtx.LatestIntent == IntentTechnical && r.tormentNexusDocs != "" {
+		contextInjection = fmt.Sprintf("\nTechnical Context:\n%s\n", r.truncateDocs(r.tormentNexusDocs))
+	}
+	if salesCtx.LatestIntent == IntentPricing {
+		pricing := sales.CalculateQuote(salesCtx.Company.MarketCapTier)
+		contextInjection = fmt.Sprintf("\nPricing Context: Annual subscription approx $%d.\n", pricing)
 	}
 
-	return &RAGResponseGenerator{
-		db:       database,
-		llm:      provider,
-		borgDocs: string(content),
+	negativeContext := "AVOID past mistakes: being too generic, missing technical specifics."
+
+	if r.registry != nil && r.llm != nil {
+		data := map[string]string{
+			"intent":   string(salesCtx.LatestIntent),
+			"dossier":  salesCtx.Deal.TechnicalDossier,
+			"company":  salesCtx.Company.Name,
+			"negative": negativeContext,
+			"context":  contextInjection,
+		}
+		promptText, err := r.registry.ResolvePrompt("outreach-reply", data)
+		if err == nil {
+			return r.llm.Generate(ctx, llm.Prompt{
+				System: "You are an elite enterprise sales engineer for TormentNexus.",
+				User:   promptText,
+			})
+		}
+	}
+
+	if r.llm != nil {
+		prompt := llm.Prompt{
+			System: "You are an elite enterprise sales engineer for TormentNexus.",
+			User:   fmt.Sprintf("Intent: %s. Action: %s. Context: %s. Dossier: %s. Generate a professional reply.", salesCtx.LatestIntent, action, contextInjection, salesCtx.Deal.TechnicalDossier),
+		}
+		return r.llm.Generate(ctx, prompt)
+	}
+
+	return "Hello, I'd like to follow up on our discussion regarding TormentNexus.", nil
+}
+
+func (r *RAGResponseGenerator) truncateDocs(docs string) string {
+	if len(docs) > 2000 {
+		return docs[:2000] + "..."
 =======
+	if err != nil {
 		slog.Info(fmt.Sprintf("RAG: Warning: could not load TormentNexus documentation: %v", err))
 	}
 
 	return &RAGResponseGenerator{
+<<<<<<< HEAD
+		db:			database,
+		llm:			provider,
+		tormentNexusDocs:	string(content),
+		objectionLib:	NewObjectionLibrary(),
+=======
 		db:               database,
 		llm:              provider,
 		tormentNexusDocs: string(content),
 		objectionLib:     NewObjectionLibrary(),
->>>>>>> origin/main
 	}
 }
 
 func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesContext, action Action) (string, error) {
-<<<<<<< HEAD
-	log.Printf("RAGResponseGenerator: Generating response for intent: %s", salesCtx.LatestIntent)
-
-	// Inject technical context if the intent is technical
-	contextInjection := ""
-	if salesCtx.LatestIntent == IntentTechnical && g.borgDocs != "" {
-		contextInjection = fmt.Sprintf("\nRelevant Technical Context from Borg Docs:\n%s\n", g.truncateDocs(g.borgDocs))
-=======
 	slog.Info(fmt.Sprintf("RAGResponseGenerator: Generating response for intent: %s", salesCtx.LatestIntent))
 
 	// Inject technical context if the intent is technical
@@ -104,12 +146,10 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		contextInjection = fmt.Sprintf("\nPricing Context: Annual subscription is approximately $%d based on company size.\n", pricing)
 	}
 
-	// SELF-IMPROVING PROMPTS: Inject successful past interactions as few-shot examples
 <<<<<<< HEAD
-	if g.db != nil {
 =======
+	// SELF-IMPROVING PROMPTS: Inject successful past interactions as few-shot examples
 	if g.db != nil && g.db.Conn != nil {
->>>>>>> origin/main
 		successes, err := g.db.ListSuccessfulInteractions(ctx, 3)
 		if err == nil && len(successes) > 0 {
 			examples := []string{}
@@ -120,17 +160,12 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		}
 	}
 
+>>>>>>> origin/main
 	latestMsg := "START_OUTREACH"
 	if len(salesCtx.Interactions) > 0 {
 		latestMsg = salesCtx.Interactions[0].RawText
 	}
 
-<<<<<<< HEAD
-	prompt := llm.Prompt{
-		System: "You are a senior sales engineer at Borg. Use the provided technical and pricing context to draft a hyper-personalized response.",
-		User: fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
-			salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier),
-=======
 	// Objection handling: use library to find a matched rebuttal
 	if salesCtx.LatestIntent == IntentObjection && len(salesCtx.Interactions) > 0 {
 		matched := g.objectionLib.MatchObjection(ctx, latestMsg, SentimentResult{}, salesCtx.Deal.CurrentState)
@@ -142,6 +177,11 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 	}
 
 	prompt := llm.Prompt{
+<<<<<<< HEAD
+		System:	"You are a senior sales engineer at TormentNexus. Use the provided technical and pricing context to draft a hyper-personalized response.",
+		User: fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
+			salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier),
+=======
 		System: `salesPersona:
 You are the world's best technical sales engineer.
 You are a master of these methodologies. USE THEM:
@@ -177,7 +217,6 @@ OUTREACH STRUCTURE:
 Remember: You're not selling software. You're selling engineering hours back to them.`,
 		User: fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s\nCompany Tech Stack: %s\nContact Role: %s",
 			salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier, strings.Join(salesCtx.Company.TechStack, ", "), salesCtx.Contact.Role),
->>>>>>> origin/main
 	}
 
 	return g.llm.Generate(ctx, prompt)
@@ -186,18 +225,31 @@ Remember: You're not selling software. You're selling engineering hours back to 
 func (g *RAGResponseGenerator) truncateDocs(docs string) string {
 	if len(docs) > 2000 {
 		return docs[:2000] + "... [truncated]"
+>>>>>>> origin/main
 	}
 	return docs
 }
+
 <<<<<<< HEAD
 =======
-
 // GenerateFromTemplate renders a template with context-specific placeholders.
 // It returns the rendered body and subject.
+>>>>>>> origin/main
 func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *db.Template, salesCtx SalesContext) (subject, body string, err error) {
 	subject = tmpl.Subject
 	body = tmpl.Body
 
+<<<<<<< HEAD
+	replacements := map[string]string{
+		"{{contact}}":        salesCtx.Contact.Name,
+		"{{company}}":        salesCtx.Company.Name,
+		"{{tech_stack}}":     strings.Join(salesCtx.Company.TechStack, ", "),
+		"{{role}}":           salesCtx.Contact.Role,
+	}
+
+	for placeholder, value := range replacements {
+		body = strings.ReplaceAll(body, placeholder, value)
+=======
 	// Helper to safely get a string value
 	getValue := func(parts ...string) string {
 		for _, part := range parts {
@@ -210,6 +262,18 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 
 	// Placeholder replacements for body
 	replacements := map[string]string{
+<<<<<<< HEAD
+		"{{contact}}":        getValue(salesCtx.Contact.Name),
+		"{{company}}":        getValue(salesCtx.Company.Name),
+		"{{tech_stack}}":     strings.Join(salesCtx.Company.TechStack, ", "),
+		"{{role}}":           getValue(salesCtx.Contact.Role),
+		"{{github_handle}}":  getValue(salesCtx.Contact.GitHubHandle),
+		"{{linkedin_url}}":   getValue(salesCtx.Contact.LinkedInURL),
+		"{{email}}":          getValue(salesCtx.Contact.Email),
+		"{{specific_project}}": "TormentNexus",
+		"{{repo}}":           getValue(salesCtx.Company.Name, "AI-Platform"),
+		"{{market_cap_tier}}": getValue(salesCtx.Company.MarketCapTier, "Enterprise"),
+=======
 		"{{contact}}":          getValue(salesCtx.Contact.Name),
 		"{{company}}":          getValue(salesCtx.Company.Name),
 		"{{tech_stack}}":       strings.Join(salesCtx.Company.TechStack, ", "),
@@ -220,6 +284,7 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 		"{{specific_project}}": "TormentNexus",
 		"{{repo}}":             getValue(salesCtx.Company.Name, "AI-Platform"),
 		"{{market_cap_tier}}":  getValue(salesCtx.Company.MarketCapTier, "Enterprise"),
+>>>>>>> origin/main
 	}
 
 	// Replace placeholders in body
@@ -229,9 +294,9 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 
 	// Replace placeholders in subject
 	for placeholder, value := range replacements {
+>>>>>>> origin/main
 		subject = strings.ReplaceAll(subject, placeholder, value)
 	}
 
 	return subject, body, nil
 }
->>>>>>> origin/main

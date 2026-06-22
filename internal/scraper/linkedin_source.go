@@ -5,23 +5,44 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+<<<<<<< HEAD
+	"os"
+	"strings"
+
+=======
 	"net/url"
 	"os"
 	"strings"
 
 	"github.com/go-rod/rod"
+>>>>>>> origin/main
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/go-rod/rod"
+=======
+	"github.com/go-rod/rod"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+>>>>>>> origin/main
 )
 
 // LinkedInSource implements LeadSource by searching for companies and contacts via LinkedIn.
 // Note: LinkedIn Sales Navigator does not have a public REST API. This source uses:
 // - Simulation fallback when credentials are not configured
+<<<<<<< HEAD
+// - Placeholder for future headless browser automation (requires LinkedIn API partnership)
+// Production use requires LinkedIn API partnership approval: https://www.linkedin.com/developers/apps
+type LinkedInSource struct {
+	Client		*http.Client
+	Username	string
+	Password	string
+	TargetTitles	[]string
+=======
 // - Headless browser automation via rod for actual scraping when credentials are present
 type LinkedInSource struct {
 	Client       *http.Client
 	Username     string
 	Password     string
 	TargetTitles []string
+>>>>>>> origin/main
 }
 
 // Discover searches for companies and contacts matching the target criteria.
@@ -53,6 +74,46 @@ func (l *LinkedInSource) Discover(ctx context.Context, keywords []string) ([]db.
 		return l.simulateDiscovery(ctx, keywords)
 	}
 
+<<<<<<< HEAD
+	// Future: Implement real LinkedIn Sales Navigator scraping via headless browser
+	// This requires:
+	// 1. LinkedIn API partnership approval
+	// 2. Headless browser automation (rod/chromedp)
+	// 3. Session cookie management
+	// 4. Rate limiting and anti-detection
+	slog.Info("LinkedInSource: Credentials configured but real API integration requires LinkedIn partnership. Using simulation.")
+	return l.simulateDiscovery(ctx, keywords)
+}
+
+// simulateDiscovery returns simulated high-value targets when real API is not available.
+func (l *LinkedInSource) simulateDiscovery(ctx context.Context, keywords []string) ([]db.Company, error) {
+	slog.Info(fmt.Sprintf("LinkedInSource: Simulating discovery for keywords: %v", keywords))
+
+	// Simulated high-value AI/ML companies with engineering leadership
+	return []db.Company{
+		{
+			Name:		"Neural Dynamics",
+			Domain:		"neuraldynamics.io",
+			TechStack:	[]string{"Python", "PyTorch", "Kubernetes", "MLflow"},
+			HiringSignals:	[]string{"Hiring: Senior ML Platform Engineer", "VP Engineering recently joined from Google Brain"},
+			MarketCapTier:	"Mid-Market",
+		},
+		{
+			Name:		"Cognitive Systems Labs",
+			Domain:		"cognitivesystems.ai",
+			TechStack:	[]string{"Rust", "Go", "TensorFlow", "gRPC"},
+			HiringSignals:	[]string{"Hiring: Distributed Systems Architect", "CTO posted about multi-agent orchestration challenges"},
+			MarketCapTier:	"Enterprise",
+		},
+		{
+			Name:		"Hyperloop AI",
+			Domain:		"hyperloop-ai.tech",
+			TechStack:	[]string{"Go", "LLMs", "Apache Kafka", "Redis"},
+			HiringSignals:	[]string{"Hiring: AI Infrastructure Lead", "Director of Engineering scaling team from 5 to 20"},
+			MarketCapTier:	"Small Business",
+		},
+	}, nil
+=======
 	// Attempt real scraping with headless browser
 	slog.Info("LinkedInSource: Credentials configured, attempting headless scrape")
 	companies, err := l.scrapeLinkedIn(ctx, keywords)
@@ -132,9 +193,40 @@ func (l *LinkedInSource) scrapeLinkedIn(ctx context.Context, keywords []string) 
 	return companies, nil
 }
 
+<<<<<<< HEAD
+// simulateDiscovery returns simulated high-value targets when real API is not available.
+func (l *LinkedInSource) simulateDiscovery(ctx context.Context, keywords []string) ([]db.Company, error) {
+	slog.Info(fmt.Sprintf("LinkedInSource: Simulating discovery for keywords: %v", keywords))
+
+	// Simulated high-value AI/ML companies with engineering leadership
+	return []db.Company{
+		{
+			Name:          "Neural Dynamics",
+			Domain:        "neuraldynamics.io",
+			TechStack:     []string{"Python", "PyTorch", "Kubernetes", "MLflow"},
+			HiringSignals: []string{"Hiring: Senior ML Platform Engineer", "VP Engineering recently joined from Google Brain"},
+			MarketCapTier: "Mid-Market",
+		},
+		{
+			Name:          "Cognitive Systems Labs",
+			Domain:        "cognitivesystems.ai",
+			TechStack:     []string{"Rust", "Go", "TensorFlow", "gRPC"},
+			HiringSignals: []string{"Hiring: Distributed Systems Architect", "CTO posted about multi-agent orchestration challenges"},
+			MarketCapTier: "Enterprise",
+		},
+		{
+			Name:          "Hyperloop AI",
+			Domain:        "hyperloop-ai.tech",
+			TechStack:     []string{"Go", "LLMs", "Apache Kafka", "Redis"},
+			HiringSignals: []string{"Hiring: AI Infrastructure Lead", "Director of Engineering scaling team from 5 to 20"},
+			MarketCapTier: "Small Business",
+		},
+	}, nil
+=======
 // simulateDiscovery returns empty — no mock data. Only real API results are used.
 func (l *LinkedInSource) simulateDiscovery(_ context.Context, _ []string) ([]db.Company, error) {
 	return nil, nil
+>>>>>>> origin/main
 }
 
 // HealthCheck verifies LinkedIn API connectivity and credential validity.
@@ -144,6 +236,10 @@ func (l *LinkedInSource) HealthCheck(ctx context.Context) error {
 		return fmt.Errorf("LINKEDIN_USERNAME and LINKEDIN_PASSWORD must be configured")
 	}
 
+<<<<<<< HEAD
+	// Future: Implement real credential validation via LinkedIn API
+=======
+>>>>>>> origin/main
 	// For now, just verify credentials are non-empty
 	if strings.TrimSpace(l.Username) == "" || strings.TrimSpace(l.Password) == "" {
 		return fmt.Errorf("LinkedIn credentials cannot be empty")

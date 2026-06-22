@@ -25,7 +25,6 @@
 2. **Environment Variables:**
    Set up the following environment variables (or use a `.env` file):
    - `DATABASE_URL`: `postgres://user:password@localhost:5432/sales_bot?sslmode=disable`
-   - `GO_TEST_MODE`: Set to `true` to facilitate local unit testing.
    - `GITHUB_TOKEN`: Your GitHub PAT.
    - `GITHUB_REPOSITORY`: The `owner/repo` string for the main repository.
 3. **Database Migrations:**
@@ -43,12 +42,19 @@
    | `CRM_BASE_URL` | Optional | REST CRM API base URL |
    | `CRM_API_KEY` | Optional | REST CRM API key |
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/main
 | `DEPLOY_SYNC_INTERVAL` | Optional | Duration string (e.g., `1h`, `15m`) for background sync |
 | `HERMES_API_URL` | Optional | Hermes Agent API server URL (e.g., `http://172.21.116.32:8642`) for real LLM |
 | `HERMES_API_KEY` | Optional | Hermes API server key (must match `API_SERVER_KEY` in Hermes `.env`) |
 | `HERMES_MODEL` | Optional | Model name for Hermes (default: `free-llm`) |
 | `GO_TEST_MODE` | Optional | Set to `true` to skip git operations in tests |
+<<<<<<< HEAD
 =======
+=======
+=======
+>>>>>>> origin/main
 | `CRM_DEAL_NAME_PROP` | Optional | HubSpot/Salesforce custom deal name property |
 | `CRM_DEAL_STAGE_PROP` | Optional | HubSpot/Salesforce custom deal stage property |
 | `CRM_DEAL_AMOUNT_PROP` | Optional | HubSpot/Salesforce custom deal amount property |
@@ -56,7 +62,10 @@
 | `CRM_CONTACT_EMAIL_PROP` | Optional | HubSpot/Salesforce custom contact email property |
    | `DEPLOY_SYNC_INTERVAL` | Optional | Duration string (e.g., `1h`, `15m`) for background sync |
    | `GO_TEST_MODE` | Optional | Set to `true` to skip git operations in tests |
+<<<<<<< HEAD
+=======
 >>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+>>>>>>> origin/main
 
 3. **Database Migrations:** Apply migrations using your preferred tool (e.g., `golang-migrate`):
 >>>>>>> origin/main
@@ -65,7 +74,6 @@
    migrate -path migrations/ -database "$DATABASE_URL" up
    ```
 <<<<<<< HEAD
-   *Note: Ensure `000004_add_interaction_success.up.sql` is applied for the Self-Improving Prompts feature.*
 =======
 
    *Note: Ensure all 4 migrations are applied, including `000004_add_interaction_success.up.sql` for the Self-Improving Prompts feature.*
@@ -140,16 +148,6 @@ start.bat
 ```
 
 <<<<<<< HEAD
-## Staging Validation
-To validate the **Self-Improving Prompts** feedback loop in a staging environment:
-1. Deploy using Docker Compose:
-   ```bash
-   docker compose -f docker-compose.staging.yml up -d --build
-   ```
-2. Simulate a "Closed Won" state for a lead via the CRM mock or manual DB update.
-3. Verify in the logs or dashboard that past outbound interactions are flagged with `success=true`.
-4. Trigger a new outreach generation and confirm that successful examples are injected into the LLM prompt.
-
 ## CI/CD
 The project uses GitHub Actions for continuous integration and automated deployment:
 - **CI/CD (`deploy.yml`):** A unified pipeline that manages testing, staging validation, and production deployment.
@@ -157,15 +155,11 @@ The project uses GitHub Actions for continuous integration and automated deploym
     - **Staging:** Automatically deploys to a staging environment (port 8081) on pull requests and runs smoke tests.
     - **Production:** Deploys to the production environment on pushes to `main` or version tags, gated by successful tests.
 
-## Production Deployment Checklist
-Before deploying to production, ensure:
-- [ ] `VERSION` and `VERSION.md` are updated to the target release version.
-- [ ] Database migrations are up to date (`migrations/` directory).
-- [ ] Environment variables for production are configured (see below).
-- [ ] The `borg` documentation submodule is initialized and up to date.
-
-### Production Verification
-After deployment, run the production smoke test to verify the system's health:
+### Required Secrets
+To enable automated deployment, ensure the following secrets are configured in GitHub:
+- `DEPLOY_HOST`: The target server address.
+- `DEPLOY_KEY`: SSH private key for server access.
+- `DATABASE_URL`: Production PostgreSQL connection string.
 =======
 Or run directly:
 
@@ -194,13 +188,29 @@ docker compose up -d --build
 ### Staging
 
 ```bash
+<<<<<<< HEAD
+docker compose -f docker-compose.staging.yml up -d --build
+=======
 # Set required staging secrets in .env.staging
 docker compose -f docker-compose.staging.yml --env-file .env.staging up -d --build
+>>>>>>> origin/main
 ```
 
 - Application: `http://localhost:8081`
 - Separate staging database
 
+<<<<<<< HEAD
+## Staging Validation
+
+To validate the **Self-Improving Prompts** feedback loop in a staging environment:
+
+1. Deploy using Docker Compose:
+   ```bash
+   docker compose -f docker-compose.staging.yml up -d --build
+   ```
+
+2. Simulate a "Closed Won" state for a lead via the CRM mock or manual DB update.
+=======
 ## Staging & Live CRM Connectivity
 
 Before deploying to staging for live CRM connectivity, ensure:
@@ -232,6 +242,7 @@ To validate **Live CRM Interactions** and the **Self-Improving Prompts** feedbac
    This script performs a simulated login, drives an inbound simulation, and verifies autonomous response generation.
 
 3. Simulate a "Closed Won" state for a lead via the CRM mock or manual DB update.
+>>>>>>> origin/main
 
 3. Verify in the logs or dashboard that past outbound interactions are flagged with `success=true`.
 
@@ -262,18 +273,10 @@ Before deploying to production, ensure:
 
 After deployment, run the production smoke test to verify the system's health:
 
->>>>>>> origin/main
 ```bash
 TARGET_URL="https://your-production-url.com" go run scripts/smoke_test.go
 ```
 
-<<<<<<< HEAD
-### Required Secrets
-To enable automated deployment, ensure the following secrets are configured in GitHub:
-- `DEPLOY_HOST`: The target server address.
-- `DEPLOY_KEY`: SSH private key for server access.
-- `DATABASE_URL`: Production PostgreSQL connection string.
-=======
 The smoke test verifies:
 - Basic health endpoint (`/health`)
 - Detailed health endpoint (`/health/detailed`) — confirms database connectivity and worker liveness
@@ -289,6 +292,8 @@ To enable automated deployment, ensure the following secrets are configured in G
 ## Known Issues
 
 - **CRLF Test Failure:** `TestResolveConflictTheirs` fails on Windows due to `\r\n` vs `\n` line ending mismatch. Does not affect production functionality.
+<<<<<<< HEAD
+=======
 
 ## Hermes LLM Integration Setup
 

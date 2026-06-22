@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 package crm_test
 
 import (
@@ -79,8 +81,14 @@ func TestCRMWorker_Integration_SkipsNilDB(t *testing.T) {
 	ctx := context.Background()
 	worker.ExecuteSync(ctx)
 	// If this doesn't panic and returns cleanly, the nil check works
+<<<<<<< HEAD
 }
 =======
+}
+=======
+}
+=======
+>>>>>>> origin/main
 package crm
 
 import (
@@ -88,11 +96,14 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"sync/atomic"
+<<<<<<< HEAD
+=======
 	"encoding/json"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
+>>>>>>> origin/main
 	"testing"
 	"time"
 
@@ -106,6 +117,8 @@ func TestRestCRMClient_RetryLogic_Integration(t *testing.T) {
 		if atomic.LoadInt32(&attempts) < 3 {
 			http.Error(w, "Temporary Server Error", http.StatusInternalServerError)
 			return
+<<<<<<< HEAD
+=======
 func TestRestCRMClient_DetailedError(t *testing.T) {
 	expectedBody := `{"error": "invalid custom requirements"}`
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -160,6 +173,7 @@ func TestRestCRMClient_DataIntegrity(t *testing.T) {
 		}
 		if err := json.Unmarshal(body, &capturedPayload); err != nil {
 			t.Fatalf("failed to decode json: %v", err)
+>>>>>>> origin/main
 		}
 		w.WriteHeader(http.StatusOK)
 	}))
@@ -185,6 +199,8 @@ func TestRestCRMClient_DataIntegrity(t *testing.T) {
 }
 
 func TestRestCRMClient_Timeout_Integration(t *testing.T) {
+<<<<<<< HEAD
+=======
 
 	deal := db.Deal{
 		ID:                 42,
@@ -222,6 +238,7 @@ func TestRestCRMClient_Timeout_Integration(t *testing.T) {
 }
 
 func TestRestCRMClient_Timeout(t *testing.T) {
+>>>>>>> origin/main
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		time.Sleep(100 * time.Millisecond)
 		w.WriteHeader(http.StatusOK)
@@ -256,6 +273,8 @@ func TestRestCRMClient_ErrorBody_Integration(t *testing.T) {
 		t.Errorf("Expected error message %q, got %q", expected, err.Error())
 	}
 }
+<<<<<<< HEAD
+=======
 	client.HTTPClient.Timeout = 10 * time.Millisecond
 
 	_, err := client.GetLeadUpdates(context.Background())
@@ -267,3 +286,4 @@ func TestRestCRMClient_ErrorBody_Integration(t *testing.T) {
 		t.Errorf("expected timeout error message, got: %v", err)
 	}
 }
+>>>>>>> origin/main

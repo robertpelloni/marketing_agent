@@ -1,4 +1,8 @@
 package communication
+<<<<<<< HEAD
+import "testing"
+func TestResponder(t *testing.T) {}
+=======
 
 import (
 	"context"
@@ -11,7 +15,11 @@ import (
 
 func TestLLMResponseGenerator_Generate(t *testing.T) {
 	provider := &llm.MockLLMProvider{}
+<<<<<<< HEAD
+	generator := NewRAGResponseGenerator(provider)
+=======
 	generator := NewRAGResponseGenerator(nil, provider)
+>>>>>>> origin/main
 
 	salesCtx := SalesContext{
 		Contact: db.Contact{Name: "John Doe", Role: "CTO"},
@@ -39,3 +47,4 @@ func TestLLMResponseGenerator_Generate(t *testing.T) {
 		t.Errorf("Response should contain technical dossier context")
 	}
 }
+>>>>>>> origin/main

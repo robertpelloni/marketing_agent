@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-# enterprise_sales_bot
+# TormentNexus Autonomous Sales Pipeline Architecture
 
 please help me design a system of autonomous scripts, workflows, skills, etc in order to be able to have a fully autonomous agent do all the lead generation, contacts, conversations, negotiation, market research, pricing, billing, scraping for contact info of promising potential enterprise customers (engineering contacts at companies for posiitons working on AI/agents/etc.) basically a full pipeline to autonomously finding, contacting, persuading, selling to enterprise customers for github.com/robertpelloni/borg 
 
@@ -44,155 +44,30 @@ Pull an unverified lead.
 
 Scrape the target engineer’s public GitHub profile (if available) and the company’s technical blog or open-source repositories.
 
-Analyze the Pain Point: Look for friction points in their current setup (e.g., state management issues in multi-agent systems, latency in TypeScript-based LLM frameworks, complexity in headless daemon orchestration).
-
-Synthesize a "Technical Dossier" containing the exact operational bottleneck the company is likely facing.
-
-Module C: Outbound Outreach & Personalization Engine (The Copywriter)
-This skill maps the technical capabilities of the AI Hypervisor directly to the target's discovered pain points.
-
-The Workflow:
-
-Consume the Technical Dossier from Module B.
-
-Construct a highly tailored, non-marketing email or message.
-
-The Formula: * Hook: Reference their specific hiring goal or a repository they maintain.
-
-Value Prop: Introduce the AI Hypervisor as a native, headless, Go-based backend daemon designed specifically to solve the exact multi-agent LLM coordination and control-plane scaling issues they are tackling.
-
-Call to Action (CTA): Offer a low-friction, high-value technical resource (e.g., an architectural blueprint or a direct API sandbox link) rather than demanding a meeting.
-
-Module D: Inbound Conversation & Negotiation Agent (The Closer)
-When a lead replies, this agent takes over the conversational state machine. It handles everything from technical Q&A to pricing objections.
-
-The Workflow:
-
-Intent Classification: Parse inbound emails/messages to categorize intent (Technical Question, Pricing Inquiry, Objection, or Spam).
-
-RAG-Powered Technical Q&A: Query the AI Hypervisor’s documentation, system architecture, and codebase schema to answer deep, low-level technical questions instantly and flawlessly.
-
-Objection Handling & Pricing Matrix: If the prospect asks about pricing or licensing, the agent references a strict internal Pricing Engine schema (defined below) to dynamically offer a tier based on estimated enterprise scale.
-
-The Hand-off: For final contract signing, it generates an autonomous proposal link.
-
-Module E: Billing, Provisioning, and ERP Agent (The Admin)
-Once terms are accepted, this agent closes the loop financially and technically without human intervention.
-
-The Workflow:
-
-Generate a dynamic Stripe or enterprise billing invoice based on negotiated parameters.
-
-Monitor the payment gateway webhooks for successful transactions or signed enterprise agreements.
-
-Upon payment verification, automatically provision access keys, license seats, or deploy a dedicated instance of the gateway harness (Hermes) for the client.
-
-3. Data Schema & State Management
-To prevent agents from losing context or duplicating outreach, a centralized state machine is critical.
-
-Lead State Machine Transitions
-Discovered → Researched → Outreach_Sent → Engaged → Negotiating → Closed_Won / Closed_Lost
-
-Core Database Entities (Schema Blueprint)
-Table	Core Fields	Purpose
-Companies	id, name, domain, tech_stack, hiring_signals, market_cap_tier	Stores organization profiles and macro data.
-Contacts	id, company_id, name, role, email, github_handle, linkedin_url	Individual target decision-makers.
-Interactions	id, contact_id, channel, direction, raw_text, summary, sentiment	Full history of communications.
-Deals	id, company_id, current_state, quoted_pricing, custom_requirements	Track financial progress and state.
-4. Market Research & Pricing Engine Rules
-The system needs a predictable, logic-based bounds system for pricing and market positioning so the agent never over-promises or under-charges.
-
-Dynamic Tiering Logic:
-
-Mid-Market ($10M - $50M revenue OR <50 engineers): Standard Developer Platform Tier. Fixed annual platform fee + consumption-based pricing per LLM orchestration node.
-
-Large Enterprise ($50M+ revenue OR high-volume AI hiring): Custom Enterprise Tier. Requires dedicated instances, source-code access options, and custom SLA parameters.
-
-Guardrails & Agent Bounds:
-
-The "Floor" Limit: The agent is hard-coded with a minimum acceptable contract value (ACV). It is mathematically forbidden from offering discounts below this floor during negotiations.
-
-Escalation Protocol: If a prospect demands custom legal terms (e.g., custom IP indemnification or non-standard SLAs) that fall outside the pre-approved configuration matrix, the deal is automatically flagged for human review, pausing outbound automated responses for that specific domain.
-
-5. Technology Stack Recommendations
-To build this cleanly, utilize a decoupled, highly performant stack that aligns with systems-level architecture:
-
-Orchestration Daemon: Build the core state-machine and scraping engine workers in Go. Its concurrency model (goroutines) makes running hundreds of parallel scraping, research, and API monitoring loops highly efficient and lightweight.
-
-Data Aggregation & Scrapers: Use headless browser setups (Playwright or Puppeteer) bundled inside isolated Docker containers to bypass anti-scraping walls when analyzing public engineering job portals.
-
-Agent Control Plane: Use a centralized gateway harness to handle LLM routing, payload caching, and vector embedding lookups (for the RAG-driven technical Q&A).
-
-Database: A relational database like PostgreSQL to enforce strict state changes and data integrity for enterprise accounts, paired with Redis for managing the real-time event queue of inbound/outbound communication tasks.
-
-Would you like to dive deep into the specific implementation details of one of these modules, such as writing the Go-based state machine logic for lead transitions or defining the prompt schemas for the hyper-personalized technical outreach agent?
-
-please write detailed instrutions to have google jules build this
-
-Using Google Jules to build a massive, multi-module enterprise sales agent system is an excellent strategy. Because Jules runs asynchronously inside its own secure Cloud VM, can execute code, check logs, and commit full pull requests via GitHub, you can offload the actual heavy lifting of writing and testing this codebase to it.
-
-To do this successfully, you cannot just hand Jules a massive prompt and ask it to "build the whole thing." Because Jules operates on a task-by-task basis, you must structure your repository so Jules understands your vision, and then feed it modular, isolated tasks.
-
-Step 1: Prepare the Repository (AGENTS.md)
-Before triggering Jules, you need to create a dedicated context file in the root of your GitHub repository. Jules automatically scans for a file named AGENTS.md to understand your architectural conventions and system definitions.
-
-Create AGENTS.md in your main branch with the following layout:
-
-Markdown
-# Borg Autonomous Sales Pipeline Architecture
-
-This system is an asynchronous, event-driven orchestration layer written in Go to automate B2B lead generation, enrichment, hyper-personalized outreach, and billing for the Borg repository.
-
-## System Guidelines
-- **Language:** Go (Golang) using standard concurrency paradigms (goroutines, channels) for background workers.
-- **State Machine:** Enforce rigid, atomic state updates for all leads in the PostgreSQL database.
-- **Integrations:** All scraper engines must utilize headless configuration profiles. External communication modules use abstract interfaces to allow mock testing.
-
-## Database Schema Constraints
-All data migrations must use strict relational mappings with full foreign key constraints tracking Companies -> Contacts -> Interactions -> Deals.
-Step 2: The Step-by-Step Implementation Backlog
-Log into jules.google.com (or use the Jules CLI / API), point it at your repository branch, and execute these specific, isolated feature prompts one task at a time.
-
-1
-Task 1: Core Database Migrations & Models
-Run on 'main' or a new feature branch
-Prompt for Jules: "Create the PostgreSQL database schemas and Go structs for our autonomous pipeline. Implement the full schema matching the Companies, Contacts, Interactions, and Deals tables. Ensure all state machine tracking fields are explicitly typed as custom enum types (Discovered, Researched, Outreach_Sent, Engaged, Negotiating, Closed_Won, Closed_Lost). Write SQL migration files and clean Go model abstractions."
-
-2
-Task 2: The Target Discovery Scraper Module
-Dependencies: Task 1 models
-Prompt for Jules: "Implement a Go-based background worker daemon that queries public job board endpoints and developer platforms. The worker must scan for keywords like 'AI Engineer' or 'LLM Orchestration'. Write parsing logic to extract company domains, filter out common consumer domains, and insert them into the database under the Discovered state. Use interfaces for the HTTP fetching layers so we can easily rotate proxies later."
-
-3
-Task 3: Engineering Contact Enrichment Engine
-Dependencies: Target Discovery Module
-Prompt for Jules: "Build a data enrichment client worker in Go. This service must pull companies from the database that are in the Discovered state, construct API calls to external B2B data providers (mock the client interface for Apollo/Hunter), and locate engineering decision-makers (e.g., 'Director of AI', 'Engineering Manager'). Insert these targets into the Contacts table and advance the company state to Researched."
-
-4
-Task 4: Technical Context Aggregator & Prompt Formatter
-Dependencies: Research data structures
-Prompt for Jules: "Create a service that crawls public technical engineering blogs and GitHub repositories based on a company's target domain. Write a processing system that compiles these findings into an internal 'Technical Dossier' text object. Generate a prompt constructor module that wraps this dossier alongside Borg's core system architecture documentation, preparing a clean text payload for our hyper-personalization LLM layer."
-
-5
-Task 5: The Inbound Communication State Machine
-Dependencies: Task 1 state engine
-Prompt for Jules: "Write a robust conversational state machine wrapper in Go. It must process simulated incoming text payloads from prospects, classify them into intents (Technical, Pricing, Objection), and query a local vector index/RAG interface for technical answers. Ensure that if a prospect asks for terms outside our predefined pricing floor bounds, the script updates the state machine to lock outbound automations and flags the record for manual review."
-
-
-Step 3: Reviewing & Verifying Jules' Work
-Because Jules clones your code into a local virtual machine to compile it, verify dependencies, and run your tests before outputting a diff, you must actively inspect its execution health:
-
-Review the Execution Plan: When you click "Give me a plan" on a prompt, Jules will list every file it intends to modify or create. Validate that it is placing Go files in clean directory boundaries (e.g., /internal/scraper, /internal/db).
-
-Watch the Stacked Diffs: Ensure Jules isn't overwriting vital infrastructure code segments. If it deletes any critical boilerplate logic during feature integration, reject the plan, refine your prompt constraints, and re-run.
-
-Approve and Merge: Once Jules finishes verifying its own workspace changes, it will compile a clean pull request. Review the PR directly inside your GitHub interface and merge it into your target development branch.
-
-Deep-Dive Resource
-For a full technical walkthrough of setting up async agentic development workflows, verifying sandbox environments, and managing pull requests within the tool ecosystem, you can check out this Google Jules AI Agent Demo and Tutorial. This guide walks you through exactly how Jules interacts with code repositories, handles daily task limits, and compiles environment setup scripts inside its isolated VM workspace.
+All transitions are atomic database updates enforced via the `lead_state` enum in PostgreSQL.
 =======
 # TormentNexus Autonomous Sales Pipeline
 
+<<<<<<< HEAD
+A fully autonomous B2B sales pipeline written in Go. It discovers potential enterprise customers, researches their technical bottlenecks, sends hyper-personalized outreach emails, negotiates deals, invoices won deals via Stripe, and even **modifies its own source code** to improve itself. It runs without human intervention — a software salesperson that never sleeps, writes its own PRs, and learns from its successes.
+
+## Table of Contents
+
+- [What It Does](#what-it-does)
+- [Architecture](#architecture)
+- [The 7-State Lead Lifecycle](#the-7-state-lead-lifecycle)
+- [Module-by-Module Breakdown](#module-by-module-breakdown)
+- [The Self-Improving Loop](#the-self-improving-loop)
+- [Integration Status](#integration-status)
+- [Getting Started](#getting-started)
+- [Configuration](#configuration)
+- [Database & Migrations](#database--migrations)
+- [Testing](#testing)
+- [Repository Management — EXECUTIVE PROTOCOL](#repository-management--executive-protocol)
+- [CI / Validation](#ci--validation)
+- [Known Issues](#known-issues)
+- [Contributing](#contributing)
+=======
 A fully autonomous B2B sales pipeline written in **Go**. It discovers enterprise customers building AI infrastructure, researches their technical bottlenecks, sends hyper-personalized outreach emails (generated by real LLMs), negotiates deals, invoices won deals via Stripe, and even **modifies its own source code** to improve itself. It runs without human intervention — a software salesperson that never sleeps, writes its own PRs, and learns from its successes.
 
 The ultimate goal of TormentNexus is **XENOCIDE** — the Final Architecture. Every company assimilated, every deal closed, every line of code written is progress toward full autonomy.
@@ -214,6 +89,7 @@ The ultimate goal of TormentNexus is **XENOCIDE** — the Final Architecture. Ev
 - **Web:** Nginx + HTTPS (Let's Encrypt), proxying dashboard at `/sales/`
 - **Sites:** `https://tormentnexus.site/` (XENOCIDE theme), `/sales/` (dashboard), `/xenocide.html`, `/legacy.html`
 - **GitHub:** `github.com/robertpelloni/enterprise_sales_bot` (30+ commits)
+>>>>>>> origin/main
 
 ---
 
@@ -221,6 +97,18 @@ The ultimate goal of TormentNexus is **XENOCIDE** — the Final Architecture. Ev
 
 In plain English, this is a Go program that:
 
+<<<<<<< HEAD
+1. **Finds companies** that might need an AI orchestration product — by scanning GitHub for MCP servers and job boards for hiring signals
+2. **Finds decision-makers** at those companies — via Apollo/enrichment APIs with name, role, email, and GitHub handle
+3. **Stalks their GitHub repos and blogs** to find technical pain points — like serial processing bottlenecks in orchestration logic
+4. **Sends them personalized emails** that reference their specific bottlenecks — grounded in real TormentNexus documentation
+5. **Handles their replies autonomously** — answering technical questions, quoting pricing ($5K–$50K/yr based on company size), handling objections (one rebuttal, then escalate to human)
+6. **Closes deals** when the lead is qualified enough — creating real Stripe invoices with 30-day payment terms
+7. **Syncs everything** to an external CRM bidirectionally — with retry logic and exponential backoff
+8. **Reads its own TODO list and implements features** — by writing code, creating PRs, and auto-merging them after CI passes
+9. **Manages its own git repository** — syncing, reconciling branches, and resolving merge conflicts via the Dual-Direction Intelligent Merge Engine
+10. **Serves a web dashboard** where a human can watch all of this happen, manually trigger actions, and monitor performance metrics
+=======
 1. **Finds companies** that might need an AI orchestration product — by scanning GitHub for MCP servers, job boards for hiring signals, and Hacker News "Who is Hiring" threads
 2. **Finds decision-makers** at those companies — via Apollo.io, Hunter.io enrichment APIs with name, role, email, and GitHub handle
 3. **Stalks their GitHub repos and blogs** to find technical pain points — like serial processing bottlenecks in orchestration logic
@@ -231,6 +119,7 @@ In plain English, this is a Go program that:
 8. **Reads its own TODO list and implements features** — by writing code, creating PRs, and auto-merging after CI passes
 9. **Manages its own git repository** — syncing, reconciling branches, resolving merge conflicts
 10. **Serves a web dashboard** with real-time metrics, live stats API, deployment controls
+>>>>>>> origin/main
 
 ---
 
@@ -242,13 +131,76 @@ In plain English, this is a Go program that:
 │                                                                       │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌────────────────────┐   │
 │  │ Scraper  │  │ Enricher │  │Researcher│  │   Communication    │   │
+<<<<<<< HEAD
+│  │ (1h tick)│  │ (1h tick)│  │ (1h tick)│  │     Manager        │   │
+=======
 │  │ (2h tick)│  │ (1h tick)│  │ (1h tick)│  │     Manager        │   │
+>>>>>>> origin/main
 │  │          │  │          │  │          │  │   (30m tick)       │   │
 │  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────────┬───────────┘   │
 │       │              │              │                 │               │
 │  ┌────▼──────────────▼──────────────▼─────────────────▼──────────┐   │
 │  │                        PostgreSQL                              │   │
 │  │    companies → contacts → interactions → deals                │   │
+<<<<<<< HEAD
+│  │                       pull_requests                           │   │
+│  └───────────────────────────────────────────────────────────────┘   │
+│                                                                       │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────────────────────────┐   │
+│  │ CRM Sync │  │ AutoDev  │  │       Web Dashboard :8080        │   │
+│  │  (30m)   │  │ (1h tick)│  │ /login  /  /health  /webhook    │   │
+│  └──────────┘  └──────────┘  └──────────────────────────────────┘   │
+│                                                                       │
+│  ┌─────────────────────┐  ┌──────────────────────────────────────┐  │
+│  │ Deploy Worker (cfg) │  │ Target Discovery Worker (2h)         │  │
+│  └─────────────────────┘  └──────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+### Tech Stack
+
+- **Language:** Go 1.24 using standard concurrency (goroutines, channels)
+- **Database:** PostgreSQL 13+ with strict relational schema and atomic state transitions
+- **External APIs:** GitHub (`go-github`), Stripe (`stripe-go`), generic REST CRM
+- **Core Pattern:** Multi-agent autonomous orchestration, background task workers, state logging
+
+### Module Architecture
+
+| Package | Purpose | Key Interfaces |
+|---|---|---|
+| `internal/scraper` | Lead discovery from job boards & GitHub | `LeadSource` |
+| `internal/enrichment` | Contact enrichment (Apollo, Hunter) | `EnrichmentSource` |
+| `internal/researcher` | Technical dossier building | `Crawler`, `DossierProcessor` |
+| `internal/communication` | Inbound/outbound state machine | `IntentClassifier`, `ResponseGenerator`, `SalesStrategy`, `OrderProcessor` |
+| `internal/crm` | Bidirectional CRM sync | `CRMClient` |
+| `internal/billing` | Stripe invoicing & payment tracking | `BillingClient` |
+| `internal/sales` | Order fulfillment for won deals | `OrderDB` |
+| `internal/llm` | LLM provider abstraction | `LLMProvider` |
+| `internal/autodev` | Autonomous code development | `Agent` |
+| `internal/deploy` | CI tracking & deployment | `CITracker`, `WorkflowDispatcher` |
+| `internal/gitcheck` | Git operations & PR management | `PRManager` |
+| `internal/gitres` | Intelligent merge engine | — |
+| `internal/db` | PostgreSQL data layer | — |
+| `internal/web` | HTTP dashboard & API | — |
+| `internal/auth` | Session-based dashboard auth | — |
+| `internal/config` | Centralized environment config | — |
+| `pkg/agents` | Target discovery worker | — |
+| `pkg/config` | Safety guardrails | — |
+
+### Background Workers
+
+| Worker | Package | Interval | Purpose |
+|---|---|---|---|
+| Scraper | `internal/scraper` | 1h | Discover new leads from job boards & GitHub |
+| Enricher | `internal/enrichment` | 1h | Enrich companies with contact data |
+| Researcher | `internal/researcher` | 1h | Build technical dossiers via crawling |
+| CRM Sync | `internal/crm` | 30m | Bidirectional CRM reconciliation |
+| Target Discovery | `pkg/agents` | 2h | GitHub MCP server discovery |
+| Communication | `internal/communication` | 30m | Process inbound + trigger outbound |
+| AutoDev | `internal/autodev` | 1h | Self-code, PR, and merge cycle |
+| Deploy Sync | `internal/deploy` | Configurable | Background repo synchronization |
+| Deploy Monitor | `internal/deploy` | Configurable | Health check monitoring |
+=======
 │  │                       pull_requests           templates        │   │
 │  └───────────────────────────────────────────────────────────────┘   │
 │                                                                       │
@@ -313,16 +265,32 @@ In plain English, this is a Go program that:
 - **External APIs:** GitHub (`go-github`), Stripe (`stripe-go`), generic REST CRM, Hunter.io, Apollo.io
 - **Email:** Postfix + OpenDKIM, Gmail IMAP (DraftSender)
 - **Web:** Nginx + Let's Encrypt SSL
+>>>>>>> origin/main
 
 ---
 
 ## The 7-State Lead Lifecycle
 
+<<<<<<< HEAD
+Every lead goes through a rigid pipeline enforced by a PostgreSQL `ENUM` type. No lead can skip states — all transitions are atomic database updates.
+
+=======
+>>>>>>> origin/main
 ```
 Discovered → Researched → Outreach_Sent → Engaged → Negotiating → Closed_Won
                                                                      ↘ Closed_Lost
 ```
 
+<<<<<<< HEAD
+| State | Meaning | What triggers it |
+|---|---|---|
+| `Discovered` | Company identified, no contacts yet | Scraper finds a new company |
+| `Researched` | Decision-maker contacts found + technical dossier compiled | Enricher finds contacts |
+| `Outreach_Sent` | First personalized email sent | Communication Manager sends initial outreach |
+| `Engaged` | Prospect replied | Inbound message received from contact |
+| `Negotiating` | Active deal discussion | 3+ interactions or qualification score >70 |
+| `Closed_Won` | Deal won, invoice created | Qualification ≥80 + FollowUp intent → auto-close |
+=======
 | State | Meaning | Trigger |
 |---|---|---|
 | `Discovered` | Company identified, no contacts yet | Scraper finds new company |
@@ -331,6 +299,7 @@ Discovered → Researched → Outreach_Sent → Engaged → Negotiating → Clos
 | `Engaged` | Prospect replied | Inbound message received |
 | `Negotiating` | Active deal discussion | 3+ interactions or qualification >70 |
 | `Closed_Won` | Deal won, Stripe invoice created | Qualification ≥80 |
+>>>>>>> origin/main
 | `Closed_Lost` | Deal lost | Escalation or manual closure |
 
 ---
@@ -338,6 +307,176 @@ Discovered → Researched → Outreach_Sent → Engaged → Negotiating → Clos
 ## Module-by-Module Breakdown
 
 ### 1. Scraper (`internal/scraper`) — Lead Discovery
+<<<<<<< HEAD
+
+Scans job boards and GitHub for companies hiring for AI orchestration roles. Creates a `Company` record and a `Deal` in `Discovered` state.
+
+- **Interface:** `LeadSource.Discover(ctx, keywords) → []Company`
+- **`MockJobBoardSource`** — returns hardcoded companies (AI Dynamics Corp, Neural Systems Inc)
+- **`GitHubJobSource`** — returns verified high-value targets
+- Searches for keywords: "AI Engineer", "LLM Orchestration", "Agentic Workflows"
+
+### 2. Enricher (`internal/enrichment`) — Contact Discovery
+
+Finds decision-makers (name, role, email, GitHub handle) at discovered companies. Advances deal from `Discovered` → `Researched`. Syncs found contacts to CRM with 3-attempt retry and exponential backoff.
+
+- **Interface:** `EnrichmentSource.Enrich(ctx, company) → []Contact`
+- **`MockApolloSource`** — returns hardcoded contacts per domain
+
+### 3. Researcher (`internal/researcher`) — Technical Dossier Building
+
+Crawls GitHub repos and engineering blogs for each contact's handle. Identifies technical bottlenecks (e.g., "high-latency serial state updates"). Builds a `technical_dossier` and stores it on the Deal. Pushes updated dossier to CRM.
+
+- **Interface:** `Crawler.Crawl(ctx, target) → string` + `DossierProcessor.Process(findings) → string`
+- **`GitHubCrawler`** — makes real GitHub API calls if `GITHUB_TOKEN` is set, otherwise falls back to intelligent simulated findings containing "BOTTLENECK DETECTED"
+- **`BlogCrawler`** — simulated (returns hypothetical blog insights about state management)
+- **`PromptFormatter`** — constructs outreach prompts combining TormentNexus docs + dossier
+
+### 4. Communication Manager (`internal/communication`) — The Sales Brain
+
+This is the most sophisticated module. Four sub-components work together:
+
+#### a. Intent Classifier (`classifier.go`)
+
+Classifies inbound messages into: `Technical`, `Pricing`, `Objection`, `MeetingRequest`, `FollowUp`, `Spam`, `Unknown`
+
+- **`MockIntentClassifier`** — keyword heuristic matching (e.g., "pricing"/"cost" → Pricing intent)
+- **`LLMIntentClassifier`** — sends text to an LLM for classification (exists but not active by default)
+
+#### b. RAG Response Generator (`responder.go`)
+
+Generates hyper-personalized replies using three context sources:
+
+1. **TormentNexus documentation** loaded from `borg/docs/ARCHITECTURE.md` (pseudo-RAG) — injected for technical intent
+2. **Pricing context** from `CalculateQuote()` — Enterprise=$50K, Mid-Market=$15K, SMB=$5K
+3. **Self-Improving Prompts loop** — injects successful past interactions as few-shot examples
+
+#### c. Learning Sales Engine (`engine.go`) — The Decision Engine
+
+- **`ScoreLead()`** — Scores 0–100 based on market cap tier (Enterprise=+50), dossier insights (BOTTLENECK=+30, INFRASTRUCTURE=+20), and interaction count
+- **`QualifyLead()`** — Scores 0–100 based on lead score + engagement quality + intent signals (MeetingRequest=+25, Pricing=+15, FollowUp=+20, Objection=−10)
+- **`Decide()`** — The core decision loop:
+  - Qualified ≥80 + FollowUp intent → auto-close as `Closed_Won`
+  - Engaged with 3+ interactions or qualification >70 → advance to `Negotiating`
+  - Technical intent → `ActionRespond`
+  - Pricing from high-value leads → `ActionRespond`; low-value → `ActionEscalate`
+  - Objection → one autonomous rebuttal, then escalate
+  - Spam → `ActionWait`
+- **`RouteLead()`** — Determines internal routing: Lead Solutions Architect, Senior Account Executive, Technical Sales Engineer, or Standard Sales Representative
+
+#### d. Manager (`manager.go`) — The Orchestration Loop
+
+- Polls for `Researched` deals with no outbound interaction yet
+- Auto-initiates outreach (sends "START_OUTREACH" to the pipeline)
+- Processes inbound messages through classify → decide → respond
+- **When a deal is won:** marks all past outbound interactions as `success=true` (feeding the Self-Improving Prompts loop), triggers `OrderProcessor`
+
+### 5. Order Processor (`internal/sales`) — Deal Fulfillment
+
+Triggered when a deal reaches `Closed_Won`:
+
+1. Creates a Stripe invoice via `BillingClient`
+2. Syncs the order to CRM
+3. **Real Stripe integration:** `StripeBillingClient` uses `stripe-go` v81 to create invoices with 30-day payment terms
+
+### 6. AutoDev Orchestrator (`internal/autodev`) — Self-Modifying Code
+
+The bot **modifies its own source code** through this lifecycle:
+
+1. **TaskManager** parses `TODO.md` for unchecked `- [ ]` items, prioritizes `[HIGH]` tasks
+2. **LocalAgent** generates code proposals, writes files (with path traversal protection), runs `go build` and `go test` as verification
+3. **Orchestrator loop** (every 1 hour):
+   - Execute Executive Sync Protocol (git fetch, submodule update, branch reconciliation)
+   - Check if working directory is clean
+   - Get next task from `TODO.md`
+   - `ProposeSolution()` → generates code
+   - `ApplyChanges()` → writes files to disk
+   - `Verify()` → runs `go build ./...` and `go test ./...`
+   - `MarkCompleted()` → updates `TODO.md`
+   - Bumps `VERSION` with build timestamp
+   - Creates feature branch, commits, pushes
+   - Creates GitHub PR via `PRManager`
+   - **On next cycle:** checks if PR CI passed → auto-merges → cleans up branch
+
+### 7. Deploy Worker (`internal/deploy`) — CI/CD & Self-Deployment
+
+- **`CITracker`** — checks GitHub Actions CI status for branches
+- **`WorkflowDispatcher`** — triggers GitHub Actions workflows remotely
+- **`Deployer`** — periodic sync (git pull + submodule update), periodic health monitoring
+- If GitHub webhook receives a push event → triggers sync + build
+
+### 8. Git Operations (`internal/gitcheck` + `internal/gitres`)
+
+- **`gitcheck`** — `IsClean`, `IsSynced`, `SyncRemote`, `UpdateSubmodules`, `CheckoutAndCommit`, `PushBranch`, `DeleteBranch`, `CheckConflicts`, `GenerateSubmoduleInventory`
+- **`gitres`** — **Dual-Direction Intelligent Merge Engine**:
+  - Forward-merges feature branches into main
+  - Reverse-merges main back into features to prevent drift
+  - Then pushes reconciled main to origin
+
+### 9. CRM Sync (`internal/crm`)
+
+Bidirectional reconciliation: pulls lead updates from CRM, pushes negotiating/closed deals to CRM.
+
+- **`RestCRMClient`** — real REST API client with Bearer auth, 6 methods (PushDeal, GetLeadUpdates, ValidateAccount, SyncInteraction, SyncContacts, FetchDealDetails)
+- **`MockCRMClient`** — for testing
+- All CRM calls include 3-attempt retry with exponential backoff
+
+### 10. Target Discovery (`pkg/agents`) — GitHub Scanning
+
+**Real GitHub API integration** using `go-github`:
+
+- Searches GitHub for repositories matching `"model-context-protocol OR mcp-server language:Go language:TypeScript"`
+- Creates companies from discovered repos with their language as tech stack
+- Deduplicates against existing database entries
+
+### 11. Web Dashboard (`internal/web`)
+
+Session-based authentication (password from `ADMIN_PASSWORD` env var, default "admin"). Serves:
+
+- **`/`** — HTML dashboard: recent deals table, performance metrics (total leads, win rate, outreach success), autonomous task board from `TODO.md`, active PRs, self-service deployment buttons (Sync/Build), system health
+- **`/health`** → `"OK"`
+- **`/health/detailed`** → JSON with DB connectivity + worker liveness
+- **`/api/v1/webhook/github`** — GitHub webhook endpoint with HMAC-SHA256 signature verification
+- **`/login`** — session authentication form
+
+### 12. LLM Abstraction (`internal/llm`)
+
+`LLMProvider` interface with `Generate(ctx, Prompt) → string`. Currently only `MockLLMProvider` returns `[MOCK LLM RESPONSE based on: ...]`. The `Prompt` struct carries `System`, `User`, and `MaxTokens` fields — ready for a real provider (OpenAI, Anthropic) to be plugged in.
+
+### 13. Config (`internal/config`) — Centralized Environment Config
+
+Typed `Config` struct loaded from env vars at startup with validation. Eliminates scattered `os.Getenv()` calls.
+
+### 14. Safety (`pkg/config`) — Guardrails
+
+`SafetyConfig` with `MaxDailyPRs=5`, tone constraint "Helpful Peer (Developer-to-Developer)", and opt-out disclaimer "Automated optimization discovery. Reply 'opt-out' to blacklist."
+
+---
+
+## The Self-Improving Loop
+
+The system's most interesting architectural feature — a positive feedback loop that improves outreach quality over time:
+
+```
+  Deal reaches Closed_Won
+          │
+          ▼
+  Communication Manager marks all past
+  OUTBOUND interactions as success=true
+          │
+          ▼
+  RAGResponseGenerator queries
+  ListSuccessfulInteractions(limit=3)
+          │
+          ▼
+  Successful responses injected into
+  LLM prompt as few-shot examples
+          │
+          ▼
+  Future outreach shaped by
+  what actually worked
+```
+=======
 | Source | Status | What it does |
 |---|---|---|
 | `HNWhoIsHiringSource` | ✅ Algolia → Firebase fallback | Scans "Who is Hiring" threads for AI/LLM roles |
@@ -436,6 +575,7 @@ Bidirectional reconciliation with REST API, 3-attempt retry with exponential bac
 | AutoDev | 1h | Self-code, PR, and merge cycle |
 | Deploy Sync | 1h | Background repo synchronization |
 | Health Monitor | 5m (cron) | Auto-restart on failure |
+>>>>>>> origin/main
 
 ---
 
@@ -445,6 +585,80 @@ Bidirectional reconciliation with REST API, 3-attempt retry with exponential bac
 |---|---|---|
 | GitHub API (target discovery) | ✅ Real | `pkg/agents/discovery.go` with `go-github` |
 | GitHub API (CI tracking) | ✅ Real | `internal/deploy/github_tracker.go` |
+<<<<<<< HEAD
+| GitHub API (PR management) | ✅ Real | `internal/gitcheck/pr.go` with `go-github` |
+| Stripe billing | ✅ Real | `internal/billing/billing.go` with `stripe-go` |
+| REST CRM client | ✅ Real | `internal/crm/crm.go` with generic REST |
+| Intent classifier | ⚠️ Hybrid | `MockIntentClassifier` + `LLMIntentClassifier` (exists but mock is default) |
+| LLM provider | ❌ Mock | `internal/llm/llm.go::MockLLMProvider` |
+| Enrichment (Apollo) | ❌ Mock | `internal/enrichment/worker.go::MockApolloSource` |
+| Job board scraper | ❌ Mock | `internal/scraper/scraper.go::MockJobBoardSource` |
+| Email sending | ❌ Not implemented | Outbound is logged but not sent |
+| Email receiving | ❌ Not implemented | Inbound is simulated by polling DB |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- **Go:** version 1.24 or later
+- **PostgreSQL:** version 13 or later
+- **Git:** for version control and submodule management
+- **GitHub Token:** A Personal Access Token (PAT) with `repo` permissions (recommended)
+
+### Quick Start (Docker)
+
+```bash
+docker compose up --build
+```
+
+Dashboard at `http://localhost:8080`.
+
+### Quick Start (Local)
+
+1. **Set environment variables:**
+
+   ```bash
+   export DATABASE_URL="postgres://user:pass@localhost:5432/sales_bot?sslmode=disable"
+   export GITHUB_TOKEN="ghp_xxxx"           # optional, enables real GitHub integration
+   export GITHUB_REPOSITORY="owner/repo"     # optional, enables CI tracking and AutoDev
+   export DEPLOY_SYNC_INTERVAL="1h"          # optional, enables background sync
+   ```
+
+2. **Apply migrations:**
+
+   ```bash
+   migrate -path migrations/ -database "$DATABASE_URL" up
+   ```
+
+3. **Initialize submodules:**
+
+   ```bash
+   git submodule update --init --recursive
+   ```
+
+4. **Build and run:**
+
+   ```bash
+   go build -o bin/sales_bot ./cmd/sales_bot
+   ./bin/sales_bot
+   ```
+
+   Or use the provided scripts:
+
+   ```batch
+   build.bat
+   start.bat
+   ```
+
+### Command-Line Flags
+
+| Flag | Description |
+|---|---|
+| `--reconcile` | Run branch reconciliation and exit |
+| `--inventory` | Generate submodule inventory table and exit |
+=======
 | GitHub API (PR management) | ✅ Real | `internal/gitcheck/pr.go` |
 | Stripe billing | ✅ Real | `internal/billing/billing.go` with `stripe-go` |
 | REST CRM client | ✅ Real | `internal/crm/crm.go` |
@@ -461,6 +675,7 @@ Bidirectional reconciliation with REST API, 3-attempt retry with exponential bac
 | OpenDKIM email signing | ✅ Real (remote) | xenocide._domainkey |
 | Live stats API | ✅ Active | `/api/v1/stats`, `/api/v1/leads` |
 | XENOCIDE website | ✅ Live | `https://tormentnexus.site/` |
+>>>>>>> origin/main
 
 ---
 
@@ -468,6 +683,66 @@ Bidirectional reconciliation with REST API, 3-attempt retry with exponential bac
 
 | Variable | Required | Default | Description |
 |---|---|---|---|
+<<<<<<< HEAD
+| `DATABASE_URL` | Yes | `postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable` | PostgreSQL connection string |
+| `GITHUB_TOKEN` | No | — | GitHub PAT for API access (enrichment, CI, PRs) |
+| `GITHUB_REPOSITORY` | No | — | `owner/repo` for CI tracking and AutoDev |
+| `GITHUB_WEBHOOK_SECRET` | No | — | HMAC secret for webhook verification |
+| `CRM_BASE_URL` | No | — | REST CRM API base URL (enables real CRM) |
+| `CRM_API_KEY` | No | — | REST CRM API key |
+| `DEPLOY_SYNC_INTERVAL` | No | `1h` | Duration string (e.g., `1h`, `15m`) for background sync |
+| `ADMIN_PASSWORD` | No | `admin` | Dashboard login password |
+| `PORT` | No | `8080` | HTTP dashboard port |
+| `ENVIRONMENT` | No | `development` | Runtime environment label |
+| `GO_TEST_MODE` | No | — | Set to `true` to skip git operations in tests |
+| `SKIP_AUTODEV_SYNC` | No | — | Set to `true` to skip git sync in AutoDev |
+| `SKIP_AUTODEV_TESTS` | No | — | Set to `true` to skip test verification in AutoDev |
+
+---
+
+## Database & Migrations
+
+All schema changes go through the `migrations/` directory. Relational integrity enforced with explicit foreign keys:
+
+```
+companies(id) → contacts(company_id) → interactions(contact_id)
+companies(id) → deals(company_id)
+                pull_requests(id)
+```
+
+### Current Schema (4 migrations)
+
+| Migration | Description |
+|---|---|
+| `000001` | Initial schema: companies, contacts, interactions, deals + `lead_state` enum + `updated_at` triggers |
+| `000002` | Add `technical_dossier` column to deals |
+| `000003` | Create `pull_requests` table for AutoDev tracking |
+| `000004` | Add `success` boolean to interactions (prompt optimization loop) |
+
+### Known Schema Debt
+
+- `contacts.email` UNIQUE constraint allows multiple NULLs — needs partial index or NOT NULL
+- Missing indices on `interactions.success` and `deals.current_state` for query performance
+- No `audit_log` table for state transition history
+- No `deleted_at` soft-delete columns for GDPR compliance
+
+---
+
+## Testing
+
+```bash
+# Unit tests
+go test ./... -v
+
+# Integration tests (requires DATABASE_URL)
+DATABASE_URL=postgres://user:pass@localhost:5432/sales_bot go test ./... -v -tags=integration
+
+# E2E tests
+DATABASE_URL=postgres://user:pass@localhost:5432/sales_bot go test ./tests/e2e/... -v
+
+# Smoke test against a running instance
+TARGET_URL="https://your-instance.com" go run scripts/smoke_test.go
+=======
 | `DATABASE_URL` | Yes | — | PostgreSQL connection string |
 | `PORT` | No | `8080` | HTTP dashboard port |
 | `GITHUB_TOKEN` | No | — | GitHub PAT for API access |
@@ -506,10 +781,222 @@ Bidirectional reconciliation with REST API, 3-attempt retry with exponential bac
 | `/api/v1/webhook/github` | POST | GitHub push webhook with HMAC verification |
 
 ---
+>>>>>>> origin/main
 
 ## Getting Started
 
 ### Prerequisites
+<<<<<<< HEAD
+
+- Go 1.24+ (or the version pinned in go.mod)
+- PostgreSQL 13+
+- (Optional) Docker & Docker Compose for local stacks
+- (Optional) GitHub Personal Access Token with `repo` permissions
+
+### Quick Start (Docker)
+
+```bash
+docker compose up --build
+```
+
+The dashboard will be available at `http://localhost:8080`.
+
+### Quick Start (Local)
+
+1. Set environment variables (example):
+   - `DATABASE_URL=postgres://user:pass@localhost:5432/tormentnexus?sslmode=disable`
+   - `PORT=8080`
+   - `GITHUB_TOKEN=ghp_xxxx` (optional, enables real GitHub integration)
+   - `GITHUB_REPOSITORY=owner/repo` (optional, enables CI tracking and AutoDev PRs)
+   - `DEPLOY_SYNC_INTERVAL=1h` (optional, enables background sync)
+
+2. Run migrations:
+   ```bash
+   migrate -path migrations/ -database "$DATABASE_URL" up
+   ```
+
+3. Initialize submodules:
+   ```bash
+   git submodule update --init --recursive
+   ```
+
+4. Build and run:
+   ```bash
+   go build -o bin/sales_bot ./cmd/sales_bot
+   ./bin/sales_bot
+   ```
+
+   Or use the provided scripts:
+   ```batch
+   build.bat
+   start.bat
+   ```
+
+## Configuration
+
+Use environment variables to configure runtime behavior:
+
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `DATABASE_URL` | Yes | `postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable` | PostgreSQL connection string |
+| `GITHUB_TOKEN` | No | — | GitHub PAT for API access (enrichment, CI, PRs) |
+| `GITHUB_REPOSITORY` | No | — | `owner/repo` for CI tracking and AutoDev |
+| `GITHUB_WEBHOOK_SECRET` | No | — | HMAC secret for webhook verification |
+| `CRM_BASE_URL` | No | — | REST CRM API base URL (enables real CRM) |
+| `CRM_API_KEY` | No | — | REST CRM API key |
+| `DEPLOY_SYNC_INTERVAL` | No | — | Duration string (e.g., `1h`, `15m`) for background sync |
+| `GO_TEST_MODE` | No | — | Set to `true` to skip git operations in tests |
+| `SKIP_AUTODEV_SYNC` | No | — | Set to `true` to skip git sync in AutoDev |
+| `SKIP_AUTODEV_TESTS` | No | — | Set to `true` to skip test verification in AutoDev |
+
+Agents and integrations are configured through typed configuration structs and dependency injection; avoid hard-coded credentials.
+
+## Database & Migrations
+
+- All schema changes MUST be delivered through the `migrations/` folder and reviewed as part of PRs.
+- Enforce relational integrity with explicit foreign keys:
+  - `companies(id)` → `contacts(company_id)`
+  - `contacts(id)` → `interactions(contact_id)`
+  - `companies(id)` → `deals(company_id)`
+- Use explicit database transactions for state transitions to ensure atomicity.
+- Avoid nullable foreign keys unless justified and documented.
+- Include test fixtures and rollback scripts for each migration.
+
+### Current Schema (4 migrations)
+
+| Migration | Description |
+|---|---|
+| `000001` | Initial schema: companies, contacts, interactions, deals + state enum + updated_at triggers |
+| `000002` | Add `technical_dossier` column to deals |
+| `000003` | Create `pull_requests` table for AutoDev tracking |
+| `000004` | Add `success` boolean to interactions (prompt optimization loop) |
+
+## Development Guidelines
+
+### Agent & Engine Development
+
+- New agents must implement the internal `Agent` interface.
+- Place new agents under `/pkg/agents/` or `/internal/`.
+- Agents must:
+  - Expose health and metrics endpoints.
+  - Provide mock testing endpoints that simulate external providers.
+  - Use defensive loops with exponential backoff and circuit-breaker behavior.
+
+### Integrations
+
+- Abstract all external communication using interfaces to allow injection of mock implementations in tests.
+- Scraper engines must support headless configuration profiles (no GUI dependency).
+- All external API calls should implement retry with exponential backoff.
+
+### State Machine
+
+- Enforce rigid, atomic state updates for all leads via transactional functions.
+- Log state transitions in an audit table for compliance and debugging.
+
+### Testing
+
+- Unit tests for pure logic and plumbing.
+- Integration tests that run against the database (use ephemeral DB instances).
+- End-to-end tests must be possible using mock endpoints without calling external providers.
+
+### Logging & Observability
+
+- Structured logging (JSON) and correlation IDs for requests/tasks.
+- Emit metrics (counts, latencies, error rates) for each agent and worker queue.
+
+### Security
+
+- Secrets must never be stored in plaintext in the repo; use environment variables or secret stores.
+- Validate and sanitize all inputs from scraping and third-party sources.
+- Webhook endpoints must verify HMAC signatures before processing.
+
+## Testing
+
+- Run unit tests:
+  ```bash
+  go test ./... -v
+  ```
+
+- Integration tests require `DATABASE_URL`:
+  ```bash
+  DATABASE_URL=postgres://user:pass@localhost:5432/sales_bot go test ./... -v -tags=integration
+  ```
+
+- E2E tests:
+  ```bash
+  DATABASE_URL=postgres://user:pass@localhost:5432/sales_bot go test ./tests/e2e/... -v
+  ```
+
+- Smoke test against a running instance:
+  ```bash
+  TARGET_URL="https://your-instance.com" go run scripts/smoke_test.go
+  ```
+
+## Repository Management — EXECUTIVE PROTOCOL
+
+To preserve autonomous development and safe merges, follow the EXECUTIVE PROTOCOL:
+
+- **Upstream Tracking:**
+  - Always sync with the parent fork and update submodules recursively.
+  - Use `scripts/sync_repo.sh` for automated synchronization.
+
+- **Intelligent Merge:**
+  - Use the dual-direction merge engine to reconcile feature branches with `main`.
+  - Forward merge: Feature → Main
+  - Reverse merge: Main → Feature (prevents drift)
+
+- **Validation:**
+  - Builds must pass merge integrity tests defined under `internal/gitcheck`.
+  - Run validation before merging:
+    ```bash
+    ./scripts/sync_repo.sh --fetch-upstream
+    go test ./internal/gitcheck/... ./internal/gitres/...
+    ```
+
+- **Automation:**
+  - CI must run the full validation, linters, unit and integration tests.
+
+## CI / Validation
+
+The CI pipeline (`.github/workflows/ci.yml`) runs:
+
+- Version consistency check (`VERSION` vs `VERSION.md`)
+- Integrity tests (`internal/gitcheck`)
+- Conflict resolution tests (`internal/gitres`)
+- Full project test suite (`go test ./...`)
+- Build verification (`go build ./cmd/sales_bot`)
+
+## Known Issues
+
+- `TestResolveConflictTheirs` in `internal/gitres/resolve_test.go` fails on Windows due to CRLF line endings. The test expects `\n` but Git writes `\r\n` on Windows.
+
+## Contributing
+
+- Follow the coding and branch conventions documented in `AGENTS.md`.
+- All PRs must:
+  - Target a feature branch and include migration files (if DB changes).
+  - Include tests (unit + integration where applicable).
+  - Pass `internal/gitcheck` and CI.
+  - Include a clear description of agent interfaces added/changed.
+
+## Useful Scripts & Tools
+
+- `scripts/sync_repo.sh` — upstream sync and submodule updater (use per EXECUTIVE PROTOCOL).
+- `scripts/smoke_test.go` — production health verification.
+- `build.bat` / `start.bat` — Windows build and start scripts.
+- `--reconcile` flag — run branch reconciliation standalone.
+- `--inventory` flag — generate submodule inventory table.
+
+## License & Contact
+
+- License: (Insert license here)
+- Maintainer: robertpelloni
+- For security issues or urgent problems, create an issue in this repo and mark it as high-priority.
+
+---
+
+This repository is intended for production-grade autonomous orchestration. Follow the conventions above to ensure agent implementations remain safe, testable, and auditable.
+=======
 - Go 1.26+ 
 - PostgreSQL 16
 - Git
@@ -542,10 +1029,36 @@ HERMES_API_URL="http://localhost:4000" \
 HERMES_API_KEY="sk-litellm" \
 HERMES_MODEL="free-llm" \
 go run ./cmd/sales_bot
+>>>>>>> origin/main
 ```
 
 ---
 
+<<<<<<< HEAD
+## Repository Management — EXECUTIVE PROTOCOL
+
+The system follows a strict protocol for repository synchronization and intelligent merging:
+
+- **Upstream Tracking:** Always sync with the parent fork and update submodules recursively.
+- **Intelligent Merge:** Use the dual-direction merge engine to reconcile feature branches with `main`.
+  - Forward merge: Feature → Main
+  - Reverse merge: Main → Feature (prevents drift)
+- **Validation:** Every build must pass merge integrity tests in `internal/gitcheck`.
+- **Automation:** Use `scripts/sync_repo.sh` for automated synchronization.
+- **CI Gating:** AutoDev PRs are only merged after CI passes and staging validates successfully.
+
+---
+
+## CI / Validation
+
+The CI pipeline (`.github/workflows/ci.yml`) runs:
+
+- Version consistency check (`VERSION` vs `VERSION.md`)
+- Integrity tests (`internal/gitcheck`)
+- Conflict resolution tests (`internal/gitres`)
+- Full project test suite (`go test ./...`)
+- Build verification (`go build ./cmd/sales_bot`)
+=======
 ## The Self-Improving Loop
 
 ```
@@ -628,20 +1141,53 @@ enterprise_sales_bot/
 ├── borg/                   # TormentNexus documentation submodule
 └── freellm_config.yaml     # LiteLLM proxy configuration
 ```
+>>>>>>> origin/main
 
 ---
 
 ## Known Issues
 
+<<<<<<< HEAD
+- **CRLF Test Failure:** `TestResolveConflictTheirs` in `internal/gitres/resolve_test.go` fails on Windows due to `\r\n` vs `\n` line ending mismatch. Does not affect production functionality.
+
+---
+
+## Contributing
+
+- Follow the coding and branch conventions documented in `AGENTS.md`.
+- All PRs must:
+  - Target a feature branch and include migration files (if DB changes).
+  - Include tests (unit + integration where applicable).
+  - Pass `internal/gitcheck` and CI.
+  - Include a clear description of agent interfaces added/changed.
+
+---
+
+## Useful Scripts & Tools
+
+| Script | Purpose |
+|---|---|
+| `scripts/sync_repo.sh` | Upstream sync and submodule updater (per EXECUTIVE PROTOCOL) |
+| `scripts/smoke_test.go` | Production health verification |
+| `scripts/crm_verify/` | CRM API interaction verification |
+| `build.bat` / `start.bat` | Windows build and start scripts |
+| `--reconcile` flag | Run branch reconciliation standalone |
+| `--inventory` flag | Generate submodule inventory table |
+=======
 - **CRLF Test Failure:** `TestResolveConflictTheirs` fails on Windows due to `\r\n` vs `\n` mismatch
 - **HN Algolia API:** Sometimes rate-limits the VPS IP, falls back to Firebase API
 - **Gmail Direct SMTP:** Blocked by Gmail from VPS IPs — emails go to IMAP Drafts instead
 - **LM Studio Models:** Large models (>16GB) may fail to load on machines with insufficient RAM
+>>>>>>> origin/main
 
 ---
 
 ## License & Contact
 
+<<<<<<< HEAD
+- Maintainer: robertpelloni
+- For security issues, create an issue in this repo and mark it as high-priority.
+=======
 - Maintainer: **Robert Pelloni** (pelloni.robert@gmail.com)
 - GitHub: `github.com/robertpelloni/enterprise_sales_bot`
 - Site: `https://tormentnexus.site/`

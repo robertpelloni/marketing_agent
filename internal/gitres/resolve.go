@@ -3,11 +3,7 @@ package gitres
 import (
 	"bytes"
 	"fmt"
-<<<<<<< HEAD
-	"log"
-=======
 	"log/slog"
->>>>>>> origin/main
 	"os/exec"
 	"strings"
 
@@ -33,11 +29,7 @@ func ResolveConflict(source string, strategy string) error {
 		conflictCmd := exec.Command("git", "diff", "--name-only", "--diff-filter=U")
 		conflicts, _ := conflictCmd.CombinedOutput()
 		if len(conflicts) > 0 {
-<<<<<<< HEAD
-			log.Printf("Intelligent Merge: Conflicts detected in files:\n%s", string(conflicts))
-=======
 			slog.Info(fmt.Sprintf("Intelligent Merge: Conflicts detected in files:\n%s", string(conflicts)))
->>>>>>> origin/main
 		}
 		return fmt.Errorf("merge failed: %v, output: %s", err, string(output))
 	}
@@ -77,16 +69,6 @@ func ReconcileBranches() error {
 
 	for _, branch := range branches {
 		if !hasUniqueProgress(branch) {
-<<<<<<< HEAD
-			log.Printf("Intelligent Merge: Skipping %s, no unique progress.", branch)
-			continue
-		}
-
-		log.Printf("Intelligent Merge: Reconciling branch: %s", branch)
-
-		// 1. Forward Merge: Feature -> Main
-		log.Printf("Intelligent Merge: Attempting Forward Merge (%s -> main)...", branch)
-=======
 			slog.Info(fmt.Sprintf("Intelligent Merge: Skipping %s, no unique progress.", branch))
 			continue
 		}
@@ -95,21 +77,10 @@ func ReconcileBranches() error {
 
 		// 1. Forward Merge: Feature -> Main
 		slog.Info(fmt.Sprintf("Intelligent Merge: Attempting Forward Merge (%s -> main)...", branch))
->>>>>>> origin/main
 		if out, err := exec.Command("git", "checkout", "main").CombinedOutput(); err != nil {
 			return fmt.Errorf("failed to checkout main: %v, output: %s", err, string(out))
 		}
 		if err := ResolveConflict(branch, "theirs"); err != nil {
-<<<<<<< HEAD
-			log.Printf("Intelligent Merge: Forward merge failed for %s: %v", branch, err)
-			_ = AbortMerge()
-		} else {
-			log.Printf("Intelligent Merge: Successfully merged %s into main", branch)
-		}
-
-		// 2. Reverse Merge: Main -> Feature
-		log.Printf("Intelligent Merge: Attempting Reverse Merge (main -> %s)...", branch)
-=======
 			slog.Info(fmt.Sprintf("Intelligent Merge: Forward merge failed for %s: %v", branch, err))
 			_ = AbortMerge()
 		} else {
@@ -125,17 +96,10 @@ func ReconcileBranches() error {
 		}
 		// We use standard merge to catch drift and ensure metadata (TODO, VERSION) is preserved correctly
 		if err := ResolveConflict("main", ""); err != nil {
-<<<<<<< HEAD
-			log.Printf("Intelligent Merge: Reverse merge failed for %s: %v", branch, err)
-			_ = AbortMerge()
-		} else {
-			log.Printf("Intelligent Merge: Successfully reconciled %s with main", branch)
-=======
 			slog.Info(fmt.Sprintf("Intelligent Merge: Reverse merge failed for %s: %v", branch, err))
 			_ = AbortMerge()
 		} else {
 			slog.Info(fmt.Sprintf("Intelligent Merge: Successfully reconciled %s with main", branch))
->>>>>>> origin/main
 		}
 	}
 
@@ -145,15 +109,9 @@ func ReconcileBranches() error {
 	}
 
 	// Step 3 of EXECUTIVE PROTOCOL: Finalize by pushing reconciled main branch
-<<<<<<< HEAD
-	log.Println("Intelligent Merge: Finalizing reconciliation by pushing main to origin...")
-	if err := gitcheck.PushBranch("main"); err != nil {
-		log.Printf("Intelligent Merge Warning: Final push failed: %v", err)
-=======
 	slog.Info("Intelligent Merge: Finalizing reconciliation by pushing main to origin...")
 	if err := gitcheck.PushBranch("main"); err != nil {
 		slog.Info(fmt.Sprintf("Intelligent Merge Warning: Final push failed: %v", err))
->>>>>>> origin/main
 		// We don't return error here to allow the cycle to continue locally
 	}
 

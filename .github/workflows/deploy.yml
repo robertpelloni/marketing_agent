@@ -17,17 +17,20 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
+<<<<<<< HEAD
+          go-version: '1.23'
+=======
           go-version: '1.24'
+>>>>>>> origin/main
           cache: true
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
           version: latest
 <<<<<<< HEAD
-      - name: Run Gosec Security Scanner
-        uses: securego/gosec-action@master
 =======
           args: --timeout=5m
+>>>>>>> origin/main
       - name: Run Gosec Security Scanner
         uses: securego/gosec@master
 >>>>>>> origin/main
@@ -56,7 +59,11 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v5
       with:
+<<<<<<< HEAD
+        go-version: '1.23'
+=======
         go-version: '1.24'
+>>>>>>> origin/main
         cache: true
     - name: Verify Version Consistency
       run: |
@@ -107,7 +114,11 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v5
       with:
+<<<<<<< HEAD
+        go-version: '1.23'
+=======
         go-version: '1.24'
+>>>>>>> origin/main
         cache: true
     - name: Build
       run: go build -v -o bin/sales_bot ./cmd/sales_bot

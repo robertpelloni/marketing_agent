@@ -12,6 +12,10 @@ import (
 )
 
 // Helper variable for env manipulation in tests
+<<<<<<< HEAD
+var testToken = ""
+=======
+>>>>>>> origin/main
 
 func TestGitHubIssueSource_Discover_WithMockServer(t *testing.T) {
 	// Track which endpoints were called
@@ -49,7 +53,11 @@ func TestGitHubIssueSource_Discover_WithMockServer(t *testing.T) {
 				},
 			}
 			w.Header().Set("Content-Type", "application/json")
+<<<<<<< HEAD
+			json.NewEncoder(w).Encode(result)
+=======
 			_ = json.NewEncoder(w).Encode(result)
+>>>>>>> origin/main
 
 		case r.URL.Path == "/search/repositories":
 			repoSearchCalled = true
@@ -71,7 +79,11 @@ func TestGitHubIssueSource_Discover_WithMockServer(t *testing.T) {
 				},
 			}
 			w.Header().Set("Content-Type", "application/json")
+<<<<<<< HEAD
+			json.NewEncoder(w).Encode(result)
+=======
 			_ = json.NewEncoder(w).Encode(result)
+>>>>>>> origin/main
 
 		default:
 			w.WriteHeader(http.StatusNotFound)

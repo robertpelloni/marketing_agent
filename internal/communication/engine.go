@@ -3,24 +3,32 @@ package communication
 import (
 	"context"
 <<<<<<< HEAD
-	"log"
-	"strings"
-
+	"fmt"
 =======
+>>>>>>> origin/main
 	"log/slog"
 	"strings"
 	"time"
 
+<<<<<<< HEAD
+=======
 	"fmt"
 >>>>>>> origin/main
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+	"fmt"
+=======
+	"fmt"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+>>>>>>> origin/main
 )
 
-// LearningSalesEngine implements the SalesStrategy interface.
 <<<<<<< HEAD
 =======
+// LearningSalesEngine implements the SalesStrategy interface.
 // isHighValueDeal determines if a deal is high-value based on company tier or quoted pricing.
 func isHighValueDeal(deal *db.Deal, company *db.Company) bool {
 	if company.MarketCapTier == "Enterprise" {
@@ -34,27 +42,69 @@ func isHighValueDeal(deal *db.Deal, company *db.Company) bool {
 
 >>>>>>> origin/main
 type LearningSalesEngine struct {
+<<<<<<< HEAD
+	db		*db.DB
+	crmClient	crm.CRMClient
+	llm		llm.LLMProvider
+=======
 	db        *db.DB
 	crmClient crm.CRMClient
 	llm       llm.LLMProvider
+>>>>>>> origin/main
 }
 
+<<<<<<< HEAD
+=======
 // NewLearningSalesEngine creates a new instance of the engine.
+>>>>>>> origin/main
 func NewLearningSalesEngine(database *db.DB, crmClient crm.CRMClient, llmProvider llm.LLMProvider) *LearningSalesEngine {
 	return &LearningSalesEngine{
+<<<<<<< HEAD
+		db:		database,
+		crmClient:	crmClient,
+		llm:		llmProvider,
+=======
 		db:        database,
 		crmClient: crmClient,
 		llm:       llmProvider,
+>>>>>>> origin/main
 	}
 }
 
+<<<<<<< HEAD
+func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext) (Action, error) {
+	slog.Info("LearningSalesEngine: Deciding next action", "deal", salesCtx.Deal.ID, "intent", salesCtx.LatestIntent)
+
+	// HITL GATE: If high value and not approved, wait for human
+	if e.isHighValueLead(salesCtx) && salesCtx.Deal.CurrentState == db.StateResearched && !salesCtx.Deal.ApprovalRequired {
+		if e.db != nil {
+			_ = e.db.SetApprovalRequired(ctx, salesCtx.Deal.ID, true)
+		}
+		return ActionWait, nil
+	}
+
+	if e.shouldAdvanceState(salesCtx) {
+		newState := db.StateNegotiating
+		if e.QualifyLead(salesCtx) >= 80 && salesCtx.LatestIntent == IntentFollowUp {
+			newState = db.StateClosedWon
+		}
+		if e.isHighValueLead(salesCtx) && newState != db.StatePendingApproval && newState != db.StateClosedWon {
+			newState = db.StatePendingApproval
+		}
+
+		slog.Info("LearningSalesEngine: Advancing deal state", "deal", salesCtx.Deal.ID, "to", newState)
+		if e.db != nil {
+			if err := e.db.UpdateDealState(ctx, salesCtx.Deal.ID, newState); err == nil {
+				_ = e.db.MarkTemplateSuccessForDeal(ctx, salesCtx.Deal.ID)
+				if e.crmClient != nil {
+					go func() {
+						updatedDeal := salesCtx.Deal
+						updatedDeal.CurrentState = newState
+						_ = e.crmClient.PushDeal(ctx, updatedDeal, salesCtx.Company, e.RouteLead(salesCtx))
+=======
 // Decide determines the next action for a lead.
 func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext) (Action, error) {
-<<<<<<< HEAD
-	log.Printf("LearningSalesEngine: Deciding next action for deal %d (Latest Intent: %s)", salesCtx.Deal.ID, salesCtx.LatestIntent)
-=======
 	slog.Info(fmt.Sprintf("LearningSalesEngine: Deciding next action for deal %d (Latest Intent: %s)", salesCtx.Deal.ID, salesCtx.LatestIntent))
->>>>>>> origin/main
 
 	// 1. Analyze historical performance and lead quality
 	if e.shouldAdvanceState(salesCtx) {
@@ -64,18 +114,6 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 			newState = db.StateClosedWon
 		}
 
-<<<<<<< HEAD
-		log.Printf("LearningSalesEngine: Advancing deal %d to %s state.", salesCtx.Deal.ID, newState)
-		if e.db != nil {
-			if err := e.db.UpdateDealState(ctx, salesCtx.Deal.ID, newState); err != nil {
-				log.Printf("LearningSalesEngine: Error updating deal state: %v", err)
-			} else if e.crmClient != nil {
-				// Immediate CRM Sync
-				updatedDeal := salesCtx.Deal
-				updatedDeal.CurrentState = newState
-				if err := e.crmClient.PushDeal(ctx, updatedDeal, salesCtx.Company, e.RouteLead(salesCtx)); err != nil {
-					log.Printf("LearningSalesEngine: Immediate CRM Push failed: %v", err)
-=======
 		// If deal is high-value, require human approval before advancing
 		if isHighValueDeal(&salesCtx.Deal, &salesCtx.Company) && newState != db.StatePendingApproval {
 			slog.Info(fmt.Sprintf("LearningSalesEngine: High-value deal %d requires human approval", salesCtx.Deal.ID))
@@ -106,6 +144,7 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 							return
 						}
 						slog.Info(fmt.Sprintf("LearningSalesEngine Error: CRM state sync failed after %d attempts for deal %d", maxRetries, updatedDeal.ID))
+>>>>>>> origin/main
 					}()
 >>>>>>> origin/main
 				}
@@ -114,14 +153,23 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 		return ActionAdvanceState, nil
 	}
 
+<<<<<<< HEAD
+	switch salesCtx.LatestIntent {
+	case IntentPricing:
+		if e.isHighValueLead(salesCtx) { return ActionEscalate, nil }
+		return ActionRespond, nil
+	case IntentObjection:
+		if e.countInteractionTypes(salesCtx.Interactions, "Outbound") >= 2 { return ActionEscalate, nil }
+		return ActionRespond, nil
+	case IntentSpam:
+		return ActionWait, nil
+	case IntentMeetingRequest:
+		return ActionRespond, nil
+=======
 	// 2. Self-Learning Strategy Adaptation
 	// In production, this would call e.llm.Generate to analyze sentiment and adjust Action
 	if e.llm != nil {
-<<<<<<< HEAD
-		log.Printf("LearningSalesEngine: Analyzing sentiment and adapting strategy via LLM for deal %d", salesCtx.Deal.ID)
-=======
 		slog.Info(fmt.Sprintf("LearningSalesEngine: Analyzing sentiment and adapting strategy via LLM for deal %d", salesCtx.Deal.ID))
->>>>>>> origin/main
 	}
 
 	// 3. Base intent-driven logic
@@ -136,7 +184,11 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 		if e.isHighValueLead(salesCtx) {
 			return ActionRespond, nil
 		}
+<<<<<<< HEAD
+		return ActionEscalate, nil	// Escalate high-tier pricing negotiation
+=======
 		return ActionEscalate, nil // Escalate high-tier pricing negotiation
+>>>>>>> origin/main
 	case IntentObjection:
 		// Attempt one autonomous rebuttal, then escalate
 		if e.countInteractionTypes(salesCtx.Interactions, "Outbound") < 2 {
@@ -145,12 +197,21 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 		return ActionEscalate, nil
 	case IntentSpam:
 		return ActionWait, nil
+>>>>>>> origin/main
 	}
 
 	return ActionRespond, nil
 }
 
 func (e *LearningSalesEngine) shouldAdvanceState(ctx SalesContext) bool {
+<<<<<<< HEAD
+	if ctx.Deal.CurrentState == db.StateEngaged && (len(ctx.Interactions) > 3 || e.QualifyLead(ctx) > 70) {
+		return true
+	}
+	if ctx.Deal.CurrentState == db.StateNegotiating && (ctx.LatestIntent == IntentFollowUp || ctx.LatestIntent == IntentPricing) {
+		return e.QualifyLead(ctx) > 85
+	}
+=======
 	// Logic to advance state from Engaged to Negotiating if interest is high or highly qualified
 	if ctx.Deal.CurrentState == db.StateEngaged && (len(ctx.Interactions) > 3 || e.QualifyLead(ctx) > 70) {
 		return true
@@ -160,47 +221,74 @@ func (e *LearningSalesEngine) shouldAdvanceState(ctx SalesContext) bool {
 		return e.QualifyLead(ctx) > 85
 	}
 
+>>>>>>> origin/main
 	return false
 }
 
 func (e *LearningSalesEngine) isHighValueLead(ctx SalesContext) bool {
+<<<<<<< HEAD
+	return ctx.Company.MarketCapTier == "Enterprise" || ctx.Deal.QuotedPricing >= 100000 || e.ScoreLead(ctx) > 80
+=======
 	return ctx.Company.MarketCapTier == "Enterprise" || e.ScoreLead(ctx) > 80
+>>>>>>> origin/main
 }
 
 func (e *LearningSalesEngine) countInteractionTypes(interactions []db.Interaction, direction string) int {
 	count := 0
 	for _, i := range interactions {
+<<<<<<< HEAD
+		if i.Direction == direction { count++ }
+=======
 		if i.Direction == direction {
 			count++
 		}
+>>>>>>> origin/main
 	}
 	return count
 }
 
 <<<<<<< HEAD
-// ScoreLead calculates a priority score based on tier and technical research.
 func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
 	score := 0
-
-	// Tier scoring
 	switch strings.ToLower(salesCtx.Company.MarketCapTier) {
-	case "enterprise":
-		score += 50
-	case "mid-market":
-		score += 25
+	case "enterprise": score += 50
+	case "mid-market": score += 25
 	}
-
-	// Dossier insight scoring
-	if strings.Contains(salesCtx.Deal.TechnicalDossier, "BOTTLENECK") {
-		score += 30
-	}
-	if strings.Contains(salesCtx.Deal.TechnicalDossier, "INFRASTRUCTURE") {
-		score += 20
-	}
-
-	// Interaction quantity bonus
+	if strings.Contains(salesCtx.Deal.TechnicalDossier, "BOTTLENECK") { score += 30 }
 	score += len(salesCtx.Interactions) * 2
+	if score > 100 { return 100 }
+	return score
+}
 
+func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
+	qual := e.ScoreLead(ctx) / 2
+	if e.countInteractionTypes(ctx.Interactions, "Inbound") > 2 { qual += 20 }
+	switch ctx.LatestIntent {
+	case IntentPricing: qual += 15
+	case IntentMeetingRequest: qual += 25
+	case IntentFollowUp: qual += 20
+	}
+	if ctx.LatestIntent == IntentObjection { qual -= 10 }
+	if qual > 100 { return 100 }
+	if qual < 0 { return 0 }
+	return qual
+}
+
+func (e *LearningSalesEngine) RouteLead(salesCtx SalesContext) string {
+	if salesCtx.Company.MarketCapTier == "Enterprise" && salesCtx.LatestIntent == IntentTechnical {
+		return "Lead Solutions Architect"
+	}
+	if e.ScoreLead(salesCtx) > 80 { return "Senior Account Executive" }
+	return "Sales Representative"
+}
+
+func CalculateQuote(tier string) int {
+	switch strings.ToLower(tier) {
+	case "enterprise": return 50000
+	case "mid-market": return 25000
+	default: return 10000
+	}
+}
 =======
 // ScoreLead calculates a priority score using Challenger Sale methodology.
 // High score = high potential to close.
@@ -258,7 +346,6 @@ func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
 	score += len(salesCtx.Interactions) * 3
 
 	// Cap at 100
->>>>>>> origin/main
 	if score > 100 {
 		return 100
 	}
@@ -266,35 +353,6 @@ func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
 }
 
 // QualifyLead returns a qualification percentage (0-100) based on readiness to buy.
-<<<<<<< HEAD
-func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
-	qual := 0
-
-	// Base score from profile
-	qual += e.ScoreLead(ctx) / 2
-
-	// Engagement quality
-	inboundCount := e.countInteractionTypes(ctx.Interactions, "Inbound")
-	if inboundCount > 2 {
-		qual += 20
-	}
-
-	// Intent analysis
-	switch ctx.LatestIntent {
-	case IntentPricing:
-		qual += 15
-	case IntentTechnical:
-		qual += 10
-	case IntentMeetingRequest:
-		qual += 25
-	case IntentFollowUp:
-		qual += 20
-	}
-
-	// Penalty for objections
-	if ctx.LatestIntent == IntentObjection {
-		qual -= 10
-=======
 // Uses MEDDIC-inspired framework: Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain, Champion
 func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
 	qual := 0
@@ -340,7 +398,6 @@ func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
 	recentInteractions := len(ctx.Interactions)
 	if recentInteractions > 5 {
 		qual += 10
->>>>>>> origin/main
 	}
 
 	if qual > 100 {
@@ -376,3 +433,4 @@ func (e *LearningSalesEngine) RouteLead(salesCtx SalesContext) string {
 	// Default: Standard Sales Representative
 	return "Sales Representative"
 }
+>>>>>>> origin/main

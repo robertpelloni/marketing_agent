@@ -13,7 +13,6 @@
 - **LinkedIn Voice/Video AI:** Integrate with AI voice or video generation for hyper-personalized video pitches to key decision-makers.
 - **Automatic PR Contributions:** Have the agent contribute small, meaningful PRs to a target company's open-source projects as a "technical hook" before reaching out.
 - **Multi-Cloud Deployment:** Ensure the entire stack can be easily deployed across AWS, GCP, and Azure with Terraform or Pulumi scripts.
-- **Self-Improving Prompts:** Implement a feedback loop where the success of an outreach (reply/deal won) is used to refine the LLM prompts for future personalization.
 =======
 
 - **TormentNexus-as-a-Service Lead Gen:** Package the autonomous sales engine itself as a service for other technical B2B products.

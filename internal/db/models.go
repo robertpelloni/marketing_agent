@@ -12,6 +12,7 @@ const (
 	StateOutreachSent LeadState = "Outreach_Sent"
 	StateEngaged      LeadState = "Engaged"
 	StateNegotiating  LeadState = "Negotiating"
+	StatePendingApproval LeadState = "Pending_Approval"  // Awaiting human review for high-value deals
 	StateClosedWon    LeadState = "Closed_Won"
 	StateClosedLost   LeadState = "Closed_Lost"
 =======
@@ -104,7 +105,9 @@ type Interaction struct {
 	RawText   string    `db:"raw_text"`
 	Summary   string    `db:"summary"`
 	Sentiment string    `db:"sentiment"`
-	Success   bool      `db:"success"` // Indicates if the interaction led to a positive outcome
+	Success   bool      `db:"success"`   // Indicates if the interaction led to a positive outcome
+	TemplateID string   `db:"template_id"` // Optional: template used for outbound interactions
+	ResponseID string   `db:"response_id"` // Optional: objection response used for this interaction
 	CreatedAt time.Time `db:"created_at"`
 =======
 	ID         int64     `db:"id"`
@@ -130,28 +133,25 @@ type Deal struct {
 	CustomRequirements string    `db:"custom_requirements"`
 	TechnicalDossier   string    `db:"technical_dossier"`
 <<<<<<< HEAD
+	ApprovalRequired   bool      `db:"approval_required"`
 =======
-	CadenceStep        int       `db:"cadence_step"` // 0 = not started, 1+ = current step index
 >>>>>>> origin/main
+	CadenceStep        int       `db:"cadence_step"` // 0 = not started, 1+ = current step index
 	CreatedAt          time.Time `db:"created_at"`
 	UpdatedAt          time.Time `db:"updated_at"`
 }
 
-<<<<<<< HEAD
-// PerformanceMetrics aggregates key sales pipeline statistics.
-type PerformanceMetrics struct {
-	TotalLeads         int            `json:"total_leads"`
-	LeadsByState       map[LeadState]int `json:"leads_by_state"`
-	SuccessfulOutreach int            `json:"successful_outreach"`
-	WinRate            float64        `json:"win_rate"`
-=======
 // Template represents a reusable outreach message template.
 type Template struct {
 	ID        string    `db:"id"`
 	Name      string    `db:"name"`
 	Subject   string    `db:"subject"`
 	Body      string    `db:"body"`
+<<<<<<< HEAD
+	Channel   string    `db:"channel"`   // email, linkedin, github
+=======
 	Channel   string    `db:"channel"` // email, linkedin, github
+>>>>>>> origin/main
 	CreatedAt time.Time `db:"created_at"`
 	UpdatedAt time.Time `db:"updated_at"`
 }
@@ -166,6 +166,12 @@ type TemplateMetrics struct {
 
 // PerformanceMetrics aggregates key sales pipeline statistics.
 type PerformanceMetrics struct {
+<<<<<<< HEAD
+	TotalLeads         int            `json:"total_leads"`
+	LeadsByState       map[LeadState]int `json:"leads_by_state"`
+	SuccessfulOutreach int            `json:"successful_outreach"`
+	WinRate            float64        `json:"win_rate"`
+=======
 	TotalLeads         int               `json:"total_leads"`
 	LeadsByState       map[LeadState]int `json:"leads_by_state"`
 	SuccessfulOutreach int               `json:"successful_outreach"`
@@ -178,3 +184,4 @@ type DealStateCount struct {
 	Count int
 >>>>>>> origin/main
 }
+>>>>>>> origin/main

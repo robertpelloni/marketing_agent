@@ -3,11 +3,7 @@ package communication
 import (
 	"context"
 	"fmt"
-<<<<<<< HEAD
-	"log"
-=======
 	"log/slog"
->>>>>>> origin/main
 	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
@@ -17,11 +13,7 @@ import (
 type MockIntentClassifier struct{}
 
 func (m *MockIntentClassifier) Classify(ctx context.Context, text string) (Intent, error) {
-<<<<<<< HEAD
-	log.Printf("MockIntentClassifier: Classifying text: %s", text)
-=======
 	slog.Info(fmt.Sprintf("MockIntentClassifier: Classifying text: %s", text))
->>>>>>> origin/main
 
 	// Simple heuristic-based mock classification
 	if containsAny(text, "pricing", "cost", "license") {
@@ -62,13 +54,8 @@ func NewLLMIntentClassifier(provider llm.LLMProvider) *LLMIntentClassifier {
 
 func (c *LLMIntentClassifier) Classify(ctx context.Context, text string) (Intent, error) {
 	prompt := llm.Prompt{
-<<<<<<< HEAD
-		System: "You are a sales intent classifier. Classify the user's message into one of: Technical, Pricing, Objection, MeetingRequest, FollowUp, Spam, or Unknown.",
-		User:   fmt.Sprintf("Classify this message: %s", text),
-=======
 		System:	"You are a sales intent classifier. Classify the user's message into one of: Technical, Pricing, Objection, MeetingRequest, FollowUp, Spam, or Unknown.",
 		User:	fmt.Sprintf("Classify this message: %s", text),
->>>>>>> origin/main
 	}
 
 	resp, err := c.llm.Generate(ctx, prompt)

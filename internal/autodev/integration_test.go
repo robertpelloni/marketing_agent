@@ -37,9 +37,13 @@ func TestAutonomousLoop_Integration(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer os.Remove(tmpTodo.Name())
+<<<<<<< HEAD
+	os.WriteFile(tmpTodo.Name(), []byte(content), 0644)
+=======
 	if err := os.WriteFile(tmpTodo.Name(), []byte(content), 0644); err != nil {
 		t.Fatalf("Failed to write integration TODO: %v", err)
 	}
+>>>>>>> origin/main
 
 	manager := NewTaskManager(tmpTodo.Name())
 	agent := &MockAgent{}
@@ -78,6 +82,11 @@ func TestMultiAgentWorkflow_Integration(t *testing.T) {
 
 	// Prepare multi-step TODO
 	content := "- [ ] Step 1: Scrape Leads\n- [ ] Step 2: Enrich Contacts"
+<<<<<<< HEAD
+	tmpTodo, _ := os.CreateTemp("", "TODO_multi.md")
+	defer os.Remove(tmpTodo.Name())
+	os.WriteFile(tmpTodo.Name(), []byte(content), 0644)
+=======
 	tmpTodo, err := os.CreateTemp("", "TODO_multi.md")
 	if err != nil {
 		t.Fatalf("Failed to create multi TODO: %v", err)
@@ -86,6 +95,7 @@ func TestMultiAgentWorkflow_Integration(t *testing.T) {
 	if err := os.WriteFile(tmpTodo.Name(), []byte(content), 0644); err != nil {
 		t.Fatalf("Failed to write multi TODO: %v", err)
 	}
+>>>>>>> origin/main
 
 	manager := NewTaskManager(tmpTodo.Name())
 	agent := &MockAgent{}

@@ -85,5 +85,12 @@ func verifyDetailedHealth(url string) error {
 		return fmt.Errorf("workers are not active: %v", health["workers"])
 	}
 
+<<<<<<< HEAD
+	if health["crm"] != "OK" && health["crm"] != "Not Configured" {
+		return fmt.Errorf("crm health is not OK: %v", health["crm"])
+	}
+
+=======
+>>>>>>> origin/main
 	return nil
 }

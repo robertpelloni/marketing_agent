@@ -3,11 +3,7 @@ package gitcheck
 import (
 	"context"
 	"fmt"
-<<<<<<< HEAD
-	"log"
-=======
 	"log/slog"
->>>>>>> origin/main
 	"os"
 	"strconv"
 	"strings"
@@ -20,19 +16,34 @@ import (
 type PRStatus string
 
 const (
+<<<<<<< HEAD
+	PRStatusOpen	PRStatus	= "Open"
+	PRStatusMerged	PRStatus	= "Merged"
+	PRStatusClosed	PRStatus	= "Closed"
+	PRStatusFailed	PRStatus	= "Failed"
+=======
 	PRStatusOpen   PRStatus = "Open"
 	PRStatusMerged PRStatus = "Merged"
 	PRStatusClosed PRStatus = "Closed"
 	PRStatusFailed PRStatus = "Failed"
+>>>>>>> origin/main
 )
 
 // PullRequest encapsulates metadata for an autonomous PR.
 type PullRequest struct {
+<<<<<<< HEAD
+	ID	string
+	URL	string
+	Branch	string
+	Title	string
+	Status	PRStatus
+=======
 	ID     string
 	URL    string
 	Branch string
 	Title  string
 	Status PRStatus
+>>>>>>> origin/main
 }
 
 // PRManager defines the interface for autonomous pull request operations.
@@ -52,9 +63,15 @@ type PRManager interface {
 
 // GitHubPRManager implements the PRManager interface using the GitHub API.
 type GitHubPRManager struct {
+<<<<<<< HEAD
+	client	*github.Client
+	owner	string
+	repo	string
+=======
 	client *github.Client
 	owner  string
 	repo   string
+>>>>>>> origin/main
 }
 
 // NewGitHubPRManager creates a new GitHubPRManager instance.
@@ -62,7 +79,7 @@ func NewGitHubPRManager(owner, repo string) *GitHubPRManager {
 	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
 <<<<<<< HEAD
-		log.Println("GitHubPRManager: Warning: GITHUB_TOKEN not set.")
+		slog.Info("GitHubPRManager: Warning: GITHUB_TOKEN not set.")
 =======
 		slog.Warn("GitHubPRManager: GITHUB_TOKEN not set")
 >>>>>>> origin/main
@@ -76,9 +93,15 @@ func NewGitHubPRManager(owner, repo string) *GitHubPRManager {
 	client := github.NewClient(tc)
 
 	return &GitHubPRManager{
+<<<<<<< HEAD
+		client:	client,
+		owner:	owner,
+		repo:	repo,
+=======
 		client: client,
 		owner:  owner,
 		repo:   repo,
+>>>>>>> origin/main
 	}
 }
 
@@ -88,7 +111,7 @@ func (g *GitHubPRManager) CreatePullRequest(ctx context.Context, branch string, 
 	}
 
 <<<<<<< HEAD
-	log.Printf("GitHubPRManager: Creating Pull Request for branch %s: %s", branch, title)
+	slog.Info(fmt.Sprintf("GitHubPRManager: Creating Pull Request for branch %s: %s", branch, title))
 =======
 	slog.Info("GitHubPRManager: Creating Pull Request", "branch", branch, "title", title)
 >>>>>>> origin/main
@@ -96,11 +119,19 @@ func (g *GitHubPRManager) CreatePullRequest(ctx context.Context, branch string, 
 	head := branch
 	base := "main"
 	newPR := &github.NewPullRequest{
+<<<<<<< HEAD
+		Title:			github.String(title),
+		Head:			github.String(head),
+		Base:			github.String(base),
+		Body:			github.String(body),
+		MaintainerCanModify:	github.Bool(true),
+=======
 		Title:               github.String(title),
 		Head:                github.String(head),
 		Base:                github.String(base),
 		Body:                github.String(body),
 		MaintainerCanModify: github.Bool(true),
+>>>>>>> origin/main
 	}
 
 	pr, _, err := g.client.PullRequests.Create(ctx, g.owner, g.repo, newPR)
@@ -109,17 +140,29 @@ func (g *GitHubPRManager) CreatePullRequest(ctx context.Context, branch string, 
 	}
 
 	return &PullRequest{
+<<<<<<< HEAD
+		ID:	strconv.Itoa(pr.GetNumber()),
+		URL:	pr.GetHTMLURL(),
+		Branch:	branch,
+		Title:	title,
+		Status:	PRStatusOpen,
+=======
 		ID:     strconv.Itoa(pr.GetNumber()),
 		URL:    pr.GetHTMLURL(),
 		Branch: branch,
 		Title:  title,
 		Status: PRStatusOpen,
+>>>>>>> origin/main
 	}, nil
 }
 
 func (g *GitHubPRManager) GetPRStatus(ctx context.Context, prID string) (PRStatus, error) {
 	if g.client == nil {
+<<<<<<< HEAD
+		return PRStatusOpen, nil	// Fallback for simulation
+=======
 		return PRStatusOpen, nil // Fallback for simulation
+>>>>>>> origin/main
 	}
 
 	number, err := strconv.Atoi(prID)
@@ -150,11 +193,11 @@ func (g *GitHubPRManager) GetPRStatus(ctx context.Context, prID string) (PRStatu
 func (g *GitHubPRManager) MergePullRequest(ctx context.Context, prID string) error {
 	if g.client == nil {
 <<<<<<< HEAD
-		log.Printf("GitHubPRManager: Simulating PR merge for %s", prID)
+		slog.Info(fmt.Sprintf("GitHubPRManager: Simulating PR merge for %s", prID))
 		return nil
 	}
 
-	log.Printf("GitHubPRManager: Merging Pull Request %s", prID)
+	slog.Info(fmt.Sprintf("GitHubPRManager: Merging Pull Request %s", prID))
 =======
 		slog.Info("GitHubPRManager: Simulating PR merge", "pr_id", prID)
 		return nil
@@ -207,10 +250,17 @@ type MockPRManager struct{}
 
 func (m *MockPRManager) CreatePullRequest(ctx context.Context, branch string, title string, body string) (*PullRequest, error) {
 	return &PullRequest{
+<<<<<<< HEAD
+		ID:	"mock-456",
+		Branch:	branch,
+		Title:	title,
+		Status:	PRStatusOpen,
+=======
 		ID:     "mock-456",
 		Branch: branch,
 		Title:  title,
 		Status: PRStatusOpen,
+>>>>>>> origin/main
 	}, nil
 }
 

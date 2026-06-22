@@ -49,6 +49,7 @@ func TestMockApolloSource_Enrich(t *testing.T) {
 		if c.Role == "" {
 			t.Errorf("Contact role should not be empty")
 		}
+>>>>>>> origin/main
 	}
 }
 
@@ -121,6 +122,7 @@ func TestEnricher_Initialization(t *testing.T) {
 <<<<<<< HEAD
 =======
 
+>>>>>>> origin/main
 // mockSourceForTest is a mock EnrichmentSource for unit testing.
 type mockSourceForTest struct {
 	name           string

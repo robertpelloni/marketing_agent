@@ -32,19 +32,20 @@ TormentNexus is **production-ready** with a complete end-to-end pipeline from le
 - **Repository Governance:** Implements the "EXECUTIVE PROTOCOL" for robust repository synchronization and intelligent branch reconciliation.
 <<<<<<< HEAD
 - **Technical Authority:** Leveraging RAG (Retrieval-Augmented Generation) over the Borg codebase and documentation to answer complex technical questions from prospects.
+- **State Machine Orchestration:** A rigid, event-driven state machine that manages the entire lead lifecycle from discovery to closing.
+- **Headless & Efficient:** Built in Go for high performance and scalability, using headless browsing for data extraction.
+
+## User-Satisfaction Design
+- **High Signal, Low Noise:** The system prioritizes quality over quantity, ensuring that outreach is technical and value-oriented rather than spammy.
+- **Transparency:** Clear tracking of lead states and interaction history in a centralized dashboard.
+- **Safety & Guardrails:** Strict pricing floors and escalation protocols for non-standard requests to ensure business integrity.
 =======
 - **Technical Authority:** Leveraging RAG (Retrieval-Augmented Generation) over the TormentNexus codebase and documentation to answer complex technical questions from prospects.
->>>>>>> origin/main
 - **State Machine Orchestration:** A rigid, event-driven state machine that manages the entire lead lifecycle from discovery to closing.
 - **Headless & Efficient:** Built in Go for high performance and scalability, using headless browsing for data extraction.
 - **Continuous Prompt Optimization:** A self-improving feedback loop that utilizes successful interaction history to refine and optimize LLM outreach prompts.
 
 ## User-Satisfaction Design
-<<<<<<< HEAD
-- **High Signal, Low Noise:** The system prioritizes quality over quantity, ensuring that outreach is technical and value-oriented rather than spammy.
-- **Transparency:** Clear tracking of lead states and interaction history in a centralized dashboard.
-- **Safety & Guardrails:** Strict pricing floors and escalation protocols for non-standard requests to ensure business integrity.
-=======
 
 - **High Signal, Low Noise:** The system prioritizes quality over quantity, ensuring that outreach is technical and value-oriented rather than spammy.
 - **Transparency:** Clear tracking of lead states and interaction history in a centralized dashboard.

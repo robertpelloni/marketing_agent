@@ -28,7 +28,11 @@ func TestRestCRMClient_PushDeal(t *testing.T) {
 func TestRestCRMClient_GetLeadUpdates(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
+<<<<<<< HEAD
+		w.Write([]byte(`[{"ID": "123", "NewState": "Negotiating"}]`))
+=======
 		_, _ = w.Write([]byte(`[{"ID": "123", "NewState": "Negotiating"}]`))
+>>>>>>> origin/main
 	}))
 	defer server.Close()
 
@@ -42,6 +46,8 @@ func TestRestCRMClient_GetLeadUpdates(t *testing.T) {
 		t.Errorf("Unexpected updates: %+v", updates)
 	}
 }
+<<<<<<< HEAD
+=======
 
 func TestRestCRMClient_SyncContacts(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -58,3 +64,4 @@ func TestRestCRMClient_SyncContacts(t *testing.T) {
 		t.Fatalf("SyncContacts failed: %v", err)
 	}
 }
+>>>>>>> origin/main

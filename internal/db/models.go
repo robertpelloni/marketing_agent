@@ -133,6 +133,9 @@ type Deal struct {
 	CustomRequirements string    `db:"custom_requirements"`
 	TechnicalDossier   string    `db:"technical_dossier"`
 <<<<<<< HEAD
+	CreatedAt          time.Time `db:"created_at"`
+	UpdatedAt          time.Time `db:"updated_at"`
+}
 =======
 	CadenceStep        int       `db:"cadence_step"` // 0 = not started, 1+ = current step index
 >>>>>>> origin/main
@@ -191,3 +194,4 @@ type DealStateCount struct {
 	Count int
 >>>>>>> origin/main
 }
+>>>>>>> origin/main

@@ -1,5 +1,9 @@
 # Build stage
+<<<<<<< HEAD
+FROM golang:1.23-alpine AS builder
+=======
 FROM golang:1.24-alpine AS builder
+>>>>>>> origin/main
 
 WORKDIR /app
 COPY go.mod go.sum ./

@@ -3,10 +3,11 @@ package scraper
 import (
 	"context"
 	"fmt"
-	"log/slog"
 <<<<<<< HEAD
+	"log"
 	"net/http"
 =======
+	"log/slog"
 >>>>>>> origin/main
 	"time"
 
@@ -48,10 +49,7 @@ func (s *Scraper) Run(ctx context.Context, interval time.Duration, keywords []st
 	defer ticker.Stop()
 
 <<<<<<< HEAD
-	slog.Info("Scraper worker started...")
-
-	// Run immediately on startup
-	s.ExecuteDiscovery(ctx, keywords)
+	log.Println("Scraper worker started...")
 =======
 	slog.Info("Scraper worker started")
 >>>>>>> origin/main
@@ -60,7 +58,7 @@ func (s *Scraper) Run(ctx context.Context, interval time.Duration, keywords []st
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			slog.Info("Scraper worker stopping: Draining in-flight work...")
+			log.Println("Scraper worker stopping...")
 =======
 			slog.Info("Scraper worker stopping: Draining in-flight work")
 >>>>>>> origin/main
@@ -77,7 +75,7 @@ func (s *Scraper) ExecuteDiscovery(ctx context.Context, keywords []string) {
 		companies, err := source.Discover(ctx, keywords)
 		if err != nil {
 <<<<<<< HEAD
-			slog.Info(fmt.Sprintf("Error discovering leads from source: %v", err))
+			log.Printf("Error discovering leads from source: %v", err)
 =======
 			slog.Error("Error discovering leads from source", "error", err)
 >>>>>>> origin/main
@@ -88,7 +86,7 @@ func (s *Scraper) ExecuteDiscovery(ctx context.Context, keywords []string) {
 			err := s.processDiscoveredCompany(ctx, company)
 			if err != nil {
 <<<<<<< HEAD
-				slog.Info(fmt.Sprintf("Error processing company %s: %v", company.Name, err))
+				log.Printf("Error processing company %s: %v", company.Name, err)
 =======
 				slog.Error("Error processing company", "company_name", company.Name, "error", err)
 >>>>>>> origin/main
@@ -107,11 +105,9 @@ func (s *Scraper) processDiscoveredCompany(ctx context.Context, company db.Compa
 	// Check if company already exists
 	existing, err := s.db.GetCompanyByDomain(ctx, company.Domain)
 	if err == nil && existing != nil {
+<<<<<<< HEAD
 		// Company already exists, skip or update signals
 =======
-	// Check if company already exists
-	existing, err := s.db.GetCompanyByDomain(ctx, company.Domain)
-	if err == nil && existing != nil {
 >>>>>>> origin/main
 		return nil
 	}
@@ -138,7 +134,7 @@ func (s *Scraper) processDiscoveredCompany(ctx context.Context, company db.Compa
 	}
 
 <<<<<<< HEAD
-	slog.Info(fmt.Sprintf("Successfully discovered and persisted new lead: %s (%s)", company.Name, company.Domain))
+	log.Printf("Successfully discovered and persisted new lead: %s (%s)", company.Name, company.Domain)
 	return nil
 }
 
@@ -167,6 +163,10 @@ func (m *MockJobBoardSource) Discover(ctx context.Context, keywords []string) ([
 		},
 	}, nil
 =======
+	slog.Info("Successfully discovered and persisted new lead", "company_name", company.Name, "domain", company.Domain)
+	return nil
+}
+
 // MockJobBoardSource is a legacy stub that no longer generates mock data.
 // All lead sources are now real API integrations.
 type MockJobBoardSource struct{}

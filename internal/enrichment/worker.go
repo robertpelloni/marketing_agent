@@ -31,7 +31,7 @@ func (e *Enricher) Run(ctx context.Context, interval time.Duration) {
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			log.Println("Enricher worker stopping: Draining in-flight work...")
+			log.Println("Enricher worker stopping...")
 =======
 			slog.Info("Enricher worker stopping: Draining in-flight work...")
 >>>>>>> origin/main
@@ -119,6 +119,9 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 			if err != nil {
 				return fmt.Errorf("failed to update deal state: %w", err)
 			}
+<<<<<<< HEAD
+			log.Printf("Enricher: Successfully enriched %s with %d contacts", company.Name, len(contacts))
+=======
 
 			// Synchronize newly found contacts with the CRM (with retry logic)
 			if e.crmClient != nil {

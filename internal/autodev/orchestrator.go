@@ -69,7 +69,7 @@ func (o *Orchestrator) Run(ctx context.Context, interval time.Duration) {
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			slog.Info("Autonomous development orchestrator stopping: Draining in-flight work...")
+			log.Println("Autonomous development orchestrator stopping...")
 =======
 			log.Println("Autonomous development orchestrator stopping: Draining in-flight work...")
 >>>>>>> origin/main
@@ -157,10 +157,14 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 				log.Printf("Autodev: Merge failed for PR %s: %v", pr.ID, err)
 			} else {
 				log.Printf("Autodev: Successfully merged PR %s. Initiating branch cleanup...", pr.ID)
+<<<<<<< HEAD
+				o.db.UpdatePRStatus(ctx, pr.ID, gitcheck.PRStatusMerged)
+=======
 				if err := o.db.UpdatePRStatus(ctx, pr.ID, gitcheck.PRStatusMerged); err != nil {
 					log.Printf("Autodev: Error updating PR status to Merged for %s: %v", pr.ID, err)
 >>>>>>> origin/main
 				}
+>>>>>>> origin/main
 				o.cleanupPRBranch(pr.Branch)
 			}
 		} else if status == gitcheck.PRStatusClosed || status == gitcheck.PRStatusFailed {
@@ -170,10 +174,14 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 				slog.Info(fmt.Sprintf("Autodev: Error updating terminal PR status for %s: %v", pr.ID, err))
 =======
 			log.Printf("Autodev: PR %s reached terminal state: %s. Initiating branch cleanup...", pr.ID, status)
+<<<<<<< HEAD
+			o.db.UpdatePRStatus(ctx, pr.ID, status)
+=======
 			if err := o.db.UpdatePRStatus(ctx, pr.ID, status); err != nil {
 				log.Printf("Autodev: Error updating terminal PR status for %s: %v", pr.ID, err)
 >>>>>>> origin/main
 			}
+>>>>>>> origin/main
 			o.cleanupPRBranch(pr.Branch)
 		}
 	}
@@ -384,10 +392,14 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 	} else {
 		log.Printf("Autodev: PR created: %s", pr.URL)
 		if o.db != nil {
+<<<<<<< HEAD
+			o.db.CreatePullRequest(ctx, pr, task.Description)
+=======
 			if err := o.db.CreatePullRequest(ctx, pr, task.Description); err != nil {
 				log.Printf("Autodev: Error persisting PR record: %v", err)
 >>>>>>> origin/main
 			}
+>>>>>>> origin/main
 		}
 	}
 
@@ -411,6 +423,18 @@ func (o *Orchestrator) finalizeCycle(ctx context.Context, task *Task) {
 	if vStr == "" {
 		vStr = "0.0.0"
 	}
+<<<<<<< HEAD
+	newV := fmt.Sprintf("%s+%d", vStr, time.Now().Unix())
+	os.WriteFile("VERSION", []byte(newV), 0644)
+	os.WriteFile("VERSION.md", []byte(newV), 0644)
+
+	// 2. Append to CHANGELOG.md
+	changelogEntry := fmt.Sprintf("\n## [%s] - %s\n- %s\n", newV, time.Now().Format("2006-01-02"), task.Description)
+	f, err := os.OpenFile("CHANGELOG.md", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err == nil {
+		f.WriteString(changelogEntry)
+		f.Close()
+=======
 
 	// Extract base version (remove previous build metadata if present)
 	baseVersion := strings.Split(vStr, "+")[0]
@@ -449,6 +473,7 @@ func (o *Orchestrator) finalizeCycle(ctx context.Context, task *Task) {
 		}
 		// #nosec G104 -- Explicit close is handled, ignore errors during autonomous loop cleanup
 		_ = f.Close()
+>>>>>>> origin/main
 	}
 
 <<<<<<< HEAD

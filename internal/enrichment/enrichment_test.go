@@ -105,7 +105,11 @@ func TestApolloSource_HealthCheck(t *testing.T) {
 func TestEnricher_Initialization(t *testing.T) {
 	database := &db.DB{}
 	sources := []EnrichmentSource{&MockApolloSource{}}
+<<<<<<< HEAD
+	e := NewEnricher(database, sources)
+=======
 	e := NewEnricher(database, sources, nil)
+>>>>>>> origin/main
 
 	if e == nil {
 		t.Fatal("Expected enricher instance, got nil")

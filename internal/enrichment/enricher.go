@@ -2,8 +2,11 @@ package enrichment
 
 import (
 	"context"
+<<<<<<< HEAD
+=======
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
+>>>>>>> origin/main
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
@@ -14,6 +17,17 @@ type EnrichmentSource interface {
 
 // Enricher coordinates the enrichment of company leads with contact data.
 type Enricher struct {
+<<<<<<< HEAD
+	db      *db.DB
+	sources []EnrichmentSource
+}
+
+// NewEnricher creates a new Enricher instance.
+func NewEnricher(database *db.DB, sources []EnrichmentSource) *Enricher {
+	return &Enricher{
+		db:      database,
+		sources: sources,
+=======
 	db        *db.DB
 	sources   []EnrichmentSource
 	crmClient crm.CRMClient
@@ -25,5 +39,6 @@ func NewEnricher(database *db.DB, sources []EnrichmentSource, crmClient crm.CRMC
 		db:        database,
 		sources:   sources,
 		crmClient: crmClient,
+>>>>>>> origin/main
 	}
 }

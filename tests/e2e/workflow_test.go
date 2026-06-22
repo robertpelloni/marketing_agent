@@ -16,7 +16,10 @@ import (
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
+<<<<<<< HEAD
+=======
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
+>>>>>>> origin/main
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
@@ -57,8 +60,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 
 	// 2b. Enrichment Phase
 <<<<<<< HEAD
-	crmMock := &crm.MockCRMClient{}
-	enricher := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{&enrichment.MockApolloSource{}}, crmMock)
+	enricher := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{&enrichment.MockApolloSource{}})
 =======
 	// For production verification, we use a mock CRM server and the real RestCRMClient
 	// to test the HTTP integration layer.
@@ -99,6 +101,9 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	res := researcher.NewResearcher(database, []researcher.Crawler{&researcher.GitHubCrawler{}}, &researcher.DefaultDossierProcessor{}, crmMock)
 =======
 	// 2c. Research Phase
+<<<<<<< HEAD
+	res := researcher.NewResearcher(database, []researcher.Crawler{&researcher.GitHubCrawler{}}, &researcher.DefaultDossierProcessor{})
+=======
 	res := researcher.NewResearcher(database, []researcher.Crawler{&researcher.GitHubCrawler{}}, &researcher.DefaultDossierProcessor{}, realCRM)
 >>>>>>> origin/main
 	res.ExecuteResearch(ctx)
@@ -124,6 +129,14 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 =======
 	// 2d. Outreach Phase
 	classifier := &communication.MockIntentClassifier{}
+<<<<<<< HEAD
+	responder := communication.NewRAGResponseGenerator(&llm.MockLLMProvider{})
+	strategy := communication.NewLearningSalesEngine(database, nil, nil)
+	comm := communication.NewManager(database, classifier, responder, strategy, nil)
+
+	// Simulate inbound pricing inquiry
+	reply, err := comm.ProcessInbound(ctx, contacts[0], "How much does Borg cost?")
+=======
 	responder := communication.NewRAGResponseGenerator(database, &llm.MockLLMProvider{})
 	strategy := communication.NewLearningSalesEngine(database, realCRM, nil)
 	comm := communication.NewManager(database, classifier, responder, strategy, nil, realCRM, nil)
@@ -131,6 +144,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 
 	// Simulate inbound pricing inquiry
 	reply, err := comm.ProcessInbound(ctx, contacts[0], "How much does TormentNexus cost?")
+>>>>>>> origin/main
 	if err != nil {
 		t.Fatalf("Failed to process inbound: %v", err)
 	}
@@ -140,7 +154,11 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 
 	// 2e. Negotiation & Closing Phase
 	// Simulate positive intent after outreach
+<<<<<<< HEAD
+	reply, err = comm.ProcessInbound(ctx, contacts[0], "This looks interesting, let's proceed with a proposal.")
+=======
 	_, err = comm.ProcessInbound(ctx, contacts[0], "This looks interesting, let's proceed with a proposal.")
+>>>>>>> origin/main
 	if err != nil {
 		t.Fatalf("Failed to process follow-up: %v", err)
 	}
@@ -152,10 +170,10 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	}
 
 <<<<<<< HEAD
-	// Verify CRM synchronization occurred during win
-	if !crmMock.PushDealCalled {
-		t.Error("Expected CRM PushDeal to be called when deal was won")
-	}
+	// 3. Autonomous Task Generation Phase
+	tmpTodo, _ := os.CreateTemp("", "TODO_E2E.md")
+	defer os.Remove(tmpTodo.Name())
+	os.WriteFile(tmpTodo.Name(), []byte("- [ ] E2E Task"), 0644)
 =======
 	// Verify CRM synchronization occurred via HTTP
 	time.Sleep(100 * time.Millisecond) // Wait for async retries/pushes
@@ -178,6 +196,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	if err := os.WriteFile(tmpTodo.Name(), []byte("- [ ] E2E Task"), 0644); err != nil {
 		t.Fatalf("Failed to write E2E TODO: %v", err)
 	}
+>>>>>>> origin/main
 
 	manager := autodev.NewTaskManager(tmpTodo.Name())
 	agent := &autodev.MockAgent{}
@@ -226,6 +245,11 @@ func TestAutonomousCodeGeneration_Pilot(t *testing.T) {
 	}
 
 	// 1. Prepare TODO
+<<<<<<< HEAD
+	tmpTodo, _ := os.CreateTemp("", "TODO_PILOT.md")
+	defer os.Remove(tmpTodo.Name())
+	os.WriteFile(tmpTodo.Name(), []byte("- [ ] Implement autonomous sales-feature"), 0644)
+=======
 	tmpTodo, err := os.CreateTemp("", "TODO_PILOT.md")
 	if err != nil {
 		t.Fatalf("Failed to create pilot TODO: %v", err)
@@ -234,6 +258,7 @@ func TestAutonomousCodeGeneration_Pilot(t *testing.T) {
 	if err := os.WriteFile(tmpTodo.Name(), []byte("- [ ] Implement autonomous sales-feature"), 0644); err != nil {
 		t.Fatalf("Failed to write pilot TODO: %v", err)
 	}
+>>>>>>> origin/main
 
 	manager := autodev.NewTaskManager(tmpTodo.Name())
 	agent := &autodev.LocalAgent{} // Real LocalAgent for code gen

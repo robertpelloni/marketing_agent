@@ -26,18 +26,30 @@ func (p *DefaultDossierProcessor) Process(findings []string) (string, error) {
 
 // PromptFormatter constructs a hyper-personalized outreach prompt.
 type PromptFormatter struct {
+<<<<<<< HEAD
+	BorgContext string
+}
+
+func (f *PromptFormatter) Format(dossier string) string {
+	return fmt.Sprintf(`### BORG OUTREACH CONTEXT ###
+=======
 	TormentNexusContext string
 }
 
 func (f *PromptFormatter) Format(dossier string) string {
 	return fmt.Sprintf(`### TormentNexus OUTREACH CONTEXT ###
+>>>>>>> origin/main
 %s
 
 ### TARGET TECHNICAL FINDINGS ###
 %s
 
 ### HYPER-PERSONALIZED HOOK ###
+<<<<<<< HEAD
+[Drafting specialized technical outreach based on the discovered bottleneck...]`, f.BorgContext, dossier)
+=======
 [Drafting specialized technical outreach based on the discovered bottleneck...]`, f.TormentNexusContext, dossier)
+>>>>>>> origin/main
 }
 
 // Run starts the background research process.
@@ -55,7 +67,7 @@ func (r *Researcher) Run(ctx context.Context, interval time.Duration) {
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			log.Println("Researcher worker stopping: Draining in-flight work...")
+			log.Println("Researcher worker stopping...")
 =======
 			slog.Info("Researcher worker stopping: Draining in-flight work...")
 >>>>>>> origin/main
@@ -154,6 +166,9 @@ func (r *Researcher) researchLead(ctx context.Context, deal db.Deal, contact db.
 		return err
 	}
 
+<<<<<<< HEAD
+	log.Printf("Researcher: Successfully compiled technical dossier for deal %d", deal.ID)
+=======
 	// Synchronize the updated deal (including dossier) with the CRM (with retry logic)
 	if r.crmClient != nil {
 		company, _ := r.db.GetCompanyByID(ctx, deal.CompanyID)

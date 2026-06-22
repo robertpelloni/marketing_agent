@@ -33,7 +33,7 @@ func TestProcessInbound_Mock(t *testing.T) {
 	// and use the SalesContext tests in engine_test.go for deeper logic.
 
 <<<<<<< HEAD
-	manager := NewManager(nil, &mockClassifier{}, &mockResponder{}, &mockStrategy{}, &mockOrderProcessor{}, nil, nil)
+	manager := NewManager(nil, &mockClassifier{}, &mockResponder{}, &mockStrategy{}, &mockOrderProcessor{})
 =======
 	manager := NewManager(nil, &mockClassifier{}, &mockResponder{}, &mockStrategy{}, &mockOrderProcessor{}, nil)
 >>>>>>> origin/main

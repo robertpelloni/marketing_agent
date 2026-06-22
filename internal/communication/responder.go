@@ -5,6 +5,8 @@ import (
 	"fmt"
 <<<<<<< HEAD
 	"log"
+	"os"
+
 =======
 	"log/slog"
 >>>>>>> origin/main
@@ -12,15 +14,28 @@ import (
 	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+>>>>>>> origin/main
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 )
 
 // RAGResponseGenerator provides technically grounded replies using Pseudo-RAG.
 type RAGResponseGenerator struct {
 <<<<<<< HEAD
-	db       *db.DB
 	llm      llm.LLMProvider
-	tormentNexusDocs string
+	borgDocs string
+}
+
+// NewRAGResponseGenerator creates a new generator with Borg context.
+func NewRAGResponseGenerator(provider llm.LLMProvider) *RAGResponseGenerator {
+	docsPath := "borg/docs/ARCHITECTURE.md"
+	content, err := os.ReadFile(docsPath)
+	if err != nil {
+		log.Printf("RAG: Warning: could not load Borg documentation: %v", err)
+	}
+
+	return &RAGResponseGenerator{
+		llm:      provider,
+		borgDocs: string(content),
 =======
 	db               *db.DB
 	llm              llm.LLMProvider
@@ -84,6 +99,11 @@ func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResp
 func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesContext, action Action) (string, error) {
 <<<<<<< HEAD
 	log.Printf("RAGResponseGenerator: Generating response for intent: %s", salesCtx.LatestIntent)
+
+	// Inject technical context if the intent is technical
+	contextInjection := ""
+	if salesCtx.LatestIntent == IntentTechnical && g.borgDocs != "" {
+		contextInjection = fmt.Sprintf("\nRelevant Technical Context from Borg Docs:\n%s\n", g.truncateDocs(g.borgDocs))
 =======
 	slog.Info(fmt.Sprintf("RAGResponseGenerator: Generating response for intent: %s", salesCtx.LatestIntent))
 >>>>>>> origin/main
@@ -92,6 +112,7 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 	contextInjection := ""
 	if salesCtx.LatestIntent == IntentTechnical && g.tormentNexusDocs != "" {
 		contextInjection = fmt.Sprintf("\nRelevant Technical Context from TormentNexus Docs:\n%s\n", g.truncateDocs(g.tormentNexusDocs))
+>>>>>>> origin/main
 	}
 
 	// Inject pricing context if the intent is pricing
@@ -100,6 +121,8 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		contextInjection = fmt.Sprintf("\nPricing Context: Annual subscription is approximately $%d based on company size.\n", pricing)
 	}
 
+<<<<<<< HEAD
+=======
 	// SELF-IMPROVING PROMPTS: Inject successful past interactions as few-shot examples
 <<<<<<< HEAD
 	if g.db != nil {
@@ -116,6 +139,7 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		}
 	}
 
+>>>>>>> origin/main
 	latestMsg := "START_OUTREACH"
 	if len(salesCtx.Interactions) > 0 {
 		latestMsg = salesCtx.Interactions[0].RawText

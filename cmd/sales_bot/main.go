@@ -3,13 +3,6 @@ package main
 import (
 	"context"
 <<<<<<< HEAD
-	"flag"
-	"fmt"
-	"log/slog"
-	"net/http"
-	"os"
-	"strings"
-	"os/signal"
 =======
 	"encoding/json"
 >>>>>>> origin/main
@@ -18,6 +11,10 @@ import (
 	"log"
 	"net/http"
 	"os"
+<<<<<<< HEAD
+	"strings"
+	"os/signal"
+=======
 	"os/signal"
 	"strings"
 >>>>>>> origin/main
@@ -29,6 +26,7 @@ import (
 <<<<<<< HEAD
 	"github.com/robertpelloni/enterprise_sales_bot/internal/config"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
+<<<<<<< HEAD
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -37,7 +35,6 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
 =======
-	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/config"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/contentgen"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
@@ -109,6 +106,18 @@ func main() {
 		return
 	}
 
+<<<<<<< HEAD
+	log.Println("Starting Enterprise Sales Bot...")
+
+	// 1. Initialize Database
+	dbURL := os.Getenv("DATABASE_URL")
+	if dbURL == "" {
+		// Default for local development if not provided
+		dbURL = "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"
+	}
+
+	database, err := db.NewDB(dbURL)
+=======
 	log.Println("Starting TormentNexus Autonomous Sales Bot...")
 >>>>>>> origin/main
 
@@ -117,6 +126,7 @@ func main() {
 
 	// 1. Initialize Database
 	database, err := db.NewDB(cfg.DatabaseURL)
+>>>>>>> origin/main
 	if err != nil {
 <<<<<<< HEAD
 		slog.Error("Could not connect to database", "error", err)
@@ -154,6 +164,8 @@ func main() {
 	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows"}
 	go s.Run(ctx, 1*time.Hour, keywords)
 
+<<<<<<< HEAD
+=======
 	// 2ca. Setup CRM Integration
 	var crmClient crm.CRMClient
 <<<<<<< HEAD
@@ -203,7 +215,11 @@ func main() {
 	enrichmentSources := []enrichment.EnrichmentSource{
 		&enrichment.MockApolloSource{},
 	}
+<<<<<<< HEAD
+	e := enrichment.NewEnricher(database, enrichmentSources)
+=======
 	e := enrichment.NewEnricher(database, enrichmentSources, crmClient)
+>>>>>>> origin/main
 
 	// Run enricher in background
 	go e.Run(ctx, 1*time.Hour)
@@ -214,20 +230,41 @@ func main() {
 		&researcher.BlogCrawler{Client: http.DefaultClient},
 	}
 	processor := &researcher.DefaultDossierProcessor{}
+<<<<<<< HEAD
+	r := researcher.NewResearcher(database, crawlers, processor)
+=======
 	r := researcher.NewResearcher(database, crawlers, processor, crmClient)
+>>>>>>> origin/main
 
 	// Run researcher in background
 	go r.Run(ctx, 1*time.Hour)
 
 <<<<<<< HEAD
+	// 2ca. Setup CRM Integration
+	var crmClient crm.CRMClient
+	crmBaseURL := os.Getenv("CRM_BASE_URL")
+	crmAPIKey := os.Getenv("CRM_API_KEY")
+
+	if crmBaseURL != "" && crmAPIKey != "" {
+		log.Println("CRM: Initializing production REST CRM client.")
+		crmClient = crm.NewRestCRMClient(crmBaseURL, crmAPIKey)
+	} else {
+		log.Println("CRM: Initializing mock CRM client (missing configuration).")
+		crmClient = crm.NewMockCRMClient()
+	}
+
 =======
+>>>>>>> origin/main
 	crmWorker := crm.NewWorker(database, crmClient)
 
 	// Run CRM sync in background
 	go crmWorker.Run(ctx, 30*time.Minute)
 
->>>>>>> origin/main
+<<<<<<< HEAD
+	// 2cb. Setup Borg Outreach System
+=======
 	// 2cb. Setup TormentNexus Outreach System
+>>>>>>> origin/main
 	outreachWorker := agents.NewTargetDiscoveryWorker(database)
 
 	// Run outreach discovery in background
@@ -236,6 +273,13 @@ func main() {
 	// 2d. Setup Deployer
 	var ciTracker deploy.CITracker
 	var dispatcher deploy.WorkflowDispatcher
+<<<<<<< HEAD
+	ghRepo := os.Getenv("GITHUB_REPOSITORY")
+	if ghRepo != "" {
+		parts := strings.Split(ghRepo, "/")
+		if len(parts) == 2 {
+			log.Printf("CI: Initializing GitHub CI Tracker and Dispatcher for %s", ghRepo)
+=======
 	if cfg.GitHubRepository != "" {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
@@ -262,21 +306,35 @@ func main() {
 	deployer := deploy.NewDeployer(ciTracker, dispatcher)
 
 	// 2da. Setup Deployer background sync and monitoring
+<<<<<<< HEAD
+	syncIntervalStr := os.Getenv("DEPLOY_SYNC_INTERVAL")
+	if syncIntervalStr != "" {
+		if interval, err := time.ParseDuration(syncIntervalStr); err == nil {
+			go deployer.Run(ctx, interval)
+			go deployer.MonitorDeployment(ctx, interval)
+		} else {
+			log.Printf("Warning: Invalid DEPLOY_SYNC_INTERVAL: %v", err)
+		}
+	}
+=======
 	go deployer.Run(ctx, cfg.DeploySyncInterval)
 	go deployer.MonitorDeployment(ctx, cfg.DeploySyncInterval)
+>>>>>>> origin/main
 
 	// 2da. Setup LLM Provider
 	llmProvider := &llm.MockLLMProvider{}
 
 <<<<<<< HEAD
-	// 2db. Setup Email direct sender
-	var emailSender mail.EmailSender
-	if cfg.SMTPHost != "" {
-		slog.Info("SMTP: Initializing SMTP email sender", "host", cfg.SMTPHost)
-		emailSender = mail.NewSMTPSender(cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUser, cfg.SMTPPass, cfg.SMTPFrom)
-	}
-
 	// 2e. Setup Communication Manager
+	classifier := &communication.MockIntentClassifier{}
+	responder := communication.NewRAGResponseGenerator(llmProvider)
+	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
+
+	// 2ea. Setup Order Processing
+	billingClient := &billing.MockBillingClient{}
+	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
+
+	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor)
 =======
 	// 2e. Setup Email Sender — SMTP, IMAP Drafts, or Mock
 	var emailSender communication.EmailSender
@@ -338,6 +396,12 @@ func main() {
 >>>>>>> origin/main
 
 	var prManager gitcheck.PRManager
+<<<<<<< HEAD
+	if ghRepo != "" {
+		parts := strings.Split(ghRepo, "/")
+		if len(parts) == 2 {
+			log.Printf("Autodev: Initializing GitHub PR Manager for %s", ghRepo)
+=======
 	if cfg.GitHubRepository != "" {
 		parts := strings.Split(cfg.GitHubRepository, "/")
 		if len(parts) == 2 {
@@ -404,9 +468,7 @@ func main() {
 	}
 
 	go func() {
-		slog.Info("Web Dashboard: Listening", "port", cfg.Port)
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			slog.Error("Web server error", "error", err)
+		if err := webServer.ListenAndServe(":8080"); err != nil {
 =======
 	// 3a. Start Autonomous Blog Generator (daily)
 	blogGen := contentgen.NewBlogGenerator(llmProvider, database)
@@ -455,18 +517,23 @@ func main() {
 	go func() {
 		log.Printf("Web Dashboard: Listening on :%s", cfg.Port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+>>>>>>> origin/main
 			log.Printf("Web server error: %v", err)
 >>>>>>> origin/main
 		}
 	}()
 
+<<<<<<< HEAD
+	// Wait for termination signal
+=======
 	// 5. Graceful Shutdown Implementation
+>>>>>>> origin/main
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 	<-sigChan
 
 <<<<<<< HEAD
-	slog.Info("Shutting down: Signal received, initiating graceful drain...")
+	log.Println("Shutting down...")
 =======
 	log.Println("Shutting down: Signal received, initiating graceful drain...")
 >>>>>>> origin/main

@@ -1,5 +1,31 @@
 # TODO
 
+<<<<<<< HEAD
+- [x] Implement robust CI/CD pipeline with automated PostgreSQL integration testing
+- [x] Mature CI/CD infrastructure for autonomous provisioning
+    - [x] Dockerize application for consistent deployment
+    - [x] Add Docker build step to deployment workflow
+    - [x] Implement CI status tracking interfaces
+- [x] Implement Task 1: Core Database Migrations & Models
+- [x] Implement Task 2: The Target Discovery Scraper Module
+- [x] Implement Task 3: Engineering Contact Enrichment Engine
+    - [x] Define Enrichment interfaces
+    - [x] Implement Mock Enrichment Source
+    - [x] Implement Enricher background worker
+    - [x] Add DB persistence for Contacts
+- [x] Implement Task 4: Technical Context Aggregator & Prompt Formatter
+    - [x] GitHub crawler for target engineers
+    - [x] Technical blog scraper
+    - [x] Prompt construction engine
+- [x] Implement Task 5: The Inbound Communication State Machine
+    - [x] Define communication interfaces (Classifier, Responder)
+    - [x] Implement Mock Intent Classifier
+- [x] Implement pseudo-RAG Response Generator (Dossier-aware)
+- [x] Create Interaction database handlers
+- [x] Implement autonomous sales-feature code generation
+    - [x] Implement the Inbound Communication background worker
+    - [x] Add negotiation & pricing engine bounds (Tiered Pricing)
+=======
 ## Phase 6 — Production Hardening & Reliability
 
 ### Test Coverage & Quality
@@ -265,6 +291,7 @@
 - [x] Implement autonomous sales-feature code generation
 - [x] Implement the Inbound Communication background worker
 - [x] Add negotiation & pricing engine bounds (Tiered Pricing)
+>>>>>>> origin/main
 - [x] Verify pathing in `build.bat` and `start.bat`
 - [x] Implement automated conflict detection tests
 - [x] Implement Dual-Direction Intelligent Merge Engine (Full Branch Reconciliation)
@@ -278,7 +305,6 @@
 - [x] Add `borg` submodule for technical documentation reference
 - [x] Implement Task 6: Automated Provisioning for won deals
 <<<<<<< HEAD
-- [x] Rebrand from Borg to TormentNexus across all product-facing references
 =======
 - [x] Rebrand from TormentNexus to TormentNexus across all product-facing references
 >>>>>>> origin/main

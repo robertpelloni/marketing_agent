@@ -401,8 +401,8 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 // CreateInteraction inserts a new interaction into the database.
 func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) error {
 	query := `
-		INSERT INTO interactions (contact_id, channel, direction, raw_text, summary, sentiment, success, created_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		INSERT INTO interactions (contact_id, channel, direction, raw_text, summary, sentiment, created_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
 =======
 // GetContactByEmail retrieves a contact by their email address.
 func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, error) {
@@ -456,6 +456,8 @@ func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) e
 		interaction.RawText,
 		interaction.Summary,
 		interaction.Sentiment,
+<<<<<<< HEAD
+=======
 		interaction.Success,
 <<<<<<< HEAD
 =======
@@ -471,6 +473,8 @@ func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) e
 	return nil
 }
 
+<<<<<<< HEAD
+=======
 // UpdateInteractionSuccess updates the success status of an existing interaction.
 func (db *DB) UpdateInteractionSuccess(ctx context.Context, interactionID int64, success bool) error {
 	query := `
@@ -570,6 +574,7 @@ func (db *DB) GetPerformanceMetrics(ctx context.Context) (*PerformanceMetrics, e
 	return metrics, nil
 }
 
+>>>>>>> origin/main
 // CreatePullRequest persists a new pull request record.
 func (db *DB) CreatePullRequest(ctx context.Context, pr *gitcheck.PullRequest, taskDesc string) error {
 	query := `
@@ -635,12 +640,8 @@ func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, er
 
 func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([]Interaction, error) {
 	query := `
-		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, created_at
-=======
-func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([]Interaction, error) {
-	query := `
 <<<<<<< HEAD
-		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, success, template_id, response_id, created_at
+		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, created_at
 =======
 		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, success, COALESCE(template_id, ''), response_id, created_at
 >>>>>>> origin/main

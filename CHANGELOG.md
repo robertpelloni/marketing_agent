@@ -1,5 +1,11 @@
 # Changelog
 
+<<<<<<< HEAD
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+=======
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
@@ -287,6 +293,7 @@ All notable changes to this project will be documented in this file. The format 
 - Consolidated database repository logic and resolved method re-declaration conflicts.
 - Completed dual-direction intelligent merge for full branch reconciliation.
 - Updated documentation and roadmap to reflect end-to-end sales lifecycle readiness.
+>>>>>>> origin/main
 
 ## [0.3.0-dev] - 2026-05-26
 

@@ -6,8 +6,8 @@ import (
 <<<<<<< HEAD
 	"log"
 =======
->>>>>>> origin/main
 	"log/slog"
+>>>>>>> origin/main
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -70,7 +70,7 @@ func (w *Worker) Run(ctx context.Context, interval time.Duration) {
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			log.Println("CRM Worker: Synchronization stopping: Draining in-flight work...")
+			log.Println("CRM Worker: Synchronization stopping...")
 =======
 			slog.Info("CRM Worker: Synchronization stopping: Draining in-flight work...")
 >>>>>>> origin/main
@@ -83,27 +83,7 @@ func (w *Worker) Run(ctx context.Context, interval time.Duration) {
 
 <<<<<<< HEAD
 func (w *Worker) sync(ctx context.Context) {
-	slog.Info("CRM Worker: Executing sync cycle...")
-
-	// 0. Pull new interactions from CRM
-	newInteractions, err := w.client.GetNewInteractions(ctx)
-	if err != nil {
-		slog.Error("CRM Worker: Error fetching new interactions", "error", err)
-	} else {
-		for _, interaction := range newInteractions {
-			slog.Info("CRM Worker: Processing new interaction from CRM", "text", interaction.RawText)
-
-			// If we have a contact email, try to process it autonomously
-			if interaction.Summary != "" && w.comm != nil {
-				contact, err := w.db.GetContactByEmail(ctx, interaction.Summary)
-				if err == nil {
-					slog.Info("CRM Worker: Found contact for CRM interaction, triggering autonomous response", "email", interaction.Summary)
-					if _, err := w.comm.ProcessInbound(ctx, *contact, interaction.RawText); err != nil {
-						slog.Error("CRM Worker: Failed to process CRM inbound", "email", interaction.Summary, "error", err)
-					}
-				}
-			}
-		}
+	log.Println("CRM Worker: Executing sync cycle...")
 =======
 // ExecuteSync manually triggers a sync cycle (exported for testing).
 func (w *Worker) ExecuteSync(ctx context.Context) {
@@ -118,6 +98,7 @@ func (w *Worker) sync(ctx context.Context) {
 		return
 >>>>>>> origin/main
 	}
+>>>>>>> origin/main
 
 	// 1. Reconcile updates from CRM
 	updates, err := w.client.GetLeadUpdates(ctx)

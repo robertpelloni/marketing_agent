@@ -23,8 +23,14 @@ jobs:
         uses: golangci/golangci-lint-action@v6
         with:
           version: latest
+<<<<<<< HEAD
       - name: Run Gosec Security Scanner
         uses: securego/gosec-action@master
+=======
+          args: --timeout=5m
+      - name: Run Gosec Security Scanner
+        uses: securego/gosec@master
+>>>>>>> origin/main
         with:
           args: ./...
 
@@ -64,6 +70,12 @@ jobs:
       run: |
         go mod tidy
         git diff --exit-code go.mod go.sum
+<<<<<<< HEAD
+=======
+    - name: Run Database Migrations
+      run: |
+        go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest -path ./migrations -database "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable" up
+>>>>>>> origin/main
     - name: Run Tests with Coverage
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable

@@ -12,9 +12,15 @@ import (
 
 // LeadUpdate represents a change in lead status from the CRM.
 type LeadUpdate struct {
+<<<<<<< HEAD
 	ID        string
 	NewState  db.LeadState
 	Notes     string
+=======
+	ID       string
+	NewState db.LeadState
+	Notes    string
+>>>>>>> origin/main
 }
 
 // CRMClient defines the interface for interacting with external CRM systems.
@@ -31,6 +37,12 @@ type CRMClient interface {
 	// SyncInteraction pushes a specific interaction or note to the CRM deal.
 	SyncInteraction(ctx context.Context, dealID int64, note string) error
 
+<<<<<<< HEAD
+=======
+	// SyncContacts synchronizes contacts for a specific company to the CRM.
+	SyncContacts(ctx context.Context, companyID int64, contacts []db.Contact) error
+
+>>>>>>> origin/main
 	// FetchDealDetails retrieves specific deal information from the CRM.
 	FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error)
 }
@@ -63,11 +75,20 @@ func NewRestCRMClient(baseURL, apiKey string) *RestCRMClient {
 func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
 	url := fmt.Sprintf("%s/deals", c.BaseURL)
 	payload, _ := json.Marshal(map[string]interface{}{
+<<<<<<< HEAD
 		"deal_id":  deal.ID,
 		"company":  company.Name,
 		"status":   deal.CurrentState,
 		"pricing":  deal.QuotedPricing,
 		"route":    route,
+=======
+		"deal_id":           deal.ID,
+		"company":           company.Name,
+		"status":            deal.CurrentState,
+		"pricing":           deal.QuotedPricing,
+		"technical_dossier": deal.TechnicalDossier,
+		"route":             route,
+>>>>>>> origin/main
 	})
 
 	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
@@ -90,6 +111,33 @@ func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.C
 	return nil
 }
 
+<<<<<<< HEAD
+=======
+func (c *RestCRMClient) SyncContacts(ctx context.Context, companyID int64, contacts []db.Contact) error {
+	url := fmt.Sprintf("%s/companies/%d/contacts", c.BaseURL, companyID)
+	payload, _ := json.Marshal(contacts)
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.APIKey)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		return fmt.Errorf("crm api error: %d", resp.StatusCode)
+	}
+
+	return nil
+}
+
+>>>>>>> origin/main
 func (c *RestCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error) {
 	url := fmt.Sprintf("%s/updates", c.BaseURL)
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)

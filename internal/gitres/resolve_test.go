@@ -4,6 +4,10 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+<<<<<<< HEAD
+=======
+	"strings"
+>>>>>>> origin/main
 	"testing"
 )
 
@@ -70,9 +74,17 @@ func TestResolveConflictTheirs(t *testing.T) {
 		t.Fatalf("Failed to read file: %v", err)
 	}
 
+<<<<<<< HEAD
 	expected := "content from A\n"
 	if string(content) != expected {
 		t.Errorf("Expected content %q, got %q", expected, string(content))
+=======
+	// Normalize CRLF to LF for cross-platform test compatibility
+	actual := strings.ReplaceAll(string(content), "\r\n", "\n")
+	expected := "content from A\n"
+	if actual != expected {
+		t.Errorf("Expected content %q, got %q", expected, actual)
+>>>>>>> origin/main
 	}
 }
 
@@ -105,8 +117,16 @@ func TestResolveConflictOurs(t *testing.T) {
 		t.Fatalf("Failed to read file: %v", err)
 	}
 
+<<<<<<< HEAD
 	expected := "content from B\n"
 	if string(content) != expected {
 		t.Errorf("Expected content %q, got %q", expected, string(content))
+=======
+	// Normalize CRLF to LF for cross-platform test compatibility
+	actual := strings.ReplaceAll(string(content), "\r\n", "\n")
+	expected := "content from B\n"
+	if actual != expected {
+		t.Errorf("Expected content %q, got %q", expected, actual)
+>>>>>>> origin/main
 	}
 }

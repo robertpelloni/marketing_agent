@@ -19,7 +19,11 @@ func TestLLMResponseGenerator_Generate(t *testing.T) {
 		Deal:    db.Deal{TechnicalDossier: "INFRASTRUCTURE_BOTTLENECK detected in legacy k8s clusters."},
 		LatestIntent: IntentTechnical,
 		Interactions: []db.Interaction{
+<<<<<<< HEAD
 			{RawText: "How can Borg help with our scaling?"},
+=======
+			{RawText: "How can TormentNexus help with our scaling?"},
+>>>>>>> origin/main
 		},
 	}
 

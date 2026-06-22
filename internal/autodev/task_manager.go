@@ -111,6 +111,10 @@ func (m *TaskManager) MarkCompleted(ctx context.Context, taskDescription string)
 	}
 
 	output := strings.Join(lines, "\n")
+<<<<<<< HEAD
+=======
+	// #nosec G306 G304 G703 -- TODO file is intentionally world-readable
+>>>>>>> origin/main
 	err = os.WriteFile(m.todoPath, []byte(output), 0644)
 	if err != nil {
 		return err

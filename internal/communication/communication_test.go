@@ -9,7 +9,11 @@ import (
 
 func TestIntentClassifier_Classify(t *testing.T) {
 	classifier := &MockIntentClassifier{}
+<<<<<<< HEAD
 	intent, err := classifier.Classify(context.Background(), "How much does Borg cost?")
+=======
+	intent, err := classifier.Classify(context.Background(), "How much does TormentNexus cost?")
+>>>>>>> origin/main
 	if err != nil {
 		t.Fatalf("Classification failed: %v", err)
 	}

@@ -44,7 +44,11 @@ func (o *Orchestrator) Run(ctx context.Context, interval time.Duration) {
 	for {
 		select {
 		case <-ctx.Done():
+<<<<<<< HEAD
 			log.Println("Autonomous development orchestrator stopping...")
+=======
+			log.Println("Autonomous development orchestrator stopping: Draining in-flight work...")
+>>>>>>> origin/main
 			return
 		case <-ticker.C:
 			o.ExecuteStep(ctx)
@@ -242,18 +246,43 @@ func (o *Orchestrator) finalizeCycle(ctx context.Context, task *Task) {
 	if vStr == "" {
 		vStr = "0.0.0"
 	}
+<<<<<<< HEAD
 	newV := fmt.Sprintf("%s+%d", vStr, time.Now().Unix())
 	os.WriteFile("VERSION", []byte(newV), 0644)
 	os.WriteFile("VERSION.md", []byte(newV), 0644)
 
 	// 2. Append to CHANGELOG.md
 	changelogEntry := fmt.Sprintf("\n## [%s] - %s\n- %s\n", newV, time.Now().Format("2006-01-02"), task.Description)
+=======
+
+	// Extract base version (remove previous build metadata if present)
+	baseVersion := strings.Split(vStr, "+")[0]
+	newV := fmt.Sprintf("%s+%d", baseVersion, time.Now().Unix())
+
+	// #nosec G306 G304 G703 -- Version files are intended to be world-readable in this architecture
+	if err := os.WriteFile("VERSION", []byte(newV), 0644); err != nil {
+		log.Printf("Autodev Warning: Failed to write VERSION: %v", err)
+	}
+	// #nosec G306 G304 G703 -- Version files are intended to be world-readable in this architecture
+	if err := os.WriteFile("VERSION.md", []byte(newV), 0644); err != nil {
+		log.Printf("Autodev Warning: Failed to write VERSION.md: %v", err)
+	}
+
+	// 2. Append to CHANGELOG.md
+	changelogEntry := fmt.Sprintf("\n## [%s] - %s\n- %s\n", newV, time.Now().Format("2006-01-02"), task.Description)
+	// #nosec G302 -- CHANGELOG is intentionally world-readable
+>>>>>>> origin/main
 	f, err := os.OpenFile("CHANGELOG.md", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err == nil {
 		if _, err := f.WriteString(changelogEntry); err != nil {
 			log.Printf("Autodev: Error writing to CHANGELOG: %v", err)
 		}
+<<<<<<< HEAD
 		f.Close()
+=======
+		// #nosec G104 -- Explicit close is handled, ignore errors during autonomous loop cleanup
+		_ = f.Close()
+>>>>>>> origin/main
 	}
 
 	log.Printf("Autodev: Cycle finalized. New version: %s", newV)

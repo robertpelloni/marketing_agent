@@ -2,8 +2,14 @@ package crm
 
 import (
 	"context"
+<<<<<<< HEAD
 	"log"
 
+=======
+	"log/slog"
+
+	"fmt"
+>>>>>>> origin/main
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
@@ -11,6 +17,10 @@ import (
 type MockCRMClient struct {
 	PushDealCalled        bool
 	SyncInteractionCalled bool
+<<<<<<< HEAD
+=======
+	SyncContactsCalled    bool
+>>>>>>> origin/main
 	GetLeadUpdatesCalled  bool
 	LatestNote            string
 	UpdatesToReturn       []LeadUpdate
@@ -22,13 +32,21 @@ func NewMockCRMClient() *MockCRMClient {
 }
 
 func (m *MockCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
+<<<<<<< HEAD
 	log.Printf("CRM: Pushing deal %d for company %s (Route: %s) to CRM", deal.ID, company.Name, route)
+=======
+	slog.Info(fmt.Sprintf("CRM: Pushing deal %d for company %s (Route: %s) to CRM", deal.ID, company.Name, route))
+>>>>>>> origin/main
 	m.PushDealCalled = true
 	return nil
 }
 
 func (m *MockCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error) {
+<<<<<<< HEAD
 	log.Println("CRM: Fetching updates from external CRM...")
+=======
+	slog.Info("CRM: Fetching updates from external CRM...")
+>>>>>>> origin/main
 	m.GetLeadUpdatesCalled = true
 	if m.UpdatesToReturn != nil {
 		return m.UpdatesToReturn, nil
@@ -37,19 +55,38 @@ func (m *MockCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error
 }
 
 func (m *MockCRMClient) ValidateAccount(ctx context.Context, domain string) (bool, error) {
+<<<<<<< HEAD
 	log.Printf("CRM: Validating account for domain: %s", domain)
+=======
+	slog.Info(fmt.Sprintf("CRM: Validating account for domain: %s", domain))
+>>>>>>> origin/main
 	return true, nil
 }
 
 func (m *MockCRMClient) SyncInteraction(ctx context.Context, dealID int64, note string) error {
+<<<<<<< HEAD
 	log.Printf("CRM: Syncing interaction for deal %d: %s", dealID, note)
+=======
+	slog.Info(fmt.Sprintf("CRM: Syncing interaction for deal %d: %s", dealID, note))
+>>>>>>> origin/main
 	m.SyncInteractionCalled = true
 	m.LatestNote = note
 	return nil
 }
 
+<<<<<<< HEAD
 func (m *MockCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error) {
 	log.Printf("CRM: Fetching mock details for deal %d", dealID)
+=======
+func (m *MockCRMClient) SyncContacts(ctx context.Context, companyID int64, contacts []db.Contact) error {
+	slog.Info(fmt.Sprintf("CRM: Syncing %d contacts for company %d", len(contacts), companyID))
+	m.SyncContactsCalled = true
+	return nil
+}
+
+func (m *MockCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error) {
+	slog.Info(fmt.Sprintf("CRM: Fetching mock details for deal %d", dealID))
+>>>>>>> origin/main
 	return &DealDetails{
 		ID:                 dealID,
 		Status:             db.StateNegotiating,

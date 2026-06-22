@@ -7,7 +7,6 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strings"
 	"os/signal"
 	"syscall"
@@ -29,7 +28,6 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/web"
 	"github.com/robertpelloni/enterprise_sales_bot/pkg/agents"
-	"github.com/robertpelloni/enterprise_sales_bot/pkg/plugins"
 
 	_ "github.com/lib/pq"	// PostgreSQL driver
 )
@@ -75,25 +73,6 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-
-	// 1a. Load Plugins
-	pluginRegistry := plugins.NewRegistry()
-	if files, err := os.ReadDir("plugins"); err == nil {
-		for _, f := range files {
-			if filepath.Ext(f.Name()) == ".so" {
-				path := filepath.Join("plugins", f.Name())
-				name := strings.TrimSuffix(f.Name(), ".so")
-				if err := pluginRegistry.LoadGoPlugin(name, path); err != nil {
-					slog.Warn("Failed to load plugin", "plugin", name, "error", err)
-				} else {
-					slog.Info("Successfully loaded plugin", "plugin", name)
-				}
-			}
-		}
-	} else if !os.IsNotExist(err) {
-		slog.Warn("Error reading plugins directory", "error", err)
-	}
-
 	// 2. Setup Scraper — HN "Who is Hiring" + LinkedIn + GitHub Issues + Mock fallback
 	sources := []scraper.LeadSource{
 		&scraper.HNWhoIsHiringSource{Client: http.DefaultClient},
@@ -108,31 +87,10 @@ func main() {
 
 	// 2a. Setup CRM Integration
 	var crmClient crm.CRMClient
-
-	// We check environment variables to decide which CRM to use.
-	// We prioritize HubSpot, then Salesforce, then the generic REST CRM, then Mock.
-	if os.Getenv("HUBSPOT_API_KEY") != "" || os.Getenv("HUBSPOT_ACCESS_TOKEN") != "" {
-		slog.Info("CRM: Initializing production HubSpot CRM client")
-		client, err := crm.NewHubSpotClient(cfg.HubSpotStageMapping, cfg.HubSpotReverseStageMapping)
-		if err != nil {
-			slog.Error(fmt.Sprintf("Failed to initialize HubSpot CRM client: %v", err))
-		} else {
-			crmClient = client
-		}
-	} else if os.Getenv("SALESFORCE_INSTANCE_URL") != "" && os.Getenv("SALESFORCE_ACCESS_TOKEN") != "" {
-		slog.Info("CRM: Initializing production Salesforce CRM client")
-		client, err := crm.NewSalesforceClient(cfg.SalesforceStageMapping, cfg.SalesforceReverseStageMapping)
-		if err != nil {
-			slog.Error(fmt.Sprintf("Failed to initialize Salesforce CRM client: %v", err))
-		} else {
-			crmClient = client
-		}
-	} else if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
+	if cfg.CRMBaseURL != "" && cfg.CRMAPIKey != "" {
 		slog.Info(fmt.Sprintf("CRM: Initializing production REST CRM client at %s", cfg.CRMBaseURL))
 		crmClient = crm.NewRestCRMClient(cfg.CRMBaseURL, cfg.CRMAPIKey)
-	}
-
-	if crmClient == nil {
+	} else {
 		slog.Info("CRM: Initializing mock CRM client (missing configuration).")
 		crmClient = crm.NewMockCRMClient()
 	}
@@ -166,10 +124,6 @@ func main() {
 		slog.Info("Enrichment: Mock source added as final fallback.")
 		enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
 		sourceNames = append(sourceNames, "Mock (fallback)")
-	}
-	for name, pe := range pluginRegistry.Enrichers {
-		enrichmentSources = append(enrichmentSources, pe)
-		sourceNames = append(sourceNames, name)
 	}
 
 	// Wrap sources in fallback chain for ordered retry with clear logging
@@ -258,18 +212,8 @@ func main() {
 		slog.Info("Communication: Initializing Mock Intent Classifier.")
 		classifier = &communication.MockIntentClassifier{}
 	}
-	for _, pc := range pluginRegistry.Classifiers {
-		slog.Info("Communication: Using Plugin Intent Classifier.")
-		classifier = pc
-		break // just use the first one found
-	}
 
-	var responder communication.ResponseGenerator = communication.NewRAGResponseGenerator(database, llmProvider)
-	for _, pr := range pluginRegistry.Responders {
-		slog.Info("Communication: Using Plugin Responder.")
-		responder = pr
-		break
-	}
+	responder := communication.NewRAGResponseGenerator(database, llmProvider)
 	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
 
 	// 2h. Setup Email Sender — SMTP, Draft, or Mock
@@ -351,7 +295,6 @@ func main() {
 	srv := &http.Server{
 		Addr:		":" + cfg.Port,
 		Handler:	webServer,
-		ReadHeaderTimeout: 10 * time.Second,
 	}
 
 	go func() {

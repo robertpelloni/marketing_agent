@@ -92,7 +92,7 @@ ipe)
 - [x] **Add intent signal aggregation** — combine hiring signals, GitHub activity, blog posts, and job postings into a unified intent score
 
 ### 8.2 Autonomous Development Improvements
-- [ ] **Replace hardcoded `LocalAgent.ProposeSolution`** with LLM-powered code generation
+- [x] **Replace hardcoded `LocalAgent.ProposeSolution`** with LLM-powered code generation
 - [ ] **Add rollback mechanism** — if verification fails, revert to pre-change state
 - [ ] **Add PR feedback loop** — use `GetPRComments` to refine the agent's code generation accuracy
 - [ ] **Add task dependency resolution** — respect ordering between tasks (e.g., DB migration before feature code)

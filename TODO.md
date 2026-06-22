@@ -74,7 +74,7 @@
 - [x] Add unified intent signal aggregation
 
 ### Autonomous Development Improvements
-- [ ] Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation
+- [x] Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation
 - [ ] Add rollback mechanism — if verification fails, revert to pre-change state
 - [ ] Add PR feedback loop — use `GetPRComments` to refine the agent's code generation accuracy
 - [ ] Add task dependency resolution

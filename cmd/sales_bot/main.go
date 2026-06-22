@@ -271,7 +271,7 @@ func main() {
 
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")
-	agent := &autodev.LocalAgent{}
+	agent := autodev.NewLocalAgent(llmProvider)
 
 	var prManager gitcheck.PRManager
 	if cfg.GitHubRepository != "" {

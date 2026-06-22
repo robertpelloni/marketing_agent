@@ -48,6 +48,8 @@
 ## [0.6.0+1781403369] - 2026-06-14
 >>>>>>> origin/main
 - Test integration task
+<<<<<<< HEAD
+=======
 
 ## [0.4.4+1781043945] - 2026-06-09
 - Test integration task
@@ -205,3 +207,4 @@
 ## [0.4.4+1780959000] - 2026-06-08
 >>>>>>> origin/main
 - Test integration task
+>>>>>>> origin/main

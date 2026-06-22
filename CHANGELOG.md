@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file. The format 
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
 >>>>>>> origin/main
 ### Added
 - **Real-Time Quote API:** Added `/api/v1/quote` endpoint for dynamic quote generation based on company size/tier.
@@ -176,6 +178,7 @@ All notable changes to this project will be documented in this file. The format 
 <<<<<<< HEAD
 =======
 =======
+>>>>>>> origin/main
 ## [0.6.0] - 2026-06-13
 
 ### Added
@@ -214,6 +217,8 @@ All notable changes to this project will be documented in this file. The format 
     - Verified full framework state with comprehensive unit and integration tests.
 
 ## [0.4.8] - 2026-06-08
+<<<<<<< HEAD
+=======
 >>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 >>>>>>> origin/main
 

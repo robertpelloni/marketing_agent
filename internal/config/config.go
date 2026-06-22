@@ -1,6 +1,9 @@
 package config
 
 import (
+<<<<<<< HEAD
+	"os"
+=======
 	"bufio"
 	"encoding/json"
 <<<<<<< HEAD
@@ -12,6 +15,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+>>>>>>> origin/main
 	"time"
 <<<<<<< HEAD
 	"fmt"
@@ -68,6 +72,33 @@ type Config struct {
 	GitHubWebhookSecret string
 	CRMBaseURL          string
 	CRMAPIKey           string
+<<<<<<< HEAD
+	CRMProvider         string
+	SalesforceAuthURL    string
+	SalesforceClientID   string
+	SalesforceClientSecret string
+	SMTPHost            string
+	SMTPPort            string
+	SMTPUser            string
+	SMTPPass            string
+	SMTPFrom            string
+	IMAPHost            string
+	IMAPPort            string
+	IMAPUser            string
+	IMAPPass            string
+	DeploySyncInterval  time.Duration
+	Port                string
+	Environment         string
+	CRMDealNameProp     string
+	CRMDealStageProp    string
+	CRMDealAmountProp   string
+	CRMDealDossierProp  string
+	CRMContactEmailProp string
+}
+
+// Load loads the configuration from environment variables.
+func Load() *Config {
+=======
 	HermesAPIURL        string
 	HermesAPIKey        string
 	HermesModel         string
@@ -119,6 +150,7 @@ func Load() *Config {
 	// Try to load .env file from current directory or executable directory
 	loadDotEnv()
 
+>>>>>>> origin/main
 	syncInterval := 1 * time.Hour
 	if intervalStr := os.Getenv("DEPLOY_SYNC_INTERVAL"); intervalStr != "" {
 		if d, err := time.ParseDuration(intervalStr); err == nil {
@@ -136,6 +168,8 @@ func Load() *Config {
 		env = "development"
 	}
 
+<<<<<<< HEAD
+=======
 	hermesModel := os.Getenv("HERMES_MODEL")
 	if hermesModel == "" {
 		hermesModel = "free-llm"
@@ -162,6 +196,7 @@ func Load() *Config {
 		}
 	}
 
+>>>>>>> origin/main
 	return &Config{
 <<<<<<< HEAD
 		DatabaseURL:		getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
@@ -210,6 +245,29 @@ func Load() *Config {
 		GitHubWebhookSecret: os.Getenv("GITHUB_WEBHOOK_SECRET"),
 		CRMBaseURL:          os.Getenv("CRM_BASE_URL"),
 		CRMAPIKey:           os.Getenv("CRM_API_KEY"),
+<<<<<<< HEAD
+		CRMProvider:         getEnv("CRM_PROVIDER", "generic"),
+		SalesforceAuthURL:    os.Getenv("SALESFORCE_AUTH_URL"),
+		SalesforceClientID:   os.Getenv("SALESFORCE_CLIENT_ID"),
+		SalesforceClientSecret: os.Getenv("SALESFORCE_CLIENT_SECRET"),
+		SMTPHost:            os.Getenv("SMTP_HOST"),
+		SMTPPort:            os.Getenv("SMTP_PORT"),
+		SMTPUser:            os.Getenv("SMTP_USER"),
+		SMTPPass:            os.Getenv("SMTP_PASS"),
+		SMTPFrom:            os.Getenv("SMTP_FROM"),
+		IMAPHost:            os.Getenv("IMAP_HOST"),
+		IMAPPort:            os.Getenv("IMAP_PORT"),
+		IMAPUser:            os.Getenv("IMAP_USER"),
+		IMAPPass:            os.Getenv("IMAP_PASS"),
+		DeploySyncInterval:  syncInterval,
+		Port:                port,
+		Environment:         env,
+		CRMDealNameProp:     os.Getenv("CRM_DEAL_NAME_PROP"),
+		CRMDealStageProp:    os.Getenv("CRM_DEAL_STAGE_PROP"),
+		CRMDealAmountProp:   os.Getenv("CRM_DEAL_AMOUNT_PROP"),
+		CRMDealDossierProp:  os.Getenv("CRM_DEAL_DOSSIER_PROP"),
+		CRMContactEmailProp: os.Getenv("CRM_CONTACT_EMAIL_PROP"),
+=======
 		HermesAPIURL:        os.Getenv("HERMES_API_URL"),
 		HermesAPIKey:        os.Getenv("HERMES_API_KEY"),
 		HermesModel:         hermesModel,
@@ -355,6 +413,8 @@ func getEnv(key, fallback string) string {
 	}
 	return fallback
 }
+<<<<<<< HEAD
+=======
 
 func parseMapFromEnv(key string, defaultMap map[string]string) map[string]string {
 	val := os.Getenv(key)
@@ -369,3 +429,4 @@ func parseMapFromEnv(key string, defaultMap map[string]string) map[string]string
 	}
 	return m
 }
+>>>>>>> origin/main

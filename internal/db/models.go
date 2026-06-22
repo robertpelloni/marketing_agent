@@ -39,6 +39,19 @@ type Company struct {
 	UpdatedAt     time.Time `db:"updated_at"`
 }
 
+<<<<<<< HEAD
+// Contact represents an individual decision-maker at a company.
+type Contact struct {
+	ID             int64     `db:"id"`
+	CompanyID      int64     `db:"company_id"`
+	Name           string    `db:"name"`
+	Role           string    `db:"role"`
+	Email          string    `db:"email"`
+	GitHubHandle   string    `db:"github_handle"`
+	LinkedInURL    string    `db:"linkedin_url"`
+	CreatedAt      time.Time `db:"created_at"`
+	UpdatedAt      time.Time `db:"updated_at"`
+=======
 // Channel represents a communication channel for outreach.
 type Channel string
 
@@ -79,6 +92,7 @@ type Contact struct {
 	PreferredChannel string    `db:"preferred_channel"` // "email", "linkedin", "github"
 	CreatedAt        time.Time `db:"created_at"`
 	UpdatedAt        time.Time `db:"updated_at"`
+>>>>>>> origin/main
 }
 
 // Interaction tracks communications with a contact.
@@ -118,11 +132,22 @@ type Deal struct {
 	QuotedPricing      float64   `db:"quoted_pricing"`
 	CustomRequirements string    `db:"custom_requirements"`
 	TechnicalDossier   string    `db:"technical_dossier"`
+<<<<<<< HEAD
+=======
 	CadenceStep        int       `db:"cadence_step"` // 0 = not started, 1+ = current step index
+>>>>>>> origin/main
 	CreatedAt          time.Time `db:"created_at"`
 	UpdatedAt          time.Time `db:"updated_at"`
 }
 
+<<<<<<< HEAD
+// PerformanceMetrics aggregates key sales pipeline statistics.
+type PerformanceMetrics struct {
+	TotalLeads         int            `json:"total_leads"`
+	LeadsByState       map[LeadState]int `json:"leads_by_state"`
+	SuccessfulOutreach int            `json:"successful_outreach"`
+	WinRate            float64        `json:"win_rate"`
+=======
 // Template represents a reusable outreach message template.
 type Template struct {
 	ID        string    `db:"id"`

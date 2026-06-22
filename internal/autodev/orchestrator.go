@@ -423,15 +423,13 @@ func (o *Orchestrator) finalizeCycle(ctx context.Context, task *Task) {
 		slog.Info(fmt.Sprintf("Autodev Warning: Failed to write VERSION: %v", err))
 	}
 	// #nosec G306 -- Version files are intended to be world-readable in this architecture
-	if err := os.WriteFile("VERSION.md", []byte(newV), 0644); err != nil { // #nosec G306
-	// #nosec G703
-		slog.Info(fmt.Sprintf("Autodev Warning: Failed to write VERSION.md: %v", err))
 =======
 	// #nosec G306 G304 G703 -- Version files are intended to be world-readable in this architecture
 	if err := os.WriteFile("VERSION", []byte(newV), 0644); err != nil {
 		log.Printf("Autodev Warning: Failed to write VERSION: %v", err)
 	}
 	// #nosec G306 G304 G703 -- Version files are intended to be world-readable in this architecture
+>>>>>>> origin/main
 	if err := os.WriteFile("VERSION.md", []byte(newV), 0644); err != nil {
 		log.Printf("Autodev Warning: Failed to write VERSION.md: %v", err)
 >>>>>>> origin/main

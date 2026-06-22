@@ -142,27 +142,7 @@ func (s *Scraper) processDiscoveredCompany(ctx context.Context, company db.Compa
 	return nil
 }
 
-// GitHubJobSource implements LeadSource by querying the GitHub API for hiring organizations.
-type GitHubJobSource struct {
-	Client *http.Client
-}
-
-func (g *GitHubJobSource) Discover(ctx context.Context, keywords []string) ([]db.Company, error) {
-	slog.Info(fmt.Sprintf("GitHubJobSource: Discovering hiring signals for: %v", keywords))
-
-	// Real-world signals: query repos related to orchestration and check contributors/hiring notices
-	// For this phase, we use a hybrid approach that returns verified high-value targets.
-	return []db.Company{
-		{
-			Name:		"Compute Logic",
-			Domain:		"computelogic.tech",
-			TechStack:	[]string{"Go", "gRPC", "TormentNexus"},
-			HiringSignals:	[]string{"Hiring: Distributed Systems Engineer (Autonomous Agent focus)"},
-			MarketCapTier:	"Enterprise",
-		},
-	}, nil
-}
-
+<<<<<<< HEAD
 // MockJobBoardSource is a simulated lead source for testing and initial development.
 type MockJobBoardSource struct{}
 
@@ -187,10 +167,6 @@ func (m *MockJobBoardSource) Discover(ctx context.Context, keywords []string) ([
 		},
 	}, nil
 =======
-	slog.Info("Successfully discovered and persisted new lead", "company_name", company.Name, "domain", company.Domain)
-	return nil
-}
-
 // MockJobBoardSource is a legacy stub that no longer generates mock data.
 // All lead sources are now real API integrations.
 type MockJobBoardSource struct{}

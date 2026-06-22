@@ -3,7 +3,11 @@ package autodev
 import (
 	"context"
 	"fmt"
+<<<<<<< HEAD
+	"log"
+=======
 	"log/slog"
+>>>>>>> origin/main
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -32,7 +36,11 @@ type LocalAgent struct{}
 >>>>>>> origin/main
 
 func (a *LocalAgent) ProposeSolution(ctx context.Context, task Task) (string, error) {
+<<<<<<< HEAD
+	log.Printf("LocalAgent: Analyzing task: %s", task.Description)
+=======
 	slog.InfoContext(ctx, "LocalAgent: Analyzing task", "description", task.Description)
+>>>>>>> origin/main
 
 <<<<<<< HEAD
 	if a.llmProvider != nil {
@@ -66,7 +74,11 @@ If multiple files are needed, repeat the block. Do not include markdown formatti
 }
 
 func (a *LocalAgent) ApplyChanges(ctx context.Context, proposal string) error {
+<<<<<<< HEAD
+	log.Printf("LocalAgent: Applying changes via proposal parsing...")
+=======
 	slog.InfoContext(ctx, "LocalAgent: Applying changes via proposal parsing")
+>>>>>>> origin/main
 
 	wd, err := os.Getwd()
 	if err != nil {
@@ -126,19 +138,31 @@ func (a *LocalAgent) safeWriteFile(wd, relPath, content string) error {
 }
 
 func (a *LocalAgent) Verify(ctx context.Context) error {
+<<<<<<< HEAD
+	log.Println("LocalAgent: Running full verification suite...")
+=======
 	slog.InfoContext(ctx, "LocalAgent: Running full verification suite")
+>>>>>>> origin/main
 
 	// 1. Check if it builds
 	buildCmd := exec.CommandContext(ctx, "go", "build", "./...")
 	if out, err := buildCmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("build verification failed: %v, output: %s", err, string(out))
 	}
+<<<<<<< HEAD
+	log.Println("LocalAgent: Build verification passed.")
+=======
 	slog.InfoContext(ctx, "LocalAgent: Build verification passed")
+>>>>>>> origin/main
 
 	// 2. Run unit tests
 	// Skip tests if requested (useful for CI/Test environments to avoid recursion/timeouts)
 	if os.Getenv("SKIP_AUTODEV_TESTS") == "true" {
+<<<<<<< HEAD
+		log.Println("LocalAgent: Skipping test verification (SKIP_AUTODEV_TESTS=true)")
+=======
 		slog.InfoContext(ctx, "LocalAgent: Skipping test verification", "env", "SKIP_AUTODEV_TESTS=true")
+>>>>>>> origin/main
 		return nil
 	}
 
@@ -146,7 +170,11 @@ func (a *LocalAgent) Verify(ctx context.Context) error {
 	if out, err := testCmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("test verification failed: %v, output: %s", err, string(out))
 	}
+<<<<<<< HEAD
+	log.Println("LocalAgent: Test verification passed.")
+=======
 	slog.InfoContext(ctx, "LocalAgent: Test verification passed")
+>>>>>>> origin/main
 
 	return nil
 }

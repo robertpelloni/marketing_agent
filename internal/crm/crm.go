@@ -5,6 +5,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+<<<<<<< HEAD
+	"io"
+=======
+>>>>>>> origin/main
 	"net/http"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -42,6 +46,27 @@ type CRMClient interface {
 
 	// FetchDealDetails retrieves specific deal information from the CRM.
 	FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error)
+<<<<<<< HEAD
+
+	// SendEmail triggers an email send via the CRM (or records a sent email).
+	SendEmail(ctx context.Context, contact db.Contact, subject, body string) error
+
+	// GetNewInteractions retrieves new external communications from the CRM.
+	GetNewInteractions(ctx context.Context) ([]db.Interaction, error)
+
+	// SetFieldMapping updates the CRM-specific field mappings.
+	SetFieldMapping(mapping FieldMapping)
+}
+
+// FieldMapping defines customizable property names for CRM synchronization.
+type FieldMapping struct {
+	DealNameProperty     string `json:"deal_name_property"`
+	DealStageProperty    string `json:"deal_stage_property"`
+	DealAmountProperty   string `json:"deal_amount_property"`
+	DealDossierProperty  string `json:"deal_dossier_property"`
+	ContactEmailProperty string `json:"contact_email_property"`
+=======
+>>>>>>> origin/main
 }
 
 // DealDetails represents detailed information for a deal in the CRM.
@@ -94,7 +119,72 @@ func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.C
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
+<<<<<<< HEAD
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
+	}
+
+	return nil
+}
+
+func (c *RestCRMClient) SetFieldMapping(mapping FieldMapping) {
+	// RestCRMClient uses a fixed schema, but we could implement dynamic mapping if needed.
+}
+
+func (c *RestCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interaction, error) {
+	url := fmt.Sprintf("%s/interactions/new", c.BaseURL)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.APIKey)
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		respBody, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return nil, fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(respBody))
+	}
+
+	var interactions []db.Interaction
+	if err := json.NewDecoder(resp.Body).Decode(&interactions); err != nil {
+		return nil, err
+	}
+
+	return interactions, nil
+}
+
+func (c *RestCRMClient) SendEmail(ctx context.Context, contact db.Contact, subject, body string) error {
+	url := fmt.Sprintf("%s/outreach/email", c.BaseURL)
+	payload, _ := json.Marshal(map[string]interface{}{
+		"to":      contact.Email,
+		"subject": subject,
+		"body":    body,
+	})
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.APIKey)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		respBody, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(respBody))
+=======
 		return fmt.Errorf("crm api error: %d", resp.StatusCode)
+>>>>>>> origin/main
 	}
 
 	return nil
@@ -118,7 +208,12 @@ func (c *RestCRMClient) SyncContacts(ctx context.Context, companyID int64, conta
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
+<<<<<<< HEAD
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
+=======
 		return fmt.Errorf("crm api error: %d", resp.StatusCode)
+>>>>>>> origin/main
 	}
 
 	return nil
@@ -139,7 +234,12 @@ func (c *RestCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
+<<<<<<< HEAD
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return nil, fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
+=======
 		return nil, fmt.Errorf("crm api error: %d", resp.StatusCode)
+>>>>>>> origin/main
 	}
 
 	var updates []LeadUpdate
@@ -165,7 +265,12 @@ func (c *RestCRMClient) ValidateAccount(ctx context.Context, domain string) (boo
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
+<<<<<<< HEAD
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return false, fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
+=======
 		return false, fmt.Errorf("crm api error: %d", resp.StatusCode)
+>>>>>>> origin/main
 	}
 
 	return resp.StatusCode == http.StatusOK, nil
@@ -186,7 +291,12 @@ func (c *RestCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*De
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
+<<<<<<< HEAD
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return nil, fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
+=======
 		return nil, fmt.Errorf("crm api error: %d", resp.StatusCode)
+>>>>>>> origin/main
 	}
 
 	var details DealDetails
@@ -217,7 +327,12 @@ func (c *RestCRMClient) SyncInteraction(ctx context.Context, dealID int64, note 
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
+<<<<<<< HEAD
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
+=======
 		return fmt.Errorf("crm api error: %d", resp.StatusCode)
+>>>>>>> origin/main
 	}
 
 	return nil

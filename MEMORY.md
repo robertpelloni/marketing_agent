@@ -3,7 +3,6 @@
 ## Current State
 
 <<<<<<< HEAD
-- The project is at v0.5.1 with Hermes Agent LLM integration, real-time quote generation, and stabilized CI pipelines.
 =======
 <<<<<<< HEAD
 - The project is at v0.4.8 with Hermes Agent LLM integration.
@@ -15,12 +14,15 @@
 <<<<<<< HEAD
 =======
 =======
+>>>>>>> origin/main
 - The project has completed Phase 5 (v0.4.1) with a fully functional end-to-end pipeline.
 - All core modules are implemented: scraper, enricher, researcher, communication, CRM, billing, deploy, and autodev.
 - The project uses Go 1.24 and follows standard Golang concurrency patterns.
 - All external integrations currently use mock implementations (except GitHub API for target discovery and CI tracking).
 - A robust merge integrity and conflict resolution testing framework is in place.
 - The project was rebranded from Borg to TormentNexus across all product-facing references.
+<<<<<<< HEAD
+=======
 >>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 >>>>>>> origin/main
 
@@ -39,6 +41,19 @@
 ## Known Technical Debt
 
 - **CRLF Test Failure:** `internal/gitres/resolve_test.go::TestResolveConflictTheirs` fails on Windows due to `\r\n` vs `\n` mismatch.
+<<<<<<< HEAD
+- **Scattered Configuration:** `os.Getenv()` calls are scattered throughout `main.go` and packages instead of a centralized config struct.
+- **Unstructured Logging:** All modules use `log.Printf` — no structured JSON logging, no log levels, no correlation IDs.
+- **No Graceful Shutdown:** Workers respond to context cancellation but do not drain in-flight work before exiting.
+- **No Connection Pooling:** `db.NewDB()` opens a connection with default pool settings (no max open/idle/lifetime).
+- **No Retry/Backoff:** External API calls (GitHub, CRM, Stripe) fail immediately without retry.
+- **No DB Migration Runner:** Migrations must be applied manually; they are not auto-applied on startup.
+- **No Dashboard Auth:** The web dashboard is completely unauthenticated.
+- **No Rate Limiting:** HTTP endpoints accept unlimited requests.
+- **No Pagination:** Dashboard hardcodes `LIMIT 20` for deals.
+- **Missing Indices:** `interactions.success` and `deals.current_state` lack database indices for query performance.
+- **Hardcoded Worker Intervals:** All background worker intervals are hardcoded in `main.go` rather than configurable.
+=======
 - **Unstructured Logging:** All modules use `log.Printf` — no structured JSON logging, no log levels, no correlation IDs.
 - **No DB Migration Runner:** Migrations must be applied manually; they are not auto-applied on startup.
 - **No Rate Limiting:** HTTP endpoints accept unlimited requests.
@@ -46,6 +61,7 @@
 - **Missing Indices:** `interactions.success` and `deals.current_state` lack database indices.
 - **Hardcoded Worker Intervals:** Background worker intervals are configurable via env vars but not via config file.
 - **Hermes Dependency:** LLM calls depend on Hermes gateway being running in WSL. If Hermes is down, bot falls back to mock.
+>>>>>>> origin/main
 
 ## Design Preferences
 
@@ -65,8 +81,13 @@
 | GitHub API (PR management) | ✅ Real | `internal/gitcheck/pr.go` with `go-github` |
 | Stripe billing | ✅ Real | `internal/billing/billing.go` with `stripe-go` |
 | REST CRM client | ✅ Real | `internal/crm/crm.go` with generic REST |
+<<<<<<< HEAD
+| LLM provider | ❌ Mock | `internal/llm/llm.go::MockLLMProvider` |
+| Intent classifier | ⚠️ Hybrid | `MockIntentClassifier` + `LLMIntentClassifier` (exists but mock is default) |
+=======
 | **LLM provider** | **✅ Real** | **`internal/llm/hermes.go::HermesLLMProvider` via Hermes Agent gateway** |
 | **Intent classifier** | **✅ Real** | **`LLMIntentClassifier` via Hermes (keyword mock fallback)** |
+>>>>>>> origin/main
 | Enrichment (Apollo) | ❌ Mock | `internal/enrichment/worker.go::MockApolloSource` |
 | Job board scraper | ❌ Mock | `internal/scraper/scraper.go::MockJobBoardSource` |
 | Email sending | ❌ Not implemented | Outbound is logged but not sent |

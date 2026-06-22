@@ -1,10 +1,15 @@
 package db
 
 import (
+<<<<<<< HEAD
+	"database/sql"
+	"fmt"
+=======
 	"context"
 	"database/sql"
 	"fmt"
 	"log/slog"
+>>>>>>> origin/main
 	"time"
 )
 
@@ -28,6 +33,9 @@ func NewDB(dataSourceName string) (*DB, error) {
 	if err := conn.Ping(); err != nil {
 		return nil, fmt.Errorf("failed to ping database: %w", err)
 	}
+<<<<<<< HEAD
+	return &DB{Conn: conn}, nil
+=======
 
 	db := &DB{Conn: conn}
 	// Run migrations on startup
@@ -35,12 +43,15 @@ func NewDB(dataSourceName string) (*DB, error) {
 		return nil, fmt.Errorf("database migrations failed: %w", err)
 	}
 	return db, nil
+>>>>>>> origin/main
 }
 
 // Close closes the database connection.
 func (db *DB) Close() error {
 	return db.Conn.Close()
 }
+<<<<<<< HEAD
+=======
 
 // RunMigrations applies all database schema migrations.
 func (db *DB) RunMigrations(ctx context.Context) error {
@@ -182,3 +193,4 @@ Best,\n[Your Name]`,
 
 	return nil
 }
+>>>>>>> origin/main

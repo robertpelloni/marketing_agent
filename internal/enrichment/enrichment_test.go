@@ -2,9 +2,12 @@ package enrichment
 
 import (
 	"context"
+<<<<<<< HEAD
+=======
 	"fmt"
 	"os"
 	"strings"
+>>>>>>> origin/main
 	"testing"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -95,6 +98,7 @@ func TestApolloSource_HealthCheck(t *testing.T) {
 			t.Skip("Apollo free plan blocks People Search: " + err.Error())
 		}
 		t.Fatalf("Health check failed: %v", err)
+>>>>>>> origin/main
 	}
 }
 
@@ -269,3 +273,4 @@ func TestFallbackSource_Names(t *testing.T) {
 		t.Errorf("Expected 2 names, got %d", len(fallbackPartial.Names()))
 	}
 }
+>>>>>>> origin/main

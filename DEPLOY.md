@@ -28,6 +28,8 @@
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
 >>>>>>> origin/main
 | `DEPLOY_SYNC_INTERVAL` | Optional | Duration string (e.g., `1h`, `15m`) for background sync |
 | `HERMES_API_URL` | Optional | Hermes Agent API server URL (e.g., `http://172.21.116.32:8642`) for real LLM |
@@ -37,6 +39,7 @@
 <<<<<<< HEAD
 =======
 =======
+>>>>>>> origin/main
 | `CRM_DEAL_NAME_PROP` | Optional | HubSpot/Salesforce custom deal name property |
 | `CRM_DEAL_STAGE_PROP` | Optional | HubSpot/Salesforce custom deal stage property |
 | `CRM_DEAL_AMOUNT_PROP` | Optional | HubSpot/Salesforce custom deal amount property |
@@ -44,6 +47,8 @@
 | `CRM_CONTACT_EMAIL_PROP` | Optional | HubSpot/Salesforce custom contact email property |
    | `DEPLOY_SYNC_INTERVAL` | Optional | Duration string (e.g., `1h`, `15m`) for background sync |
    | `GO_TEST_MODE` | Optional | Set to `true` to skip git operations in tests |
+<<<<<<< HEAD
+=======
 >>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
 >>>>>>> origin/main
 
@@ -233,6 +238,8 @@ To enable automated deployment, ensure the following secrets are configured in G
 ## Known Issues
 
 - **CRLF Test Failure:** `TestResolveConflictTheirs` fails on Windows due to `\r\n` vs `\n` line ending mismatch. Does not affect production functionality.
+<<<<<<< HEAD
+=======
 
 ## Hermes LLM Integration Setup
 
@@ -287,3 +294,4 @@ curl -H "Authorization: Bearer your-secret-key" \
 | Response Generator | Template-based with mock output | Real hyper-personalized outreach drafts |
 | Sales Strategy | Hardcoded heuristics | LLM-augmented sentiment analysis |
 | Model Routing | N/A | Hermes handles NVIDIA → OpenRouter → LM Studio waterfall |
+>>>>>>> origin/main

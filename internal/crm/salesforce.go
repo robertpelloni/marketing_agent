@@ -5,13 +5,86 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+<<<<<<< HEAD
+	"io"
+	"net/http"
+	"net/url"
+=======
 	"net/http"
 	"os"
+>>>>>>> origin/main
 	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
+<<<<<<< HEAD
+// SalesforceCRMClient implements CRMClient for Salesforce.
+type SalesforceCRMClient struct {
+	BaseURL      string
+	AccessToken  string
+	ClientID     string
+	ClientSecret string
+	AuthURL      string
+	HTTPClient   *http.Client
+	Mapping      FieldMapping
+}
+
+// NewSalesforceCRMClient creates a new Salesforce CRM client.
+func NewSalesforceCRMClient(baseURL, accessToken, clientID, clientSecret, authURL string) *SalesforceCRMClient {
+	return &SalesforceCRMClient{
+		BaseURL:      baseURL,
+		AccessToken:  accessToken,
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
+		AuthURL:      authURL,
+		HTTPClient:   &http.Client{},
+		Mapping: FieldMapping{
+			DealNameProperty:     "Name",
+			DealStageProperty:    "StageName",
+			DealAmountProperty:   "Amount",
+			DealDossierProperty:  "Description",
+			ContactEmailProperty: "Email",
+		},
+	}
+}
+
+func (c *SalesforceCRMClient) SetFieldMapping(mapping FieldMapping) {
+	if mapping.DealNameProperty != "" {
+		c.Mapping.DealNameProperty = mapping.DealNameProperty
+	}
+	if mapping.DealStageProperty != "" {
+		c.Mapping.DealStageProperty = mapping.DealStageProperty
+	}
+	if mapping.DealAmountProperty != "" {
+		c.Mapping.DealAmountProperty = mapping.DealAmountProperty
+	}
+	if mapping.DealDossierProperty != "" {
+		c.Mapping.DealDossierProperty = mapping.DealDossierProperty
+	}
+	if mapping.ContactEmailProperty != "" {
+		c.Mapping.ContactEmailProperty = mapping.ContactEmailProperty
+	}
+}
+
+func (c *SalesforceCRMClient) RefreshToken(ctx context.Context) error {
+	if c.ClientID == "" || c.ClientSecret == "" || c.AuthURL == "" {
+		return nil // Skip if not configured for OAuth
+	}
+
+	data := url.Values{}
+	data.Set("grant_type", "client_credentials")
+	data.Set("client_id", c.ClientID)
+	data.Set("client_secret", c.ClientSecret)
+
+	req, err := http.NewRequestWithContext(ctx, "POST", c.AuthURL, strings.NewReader(data.Encode()))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	resp, err := c.HTTPClient.Do(req)
+=======
 // SalesforceClient implements CRMClient using the Salesforce REST API.
 // It expects the following environment variables to be set:
 //  - SALESFORCE_INSTANCE_URL (e.g., https://yourInstance.my.salesforce.com)
@@ -90,11 +163,36 @@ func (s *SalesforceClient) PushDeal(ctx context.Context, deal db.Deal, company d
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := s.client.Do(req)
+>>>>>>> origin/main
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 
+<<<<<<< HEAD
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("auth error: %d", resp.StatusCode)
+	}
+
+	var result struct {
+		AccessToken string `json:"access_token"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return err
+	}
+
+	c.AccessToken = result.AccessToken
+	return nil
+}
+
+func (c *SalesforceCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interaction, error) {
+	if err := c.RefreshToken(ctx); err != nil {
+		return nil, fmt.Errorf("token refresh failed: %w", err)
+	}
+
+	// Querying EmailMessage to get real-time inbound emails
+	url := fmt.Sprintf("%s/services/data/v54.0/query/?q=SELECT+TextBody,Subject,FromAddress+FROM+EmailMessage+WHERE+Incoming=true+LIMIT+10", c.BaseURL)
+=======
 	if resp.StatusCode >= 400 {
 		return fmt.Errorf("salesforce PushDeal: status %d", resp.StatusCode)
 	}
@@ -109,32 +207,171 @@ func (s *SalesforceClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, er
 	soql := "SELECT Id, StageName FROM Lead WHERE LastModifiedDate = LAST_N_DAYS:1"
 	url := fmt.Sprintf("%s/services/data/%s/query?q=%s", s.instanceURL, s.apiVersion, urlEncode(soql))
 
+>>>>>>> origin/main
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
+<<<<<<< HEAD
+	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+
+	resp, err := c.HTTPClient.Do(req)
+=======
 	req.Header.Set("Authorization", "Bearer "+s.accessToken)
 
 	resp, err := s.client.Do(req)
+>>>>>>> origin/main
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
+<<<<<<< HEAD
+		return nil, fmt.Errorf("salesforce api error (%d)", resp.StatusCode)
+=======
 		return nil, fmt.Errorf("salesforce GetLeadUpdates: status %d", resp.StatusCode)
+>>>>>>> origin/main
 	}
 
 	var result struct {
 		Records []struct {
+<<<<<<< HEAD
+			TextBody    string `json:"TextBody"`
+			Subject     string `json:"Subject"`
+			FromAddress string `json:"FromAddress"`
+=======
 			Id        string `json:"Id"`
 			StageName string `json:"StageName"`
+>>>>>>> origin/main
 		} `json:"records"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, err
 	}
 
+<<<<<<< HEAD
+	interactions := make([]db.Interaction, len(result.Records))
+	for i, r := range result.Records {
+		interactions[i] = db.Interaction{
+			RawText: r.TextBody,
+			Summary: r.FromAddress, // Use sender address for identification
+			Channel: "Salesforce Email",
+		}
+	}
+
+	return interactions, nil
+}
+
+func (c *SalesforceCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
+	if err := c.RefreshToken(ctx); err != nil {
+		return fmt.Errorf("token refresh failed: %w", err)
+	}
+
+	method := "POST"
+	url := fmt.Sprintf("%s/services/data/v54.0/sobjects/Opportunity", c.BaseURL)
+	if deal.ID > 1000 {
+		method = "PATCH"
+		url = fmt.Sprintf("%s/services/data/v54.0/sobjects/Opportunity/%015d", c.BaseURL, deal.ID)
+	}
+
+	payload, _ := json.Marshal(map[string]interface{}{
+		c.Mapping.DealNameProperty:    fmt.Sprintf("%s - %d", company.Name, deal.ID),
+		c.Mapping.DealStageProperty:   string(deal.CurrentState),
+		c.Mapping.DealAmountProperty:  deal.QuotedPricing,
+		c.Mapping.DealDossierProperty: deal.TechnicalDossier,
+		"CloseDate":                   "2026-12-31", // Placeholder
+	})
+
+	req, err := http.NewRequestWithContext(ctx, method, url, bytes.NewBuffer(payload))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return fmt.Errorf("salesforce api error (%d): %s", resp.StatusCode, string(body))
+	}
+
+	return nil
+}
+
+func (c *SalesforceCRMClient) SyncContacts(ctx context.Context, companyID int64, contacts []db.Contact) error {
+	if err := c.RefreshToken(ctx); err != nil {
+		return fmt.Errorf("token refresh failed: %w", err)
+	}
+
+	for _, contact := range contacts {
+		url := fmt.Sprintf("%s/services/data/v54.0/sobjects/Contact", c.BaseURL)
+		payload, _ := json.Marshal(map[string]interface{}{
+			"LastName":                     contact.Name,
+			c.Mapping.ContactEmailProperty: contact.Email,
+			"Title":                        contact.Role,
+		})
+
+		req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
+		if err != nil {
+			return err
+		}
+		req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+		req.Header.Set("Content-Type", "application/json")
+
+		resp, err := c.HTTPClient.Do(req)
+		if err == nil {
+			resp.Body.Close()
+		}
+	}
+	return nil
+}
+
+func (c *SalesforceCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error) {
+	if err := c.RefreshToken(ctx); err != nil {
+		return nil, fmt.Errorf("token refresh failed: %w", err)
+	}
+
+	// Simplified: Querying Opportunities
+	query := fmt.Sprintf("SELECT Id,%s FROM Opportunity LIMIT 10", c.Mapping.DealStageProperty)
+	url := fmt.Sprintf("%s/services/data/v54.0/query/?q=%s", c.BaseURL, url.QueryEscape(query))
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return nil, fmt.Errorf("salesforce api error (%d): %s", resp.StatusCode, string(body))
+	}
+
+	var result struct {
+		Records []map[string]interface{} `json:"records"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	updates := make([]LeadUpdate, len(result.Records))
+	for i, r := range result.Records {
+		id, _ := r["Id"].(string)
+		stage, _ := r[c.Mapping.DealStageProperty].(string)
+		updates[i] = LeadUpdate{
+			ID:       id,
+			NewState: db.LeadState(stage),
+=======
 	var updates []LeadUpdate
 	for _, r := range result.Records {
 <<<<<<< HEAD
@@ -144,39 +381,162 @@ func (s *SalesforceClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, er
 >>>>>>> origin/main
 		if state != "" {
 			updates = append(updates, LeadUpdate{ID: r.Id, NewState: state, Notes: ""})
+>>>>>>> origin/main
 		}
 	}
 
 	return updates, nil
 }
 
+<<<<<<< HEAD
+func (c *SalesforceCRMClient) ValidateAccount(ctx context.Context, domain string) (bool, error) {
+	if err := c.RefreshToken(ctx); err != nil {
+		return false, fmt.Errorf("token refresh failed: %w", err)
+	}
+
+	url := fmt.Sprintf("%s/services/data/v54.0/query/?q=SELECT+Id+FROM+Account+WHERE+Website+LIKE+'%%%s%%'+LIMIT+1", c.BaseURL, domain)
+=======
 // ValidateAccount verifies if a given domain has a Salesforce Account.
 func (s *SalesforceClient) ValidateAccount(ctx context.Context, domain string) (bool, error) {
 	soql := fmt.Sprintf("SELECT Id FROM Account WHERE Website = '%s' LIMIT 1", domain)
 	url := fmt.Sprintf("%s/services/data/%s/query?q=%s", s.instanceURL, s.apiVersion, urlEncode(soql))
 
+>>>>>>> origin/main
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return false, err
 	}
+<<<<<<< HEAD
+	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+
+	resp, err := c.HTTPClient.Do(req)
+=======
 	req.Header.Set("Authorization", "Bearer "+s.accessToken)
 
 	resp, err := s.client.Do(req)
+>>>>>>> origin/main
 	if err != nil {
 		return false, err
 	}
 	defer resp.Body.Close()
 
+<<<<<<< HEAD
+	if resp.StatusCode >= 400 {
+		return false, nil
+	}
+=======
 	if resp.StatusCode == http.StatusNotFound {
 		return false, nil
 	}
 	if resp.StatusCode >= 400 {
 		return false, fmt.Errorf("salesforce ValidateAccount: status %d", resp.StatusCode)
 	}
+>>>>>>> origin/main
 
 	var result struct {
 		TotalSize int `json:"totalSize"`
 	}
+<<<<<<< HEAD
+	json.NewDecoder(resp.Body).Decode(&result)
+
+	return result.TotalSize > 0, nil
+}
+
+func (c *SalesforceCRMClient) SyncInteraction(ctx context.Context, dealID int64, note string) error {
+	if err := c.RefreshToken(ctx); err != nil {
+		return fmt.Errorf("token refresh failed: %w", err)
+	}
+
+	// In Salesforce, notes are often attached via ContentNote or Task.
+	// We use 'WhatId' to associate the Task with the Opportunity.
+	url := fmt.Sprintf("%s/services/data/v54.0/sobjects/Task", c.BaseURL)
+	payload, _ := json.Marshal(map[string]interface{}{
+		"Description": note,
+		"Status":      "Completed",
+		"Priority":     "Normal",
+		"Subject":      "Autonomous Sales Interaction",
+		"WhatId":       fmt.Sprintf("%015d", dealID), // Salesforce ID format padding
+	})
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	return nil
+}
+
+func (c *SalesforceCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error) {
+	if err := c.RefreshToken(ctx); err != nil {
+		return nil, fmt.Errorf("token refresh failed: %w", err)
+	}
+
+	url := fmt.Sprintf("%s/services/data/v54.0/sobjects/Opportunity/%d", c.BaseURL, dealID)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("salesforce api error (%d)", resp.StatusCode)
+	}
+
+	var r map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&r); err != nil {
+		return nil, err
+	}
+
+	idStr, _ := r["Id"].(string)
+	var id int64
+	fmt.Sscanf(idStr, "%d", &id)
+
+	stage, _ := r[c.Mapping.DealStageProperty].(string)
+	amount, _ := r[c.Mapping.DealAmountProperty].(float64)
+
+	return &DealDetails{
+		ID:            id,
+		Status:        db.LeadState(stage),
+		QuotedPricing: amount,
+	}, nil
+}
+
+func (c *SalesforceCRMClient) SendEmail(ctx context.Context, contact db.Contact, subject, body string) error {
+	if err := c.RefreshToken(ctx); err != nil {
+		return fmt.Errorf("token refresh failed: %w", err)
+	}
+
+	url := fmt.Sprintf("%s/services/data/v54.0/sobjects/EmailMessage", c.BaseURL)
+	payload, _ := json.Marshal(map[string]interface{}{
+		"Subject":      subject,
+		"TextBody":     body,
+		"ToAddress":    contact.Email,
+		"Status":       "3", // Sent
+	})
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.HTTPClient.Do(req)
+=======
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return false, err
 	}
@@ -201,17 +561,25 @@ func (s *SalesforceClient) SyncInteraction(ctx context.Context, dealID int64, no
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := s.client.Do(req)
+>>>>>>> origin/main
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
+<<<<<<< HEAD
+		respBody, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return fmt.Errorf("salesforce api error (%d): %s", resp.StatusCode, string(respBody))
+=======
 		return fmt.Errorf("salesforce SyncInteraction: status %d", resp.StatusCode)
+>>>>>>> origin/main
 	}
 
 	return nil
 }
+<<<<<<< HEAD
+=======
 
 // SyncContacts creates or updates Salesforce Contact records for a company.
 func (s *SalesforceClient) SyncContacts(ctx context.Context, companyID int64, contacts []db.Contact) error {

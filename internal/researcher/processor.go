@@ -3,7 +3,11 @@ package researcher
 import (
 	"context"
 	"fmt"
+<<<<<<< HEAD
+	"log"
+=======
 	"log/slog"
+>>>>>>> origin/main
 	"strings"
 	"time"
 
@@ -41,12 +45,20 @@ func (r *Researcher) Run(ctx context.Context, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
+<<<<<<< HEAD
+	log.Println("Researcher worker started...")
+=======
 	slog.Info("Researcher worker started...")
+>>>>>>> origin/main
 
 	for {
 		select {
 		case <-ctx.Done():
+<<<<<<< HEAD
+			log.Println("Researcher worker stopping: Draining in-flight work...")
+=======
 			slog.Info("Researcher worker stopping: Draining in-flight work...")
+>>>>>>> origin/main
 			return
 		case <-ticker.C:
 			r.executeResearch(ctx)
@@ -60,6 +72,12 @@ func (r *Researcher) ExecuteResearch(ctx context.Context) {
 }
 
 func (r *Researcher) executeResearch(ctx context.Context) {
+<<<<<<< HEAD
+	// Find deals in Researched state (contacts found, now need deep technical context)
+	deals, err := r.db.ListDealsByState(ctx, db.StateResearched)
+	if err != nil {
+		log.Printf("Researcher: Error listing deals: %v", err)
+=======
 	if r.db == nil {
 		slog.Info("Researcher: DB unavailable, skipping research cycle")
 		return
@@ -69,6 +87,7 @@ func (r *Researcher) executeResearch(ctx context.Context) {
 	deals, err := r.db.ListDealsByState(ctx, db.StateResearched)
 	if err != nil {
 		slog.Info(fmt.Sprintf("Researcher: Error listing deals: %v", err))
+>>>>>>> origin/main
 		return
 	}
 
@@ -80,7 +99,11 @@ func (r *Researcher) executeResearch(ctx context.Context) {
 
 		err = r.researchLead(ctx, deal, contacts[0])
 		if err != nil {
+<<<<<<< HEAD
+			log.Printf("Researcher: Error researching lead %d: %v", deal.ID, err)
+=======
 			slog.Info(fmt.Sprintf("Researcher: Error researching lead %d: %v", deal.ID, err))
+>>>>>>> origin/main
 		}
 	}
 }
@@ -142,17 +165,29 @@ func (r *Researcher) researchLead(ctx context.Context, deal db.Deal, contact db.
 				for i := 0; i < maxRetries; i++ {
 					// We push the deal with a "Researcher" route to indicate provenance
 					if err := r.crmClient.PushDeal(ctx, updatedDeal, *company, "Researcher"); err != nil {
+<<<<<<< HEAD
+						log.Printf("Researcher Warning: Failed to push updated dossier to CRM (attempt %d/%d): %v", i+1, maxRetries, err)
+=======
 						slog.Info(fmt.Sprintf("Researcher Warning: Failed to push updated dossier to CRM (attempt %d/%d): %v", i+1, maxRetries, err))
+>>>>>>> origin/main
 						time.Sleep(time.Duration(i+1) * 2 * time.Second)
 						continue
 					}
 					return
 				}
+<<<<<<< HEAD
+				log.Printf("Researcher Error: CRM dossier push failed after %d attempts for deal %d", maxRetries, deal.ID)
+=======
 				slog.Info(fmt.Sprintf("Researcher Error: CRM dossier push failed after %d attempts for deal %d", maxRetries, deal.ID))
+>>>>>>> origin/main
 			}()
 		}
 	}
 
+<<<<<<< HEAD
+	log.Printf("Researcher: Successfully compiled technical dossier for deal %d", deal.ID)
+=======
 	slog.Info(fmt.Sprintf("Researcher: Successfully compiled technical dossier for deal %d", deal.ID))
+>>>>>>> origin/main
 	return nil
 }

@@ -179,7 +179,13 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 	err = o.agent.Verify(ctx)
 	if err != nil {
 		slog.Info(fmt.Sprintf("Autodev: Verification failed for task '%s': %v", task.Description, err))
-		// Here we would ideally rollback or attempt fix
+		slog.Info("Autodev: Initiating rollback to pre-change state")
+		// Execute git checkout to discard uncommitted changes
+		if err := gitcheck.DiscardChanges(); err != nil {
+			slog.Warn("Autodev: Rollback failed", "error", err)
+		}
+		o.manager.MarkTaskFailed(task.ID)
+
 		return
 	}
 

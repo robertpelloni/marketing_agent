@@ -4,7 +4,216 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [Unreleased]
 
+<<<<<<< HEAD
 ## [0.4.7] - 2026-06-08
+=======
+<<<<<<< HEAD
+### Added
+- **Real-Time Quote API:** Added `/api/v1/quote` endpoint for dynamic quote generation based on company size/tier.
+- **Enrichment Source Fallback Chain:**
+    - Implemented `FallbackSource` in `internal/enrichment/fallback.go`.
+    - Wraps multiple `EnrichmentSource` instances (Hunter.io, Apollo.io, Mock) and tries each in order.
+    - Logs clear pass/fail indicators per source with structured status reporting.
+    - Respects context cancellation mid-chain.
+    - Exposes `Status()`, `Sources()`, and `Names()` for observability and testing.
+    - Integrated into `cmd/sales_bot/main.go` replacing flat source iteration.
+    - Added comprehensive unit tests (8 test cases across 3 test functions) — all passing.
+
+- **GitHub Repository Analysis:**
+    - New `scraper.GitHubAnalyzer` analyzes public repos for tech stack, languages, topics, activity, and infrastructure patterns.
+    - Detects bottlenecks (high open issues, popular-but-inactive repos).
+    - Identifies technologies from topics and descriptions across 12 categories (AI/ML, LLM, Kubernetes, Go, Python, Rust, etc.).
+    - Generates `RepoAnalysis` with `InsightSummary` for personalized outreach hooks.
+    - Supports both org and user repository analysis.
+    - Comprehensive unit tests for insight generation and helper methods.
+
+- **Deal Forecasting:**
+    - New `sales.ForecastingEngine` that predicts win probability using historical patterns.
+    - Combines source win rate, stage baseline, time-in-stage penalty, interaction sentiment, and engagement quantity.
+    - Generates risk factors (stalled progress, negative sentiment, low engagement, low source win rate).
+    - `PipelineSummary` aggregates forecasts across all deals with at-risk detection.
+    - `PercentileForecast()` computes P10/P50/P90 revenue ranges for pipeline.
+    - Learns from closed deals to improve accuracy over time.
+    - Comprehensive unit tests for healthy and at-risk scenarios.
+
+- **Interaction Sentiment Analysis:**
+    - New `communication.SentimentAnalyzer` with heuristic keyword-based classification.
+    - Detects positive/negative/neutral/mixed sentiment with confidence scoring (-100 to +100).
+    - Urgency detection for time-sensitive replies.
+    - Optional LLM-assisted refinement for deeper semantic analysis.
+    - `AggregateDealSentiment()` combines multiple interactions into per-deal trends.
+    - Generates context-aware next-action recommendations per sentiment class.
+    - Comprehensive unit tests (8 tests) covering all sentiment types, urgency, and aggregation.
+
+- **Prompt Versioning & A/B Testing:**
+    - New `llm.PromptRegistry` for managing prompt templates with version tracking.
+    - `RegisterVersion()`, `GetActiveVersion()`, `ResolvePrompt()` with `${key}` placeholder interpolation.
+    - `AssignExperiment()` configures weighted A/B experiments across prompt versions.
+    - `RecordOutcome()` tracks success/failure per variant for analytics.
+    - JSON persistence at `data/prompt_registry.json` for state across restarts.
+    - Comprehensive unit tests for registration, selection, rendering, outcomes, and persistence.
+
+- **Token Budget Tracking:**
+    - New `llm.TokenBudget` with configurable budget, reset interval, warning threshold, and exceeded callback.
+    - `RecordUsage()` logs tokens and checks budget; `IsWithinBudget()`, `GetUsage()`, `ShouldWarn()`, `EstimatedCost()` for observability.
+    - `DealTokenTracker` tracks per-deal token consumption.
+    - `BudgetAwareProvider` wraps any `LLMProvider` with automatic budget enforcement returning `ErrBudgetExceeded` when exhausted.
+    - Comprehensive unit tests for budget, exceed, and provider wrapping.
+
+- **GitHub Issue/PR Comment Outreach:**
+    - New `communication.GitHubCommentSender` that searches for relevant issues/PRs in a target org and posts a technical hook comment.
+    - Includes `SendComment`, `SearchRelevantIssues`, and `FindAndComment` helpers.
+    - Simulated placeholder comment generation (`GenerateTechHookComment`).
+    - Uses `go‑github` client; respects rate‑limiting; logs actions.
+
+- **LinkedIn Message Sending (simulation placeholder):**
+    - New `communication.LinkedInSender` with `Send`, `HealthCheck`, and connection‑request stubs.
+    - Works with `LINKEDIN_USERNAME`/`LINKEDIN_PASSWORD` env vars.
+    - Currently logs simulated messages; ready for headless‑browser automation (rod/chromedp).
+
+- **Outreach Cadence Management:**
+    - Added `cadence.go` defining `CadenceStep`, `CadenceSchedule`, `CadenceTracker`, and `CadenceAwareManager`.
+    - Provides a default 5‑touch multi‑channel schedule (email → GitHub → email → LinkedIn → email).
+    - `CadenceAwareManager` runs a periodic scheduler that decides when to trigger the next touch based on interaction history.
+    - Integrated with the existing `communication.Manager` via composition.
+
+- **Response Quality Scoring:**
+    - New `communication.QualityScorer` with heuristic + optional LLM-assisted evaluation.
+    - Scores messages 0–100 on personalization, relevance, CTA presence, tone, and length.
+    - `Evaluate()` returns `QualityScore` with issues and suggestions.
+    - `ScoreAndLog()` logs pass/fail with detailed breakdown.
+    - Configurable minimum threshold (default 60) to block low-quality outreach.
+
+- **Salesforce CRM Adapter:**
+    - New `crm.SalesforceClient` implementing `CRMClient` (push deals, lead updates, account validation, sync contacts/interactions, fetch deal details).
+    - Uses env vars `SALESFORCE_INSTANCE_URL`, `SALESFORCE_ACCESS_TOKEN`, `SALESFORCE_API_VERSION`.
+    - Placeholder mapping functions for lead‑state conversions.
+
+- **HubSpot CRM Adapter:**
+    - New `crm.HubSpotClient` implementing `CRMClient` (push deals, lead updates, account validation, sync contacts/interactions, fetch deal details).
+    - Configured via `HUBSPOT_BASE_URL`, `HUBSPOT_API_KEY` or `HUBSPOT_ACCESS_TOKEN`.
+    - Includes helper functions for converting Salesforce‑style states.
+
+- **Channel Preference per Contact:**
+    - Added `preferred_channel` column to `contacts` table (migration `000005`).
+    - Extended `Contact` model with `PreferredChannel` field and introduced `db.Channel` type with constants (`ChannelEmail`, `ChannelLinkedIn`, `ChannelGitHub`) and helper methods (`DefaultChannel`, `IsValid`, `String`).
+    - Updated `CreateContact`, `ListContactsByCompany`, `GetContactByEmail` to include `preferred_channel`; added `UpdateContactPreferredChannel` method.
+    - Communication Manager now respects contact channel preference via `DefaultChannelForContact()` helper, using it for inbound/outbound interaction channel tagging and sender routing.
+    - Web dashboard displays contact channel preference as an inline dropdown (Email/LinkedIn/GitHub) with auto‑submit on change via new `update_channel` POST handler.
+
+- **LinkedIn Sales Navigator Scraper:**
+    - Implemented `LinkedInSource` in `internal/scraper/linkedin_source.go` implementing `LeadSource` interface.
+    - Configurable via `LINKEDIN_USERNAME`/`LINKEDIN_PASSWORD` environment variables.
+    - Includes `SetTargetTitles()` for configurable job title filtering (CTO, VP Engineering, Lead Developer, etc.).
+    - `HealthCheck()` validates credential presence and configuration.
+    - Simulation fallback returns high‑value AI/ML targets when credentials are not configured.
+    - Integrated into `cmd/sales_bot/main.go` scraper source list alongside HN and GitHub sources.
+    - Comprehensive unit tests (discovery, health check, credential configuration, title configuration) — all passing.
+    - Designed for future headless browser automation (placeholder for rod/chromedp).
+
+## [0.4.9] - 2026-06-10
+
+### Added
+- **Hacker News "Who is Hiring" Lead Discovery:**
+    - Implemented `HNWhoIsHiringSource` in `internal/scraper/hn_source.go`.
+    - Scrapes HN Algolia API for latest "Who is Hiring" threads.
+    - Parses 200+ top-level comments per thread for company name, domain, tech stack.
+    - Filters for AI/LLM relevance using 30+ keyword patterns.
+    - Deduplicates by domain and classifies market cap tier from posting context.
+
+- **Hunter.io Email Enrichment:**
+    - Implemented `HunterSource` in `internal/enrichment/hunter.go`.
+    - Calls Hunter.io domain search API to find professional email addresses.
+    - Filters results for decision-makers (VP, Director, CTO, Lead, Architect, etc.).
+    - Health check verifies API key validity.
+
+- **SMTP Email Sending:**
+    - Implemented `SMTPSender` in `internal/communication/smtp_sender.go`.
+    - Supports STARTTLS (port 587) and direct SSL (port 465).
+    - Builds RFC 5322 compliant messages with proper headers.
+    - Health check verifies SMTP connectivity and authentication.
+    - `MockEmailSender` for testing without sending.
+
+- **IMAP Email Receiving:**
+    - Implemented `EmailReceiver` in `internal/communication/imap_receiver.go`.
+    - Polls IMAP inbox for unread messages at configurable interval.
+    - Parses inbound emails and matches sender to contacts in database.
+    - Feeds matched emails into the Communication Manager's inbound pipeline.
+    - Tracks last processed UID to avoid reprocessing.
+
+- **Communication Manager Email Integration:**
+    - `Manager` now accepts optional `EmailSender` — sends real emails after persisting outbound interactions.
+    - `NewManager()` signature updated to accept `EmailSender` (nil = log-only mode).
+    - Added `GetDB()` method for IMAP receiver contact lookup.
+
+- **Config Extensions:**
+    - Added `HunterAPIKey`, SMTP fields (`SMTPHost/Port/Username/Password/From/FromName`), IMAP fields (`IMAPHost/Port/Username/Password/Folder/IMAPPollInterval`).
+
+### Changed
+- HN scraper now runs as primary lead source alongside mock fallback.
+- Hunter.io runs as primary enrichment source when `HUNTER_API_KEY` is set.
+- Main.go wires all new components with auto-detection from environment variables.
+
+## [0.4.8] - 2026-06-10
+
+### Added
+- **Hermes Agent LLM Integration (Phase 7 foundation):**
+    - Implemented `HermesLLMProvider` in `internal/llm/hermes.go` — an OpenAI-compatible client that routes all LLM calls through a local Hermes Agent gateway.
+    - Added `HermesConfig` struct with `BaseURL`, `APIKey`, and `Model` fields for flexible configuration.
+    - Added `HealthCheck()` method for runtime connectivity verification.
+    - Wired Hermes as the primary LLM provider in `cmd/sales_bot/main.go` with automatic fallback to `MockLLMProvider` when `HERMES_API_URL`/`HERMES_API_KEY` are not set.
+    - Added `LLMIntentClassifier` integration — when Hermes is available, the bot uses LLM-based intent classification instead of keyword-matching mocks.
+    - Added LLM provider health status to the web dashboard (System Health section) and `/health/detailed` JSON endpoint.
+    - Extended `Config` struct with `HermesAPIURL`, `HermesAPIKey`, and `HermesModel` fields.
+    - Added integration tests that verify end-to-end Hermes connectivity (health check + LLM generation).
+    - Configured Hermes API server (`API_SERVER_HOST=0.0.0.0`) for cross-WSL/Windows access.
+
+### Changed
+- `web.NewServer()` now accepts an `llm.LLMProvider` parameter for health reporting.
+- Dashboard HTML updated with LLM provider status indicator (green for Hermes connected, grey for mock).
+
+## [0.4.7] - 2026-06-08
+=======
+## [0.6.0] - 2026-06-13
+
+### Added
+- **Enterprise CRM Refinement:**
+    - Implemented automated record associations: Linked HubSpot Notes to Deals and Salesforce Tasks to Opportunities (via `WhatId`).
+    - Enhanced `PushDeal` with upsert logic: The system now uses `PATCH` to update existing records, preventing duplicate entries in HubSpot and Salesforce.
+- **Improved Governance:**
+    - Standardized version 0.6.0 across all project and module metadata.
+    - Synchronized handoff documentation with finalized CRM-to-Outreach cycle verification.
+
+## [0.5.1] - 2026-06-12
+
+### Added
+- **Live CRM Inbound Integration:**
+    - Integrated HubSpot and Salesforce inbound email polling into the autonomous response loop.
+    - Updated `CRM Worker` to automatically trigger the `communication.Manager` for new external interactions.
+    - Enhanced CRM clients to extract and associate sender emails from HubSpot Communications and Salesforce EmailMessage objects.
+- **Architectural Improvements:**
+    - Implemented a base `IMAPPoller` in `internal/mail` for real-time email ingestion.
+    - Decoupled `CRM Worker` from `communication.Manager` using an `InboundProcessor` interface to prevent circular imports.
+    - Hardened response generation logic with robust nil-checks to support operation during database maintenance or simulation.
+- **Verification Suite:**
+    - Developed a new End-to-End verification script (`scripts/verify_live_flow/main.go`) to validate the complete CRM-to-Outreach autonomous lifecycle.
+
+## [0.5.0] - 2026-06-08
+
+### Added
+- **CRM Field Mapping Configuration:**
+    - Implemented `FieldMapping` in `internal/crm` to allow customizable property names for HubSpot and Salesforce.
+    - Added `SetFieldMapping` to `CRMClient` interface and implemented it across all clients (HubSpot, Salesforce, REST, Mock).
+    - Exposed CRM field mappings via environment variables and updated `internal/config`.
+    - Integrated dynamic mapping into `HubSpotCRMClient` and `SalesforceCRMClient` for API requests and response parsing.
+- **Deployment & Readiness:**
+    - Updated `Dockerfile` and `docker-compose.staging.yml` for staging environment readiness.
+    - Enhanced `DEPLOY.md` with CRM field mapping instructions and staging validation steps.
+    - Verified full framework state with comprehensive unit and integration tests.
+
+## [0.4.8] - 2026-06-08
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+>>>>>>> origin/main
 
 ### Added
 - **Final Feature Validation:**
@@ -47,7 +256,11 @@ All notable changes to this project will be documented in this file. The format 
     - Expanded PushDeal payload to include technical dossiers for better CRM visibility.
 
 ### Changed
+<<<<<<< HEAD
 - Rebranded all product-facing references from "TormentNexus" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
+=======
+- Rebranded all product-facing references from "Borg" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
+>>>>>>> origin/main
 - Comprehensive documentation overhaul: ROADMAP, TODO, VISION, README, DEPLOY, MEMORY, IDEAS, AGENTS, HANDOFF all updated with gap analysis, forward-looking phases, and technical debt inventory.
 
 ## [0.4.1] - 2026-06-05

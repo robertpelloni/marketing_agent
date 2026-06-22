@@ -2,25 +2,12 @@ package researcher
 
 import (
 	"context"
-<<<<<<< HEAD
-=======
 	"fmt"
->>>>>>> origin/main
 	"log/slog"
 	"strings"
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
-<<<<<<< HEAD
-	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
-)
-
-type DefaultDossierProcessor struct{}
-func (p *DefaultDossierProcessor) Process(findings []string) (string, error) {
-	return strings.Join(findings, "\n\n"), nil
-}
-
-=======
 )
 
 // DefaultDossierProcessor implements the DossierProcessor interface.
@@ -35,34 +22,21 @@ func (p *DefaultDossierProcessor) Process(findings []string) (string, error) {
 
 // PromptFormatter constructs a hyper-personalized outreach prompt.
 type PromptFormatter struct {
-<<<<<<< HEAD
-	BorgContext string
-}
-
-func (f *PromptFormatter) Format(dossier string) string {
-	return fmt.Sprintf(`### BORG OUTREACH CONTEXT ###
-=======
 	TormentNexusContext string
 }
 
 func (f *PromptFormatter) Format(dossier string) string {
 	return fmt.Sprintf(`### TormentNexus OUTREACH CONTEXT ###
->>>>>>> origin/main
 %s
 
 ### TARGET TECHNICAL FINDINGS ###
 %s
 
 ### HYPER-PERSONALIZED HOOK ###
-<<<<<<< HEAD
-[Drafting specialized technical outreach based on the discovered bottleneck...]`, f.BorgContext, dossier)
-=======
 [Drafting specialized technical outreach based on the discovered bottleneck...]`, f.TormentNexusContext, dossier)
->>>>>>> origin/main
 }
 
 // Run starts the background research process.
->>>>>>> origin/main
 func (r *Researcher) Run(ctx context.Context, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
@@ -80,14 +54,6 @@ func (r *Researcher) Run(ctx context.Context, interval time.Duration) {
 	}
 }
 
-<<<<<<< HEAD
-func (r *Researcher) executeResearch(ctx context.Context) {
-	start := time.Now()
-	// Find deals in Researched state (contacts found, now need deep technical context)
-	deals, err := r.db.ListDealsByState(ctx, db.StateResearched)
-	if err != nil {
-		slog.Info("Researcher: Error listing deals", "error", err)
-=======
 // ExecuteResearch manually triggers a research cycle (exported for testing).
 func (r *Researcher) ExecuteResearch(ctx context.Context) {
 	r.executeResearch(ctx)
@@ -103,7 +69,6 @@ func (r *Researcher) executeResearch(ctx context.Context) {
 	deals, err := r.db.ListDealsByState(ctx, db.StateResearched)
 	if err != nil {
 		slog.Info(fmt.Sprintf("Researcher: Error listing deals: %v", err))
->>>>>>> origin/main
 		return
 	}
 
@@ -115,36 +80,21 @@ func (r *Researcher) executeResearch(ctx context.Context) {
 
 		err = r.researchLead(ctx, deal, contacts[0])
 		if err != nil {
-<<<<<<< HEAD
-			slog.Info("Researcher: Error researching lead", "deal", deal.ID, "error", err)
-		}
-	}
-	deploy.RecordTiming("Researcher", time.Since(start))
-=======
 			slog.Info(fmt.Sprintf("Researcher: Error researching lead %d: %v", deal.ID, err))
 		}
 	}
->>>>>>> origin/main
 }
 
 func (r *Researcher) researchLead(ctx context.Context, deal db.Deal, contact db.Contact) error {
 	var findings []string
 
 	// Crawl for each source
-<<<<<<< HEAD
-	targets := []string{contact.GitHubHandle, contact.Email}
-	for _, crawler := range r.crawlers {
-		for _, target := range targets {
-			if target == "" { continue }
-=======
-	targets := []string{contact.GitHubHandle, contact.Email} // Simplified targets
->>>>>>> origin/main
+	targets := []string{contact.GitHubHandle, contact.Email}	// Simplified targets
 	for _, crawler := range r.crawlers {
 		for _, target := range targets {
 			if target == "" {
 				continue
 			}
->>>>>>> origin/main
 			finding, err := crawler.Crawl(ctx, target)
 			if err == nil && finding != "" {
 				findings = append(findings, finding)
@@ -158,7 +108,6 @@ func (r *Researcher) researchLead(ctx context.Context, deal db.Deal, contact db.
 	}
 
 	// Update deal with dossier
-<<<<<<< HEAD
 	company, _ := r.db.GetCompanyByID(ctx, deal.CompanyID)
 
 	// Calculate Unified Intent Score
@@ -170,16 +119,11 @@ func (r *Researcher) researchLead(ctx context.Context, deal db.Deal, contact db.
 		slog.Info(fmt.Sprintf("Researcher: Unified Intent Score for %s is %d", company.Name, intentScore))
 	}
 
-=======
->>>>>>> origin/main
 	err = r.db.UpdateTechnicalDossier(ctx, deal.ID, dossier)
 	if err != nil {
 		return err
 	}
 
-<<<<<<< HEAD
-	log.Printf("Researcher: Successfully compiled technical dossier for deal %d", deal.ID)
-=======
 	// Synchronize the updated deal (including dossier) with the CRM (with retry logic)
 	if r.crmClient != nil {
 		company, _ := r.db.GetCompanyByID(ctx, deal.CompanyID)
@@ -189,32 +133,19 @@ func (r *Researcher) researchLead(ctx context.Context, deal db.Deal, contact db.
 			go func() {
 				maxRetries := 3
 				for i := 0; i < maxRetries; i++ {
-<<<<<<< HEAD
-					if err := r.crmClient.PushDeal(ctx, updatedDeal, *company, "Researcher"); err != nil {
-						slog.Info("Researcher Warning: Failed to push updated dossier to CRM", "attempt", i+1, "error", err)
-=======
 					// We push the deal with a "Researcher" route to indicate provenance
 					if err := r.crmClient.PushDeal(ctx, updatedDeal, *company, "Researcher"); err != nil {
 						slog.Info(fmt.Sprintf("Researcher Warning: Failed to push updated dossier to CRM (attempt %d/%d): %v", i+1, maxRetries, err))
->>>>>>> origin/main
 						time.Sleep(time.Duration(i+1) * 2 * time.Second)
 						continue
 					}
 					return
 				}
-<<<<<<< HEAD
-				slog.Info("Researcher Error: CRM dossier push failed after max retries", "deal", deal.ID)
-=======
 				slog.Info(fmt.Sprintf("Researcher Error: CRM dossier push failed after %d attempts for deal %d", maxRetries, deal.ID))
->>>>>>> origin/main
 			}()
 		}
 	}
 
-<<<<<<< HEAD
-	slog.Info("Researcher: Successfully compiled technical dossier", "deal", deal.ID)
-=======
 	slog.Info(fmt.Sprintf("Researcher: Successfully compiled technical dossier for deal %d", deal.ID))
->>>>>>> origin/main
 	return nil
 }

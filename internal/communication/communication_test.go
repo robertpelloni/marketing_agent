@@ -9,11 +9,7 @@ import (
 
 func TestIntentClassifier_Classify(t *testing.T) {
 	classifier := &MockIntentClassifier{}
-<<<<<<< HEAD
-	intent, err := classifier.Classify(context.Background(), "How much does Borg cost?")
-=======
 	intent, err := classifier.Classify(context.Background(), "How much does TormentNexus cost?")
->>>>>>> origin/main
 	if err != nil {
 		t.Fatalf("Classification failed: %v", err)
 	}
@@ -41,13 +37,8 @@ func TestSalesEngine_Decide(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Decision failed: %v", err)
 		}
-<<<<<<< HEAD
-		if action != ActionWait {
-			t.Errorf("Expected ActionWait for Enterprise pricing, got %s", action)
-=======
 		if action != ActionRespond {
 			t.Errorf("Expected ActionRespond for Enterprise pricing, got %s", action)
->>>>>>> origin/main
 		}
 	})
 

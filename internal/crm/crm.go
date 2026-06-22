@@ -5,10 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-<<<<<<< HEAD
-	"io"
-=======
->>>>>>> origin/main
 	"net/http"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -16,36 +12,12 @@ import (
 
 // LeadUpdate represents a change in lead status from the CRM.
 type LeadUpdate struct {
-<<<<<<< HEAD
 	ID        string
 	NewState  db.LeadState
 	Notes     string
 }
 
 // CRMClient defines the interface for interacting with external CRM systems.
-type FieldMapping struct {
-	DealNameProp     string
-	DealAmountProp   string
-	DealStageProp    string
-	DealDescProp     string
-	DealRouteProp    string
-	ContactEmailProp string
-	ContactRoleProp  string
-	AccountWebProp   string
-}
-
-type FieldMappingSetter interface {
-	SetFieldMapping(mapping FieldMapping)
-}
-
-=======
-	ID       string
-	NewState db.LeadState
-	Notes    string
-}
-
-// CRMClient defines the interface for interacting with external CRM systems.
->>>>>>> origin/main
 type CRMClient interface {
 	// PushDeal synchronizes a local deal to the CRM.
 	PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error
@@ -59,35 +31,11 @@ type CRMClient interface {
 	// SyncInteraction pushes a specific interaction or note to the CRM deal.
 	SyncInteraction(ctx context.Context, dealID int64, note string) error
 
-<<<<<<< HEAD
-=======
 	// SyncContacts synchronizes contacts for a specific company to the CRM.
 	SyncContacts(ctx context.Context, companyID int64, contacts []db.Contact) error
 
->>>>>>> origin/main
 	// FetchDealDetails retrieves specific deal information from the CRM.
 	FetchDealDetails(ctx context.Context, dealID int64) (*DealDetails, error)
-<<<<<<< HEAD
-
-	// SendEmail triggers an email send via the CRM (or records a sent email).
-	SendEmail(ctx context.Context, contact db.Contact, subject, body string) error
-
-	// GetNewInteractions retrieves new external communications from the CRM.
-	GetNewInteractions(ctx context.Context) ([]db.Interaction, error)
-
-	// SetFieldMapping updates the CRM-specific field mappings.
-	SetFieldMapping(mapping FieldMapping)
-}
-
-// FieldMapping defines customizable property names for CRM synchronization.
-type FieldMapping struct {
-	DealNameProperty     string `json:"deal_name_property"`
-	DealStageProperty    string `json:"deal_stage_property"`
-	DealAmountProperty   string `json:"deal_amount_property"`
-	DealDossierProperty  string `json:"deal_dossier_property"`
-	ContactEmailProperty string `json:"contact_email_property"`
-=======
->>>>>>> origin/main
 }
 
 // DealDetails represents detailed information for a deal in the CRM.
@@ -118,20 +66,12 @@ func NewRestCRMClient(baseURL, apiKey string) *RestCRMClient {
 func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.Company, route string) error {
 	url := fmt.Sprintf("%s/deals", c.BaseURL)
 	payload, _ := json.Marshal(map[string]interface{}{
-<<<<<<< HEAD
-		"deal_id":  deal.ID,
-		"company":  company.Name,
-		"status":   deal.CurrentState,
-		"pricing":  deal.QuotedPricing,
-		"route":    route,
-=======
 		"deal_id":           deal.ID,
 		"company":           company.Name,
 		"status":            deal.CurrentState,
 		"pricing":           deal.QuotedPricing,
 		"technical_dossier": deal.TechnicalDossier,
 		"route":             route,
->>>>>>> origin/main
 	})
 
 	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
@@ -148,79 +88,12 @@ func (c *RestCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.C
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-<<<<<<< HEAD
-		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
-		return fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
-	}
-
-	return nil
-}
-
-func (c *RestCRMClient) SetFieldMapping(mapping FieldMapping) {
-	// RestCRMClient uses a fixed schema, but we could implement dynamic mapping if needed.
-}
-
-func (c *RestCRMClient) GetNewInteractions(ctx context.Context) ([]db.Interaction, error) {
-	url := fmt.Sprintf("%s/interactions/new", c.BaseURL)
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Authorization", "Bearer "+c.APIKey)
-
-	resp, err := c.HTTPClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode >= 400 {
-		respBody, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
-		return nil, fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(respBody))
-	}
-
-	var interactions []db.Interaction
-	if err := json.NewDecoder(resp.Body).Decode(&interactions); err != nil {
-		return nil, err
-	}
-
-	return interactions, nil
-}
-
-func (c *RestCRMClient) SendEmail(ctx context.Context, contact db.Contact, subject, body string) error {
-	url := fmt.Sprintf("%s/outreach/email", c.BaseURL)
-	payload, _ := json.Marshal(map[string]interface{}{
-		"to":      contact.Email,
-		"subject": subject,
-		"body":    body,
-	})
-
-	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
-	if err != nil {
-		return err
-	}
-	req.Header.Set("Authorization", "Bearer "+c.APIKey)
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := c.HTTPClient.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode >= 400 {
-		respBody, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
-		return fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(respBody))
-=======
 		return fmt.Errorf("crm api error: %d", resp.StatusCode)
->>>>>>> origin/main
 	}
 
 	return nil
 }
 
-<<<<<<< HEAD
-=======
 func (c *RestCRMClient) SyncContacts(ctx context.Context, companyID int64, contacts []db.Contact) error {
 	url := fmt.Sprintf("%s/companies/%d/contacts", c.BaseURL, companyID)
 	payload, _ := json.Marshal(contacts)
@@ -239,18 +112,12 @@ func (c *RestCRMClient) SyncContacts(ctx context.Context, companyID int64, conta
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-<<<<<<< HEAD
-		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
-		return fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
-=======
 		return fmt.Errorf("crm api error: %d", resp.StatusCode)
->>>>>>> origin/main
 	}
 
 	return nil
 }
 
->>>>>>> origin/main
 func (c *RestCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error) {
 	url := fmt.Sprintf("%s/updates", c.BaseURL)
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
@@ -266,12 +133,7 @@ func (c *RestCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-<<<<<<< HEAD
-		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
-		return nil, fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
-=======
 		return nil, fmt.Errorf("crm api error: %d", resp.StatusCode)
->>>>>>> origin/main
 	}
 
 	var updates []LeadUpdate
@@ -297,12 +159,7 @@ func (c *RestCRMClient) ValidateAccount(ctx context.Context, domain string) (boo
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-<<<<<<< HEAD
-		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
-		return false, fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
-=======
 		return false, fmt.Errorf("crm api error: %d", resp.StatusCode)
->>>>>>> origin/main
 	}
 
 	return resp.StatusCode == http.StatusOK, nil
@@ -323,12 +180,7 @@ func (c *RestCRMClient) FetchDealDetails(ctx context.Context, dealID int64) (*De
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-<<<<<<< HEAD
-		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
-		return nil, fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
-=======
 		return nil, fmt.Errorf("crm api error: %d", resp.StatusCode)
->>>>>>> origin/main
 	}
 
 	var details DealDetails
@@ -359,12 +211,7 @@ func (c *RestCRMClient) SyncInteraction(ctx context.Context, dealID int64, note 
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-<<<<<<< HEAD
-		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
-		return fmt.Errorf("crm api error (%d): %s", resp.StatusCode, string(body))
-=======
 		return fmt.Errorf("crm api error: %d", resp.StatusCode)
->>>>>>> origin/main
 	}
 
 	return nil

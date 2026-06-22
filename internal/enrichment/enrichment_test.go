@@ -2,12 +2,9 @@ package enrichment
 
 import (
 	"context"
-<<<<<<< HEAD
-=======
 	"fmt"
 	"os"
 	"strings"
->>>>>>> origin/main
 	"testing"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -25,31 +22,12 @@ func TestMockApolloSource_Enrich(t *testing.T) {
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
-<<<<<<< HEAD
 	if len(contacts) != 1 {
 		t.Errorf("Expected 1 contact, got %d", len(contacts))
 	}
 
 	if contacts[0].Name != "Sarah Chen" {
 		t.Errorf("Expected Sarah Chen, got %s", contacts[0].Name)
-=======
-	// Mock now generates 1-3 contacts per company
-	if len(contacts) < 1 || len(contacts) > 3 {
-		t.Errorf("Expected 1-3 contacts, got %d", len(contacts))
-	}
-
-	// Verify all contacts have valid fields
-	for _, c := range contacts {
-		if c.Name == "" {
-			t.Errorf("Contact name should not be empty")
-		}
-		if c.Email == "" {
-			t.Errorf("Contact email should not be empty")
-		}
-		if c.Role == "" {
-			t.Errorf("Contact role should not be empty")
-		}
->>>>>>> origin/main
 	}
 }
 
@@ -98,18 +76,13 @@ func TestApolloSource_HealthCheck(t *testing.T) {
 			t.Skip("Apollo free plan blocks People Search: " + err.Error())
 		}
 		t.Fatalf("Health check failed: %v", err)
->>>>>>> origin/main
 	}
 }
 
 func TestEnricher_Initialization(t *testing.T) {
 	database := &db.DB{}
 	sources := []EnrichmentSource{&MockApolloSource{}}
-<<<<<<< HEAD
-	e := NewEnricher(database, sources)
-=======
 	e := NewEnricher(database, sources, nil)
->>>>>>> origin/main
 
 	if e == nil {
 		t.Fatal("Expected enricher instance, got nil")
@@ -119,10 +92,6 @@ func TestEnricher_Initialization(t *testing.T) {
 		t.Errorf("Expected 1 source, got %d", len(e.sources))
 	}
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/main
 // mockSourceForTest is a mock EnrichmentSource for unit testing.
 type mockSourceForTest struct {
 	name           string
@@ -277,4 +246,3 @@ func TestFallbackSource_Names(t *testing.T) {
 		t.Errorf("Expected 2 names, got %d", len(fallbackPartial.Names()))
 	}
 }
->>>>>>> origin/main

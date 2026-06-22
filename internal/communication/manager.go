@@ -1,41 +1,17 @@
 package communication
 
 import (
-<<<<<<< HEAD
-	"bytes"
-	"context"
-	"encoding/json"
-	"fmt"
-	"log/slog"
-	"net/http"
-	"os"
-	"time"
-
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
-)
-
-type Intent string
-=======
 	"context"
 	"fmt"
 	"log/slog"
 	"time"
 
-<<<<<<< HEAD
-	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/mail"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/metrics"
-=======
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
->>>>>>> origin/main
 )
 
 // Intent represents the classified purpose of an inbound message.
 type Intent string
 
->>>>>>> origin/main
 const (
 	IntentTechnical		Intent	= "Technical"
 	IntentPricing		Intent	= "Pricing"
@@ -47,39 +23,6 @@ const (
 	IntentGeneral		Intent	= "General"
 )
 
-<<<<<<< HEAD
-type IntentClassifier interface { Classify(ctx context.Context, text string) (Intent, error) }
-type ResponseGenerator interface { Generate(ctx context.Context, salesCtx SalesContext, action Action) (string, error) }
-type OrderProcessor interface { ProcessOrder(ctx context.Context, deal db.Deal) error }
-
-type Manager struct {
-	db         *db.DB
-	classifier IntentClassifier
-	responder  ResponseGenerator
-	strategy   SalesStrategy
-	processor  OrderProcessor
-	sender     EmailSender
-	github     *GitHubCommentSender
-	linkedin   *LinkedInSender
-	registry   *llm.PromptRegistry
-	objections *ObjectionLibrary
-}
-
-func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor, sender EmailSender, github *GitHubCommentSender, linkedin *LinkedInSender, registry *llm.PromptRegistry) *Manager {
-	return &Manager{
-		db:         database,
-		classifier: classifier,
-		responder:  responder,
-		strategy:   strategy,
-		processor:  processor,
-		sender:     sender,
-		github:     github,
-		linkedin:   linkedin,
-		registry:   registry,
-	}
-}
-
-=======
 // IntentClassifier defines the interface for categorizing inbound communication.
 type IntentClassifier interface {
 	Classify(ctx context.Context, text string) (Intent, error)
@@ -122,39 +65,24 @@ func NewManager(database *db.DB, classifier IntentClassifier, responder Response
 
 // SetObjectionLibrary attaches the objection handling library to this manager.
 // If set, ProcessInbound will automatically detect and counter objections.
->>>>>>> origin/main
 func (m *Manager) SetObjectionLibrary(lib *ObjectionLibrary) {
 	m.objections = lib
 }
 
-<<<<<<< HEAD
-=======
 // Run starts the periodic inbound communication processing loop.
->>>>>>> origin/main
 func (m *Manager) Run(ctx context.Context, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-<<<<<<< HEAD
-	slog.Info("Communication Manager: Background poller started", "interval", interval)
-
-	m.pollAndProcess(ctx)
-	for {
-		select {
-		case <-ctx.Done():
-			slog.Info("Communication Manager stopping...")
-=======
 	slog.Info(fmt.Sprintf("Communication Manager: Background poller started (interval: %v)...", interval))
 
 	// Run immediately on startup
 	m.pollAndProcess(ctx)
->>>>>>> origin/main
 
 	for {
 		select {
 		case <-ctx.Done():
 			slog.Info("Communication Manager: Background poller stopping: Draining in-flight work...")
->>>>>>> origin/main
 			return
 		case <-ticker.C:
 			m.pollAndProcess(ctx)
@@ -162,21 +90,12 @@ func (m *Manager) Run(ctx context.Context, interval time.Duration) {
 	}
 }
 
-<<<<<<< HEAD
-=======
 // ExecutePoll manually triggers a poll and process cycle (exported for testing).
->>>>>>> origin/main
 func (m *Manager) ExecutePoll(ctx context.Context) {
 	m.pollAndProcess(ctx)
 }
 
 func (m *Manager) pollAndProcess(ctx context.Context) {
-<<<<<<< HEAD
-	if m.db == nil { return }
-	deals, err := m.db.ListDealsByState(ctx, db.StateResearched)
-	if err != nil {
-		slog.Error("Comm Manager: Error polling deals", "error", err)
-=======
 	if m.db == nil {
 		slog.Info("Comm Manager: DB unavailable, skipping poll cycle")
 		return
@@ -185,26 +104,10 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 	deals, err := m.db.ListDealsByState(ctx, db.StateResearched)
 	if err != nil {
 		slog.Info(fmt.Sprintf("Comm Manager: Error polling deals: %v", err))
->>>>>>> origin/main
 		return
 	}
 
 	for _, deal := range deals {
-<<<<<<< HEAD
-		contacts, _ := m.db.ListContactsByCompany(ctx, deal.CompanyID)
-		if len(contacts) == 0 { continue }
-		interactions, _ := m.db.ListInteractionsByContact(ctx, contacts[0].ID)
-		hasOutbound := false
-		for _, i := range interactions {
-			if i.Direction == "Outbound" { hasOutbound = true; break }
-		}
-
-		if !hasOutbound && !deal.ApprovalRequired {
-			slog.Info("Comm Manager: Initiating autonomous outreach", "deal", deal.ID, "to", contacts[0].Email)
-			if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err == nil {
-				_ = m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent)
-				m.triggerWebhook(ctx, deal.ID, db.StateOutreachSent)
-=======
 		contacts, err := m.db.ListContactsByCompany(ctx, deal.CompanyID)
 		if err != nil || len(contacts) == 0 {
 			continue
@@ -228,42 +131,11 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 			}
 			if err := m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent); err != nil {
 				slog.Info(fmt.Sprintf("Comm Manager Error: Failed to update deal state to OutreachSent for deal %d: %v", deal.ID, err))
->>>>>>> origin/main
 			}
->>>>>>> origin/main
 		}
 	}
 }
 
-<<<<<<< HEAD
-func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text string) (string, error) {
-	channel := "email"
-	if contact.PreferredChannel != "" { channel = contact.PreferredChannel }
-
-	_ = m.db.CreateInteraction(ctx, &db.Interaction{ContactID: contact.ID, Channel: channel, Direction: "Inbound", RawText: text})
-	intent, err := m.classifier.Classify(ctx, text)
-	if err != nil { return "", err }
-
-	company, _ := m.db.GetCompanyByID(ctx, contact.CompanyID)
-	ints, _ := m.db.ListInteractionsByContact(ctx, contact.ID)
-	deal, _ := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
-
-	salesCtx := SalesContext{
-		Company:      *company,
-		Deal:         *deal,
-		Contact:      contact,
-		Interactions: ints,
-		LatestIntent: intent,
-	}
-
-	action, err := m.strategy.Decide(ctx, salesCtx)
-	if err != nil { return "", err }
-	if action == ActionEscalate { return "Escalated to human lead.", nil }
-
-	replyText, err := m.responder.Generate(ctx, salesCtx, action)
-	if err != nil { return "", err }
-
-=======
 // DefaultChannelForContact returns the channel to use when communicating with a contact.
 // If the contact has a preferred channel set, that is used. Otherwise defaults to "email".
 func DefaultChannelForContact(contact db.Contact) string {
@@ -288,7 +160,6 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	err := m.db.CreateInteraction(ctx, &inbound)
 	if err != nil {
 		return "", err
->>>>>>> origin/main
 	}
 
 	// 2. Classify intent
@@ -297,46 +168,6 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		return "", err
 	}
 
-<<<<<<< HEAD
-	// Synchronize inbound interaction with the CRM
-	if m.crmClient != nil {
-		go m.syncInteractionWithRetry(ctx, contact.CompanyID, fmt.Sprintf("Inbound (%s): %s", intent, text))
-	}
-
-	// 2a. Decide next action using strategy engine
-	var company *db.Company
-	var deal *db.Deal
-	var interactions []db.Interaction
-
-	if m.db != nil && m.db.Conn != nil {
-		var err error
-		company, err = m.db.GetCompanyByID(ctx, contact.CompanyID)
-		if err != nil {
-			return "", fmt.Errorf("failed to get company for strategy: %w", err)
-		}
-
-		interactions, err = m.db.ListInteractionsByContact(ctx, contact.ID)
-		if err != nil {
-			slog.Warn("Comm Manager: failed to list interactions for strategy", "error", err)
-		}
-
-		deal, err = m.db.GetDealByCompanyID(ctx, contact.CompanyID)
-		if err != nil {
-			return "", fmt.Errorf("failed to get deal for strategy: %w", err)
-		}
-	} else {
-		// Mock contexts for verification without DB
-		company = &db.Company{Name: "Mock Corp"}
-		deal = &db.Deal{CurrentState: db.StateResearched}
-	}
-
-	salesCtx := SalesContext{
-		Company:      *company,
-		Deal:         *deal,
-		Contact:      contact,
-		Interactions: interactions,
-		LatestIntent: intent,
-=======
 	// 2a. Decide next action using strategy engine
 	company, err := m.db.GetCompanyByID(ctx, contact.CompanyID)
 	if err != nil {
@@ -378,17 +209,12 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	}
 
 	// 3a. Objection detection and counter-response injection
->>>>>>> origin/main
 	var responseID string
 	if m.objections != nil {
 		sentiment := AnalyzeSentiment(text)
 		if sentiment.Sentiment == SentimentNegative || sentiment.Sentiment == SentimentMixed {
 			match := m.objections.MatchObjection(ctx, text, sentiment, deal.CurrentState)
 			if match != nil {
-<<<<<<< HEAD
-				replyText = match.Response.Text + "\n\n" + replyText
-				responseID = match.Response.ID
-=======
 				slog.Info("Objection detected",
 					"category", match.Objection.Category,
 					"objection", match.Objection.Title,
@@ -400,21 +226,11 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 
 				responseID = match.Response.ID
 				// Record usage for A/B testing
->>>>>>> origin/main
 				m.objections.RecordOutcome(responseID, false)
 			}
 		}
 	}
 
-<<<<<<< HEAD
-	if action == ActionAdvanceState {
-		updatedDeal, _ := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
-		if updatedDeal != nil {
-			m.triggerWebhook(ctx, updatedDeal.ID, updatedDeal.CurrentState)
-			if updatedDeal.CurrentState == db.StateClosedWon {
-				if m.registry != nil { m.registry.RecordOutcome("outreach-reply", "current", true) }
-				if m.processor != nil { _ = m.processor.ProcessOrder(ctx, *updatedDeal) }
-=======
 	// 3b. Handle order processing and prompt optimization loop if deal was won
 	if action == ActionAdvanceState {
 		updatedDeal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
@@ -436,28 +252,10 @@ if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
 				if err := m.processor.ProcessOrder(ctx, *updatedDeal); err != nil {
 					slog.Info(fmt.Sprintf("Comm Manager Error: Order processing failed: %v", err))
 				}
->>>>>>> origin/main
 			}
 		}
 	}
 
-<<<<<<< HEAD
-	_ = m.db.CreateInteraction(ctx, &db.Interaction{
-		ContactID:  contact.ID,
-		Channel:    channel,
-		Direction:  "Outbound",
-		RawText:    replyText,
-		Summary:    fmt.Sprintf("Reply to intent: %s", intent),
-		ResponseID: responseID,
-	})
-
-	if m.sender != nil && channel == "email" {
-		subject := "TormentNexus follow up"
-		if text == "START_OUTREACH" { subject = "Quick question" }
-		_ = m.sender.Send(ctx, EmailMessage{To: contact.Email, Subject: subject, Body: replyText})
-	} else if channel == "github" && m.github != nil {
-		_ = m.github.FindAndComment(ctx, *company, contact)
-=======
 	// 4. Persist outbound interaction
 	outbound := db.Interaction{
 		ContactID:	contact.ID,
@@ -472,10 +270,6 @@ if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
 		return "", err
 	}
 
-<<<<<<< HEAD
-	return replyText, nil
-}
-=======
 	// 5. Actually send the communication if sender is configured
 	if m.sender != nil && contact.Email != "" && channel == "email" {
 		subject := fmt.Sprintf("Re: %s — TormentNexus", company.Name)
@@ -498,30 +292,11 @@ if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
 		slog.Info(fmt.Sprintf("Comm Manager: Channel %q requires future implementation for %s — reply logged", channel, contact.Email))
 	} else if m.sender == nil {
 		slog.Info(fmt.Sprintf("Comm Manager: No email sender configured — reply logged but not sent to %s", contact.Email))
->>>>>>> origin/main
 	}
->>>>>>> origin/main
 
 	return replyText, nil
 }
 
-<<<<<<< HEAD
-func (m *Manager) triggerWebhook(ctx context.Context, dealID int64, newState db.LeadState) {
-	url := os.Getenv("WEBHOOK_URL")
-	if url == "" { return }
-	payload, _ := json.Marshal(map[string]interface{}{"deal_id": dealID, "event": "state_change", "new_state": newState, "ts": time.Now()})
-	req, _ := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(payload))
-	req.Header.Set("Content-Type", "application/json")
-	client := &http.Client{Timeout: 5 * time.Second}
-	resp, err := client.Do(req)
-	if err == nil { _ = resp.Body.Close() }
-}
-
-func (m *Manager) GetDB() *db.DB { return m.db }
-
-func (m *Manager) ApproveDeal(ctx context.Context, dealID int64) error {
-	return m.db.UpdateDealState(ctx, dealID, db.StateNegotiating)
-=======
 // GetDB returns the database connection (used by IMAP receiver for contact lookup).
 func (m *Manager) GetDB() *db.DB {
 	return m.db
@@ -545,5 +320,4 @@ func (m *Manager) RejectDeal(ctx context.Context, dealID int64) error {
 	}
 	slog.Info(fmt.Sprintf("Manager: Deal %d rejected by human review, marked as Closed_Lost", dealID))
 	return nil
->>>>>>> origin/main
 }

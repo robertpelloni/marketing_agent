@@ -1,25 +1,15 @@
-<<<<<<< HEAD
-=======
 // Package communication provides the objection handling library — a curated set of
 // common B2B objections with proven counter-arguments, success-rate metadata,
 // and context-aware matching.
->>>>>>> origin/main
 package communication
 
 import (
 	"context"
-<<<<<<< HEAD
-	"encoding/json"
-	"fmt"
-	"log/slog"
-	"math/rand"
-=======
 	crypto_rand "crypto/rand"
 	"encoding/json"
 	"fmt"
 	"log/slog"
 	"math/big"
->>>>>>> origin/main
 	"strings"
 	"sync"
 	"time"
@@ -27,8 +17,6 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
-<<<<<<< HEAD
-=======
 func cryptoRandInt() int64 {
 	n, err := crypto_rand.Int(crypto_rand.Reader, big.NewInt(1<<63-1))
 	if err != nil {
@@ -39,7 +27,6 @@ func cryptoRandInt() int64 {
 
 
 // ObjectionCategory groups objections by theme.
->>>>>>> origin/main
 type ObjectionCategory string
 
 const (
@@ -55,22 +42,11 @@ const (
 	CategorySupport    ObjectionCategory = "support"
 )
 
-<<<<<<< HEAD
-=======
 // Objection describes a common B2B objection.
->>>>>>> origin/main
 type Objection struct {
 	ID        string            `json:"id"`
 	Category  ObjectionCategory `json:"category"`
 	Title     string            `json:"title"`
-<<<<<<< HEAD
-	Patterns  []string          `json:"patterns"`
-	Keywords  []string          `json:"keywords"`
-	Urgency   float64           `json:"urgency"`
-	Priority  int               `json:"priority"`
-}
-
-=======
 	Patterns  []string          `json:"patterns"`  // regex or keyword patterns
 	Keywords  []string          `json:"keywords"`  // signal words
 	Urgency   float64           `json:"urgency"`   // 0.0 – 1.0 (how critical to handle)
@@ -78,43 +54,22 @@ type Objection struct {
 }
 
 // ResponseOption is a single counter-argument with trackable metadata.
->>>>>>> origin/main
 type ResponseOption struct {
 	ID          string    `json:"id"`
 	ObjectionID string    `json:"objection_id"`
 	Text        string    `json:"text"`
-<<<<<<< HEAD
-	Approach    string    `json:"approach"`
-	UseCases    []string  `json:"use_cases"`
-	SuccessRate float64   `json:"success_rate"`
-=======
 	Approach    string    `json:"approach"`     // e.g. "value", "social-proof", "technical", "fear"
 	UseCases    []string  `json:"use_cases"`    // deal stages or contexts where this works
 	SuccessRate float64   `json:"success_rate"` // 0.0 – 1.0 (tracked over time)
->>>>>>> origin/main
 	TimesUsed   int       `json:"times_used"`
 	LastUsed    time.Time `json:"last_used"`
 }
 
-<<<<<<< HEAD
-=======
 // ObjectionLibrary is the central registry of objections and responses.
->>>>>>> origin/main
 type ObjectionLibrary struct {
 	mu         sync.RWMutex
 	objections []Objection
 	responses  []ResponseOption
-<<<<<<< HEAD
-	randGen    *rand.Rand
-}
-
-func NewObjectionLibrary() *ObjectionLibrary {
-	lib := &ObjectionLibrary{
-		randGen: rand.New(rand.NewSource(time.Now().UnixNano())),
-	}
-	if err := lib.loadEmbedded(); err != nil {
-		slog.Warn("Failed to load embedded objection data", "error", err)
-=======
 }
 
 // NewObjectionLibrary creates a library populated with the embedded curated data.
@@ -124,15 +79,11 @@ func NewObjectionLibrary() *ObjectionLibrary {
 	}
 	if err := lib.loadEmbedded(); err != nil {
 		slog.Warn("Failed to load embedded objection data, using empty library", "error", err)
->>>>>>> origin/main
 	}
 	return lib
 }
 
-<<<<<<< HEAD
-=======
 // LoadJSON replaces the library contents with data from a JSON byte slice.
->>>>>>> origin/main
 func (lib *ObjectionLibrary) LoadJSON(data []byte) error {
 	var payload struct {
 		Objections []Objection      `json:"objections"`
@@ -149,14 +100,6 @@ func (lib *ObjectionLibrary) LoadJSON(data []byte) error {
 	return nil
 }
 
-<<<<<<< HEAD
-type MatchedResult struct {
-	Objection Objection
-	Response  ResponseOption
-	Score     float64
-}
-
-=======
 // MatchedResult holds the best objection and response for a given context.
 type MatchedResult struct {
 	Objection Objection
@@ -166,7 +109,6 @@ type MatchedResult struct {
 
 // MatchObjection finds the best objection and response for the given context.
 // It returns nil if no good match is found.
->>>>>>> origin/main
 func (lib *ObjectionLibrary) MatchObjection(ctx context.Context, text string, sentiment SentimentResult, dealStage db.LeadState) *MatchedResult {
 	lib.mu.RLock()
 	defer lib.mu.RUnlock()
@@ -176,20 +118,12 @@ func (lib *ObjectionLibrary) MatchObjection(ctx context.Context, text string, se
 	}
 
 	textLower := strings.ToLower(text)
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/main
 	var best *MatchedResult
 	bestScore := 0.0
 
 	for _, obj := range lib.objections {
 		score := scoreObjection(obj, textLower, sentiment, dealStage)
-<<<<<<< HEAD
-		if score <= 0 { continue }
-		resp := lib.bestResponseFor(obj.ID, dealStage)
-		if resp == nil { continue }
-=======
 		if score <= 0 {
 			continue
 		}
@@ -197,7 +131,6 @@ func (lib *ObjectionLibrary) MatchObjection(ctx context.Context, text string, se
 		if resp == nil {
 			continue
 		}
->>>>>>> origin/main
 		if score > bestScore {
 			bestScore = score
 			best = &MatchedResult{
@@ -211,10 +144,7 @@ func (lib *ObjectionLibrary) MatchObjection(ctx context.Context, text string, se
 	return best
 }
 
-<<<<<<< HEAD
-=======
 // RecordOutcome updates the success-rate data for a response option.
->>>>>>> origin/main
 func (lib *ObjectionLibrary) RecordOutcome(responseID string, success bool) {
 	lib.mu.Lock()
 	defer lib.mu.Unlock()
@@ -223,18 +153,11 @@ func (lib *ObjectionLibrary) RecordOutcome(responseID string, success bool) {
 		if lib.responses[i].ID == responseID {
 			lib.responses[i].TimesUsed++
 			lib.responses[i].LastUsed = time.Now()
-<<<<<<< HEAD
-			n := float64(lib.responses[i].TimesUsed)
-			if success {
-				lib.responses[i].SuccessRate = ((lib.responses[i].SuccessRate * (n - 1)) + 1.0) / n
-			} else {
-=======
 			if success {
 				n := float64(lib.responses[i].TimesUsed)
 				lib.responses[i].SuccessRate = ((lib.responses[i].SuccessRate * (n - 1)) + 1.0) / n
 			} else {
 				n := float64(lib.responses[i].TimesUsed)
->>>>>>> origin/main
 				lib.responses[i].SuccessRate = (lib.responses[i].SuccessRate * (n - 1)) / n
 			}
 			break
@@ -242,8 +165,6 @@ func (lib *ObjectionLibrary) RecordOutcome(responseID string, success bool) {
 	}
 }
 
-<<<<<<< HEAD
-=======
 // Statistics returns aggregate stats about the library.
 func (lib *ObjectionLibrary) Statistics() map[string]interface{} {
 	lib.mu.RLock()
@@ -270,54 +191,33 @@ func (lib *ObjectionLibrary) Statistics() map[string]interface{} {
 // --- internal helpers ---
 
 // loadEmbedded loads the compiled-in objection and response data.
->>>>>>> origin/main
 func (lib *ObjectionLibrary) loadEmbedded() error {
 	return lib.LoadJSON([]byte(embeddedObjectionData))
 }
 
-<<<<<<< HEAD
-func (lib *ObjectionLibrary) assignDefaults() {
-	for i := range lib.responses {
-		if lib.responses[i].SuccessRate == 0 {
-			lib.responses[i].SuccessRate = 0.5
-=======
 // assignDefaults fills any zero-value metadata after loading.
 func (lib *ObjectionLibrary) assignDefaults() {
 	for i := range lib.responses {
 		if lib.responses[i].SuccessRate == 0 {
 			lib.responses[i].SuccessRate = 0.5 // neutral start
->>>>>>> origin/main
 		}
 	}
 }
 
-<<<<<<< HEAD
-=======
 // bestResponseFor selects the best response for an objection given the current deal stage.
->>>>>>> origin/main
 func (lib *ObjectionLibrary) bestResponseFor(objectionID string, stage db.LeadState) *ResponseOption {
 	var candidates []ResponseOption
 	stageStr := strings.ToLower(string(stage))
 
 	for _, resp := range lib.responses {
-<<<<<<< HEAD
-		if resp.ObjectionID != objectionID { continue }
-=======
 		if resp.ObjectionID != objectionID {
 			continue
 		}
 		// Check if this response is appropriate for the stage
->>>>>>> origin/main
 		if len(resp.UseCases) > 0 {
 			applicable := false
 			for _, uc := range resp.UseCases {
 				if strings.EqualFold(uc, stageStr) || uc == "*" {
-<<<<<<< HEAD
-					applicable = true; break
-				}
-			}
-			if !applicable { continue }
-=======
 					applicable = true
 					break
 				}
@@ -325,30 +225,11 @@ func (lib *ObjectionLibrary) bestResponseFor(objectionID string, stage db.LeadSt
 			if !applicable {
 				continue
 			}
->>>>>>> origin/main
 		}
 		candidates = append(candidates, resp)
 	}
 
 	if len(candidates) == 0 {
-<<<<<<< HEAD
-		for _, resp := range lib.responses {
-			if resp.ObjectionID == objectionID { candidates = append(candidates, resp) }
-		}
-	}
-
-	if len(candidates) == 0 { return nil }
-
-	totalWeight := 0.0
-	for _, c := range candidates {
-		totalWeight += c.SuccessRate * float64(1+c.TimesUsed)
-	}
-	r := lib.randGen.Float64() * totalWeight
-	accum := 0.0
-	for _, c := range candidates {
-		accum += c.SuccessRate * float64(1+c.TimesUsed)
-		if accum >= r { return &c }
-=======
 		// fallback — any response for this objection
 		for _, resp := range lib.responses {
 			if resp.ObjectionID == objectionID {
@@ -374,25 +255,10 @@ func (lib *ObjectionLibrary) bestResponseFor(objectionID string, stage db.LeadSt
 		if accum >= r {
 			return &c
 		}
->>>>>>> origin/main
 	}
 	return &candidates[len(candidates)-1]
 }
 
-<<<<<<< HEAD
-func scoreObjection(obj Objection, textLower string, sentiment SentimentResult, _ db.LeadState) float64 {
-	score := 0.0
-	for _, kw := range obj.Keywords {
-		if strings.Contains(textLower, strings.ToLower(kw)) { score += 0.4 }
-	}
-	for _, pat := range obj.Patterns {
-		if strings.Contains(textLower, strings.ToLower(pat)) { score += 0.5 }
-	}
-	if sentiment.Sentiment == SentimentNegative || sentiment.Sentiment == SentimentMixed {
-		if sentiment.Confidence > 0.6 { score += 0.3 * sentiment.Confidence }
-	}
-	if obj.Urgency > 0.7 { score *= 1.2 }
-=======
 // scoreObjection computes how well an objection matches the given context.
 func scoreObjection(obj Objection, textLower string, sentiment SentimentResult, _ db.LeadState) float64 {
 	score := 0.0
@@ -424,6 +290,5 @@ func scoreObjection(obj Objection, textLower string, sentiment SentimentResult, 
 		score *= 1.2
 	}
 
->>>>>>> origin/main
 	return score
 }

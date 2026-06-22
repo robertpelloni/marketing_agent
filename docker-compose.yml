@@ -7,10 +7,7 @@ services:
       - "8080:8080"
     environment:
       - DATABASE_URL=postgres://postgres:postgres@postgres:5432/sales_bot?sslmode=disable
-<<<<<<< HEAD
-=======
       - ENVIRONMENT=production
->>>>>>> origin/main
     depends_on:
       postgres:
         condition: service_healthy

@@ -31,18 +31,12 @@ func IsClean() (bool, error) {
 // It performs a 'git fetch' first to ensure local awareness of remote state.
 func IsSynced(target string) (bool, error) {
 	// Fetch first to ensure we have latest info
-<<<<<<< HEAD
-=======
 	// #nosec G204 -- Intentional subprocess execution for autonomous sync
->>>>>>> origin/main
 	if err := exec.Command("git", "fetch", "origin").Run(); err != nil {
 		return false, fmt.Errorf("failed to fetch from origin: %w", err)
 	}
 
-<<<<<<< HEAD
-=======
 	// #nosec G204 -- Intentional subprocess execution for autonomous sync
->>>>>>> origin/main
 	cmd := exec.Command("git", "rev-list", "--left-right", "--count", "HEAD...origin/"+target)
 	var out bytes.Buffer
 	cmd.Stdout = &out
@@ -116,10 +110,7 @@ func UpdateSubmodules() error {
 // CheckoutAndCommit creates or resets a branch and commits all current working directory changes.
 // This is typically used by the autonomous agent to persist its self-directed updates.
 func CheckoutAndCommit(branch string, message string) error {
-<<<<<<< HEAD
-=======
 	// #nosec G204 -- Intentional subprocess execution for autonomous git operations
->>>>>>> origin/main
 	checkoutCmd := exec.Command("git", "checkout", "-B", branch)
 	if err := checkoutCmd.Run(); err != nil {
 		return fmt.Errorf("failed to checkout branch %s: %v", branch, err)
@@ -130,10 +121,7 @@ func CheckoutAndCommit(branch string, message string) error {
 		return fmt.Errorf("failed to stage changes: %v", err)
 	}
 
-<<<<<<< HEAD
-=======
 	// #nosec G204 -- Intentional subprocess execution for autonomous git operations
->>>>>>> origin/main
 	commitCmd := exec.Command("git", "commit", "-m", message)
 	if err := commitCmd.Run(); err != nil {
 		return fmt.Errorf("failed to commit changes: %v", err)
@@ -144,10 +132,7 @@ func CheckoutAndCommit(branch string, message string) error {
 
 // PushBranch pushes the specified local branch to the 'origin' remote.
 func PushBranch(branch string) error {
-<<<<<<< HEAD
-=======
 	// #nosec G204 -- Intentional subprocess execution for autonomous git operations
->>>>>>> origin/main
 	cmd := exec.Command("git", "push", "origin", branch)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("failed to push branch %s: %v", branch, err)
@@ -157,10 +142,7 @@ func PushBranch(branch string) error {
 
 // DeleteBranch deletes a local branch.
 func DeleteBranch(branch string) error {
-<<<<<<< HEAD
-=======
 	// #nosec G204 -- Intentional subprocess execution for autonomous git operations
->>>>>>> origin/main
 	cmd := exec.Command("git", "branch", "-d", branch)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("failed to delete local branch %s: %v", branch, err)
@@ -170,10 +152,7 @@ func DeleteBranch(branch string) error {
 
 // DeleteRemoteBranch deletes a remote branch from 'origin'.
 func DeleteRemoteBranch(branch string) error {
-<<<<<<< HEAD
-=======
 	// #nosec G204 -- Intentional subprocess execution for autonomous git operations
->>>>>>> origin/main
 	cmd := exec.Command("git", "push", "origin", "--delete", branch)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("failed to delete remote branch %s: %v", branch, err)
@@ -238,10 +217,7 @@ func GenerateSubmoduleInventory() (string, error) {
 			path := parts[1]
 
 			// Get URL
-<<<<<<< HEAD
-=======
 			// #nosec G204 -- Intentional subprocess execution for autonomous submodule inventory
->>>>>>> origin/main
 			urlCmd := exec.Command("git", "config", "--file", ".gitmodules", fmt.Sprintf("submodule.%s.url", path))
 			urlOut, _ := urlCmd.Output()
 			url := strings.TrimSpace(string(urlOut))
@@ -252,15 +228,21 @@ func GenerateSubmoduleInventory() (string, error) {
 
 	return inventory, nil
 }
-<<<<<<< HEAD
 
-// ResetHard performs a git reset --hard to revert any local changes.
-func ResetHard() error {
-	cmd := exec.Command("git", "reset", "--hard", "HEAD")
-	if out, err := cmd.CombinedOutput(); err != nil {
+// DiscardChanges discards all uncommitted changes in the working directory and index.
+// Used by the autodev rollback mechanism when verification fails.
+func DiscardChanges() error {
+	// First, reset the index and working directory to HEAD
+	resetCmd := exec.Command("git", "reset", "--hard", "HEAD")
+	if out, err := resetCmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("git reset --hard failed: %v, output: %s", err, string(out))
 	}
+
+	// Then, remove any untracked files and directories created during the failed attempt
+	cleanCmd := exec.Command("git", "clean", "-fd")
+	if out, err := cleanCmd.CombinedOutput(); err != nil {
+		return fmt.Errorf("git clean -fd failed: %v, output: %s", err, string(out))
+	}
+
 	return nil
 }
-=======
->>>>>>> origin/main

@@ -1,92 +1,11 @@
 # Changelog
 
-<<<<<<< HEAD
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-=======
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<<<<<<< HEAD
-## [0.9.0] - 2026-06-16
-
-### Added
-- **GDPR Compliance Endpoints:** Added `/api/v1/gdpr/export` and `/api/v1/gdpr/delete` to manage contact data privacy.
-- **Webhook IP Allowlisting:** Secured GitHub webhook ingestion by verifying sender IP against a configurable allowlist.
-- **Secrets Encryption Utility:** Implemented AES-GCM encryption for securing sensitive data at rest.
-- **Soft Delete Support:** Added `deleted_at` columns and database migrations to support non-destructive data removal.
-
-
-### Added
-- **Concurrent Task Execution:** The `autodev` orchestrator now processes multiple independent tasks in parallel using goroutines.
-- **Task Dependency Resolution:** Added support for `DependsOn` metadata in `TODO.md`, ensuring tasks are executed in the correct sequence.
-- **Outbound Webhooks:** Automated HTTP POST notifications to `WEBHOOK_URL` upon lead state changes.
-- **Improved Task Parsing:** Enhanced `TaskManager` with regex-based parsing for task IDs and dependencies in Markdown.
-
-
-### Added
-- **Dashboard Pagination:** Implemented offset-based pagination for the deal list to support large-scale lead management.
-- **Worker Performance Profiling:** Added instrumentation to background workers (Scraper, Enricher, Researcher) with real-time cycle duration reporting on the dashboard.
-- **REST API (v1):** Added public JSON endpoints (`/api/v1/deals`, `/api/v1/leads`) for external system integration.
-- **Lead Export:** Extended database repository with `ListAllCompanies` to facilitate lead data extraction.
-
-
-### Added
-- **Prompt Performance Analytics:** New dashboard section displaying A/B test results, success rates, and win percentages for versioned prompts.
-- **Outcome Tracking:** The communication manager now records successful deal state transitions back into the PromptRegistry for real-time performance evaluation.
-- **Negative Example Injection:** RAG responder now incorporates "what NOT to do" context from past unsuccessful interactions to prevent repetitive outreach mistakes.
-
-
-### Added
-- **AutoDev Rollback Mechanism:** The orchestrator now performs an automated `git reset --hard` if the verification suite fails after applying autonomous code changes, ensuring codebase integrity.
-- **Input Sanitization:** All user-provided inputs from the web dashboard are now sanitized using HTML escaping to prevent XSS attacks.
-
-
-### Added
-- **AutoDev PR Feedback Loop:** The system now polls for comments on open autonomous PRs and automatically triggers refinement tasks to address feedback.
-- **Human-in-the-Loop (HITL) Gating:** High-value enterprise deals now require manual approval from the web dashboard before the bot initiates outreach.
-- **Objection Handling Library:** Integrated a library of pre-validated rebuttals for common sales objections (pricing, budget, competitors) into the technical responder.
-- **CSRF Protection:** Added session-based CSRF tokens to all dashboard forms to secure manual intervention actions.
-- **Initialization Recovery:** Added heartbeat logging and a top-level recovery block in main.go to capture and log initialization panics with stack traces.
-
-
-### Added
-- **LLM-Powered Autonomous Development:**
-    - Upgraded `autodev.LocalAgent` to use LLM-powered Go code generation.
-    - Integrated `llm.LLMProvider` into the autonomous dev loop for dynamic solution proposing.
-- **UAT Simulation Portal:**
-    - Integrated an interactive User Acceptance Testing (UAT) portal into the web dashboard (`/api/v1/test/simulate_inbound`).
-    - Enables real-time simulation of inbound messages and verification of autonomous brain replies.
-- **Multi-Channel Sales Engagement:**
-    - Implemented `GitHubSender` for technical outreach via repository issue comments.
-    - Scaffolded `LinkedInSender` for cross-platform professional engagement.
-- **Lead Discovery Intelligence:**
-    - Implemented `BlogWorker` for RSS/Atom ingestion of technical engineering blogs to detect hiring/innovation signals.
-    - Enhanced `LearningSalesEngine` with competitor detection scoring (LangChain, LlamaIndex, etc.).
-- **Enterprise CRM Field Mapping:**
-    - Added `FieldMapping` and `FieldMappingSetter` to CRM clients (Salesforce, HubSpot) to support custom enterprise property schemas.
-- **Security & CI Hardening:**
-    - Resolved all `gosec` security vulnerabilities including Slowloris mitigations (G112) and Secure/SameSite cookie hardening (G124).
-    - Applied explicit error handling (errcheck) and removed all unused code to satisfy strict `golangci-lint` CI requirements.
-
-
-### Added
-=======
 ## [Unreleased]
 
-<<<<<<< HEAD
-## [0.4.7] - 2026-06-08
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> origin/main
 ### Added
 - **Real-Time Quote API:** Added `/api/v1/quote` endpoint for dynamic quote generation based on company size/tier.
->>>>>>> origin/main
 - **Enrichment Source Fallback Chain:**
     - Implemented `FallbackSource` in `internal/enrichment/fallback.go`.
     - Wraps multiple `EnrichmentSource` instances (Hunter.io, Apollo.io, Mock) and tries each in order.
@@ -250,53 +169,6 @@ All notable changes to this project will be documented in this file. The format 
 - Dashboard HTML updated with LLM provider status indicator (green for Hermes connected, grey for mock).
 
 ## [0.4.7] - 2026-06-08
-<<<<<<< HEAD
-=======
-=======
-=======
->>>>>>> origin/main
-## [0.6.0] - 2026-06-13
-
-### Added
-- **Enterprise CRM Refinement:**
-    - Implemented automated record associations: Linked HubSpot Notes to Deals and Salesforce Tasks to Opportunities (via `WhatId`).
-    - Enhanced `PushDeal` with upsert logic: The system now uses `PATCH` to update existing records, preventing duplicate entries in HubSpot and Salesforce.
-- **Improved Governance:**
-    - Standardized version 0.6.0 across all project and module metadata.
-    - Synchronized handoff documentation with finalized CRM-to-Outreach cycle verification.
-
-## [0.5.1] - 2026-06-12
-
-### Added
-- **Live CRM Inbound Integration:**
-    - Integrated HubSpot and Salesforce inbound email polling into the autonomous response loop.
-    - Updated `CRM Worker` to automatically trigger the `communication.Manager` for new external interactions.
-    - Enhanced CRM clients to extract and associate sender emails from HubSpot Communications and Salesforce EmailMessage objects.
-- **Architectural Improvements:**
-    - Implemented a base `IMAPPoller` in `internal/mail` for real-time email ingestion.
-    - Decoupled `CRM Worker` from `communication.Manager` using an `InboundProcessor` interface to prevent circular imports.
-    - Hardened response generation logic with robust nil-checks to support operation during database maintenance or simulation.
-- **Verification Suite:**
-    - Developed a new End-to-End verification script (`scripts/verify_live_flow/main.go`) to validate the complete CRM-to-Outreach autonomous lifecycle.
-
-## [0.5.0] - 2026-06-08
-
-### Added
-- **CRM Field Mapping Configuration:**
-    - Implemented `FieldMapping` in `internal/crm` to allow customizable property names for HubSpot and Salesforce.
-    - Added `SetFieldMapping` to `CRMClient` interface and implemented it across all clients (HubSpot, Salesforce, REST, Mock).
-    - Exposed CRM field mappings via environment variables and updated `internal/config`.
-    - Integrated dynamic mapping into `HubSpotCRMClient` and `SalesforceCRMClient` for API requests and response parsing.
-- **Deployment & Readiness:**
-    - Updated `Dockerfile` and `docker-compose.staging.yml` for staging environment readiness.
-    - Enhanced `DEPLOY.md` with CRM field mapping instructions and staging validation steps.
-    - Verified full framework state with comprehensive unit and integration tests.
-
-## [0.4.8] - 2026-06-08
-<<<<<<< HEAD
-=======
->>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
->>>>>>> origin/main
 
 ### Added
 - **Final Feature Validation:**
@@ -339,11 +211,7 @@ All notable changes to this project will be documented in this file. The format 
     - Expanded PushDeal payload to include technical dossiers for better CRM visibility.
 
 ### Changed
-<<<<<<< HEAD
 - Rebranded all product-facing references from "TormentNexus" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
-=======
-- Rebranded all product-facing references from "Borg" to "TormentNexus" across 14 files (Go source, tests, markdown docs, CI config).
->>>>>>> origin/main
 - Comprehensive documentation overhaul: ROADMAP, TODO, VISION, README, DEPLOY, MEMORY, IDEAS, AGENTS, HANDOFF all updated with gap analysis, forward-looking phases, and technical debt inventory.
 
 ## [0.4.1] - 2026-06-05
@@ -363,7 +231,6 @@ All notable changes to this project will be documented in this file. The format 
 - Consolidated database repository logic and resolved method re-declaration conflicts.
 - Completed dual-direction intelligent merge for full branch reconciliation.
 - Updated documentation and roadmap to reflect end-to-end sales lifecycle readiness.
->>>>>>> origin/main
 
 ## [0.3.0-dev] - 2026-05-26
 

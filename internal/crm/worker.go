@@ -9,35 +9,17 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 )
 
-<<<<<<< HEAD
-// InboundProcessor defines an interface for processing inbound communication autonomously.
-type InboundProcessor interface {
-	ProcessInbound(ctx context.Context, contact db.Contact, text string) (string, error)
-}
-
-=======
->>>>>>> origin/main
 // Worker coordinates the synchronization between the local database and the external CRM.
 type Worker struct {
-<<<<<<< HEAD
 	db	*db.DB
 	client	CRMClient
-=======
-	db     *db.DB
-	client CRMClient
->>>>>>> origin/main
 }
 
 // NewWorker creates a new CRM synchronization worker.
 func NewWorker(database *db.DB, client CRMClient) *Worker {
 	return &Worker{
-<<<<<<< HEAD
 		db:	database,
 		client:	client,
-=======
-		db:     database,
-		client: client,
->>>>>>> origin/main
 	}
 }
 
@@ -70,7 +52,6 @@ func (w *Worker) sync(ctx context.Context) {
 	if w.db == nil {
 		slog.Info("CRM Worker: DB unavailable, skipping sync cycle")
 		return
->>>>>>> origin/main
 	}
 
 	// 1. Reconcile updates from CRM

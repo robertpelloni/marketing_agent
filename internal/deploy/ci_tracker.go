@@ -2,17 +2,29 @@ package deploy
 
 import (
 	"context"
+<<<<<<< HEAD
 	"log"
+=======
+	"log/slog"
+	"fmt"
+>>>>>>> origin/main
 )
 
 // CIStatus represents the outcome of a CI pipeline run.
 type CIStatus string
 
 const (
+<<<<<<< HEAD
 	CIStatusSuccess CIStatus = "Success"
 	CIStatusFailure CIStatus = "Failure"
 	CIStatusPending CIStatus = "Pending"
 	CIStatusUnknown CIStatus = "Unknown"
+=======
+	CIStatusSuccess	CIStatus	= "Success"
+	CIStatusFailure	CIStatus	= "Failure"
+	CIStatusPending	CIStatus	= "Pending"
+	CIStatusUnknown	CIStatus	= "Unknown"
+>>>>>>> origin/main
 )
 
 // CITracker defines an interface for monitoring the status of CI jobs.
@@ -25,7 +37,11 @@ type CITracker interface {
 type MockCITracker struct{}
 
 func (m *MockCITracker) GetLatestStatus(ctx context.Context, branch string) (CIStatus, error) {
+<<<<<<< HEAD
 	log.Printf("MockCITracker: Checking status for branch: %s", branch)
+=======
+	slog.Info(fmt.Sprintf("MockCITracker: Checking status for branch: %s", branch))
+>>>>>>> origin/main
 	// In a real implementation, this would query the GitHub Actions API.
 	if branch == "feat/failing-task" {
 		return CIStatusFailure, nil

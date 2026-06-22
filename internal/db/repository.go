@@ -140,6 +140,25 @@ func (db *DB) UpdateDealState(ctx context.Context, dealID int64, newState LeadSt
 }
 
 // ListDealsByState retrieves deals in a specific state.
+// ListAllCompanies retrieves all companies in the database.
+func (db *DB) ListAllCompanies(ctx context.Context) ([]Company, error) {
+	rows, err := db.Conn.QueryContext(ctx, "SELECT id, name, domain, tech_stack, hiring_signals, market_cap_tier, created_at, updated_at FROM companies")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var companies []Company
+	for rows.Next() {
+		var c Company
+		if err := rows.Scan(&c.ID, &c.Name, &c.Domain, pq.Array(&c.TechStack), pq.Array(&c.HiringSignals), &c.MarketCapTier, &c.CreatedAt, &c.UpdatedAt); err != nil {
+			return nil, err
+		}
+		companies = append(companies, c)
+	}
+	return companies, nil
+}
+
 func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, error) {
 	query := `
 		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at

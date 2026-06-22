@@ -65,6 +65,8 @@ func (s *Server) routes() {
 	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
 	s.mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
 		s.mux.HandleFunc("/api/v1/quote", s.handleGenerateQuote)
+	s.mux.Handle("/api/v1/leads", s.auth.Middleware(http.HandlerFunc(s.handleLeadsAPI)))
+	s.mux.Handle("/api/v1/deals", s.auth.Middleware(http.HandlerFunc(s.handleDealsAPI)))
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -509,5 +511,76 @@ func (s *Server) handleGenerateQuote(w http.ResponseWriter, r *http.Request) {
 		"quote": quote,
 	}); err != nil {
 		slog.ErrorContext(r.Context(), "Error encoding quote JSON", "error", err)
+	}
+}
+
+// REST API for external pipeline management
+func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		// Example: List all leads
+		companies, err := s.db.ListAllCompanies(r.Context())
+		if err != nil {
+			http.Error(w, "Failed to retrieve leads", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(companies)
+	case http.MethodPost:
+		// Example: Create a new lead
+		var lead db.Company
+		if err := json.NewDecoder(r.Body).Decode(&lead); err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+		if err := s.db.CreateCompany(r.Context(), &lead); err != nil {
+			http.Error(w, "Failed to create lead", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(lead)
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+}
+
+func (s *Server) handleDealsAPI(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		// Example: List all deals, could support filtering by state via query params
+		stateFilter := r.URL.Query().Get("state")
+		var deals []db.Deal
+		var err error
+		if stateFilter != "" {
+			deals, err = s.db.ListDealsByState(r.Context(), db.LeadState(stateFilter))
+		} else {
+			// Add a repository method to list all deals if needed,
+			// or just fall back to a specific state for now.
+			deals, err = s.db.ListDealsByState(r.Context(), db.StateDiscovered) // Placeholder
+		}
+
+		if err != nil {
+			http.Error(w, "Failed to retrieve deals", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(deals)
+	case http.MethodPost:
+		// Example: Create a new deal
+		var deal db.Deal
+		if err := json.NewDecoder(r.Body).Decode(&deal); err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+		if err := s.db.CreateDeal(r.Context(), &deal); err != nil {
+			http.Error(w, "Failed to create deal", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(deal)
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
 }

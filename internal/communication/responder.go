@@ -5,8 +5,6 @@ import (
 	"fmt"
 <<<<<<< HEAD
 	"log"
-	"os"
-
 =======
 	"log/slog"
 >>>>>>> origin/main
@@ -21,21 +19,9 @@ import (
 // RAGResponseGenerator provides technically grounded replies using Pseudo-RAG.
 type RAGResponseGenerator struct {
 <<<<<<< HEAD
+	db       *db.DB
 	llm      llm.LLMProvider
-	borgDocs string
-}
-
-// NewRAGResponseGenerator creates a new generator with Borg context.
-func NewRAGResponseGenerator(provider llm.LLMProvider) *RAGResponseGenerator {
-	docsPath := "borg/docs/ARCHITECTURE.md"
-	content, err := os.ReadFile(docsPath)
-	if err != nil {
-		log.Printf("RAG: Warning: could not load Borg documentation: %v", err)
-	}
-
-	return &RAGResponseGenerator{
-		llm:      provider,
-		borgDocs: string(content),
+	tormentNexusDocs string
 =======
 	db               *db.DB
 	llm              llm.LLMProvider
@@ -99,11 +85,6 @@ func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResp
 func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesContext, action Action) (string, error) {
 <<<<<<< HEAD
 	log.Printf("RAGResponseGenerator: Generating response for intent: %s", salesCtx.LatestIntent)
-
-	// Inject technical context if the intent is technical
-	contextInjection := ""
-	if salesCtx.LatestIntent == IntentTechnical && g.borgDocs != "" {
-		contextInjection = fmt.Sprintf("\nRelevant Technical Context from Borg Docs:\n%s\n", g.truncateDocs(g.borgDocs))
 =======
 	slog.Info(fmt.Sprintf("RAGResponseGenerator: Generating response for intent: %s", salesCtx.LatestIntent))
 >>>>>>> origin/main

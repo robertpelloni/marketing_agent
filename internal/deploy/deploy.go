@@ -87,7 +87,7 @@ func (d *Deployer) MonitorDeployment(ctx context.Context, interval time.Duration
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			log.Println("Deployment monitor stopping...")
+			log.Println("Deployment monitor stopping: Draining in-flight work...")
 =======
 			slog.Info("Deployment monitor stopping: Draining in-flight work...")
 >>>>>>> origin/main
@@ -178,7 +178,7 @@ func (d *Deployer) Run(ctx context.Context, interval time.Duration) {
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			log.Println("Deployment worker stopping...")
+			log.Println("Deployment worker stopping: Draining in-flight work...")
 			return
 		case <-ticker.C:
 			if err := d.ExecuteSync(); err != nil {

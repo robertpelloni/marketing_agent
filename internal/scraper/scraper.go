@@ -58,7 +58,7 @@ func (s *Scraper) Run(ctx context.Context, interval time.Duration, keywords []st
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			log.Println("Scraper worker stopping...")
+			log.Println("Scraper worker stopping: Draining in-flight work...")
 =======
 			slog.Info("Scraper worker stopping: Draining in-flight work")
 >>>>>>> origin/main

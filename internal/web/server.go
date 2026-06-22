@@ -24,11 +24,7 @@ import (
 
 <<<<<<< HEAD
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
-=======
-	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 <<<<<<< HEAD
-	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 	"golang.org/x/time/rate"
@@ -55,10 +51,9 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 		deploy:  deployer,
 		tracker: tracker,
 		tasks:   taskManager,
-	}
+		auth:    auth.NewAuthenticator(),
+		mux:     http.NewServeMux(),
 =======
-	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
@@ -100,7 +95,8 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 
 func (s *Server) routes() {
 <<<<<<< HEAD
-	s.mux.HandleFunc("/", s.handleDashboard)
+	// Protected routes
+	s.mux.Handle("/", s.auth.Middleware(http.HandlerFunc(s.handleDashboard)))
 =======
 	// API routes — no auth (use /x/ prefix to avoid mux conflicts)
 	s.mux.HandleFunc("/x/stats", s.handleStats)
@@ -114,7 +110,6 @@ func (s *Server) routes() {
 	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
 	s.mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
 <<<<<<< HEAD
-	s.mux.HandleFunc("/api/v1/test/simulate_inbound", s.handleSimulateInbound)
 =======
 
 	// Protected routes
@@ -144,12 +139,6 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 // ListenAndServe starts the HTTP server.
 func (s *Server) ListenAndServe(addr string) error {
 <<<<<<< HEAD
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", s.handleDashboard)
-	mux.HandleFunc("/health", s.handleHealth)
-	mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
-	mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
-
 	log.Printf("Web dashboard starting on %s", addr)
 	return http.ListenAndServe(addr, mux)
 }
@@ -187,17 +176,13 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		action := r.FormValue("action")
 		switch action {
 		case "enrich":
+			// #nosec G706 -- deal_id is used for context in manual action logs
 <<<<<<< HEAD
 			log.Printf("UI: Manual enrichment triggered for deal %s", r.FormValue("deal_id"))
 		case "sync":
 			if err := s.deploy.ExecuteSync(); err != nil {
 				log.Printf("UI: Sync error: %v", err)
-			}
-		case "build":
-			if err := s.deploy.ExecuteBuild(); err != nil {
-				log.Printf("UI: Build error: %v", err)
 =======
-			// #nosec G706 -- deal_id is used for context in manual action logs
 			slog.InfoContext(r.Context(), "Manual enrichment triggered", "deal_id", r.FormValue("deal_id"))
 		case "sync":
 			if err := s.deploy.ExecuteSync(); err != nil {
@@ -395,6 +380,27 @@ h1 { color: #333; }
 <<<<<<< HEAD
 		}
 
+		// Retrieve latest interaction ID to allow manual flagging from UI
+		contacts, _ := s.db.ListContactsByCompany(r.Context(), d.CompanyID)
+		latestInteractionID := int64(0)
+=======
+		case db.StatePendingApproval:
+			statusTitle = "Deal flagged for human approval before progression."
+		}
+
+		// Retrieve contacts and latest interaction ID for each deal
+		contacts, _ := s.db.ListContactsByCompany(r.Context(), d.CompanyID)
+		latestInteractionID := int64(0)
+		var contactHTML string
+>>>>>>> origin/main
+		if len(contacts) > 0 {
+			interactions, _ := s.db.ListInteractionsByContact(r.Context(), contacts[0].ID)
+			if len(interactions) > 0 {
+				latestInteractionID = interactions[0].ID
+			}
+<<<<<<< HEAD
+		}
+
 		fmt.Fprintf(w, `
 				<tr>
 					<td>%d</td>
@@ -460,19 +466,6 @@ h1 { color: #333; }
 						<th>Status</th>
 					</tr>`)
 =======
-		case db.StatePendingApproval:
-			statusTitle = "Deal flagged for human approval before progression."
-		}
-
-		// Retrieve contacts and latest interaction ID for each deal
-		contacts, _ := s.db.ListContactsByCompany(r.Context(), d.CompanyID)
-		latestInteractionID := int64(0)
-		var contactHTML string
-		if len(contacts) > 0 {
-			interactions, _ := s.db.ListInteractionsByContact(r.Context(), contacts[0].ID)
-			if len(interactions) > 0 {
-				latestInteractionID = interactions[0].ID
-			}
 
 			// Build contacts HTML with channel preference dropdown
 			contactHTML = `<div style="margin-top: 8px; font-size: 0.9em;">`
@@ -692,7 +685,7 @@ h1 { color: #333; }
 				</script>
 			</div>
 		</body>
-			</html>`, health)
+				</html>`, health)
 =======
 <tr>
 <td>%s</td>
@@ -780,7 +773,8 @@ func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 	// 3. Worker liveness (Simulated)
 	health["workers"] = "active"
 
-	json.NewEncoder(w).Encode(health)
+	if err := json.NewEncoder(w).Encode(health); err != nil {
+		log.Printf("Web: Error encoding health JSON: %v", err)
 =======
 	// 3. Worker liveness
 	health["workers"] = "active"

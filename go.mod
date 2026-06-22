@@ -4,18 +4,14 @@ module github.com/robertpelloni/enterprise_sales_bot
 go 1.23.0
 
 require (
+<<<<<<< HEAD
 	github.com/google/go-github/v60 v60.0.0
 	github.com/lib/pq v1.10.9
 	golang.org/x/oauth2 v0.24.0
 )
 
-require (
-	github.com/google/go-querystring v1.1.0 // indirect
-	github.com/stripe/stripe-go/v81 v81.4.0 // indirect
+require github.com/google/go-querystring v1.1.0 // indirect
 =======
-go 1.24
-
-require (
 	github.com/emersion/go-imap v1.2.1
 	github.com/go-rod/rod v0.116.2
 	github.com/google/go-github/v60 v60.0.0
@@ -72,3 +68,4 @@ require (
 	google.golang.org/protobuf v1.36.8 // indirect
 >>>>>>> origin/main
 )
+>>>>>>> origin/main

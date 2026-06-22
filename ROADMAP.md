@@ -133,29 +133,9 @@ Implemented hyper-personalized LLM layer foundations, lead routing metadata, and
 
 <<<<<<< HEAD
 ## Phase 7 — Real Integrations & Multi-Channel Outreach
-
-### 7.1 Real Enrichment Providers
-- [x] **Implement Apollo.io API enrichment source** (replace mock)
-- [x] **Implement Hunter.io email finder** as secondary enrichment source
-- [x] **Implement LinkedIn Sales Navigator scraper** for contact discovery (headless)
-- [x] **Add enrichment source fallback chain** — if primary fails, try secondary automatically
-
-### 7.2 Real Communication Channels
-- [x] **Implement SMTP email sender** for outbound outreach (replace mock)
-- [x] **Implement IMAP/POP3 email polling** for inbound message ingestion
-- [x] **Implement LinkedIn message sending** via headless automation
-- [x] **Implement GitHub Issue/PR comment outreach** as a technical hook channel
-- [x] **Add channel preference logic** — route outreach via the contact's preferred channel
-- [x] **Add outreach cadence management** — configurable follow-up schedule (e.g., Day 1 → Day 3 → Day 7)
-
-### 7.3 Real LLM Integration
-- [x] **Implement OpenAI/Anthropic LLM provider** (replace mock)
-- [x] **Add provider fallback chain** for LLM calls (primary → secondary → tertiary)
-- [x] **Add token budget tracking** per deal/contact to control costs
-- [x] **Add prompt versioning** — store and track prompt templates with A/B testing capability
-- [x] **Add response quality scoring** — auto-evaluate generated responses before sending
 =======
 ## COMPLETED: Phase 7 — Real Integrations & Multi-Channel Outreach (Core CRM & Email)
+>>>>>>> origin/main
 
 ### 7.1 Real Enrichment Providers
 - [ ] **Implement Apollo.io API enrichment source** (replace mock)
@@ -165,7 +145,11 @@ Implemented hyper-personalized LLM layer foundations, lead routing metadata, and
 
 ### 7.2 Real Communication Channels
 - [ ] **Implement SMTP email sender** for outbound outreach (replace mock)
+<<<<<<< HEAD
+- [ ] **Implement IMAP/POP3 email polling** for inbound message ingestion
+=======
 - [x] **Implement IMAP/POP3 email polling** for inbound message ingestion
+>>>>>>> origin/main
 - [ ] **Implement LinkedIn message sending** via headless automation
 - [ ] **Implement GitHub Issue/PR comment outreach** as a technical hook channel
 - [ ] **Add channel preference logic** — route outreach via the contact's preferred channel
@@ -180,6 +164,11 @@ Implemented hyper-personalized LLM layer foundations, lead routing metadata, and
 >>>>>>> origin/main
 
 ### 7.4 Real CRM Integration
+<<<<<<< HEAD
+- [ ] **Implement Salesforce CRM adapter** (replace generic REST mock)
+- [ ] **Implement HubSpot CRM adapter** as alternative
+- [ ] **Add CRM field mapping configuration** — map local fields to CRM-specific schema
+=======
 - [x] **Implement Salesforce CRM adapter** (replace generic REST mock)
 - [x] **Implement HubSpot CRM adapter** as alternative
 <<<<<<< HEAD

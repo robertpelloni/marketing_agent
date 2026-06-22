@@ -131,7 +131,7 @@ func (m *Manager) Run(ctx context.Context, interval time.Duration) {
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			log.Println("Communication Manager: Background poller stopping...")
+			log.Println("Communication Manager: Background poller stopping: Draining in-flight work...")
 =======
 			slog.Info("Communication Manager: Background poller stopping: Draining in-flight work...")
 >>>>>>> origin/main
@@ -189,8 +189,11 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 <<<<<<< HEAD
 			log.Printf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email)
 			// Trigger outreach
-			m.ProcessInbound(ctx, contacts[0], "START_OUTREACH") // Internal trigger
-			m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent)
+			if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
+				log.Printf("Comm Manager Error: Failed to initiate outreach for deal %d: %v", deal.ID, err)
+			}
+			if err := m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent); err != nil {
+				log.Printf("Comm Manager Error: Failed to update deal state to OutreachSent for deal %d: %v", deal.ID, err)
 =======
 			slog.Info(fmt.Sprintf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email))
 			// Trigger outreach
@@ -347,13 +350,16 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	}
 
 <<<<<<< HEAD
-	// 3a. Handle order processing if deal was won
+	// 3a. Handle order processing and prompt optimization loop if deal was won
 	if action == ActionAdvanceState {
 		updatedDeal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
-		if err == nil && updatedDeal.CurrentState == db.StateClosedWon && m.processor != nil {
-			log.Printf("Comm Manager: Triggering order processor for won deal %d", updatedDeal.ID)
-			if err := m.processor.ProcessOrder(ctx, *updatedDeal); err != nil {
-				log.Printf("Comm Manager Error: Order processing failed: %v", err)
+		if err == nil && updatedDeal.CurrentState == db.StateClosedWon {
+			log.Printf("Comm Manager: Deal %d won! Flagging past outbound interactions as successful.", updatedDeal.ID)
+			// Mark all outbound interactions for this contact as successful to feed back into RAG
+			for _, interaction := range interactions {
+				if interaction.Direction == "Outbound" {
+					if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
+						log.Printf("Comm Manager Error: Failed to mark interaction %d as successful: %v", interaction.ID, err)
 =======
 	// 3a. Objection detection and counter-response injection
 	var responseID string
@@ -397,9 +403,9 @@ if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
 
 			if m.processor != nil {
 <<<<<<< HEAD
-				slog.Info("Comm Manager: Triggering order processor", "deal_id", updatedDeal.ID)
+				log.Printf("Comm Manager: Triggering order processor for won deal %d", updatedDeal.ID)
 				if err := m.processor.ProcessOrder(ctx, *updatedDeal); err != nil {
-					slog.Error("Comm Manager: Order processing failed", "deal_id", updatedDeal.ID, "error", err)
+					log.Printf("Comm Manager Error: Order processing failed: %v", err)
 =======
 				slog.Info(fmt.Sprintf("Comm Manager: Triggering order processor for won deal %d", updatedDeal.ID))
 				if err := m.processor.ProcessOrder(ctx, *updatedDeal); err != nil {

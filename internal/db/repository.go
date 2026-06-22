@@ -401,8 +401,8 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 // CreateInteraction inserts a new interaction into the database.
 func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) error {
 	query := `
-		INSERT INTO interactions (contact_id, channel, direction, raw_text, summary, sentiment, created_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7)
+		INSERT INTO interactions (contact_id, channel, direction, raw_text, summary, sentiment, success, created_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 =======
 // GetContactByEmail retrieves a contact by their email address.
 func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, error) {

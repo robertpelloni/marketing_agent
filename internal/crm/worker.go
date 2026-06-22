@@ -70,7 +70,7 @@ func (w *Worker) Run(ctx context.Context, interval time.Duration) {
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			log.Println("CRM Worker: Synchronization stopping...")
+			log.Println("CRM Worker: Synchronization stopping: Draining in-flight work...")
 =======
 			slog.Info("CRM Worker: Synchronization stopping: Draining in-flight work...")
 >>>>>>> origin/main

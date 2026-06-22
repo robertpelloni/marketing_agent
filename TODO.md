@@ -103,7 +103,20 @@
 - [ ] Add token budget tracking per deal/contact
 - [ ] Add prompt versioning with A/B testing capability
 - [ ] Add response quality scoring before sending
+
+### Real CRM Integration
+- [ ] Implement Salesforce CRM adapter
+- [ ] Implement HubSpot CRM adapter
+- [ ] Add CRM field mapping configuration
 =======
+- [x] Implement Apollo.io API enrichment source (replace mock)
+- [x] Implement Hunter.io email finder as secondary source
+- [x] Implement LinkedIn Sales Navigator scraper for contact discovery
+- [x] Add enrichment source fallback chain
+
+### Real Communication Channels
+- [x] Implement SMTP email sender for outbound outreach
+- [x] Implement IMAP/POP3 email polling for inbound ingestion
 - [x] Implement LinkedIn message sending via headless automation
 - [x] Implement GitHub Issue/PR comment outreach as technical hook
 >>>>>>> origin/main

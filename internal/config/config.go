@@ -73,19 +73,6 @@ type Config struct {
 	CRMBaseURL          string
 	CRMAPIKey           string
 <<<<<<< HEAD
-	CRMProvider         string
-	SalesforceAuthURL    string
-	SalesforceClientID   string
-	SalesforceClientSecret string
-	SMTPHost            string
-	SMTPPort            string
-	SMTPUser            string
-	SMTPPass            string
-	SMTPFrom            string
-	IMAPHost            string
-	IMAPPort            string
-	IMAPUser            string
-	IMAPPass            string
 	DeploySyncInterval  time.Duration
 	Port                string
 	Environment         string
@@ -246,27 +233,9 @@ func Load() *Config {
 		CRMBaseURL:          os.Getenv("CRM_BASE_URL"),
 		CRMAPIKey:           os.Getenv("CRM_API_KEY"),
 <<<<<<< HEAD
-		CRMProvider:         getEnv("CRM_PROVIDER", "generic"),
-		SalesforceAuthURL:    os.Getenv("SALESFORCE_AUTH_URL"),
-		SalesforceClientID:   os.Getenv("SALESFORCE_CLIENT_ID"),
-		SalesforceClientSecret: os.Getenv("SALESFORCE_CLIENT_SECRET"),
-		SMTPHost:            os.Getenv("SMTP_HOST"),
-		SMTPPort:            os.Getenv("SMTP_PORT"),
-		SMTPUser:            os.Getenv("SMTP_USER"),
-		SMTPPass:            os.Getenv("SMTP_PASS"),
-		SMTPFrom:            os.Getenv("SMTP_FROM"),
-		IMAPHost:            os.Getenv("IMAP_HOST"),
-		IMAPPort:            os.Getenv("IMAP_PORT"),
-		IMAPUser:            os.Getenv("IMAP_USER"),
-		IMAPPass:            os.Getenv("IMAP_PASS"),
 		DeploySyncInterval:  syncInterval,
 		Port:                port,
 		Environment:         env,
-		CRMDealNameProp:     os.Getenv("CRM_DEAL_NAME_PROP"),
-		CRMDealStageProp:    os.Getenv("CRM_DEAL_STAGE_PROP"),
-		CRMDealAmountProp:   os.Getenv("CRM_DEAL_AMOUNT_PROP"),
-		CRMDealDossierProp:  os.Getenv("CRM_DEAL_DOSSIER_PROP"),
-		CRMContactEmailProp: os.Getenv("CRM_CONTACT_EMAIL_PROP"),
 =======
 		HermesAPIURL:        os.Getenv("HERMES_API_URL"),
 		HermesAPIKey:        os.Getenv("HERMES_API_KEY"),

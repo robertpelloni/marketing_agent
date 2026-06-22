@@ -67,7 +67,7 @@ func (r *Researcher) Run(ctx context.Context, interval time.Duration) {
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			log.Println("Researcher worker stopping...")
+			log.Println("Researcher worker stopping: Draining in-flight work...")
 =======
 			slog.Info("Researcher worker stopping: Draining in-flight work...")
 >>>>>>> origin/main

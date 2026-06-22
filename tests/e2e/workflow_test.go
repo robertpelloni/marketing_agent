@@ -60,7 +60,8 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 
 	// 2b. Enrichment Phase
 <<<<<<< HEAD
-	enricher := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{&enrichment.MockApolloSource{}})
+	crmMock := &crm.MockCRMClient{}
+	enricher := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{&enrichment.MockApolloSource{}}, crmMock)
 =======
 	// For production verification, we use a mock CRM server and the real RestCRMClient
 	// to test the HTTP integration layer.
@@ -125,7 +126,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	classifier := &communication.MockIntentClassifier{}
 	responder := communication.NewRAGResponseGenerator(database, &llm.MockLLMProvider{})
 	strategy := communication.NewLearningSalesEngine(database, crmMock, nil)
-	comm := communication.NewManager(database, classifier, responder, strategy, nil, nil)
+	comm := communication.NewManager(database, classifier, responder, strategy, nil)
 =======
 	// 2d. Outreach Phase
 	classifier := &communication.MockIntentClassifier{}
@@ -170,10 +171,10 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	}
 
 <<<<<<< HEAD
-	// 3. Autonomous Task Generation Phase
-	tmpTodo, _ := os.CreateTemp("", "TODO_E2E.md")
-	defer os.Remove(tmpTodo.Name())
-	os.WriteFile(tmpTodo.Name(), []byte("- [ ] E2E Task"), 0644)
+	// Verify CRM synchronization occurred during win
+	if !crmMock.PushDealCalled {
+		t.Error("Expected CRM PushDeal to be called when deal was won")
+	}
 =======
 	// Verify CRM synchronization occurred via HTTP
 	time.Sleep(100 * time.Millisecond) // Wait for async retries/pushes

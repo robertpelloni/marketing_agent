@@ -60,7 +60,6 @@ func (m *MockCRMClient) PushDeal(ctx context.Context, deal db.Deal, company db.C
 func (m *MockCRMClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error) {
 <<<<<<< HEAD
 	log.Println("CRM: Fetching updates from external CRM...")
-	// Simulate a lead being closed in the CRM
 =======
 	slog.Info("CRM: Fetching updates from external CRM...")
 >>>>>>> origin/main

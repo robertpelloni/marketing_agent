@@ -11,6 +11,9 @@ All notable changes to this project will be documented in this file. The format 
 ## [Unreleased]
 
 <<<<<<< HEAD
+## [0.4.7] - 2026-06-08
+=======
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======

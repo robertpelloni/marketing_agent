@@ -35,6 +35,7 @@ import (
 	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
 =======
+	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/config"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/contentgen"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
@@ -326,15 +327,6 @@ func main() {
 
 <<<<<<< HEAD
 	// 2e. Setup Communication Manager
-	classifier := &communication.MockIntentClassifier{}
-	responder := communication.NewRAGResponseGenerator(llmProvider)
-	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
-
-	// 2ea. Setup Order Processing
-	billingClient := &billing.MockBillingClient{}
-	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
-
-	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor)
 =======
 	// 2e. Setup Email Sender — SMTP, IMAP Drafts, or Mock
 	var emailSender communication.EmailSender
@@ -367,7 +359,7 @@ func main() {
 	billingClient := &billing.MockBillingClient{}
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
-	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, crmClient, emailSender)
+	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor)
 =======
 	// 2fa. Setup Order Processing
 >>>>>>> origin/main
@@ -461,14 +453,7 @@ func main() {
 
 <<<<<<< HEAD
 	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager, crmClient, commManager, cfg.CRMProvider)
-	srv := &http.Server{
-		Addr:    ":" + cfg.Port,
-		Handler: webServer,
-	}
-
-	go func() {
-		if err := webServer.ListenAndServe(":8080"); err != nil {
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager)
 =======
 	// 3a. Start Autonomous Blog Generator (daily)
 	blogGen := contentgen.NewBlogGenerator(llmProvider, database)
@@ -508,6 +493,7 @@ func main() {
 >>>>>>> origin/main
 	// 4. Start Web Server
 	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider)
+>>>>>>> origin/main
 	srv := &http.Server{
 		Addr:              ":" + cfg.Port,
 		Handler:           webServer,

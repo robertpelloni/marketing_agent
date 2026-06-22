@@ -31,7 +31,7 @@ func (e *Enricher) Run(ctx context.Context, interval time.Duration) {
 		select {
 		case <-ctx.Done():
 <<<<<<< HEAD
-			log.Println("Enricher worker stopping...")
+			log.Println("Enricher worker stopping: Draining in-flight work...")
 =======
 			slog.Info("Enricher worker stopping: Draining in-flight work...")
 >>>>>>> origin/main

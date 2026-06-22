@@ -3,7 +3,11 @@ package communication
 import (
 	"context"
 	"fmt"
+<<<<<<< HEAD
+	"log"
+=======
 	"log/slog"
+>>>>>>> origin/main
 	"os"
 	"strings"
 
@@ -13,10 +17,16 @@ import (
 
 // RAGResponseGenerator provides technically grounded replies using Pseudo-RAG.
 type RAGResponseGenerator struct {
+<<<<<<< HEAD
+	db       *db.DB
+	llm      llm.LLMProvider
+	tormentNexusDocs string
+=======
 	db               *db.DB
 	llm              llm.LLMProvider
 	tormentNexusDocs string
 	objectionLib     *ObjectionLibrary
+>>>>>>> origin/main
 }
 
 // NewRAGResponseGenerator creates a new generator with TormentNexus context.
@@ -34,12 +44,25 @@ func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResp
 		// #nosec G304 -- Documentation paths are internal to the repository structure
 		content, err = os.ReadFile(path)
 		if err == nil {
+<<<<<<< HEAD
+			log.Printf("RAG: Successfully loaded TormentNexus documentation from %s", path)
+=======
 			slog.Info(fmt.Sprintf("RAG: Successfully loaded TormentNexus documentation from %s", path))
+>>>>>>> origin/main
 			break
 		}
 	}
 
 	if err != nil {
+<<<<<<< HEAD
+		log.Printf("RAG: Warning: could not load TormentNexus documentation: %v", err)
+	}
+
+	return &RAGResponseGenerator{
+		db:       database,
+		llm:      provider,
+		tormentNexusDocs: string(content),
+=======
 		slog.Info(fmt.Sprintf("RAG: Warning: could not load TormentNexus documentation: %v", err))
 	}
 
@@ -48,11 +71,16 @@ func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResp
 		llm:              provider,
 		tormentNexusDocs: string(content),
 		objectionLib:     NewObjectionLibrary(),
+>>>>>>> origin/main
 	}
 }
 
 func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesContext, action Action) (string, error) {
+<<<<<<< HEAD
+	log.Printf("RAGResponseGenerator: Generating response for intent: %s", salesCtx.LatestIntent)
+=======
 	slog.Info(fmt.Sprintf("RAGResponseGenerator: Generating response for intent: %s", salesCtx.LatestIntent))
+>>>>>>> origin/main
 
 	// Inject technical context if the intent is technical
 	contextInjection := ""
@@ -67,7 +95,11 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 	}
 
 	// SELF-IMPROVING PROMPTS: Inject successful past interactions as few-shot examples
+<<<<<<< HEAD
+	if g.db != nil {
+=======
 	if g.db != nil && g.db.Conn != nil {
+>>>>>>> origin/main
 		successes, err := g.db.ListSuccessfulInteractions(ctx, 3)
 		if err == nil && len(successes) > 0 {
 			examples := []string{}
@@ -83,6 +115,12 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		latestMsg = salesCtx.Interactions[0].RawText
 	}
 
+<<<<<<< HEAD
+	prompt := llm.Prompt{
+		System: "You are a senior sales engineer at TormentNexus. Use the provided technical and pricing context to draft a hyper-personalized response.",
+		User: fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
+			salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier),
+=======
 	// Objection handling: use library to find a matched rebuttal
 	if salesCtx.LatestIntent == IntentObjection && len(salesCtx.Interactions) > 0 {
 		matched := g.objectionLib.MatchObjection(ctx, latestMsg, SentimentResult{}, salesCtx.Deal.CurrentState)
@@ -129,6 +167,7 @@ OUTREACH STRUCTURE:
 Remember: You're not selling software. You're selling engineering hours back to them.`,
 		User: fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s\nCompany Tech Stack: %s\nContact Role: %s",
 			salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier, strings.Join(salesCtx.Company.TechStack, ", "), salesCtx.Contact.Role),
+>>>>>>> origin/main
 	}
 
 	return g.llm.Generate(ctx, prompt)
@@ -140,6 +179,8 @@ func (g *RAGResponseGenerator) truncateDocs(docs string) string {
 	}
 	return docs
 }
+<<<<<<< HEAD
+=======
 
 // GenerateFromTemplate renders a template with context-specific placeholders.
 // It returns the rendered body and subject.
@@ -183,3 +224,4 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 
 	return subject, body, nil
 }
+>>>>>>> origin/main

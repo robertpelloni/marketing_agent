@@ -23,7 +23,10 @@ jobs:
         uses: golangci/golangci-lint-action@v6
         with:
           version: latest
+<<<<<<< HEAD
+=======
           args: --timeout=5m
+>>>>>>> origin/main
       - name: Run Gosec Security Scanner
         uses: securego/gosec@master
         with:

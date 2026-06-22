@@ -2,17 +2,26 @@ package communication
 
 import (
 	"context"
+<<<<<<< HEAD
+	"log"
+	"strings"
+	"time"
+
+=======
 	"log/slog"
 	"strings"
 	"time"
 
 	"fmt"
+>>>>>>> origin/main
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 )
 
 // LearningSalesEngine implements the SalesStrategy interface.
+<<<<<<< HEAD
+=======
 // isHighValueDeal determines if a deal is high-value based on company tier or quoted pricing.
 func isHighValueDeal(deal *db.Deal, company *db.Company) bool {
 	if company.MarketCapTier == "Enterprise" {
@@ -24,6 +33,7 @@ func isHighValueDeal(deal *db.Deal, company *db.Company) bool {
 	return false
 }
 
+>>>>>>> origin/main
 type LearningSalesEngine struct {
 	db        *db.DB
 	crmClient crm.CRMClient
@@ -41,7 +51,11 @@ func NewLearningSalesEngine(database *db.DB, crmClient crm.CRMClient, llmProvide
 
 // Decide determines the next action for a lead.
 func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext) (Action, error) {
+<<<<<<< HEAD
+	log.Printf("LearningSalesEngine: Deciding next action for deal %d (Latest Intent: %s)", salesCtx.Deal.ID, salesCtx.LatestIntent)
+=======
 	slog.Info(fmt.Sprintf("LearningSalesEngine: Deciding next action for deal %d (Latest Intent: %s)", salesCtx.Deal.ID, salesCtx.LatestIntent))
+>>>>>>> origin/main
 
 	// 1. Analyze historical performance and lead quality
 	if e.shouldAdvanceState(salesCtx) {
@@ -51,6 +65,28 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 			newState = db.StateClosedWon
 		}
 
+<<<<<<< HEAD
+		log.Printf("LearningSalesEngine: Advancing deal %d to %s state.", salesCtx.Deal.ID, newState)
+		if e.db != nil {
+			if err := e.db.UpdateDealState(ctx, salesCtx.Deal.ID, newState); err != nil {
+				log.Printf("LearningSalesEngine: Error updating deal state: %v", err)
+			} else if e.crmClient != nil {
+				// Immediate CRM Sync (non-blocking)
+				go func() {
+					updatedDeal := salesCtx.Deal
+					updatedDeal.CurrentState = newState
+					maxRetries := 3
+					for i := 0; i < maxRetries; i++ {
+						if err := e.crmClient.PushDeal(ctx, updatedDeal, salesCtx.Company, e.RouteLead(salesCtx)); err != nil {
+							log.Printf("LearningSalesEngine: Immediate CRM Push failed (attempt %d/%d): %v", i+1, maxRetries, err)
+							time.Sleep(time.Duration(i+1) * 2 * time.Second)
+							continue
+						}
+						return
+					}
+					log.Printf("LearningSalesEngine Error: CRM state sync failed after %d attempts for deal %d", maxRetries, updatedDeal.ID)
+				}()
+=======
 		// If deal is high-value, require human approval before advancing
 		if isHighValueDeal(&salesCtx.Deal, &salesCtx.Company) && newState != db.StatePendingApproval {
 			slog.Info(fmt.Sprintf("LearningSalesEngine: High-value deal %d requires human approval", salesCtx.Deal.ID))
@@ -83,6 +119,7 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 						slog.Info(fmt.Sprintf("LearningSalesEngine Error: CRM state sync failed after %d attempts for deal %d", maxRetries, updatedDeal.ID))
 					}()
 				}
+>>>>>>> origin/main
 			}
 		}
 		return ActionAdvanceState, nil
@@ -91,7 +128,11 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 	// 2. Self-Learning Strategy Adaptation
 	// In production, this would call e.llm.Generate to analyze sentiment and adjust Action
 	if e.llm != nil {
+<<<<<<< HEAD
+		log.Printf("LearningSalesEngine: Analyzing sentiment and adapting strategy via LLM for deal %d", salesCtx.Deal.ID)
+=======
 		slog.Info(fmt.Sprintf("LearningSalesEngine: Analyzing sentiment and adapting strategy via LLM for deal %d", salesCtx.Deal.ID))
+>>>>>>> origin/main
 	}
 
 	// 3. Base intent-driven logic
@@ -147,6 +188,31 @@ func (e *LearningSalesEngine) countInteractionTypes(interactions []db.Interactio
 	return count
 }
 
+<<<<<<< HEAD
+// ScoreLead calculates a priority score based on tier and technical research.
+func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
+	score := 0
+
+	// Tier scoring
+	switch strings.ToLower(salesCtx.Company.MarketCapTier) {
+	case "enterprise":
+		score += 50
+	case "mid-market":
+		score += 25
+	}
+
+	// Dossier insight scoring
+	if strings.Contains(salesCtx.Deal.TechnicalDossier, "BOTTLENECK") {
+		score += 30
+	}
+	if strings.Contains(salesCtx.Deal.TechnicalDossier, "INFRASTRUCTURE") {
+		score += 20
+	}
+
+	// Interaction quantity bonus
+	score += len(salesCtx.Interactions) * 2
+
+=======
 // ScoreLead calculates a priority score using Challenger Sale methodology.
 // High score = high potential to close.
 func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
@@ -203,6 +269,7 @@ func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
 	score += len(salesCtx.Interactions) * 3
 
 	// Cap at 100
+>>>>>>> origin/main
 	if score > 100 {
 		return 100
 	}
@@ -210,6 +277,35 @@ func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
 }
 
 // QualifyLead returns a qualification percentage (0-100) based on readiness to buy.
+<<<<<<< HEAD
+func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
+	qual := 0
+
+	// Base score from profile
+	qual += e.ScoreLead(ctx) / 2
+
+	// Engagement quality
+	inboundCount := e.countInteractionTypes(ctx.Interactions, "Inbound")
+	if inboundCount > 2 {
+		qual += 20
+	}
+
+	// Intent analysis
+	switch ctx.LatestIntent {
+	case IntentPricing:
+		qual += 15
+	case IntentTechnical:
+		qual += 10
+	case IntentMeetingRequest:
+		qual += 25
+	case IntentFollowUp:
+		qual += 20
+	}
+
+	// Penalty for objections
+	if ctx.LatestIntent == IntentObjection {
+		qual -= 10
+=======
 // Uses MEDDIC-inspired framework: Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain, Champion
 func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
 	qual := 0
@@ -255,6 +351,7 @@ func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
 	recentInteractions := len(ctx.Interactions)
 	if recentInteractions > 5 {
 		qual += 10
+>>>>>>> origin/main
 	}
 
 	if qual > 100 {

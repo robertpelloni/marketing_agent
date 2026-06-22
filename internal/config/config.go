@@ -1,6 +1,9 @@
 package config
 
 import (
+<<<<<<< HEAD
+	"os"
+=======
 	"bufio"
 	"encoding/json"
 	"fmt"
@@ -9,6 +12,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+>>>>>>> origin/main
 	"time"
 )
 
@@ -20,6 +24,15 @@ type Config struct {
 	GitHubWebhookSecret string
 	CRMBaseURL          string
 	CRMAPIKey           string
+<<<<<<< HEAD
+	DeploySyncInterval  time.Duration
+	Port                string
+	Environment         string
+}
+
+// Load loads the configuration from environment variables.
+func Load() *Config {
+=======
 	HermesAPIURL        string
 	HermesAPIKey        string
 	HermesModel         string
@@ -70,6 +83,7 @@ func Load() *Config {
 	// Try to load .env file from current directory or executable directory
 	loadDotEnv()
 
+>>>>>>> origin/main
 	syncInterval := 1 * time.Hour
 	if intervalStr := os.Getenv("DEPLOY_SYNC_INTERVAL"); intervalStr != "" {
 		if d, err := time.ParseDuration(intervalStr); err == nil {
@@ -87,6 +101,8 @@ func Load() *Config {
 		env = "development"
 	}
 
+<<<<<<< HEAD
+=======
 	hermesModel := os.Getenv("HERMES_MODEL")
 	if hermesModel == "" {
 		hermesModel = "free-llm"
@@ -113,6 +129,7 @@ func Load() *Config {
 		}
 	}
 
+>>>>>>> origin/main
 	return &Config{
 		DatabaseURL:         getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
 		GitHubToken:         os.Getenv("GITHUB_TOKEN"),
@@ -120,6 +137,11 @@ func Load() *Config {
 		GitHubWebhookSecret: os.Getenv("GITHUB_WEBHOOK_SECRET"),
 		CRMBaseURL:          os.Getenv("CRM_BASE_URL"),
 		CRMAPIKey:           os.Getenv("CRM_API_KEY"),
+<<<<<<< HEAD
+		DeploySyncInterval:  syncInterval,
+		Port:                port,
+		Environment:         env,
+=======
 		HermesAPIURL:        os.Getenv("HERMES_API_URL"),
 		HermesAPIKey:        os.Getenv("HERMES_API_KEY"),
 		HermesModel:         hermesModel,
@@ -247,6 +269,7 @@ func loadDotEnv() {
 			}
 		}
 		return // only load the first .env found
+>>>>>>> origin/main
 	}
 }
 
@@ -256,6 +279,8 @@ func getEnv(key, fallback string) string {
 	}
 	return fallback
 }
+<<<<<<< HEAD
+=======
 
 func parseMapFromEnv(key string, defaultMap map[string]string) map[string]string {
 	val := os.Getenv(key)
@@ -270,3 +295,4 @@ func parseMapFromEnv(key string, defaultMap map[string]string) map[string]string
 	}
 	return m
 }
+>>>>>>> origin/main

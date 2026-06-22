@@ -3,7 +3,11 @@ package communication
 import (
 	"context"
 	"fmt"
+<<<<<<< HEAD
+	"log"
+=======
 	"log/slog"
+>>>>>>> origin/main
 	"time"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -13,6 +17,15 @@ import (
 type Intent string
 
 const (
+<<<<<<< HEAD
+	IntentTechnical      Intent = "Technical"
+	IntentPricing        Intent = "Pricing"
+	IntentObjection      Intent = "Objection"
+	IntentMeetingRequest Intent = "MeetingRequest"
+	IntentFollowUp       Intent = "FollowUp"
+	IntentSpam           Intent = "Spam"
+	IntentUnknown        Intent = "Unknown"
+=======
 	IntentTechnical		Intent	= "Technical"
 	IntentPricing		Intent	= "Pricing"
 	IntentObjection		Intent	= "Objection"
@@ -21,6 +34,7 @@ const (
 	IntentSpam		Intent	= "Spam"
 	IntentUnknown		Intent	= "Unknown"
 	IntentGeneral		Intent	= "General"
+>>>>>>> origin/main
 )
 
 // IntentClassifier defines the interface for categorizing inbound communication.
@@ -40,6 +54,26 @@ type OrderProcessor interface {
 
 // Manager coordinates the inbound communication state machine.
 type Manager struct {
+<<<<<<< HEAD
+	db         *db.DB
+	classifier IntentClassifier
+	responder  ResponseGenerator
+	strategy   SalesStrategy
+	processor  OrderProcessor
+}
+
+// NewManager creates a new communication Manager.
+func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor) *Manager {
+	return &Manager{
+		db:         database,
+		classifier: classifier,
+		responder:  responder,
+		strategy:   strategy,
+		processor:  processor,
+	}
+}
+
+=======
 	db		*db.DB
 	classifier	IntentClassifier
 	responder	ResponseGenerator
@@ -69,20 +103,29 @@ func (m *Manager) SetObjectionLibrary(lib *ObjectionLibrary) {
 	m.objections = lib
 }
 
+>>>>>>> origin/main
 // Run starts the periodic inbound communication processing loop.
 func (m *Manager) Run(ctx context.Context, interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
+<<<<<<< HEAD
+	log.Printf("Communication Manager: Background poller started (interval: %v)...", interval)
+=======
 	slog.Info(fmt.Sprintf("Communication Manager: Background poller started (interval: %v)...", interval))
 
 	// Run immediately on startup
 	m.pollAndProcess(ctx)
+>>>>>>> origin/main
 
 	for {
 		select {
 		case <-ctx.Done():
+<<<<<<< HEAD
+			log.Println("Communication Manager: Background poller stopping: Draining in-flight work...")
+=======
 			slog.Info("Communication Manager: Background poller stopping: Draining in-flight work...")
+>>>>>>> origin/main
 			return
 		case <-ticker.C:
 			m.pollAndProcess(ctx)
@@ -90,6 +133,15 @@ func (m *Manager) Run(ctx context.Context, interval time.Duration) {
 	}
 }
 
+<<<<<<< HEAD
+func (m *Manager) pollAndProcess(ctx context.Context) {
+	// In a real scenario, this would poll an IMAP server or Webhook queue.
+	// For this architecture, we simulate by checking for 'Researched' deals
+	// that haven't had an outbound interaction yet (triggering initial outreach).
+	deals, err := m.db.ListDealsByState(ctx, db.StateResearched)
+	if err != nil {
+		log.Printf("Comm Manager: Error polling deals: %v", err)
+=======
 // ExecutePoll manually triggers a poll and process cycle (exported for testing).
 func (m *Manager) ExecutePoll(ctx context.Context) {
 	m.pollAndProcess(ctx)
@@ -104,6 +156,7 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 	deals, err := m.db.ListDealsByState(ctx, db.StateResearched)
 	if err != nil {
 		slog.Info(fmt.Sprintf("Comm Manager: Error polling deals: %v", err))
+>>>>>>> origin/main
 		return
 	}
 
@@ -124,6 +177,15 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 		}
 
 		if !hasOutbound {
+<<<<<<< HEAD
+			log.Printf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email)
+			// Trigger outreach
+			if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
+				log.Printf("Comm Manager Error: Failed to initiate outreach for deal %d: %v", deal.ID, err)
+			}
+			if err := m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent); err != nil {
+				log.Printf("Comm Manager Error: Failed to update deal state to OutreachSent for deal %d: %v", deal.ID, err)
+=======
 			slog.Info(fmt.Sprintf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email))
 			// Trigger outreach
 			if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
@@ -131,11 +193,22 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 			}
 			if err := m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent); err != nil {
 				slog.Info(fmt.Sprintf("Comm Manager Error: Failed to update deal state to OutreachSent for deal %d: %v", deal.ID, err))
+>>>>>>> origin/main
 			}
 		}
 	}
 }
 
+<<<<<<< HEAD
+// ProcessInbound handles a new inbound message from a contact.
+func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text string) (string, error) {
+	// 1. Persist inbound interaction
+	inbound := db.Interaction{
+		ContactID: contact.ID,
+		Channel:   "Email", // Default for now
+		Direction: "Inbound",
+		RawText:   text,
+=======
 // DefaultChannelForContact returns the channel to use when communicating with a contact.
 // If the contact has a preferred channel set, that is used. Otherwise defaults to "email".
 func DefaultChannelForContact(contact db.Contact) string {
@@ -156,6 +229,7 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		Channel:	channel,
 		Direction:	"Inbound",
 		RawText:	text,
+>>>>>>> origin/main
 	}
 	err := m.db.CreateInteraction(ctx, &inbound)
 	if err != nil {
@@ -176,7 +250,11 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 
 	interactions, err := m.db.ListInteractionsByContact(ctx, contact.ID)
 	if err != nil {
+<<<<<<< HEAD
+		log.Printf("Warning: failed to list interactions for strategy: %v", err)
+=======
 		slog.Info(fmt.Sprintf("Warning: failed to list interactions for strategy: %v", err))
+>>>>>>> origin/main
 	}
 
 	deal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
@@ -185,11 +263,19 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	}
 
 	salesCtx := SalesContext{
+<<<<<<< HEAD
+		Company:      *company,
+		Deal:         *deal,
+		Contact:      contact,
+		Interactions: interactions,
+		LatestIntent: intent,
+=======
 		Company:	*company,
 		Deal:		*deal,
 		Contact:	contact,
 		Interactions:	interactions,
 		LatestIntent:	intent,
+>>>>>>> origin/main
 	}
 
 	action, err := m.strategy.Decide(ctx, salesCtx)
@@ -198,7 +284,11 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	}
 
 	if action == ActionEscalate {
+<<<<<<< HEAD
+		log.Printf("UI: Deal %d escalated for human review.", salesCtx.Deal.ID)
+=======
 		slog.Info(fmt.Sprintf("UI: Deal %d escalated for human review.", salesCtx.Deal.ID))
+>>>>>>> origin/main
 		return "I've flagged this for our technical lead to review. We will get back to you shortly.", nil
 	}
 
@@ -208,6 +298,18 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		return "", err
 	}
 
+<<<<<<< HEAD
+	// 3a. Handle order processing and prompt optimization loop if deal was won
+	if action == ActionAdvanceState {
+		updatedDeal, err := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
+		if err == nil && updatedDeal.CurrentState == db.StateClosedWon {
+			log.Printf("Comm Manager: Deal %d won! Flagging past outbound interactions as successful.", updatedDeal.ID)
+			// Mark all outbound interactions for this contact as successful to feed back into RAG
+			for _, interaction := range interactions {
+				if interaction.Direction == "Outbound" {
+					if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
+						log.Printf("Comm Manager Error: Failed to mark interaction %d as successful: %v", interaction.ID, err)
+=======
 	// 3a. Objection detection and counter-response injection
 	var responseID string
 	if m.objections != nil {
@@ -243,14 +345,21 @@ if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
 					}
 					if interaction.ResponseID != "" && m.objections != nil {
 						m.objections.RecordOutcome(interaction.ResponseID, true)
+>>>>>>> origin/main
 					}
 				}
 			}
 
 			if m.processor != nil {
+<<<<<<< HEAD
+				log.Printf("Comm Manager: Triggering order processor for won deal %d", updatedDeal.ID)
+				if err := m.processor.ProcessOrder(ctx, *updatedDeal); err != nil {
+					log.Printf("Comm Manager Error: Order processing failed: %v", err)
+=======
 				slog.Info(fmt.Sprintf("Comm Manager: Triggering order processor for won deal %d", updatedDeal.ID))
 				if err := m.processor.ProcessOrder(ctx, *updatedDeal); err != nil {
 					slog.Info(fmt.Sprintf("Comm Manager Error: Order processing failed: %v", err))
+>>>>>>> origin/main
 				}
 			}
 		}
@@ -258,18 +367,30 @@ if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
 
 	// 4. Persist outbound interaction
 	outbound := db.Interaction{
+<<<<<<< HEAD
+		ContactID: contact.ID,
+		Channel:   "Email",
+		Direction: "Outbound",
+		RawText:   replyText,
+		Summary:   fmt.Sprintf("Reply to intent: %s", intent),
+=======
 		ContactID:	contact.ID,
 		Channel:	channel,
 		Direction:	"Outbound",
 		RawText:	replyText,
 		Summary:	fmt.Sprintf("Reply to intent: %s", intent),
 		ResponseID:	responseID,
+>>>>>>> origin/main
 	}
 	err = m.db.CreateInteraction(ctx, &outbound)
 	if err != nil {
 		return "", err
 	}
 
+<<<<<<< HEAD
+	return replyText, nil
+}
+=======
 	// 5. Actually send the communication if sender is configured
 	if m.sender != nil && contact.Email != "" && channel == "email" {
 		subject := fmt.Sprintf("Re: %s — TormentNexus", company.Name)
@@ -321,3 +442,4 @@ func (m *Manager) RejectDeal(ctx context.Context, dealID int64) error {
 	slog.Info(fmt.Sprintf("Manager: Deal %d rejected by human review, marked as Closed_Lost", dealID))
 	return nil
 }
+>>>>>>> origin/main

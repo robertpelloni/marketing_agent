@@ -3,7 +3,10 @@ package web
 import (
 	"net/http"
 	"net/http/httptest"
+<<<<<<< HEAD
+=======
 	"strings"
+>>>>>>> origin/main
 	"testing"
 )
 
@@ -27,6 +30,8 @@ func TestHealthCheck(t *testing.T) {
 		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), "OK\n")
 	}
 }
+<<<<<<< HEAD
+=======
 
 func TestHandleGenerateQuote(t *testing.T) {
 	server := NewServer(nil, nil, nil, nil, nil) // Dependencies aren't strictly needed for this endpoint since it just calculates a quote based on URL parameters
@@ -50,3 +55,4 @@ func TestHandleGenerateQuote(t *testing.T) {
 			rr.Body.String(), expected)
 	}
 }
+>>>>>>> origin/main

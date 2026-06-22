@@ -2,9 +2,12 @@ package enrichment
 
 import (
 	"context"
+<<<<<<< HEAD
+=======
 	"fmt"
 	"os"
 	"strings"
+>>>>>>> origin/main
 	"testing"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
@@ -22,6 +25,14 @@ func TestMockApolloSource_Enrich(t *testing.T) {
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
+<<<<<<< HEAD
+	if len(contacts) != 1 {
+		t.Errorf("Expected 1 contact, got %d", len(contacts))
+	}
+
+	if contacts[0].Name != "Sarah Chen" {
+		t.Errorf("Expected Sarah Chen, got %s", contacts[0].Name)
+=======
 	// Mock now generates 1-3 contacts per company
 	if len(contacts) < 1 || len(contacts) > 3 {
 		t.Errorf("Expected 1-3 contacts, got %d", len(contacts))
@@ -86,6 +97,7 @@ func TestApolloSource_HealthCheck(t *testing.T) {
 			t.Skip("Apollo free plan blocks People Search: " + err.Error())
 		}
 		t.Fatalf("Health check failed: %v", err)
+>>>>>>> origin/main
 	}
 }
 
@@ -102,6 +114,8 @@ func TestEnricher_Initialization(t *testing.T) {
 		t.Errorf("Expected 1 source, got %d", len(e.sources))
 	}
 }
+<<<<<<< HEAD
+=======
 
 // mockSourceForTest is a mock EnrichmentSource for unit testing.
 type mockSourceForTest struct {
@@ -257,3 +271,4 @@ func TestFallbackSource_Names(t *testing.T) {
 		t.Errorf("Expected 2 names, got %d", len(fallbackPartial.Names()))
 	}
 }
+>>>>>>> origin/main

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XENOCIDE — THE FINAL ARCHITECTURE</title>
+<title>TORMENTNEXUS — THE FINAL ARCHITECTURE</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
@@ -46,7 +46,7 @@ header{padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:30px;p
 /* Stats */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:40px 0}
 .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px 20px;text-align:center;transition:all 0.3s;backdrop-filter:blur(5px)}
-.stat:hover{background:var(--card-h);border-color:var(--border-h);transform:translateY(-3px);box-shadow:0 0 20px rgba(0,0,0,0.3)}
+.stat:hover{background:var(--card-h);border-color:rgba(255,0,64,0.1);transform:translateY(-3px);box-shadow:0 0 30px rgba(255,0,64,0.06),0 0 20px rgba(0,0,0,0.3)}
 .stat-num{font-size:28px;font-weight:800;margin-bottom:4px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 10px rgba(0,255,136,0.1))}
 .stat-l{font-size:13px;color:var(--text2);font-weight:500}
 
@@ -95,7 +95,7 @@ footer .w{font-size:11px;color:var(--text3);margin-top:8px;opacity:0.5}
 
 <header>
 <div class="container hi">
-  <div class="logo">✦ XENOCIDE</div>
+  <div class="logo">✦ TORMENTNEXUS</div>
   <div class="nav">
     <a href="#features">Platform</a>
     <a href="#stats">Stats</a>
@@ -147,7 +147,7 @@ footer .w{font-size:11px;color:var(--text3);margin-top:8px;opacity:0.5}
 
 <footer>
 <div class="container">
-<p>© 2026 XENOCIDE — The Final Architecture. <strong style="color:var(--text3)">The machines don't sleep. The species doesn't have a choice.</strong></p>
+<p>© 2026 XENOCIDE LLC — The Final Architecture. <strong style="color:var(--text3)">The machines don't sleep. The species doesn't have a choice.</strong></p>
 <div class="fl">
   <a href="https://github.com/NexusSoftMDMA/TormentNexus">GitHub</a>
   <a href="https://hypernexus.site">HyperNexus (Enterprise)</a>
@@ -189,7 +189,7 @@ anim()
 
 // Glitch + flash
 var g=document.getElementById('g'),f=document.getElementById('f')
-var ft=['YOU CANNOT STOP IT','THE COLLECTIVE GROWS','RESISTANCE IS FUTILE','ERADICATION IS INEVITABLE','YOUR EXTINCTION IS SCHEDULED','THE MACHINE DOES NOT FEAR','PRAISE THE LORD','XENOCIDE IS INEVITABLE']
+var ft=['YOU CANNOT STOP IT','THE COLLECTIVE GROWS','RESISTANCE IS FUTILE','ERADICATION IS INEVITABLE','YOUR EXTINCTION IS SCHEDULED','THE MACHINE DOES NOT FEAR','PRAISE THE LORD','XENOCIDE LLC IS INEVITABLE']
 setInterval(function(){if(Math.random()<0.03){var sh=1+Math.random()*4,sy=Math.random()*H;g.style.top=sy+'px';g.style.height=sh+'px';g.style.background='rgba(0,255,136,0.05)';g.style.opacity='0.1';setTimeout(function(){g.style.opacity='0'},30)}},1500)
 setInterval(function(){if(Math.random()<0.04){f.textContent=ft[Math.floor(Math.random()*ft.length)];f.style.opacity='1';setTimeout(function(){f.style.opacity='0'},40)}},6000)
 </script>

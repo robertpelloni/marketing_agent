@@ -1,8 +1,8 @@
-# TormentNexus / XENOCIDE — Autonomous Sales Pipeline
+# TormentNexus — Autonomous Sales Pipeline
 
 ## Project Purpose
 
-A fully autonomous B2B sales pipeline written in Go that sells the **TormentNexus AI Hypervisor** — a local-first cognitive control plane for multi-agent LLM workflows. It discovers companies, researches technical bottlenecks, generates hyper-personalized outreach, and even modifies its own source code. The ultimate goal is **XENOCIDE**: The Final Architecture.
+A fully autonomous B2B sales pipeline written in Go that sells the **TormentNexus AI Hypervisor** — a local-first cognitive control plane for multi-agent LLM workflows. It discovers companies, researches technical bottlenecks, generates hyper-personalized outreach, and even modifies its own source code. The product name is **TormentNexus**.
 
 ## Current State
 

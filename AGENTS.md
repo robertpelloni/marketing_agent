@@ -334,3 +334,11 @@ The system follows a strict "EXECUTIVE PROTOCOL" for repository synchronization 
 - **Validation:** Every build must pass the merge integrity tests defined in `internal/gitcheck`.
 - **Automation:** Utilize `scripts/sync_repo.sh` for automated synchronization.
 - **CI Gating:** AutoDev PRs are only merged after CI passes and staging validates successfully.
+
+## Brain — Agent Memory
+
+This project uses Brain for agent memory management.
+
+**Start here when orienting:** Read `.memory/main.md` for the project roadmap, key decisions, and open problems.
+Read `.memory/AGENTS.md` for the full Brain protocol reference.
+Tools: memory_commit, memory_branch (create/switch/merge)

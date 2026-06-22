@@ -219,7 +219,7 @@ func main() {
 	// 3a. Start Autonomous Blog Generator (daily)
 	blogGen := contentgen.NewBlogGenerator(llmProvider, database)
 	// Blog generator disabled
-		_ = blogGen
+	_ = blogGen
 
 	// 3b. Start Stats API Server (port 8086, no auth)
 	go func() {

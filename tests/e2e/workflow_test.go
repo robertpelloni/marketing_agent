@@ -2,7 +2,15 @@ package e2e
 
 import (
 	"context"
+<<<<<<< HEAD
 	"os"
+=======
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"sync"
+>>>>>>> origin/main
 	"testing"
 	"time"
 
@@ -48,8 +56,31 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	deal := deals[0]
 
 	// 2b. Enrichment Phase
+<<<<<<< HEAD
 	crmMock := &crm.MockCRMClient{}
 	enricher := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{&enrichment.MockApolloSource{}}, crmMock)
+=======
+	// For production verification, we use a mock CRM server and the real RestCRMClient
+	// to test the HTTP integration layer.
+	mux := http.NewServeMux()
+	var mu sync.Mutex
+	calls := make(map[string]int)
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		mu.Lock()
+		calls[r.URL.Path]++
+		mu.Unlock()
+		w.WriteHeader(http.StatusOK)
+		if r.URL.Path == "/updates" {
+			w.Write([]byte("[]"))
+		}
+	})
+	crmServer := httptest.NewServer(mux)
+	defer crmServer.Close()
+
+	realCRM := crm.NewRestCRMClient(crmServer.URL, "e2e-token")
+
+	enricher := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{&enrichment.MockApolloSource{}}, realCRM)
+>>>>>>> origin/main
 	enricher.ExecuteEnrichment(ctx)
 
 	// Verify contact was created
@@ -58,6 +89,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 		t.Fatal("Expected a contact to be created during enrichment")
 	}
 
+<<<<<<< HEAD
 	// Verify CRM synchronization occurred during enrichment
 	if !crmMock.SyncContactsCalled {
 		t.Error("Expected CRM SyncContacts to be called during enrichment")
@@ -65,6 +97,10 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 
 	// 2c. Research Phase
 	res := researcher.NewResearcher(database, []researcher.Crawler{&researcher.GitHubCrawler{}}, &researcher.DefaultDossierProcessor{}, crmMock)
+=======
+	// 2c. Research Phase
+	res := researcher.NewResearcher(database, []researcher.Crawler{&researcher.GitHubCrawler{}}, &researcher.DefaultDossierProcessor{}, realCRM)
+>>>>>>> origin/main
 	res.ExecuteResearch(ctx)
 
 	// Verify dossier was compiled
@@ -73,6 +109,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 		t.Error("Expected technical dossier to be compiled")
 	}
 
+<<<<<<< HEAD
 	// Verify CRM synchronization occurred during research (PushDeal with dossier)
 	if !crmMock.PushDealCalled {
 		t.Error("Expected CRM PushDeal to be called during research")
@@ -84,6 +121,13 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	responder := communication.NewRAGResponseGenerator(database, &llm.MockLLMProvider{})
 	strategy := communication.NewLearningSalesEngine(database, crmMock, nil)
 	comm := communication.NewManager(database, classifier, responder, strategy, nil, nil)
+=======
+	// 2d. Outreach Phase
+	classifier := &communication.MockIntentClassifier{}
+	responder := communication.NewRAGResponseGenerator(database, &llm.MockLLMProvider{})
+	strategy := communication.NewLearningSalesEngine(database, realCRM, nil)
+	comm := communication.NewManager(database, classifier, responder, strategy, nil, realCRM, nil)
+>>>>>>> origin/main
 
 	// Simulate inbound pricing inquiry
 	reply, err := comm.ProcessInbound(ctx, contacts[0], "How much does TormentNexus cost?")
@@ -107,10 +151,23 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 		t.Errorf("Expected deal to be Closed_Won, got %s", wonDeal.CurrentState)
 	}
 
+<<<<<<< HEAD
 	// Verify CRM synchronization occurred during win
 	if !crmMock.PushDealCalled {
 		t.Error("Expected CRM PushDeal to be called when deal was won")
 	}
+=======
+	// Verify CRM synchronization occurred via HTTP
+	time.Sleep(100 * time.Millisecond) // Wait for async retries/pushes
+	mu.Lock()
+	if calls["/deals"] == 0 {
+		t.Error("Expected CRM PushDeal HTTP call")
+	}
+	if calls[fmt.Sprintf("/companies/%d/contacts", deal.CompanyID)] == 0 {
+		t.Error("Expected CRM SyncContacts HTTP call")
+	}
+	mu.Unlock()
+>>>>>>> origin/main
 
 	// 3. Autonomous Task Generation Phase
 	tmpTodo, err := os.CreateTemp("", "TODO_E2E.md")
@@ -197,3 +254,72 @@ func TestAutonomousCodeGeneration_Pilot(t *testing.T) {
 		t.Errorf("Autonomous code generation failed: internal/sales/feature.go not found")
 	}
 }
+<<<<<<< HEAD
+=======
+
+func TestCRMReconciliationWorkflow(t *testing.T) {
+	dbURL := os.Getenv("DATABASE_URL")
+	if dbURL == "" {
+		t.Skip("DATABASE_URL not set, skipping CRM reconciliation test")
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	database, err := db.NewDB(dbURL)
+	if err != nil {
+		t.Fatalf("Failed to initialize database: %v", err)
+	}
+
+	// 1. Setup a lead in Negotiating state
+	company := &db.Company{Name: "Reconciliation Corp", Domain: "recon.io"}
+	database.CreateCompany(ctx, company)
+	deal := &db.Deal{CompanyID: company.ID, CurrentState: db.StateNegotiating}
+	database.CreateDeal(ctx, deal)
+
+	// 2. Setup mock CRM server to provide updates
+	mux := http.NewServeMux()
+	mux.HandleFunc("/updates", func(w http.ResponseWriter, r *http.Request) {
+		// Mock a state change from Negotiating to Won
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprintf(w, `[{"ID": "%d", "NewState": "Closed_Won", "Notes": "Closed via external CRM portal"}]`, deal.ID)
+	})
+	mux.HandleFunc(fmt.Sprintf("/deals/%d", deal.ID), func(w http.ResponseWriter, r *http.Request) {
+		// Mock updated deal details
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprintf(w, `{"id": %d, "status": "Closed_Won", "quoted_pricing": 15000.0, "custom_requirements": "SLA upgrade confirmed" }`, deal.ID)
+	})
+	// Allow PushDeal to succeed
+	mux.HandleFunc("/deals", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
+
+	crmServer := httptest.NewServer(mux)
+	defer crmServer.Close()
+
+	realCRM := crm.NewRestCRMClient(crmServer.URL, "recon-token")
+	worker := crm.NewWorker(database, realCRM, nil)
+
+	// 3. Trigger reconciliation
+	// crm.Worker.sync is internal, but we can call Run once or simulate it.
+	// For this test, we verify that the worker logic is functional.
+	// We'll use a wrapper or just call the sync logic if it was exported.
+	// Since sync is private, we simulate the logic or use the background loop.
+
+	// Execute a single sync cycle (we'll need to export it or use a test helper)
+	// For now, let's just trigger the background worker briefly.
+	go worker.Run(ctx, 100*time.Millisecond)
+
+	// Wait for reconciliation to occur
+	time.Sleep(500 * time.Millisecond)
+
+	// 4. Verify local state matches CRM updates
+	updatedDeal, _ := database.GetDealByCompanyID(ctx, company.ID)
+	if updatedDeal.CurrentState != db.StateClosedWon {
+		t.Errorf("Reconciliation failed: expected state Closed_Won, got %s", updatedDeal.CurrentState)
+	}
+	if updatedDeal.QuotedPricing != 15000.0 {
+		t.Errorf("Reconciliation failed: expected pricing 15000.0, got %f", updatedDeal.QuotedPricing)
+	}
+}
+>>>>>>> origin/main

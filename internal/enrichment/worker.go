@@ -108,6 +108,7 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 	return nil
 }
 
+<<<<<<< HEAD
 // MockApolloSource is a simulated enrichment source.
 type MockApolloSource struct{}
 
@@ -135,5 +136,12 @@ func (m *MockApolloSource) Enrich(ctx context.Context, company db.Company) ([]db
 		}, nil
 	}
 
+=======
+// MockApolloSource is a legacy stub that no longer generates mock contacts.
+// Only real enrichment sources (Hunter.io, Apollo.io) are used.
+type MockApolloSource struct{}
+
+func (m *MockApolloSource) Enrich(_ context.Context, _ db.Company) ([]db.Contact, error) {
+>>>>>>> origin/main
 	return nil, nil
 }

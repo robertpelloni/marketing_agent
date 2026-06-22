@@ -65,6 +65,12 @@ jobs:
       run: |
         go mod tidy
         git diff --exit-code go.mod go.sum
+<<<<<<< HEAD
+=======
+    - name: Run Database Migrations
+      run: |
+        go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest -path ./migrations -database "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable" up
+>>>>>>> origin/main
     - name: Run Tests with Coverage
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable

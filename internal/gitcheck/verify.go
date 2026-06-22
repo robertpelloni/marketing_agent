@@ -228,6 +228,7 @@ func GenerateSubmoduleInventory() (string, error) {
 
 	return inventory, nil
 }
+<<<<<<< HEAD
 
 // DiscardChanges discards all uncommitted changes in the working directory and index.
 // Used by the autodev rollback mechanism when verification fails.
@@ -246,3 +247,5 @@ func DiscardChanges() error {
 
 	return nil
 }
+=======
+>>>>>>> origin/main

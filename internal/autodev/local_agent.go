@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+<<<<<<< HEAD
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 )
@@ -23,10 +24,17 @@ func NewLocalAgent(provider llm.LLMProvider) *LocalAgent {
 		llmProvider: provider,
 	}
 }
+=======
+)
+
+// LocalAgent is an agent that executes tasks and verifies them using local tools.
+type LocalAgent struct{}
+>>>>>>> origin/main
 
 func (a *LocalAgent) ProposeSolution(ctx context.Context, task Task) (string, error) {
 	slog.InfoContext(ctx, "LocalAgent: Analyzing task", "description", task.Description)
 
+<<<<<<< HEAD
 	if a.llmProvider != nil {
 		slog.InfoContext(ctx, "LocalAgent: Using LLM to synthesize code", "task", task.Description)
 		prompt := fmt.Sprintf(`You are an autonomous development agent.
@@ -48,6 +56,8 @@ If multiple files are needed, repeat the block. Do not include markdown formatti
 		slog.WarnContext(ctx, "LocalAgent: LLM code synthesis failed, falling back to template", "error", err)
 	}
 
+=======
+>>>>>>> origin/main
 	if strings.Contains(strings.ToLower(task.Description), "sales-feature") {
 		return fmt.Sprintf("FILE: internal/sales/feature.go\nCONTENT:\npackage sales\n\n// Autonomous Feature: %s\nfunc ExecuteSalesFeature() {\n\tprintln(\"Executing autonomous sales logic\")\n}\n", task.Description), nil
 	}

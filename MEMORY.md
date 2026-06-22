@@ -2,11 +2,27 @@
 
 ## Current State
 
+<<<<<<< HEAD
 - The project is at v0.5.1 with Hermes Agent LLM integration, real-time quote generation, and stabilized CI pipelines.
+=======
+<<<<<<< HEAD
+- The project is at v0.4.8 with Hermes Agent LLM integration.
+>>>>>>> origin/main
 - Core modules: scraper, enricher, researcher, communication, CRM, billing, deploy, autodev.
 - **LLM provider is now REAL** via Hermes Agent gateway (WSL) — replaces MockLLMProvider.
 - **Intent classifier is now REAL** via LLMIntentClassifier when Hermes is available.
 - Remaining mocks: enrichment (Apollo), job board scraper, email send/receive, billing (Stripe).
+<<<<<<< HEAD
+=======
+=======
+- The project has completed Phase 5 (v0.4.1) with a fully functional end-to-end pipeline.
+- All core modules are implemented: scraper, enricher, researcher, communication, CRM, billing, deploy, and autodev.
+- The project uses Go 1.24 and follows standard Golang concurrency patterns.
+- All external integrations currently use mock implementations (except GitHub API for target discovery and CI tracking).
+- A robust merge integrity and conflict resolution testing framework is in place.
+- The project was rebranded from Borg to TormentNexus across all product-facing references.
+>>>>>>> origin/jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+>>>>>>> origin/main
 
 ## Architectural Traits
 

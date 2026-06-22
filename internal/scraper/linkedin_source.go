@@ -9,8 +9,13 @@ import (
 	"os"
 	"strings"
 
+<<<<<<< HEAD
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/go-rod/rod"
+=======
+	"github.com/go-rod/rod"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+>>>>>>> origin/main
 )
 
 // LinkedInSource implements LeadSource by searching for companies and contacts via LinkedIn.
@@ -132,6 +137,7 @@ func (l *LinkedInSource) scrapeLinkedIn(ctx context.Context, keywords []string) 
 	return companies, nil
 }
 
+<<<<<<< HEAD
 // simulateDiscovery returns simulated high-value targets when real API is not available.
 func (l *LinkedInSource) simulateDiscovery(ctx context.Context, keywords []string) ([]db.Company, error) {
 	slog.Info(fmt.Sprintf("LinkedInSource: Simulating discovery for keywords: %v", keywords))
@@ -160,6 +166,11 @@ func (l *LinkedInSource) simulateDiscovery(ctx context.Context, keywords []strin
 			MarketCapTier: "Small Business",
 		},
 	}, nil
+=======
+// simulateDiscovery returns empty — no mock data. Only real API results are used.
+func (l *LinkedInSource) simulateDiscovery(_ context.Context, _ []string) ([]db.Company, error) {
+	return nil, nil
+>>>>>>> origin/main
 }
 
 // HealthCheck verifies LinkedIn API connectivity and credential validity.

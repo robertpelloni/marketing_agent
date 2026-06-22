@@ -140,6 +140,7 @@ func (db *DB) UpdateDealState(ctx context.Context, dealID int64, newState LeadSt
 }
 
 // ListDealsByState retrieves deals in a specific state.
+<<<<<<< HEAD
 // ListAllCompanies retrieves all companies in the database.
 func (db *DB) ListAllCompanies(ctx context.Context) ([]Company, error) {
 	rows, err := db.Conn.QueryContext(ctx, "SELECT id, name, domain, tech_stack, hiring_signals, market_cap_tier, created_at, updated_at FROM companies")
@@ -159,6 +160,8 @@ func (db *DB) ListAllCompanies(ctx context.Context) ([]Company, error) {
 	return companies, nil
 }
 
+=======
+>>>>>>> origin/main
 func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, error) {
 	query := `
 		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at
@@ -281,6 +284,12 @@ func (db *DB) UpdateTechnicalDossier(ctx context.Context, dealID int64, dossier 
 }
 
 // CreateContact inserts a new contact into the database.
+<<<<<<< HEAD
+=======
+// Uses UPSERT (ON CONFLICT) to handle duplicate emails gracefully —
+// if a contact with the same email already exists, it updates the
+// existing record instead of failing.
+>>>>>>> origin/main
 func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
 	if contact.PreferredChannel == "" {
 		contact.PreferredChannel = string(DefaultChannel())
@@ -289,6 +298,15 @@ func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
 	query := `
 		INSERT INTO contacts (company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+<<<<<<< HEAD
+=======
+		ON CONFLICT (email) DO UPDATE SET
+			name = EXCLUDED.name,
+			role = EXCLUDED.role,
+			company_id = EXCLUDED.company_id,
+			preferred_channel = EXCLUDED.preferred_channel,
+			updated_at = NOW()
+>>>>>>> origin/main
 		RETURNING id
 	`
 	now := time.Now()
@@ -362,7 +380,10 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 	return contacts, nil
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 // GetContactByEmail retrieves a contact by their email address.
 func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, error) {
 	query := `
@@ -392,6 +413,10 @@ func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, er
 	}
 	return contact, nil
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
 // CreateInteraction inserts a new interaction into the database.
 func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) error {
 	query := `
@@ -575,7 +600,11 @@ func (db *DB) ListActivePullRequests(ctx context.Context) ([]gitcheck.PullReques
 // ListInteractionsByContact retrieves all interactions for a specific contact.
 func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([]Interaction, error) {
 	query := `
+<<<<<<< HEAD
 		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, success, template_id, response_id, created_at
+=======
+		SELECT id, contact_id, channel, direction, raw_text, summary, sentiment, success, COALESCE(template_id, ''), response_id, created_at
+>>>>>>> origin/main
 		FROM interactions
 		WHERE contact_id = $1
 		ORDER BY created_at DESC
@@ -776,3 +805,46 @@ func (db *DB) MarkTemplateSuccessForDeal(ctx context.Context, dealID int64) erro
 	}
 	return nil
 }
+<<<<<<< HEAD
+=======
+
+// CountCompanies returns the total number of companies.
+func (db *DB) CountCompanies(ctx context.Context) (int, error) {
+	var count int
+	err := db.Conn.QueryRowContext(ctx, `SELECT COUNT(*) FROM companies`).Scan(&count)
+	return count, err
+}
+
+// CountContacts returns the total number of contacts.
+func (db *DB) CountContacts(ctx context.Context) (int, error) {
+	var count int
+	err := db.Conn.QueryRowContext(ctx, `SELECT COUNT(*) FROM contacts`).Scan(&count)
+	return count, err
+}
+
+// CountInteractions returns the total number of interactions.
+func (db *DB) CountInteractions(ctx context.Context) (int, error) {
+	var count int
+	err := db.Conn.QueryRowContext(ctx, `SELECT COUNT(*) FROM interactions`).Scan(&count)
+	return count, err
+}
+
+// CountDealsByState returns counts of deals grouped by state.
+func (db *DB) CountDealsByState(ctx context.Context) ([]DealStateCount, error) {
+	rows, err := db.Conn.QueryContext(ctx, `SELECT current_state, COUNT(*) FROM deals GROUP BY current_state ORDER BY current_state`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var results []DealStateCount
+	for rows.Next() {
+		var dsc DealStateCount
+		if err := rows.Scan(&dsc.State, &dsc.Count); err != nil {
+			return nil, err
+		}
+		results = append(results, dsc)
+	}
+	return results, nil
+}
+>>>>>>> origin/main

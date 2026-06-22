@@ -19,6 +19,7 @@ import (
 // The client uses HubSpot's CRM objects: contacts, companies, deals.
 
 type HubSpotClient struct {
+<<<<<<< HEAD
 	baseURL     string
 	apiKey      string
 	accessToken string
@@ -29,6 +30,16 @@ type HubSpotClient struct {
 
 // NewHubSpotClient creates a new HubSpot CRM client.
 func NewHubSpotClient(stageMap map[string]string, reverseMap map[string]string) (*HubSpotClient, error) {
+=======
+	baseURL    string
+	apiKey     string
+	accessToken string
+	client     *http.Client
+}
+
+// NewHubSpotClient creates a new HubSpot CRM client.
+func NewHubSpotClient() (*HubSpotClient, error) {
+>>>>>>> origin/main
 	base := os.Getenv("HUBSPOT_BASE_URL")
 	if base == "" {
 		base = "https://api.hubapi.com"
@@ -38,6 +49,7 @@ func NewHubSpotClient(stageMap map[string]string, reverseMap map[string]string) 
 	if key == "" && token == "" {
 		return nil, fmt.Errorf("hubspot client: missing API key or access token")
 	}
+<<<<<<< HEAD
 		return &HubSpotClient{
 		baseURL:     base,
 		apiKey:      key,
@@ -46,6 +58,9 @@ func NewHubSpotClient(stageMap map[string]string, reverseMap map[string]string) 
 		stageMap:    stageMap,
 		reverseMap:  reverseMap,
 	}, nil
+=======
+	return &HubSpotClient{baseURL: base, apiKey: key, accessToken: token, client: &http.Client{}}, nil
+>>>>>>> origin/main
 }
 
 // authHeader constructs the Authorization header for HubSpot requests.
@@ -63,7 +78,11 @@ func (h *HubSpotClient) PushDeal(ctx context.Context, deal db.Deal, company db.C
 			"dealname":           fmt.Sprintf("%s – %s", company.Name, route),
 			"amount":             deal.QuotedPricing,
 			"pipeline":           "default",
+<<<<<<< HEAD
 			"dealstage":          h.mapLeadStateToHubSpotStage(deal.CurrentState),
+=======
+			"dealstage":          mapLeadStateToHubSpotStage(deal.CurrentState),
+>>>>>>> origin/main
 			"description":        deal.TechnicalDossier,
 			"custom_route":       route,
 		},
@@ -124,7 +143,11 @@ func (h *HubSpotClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error
 
 	var updates []LeadUpdate
 	for _, r := range result.Results {
+<<<<<<< HEAD
 		state := h.mapHubSpotLeadStatusToLeadState(r.Properties.LeadStatus)
+=======
+		state := mapHubSpotLeadStatusToLeadState(r.Properties.LeadStatus)
+>>>>>>> origin/main
 		if state != "" {
 			updates = append(updates, LeadUpdate{ID: r.ID, NewState: state, Notes: ""})
 		}
@@ -231,7 +254,11 @@ func (h *HubSpotClient) SyncContacts(ctx context.Context, companyID int64, conta
 		if err != nil {
 			return err
 		}
+<<<<<<< HEAD
 		_ = resp.Body.Close()
+=======
+		resp.Body.Close()
+>>>>>>> origin/main
 		if resp.StatusCode >= 400 {
 			return fmt.Errorf("hubspot SyncContacts: status %d", resp.StatusCode)
 		}
@@ -273,7 +300,11 @@ func (h *HubSpotClient) FetchDealDetails(ctx context.Context, dealID int64) (*De
 
 	return &DealDetails{
 		ID:                 parseHubSpotDealID(result.Properties.DealName), // placeholder conversion
+<<<<<<< HEAD
 		Status:             h.mapHubSpotStageToLeadState(result.Properties.Stage),
+=======
+		Status:             mapHubSpotStageToLeadState(result.Properties.Stage),
+>>>>>>> origin/main
 		QuotedPricing:      result.Properties.Amount,
 		CustomRequirements: result.Properties.CustomRoute,
 		TechnicalDossier:   result.Properties.Description,
@@ -297,6 +328,7 @@ func lastName(full string) string {
 	return ""
 }
 
+<<<<<<< HEAD
 func (h *HubSpotClient) mapLeadStateToHubSpotStage(state db.LeadState) string {
 	if h.stageMap != nil {
 		if stage, ok := h.stageMap[string(state)]; ok {
@@ -325,3 +357,9 @@ func (h *HubSpotClient) mapHubSpotStageToLeadState(stage string) db.LeadState {
 }
 
 func parseHubSpotDealID(name string) int64                     { return 0 }
+=======
+func mapLeadStateToHubSpotStage(state db.LeadState) string { return "appointmentscheduled" }
+func mapHubSpotLeadStatusToLeadState(status string) db.LeadState { return db.StateResearched }
+func mapHubSpotStageToLeadState(stage string) db.LeadState      { return db.StateResearched }
+func parseHubSpotDealID(name string) int64                     { return 0 }
+>>>>>>> origin/main

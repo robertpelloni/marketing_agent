@@ -16,8 +16,13 @@ import (
 	"strings"
 
 	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
+<<<<<<< HEAD
 	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
+=======
+	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
+>>>>>>> origin/main
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
@@ -56,17 +61,29 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 }
 
 func (s *Server) routes() {
+<<<<<<< HEAD
 	// Protected routes
 	s.mux.Handle("/", s.auth.Middleware(http.HandlerFunc(s.handleDashboard)))
+=======
+	// API routes — no auth (use /x/ prefix to avoid mux conflicts)
+	s.mux.HandleFunc("/x/stats", s.handleStats)
+	s.mux.HandleFunc("/x/leads", s.handleLeads)
+>>>>>>> origin/main
 
 	// Public routes
 	s.mux.HandleFunc("/login", s.auth.HandleLogin)
 	s.mux.HandleFunc("/health", s.handleHealth)
 	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
 	s.mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
+<<<<<<< HEAD
 		s.mux.HandleFunc("/api/v1/quote", s.handleGenerateQuote)
 	s.mux.Handle("/api/v1/leads", s.auth.Middleware(http.HandlerFunc(s.handleLeadsAPI)))
 	s.mux.Handle("/api/v1/deals", s.auth.Middleware(http.HandlerFunc(s.handleDealsAPI)))
+=======
+
+	// Protected routes
+	s.mux.Handle("/", http.HandlerFunc(s.handleDashboard))
+>>>>>>> origin/main
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -83,7 +100,21 @@ func (s *Server) ListenAndServe(addr string) error {
 }
 
 func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
+<<<<<<< HEAD
 	if r.URL.Path != "/" {
+=======
+	// Serve API endpoints from the root handler
+	path := r.URL.Path
+	if path == "/x/stats" || path == "/api/v1/stats" {
+		s.handleStats(w, r)
+		return
+	}
+	if path == "/x/leads" || path == "/api/v1/leads" {
+		s.handleLeads(w, r)
+		return
+	}
+	if path != "/" {
+>>>>>>> origin/main
 		http.NotFound(w, r)
 		return
 	}
@@ -122,7 +153,11 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 					slog.InfoContext(r.Context(), "Contact channel updated", "contact_id", id, "channel", channel)
 				}
 			}
+<<<<<<< HEAD
 case "build":
+=======
+		case "build":
+>>>>>>> origin/main
 			if err := s.deploy.ExecuteBuild(); err != nil {
 				slog.WarnContext(r.Context(), "Build error", "error", err)
 			}
@@ -514,6 +549,7 @@ func (s *Server) handleGenerateQuote(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+<<<<<<< HEAD
 // REST API for external pipeline management
 func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
@@ -583,4 +619,49 @@ func (s *Server) handleDealsAPI(w http.ResponseWriter, r *http.Request) {
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
+=======
+func (s *Server) handleStats(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-Type", "application/json")
+	ctx := r.Context()
+	companies, _ := s.db.CountCompanies(ctx)
+	contacts, _ := s.db.CountContacts(ctx)
+	interactions, _ := s.db.CountInteractions(ctx)
+	stateCounts := make(map[string]int)
+	states, _ := s.db.CountDealsByState(ctx)
+	for _, st := range states {
+		stateCounts[string(st.State)] = st.Count
+	}
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"companies": companies, "contacts": contacts,
+		"interactions": interactions, "deals": stateCounts,
+		"status": "operational",
+	})
+}
+
+func (s *Server) handleLeads(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	ctx := r.Context()
+	deals, err := s.db.ListRecentDeals(ctx, 20)
+	if err != nil {
+		http.Error(w, `{"error":"`+err.Error()+`"}`, 500)
+		return
+	}
+	type lead struct {
+		ID      int64
+		Company string
+		State   string
+		Contact string
+	}
+	var out []lead
+	for _, d := range deals {
+		c, _ := s.db.GetCompanyByID(ctx, d.CompanyID)
+		cn := ""
+		if c != nil {
+			cn = c.Name
+		}
+		out = append(out, lead{ID: d.ID, Company: cn, State: string(d.CurrentState)})
+	}
+	json.NewEncoder(w).Encode(out)
+>>>>>>> origin/main
 }

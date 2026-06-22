@@ -6,10 +6,17 @@ import (
 	"strings"
 	"time"
 
+<<<<<<< HEAD
 	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
 	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
 	"fmt"
+=======
+	"fmt"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+>>>>>>> origin/main
 )
 
 // LearningSalesEngine implements the SalesStrategy interface.
@@ -25,17 +32,29 @@ func isHighValueDeal(deal *db.Deal, company *db.Company) bool {
 }
 
 type LearningSalesEngine struct {
+<<<<<<< HEAD
 	db		*db.DB
 	crmClient	crm.CRMClient
 	llm		llm.LLMProvider
+=======
+	db        *db.DB
+	crmClient crm.CRMClient
+	llm       llm.LLMProvider
+>>>>>>> origin/main
 }
 
 // NewLearningSalesEngine creates a new instance of the engine.
 func NewLearningSalesEngine(database *db.DB, crmClient crm.CRMClient, llmProvider llm.LLMProvider) *LearningSalesEngine {
 	return &LearningSalesEngine{
+<<<<<<< HEAD
 		db:		database,
 		crmClient:	crmClient,
 		llm:		llmProvider,
+=======
+		db:        database,
+		crmClient: crmClient,
+		llm:       llmProvider,
+>>>>>>> origin/main
 	}
 }
 
@@ -106,7 +125,11 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 		if e.isHighValueLead(salesCtx) {
 			return ActionRespond, nil
 		}
+<<<<<<< HEAD
 		return ActionEscalate, nil	// Escalate high-tier pricing negotiation
+=======
+		return ActionEscalate, nil // Escalate high-tier pricing negotiation
+>>>>>>> origin/main
 	case IntentObjection:
 		// Attempt one autonomous rebuttal, then escalate
 		if e.countInteractionTypes(salesCtx.Interactions, "Outbound") < 2 {
@@ -147,6 +170,7 @@ func (e *LearningSalesEngine) countInteractionTypes(interactions []db.Interactio
 	return count
 }
 
+<<<<<<< HEAD
 // ScoreLead calculates a priority score based on tier and technical research.
 func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
 	score := 0
@@ -170,6 +194,64 @@ func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
 	// Interaction quantity bonus
 	score += len(salesCtx.Interactions) * 2
 
+=======
+// ScoreLead calculates a priority score using Challenger Sale methodology.
+// High score = high potential to close.
+func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
+	score := 0
+
+	// BANT-lite scoring (Budget, Authority, Need, Timeline)
+	switch strings.ToLower(salesCtx.Company.MarketCapTier) {
+	case "enterprise":
+		score += 35 // Budget signal
+	case "mid-market":
+		score += 20
+	case "startup":
+		score += 10
+	}
+
+	// Contact role = Authority signal
+	role := strings.ToLower(salesCtx.Contact.Role)
+	if strings.Contains(role, "vp") || strings.Contains(role, "director") || strings.Contains(role, "cto") || strings.Contains(role, "chief") {
+		score += 25
+	} else if strings.Contains(role, "head of") || strings.Contains(role, "principal") || strings.Contains(role, "staff") {
+		score += 15
+	} else if strings.Contains(role, "manager") || strings.Contains(role, "lead") {
+		score += 10
+	}
+
+	// Need signal from technical dossier
+	dossier := strings.ToUpper(salesCtx.Deal.TechnicalDossier)
+	if strings.Contains(dossier, "BOTTLENECK") {
+		score += 25 // Clear pain point identified
+	}
+	if strings.Contains(dossier, "SCALING") || strings.Contains(dossier, "PERFORMANCE") {
+		score += 20
+	}
+	if strings.Contains(dossier, "ORCHESTRATION") || strings.Contains(dossier, "COORDINATION") || strings.Contains(dossier, "WORKFLOW") {
+		score += 20 // Direct TormentNexus relevance
+	}
+	if strings.Contains(dossier, "MIGRAT") || strings.Contains(dossier, "REWRITE") || strings.Contains(dossier, "REFACTOR") {
+		score += 15
+	}
+
+	// Tech stack relevance to TormentNexus
+	stack := strings.Join(salesCtx.Company.TechStack, ",")
+	if strings.Contains(stack, "Go") || strings.Contains(stack, "Golang") {
+		score += 10 // Same language = easier sell
+	}
+	if strings.Contains(stack, "LLM") || strings.Contains(stack, "OpenAI") || strings.Contains(stack, "Anthropic") || strings.Contains(stack, "LangChain") {
+		score += 15 // Already in AI space
+	}
+	if strings.Contains(stack, "Kubernetes") || strings.Contains(stack, "Docker") {
+		score += 5
+	}
+
+	// Interaction engagement
+	score += len(salesCtx.Interactions) * 3
+
+	// Cap at 100
+>>>>>>> origin/main
 	if score > 100 {
 		return 100
 	}
@@ -177,6 +259,7 @@ func (e *LearningSalesEngine) ScoreLead(salesCtx SalesContext) int {
 }
 
 // QualifyLead returns a qualification percentage (0-100) based on readiness to buy.
+<<<<<<< HEAD
 func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
 	qual := 0
 
@@ -204,6 +287,53 @@ func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
 	// Penalty for objections
 	if ctx.LatestIntent == IntentObjection {
 		qual -= 10
+=======
+// Uses MEDDIC-inspired framework: Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain, Champion
+func (e *LearningSalesEngine) QualifyLead(ctx SalesContext) int {
+	qual := 0
+
+	// Metrics: clear pain that can be measured
+	if strings.Contains(strings.ToUpper(ctx.Deal.TechnicalDossier), "BOTTLENECK") {
+		qual += 20
+	}
+	if len(ctx.Deal.TechnicalDossier) > 100 {
+		qual += 10 // Detailed dossier = real research done
+	}
+
+	// Decision Criteria: technical fit with our product
+	stack := strings.Join(ctx.Company.TechStack, ",")
+	if strings.Contains(stack, "LLM") || strings.Contains(stack, "AI") || strings.Contains(stack, "Agent") || strings.Contains(stack, "Orchestrat") {
+		qual += 15
+	}
+
+	// Identify Pain: engagement signals showing interest
+	inboundCount := e.countInteractionTypes(ctx.Interactions, "Inbound")
+	if inboundCount >= 1 {
+		qual += 15
+	}
+	if inboundCount >= 2 {
+		qual += 10
+	}
+
+	// Intent signals (strongest qualification indicators)
+	switch ctx.LatestIntent {
+	case IntentMeetingRequest:
+		qual += 30 // Hot signal: they want to talk
+	case IntentPricing:
+		qual += 20 // Budget-aware, actively evaluating
+	case IntentFollowUp:
+		qual += 20 // Engaged and coming back
+	case IntentTechnical:
+		qual += 15 // Evaluating technical fit
+	case IntentObjection:
+		qual += 5 // Still engaged, just needs handling
+	}
+
+	// Engagement velocity: rapid replies = high interest
+	recentInteractions := len(ctx.Interactions)
+	if recentInteractions > 5 {
+		qual += 10
+>>>>>>> origin/main
 	}
 
 	if qual > 100 {

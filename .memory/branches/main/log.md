@@ -4103,3 +4103,95 @@ print("Removed from README.md")
 PYEOF")
 **Observation**: bash: success
 
+## Turn 4 | 2026-06-23T15:13:52.348Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now sync back and push:
+**Action**: bash(command: "scp root@5.161.250.43:/var/www/hypernexus.site/index.html hypernexus_site/index.html && git add -A && git commit -m "remove XENOCIDE video from hypernexus.site + README" && git push && echo "=== DONE ==="", timeout: 20)
+**Observation**: bash: success
+
+## Turn 5 | 2026-06-23T15:13:59.152Z | deepseek/deepseek-v4-flash
+
+**Thought**: Done. XENOCIDE Threat Assessment video is gone from **tormentnexus.site**, **hypernexus.site**, and **README.md**. Only the two Control Plane videos remain across all three.
+
+## Turn 1 | 2026-06-23T15:14:18.218Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The user wants:
+1. Remove the "TormentNexus: Control Plane" video (f1d465b7) from hypernexus.site
+2. Keep only the "TormentNexus: AI Control Plane" video (fe12996c) on hypernexus.site
+3. Rename that video from "TormentNexus: AI Control Plane" to "HyperNexus: AI Control Plane" (or similar - rename "TormentNexus" to "HyperNexus" in the title)
+
+Also need to update README.md accordingly.
+**Action**: bash(command: "ssh root@5.161.250.43 "grep -n 'f1d465b7\|fe12996c\|Control Plane\|AI Control' /var/www/hypernexus.site/index.html""), bash(command: "grep -n 'f1d465b7\|fe12996c\|Control Plane\|AI Control' README.md")
+**Observation**: bash: success; bash: success
+
+## Turn 2 | 2026-06-23T15:14:22.407Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: I need to:
+1. hypernexus.site: Remove the first video (f1d465b7) from both hero and dossier sections, and rename the second video's text from "TormentNexus: AI Control Plane" to "HyperNexus: AI Control Plane"
+2. README.md: Remove the first video from both tables, and rename the second one
+
+Let me do both.
+**Action**: bash(command: "ssh root@5.161.250.43 python3 << 'PYEOF'
+with open('/var/www/hypernexus.site/index.html', 'r') as f:
+    content = f.read()
+
+# Remove first video from hero section (f1d465b7 line)
+old_hero_first = '                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb" target="_blank" class="btn btn-secondary" style="font-size:13px;padding:10px 22px">▶ TormentNexus: Control Plane</a>\n'
+content = content.replace(old_hero_first, '')
+
+# Rename second video in hero section
+content = content.replace('▶ TormentNexus: AI Control Plane', '▶ HyperNexus: AI Control Plane')
+
+# Remove first video from dossier section (f1d465b7 block)
+old_dossier_first = '''                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb" target="_blank" class="btn btn-primary" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:24px 16px;border-radius:12px;text-decoration:none;font-size:14px;line-height:1.4">
+                    <span style="font-size:28px">▶</span>
+                    <strong>TormentNexus:<br>Control Plane</strong>
+                    <span style="font-size:12px;opacity:0.7">2:07 — 182 sources</span>
+                </a>
+'''
+content = content.replace(old_dossier_first, '')
+
+# Rename second video title in dossier section
+content = content.replace('<strong>TormentNexus:<br>AI Control Plane</strong>', '<strong>HyperNexus:<br>AI Control Plane</strong>')
+
+with open('/var/www/hypernexus.site/index.html', 'w') as f:
+    f.write(content)
+
+print("hypernexus.site updated. Remaining notebooklm:", content.count('notebooklm'))
+PYEOF")
+**Observation**: bash: success
+
+## Turn 3 | 2026-06-23T15:14:28.842Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now update the README.md:
+**Action**: bash(command: "python3 << 'PYEOF'
+with open('README.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# Remove first video from top table
+old_top_first = "| [**TormentNexus: Control Plane**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb) | AI-generated video overview covering the TormentNexus architecture, MCP tool routing, memory systems, and swarm orchestration (182 sources) |\n"
+content = content.replace(old_top_first, "")
+
+# Rename second video in top table
+content = content.replace("**TormentNexus: AI Control Plane**", "**HyperNexus: AI Control Plane**")
+# Also update the description to mention HyperNexus
+content = content.replace("AI-generated deep-dive into the TormentNexus AI control plane, enterprise orchestration, and autonomous capabilities", "AI-generated deep-dive into the HyperNexus enterprise AI orchestration platform, architecture, and capabilities")
+
+# Remove first video from bottom table
+old_bottom_first = "| **TormentNexus: Control Plane** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb) |\n"
+content = content.replace(old_bottom_first, "")
+
+# Rename second video in bottom table
+content = content.replace("**TormentNexus: AI Control Plane**", "**HyperNexus: AI Control Plane**")
+
+with open('README.md', 'w', encoding='utf-8') as f:
+    f.write(content)
+
+print("README.md updated")
+PYEOF")
+**Observation**: bash: success
+

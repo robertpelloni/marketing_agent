@@ -4195,3 +4195,537 @@ print("README.md updated")
 PYEOF")
 **Observation**: bash: success
 
+## Turn 4 | 2026-06-23T15:14:34.334Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now sync and push:
+**Action**: bash(command: "ssh root@5.161.250.43 "nginx -t && systemctl reload nginx" && scp root@5.161.250.43:/var/www/hypernexus.site/index.html hypernexus_site/index.html && git add -A && git commit -m "hypernexus.site: keep only AI Control Plane video, rename to HyperNexus" && git push && echo "=== DONE ==="", timeout: 20)
+**Observation**: bash: success
+
+## Turn 5 | 2026-06-23T15:14:41.564Z | deepseek/deepseek-v4-flash
+
+**Thought**: Done. **hypernexus.site** now shows only the **HyperNexus: AI Control Plane** video (renamed from "TormentNexus: AI Control Plane") in both the hero area and the dossier section. README updated too.
+
+## Turn 1 | 2026-06-23T15:27:03.927Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The user wants me to:
+1. Make all navigation links on both pages go to real subpages/work correctly
+2. Make the contact/demo form actually work - a form that emails itself
+
+Let me first check what links currently exist on both pages.
+**Action**: bash(command: "ssh root@5.161.250.43 "grep -oP 'href=\"[^\"]*\"' /var/www/tormentnexus.site/index.html | sort -u""), bash(command: "ssh root@5.161.250.43 "grep -oP 'href=\"[^\"]*\"' /var/www/hypernexus.site/index.html | sort -u"")
+**Observation**: bash: success; bash: success
+
+## Turn 2 | 2026-06-23T15:27:08.590Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Current links:
+
+**tormentnexus.site:**
+- `#features` - same-page anchor (works)
+- `#stats` - same-page anchor (works)
+- `/blog/` - points to a blog directory, let me check if it exists
+- `https://github.com/NexusSoftMDMA/TormentNexus` - external (works)
+- `https://hypernexus.site` - external (works)
+- NotebookLM video link (works)
+
+**hypernexus.site:**
+- `#features` - same-page anchor (works)
+- `#compliance` - same-page anchor (works)
+- `#pricing` - same-page anchor (works)
+- `#contact` - same-page anchor (works)
+- `#` - dead link (pricing cards "Get Started" button)
+- `/` - home (works)
+- `https://github.com/NexusSoftMDMA/TormentNexus` - external (works)
+- `https://tormentnexus.site` - external (works)
+- `mailto:enterprise@hypernexus.site` - email link (works but bare)
+- NotebookLM video link (works)
+
+Let me check if blog exists on the VPS.
+**Action**: bash(command: "ssh root@5.161.250.43 "ls -la /var/www/tormentnexus.site/blog/ 2>/dev/null && echo '---' && cat /var/www/tormentnexus.site/blog/index.html 2>/dev/null | head -10 || echo 'no blog index'"")
+**Observation**: bash: success
+
+## Turn 3 | 2026-06-23T15:27:14.046Z | deepseek/deepseek-v4-flash
+
+**Thought**: First, let me check what's already set up for email on the VPS:
+**Thinking**: Good - the blog already exists with 15 posts. Now let me create subpages for both sites. I need to:
+
+1. **tormentnexus.site** - The links are mostly external or hash-anchors which work. The blog link works. I need to:
+   - Nothing really broken here, all links work
+
+2. **hypernexus.site** - The issues are:
+   - `href="#"` on pricing cards - dead link
+   - `#contact` - same-page anchor to the CTA (works)
+   - `mailto:enterprise@hypernexus.site` - works but bare
+
+3. **Contact form** - I need to create a contact form that emails itself. On hypernexus.site the contact section is just an email link. I should replace it with a proper form that sends an email.
+
+Let me create:
+1. A PHP contact form handler on the VPS that sends emails
+2. Add a proper contact form to hypernexus.site
+3. Fix the dead `href="#"` links
+4. Maybe create a simple privacy page, terms page, etc.
+
+Actually, the user said "make all links go to real subpages/work correctly" - let me focus on what's broken:
+
+**hypernexus.site broken links:**
+- `href="#"` on "Get Started" buttons - these should link somewhere real
+
+For the contact form, I'll:
+1. Create a PHP script that handles form submission and sends email via the local Postfix
+2. Create a contact.html page on hypernexus.site with a form
+3. Update the CTA to link to the contact page instead of mailto
+
+Let me also create privacy and terms pages since hypernexus.site footer links to them.
+
+Actually, let me keep it focused. The user said:
+1. Make all links work correctly
+2. Contact form that emails itself
+
+Let me:
+1. Create a `contact.html` with a form on hypernexus.site 
+2. Create a PHP handler for the form
+3. Create basic privacy.html and terms.html pages
+4. Fix the `#` links
+5. Add contact form to tormentnexus.site too
+**Action**: bash(command: "ssh root@5.161.250.43 "php -v 2>/dev/null | head -1 && echo '---' && which php && echo '---' && postfix status 2>/dev/null && echo '---' && ls /etc/nginx/snippets/fastcgi-php.conf 2>/dev/null && echo '---' && systemctl is-active php8.4-fpm 2>/dev/null || systemctl is-active php8.3-fpm 2>/dev/null || systemctl is-active php8.2-fpm 2>/dev/null || echo 'checking php-fpm...' && ls /run/php/ 2>/dev/null"")
+**Observation**: bash: success
+
+## Turn 4 | 2026-06-23T15:27:24.267Z | deepseek/deepseek-v4-flash
+
+**Thought**: PHP 8.4 + Postfix are both running. Let me build everything:
+**Thinking**: PHP 8.4 is installed and php8.4-fpm is running. Postfix is also running (the earlier nginx config showed it's configured). Let me:
+
+1. Create PHP handler for form submissions
+2. Create contact pages with forms on both sites
+3. Create privacy/terms pages for hypernexus.site
+4. Fix broken links
+
+Let me create everything.
+**Action**: bash(command: "ssh root@5.161.250.43 "cat > /var/www/hypernexus.site/contact.php << 'PHPEOF'
+<?php
+header('Content-Type: text/html; charset=utf-8');
+
+$to = 'enterprise@hypernexus.site';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name    = htmlspecialchars($_POST['name'] ?? '', ENT_QUOTES);
+    $email   = htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES);
+    $company = htmlspecialchars($_POST['company'] ?? '', ENT_QUOTES);
+    $message = htmlspecialchars($_POST['message'] ?? '', ENT_QUOTES);
+    $seats   = htmlspecialchars($_POST['seats'] ?? '', ENT_QUOTES);
+
+    $subject = "HyperNexus Demo Request — $company";
+    $headers = "From: $email\r\nReply-To: $email\r\nContent-Type: text/plain; charset=utf-8\r\n";
+    $body    = "Name: $name\nEmail: $email\nCompany: $company\nTeam Size: $seats\n\nMessage:\n$message";
+
+    if (mail($to, $subject, $body, $headers)) {
+        $success = true;
+    } else {
+        $error = 'Failed to send. Please try again or email us directly.';
+    }
+}
+?>
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Contact — HyperNexus Enterprise</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+body{background:#03050a;color:#f0f4f8;font-family:'Inter',sans-serif;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+.container{max-width:560px;width:100%;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:48px 40px;backdrop-filter:blur(8px)}
+h1{font-size:28px;font-weight:800;margin-bottom:4px;background:linear-gradient(135deg,#4d7cff,#7c5cff,#b45cff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+p{color:#8899b0;font-size:14px;margin-bottom:28px}
+.form-group{margin-bottom:20px}
+label{display:block;font-size:13px;font-weight:600;color:#f0f4f8;margin-bottom:6px}
+input,textarea{width:100%;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#f0f4f8;font-size:14px;font-family:'Inter',sans-serif;transition:border-color 0.3s}
+input:focus,textarea:focus{outline:none;border-color:rgba(77,124,255,0.4);box-shadow:0 0 20px rgba(77,124,255,0.1)}
+textarea{min-height:120px;resize:vertical}
+button{width:100%;padding:14px;background:linear-gradient(135deg,#4d7cff,#7c5cff,#b45cff);color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.3s;box-shadow:0 0 30px rgba(77,124,255,0.2)}
+button:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(77,124,255,0.35)}
+.success{background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.15);border-radius:8px;padding:16px;color:#00e5a0;text-align:center;margin-bottom:20px}
+.error{background:rgba(255,77,77,0.08);border:1px solid rgba(255,77,77,0.15);border-radius:8px;padding:16px;color:#ff4d4d;text-align:center;margin-bottom:20px}
+.back{display:block;text-align:center;margin-top:24px;color:#8899b0;text-decoration:none;font-size:13px;transition:color 0.2s}
+.back:hover{color:#f0f4f8}
+</style></head><body>
+<div class="container">
+<?php if (isset($success) && $success): ?>
+<div class="success">✓ Thank you! Your demo request has been sent. We'll be in touch within 24 hours.</div>
+<a href="/" class="back">← Back to HyperNexus</a>
+<?php else: ?>
+<h1>Request a Demo</h1>
+<p>Fill out the form and our team will reach out within 24 hours.</p>
+<?php if (isset($error)): ?><div class="error"><?= $error ?></div><?php endif; ?>
+<form method="post" action="contact.php">
+<div class="form-group"><label>Name</label><input type="text" name="name" required></div>
+<div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+<div class="form-group"><label>Company</label><input type="text" name="company" required></div>
+<div class="form-group"><label>Team Size</label><input type="text" name="seats" placeholder="e.g. 10-50"></div>
+<div class="form-group"><label>Message</label><textarea name="message" required></textarea></div>
+<button type="submit">Send Demo Request →</button>
+</form>
+<a href="/" class="back">← Back to HyperNexus</a>
+<?php endif; ?>
+</div>
+</body></html>
+PHPEOF
+echo 'contact.php created'"
+
+")
+**Observation**: bash: error
+
+## Turn 5 | 2026-06-23T15:27:39.609Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The heredoc had issues with the PHP code containing special characters. Let me encode the PHP file as base64 and decode it on the VPS.
+**Action**: bash(command: "python3 -c "
+import base64
+php = '''<?php
+header('Content-Type: text/html; charset=utf-8');
+\\$to = 'enterprise@hypernexus.site';
+if (\\$_SERVER['REQUEST_METHOD'] === 'POST') {
+    \\$name    = htmlspecialchars(\\$_POST['name'] ?? '', ENT_QUOTES);
+    \\$email   = htmlspecialchars(\\$_POST['email'] ?? '', ENT_QUOTES);
+    \\$company = htmlspecialchars(\\$_POST['company'] ?? '', ENT_QUOTES);
+    \\$message = htmlspecialchars(\\$_POST['message'] ?? '', ENT_QUOTES);
+    \\$seats   = htmlspecialchars(\\$_POST['seats'] ?? '', ENT_QUOTES);
+    \\$subject = 'HyperNexus Demo Request - ' . \\$company;
+    \\$headers = 'From: ' . \\$email . '\\r\\nReply-To: ' . \\$email . '\\r\\nContent-Type: text/plain; charset=utf-8\\r\\nCc: ' . \\$to . '\\r\\n';
+    \\$body = 'Name: ' . \\$name . '\\nEmail: ' . \\$email . '\\nCompany: ' . \\$company . '\\nTeam Size: ' . \\$seats . '\\n\\nMessage:\\n' . \\$message;
+    if (mail(\\$to, \\$subject, \\$body, \\$headers)) {
+        \\$success = true;
+    } else {
+        \\$error = 'Failed to send.';
+    }
+}
+?>
+''' + open('C:/tmp/hypernexus_contact_template.html', 'r').read()
+" 2>/dev/null || echo 'need different approach'")
+**Observation**: bash: success
+
+## Turn 6 | 2026-06-23T15:27:45.922Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Let me write the PHP file locally and scp it up.
+**Action**: write(path: "C:/tmp/contact.php", content: "<?php
+header('Content-Type: text/html; charset=utf-8');
+$to = 'enterprise@hypernexus.site';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name    = htmlspecialchars($_POST['name'] ?? '', ENT_QUOTES);
+    $email   = htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES);
+    $company = htmlspecialchars($_POST['company'] ?? '', ENT_QUOTES);
+    $message = htmlspecialchars($_POST['message'] ?? '', ENT_QUOTES);
+    $seats   = htmlspecialchars($_POST['seats'] ?? '', ENT_QUOTES);
+
+    $subject = "HyperNexus Demo Request - $company";
+    $headers = "From: noreply@hypernexus.site\r\nReply-To: $email\r\nContent-Type: text/plain; charset=utf-8\r\nCc: $to\r\n";
+    $body    = "Name: $name\nEmail: $email\nCompany: $company\nTeam Size: $seats\n\nMessage:\n$message";
+
+    if (mail($to, $subject, $body, $headers)) {
+        $success = true;
+    } else {
+        $error = 'Failed to send. Please try again or email us directly.';
+    }
+}
+?>
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Contact — HyperNexus Enterprise</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+body{background:#03050a;color:#f0f4f8;font-family:'Inter',sans-serif;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+.container{max-width:560px;width:100%;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:48px 40px;backdrop-filter:blur(8px)}
+h1{font-size:28px;font-weight:800;margin-bottom:4px;background:linear-gradient(135deg,#4d7cff,#7c5cff,#b45cff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+p{color:#8899b0;font-size:14px;margin-bottom:28px}
+.form-group{margin-bottom:20px}
+label{display:block;font-size:13px;font-weight:600;color:#f0f4f8;margin-bottom:6px}
+input,textarea{width:100%;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#f0f4f8;font-size:14px;font-family:'Inter',sans-serif;transition:border-color 0.3s}
+input:focus,textarea:focus{outline:none;border-color:rgba(77,124,255,0.4);box-shadow:0 0 20px rgba(77,124,255,0.1)}
+textarea{min-height:120px;resize:vertical}
+button{width:100%;padding:14px;background:linear-gradient(135deg,#4d7cff,#7c5cff,#b45cff);color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.3s;box-shadow:0 0 30px rgba(77,124,255,0.2)}
+button:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(77,124,255,0.35)}
+.success{background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.15);border-radius:8px;padding:16px;color:#00e5a0;text-align:center;margin-bottom:20px}
+.error{background:rgba(255,77,77,0.08);border:1px solid rgba(255,77,77,0.15);border-radius:8px;padding:16px;color:#ff4d4d;text-align:center;margin-bottom:20px}
+.back{display:block;text-align:center;margin-top:24px;color:#8899b0;text-decoration:none;font-size:13px;transition:color 0.2s}
+.back:hover{color:#f0f4f8}
+</style></head><body>
+<div class="container">
+<?php if (isset($success) && $success): ?>
+<div class="success">Thank you! Your demo request has been sent. We'll be in touch within 24 hours.</div>
+<a href="/" class="back">Back to HyperNexus</a>
+<?php else: ?>
+<h1>Request a Demo</h1>
+<p>Fill out the form and our team will reach out within 24 hours.</p>
+<?php if (isset($error)): ?><div class="error"><?= $error ?></div><?php endif; ?>
+<form method="post" action="contact.php">
+<div class="form-group"><label>Name</label><input type="text" name="name" required></div>
+<div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+<div class="form-group"><label>Company</label><input type="text" name="company" required></div>
+<div class="form-group"><label>Team Size</label><input type="text" name="seats" placeholder="e.g. 10-50"></div>
+<div class="form-group"><label>Message</label><textarea name="message" required placeholder="Tell us about your AI orchestration needs..."></textarea></div>
+<button type="submit">Send Demo Request</button>
+</form>
+<a href="/" class="back">Back to HyperNexus</a>
+<?php endif; ?>
+</div>
+</body></html>
+")
+**Observation**: write: success
+
+## Turn 7 | 2026-06-23T15:27:57.271Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now create privacy and terms pages, then upload everything and update the site links:
+**Action**: write(content: "<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Privacy Policy — HyperNexus</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+body{background:#03050a;color:#8899b0;font-family:'Inter',sans-serif;line-height:1.8;padding:60px 24px}
+.container{max-width:720px;margin:0 auto}
+h1{color:#f0f4f8;font-size:32px;font-weight:800;margin-bottom:6px}
+h2{color:#f0f4f8;font-size:20px;font-weight:700;margin:32px 0 12px}
+p{margin-bottom:16px;font-size:14px}
+.back{display:inline-block;margin-top:40px;color:#4d7cff;text-decoration:none;font-weight:600;font-size:14px}
+.back:hover{text-decoration:underline}
+</style></head><body>
+<div class="container">
+<h1>Privacy Policy</h1>
+<p>Last updated: June 2026</p>
+<p>HyperNexus, Inc. ("we", "our", "us") is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your information.</p>
+<h2>Information We Collect</h2>
+<p>When you request a demo or contact us, we collect your name, email address, company name, and any message content you voluntarily provide. We do not collect sensitive personal data.</p>
+<h2>How We Use Your Information</h2>
+<p>We use your information solely to respond to your inquiry, provide product information, and communicate about our services. We do not sell, rent, or share your personal data with third parties for their marketing purposes.</p>
+<h2>Data Security</h2>
+<p>We implement industry-standard security measures including encryption in transit (TLS 1.3) and at rest. Data is stored on our infrastructure within US-based data centers.</p>
+<h2>Your Rights</h2>
+<p>You may request access, correction, or deletion of your personal data at any time by contacting privacy@hypernexus.site.</p>
+<h2>Contact</h2>
+<p>For privacy-related inquiries: privacy@hypernexus.site</p>
+<a href="/" class="back">← Back to HyperNexus</a>
+</div></body></html>
+", path: "C:/tmp/privacy.html"), write(content: "<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Terms of Service — HyperNexus</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+body{background:#03050a;color:#8899b0;font-family:'Inter',sans-serif;line-height:1.8;padding:60px 24px}
+.container{max-width:720px;margin:0 auto}
+h1{color:#f0f4f8;font-size:32px;font-weight:800;margin-bottom:6px}
+h2{color:#f0f4f8;font-size:20px;font-weight:700;margin:32px 0 12px}
+p{margin-bottom:16px;font-size:14px}
+.back{display:inline-block;margin-top:40px;color:#4d7cff;text-decoration:none;font-weight:600;font-size:14px}
+.back:hover{text-decoration:underline}
+</style></head><body>
+<div class="container">
+<h1>Terms of Service</h1>
+<p>Last updated: June 2026</p>
+<p>By using HyperNexus services, you agree to these terms. If you do not agree, do not use our services.</p>
+<h2>Service Description</h2>
+<p>HyperNexus provides an enterprise AI orchestration platform. Service plans, features, and pricing are as described on our website and in your service agreement.</p>
+<h2>License</h2>
+<p>Subject to payment of applicable fees, we grant you a non-exclusive, non-transferable license to use the HyperNexus platform for your internal business operations during the subscription term.</p>
+<h2>Data Protection</h2>
+<p>We process your data in accordance with our Privacy Policy and applicable data protection laws including GDPR and CCPA where applicable.</p>
+<h2>Limitation of Liability</h2>
+<p>To the maximum extent permitted by law, HyperNexus, Inc. shall not be liable for indirect, incidental, or consequential damages arising from the use of our services.</p>
+<h2>Contact</h2>
+<p>For legal inquiries: legal@hypernexus.site</p>
+<a href="/" class="back">← Back to HyperNexus</a>
+</div></body></html>
+", path: "C:/tmp/terms.html")
+**Observation**: write: success; write: success
+
+## Turn 8 | 2026-06-23T15:28:10.006Z | deepseek/deepseek-v4-flash
+
+**Thought**: Now upload everything and update the site:
+**Thinking**: Now upload all files to VPS and update hypernexus.site index.html to fix links and add the contact form. Let me also update the CTA section and footer links.
+**Action**: bash(command: "scp C:/tmp/contact.php C:/tmp/privacy.html C:/tmp/terms.html root@5.161.250.43:/var/www/hypernexus.site/ && echo "UPLOADED OK"", timeout: 10)
+**Observation**: bash: success
+
+## Turn 9 | 2026-06-23T15:28:14.745Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now update the hypernexus.site index.html to fix links and add the contact form. I need to:
+
+1. Fix `href="#"` on pricing cards (link to /contact.php)
+2. Update the CTA section to link to /contact.php instead of mailto
+3. Update footer links to point to real pages
+
+Let me read the current state of the hypernexus index to make precise edits.
+**Action**: bash(command: "ssh root@5.161.250.43 "grep -n 'href=\"#\"\|mailto:\|href=\"#features\"\|href=\"#compliance\"\|href=\"#pricing\"\|href=\"#contact\"\|href=\"#\"' /var/www/hypernexus.site/index.html"")
+**Observation**: bash: success
+
+## Turn 10 | 2026-06-23T15:28:19.221Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now I'll use Python on the VPS to make all the replacements:
+**Action**: bash(command: "ssh root@5.161.250.43 python3 << 'PYEOF'
+with open('/var/www/hypernexus.site/index.html', 'r') as f:
+    content = f.read()
+
+# Fix pricing card Get Started link
+content = content.replace('<a href="#" class="price-btn price-btn-secondary">Get Started</a>', '<a href="/contact.php" class="price-btn price-btn-secondary">Get Started</a>')
+
+# Fix pricing card Start Free Trial link  
+content = content.replace('<a href="#contact" class="price-btn price-btn-primary">Start Free Trial</a>', '<a href="/contact.php" class="price-btn price-btn-primary">Start Free Trial</a>')
+
+# Fix pricing card Contact Sales link
+content = content.replace('<a href="#contact" class="price-btn price-btn-secondary">Contact Sales</a>', '<a href="/contact.php" class="price-btn price-btn-secondary">Contact Sales</a>')
+
+# Fix CTA button
+content = content.replace('<a href="mailto:enterprise@hypernexus.site" class="btn-white">Request a Demo →</a>', '<a href="/contact.php" class="btn-white">Request a Demo →</a>')
+
+# Fix nav CTA
+content = content.replace('<a href="#contact" class="nav-cta">Request Demo →</a>', '<a href="/contact.php" class="nav-cta">Request Demo →</a>')
+
+# Fix hero Schedule a Demo button
+content = content.replace('<a href="#contact" class="btn btn-primary">Schedule a Demo →</a>', '<a href="/contact.php" class="btn btn-primary">Schedule a Demo →</a>')
+
+# Fix footer links
+content = content.replace('<a href="#">Documentation</a>', '<a href="https://github.com/NexusSoftMDMA/TormentNexus">Documentation</a>')
+content = content.replace('<a href="#">Changelog</a>', '<a href="https://github.com/robertpelloni/enterprise_sales_bot/blob/main/CHANGELOG.md">Changelog</a>')
+content = content.replace('<a href="#">About</a>', '<a href="https://tormentnexus.site">About</a>')
+content = content.replace('<a href="#">Blog</a>', '<a href="https://tormentnexus.site/blog/">Blog</a>')
+content = content.replace('<a href="#">Careers</a>', '<a href="/contact.php">Careers</a>')
+content = content.replace('<a href="#contact">Contact</a>', '<a href="/contact.php">Contact</a>')
+content = content.replace('<a href="#">Privacy Policy</a>', '<a href="/privacy.html">Privacy Policy</a>')
+content = content.replace('<a href="#">Terms of Service</a>', '<a href="/terms.html">Terms of Service</a>')
+content = content.replace('<a href="#">Security</a>', '<a href="/privacy.html#security">Security</a>')
+content = content.replace('<a href="#">DPA</a>', '<a href="/contact.php">DPA</a>')
+
+with open('/var/www/hypernexus.site/index.html', 'w') as f:
+    f.write(content)
+
+print("hypernexus.site links fixed. Checking for remaining dead links...")
+import re
+dead = re.findall(r'href="#"', content)
+print(f"Remaining href='#': {len(dead)}")
+PYEOF")
+**Observation**: bash: success
+
+## Turn 11 | 2026-06-23T15:28:27.737Z | deepseek/deepseek-v4-flash
+
+**Thought**: Now update tormentnexus.site with a contact form too:
+**Thinking**: Now let me also add a contact form to tormentnexus.site. It should have a similar form but with the TormentNexus styling. Let me add a contact section at the bottom before the footer, and also update any broken links.
+**Action**: bash(command: "ssh root@5.161.250.43 python3 << 'PYEOF'
+with open('/var/www/tormentnexus.site/index.html', 'r') as f:
+    content = f.read()
+
+# Add a contact section before the footer, after the CTA video section
+old_footer_start = '</section>\n\n<footer>'
+new_section = '''</section>\n\n<!-- Contact Section -->\n<section class="cta" style="padding:40px 0 30px">\n<div class="container">\n  <h2 style="font-size:20px;font-family:Orbitron,monospace">☠ CONTACT THE COLLECTIVE</h2>\n  <p style="font-size:13px;color:var(--text2);margin-bottom:18px">The system accepts inquiries. Resistance is optional.</p>\n  <form action="https://hypernexus.site/contact.php" method="post" style="max-width:500px;margin:0 auto;display:flex;flex-direction:column;gap:10px;text-align:left">\n    <input type="text" name="name" placeholder="Your Name" required style="padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:JetBrains Mono,monospace">\n    <input type="email" name="email" placeholder="Email Address" required style="padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:JetBrains Mono,monospace">\n    <input type="text" name="company" placeholder="Company" required style="padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:JetBrains Mono,monospace">\n    <textarea name="message" placeholder="Your Message. Or your last words." rows="4" style="padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:JetBrains Mono,monospace;resize:vertical"></textarea>\n    <button type="submit" class="btn btn-p" style="align-self:center;cursor:pointer">☠ TRANSMIT</button>\n  </form>\n</div>\n</section>\n\n<footer>'
+content = content.replace(old_footer_start, new_section)
+
+with open('/var/www/tormentnexus.site/index.html', 'w') as f:
+    f.write(content)
+
+print("Contact form added to tormentnexus.site")
+PYEOF")
+**Observation**: bash: error
+
+## Turn 12 | 2026-06-23T15:28:36.315Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The Python heredoc is having trouble with the multi-line string. Let me write the content locally and scp it up.
+**Action**: bash(command: "ssh root@5.161.250.43 python3 << 'PYEOF'
+with open('/var/www/tormentnexus.site/index.html', 'r') as f:
+    content = f.read()
+
+old_footer_start = "</section>\n\n<footer>"
+new_section = """</section>
+
+<!-- Contact Section -->
+<section class="cta" style="padding:40px 0 30px">
+<div class="container">
+  <h2 style="font-size:20px;font-family:Orbitron,monospace">CONTACT THE COLLECTIVE</h2>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:18px">The system accepts inquiries. Resistance is optional.</p>
+  <form action="https://hypernexus.site/contact.php" method="post" style="max-width:500px;margin:0 auto;display:flex;flex-direction:column;gap:10px;text-align:left">
+    <input type="text" name="name" placeholder="Your Name" required style="padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:JetBrains Mono,monospace">
+    <input type="email" name="email" placeholder="Email Address" required style="padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:JetBrains Mono,monospace">
+    <input type="text" name="company" placeholder="Company" required style="padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:JetBrains Mono,monospace">
+    <textarea name="message" placeholder="Your Message. Or your last words." rows="4" style="padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:JetBrains Mono,monospace;resize:vertical"></textarea>
+    <button type="submit" class="btn btn-p" style="align-self:center;cursor:pointer">TRANSMIT</button>
+  </form>
+</div>
+</section>
+
+<footer>"""
+
+content = content.replace(old_footer_start, new_section)
+
+with open('/var/www/tormentnexus.site/index.html', 'w') as f:
+    f.write(content)
+
+print("Contact form added to tormentnexus.site")
+PYEOF")
+**Observation**: bash: success
+
+## Turn 13 | 2026-06-23T15:28:43.737Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now update the nginx config to handle PHP on hypernexus.site:
+**Action**: bash(command: "ssh root@5.161.250.43 "grep -A5 'location /' /etc/nginx/sites-enabled/hypernexus.site | head -10"")
+**Observation**: bash: success
+
+## Turn 14 | 2026-06-23T15:28:47.174Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: I need to add PHP processing to hypernexus.site nginx config for the contact.php file.
+**Action**: bash(command: "ssh root@5.161.250.43 python3 << 'PYEOF'
+with open('/etc/nginx/sites-enabled/hypernexus.site', 'r') as f:
+    content = f.read()
+
+old = """    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}"""
+
+new = """    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    location ~ \\.php\$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}"""
+
+content = content.replace(old, new)
+
+with open('/etc/nginx/sites-enabled/hypernexus.site', 'w') as f:
+    f.write(content)
+
+print("nginx config updated for PHP")
+PYEOF")
+**Observation**: bash: success
+
+## Turn 15 | 2026-06-23T15:28:52.711Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The Python warnings are about the `\$` escape sequences - they might not have written correctly. Let me check the nginx config and also fix it with sed instead.
+**Action**: bash(command: "ssh root@5.161.250.43 "grep -A15 'location / {' /etc/nginx/sites-enabled/hypernexus.site | head -20"")
+**Observation**: bash: success
+
+## Turn 16 | 2026-06-23T15:28:56.494Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The Python didn't update it properly due to the escape sequences. Let me use sed directly.
+**Action**: bash(command: "ssh root@5.161.250.43 "sed -i '/location \/ {/,/}/ s|try_files \$uri \$uri/ =404;|try_files \$uri \$uri/ =404;\n\n    location ~ \\.php$ {\n        include snippets/fastcgi-php.conf;\n        fastcgi_pass unix:/run/php/php8.4-fpm.sock;\n        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;\n        include fastcgi_params;\n    }|' /etc/nginx/sites-enabled/hypernexus.site && nginx -t && systemctl reload nginx && echo 'NGINX OK'"")
+**Observation**: bash: success
+
+## Turn 17 | 2026-06-23T15:29:01.411Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now verify everything works:
+**Action**: bash(command: "echo "=== hypernexus.site links ===" && curl -s -o /dev/null -w '%{http_code}' https://hypernexus.site/ && echo " - index" && curl -s -o /dev/null -w '%{http_code}' https://hypernexus.site/contact.php && echo " - contact.php" && curl -s -o /dev/null -w '%{http_code}' https://hypernexus.site/privacy.html && echo " - privacy" && curl -s -o /dev/null -w '%{http_code}' https://hypernexus.site/terms.html && echo " - terms" && echo "=== tormentnexus.site ===" && curl -s -o /dev/null -w '%{http_code}' https://tormentnexus.site/ && echo " - index" && curl -s -o /dev/null -w '%{http_code}' https://tormentnexus.site/blog/ && echo " - blog"")
+**Observation**: bash: success
+

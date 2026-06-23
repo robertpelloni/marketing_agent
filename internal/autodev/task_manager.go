@@ -88,7 +88,7 @@ func (m *TaskManager) ListAllTasks(ctx context.Context) ([]Task, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func() { _ = file.Close() }()
 
 	var tasks []Task
 	scanner := bufio.NewScanner(file)

@@ -137,7 +137,7 @@ func (h *HNWhoIsHiringSource) findLatestWhoIsHiringThread(ctx context.Context) (
 	if err != nil {
 		return 0, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	var result struct {
 		Hits []struct {
@@ -224,7 +224,7 @@ func (h *HNWhoIsHiringSource) fetchItem(ctx context.Context, id int) (hnItem, er
 	if err != nil {
 		return hnItem{}, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	var item hnItem
 	if err := json.NewDecoder(resp.Body).Decode(&item); err != nil {

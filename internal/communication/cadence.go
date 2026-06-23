@@ -297,7 +297,7 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			if err != nil {
 				slog.Info(fmt.Sprintf("CadenceAwareManager: Template %s not found for deal %d: %v", nextStep.TemplateID, deal.ID, err))
 				// Fallback to ProcessInbound
-				if _, err := cam.Manager.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
+				if _, err := cam.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
 					slog.Info(fmt.Sprintf("CadenceAwareManager: Fallback email step failed for deal %d: %v", deal.ID, err))
 				}
 				continue
@@ -354,13 +354,13 @@ subject, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
 			}
 
 			// Send email via sender
-			if cam.Manager.sender != nil {
+			if cam.sender != nil {
 				emailMsg := EmailMessage{
 					To:      contacts[0].Email,
 					Subject: subject,
 					Body:    body,
 				}
-				if err := cam.Manager.sender.Send(ctx, emailMsg); err != nil {
+				if err := cam.sender.Send(ctx, emailMsg); err != nil {
 					slog.Info(fmt.Sprintf("CadenceAwareManager: Email send failed for deal %d: %v", deal.ID, err))
 				} else {
 					slog.Info(fmt.Sprintf("CadenceAwareManager: Email sent successfully for deal %d (step %d, template %s)", deal.ID, nextStep.StepNumber, tmpl.ID))

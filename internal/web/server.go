@@ -180,7 +180,7 @@ case "build":
 	}
 
 	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprintf(w, `
+	_, _ = fmt.Fprintf(w, `
 <!DOCTYPE html>
 <html>
 <head>
@@ -267,7 +267,7 @@ h1 { color: #333; }
 			contactHTML += `</div>`
 		}
 
-		fmt.Fprintf(w, `
+		_, _ = fmt.Fprintf(w, `
 <tr>
 <td>%d</td>
 <td>%d</td>
@@ -289,7 +289,7 @@ h1 { color: #333; }
 </tr>%s`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID, latestInteractionID, contactHTML)
 	}
 
-	fmt.Fprintf(w, `
+	_, _ = fmt.Fprintf(w, `
 </table>
 <div class="deploy-section" style="border-top: 5px solid #17a2b8;">
 <h2>Performance Metrics</h2>
@@ -318,7 +318,7 @@ h1 { color: #333; }
 </ul>
 </div>`, metrics.TotalLeads, metrics.LeadsByState[db.StateClosedWon], metrics.WinRate, metrics.SuccessfulOutreach, metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateOutreachSent], metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateNegotiating])
 
-	fmt.Fprintf(w, `
+	_, _ = fmt.Fprintf(w, `
 <div class="deploy-section">
 <h2>Autonomous Task Board</h2>
 <p>Prioritized development roadmap and execution status.</p>
@@ -333,14 +333,14 @@ h1 { color: #333; }
 		if t.Completed {
 			status = "Completed"
 		}
-		fmt.Fprintf(w, `
+		_, _ = fmt.Fprintf(w, `
 <tr>
 <td>%s</td>
 <td><span class="status status-%s">%s</span></td>
 </tr>`, html.EscapeString(t.Description), status, status)
 	}
 
-	fmt.Fprintf(w, `
+	_, _ = fmt.Fprintf(w, `
 </table>
 </div>
 <div class="deploy-section">
@@ -355,7 +355,7 @@ h1 { color: #333; }
 </tr>`)
 
 	for _, pr := range prs {
-		fmt.Fprintf(w, `
+		_, _ = fmt.Fprintf(w, `
 <tr>
 <td>%s</td>
 <td>%s</td>
@@ -364,7 +364,7 @@ h1 { color: #333; }
 </tr>`, html.EscapeString(pr.ID), html.EscapeString(pr.Branch), html.EscapeString(pr.Title), html.EscapeString(string(pr.Status)))
 	}
 
-	fmt.Fprintf(w, `
+	_, _ = fmt.Fprintf(w, `
 </table>
 </div>
 <div class="deploy-section">
@@ -392,7 +392,7 @@ h1 { color: #333; }
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "OK")
+	_, _ = fmt.Fprintln(w, "OK")
 }
 
 func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
@@ -489,7 +489,7 @@ func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	w.WriteHeader(http.StatusAccepted)
-	fmt.Fprintln(w, "Deployment triggered")
+	_, _ = fmt.Fprintln(w, "Deployment triggered")
 }
 
 func (s *Server) handleGenerateQuote(w http.ResponseWriter, r *http.Request) {
@@ -525,7 +525,7 @@ func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(companies)
+		_ = json.NewEncoder(w).Encode(companies)
 	case http.MethodPost:
 		// Example: Create a new lead
 		var lead db.Company
@@ -539,7 +539,7 @@ func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(lead)
+		_ = json.NewEncoder(w).Encode(lead)
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
@@ -565,7 +565,7 @@ func (s *Server) handleDealsAPI(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(deals)
+		_ = json.NewEncoder(w).Encode(deals)
 	case http.MethodPost:
 		// Example: Create a new deal
 		var deal db.Deal
@@ -579,7 +579,7 @@ func (s *Server) handleDealsAPI(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(deal)
+		_ = json.NewEncoder(w).Encode(deal)
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}

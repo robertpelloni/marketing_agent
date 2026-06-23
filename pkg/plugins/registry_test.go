@@ -5,14 +5,19 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"testing"
 )
 
 func TestLoadGoPlugin(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("Go plugins (-buildmode=plugin) are not supported on Windows")
+	}
+
 	// Build the plugin first
 	pluginDir := "testdata"
-	os.MkdirAll(pluginDir, 0755)
-	defer os.RemoveAll(pluginDir)
+	_ = os.MkdirAll(pluginDir, 0755)
+	defer func() { _ = os.RemoveAll(pluginDir) }()
 
 	pluginPath := filepath.Join(pluginDir, "example.so")
 

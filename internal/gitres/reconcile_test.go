@@ -13,7 +13,7 @@ func TestReconcileBranches_Functional(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	// Helper to run git commands in the temp directory
 	runGit := func(args ...string) error {

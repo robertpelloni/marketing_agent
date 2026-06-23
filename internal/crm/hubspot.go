@@ -82,7 +82,7 @@ func (h *HubSpotClient) PushDeal(ctx context.Context, deal db.Deal, company db.C
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return fmt.Errorf("hubspot PushDeal: status %d", resp.StatusCode)
@@ -104,7 +104,7 @@ func (h *HubSpotClient) GetLeadUpdates(ctx context.Context) ([]LeadUpdate, error
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return nil, fmt.Errorf("hubspot GetLeadUpdates: status %d", resp.StatusCode)
@@ -159,7 +159,7 @@ func (h *HubSpotClient) ValidateAccount(ctx context.Context, domain string) (boo
 	if err != nil {
 		return false, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return false, fmt.Errorf("hubspot ValidateAccount: status %d", resp.StatusCode)
@@ -197,7 +197,7 @@ func (h *HubSpotClient) SyncInteraction(ctx context.Context, dealID int64, note 
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return fmt.Errorf("hubspot SyncInteraction: status %d", resp.StatusCode)
@@ -252,7 +252,7 @@ func (h *HubSpotClient) FetchDealDetails(ctx context.Context, dealID int64) (*De
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		return nil, fmt.Errorf("hubspot FetchDealDetails: status %d", resp.StatusCode)

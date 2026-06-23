@@ -146,7 +146,7 @@ func (db *DB) ListAllCompanies(ctx context.Context) ([]Company, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var companies []Company
 	for rows.Next() {
@@ -169,7 +169,7 @@ func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, er
 	if err != nil {
 		return nil, fmt.Errorf("failed to list deals by state: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var deals []Deal
 	for rows.Next() {
@@ -239,7 +239,7 @@ func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to list recent deals: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var deals []Deal
 	for rows.Next() {
@@ -338,7 +338,7 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 	if err != nil {
 		return nil, fmt.Errorf("failed to list contacts: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var contacts []Contact
 	for rows.Next() {
@@ -449,7 +449,7 @@ func (db *DB) ListSuccessfulInteractions(ctx context.Context, limit int) ([]Inte
 	if err != nil {
 		return nil, fmt.Errorf("failed to list successful interactions: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var interactions []Interaction
 	for rows.Next() {
@@ -484,7 +484,7 @@ func (db *DB) GetPerformanceMetrics(ctx context.Context) (*PerformanceMetrics, e
 	if err != nil {
 		return nil, fmt.Errorf("failed to query state counts: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	total := 0
 	won := 0
@@ -559,7 +559,7 @@ func (db *DB) ListActivePullRequests(ctx context.Context) ([]gitcheck.PullReques
 	if err != nil {
 		return nil, fmt.Errorf("failed to list active PRs: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var prs []gitcheck.PullRequest
 	for rows.Next() {
@@ -584,7 +584,7 @@ func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([
 	if err != nil {
 		return nil, fmt.Errorf("failed to list interactions: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var interactions []Interaction
 	for rows.Next() {
@@ -656,7 +656,7 @@ func (db *DB) ListTemplates(ctx context.Context) ([]Template, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to list templates: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var templates []Template
 	for rows.Next() {
@@ -694,7 +694,7 @@ func (db *DB) GetTemplateMetrics(ctx context.Context) ([]TemplateMetrics, error)
 	if err != nil {
 		return nil, fmt.Errorf("failed to query template metrics: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var metrics []TemplateMetrics
 	for rows.Next() {
@@ -772,7 +772,7 @@ func (db *DB) MarkTemplateSuccessForDeal(ctx context.Context, dealID int64) erro
 				return fmt.Errorf("failed to record template success for %s: %w", tmplID, err)
 			}
 		}
-		rows.Close()
+		_ = rows.Close()
 	}
 	return nil
 }

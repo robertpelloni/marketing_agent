@@ -131,5 +131,5 @@ func TestPromptRegistry_Persistence(t *testing.T) {
 	}
 
 	// Cleanup
-	os.Remove(file)
+	_ = os.Remove(file)
 }

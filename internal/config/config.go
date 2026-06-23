@@ -209,7 +209,7 @@ func loadDotEnv() {
 		if err != nil {
 			continue	// .env is optional
 		}
-		defer file.Close()
+		defer func() { _ = file.Close() }()
 
 		slog.Info(fmt.Sprintf("Config: Loading environment from %s", p))
 		scanner := bufio.NewScanner(file)

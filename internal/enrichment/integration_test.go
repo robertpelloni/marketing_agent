@@ -24,7 +24,7 @@ func setupTestDB(t *testing.T) *db.DB {
 	ctx := context.Background()
 	// Run migrations
 	if err := database.RunMigrations(ctx); err != nil {
-		database.Close()
+		_ = database.Close()
 		t.Fatalf("Failed to run migrations: %v", err)
 	}
 
@@ -44,7 +44,7 @@ func cleanupDeal(t *testing.T, database *db.DB, companyName string) {
 
 func TestEnricher_Integration_EnrichesDiscoveredDeals(t *testing.T) {
 	database := setupTestDB(t)
-	defer database.Close()
+	defer func() { _ = database.Close() }()
 
 	ctx := context.Background()
 

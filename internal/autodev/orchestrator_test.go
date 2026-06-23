@@ -12,7 +12,7 @@ import (
 func TestOrchestrator_ExecuteStep_Mock(t *testing.T) {
 	// Setup mock environment
 	tmpTodo, _ := os.CreateTemp("", "TODO_TEST.md")
-	defer os.Remove(tmpTodo.Name())
+	defer func() { _ = os.Remove(tmpTodo.Name()) }()
 	if err := os.WriteFile(tmpTodo.Name(), []byte("- [ ] Test integration task"), 0644); err != nil {
 		t.Fatalf("Failed to write mock TODO: %v", err)
 	}
@@ -27,12 +27,12 @@ func TestOrchestrator_ExecuteStep_Mock(t *testing.T) {
 	orchestrator := NewOrchestrator(nil, manager, agent, prManager, tracker)
 
 	// Skip git sync logic for unit testing orchestrator flow
-	os.Setenv("SKIP_AUTODEV_SYNC", "true")
-	os.Setenv("GO_TEST_MODE", "true")
-	os.Setenv("SKIP_AUTODEV_TESTS", "true")
-	defer os.Unsetenv("SKIP_AUTODEV_SYNC")
-	defer os.Unsetenv("GO_TEST_MODE")
-	defer os.Unsetenv("SKIP_AUTODEV_TESTS")
+	_ = os.Setenv("SKIP_AUTODEV_SYNC", "true")
+	_ = os.Setenv("GO_TEST_MODE", "true")
+	_ = os.Setenv("SKIP_AUTODEV_TESTS", "true")
+	defer func() { _ = os.Unsetenv("SKIP_AUTODEV_SYNC") }()
+	defer func() { _ = os.Unsetenv("GO_TEST_MODE") }()
+	defer func() { _ = os.Unsetenv("SKIP_AUTODEV_TESTS") }()
 
 	ctx := context.Background()
 	orchestrator.ExecuteStep(ctx)

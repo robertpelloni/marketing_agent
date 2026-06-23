@@ -36,7 +36,7 @@ func TestAutonomousLoop_Integration(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer os.Remove(tmpTodo.Name())
+	defer func() { _ = os.Remove(tmpTodo.Name()) }()
 	if err := os.WriteFile(tmpTodo.Name(), []byte(content), 0644); err != nil {
 		t.Fatalf("Failed to write integration TODO: %v", err)
 	}
@@ -49,8 +49,8 @@ func TestAutonomousLoop_Integration(t *testing.T) {
 	orchestrator := NewOrchestrator(database, manager, agent, prManager, tracker)
 
 	// We skip the sync protocol to avoid git errors in CI environment
-	os.Setenv("SKIP_AUTODEV_SYNC", "true")
-	defer os.Unsetenv("SKIP_AUTODEV_SYNC")
+	_ = os.Setenv("SKIP_AUTODEV_SYNC", "true")
+	defer func() { _ = os.Unsetenv("SKIP_AUTODEV_SYNC") }()
 
 	// Run one cycle manually
 	orchestrator.ExecuteStep(ctx)
@@ -82,7 +82,7 @@ func TestMultiAgentWorkflow_Integration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create multi TODO: %v", err)
 	}
-	defer os.Remove(tmpTodo.Name())
+	defer func() { _ = os.Remove(tmpTodo.Name()) }()
 	if err := os.WriteFile(tmpTodo.Name(), []byte(content), 0644); err != nil {
 		t.Fatalf("Failed to write multi TODO: %v", err)
 	}
@@ -93,8 +93,8 @@ func TestMultiAgentWorkflow_Integration(t *testing.T) {
 	tracker := &deploy.MockCITracker{}
 	orchestrator := NewOrchestrator(database, manager, agent, prManager, tracker)
 
-	os.Setenv("SKIP_AUTODEV_SYNC", "true")
-	defer os.Unsetenv("SKIP_AUTODEV_SYNC")
+	_ = os.Setenv("SKIP_AUTODEV_SYNC", "true")
+	defer func() { _ = os.Unsetenv("SKIP_AUTODEV_SYNC") }()
 
 	// Execute two steps
 	orchestrator.ExecuteStep(ctx)
@@ -110,7 +110,7 @@ func TestMultiAgentWorkflow_Integration(t *testing.T) {
 func TestLocalAgent_ApplyChanges(t *testing.T) {
 	agent := &LocalAgent{}
 	tmpFile := "test_apply.txt"
-	defer os.Remove(tmpFile)
+	defer func() { _ = os.Remove(tmpFile) }()
 
 	proposal := fmt.Sprintf("FILE: %s\nCONTENT:\nHello World\n", tmpFile)
 	err := agent.ApplyChanges(context.Background(), proposal)
@@ -150,8 +150,8 @@ func TestLocalAgent_Verify(t *testing.T) {
 	defer cancel()
 
 	// We skip the tests inside Verify to avoid recursive test execution in this environment
-	os.Setenv("SKIP_AUTODEV_TESTS", "true")
-	defer os.Unsetenv("SKIP_AUTODEV_TESTS")
+	_ = os.Setenv("SKIP_AUTODEV_TESTS", "true")
+	defer func() { _ = os.Unsetenv("SKIP_AUTODEV_TESTS") }()
 
 	// This runs 'go build' which should pass in this environment
 	err := agent.Verify(ctx)

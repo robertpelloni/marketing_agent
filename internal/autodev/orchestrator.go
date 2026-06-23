@@ -91,8 +91,8 @@ func (o *Orchestrator) checkPRs(ctx context.Context) {
 					if err := o.agent.ApplyChanges(ctx, proposal); err == nil {
 						if verifyErr := o.agent.Verify(ctx); verifyErr == nil {
 							slog.Info("Autodev: Feedback patch applied successfully. Committing and pushing updates to PR.")
-							gitcheck.CheckoutAndCommit(pr.Branch, fmt.Sprintf("fix: address review comments on PR %s", pr.ID))
-							gitcheck.PushBranch(pr.Branch)
+							_ = gitcheck.CheckoutAndCommit(pr.Branch, fmt.Sprintf("fix: address review comments on PR %s", pr.ID))
+							_ = gitcheck.PushBranch(pr.Branch)
 						}
 					}
 				}
@@ -211,7 +211,7 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 			if err := gitcheck.DiscardChanges(); err != nil {
 				slog.Warn("Autodev: Rollback failed", "error", err)
 			}
-			o.manager.MarkTaskFailed(task.ID)
+			_ = o.manager.MarkTaskFailed(task.ID)
 			continue
 		}
 
@@ -237,7 +237,7 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 			if err := gitcheck.CheckoutAndCommit(branchName, fmt.Sprintf("Autonomous Update: %s", task.Description)); err != nil {
 				slog.Info(fmt.Sprintf("Autodev: Error committing changes: %v", err))
 				// Ensure we get back to main so the next task doesn't branch off this one
-				gitcheck.DiscardChanges()
+				_ = gitcheck.DiscardChanges()
 				continue
 			}
 
@@ -268,7 +268,7 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 		// we must checkout main again before processing the next task in the batch.
 		// A full implementation would use isolated git worktrees.
 		if os.Getenv("SKIP_AUTODEV_SYNC") != "true" {
-			gitcheck.DiscardChanges() // Check out main
+			_ = gitcheck.DiscardChanges() // Check out main
 		}
 	}
 }

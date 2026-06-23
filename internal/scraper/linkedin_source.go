@@ -74,7 +74,7 @@ func (l *LinkedInSource) scrapeLinkedIn(ctx context.Context, keywords []string) 
 
 	// Connect to browser (auto-launch if needed)
 	browser := rod.New().MustConnect()
-	defer browser.Close()
+	defer func() { _ = browser.Close() }()
 
 	page := browser.MustPage()
 	page.MustNavigate("https://www.linkedin.com/login")

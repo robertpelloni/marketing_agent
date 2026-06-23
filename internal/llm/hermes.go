@@ -117,7 +117,7 @@ func (h *HermesLLMProvider) Generate(ctx context.Context, prompt Prompt) (string
 	if err != nil {
 		return "", fmt.Errorf("hermes: request failed: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -162,7 +162,7 @@ func (h *HermesLLMProvider) HealthCheck(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("hermes health: request failed: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("hermes health: API returned status %d", resp.StatusCode)

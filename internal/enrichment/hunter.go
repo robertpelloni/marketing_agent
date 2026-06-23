@@ -112,7 +112,7 @@ func (h *HunterSource) domainSearch(ctx context.Context, domain string) ([]db.Co
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -181,7 +181,7 @@ func (h *HunterSource) HealthCheck(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("hunter: account check returned %d", resp.StatusCode)

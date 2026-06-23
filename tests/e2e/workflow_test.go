@@ -117,7 +117,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create E2E TODO: %v", err)
 	}
-	defer os.Remove(tmpTodo.Name())
+	defer func() { _ = os.Remove(tmpTodo.Name()) }()
 	if err := os.WriteFile(tmpTodo.Name(), []byte("- [ ] E2E Task"), 0644); err != nil {
 		t.Fatalf("Failed to write E2E TODO: %v", err)
 	}
@@ -129,8 +129,8 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	orchestrator := autodev.NewOrchestrator(database, manager, agent, prManager, tracker)
 
 	// Skip sync for E2E
-	os.Setenv("SKIP_AUTODEV_SYNC", "true")
-	defer os.Unsetenv("SKIP_AUTODEV_SYNC")
+	_ = os.Setenv("SKIP_AUTODEV_SYNC", "true")
+	defer func() { _ = os.Unsetenv("SKIP_AUTODEV_SYNC") }()
 
 	// Execute task lifecycle
 	orchestrator.ExecuteStep(ctx)
@@ -173,7 +173,7 @@ func TestAutonomousCodeGeneration_Pilot(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create pilot TODO: %v", err)
 	}
-	defer os.Remove(tmpTodo.Name())
+	defer func() { _ = os.Remove(tmpTodo.Name()) }()
 	if err := os.WriteFile(tmpTodo.Name(), []byte("- [ ] Implement autonomous sales-feature"), 0644); err != nil {
 		t.Fatalf("Failed to write pilot TODO: %v", err)
 	}
@@ -184,10 +184,10 @@ func TestAutonomousCodeGeneration_Pilot(t *testing.T) {
 	tracker := &deploy.MockCITracker{}
 	orchestrator := autodev.NewOrchestrator(database, manager, agent, prManager, tracker)
 
-	os.Setenv("SKIP_AUTODEV_SYNC", "true")
-	os.Setenv("SKIP_AUTODEV_TESTS", "true")
-	defer os.Unsetenv("SKIP_AUTODEV_SYNC")
-	defer os.Unsetenv("SKIP_AUTODEV_TESTS")
+	_ = os.Setenv("SKIP_AUTODEV_SYNC", "true")
+	_ = os.Setenv("SKIP_AUTODEV_TESTS", "true")
+	defer func() { _ = os.Unsetenv("SKIP_AUTODEV_SYNC") }()
+	defer func() { _ = os.Unsetenv("SKIP_AUTODEV_TESTS") }()
 
 	// 2. Trigger Loop
 	orchestrator.ExecuteStep(ctx)

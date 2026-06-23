@@ -68,7 +68,7 @@ func main() {
 	if err != nil {
 		slog.Error(fmt.Sprintf("Could not connect to database: %v", err))
 	}
-	defer database.Close()
+	defer func() { _ = database.Close() }()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()

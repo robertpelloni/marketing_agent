@@ -115,22 +115,23 @@ func (m *MockApolloSource) Enrich(ctx context.Context, company db.Company) ([]db
 	slog.Info(fmt.Sprintf("MockApolloSource: Searching for contacts at %s", company.Domain))
 
 	// Simulate finding contacts based on domain
-	if company.Domain == "aidynamics.com" {
+	switch company.Domain {
+	case "aidynamics.com":
 		return []db.Contact{
 			{
-				Name:		"Sarah Chen",
-				Role:		"Director of AI",
-				Email:		"sarah.chen@aidynamics.com",
-				GitHubHandle:	"schen-ai",
+				Name:          "Sarah Chen",
+				Role:          "Director of AI",
+				Email:         "sarah.chen@aidynamics.com",
+				GitHubHandle:  "schen-ai",
 			},
 		}, nil
-	} else if company.Domain == "neuralsystems.io" {
+	case "neuralsystems.io":
 		return []db.Contact{
 			{
-				Name:		"James Wilson",
-				Role:		"Principal Systems Architect",
-				Email:		"j.wilson@neuralsystems.io",
-				GitHubHandle:	"jwilson-sys",
+				Name:          "James Wilson",
+				Role:          "Principal Systems Architect",
+				Email:         "j.wilson@neuralsystems.io",
+				GitHubHandle:  "jwilson-sys",
 			},
 		}, nil
 	}

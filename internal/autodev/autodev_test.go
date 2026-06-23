@@ -18,7 +18,7 @@ func TestTaskManager_GetNextTask(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer os.Remove(tmpfile.Name())
+	defer func() { _ = os.Remove(tmpfile.Name()) }()
 
 	if _, err := tmpfile.Write([]byte(content)); err != nil {
 		t.Fatal(err)
@@ -47,7 +47,7 @@ func TestTaskManager_MarkCompleted(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer os.Remove(tmpfile.Name())
+	defer func() { _ = os.Remove(tmpfile.Name()) }()
 
 	if err := os.WriteFile(tmpfile.Name(), []byte(content), 0644); err != nil {
 		t.Fatalf("Failed to write TODO file: %v", err)

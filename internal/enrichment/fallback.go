@@ -121,10 +121,10 @@ func (f *FallbackSource) Status() string {
 	defer f.mu.RUnlock()
 
 	var b strings.Builder
-	b.WriteString(fmt.Sprintf("FallbackSource: %d source(s) configured\n", len(f.sources)))
+	fmt.Fprintf(&b, "FallbackSource: %d source(s) configured\n", len(f.sources))
 	for i, name := range f.names {
 		_ = i
-		b.WriteString(fmt.Sprintf("  [%d] %s\n", i+1, name))
+		fmt.Fprintf(&b, "  [%d] %s\n", i+1, name)
 	}
 	return b.String()
 }

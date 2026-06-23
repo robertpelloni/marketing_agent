@@ -63,7 +63,7 @@ func (l *LinkedInSender) sendViaRod(ctx context.Context, msg LinkedInMessage) (e
 	}()
 
 	browser := rod.New().MustConnect()
-	defer browser.Close()
+	defer func() { _ = browser.Close() }()
 
 	page := browser.MustPage()
 
@@ -162,7 +162,7 @@ func (l *LinkedInSender) connectViaRod(ctx context.Context, profileURL, note str
 	}()
 
 	browser := rod.New().MustConnect()
-	defer browser.Close()
+	defer func() { _ = browser.Close() }()
 
 	page := browser.MustPage()
 

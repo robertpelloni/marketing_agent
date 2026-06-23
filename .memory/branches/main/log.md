@@ -3810,3 +3810,142 @@ print("README.md updated OK")
 PYEOF")
 **Observation**: bash: success
 
+## Turn 29 | 2026-06-23T14:20:38.014Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now sync the website from VPS to local repo, and commit/push everything.
+**Action**: bash(command: "scp root@5.161.250.43:/var/www/tormentnexus.site/index.html tormentnexus_site/index.html && git add -A && git commit -m "embed NotebookLM video overview links on site + README" && git push && echo "=== ALL DONE ==="", timeout: 30)
+**Observation**: bash: success
+
+## Turn 30 | 2026-06-23T14:20:49.890Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now verify the final result.
+**Action**: bash(command: "ssh root@5.161.250.43 "nginx -t && systemctl reload nginx && echo 'NGINX OK'" && curl -s https://tormentnexus.site/ | grep -c 'notebooklm' && echo "videos embedded on site ✓" && grep -c 'notebooklm' README.md && echo "videos in README ✓"")
+**Observation**: bash: success
+
+## Turn 31 | 2026-06-23T14:20:55.441Z | deepseek/deepseek-v4-flash
+
+**Thought**: # ✅ Done — Both videos embedded everywhere
+
+| Location | First Video (Control Plane) | Second Video (Threat Assessment) |
+|---|---|---|
+| **tormentnexus.site** 🔴 | Top — hero area, two prominent **▶ WATCH** buttons under the paragraph | Bottom — "Video Dossier — Evidence File" section before footer |
+| **README.md** 📖 | Top — table under "Video Overviews" after intro | Bottom — "Video Dossier" table before License & Contact |
+
+Nginx reloaded, changes pushed to GitHub, VPS + local + remote all in sync.
+
+## Turn 1 | 2026-06-23T14:57:16.118Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The user wants me to:
+1. Add a third NotebookLM video link to hypernexus.site
+2. Make sure all the video links work on both pages (tormentnexus.site and hypernexus.site)
+
+The link is an AI-generated podcast style video from NotebookLM. Let me first check what this new artifact is about, then add it to hypernexus.site. I also need to verify the existing links work on tormentnexus.site.
+
+Let me first check what this new link is, then add it to hypernexus.site.
+**Action**: bash(command: "agent-browser open "https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fe12996c-46fd-411c-87bd-09744520c784" 2>&1 | head -5", timeout: 30)
+**Observation**: bash: error
+
+## Turn 2 | 2026-06-23T14:57:50.554Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Let me try to just get the title via curl.
+**Action**: bash(command: "curl -s -L "https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fe12996c-46fd-411c-87bd-09744520c784" 2>&1 | grep -oP '<title>[^<]+</title>|"title":"[^"]+"' | head -3", timeout: 15)
+**Observation**: bash: success
+
+## Turn 3 | 2026-06-23T14:57:55.461Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The third video is "TormentNexus: AI Control Plane". Now let me:
+
+1. Check the current state of tormentnexus.site links to make sure they work
+2. Add this video to hypernexus.site
+3. Also add it to the README
+
+Let me first read the current hypernexus.site to understand where to add the video links.
+**Action**: bash(command: "ssh root@5.161.250.43 "grep -n 'hero\|CTA\|contact\|footer\|btn-white\|btn-primary' /var/www/hypernexus.site/index.html | head -20"")
+**Observation**: bash: success
+
+## Turn 4 | 2026-06-23T14:57:59.303Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Let me also check what the hero section and CTA section look like in hypernexus.site:
+**Action**: bash(command: "ssh root@5.161.250.43 "sed -n '/<section class=\"hero\">/,/<section class=\"logos\">/p' /var/www/hypernexus.site/index.html""), bash(command: "ssh root@5.161.250.43 "sed -n '/<section id=\"contact\" class=\"cta\">/,/<footer>/p' /var/www/hypernexus.site/index.html"")
+**Observation**: bash: success; bash: success
+
+## Turn 5 | 2026-06-23T14:58:03.068Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Let me also check the current tormentnexus.site to verify the links are there and working:
+**Action**: bash(command: "ssh root@5.161.250.43 "grep -c 'notebooklm' /var/www/tormentnexus.site/index.html && echo 'tormentnexus links count' && grep -oP 'notebooklm\.google[^\" ]+' /var/www/tormentnexus.site/index.html | sort -u"")
+**Observation**: bash: success
+
+## Turn 6 | 2026-06-23T14:58:06.610Z | deepseek/deepseek-v4-flash
+
+**Thought**: Now let me update both the website and README with all three videos:
+**Thinking**: Good - tormentnexus.site has the two video links (4 occurrences = 2 buttons × 2 files = hero + dossier sections). Now I need to:
+
+1. Add the third video link to hypernexus.site (in both hero area and a dossier section)
+2. Also add all 3 videos to hypernexus.site
+3. Update README.md with all 3 videos
+
+For hypernexus.site, I'll add:
+- A video section near the hero (professional-style)
+- A video dossier section near the bottom
+
+Let me do all edits now.
+**Action**: bash(command: "ssh root@5.161.250.43 python3 << 'PYEOF'
+with open('/var/www/hypernexus.site/index.html', 'r') as f:
+    content = f.read()
+
+# Add video links after hero buttons
+old_hero_end = '<div class="hero-buttons">\n                <a href="#contact" class="btn btn-primary">Schedule a Demo →</a>\n                <a href="#pricing" class="btn btn-secondary">View Pricing</a>\n            </div>\n        </div>\n    </section>\n\n    <section class="logos">'
+new_hero_end = '<div class="hero-buttons">\n                <a href="#contact" class="btn btn-primary">Schedule a Demo →</a>\n                <a href="#pricing" class="btn btn-secondary">View Pricing</a>\n            </div>\n            <div class="hero-videos" style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">\n                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb" target="_blank" class="btn btn-secondary" style="font-size:13px;padding:10px 22px">▶ TormentNexus: Control Plane</a>\n                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fe12996c-46fd-411c-87bd-09744520c784" target="_blank" class="btn btn-secondary" style="font-size:13px;padding:10px 22px">▶ TormentNexus: AI Control Plane</a>\n                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800" target="_blank" class="btn btn-secondary" style="font-size:13px;padding:10px 22px">▶ XENOCIDE Threat Assessment</a>\n            </div>\n        </div>\n    </section>\n\n    <section class="logos">'
+content = content.replace(old_hero_end, new_hero_end)
+
+# Add video dossier section before footer
+old_footer_start = '    <footer>'
+new_footer_start = '    <section class="cta" style="border-top:1px solid var(--glass-border);padding:60px 0">\n        <div class="container">\n            <div class="section-header">\n                <div class="label">Video Dossier</div>\n                <h2>AI-Generated Intelligence Briefings</h2>\n                <p>Deep-dive video overviews covering the TormentNexus ecosystem, generated by AI from 182 source documents each.</p>\n            </div>\n            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:900px;margin:0 auto">\n                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb" target="_blank" class="btn btn-primary" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:24px 16px;border-radius:12px;text-decoration:none;font-size:14px;line-height:1.4">\n                    <span style="font-size:28px">▶</span>\n                    <strong>TormentNexus:<br>Control Plane</strong>\n                    <span style="font-size:12px;opacity:0.7">2:07 — 182 sources</span>\n                </a>\n                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fe12996c-46fd-411c-87bd-09744520c784" target="_blank" class="btn btn-primary" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:24px 16px;border-radius:12px;text-decoration:none;font-size:14px;line-height:1.4">\n                    <span style="font-size:28px">▶</span>\n                    <strong>TormentNexus:<br>AI Control Plane</strong>\n                    <span style="font-size:12px;opacity:0.7">182 sources</span>\n                </a>\n                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800" target="_blank" class="btn btn-primary" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:24px 16px;border-radius:12px;text-decoration:none;font-size:14px;line-height:1.4">\n                    <span style="font-size:28px">▶</span>\n                    <strong>XENOCIDE<br>Threat Assessment</strong>\n                    <span style="font-size:12px;opacity:0.7">2:16 — 182 sources</span>\n                </a>\n            </div>\n        </div>\n    </section>\n\n    <footer>'
+content = content.replace(old_footer_start, new_footer_start)
+
+with open('/var/www/hypernexus.site/index.html', 'w') as f:
+    f.write(content)
+
+print("hypernexus.site updated OK")
+PYEOF")
+**Observation**: bash: success
+
+## Turn 7 | 2026-06-23T14:58:17.706Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now update the README.md to include all three videos:
+**Action**: bash(command: "python3 << 'PYEOF'
+with open('README.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# Update the top video table with all 3 videos
+old_video_table = "| [**TormentNexus: Control Plane**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb) | AI-generated video overview covering the TormentNexus architecture, MCP tool routing, memory systems, and swarm orchestration (182 sources) |\n| [**XENOCIDE Threat Assessment**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800) | AI-generated threat assessment analyzing the autonomous sales pipeline's capabilities, growth trajectory, and system-wide implications (182 sources) |"
+new_video_table = "| [**TormentNexus: Control Plane**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb) | AI-generated video overview covering the TormentNexus architecture, MCP tool routing, memory systems, and swarm orchestration (182 sources) |\n| [**TormentNexus: AI Control Plane**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fe12996c-46fd-411c-87bd-09744520c784) | AI-generated deep-dive into the TormentNexus AI control plane, enterprise orchestration, and autonomous capabilities (182 sources) |\n| [**XENOCIDE Threat Assessment**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800) | AI-generated threat assessment analyzing the autonomous sales pipeline's capabilities, growth trajectory, and system-wide implications (182 sources) |"
+content = content.replace(old_video_table, new_video_table)
+
+# Update the bottom video dossier table
+old_bottom_table = "| **TormentNexus: Control Plane** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb) |\n| **XENOCIDE Threat Assessment** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800) |"
+new_bottom_table = "| **TormentNexus: Control Plane** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb) |\n| **TormentNexus: AI Control Plane** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fe12996c-46fd-411c-87bd-09744520c784) |\n| **XENOCIDE Threat Assessment** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800) |"
+content = content.replace(old_bottom_table, new_bottom_table)
+
+with open('README.md', 'w', encoding='utf-8') as f:
+    f.write(content)
+
+print("README.md updated OK with all 3 videos")
+PYEOF")
+**Observation**: bash: success
+
+## Turn 8 | 2026-06-23T14:58:25.760Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now sync, reload, commit, push:
+**Action**: bash(command: "ssh root@5.161.250.43 "nginx -t && systemctl reload nginx && echo 'NGINX OK'" && scp root@5.161.250.43:/var/www/hypernexus.site/index.html hypernexus_site/index.html && curl -s https://hypernexus.site/ | grep -c 'notebooklm' && echo "hypernexus: videos ✓" && curl -s https://tormentnexus.site/ | grep -c 'notebooklm' && echo "tormentnexus: videos ✓"", timeout: 15)
+**Observation**: bash: success
+

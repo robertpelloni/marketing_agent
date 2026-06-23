@@ -4029,3 +4029,77 @@ print("Remaining video links:", content.count('notebooklm'))
 PYEOF")
 **Observation**: bash: success
 
+## Turn 4 | 2026-06-23T15:11:14.336Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now sync the file back to local and push:
+**Action**: bash(command: "scp root@5.161.250.43:/var/www/tormentnexus.site/index.html tormentnexus_site/index.html && git add -A && git commit -m "remove XENOCIDE video from tormentnexus.site" && git push && echo "=== DONE ==="", timeout: 20)
+**Observation**: bash: success
+
+## Turn 5 | 2026-06-23T15:11:20.891Z | deepseek/deepseek-v4-flash
+
+**Thought**: Done. **tormentnexus.site** now only has the first video ("TormentNexus: Control Plane") — once in the hero area, once in the dossier section. The XENOCIDE Threat Assessment video is still on **hypernexus.site** and in **README.md**.
+
+## Turn 1 | 2026-06-23T15:13:38.824Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The user wants to remove the XENOCIDE Threat Assessment video (a6465c8d) from:
+1. hypernexus.site
+2. README.md
+
+Let me do both.
+**Action**: bash(command: "ssh root@5.161.250.43 "grep -n 'a6465c8d' /var/www/hypernexus.site/index.html""), bash(command: "grep -n 'a6465c8d\|XENOCIDE\|Threat Assessment' README.md")
+**Observation**: bash: success; bash: success
+
+## Turn 2 | 2026-06-23T15:13:42.770Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The XENOCIDE video appears in:
+- hypernexus.site: lines 601 (hero) and 730 (dossier section)
+- README.md: line 42 (top table) and line 561 (bottom table)
+
+Let me remove all of them.
+**Action**: bash(command: "ssh root@5.161.250.43 python3 << 'PYEOF'
+with open('/var/www/hypernexus.site/index.html', 'r') as f:
+    content = f.read()
+
+# Remove from hero section
+old_hero = '                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800" target="_blank" class="btn btn-secondary" style="font-size:13px;padding:10px 22px">▶ XENOCIDE Threat Assessment</a>\n            </div>'
+new_hero = '            </div>'
+content = content.replace(old_hero, new_hero)
+
+# Remove from dossier section
+old_dossier = '                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800" target="_blank" class="btn btn-primary" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:24px 16px;border-radius:12px;text-decoration:none;font-size:14px;line-height:1.4">\n                    <span style="font-size:28px">▶</span>\n                    <strong>XENOCIDE<br>Threat Assessment</strong>\n                    <span style="font-size:12px;opacity:0.7">2:16 — 182 sources</span>\n                </a>\n            </div>'
+new_dossier = '            </div>'
+content = content.replace(old_dossier, new_dossier)
+
+with open('/var/www/hypernexus.site/index.html', 'w') as f:
+    f.write(content)
+
+print("Removed from hypernexus.site. Remaining:", content.count('notebooklm'))
+PYEOF")
+**Observation**: bash: success
+
+## Turn 3 | 2026-06-23T15:13:48.320Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now remove from README.md locally:
+**Action**: bash(command: "python3 << 'PYEOF'
+with open('README.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# Remove from top table
+old_top = "| [**XENOCIDE Threat Assessment**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800) | AI-generated threat assessment analyzing the autonomous sales pipeline's capabilities, growth trajectory, and system-wide implications (182 sources) |\n"
+content = content.replace(old_top, "")
+
+# Remove from bottom table
+old_bottom = "| **XENOCIDE Threat Assessment** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800) |\n"
+content = content.replace(old_bottom, "")
+
+with open('README.md', 'w', encoding='utf-8') as f:
+    f.write(content)
+
+print("Removed from README.md")
+PYEOF")
+**Observation**: bash: success
+

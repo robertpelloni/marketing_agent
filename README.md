@@ -39,7 +39,6 @@ A fully autonomous B2B sales pipeline written in Go. It discovers potential ente
 |---|---|
 | [**TormentNexus: Control Plane**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb) | AI-generated video overview covering the TormentNexus architecture, MCP tool routing, memory systems, and swarm orchestration (182 sources) |
 | [**TormentNexus: AI Control Plane**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fe12996c-46fd-411c-87bd-09744520c784) | AI-generated deep-dive into the TormentNexus AI control plane, enterprise orchestration, and autonomous capabilities (182 sources) |
-| [**XENOCIDE Threat Assessment**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800) | AI-generated threat assessment analyzing the autonomous sales pipeline's capabilities, growth trajectory, and system-wide implications (182 sources) |
 
 ## Table of Contents
 
@@ -558,7 +557,6 @@ AI-generated video overviews based on 182 source documents each:
 |---|---|
 | **TormentNexus: Control Plane** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb) |
 | **TormentNexus: AI Control Plane** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fe12996c-46fd-411c-87bd-09744520c784) |
-| **XENOCIDE Threat Assessment** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800) |
 
 ---
 

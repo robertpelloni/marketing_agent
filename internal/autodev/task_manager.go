@@ -21,6 +21,25 @@ func NewTaskManager(todoPath string) *TaskManager {
 // GetNextTask parses TODO.md and returns the highest priority uncompleted task
 // whose dependencies have all been met.
 func (m *TaskManager) GetNextTask(ctx context.Context) (*Task, error) {
+	tasks, err := m.GetRunnableTasks(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if len(tasks) == 0 {
+		return nil, nil
+	}
+	// Simple sort: High first
+	for _, t := range tasks {
+		if t.Category == "High" || strings.Contains(t.Description, "[HIGH]") {
+			return &t, nil
+		}
+	}
+	return &tasks[0], nil
+}
+
+// GetRunnableTasks parses TODO.md and returns ALL uncompleted tasks
+// whose dependencies have all been met, suitable for concurrent execution.
+func (m *TaskManager) GetRunnableTasks(ctx context.Context) ([]Task, error) {
 	allTasks, err := m.ListAllTasks(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tasks: %w", err)
@@ -60,14 +79,7 @@ func (m *TaskManager) GetNextTask(ctx context.Context) (*Task, error) {
 		return nil, fmt.Errorf("deadlock: pending tasks exist but none have their dependencies met")
 	}
 
-	// Priority parsing and execution selection
-	for _, t := range runnableTasks {
-		if t.Category == "High" || strings.Contains(t.Description, "[HIGH]") {
-			return &t, nil
-		}
-	}
-
-	return &runnableTasks[0], nil
+	return runnableTasks, nil
 }
 
 // ListAllTasks returns all tasks from TODO.md.

@@ -47,3 +47,53 @@ HUBSPOT_STAGE_MAPPING={"Discovered":"appointmentscheduled", ...}
 - Continue adding endpoints for `REST API for external pipeline management` (`/api/v1/leads`, `/api/v1/deals`, `/api/v1/interactions`).
 - Implement outbound webhooks on deal state changes (Phase 10).
 - Consider exploring competitor intelligence tracking (Phase 8).
+
+---
+
+## Executive Protocol Sync (v0.5.1 → v0.5.1)
+
+### Date: 2026-06-23
+
+### What Was Done
+
+#### STEP 1: Upstream Tracking & Submodule Sanitization
+- Fetched all tags from origin (single remote — no upstream fork detected)
+- Verified and updated `borg` submodule to latest commit: `e3e3377`
+- No upstream parent fork to sync from (this is the canonical repo)
+
+#### STEP 2: Dual-Direction Intelligent Merge Engine
+- **Forward Merge:** Merged `jules-crm-field-mapping-12193946835217908533` into `main`
+  - 1 commit ahead: `feat: implement concurrent task execution for independent tasks`
+  - Modified files: ROADMAP.md, TODO.md, hypernexus_site/index.html, tormentnexus_site/index.html,
+    internal/autodev/orchestrator.go, internal/autodev/task_manager.go, CHANGELOG.md, VERSION files
+  - 7 files changed, 109 insertions(+), 80 deletions(-)
+- **Reverse Merge:** Merged `main` back into `jules-crm-field-mapping` branch to prevent drift
+- **Stale Branches Identified (0 ahead of main, ignored per protocol):**
+  - crm-integration-tests-10823287328178807054
+  - jules-12741150550545531224-863b86a9
+  - jules-autodev-phase5-integration-10246787539514155621
+  - jules-phase6-production-hardening-042-863b86a9-12417263503841031080
+  - main-4215924055125686102
+  - orchestrate-staging-docker-compose-18161885601118019175
+  - v0.5.0-multi-channel-release-3273472954140028497
+
+#### STEP 3: Workspace Cleanup & Version Governance
+- **Version bump:** 0.5.0 → 0.5.1 (VERSION, VERSION.md, internal/autodev/VERSION)
+- **Changelog:** Updated with v0.5.1 entry (Executive Protocol sync, concurrent tasks, website sync)
+- **TODO.md:** Marked Executive Protocol sync as done
+- **Scripts validated:** start.bat, build.bat — paths and submodule targets correct
+- **Gitignore verified:** Only excludes bin/, *.exe, .env — all docs, memory, DB, session files tracked
+
+### Websites Deployed & Synced
+- **tormentnexus.site** — live at VPS, committed to repo at tormentnexus_site/index.html
+- **hypernexus.site** — live at VPS, committed to repo at hypernexus_site/index.html
+
+### VPS Health
+- Disk cleaned from 95% → 70% (15GB syslog truncated)
+- sales-bot service active (PID 3272130, 22h uptime)
+- Both websites responding 200
+
+### Next Model
+- Build phase: `go build -o bin/sales_bot ./cmd/sales_bot`
+- Deploy: scp bin/sales_bot to VPS, restart sales-bot service
+- Clean up dead `tormentnexus-bot.service` systemd unit on VPS

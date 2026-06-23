@@ -3443,3 +3443,69 @@ print("HANDOFF.md updated OK")
 PYEOF")
 **Observation**: bash: success
 
+## Turn 14 | 2026-06-23T13:03:38.076Z | deepseek/deepseek-v4-flash
+
+**Thought**: Now push everything to GitHub:
+**Thinking**: Now let me do the push & deploy step:
+**Action**: bash(command: "git add -A && git status --short | head -30")
+**Observation**: bash: success
+
+## Turn 15 | 2026-06-23T13:03:41.949Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Wait, the website files (tormentnexus_site/index.html, hypernexus_site/index.html, internal/autodev/orchestrator.go, etc.) were already part of the merge commit. So they're already staged in that merge commit. Let me check what's actually unstaged.
+
+Also I see `.memory/branches/main/log.md` is newly added. Let me check if there are other files that should be included.
+**Action**: bash(command: "git log --oneline -3 && echo "---" && git diff --cached --stat | head -20")
+**Observation**: bash: success
+
+## Turn 16 | 2026-06-23T13:03:45.936Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The merge commit already captured the file changes (orchestrator.go, task_manager.go, website files, etc.) in the previous commit `e2df93e`. The staged changes now are just the version bump, changelog, handoff, and memory log.
+
+Let me commit and push.
+**Action**: bash(command: "git commit -m "v0.5.1: Executive Protocol sync — version bump, changelog, branch reconciliation" && git push origin main && echo "=== PUSHED ==="", timeout: 30)
+**Observation**: bash: success
+
+## Turn 17 | 2026-06-23T13:03:53.994Z | deepseek/deepseek-v4-flash
+
+**Thought**: Now push the feature branch up to date, then build:
+**Thinking**: Now let me push the feature branch too and come back to main.
+**Action**: bash(command: "git checkout jules-crm-field-mapping-12193946835217908533 && git push origin jules-crm-field-mapping-12193946835217908533 && echo "=== FEATURE PUSHED ===" && git checkout main", timeout: 15)
+**Observation**: bash: error
+
+## Turn 18 | 2026-06-23T13:03:58.016Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The .memory file is tracked. Let me stash and switch.
+**Action**: bash(command: "git stash push -m "before branch switch" && git checkout jules-crm-field-mapping-12193946835217908533 && git push origin jules-crm-field-mapping-12193946835217908533 && git checkout main && git stash pop", timeout: 15)
+**Observation**: bash: success
+
+## Turn 19 | 2026-06-23T13:04:05.713Z | deepseek/deepseek-v4-flash
+
+**Thought**: Now the build:
+**Thinking**: Feature branch pushed. Now let me run the build.
+**Action**: bash(command: "go build -o bin/sales_bot ./cmd/sales_bot 2>&1", timeout: 60)
+**Observation**: bash: error
+
+## Turn 20 | 2026-06-23T13:05:10.683Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The build timed out. Let me try again with a longer timeout.
+**Action**: bash(command: "go build -o bin/sales_bot ./cmd/sales_bot 2>&1", timeout: 120)
+**Observation**: bash: success
+
+## Turn 21 | 2026-06-23T13:06:39.768Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Action**: bash(command: "ls -lh bin/sales_bot 2>/dev/null && echo "=== BUILD SUCCESS ===" || echo "BUILD FAILED"")
+**Observation**: bash: success
+
+## Turn 22 | 2026-06-23T13:06:43.194Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Build succeeded. 17MB binary. Now let me verify the final state.
+**Action**: bash(command: "echo "=== FINAL STATE ===" && echo "Version:" && cat VERSION && echo "---" && echo "Branches reconciled:" && git branch --merged main | grep -v "main$" | head -10 && echo "---" && echo "Unmerged branches remaining:" && git branch --no-merged main | head -10 && echo "---" && echo "Submodule:" && git submodule status && echo "---" && git log --oneline -5 && echo "---" && echo "Binary:" && ls -lh bin/sales_bot")
+**Observation**: bash: success
+

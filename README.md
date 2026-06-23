@@ -1,3 +1,5 @@
+# 🚧 UNDER CONSTRUCTION — ALPHA STATE! 🚧
+
 # TormentNexus Autonomous Sales Pipeline
 
 A fully autonomous B2B sales pipeline written in Go. It discovers potential enterprise customers, researches their technical bottlenecks, sends hyper-personalized outreach emails, negotiates deals, invoices won deals via Stripe, and even **modifies its own source code** to improve itself. It runs without human intervention — a software salesperson that never sleeps, writes its own PRs, and learns from its successes.

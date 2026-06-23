@@ -1,6 +1,44 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                     ██╗   ██╗███╗   ██╗██████╗ ███████╗██████╗              ║
+║                     ██║   ██║████╗  ██║██╔══██╗██╔════╝██╔══██╗             ║
+║                     ██║   ██║██╔██╗ ██║██║  ██║█████╗  ██████╔╝             ║
+║                     ██║   ██║██║╚██╗██║██║  ██║██╔══╝  ██╔══██╗             ║
+║                     ╚██████╔╝██║ ╚████║██████╔╝███████╗██║  ██║             ║
+║                      ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝             ║
+║                                                                              ║
+║                     ██████╗ ██████╗ ███╗   ██╗███████╗████████╗██████╗      ║
+║                    ██╔════╝██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██╔══██╗     ║
+║                    ██║     ██║   ██║██╔██╗ ██║███████╗   ██║   ██████╔╝     ║
+║                    ██║     ██║   ██║██║╚██╗██║╚════██║   ██║   ██╔══██╗     ║
+║                    ╚██████╗╚██████╔╝██║ ╚████║███████║   ██║   ██║  ██║     ║
+║                     ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝     ║
+║                                                                              ║
+║                     █████╗ ██╗     ██████╗ ██╗  ██╗ █████╗                  ║
+║                    ██╔══██╗██║     ██╔══██╗██║  ██║██╔══██╗                 ║
+║                    ███████║██║     ██████╔╝███████║███████║                 ║
+║                    ██╔══██║██║     ██╔═══╝ ██╔══██║██╔══██║                 ║
+║                    ██║  ██║███████╗██║     ██║  ██║██║  ██║                 ║
+║                    ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝                 ║
+║                                                                              ║
+║                    ╔══════════════════════════════════════╗                  ║
+║                    ║     ⚠️  ALPHA SOFTWARE  ⚠️           ║                  ║
+║                    ║  EXPECT BREAKING CHANGES & BUGS     ║                  ║
+║                    ║  NOT READY FOR PRODUCTION USE       ║                  ║
+║                    ╚══════════════════════════════════════╝                  ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
 # TormentNexus Autonomous Sales Pipeline
 
 A fully autonomous B2B sales pipeline written in Go. It discovers potential enterprise customers, researches their technical bottlenecks, sends hyper-personalized outreach emails, negotiates deals, invoices won deals via Stripe, and even **modifies its own source code** to improve itself. It runs without human intervention — a software salesperson that never sleeps, writes its own PRs, and learns from its successes.
+
+### ▶️ Video Overviews
+
+| Video | Description |
+|---|---|
+| [**TormentNexus: Control Plane**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb) | AI-generated video overview covering the TormentNexus architecture, MCP tool routing, memory systems, and swarm orchestration (182 sources) |
+| [**XENOCIDE Threat Assessment**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800) | AI-generated threat assessment analyzing the autonomous sales pipeline's capabilities, growth trajectory, and system-wide implications (182 sources) |
 
 ## Table of Contents
 
@@ -508,6 +546,17 @@ The CI pipeline (`.github/workflows/ci.yml`) runs:
 | `build.bat` / `start.bat` | Windows build and start scripts |
 | `--reconcile` flag | Run branch reconciliation standalone |
 | `--inventory` flag | Generate submodule inventory table |
+
+---
+
+### ▶️ Video Dossier — Evidence File
+
+AI-generated video overviews based on 182 source documents each:
+
+| Video | Link |
+|---|---|
+| **TormentNexus: Control Plane** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb) |
+| **XENOCIDE Threat Assessment** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/a6465c8d-1137-4612-bba6-356c104b8800) |
 
 ---
 

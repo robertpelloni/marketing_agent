@@ -414,6 +414,13 @@ class SpookySkull{
     chromeGrad.addColorStop(0.65, '#5d6f88');
     chromeGrad.addColorStop(1, '#0c111a');
 
+    // Shiny radial gradient for the 3D cranium dome cap
+    var domeGrad = ctx.createRadialGradient(-4, -14, 1, 0, -9, 15);
+    domeGrad.addColorStop(0, '#ffffff'); // Glaring white reflection highlight
+    domeGrad.addColorStop(0.3, '#a3b6cf');
+    domeGrad.addColorStop(0.7, '#414e63');
+    domeGrad.addColorStop(1, '#0c111a');
+
     ctx.fillStyle = chromeGrad;
     ctx.strokeStyle = 'rgba(0, 255, 136, 0.7)'; // Cyber green edge highlight
     ctx.lineWidth = 1.0;
@@ -455,8 +462,8 @@ class SpookySkull{
     ctx.closePath();
     ctx.fill();
 
-    // 3. Cranium Dome Plate (Sleek, chrome-plated metal cap)
-    ctx.fillStyle = chromeGrad;
+    // 3. Cranium Dome Plate (Sleek, chrome-plated radial-gradient metal cap)
+    ctx.fillStyle = domeGrad;
     ctx.strokeStyle = 'rgba(0, 255, 136, 0.7)';
     ctx.lineWidth = 1.1;
     ctx.beginPath();
@@ -470,20 +477,34 @@ class SpookySkull{
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
-    // Forehead Sagittal Welded Seam
+    // Forehead CPU Access Plate (Classic T-800 microchip panel)
+    ctx.fillStyle = '#3a4659';
+    ctx.strokeStyle = '#05070a';
+    ctx.lineWidth = 0.6;
+    ctx.fillRect(-4.5, -21, 9, 7.5);
+    ctx.strokeRect(-4.5, -21, 9, 7.5);
+    
+    // Panel Corner Screws
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(-3.5, -20, 0.45, 0, Math.PI*2);
+    ctx.arc(3.5, -20, 0.45, 0, Math.PI*2);
+    ctx.arc(-3.5, -14.5, 0.45, 0, Math.PI*2);
+    ctx.arc(3.5, -14.5, 0.45, 0, Math.PI*2);
+    ctx.fill();
+
+    // Forehead Sagittal Welded Seam (under CPU plate)
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.6)';
     ctx.lineWidth = 0.9;
     ctx.beginPath();
-    ctx.moveTo(0, -23); ctx.lineTo(0, -9);
+    ctx.moveTo(0, -13.5); ctx.lineTo(0, -9);
     ctx.stroke();
     // Weld staple markings
     ctx.strokeStyle = '#6d7f99';
     ctx.lineWidth = 0.5;
-    for (var sy = -20; sy <= -11; sy += 3) {
-      ctx.beginPath();
-      ctx.moveTo(-1.5, sy); ctx.lineTo(1.5, sy);
-      ctx.stroke();
-    }
+    ctx.beginPath();
+    ctx.moveTo(-1.5, -11.5); ctx.lineTo(1.5, -11.5);
+    ctx.stroke();
 
     // Temporal panel line slots (breaks round helmet illusion)
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
@@ -554,6 +575,21 @@ class SpookySkull{
     ctx.lineTo(9.0, 0);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
+
+    // Mandibular Hinge Gears (classic round side pivot gears on the cheek sides)
+    ctx.fillStyle = '#5a6b82';
+    ctx.strokeStyle = '#05070a';
+    ctx.lineWidth = 0.7;
+    ctx.beginPath();
+    ctx.arc(-11.5, 4.2, 2.5, 0, Math.PI*2);
+    ctx.arc(11.5, 4.2, 2.5, 0, Math.PI*2);
+    ctx.fill(); ctx.stroke();
+    // Inner gear pivot bolt
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(-11.5, 4.2, 0.8, 0, Math.PI*2);
+    ctx.arc(11.5, 4.2, 0.8, 0, Math.PI*2);
+    ctx.fill();
 
     // Nose bridge and hollow double-chambered mechanical nose cavity
     ctx.fillStyle = '#05070c';
@@ -652,6 +688,18 @@ class SpookySkull{
     ctx.lineTo(8.5, 12);
     ctx.lineTo(5.5, 19);
     ctx.lineTo(-5.5, 19);
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
+
+    // Chin Block Plate (classic T-800 squared chin plate)
+    ctx.fillStyle = '#6d7f99';
+    ctx.strokeStyle = '#0c111a';
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    ctx.moveTo(-3, 16.2);
+    ctx.lineTo(3, 16.2);
+    ctx.lineTo(2, 18.5);
+    ctx.lineTo(-2, 18.5);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 

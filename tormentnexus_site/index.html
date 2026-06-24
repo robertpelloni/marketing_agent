@@ -480,15 +480,15 @@ class SpookySkull{
     ctx.lineWidth = 1.1;
     ctx.beginPath();
     ctx.moveTo(-13.5, -9);
-    ctx.bezierCurveTo(-14, -18, -11, -22, -8.5, -22);
-    ctx.quadraticCurveTo(-4, -19.5, 0, -19.5);
-    ctx.quadraticCurveTo(4, -19.5, 8.5, -22);
-    ctx.bezierCurveTo(11, -22, 14, -18, 13.5, -9);
+    ctx.bezierCurveTo(-14, -19, -10.5, -23, -8.0, -23); // Higher forehead dome
+    ctx.quadraticCurveTo(-4, -20.5, 0, -20.5); // Center crown dip
+    ctx.quadraticCurveTo(4, -20.5, 8.0, -23);
+    ctx.bezierCurveTo(10.5, -23, 14, -19, 13.5, -9);
     ctx.lineTo(13.5, -5);
-    ctx.lineTo(10.5, -3.5);
-    ctx.lineTo(11.5, 0);
-    ctx.lineTo(-11.5, 0);
-    ctx.lineTo(-10.5, -3.5);
+    ctx.lineTo(10.0, -3.5); // Indent temporal notch
+    ctx.lineTo(11.0, 0);
+    ctx.lineTo(-11.0, 0);
+    ctx.lineTo(-10.0, -3.5);
     ctx.lineTo(-13.5, -5);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
@@ -497,16 +497,16 @@ class SpookySkull{
     ctx.fillStyle = '#3a4659';
     ctx.strokeStyle = '#05070a';
     ctx.lineWidth = 0.6;
-    ctx.fillRect(-4.5, -21, 9, 7.5);
-    ctx.strokeRect(-4.5, -21, 9, 7.5);
+    ctx.fillRect(-4.5, -21.5, 9, 7.5);
+    ctx.strokeRect(-4.5, -21.5, 9, 7.5);
     
     // Panel Corner Screws
     ctx.fillStyle = '#ffffff';
     ctx.beginPath();
-    ctx.arc(-3.5, -20, 0.45, 0, Math.PI*2);
-    ctx.arc(3.5, -20, 0.45, 0, Math.PI*2);
-    ctx.arc(-3.5, -14.5, 0.45, 0, Math.PI*2);
-    ctx.arc(3.5, -14.5, 0.45, 0, Math.PI*2);
+    ctx.arc(-3.5, -20.5, 0.45, 0, Math.PI*2);
+    ctx.arc(3.5, -20.5, 0.45, 0, Math.PI*2);
+    ctx.arc(-3.5, -15.0, 0.45, 0, Math.PI*2);
+    ctx.arc(3.5, -15.0, 0.45, 0, Math.PI*2);
     ctx.fill();
 
     // Forehead frontal V-grooves (Classic T-800 skull indents from photo)
@@ -560,13 +560,13 @@ class SpookySkull{
     // Left Brow segment
     ctx.fillStyle = browGradLeft;
     ctx.beginPath();
-    ctx.moveTo(-14.5, -9); ctx.lineTo(-1.5, -9); ctx.lineTo(-2.5, -5.5); ctx.lineTo(-11.5, -5.5);
+    ctx.moveTo(-14.5, -9); ctx.lineTo(-1.5, -8.0); ctx.lineTo(-2.5, -4.5); ctx.lineTo(-11.5, -5.5);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
     // Right Brow segment
     ctx.fillStyle = browGradRight;
     ctx.beginPath();
-    ctx.moveTo(14.5, -9); ctx.lineTo(1.5, -9); ctx.lineTo(2.5, -5.5); ctx.lineTo(11.5, -5.5);
+    ctx.moveTo(14.5, -9); ctx.lineTo(1.5, -8.0); ctx.lineTo(2.5, -4.5); ctx.lineTo(11.5, -5.5);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
@@ -608,18 +608,18 @@ class SpookySkull{
     ctx.lineWidth = 1.0;
     // Left Cheekbone bracket
     ctx.beginPath();
-    ctx.moveTo(-12.5, -4);
-    ctx.lineTo(-15.5, 2.5);
-    ctx.lineTo(-10.5, 5);
-    ctx.lineTo(-9.0, 0);
+    ctx.moveTo(-12.5, -2);
+    ctx.lineTo(-16.0, 2.0); // Wider flair
+    ctx.lineTo(-10.0, 5.5);
+    ctx.lineTo(-8.5, 1.5);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
     // Right Cheekbone bracket
     ctx.beginPath();
-    ctx.moveTo(12.5, -4);
-    ctx.lineTo(15.5, 2.5);
-    ctx.lineTo(10.5, 5);
-    ctx.lineTo(9.0, 0);
+    ctx.moveTo(12.5, -2);
+    ctx.lineTo(16.0, 2.0); // Wider flair
+    ctx.lineTo(10.0, 5.5);
+    ctx.lineTo(8.5, 1.5);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
@@ -654,14 +654,14 @@ class SpookySkull{
     // Nose bridge and spade-shaped mechanical nasal cavity
     ctx.fillStyle = '#020305';
     ctx.beginPath();
-    ctx.moveTo(0, -4.5);
-    ctx.lineTo(-1.8, -1.0);
-    ctx.lineTo(-2.2, 2.2);
-    ctx.lineTo(-0.7, 2.2);
-    ctx.lineTo(0, 0.5); // Septum block
-    ctx.lineTo(0.7, 2.2);
-    ctx.lineTo(2.2, 2.2);
-    ctx.lineTo(1.8, -1.0);
+    ctx.moveTo(0, -4.0);
+    ctx.lineTo(-2.2, -1.0);
+    ctx.lineTo(-2.5, 2.5);
+    ctx.lineTo(-0.8, 2.5);
+    ctx.lineTo(0, 0.8); // Septum block
+    ctx.lineTo(0.8, 2.5);
+    ctx.lineTo(2.5, 2.5);
+    ctx.lineTo(2.2, -1.0);
     ctx.closePath();
     ctx.fill();
 
@@ -784,13 +784,13 @@ class SpookySkull{
     ctx.lineWidth = 1.0;
     ctx.beginPath();
     ctx.moveTo(-11.5, 4.2 - jawOffset); 
-    ctx.quadraticCurveTo(-11.0, 11.5, -4.5, 15.5); 
-    ctx.lineTo(-3.5, 19.5); 
-    ctx.lineTo(3.5, 19.5);  
-    ctx.lineTo(4.5, 15.5);
-    ctx.quadraticCurveTo(11.0, 11.5, 11.5, 4.2 - jawOffset); 
-    ctx.lineTo(8.5, 11.5);
-    ctx.quadraticCurveTo(0, 14.5, -8.5, 11.5); 
+    ctx.quadraticCurveTo(-11.0, 10.5, -5.0, 15.0); 
+    ctx.lineTo(-3.8, 20.0); 
+    ctx.lineTo(3.8, 20.0);  
+    ctx.lineTo(5.0, 15.0);
+    ctx.quadraticCurveTo(11.0, 10.5, 11.5, 4.2 - jawOffset); 
+    ctx.lineTo(8.5, 11.0);
+    ctx.quadraticCurveTo(0, 14.0, -8.5, 11.0); 
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
@@ -801,8 +801,8 @@ class SpookySkull{
     ctx.beginPath();
     ctx.moveTo(-3.0, 16.0);
     ctx.lineTo(3.0, 16.0);
-    ctx.lineTo(2.0, 19.5);
-    ctx.lineTo(-2.0, 19.5);
+    ctx.lineTo(2.0, 20.0);
+    ctx.lineTo(-2.0, 20.0);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
     

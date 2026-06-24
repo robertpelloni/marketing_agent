@@ -640,16 +640,8 @@ class SpookySkull{
 
     ctx.restore(); // restore jaw position
 
-    // ── Technical HUD overlay text next to the skull ──
+    // ── Cyber target frame brackets next to the skull ──
     if (this.z > 0.45) {
-      ctx.fillStyle = 'rgba(0, 255, 136, 0.75)';
-      ctx.font = 'bold 3.5px Courier New, monospace';
-      ctx.fillText("SYS_LOC: T-800", 20, -11);
-      ctx.fillStyle = 'rgba(255, 0, 68, 0.75)';
-      ctx.fillText("LOC: " + Math.floor(this.x) + "," + Math.floor(this.y), 20, -6);
-      ctx.fillText("INDEX: " + Math.floor(this.z * 100) + "%", 20, -1);
-      
-      // Cyber target frame brackets
       ctx.strokeStyle = 'rgba(255, 0, 68, 0.35)';
       ctx.lineWidth = 0.5;
       // Top-left bracket

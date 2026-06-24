@@ -440,16 +440,29 @@ class SpookySkull{
     ctx.strokeRect(-5.5, 19, 11, 2.2);
     ctx.strokeRect(-5.5, 24, 11, 2.2);
 
-    // 2. Cranium (Heavy metal brow & dome shell)
+    // 2. Cheekbone Void Gaps (drawn first to act as deep black hollow spaces behind zygomatic arches)
+    ctx.fillStyle = '#03050a'; // Empty canvas background color to create 3D hollow depth
+    ctx.beginPath();
+    ctx.moveTo(-13, 0);
+    ctx.lineTo(-8, 0);
+    ctx.lineTo(-8, 9);
+    ctx.lineTo(-12.5, 6);
+    ctx.closePath();
+    ctx.moveTo(13, 0);
+    ctx.lineTo(8, 0);
+    ctx.lineTo(8, 9);
+    ctx.lineTo(12.5, 6);
+    ctx.closePath();
+    ctx.fill();
+
+    // 3. Cranium Dome Plate (Sleek, chrome-plated metal cap)
     ctx.fillStyle = chromeGrad;
     ctx.strokeStyle = 'rgba(0, 255, 136, 0.7)';
     ctx.lineWidth = 1.1;
-    
-    // Top Dome (sleek, not bulbous)
     ctx.beginPath();
     ctx.arc(0, -9, 14, Math.PI, 0); 
     ctx.lineTo(14, -6);
-    ctx.lineTo(11, -4); // Temporal side indentation
+    ctx.lineTo(11, -4); // Side temporal indents
     ctx.lineTo(12, 0);
     ctx.lineTo(-12, 0);
     ctx.lineTo(-11, -4);
@@ -457,28 +470,47 @@ class SpookySkull{
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
-    // Temporal side mechanical panels (breaks helmet uniformity)
-    ctx.strokeStyle = 'rgba(0, 0, 0, 0.45)';
+    // Forehead Sagittal Welded Seam
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.6)';
+    ctx.lineWidth = 0.9;
+    ctx.beginPath();
+    ctx.moveTo(0, -23); ctx.lineTo(0, -9);
+    ctx.stroke();
+    // Weld staple markings
+    ctx.strokeStyle = '#6d7f99';
+    ctx.lineWidth = 0.5;
+    for (var sy = -20; sy <= -11; sy += 3) {
+      ctx.beginPath();
+      ctx.moveTo(-1.5, sy); ctx.lineTo(1.5, sy);
+      ctx.stroke();
+    }
+
+    // Temporal panel line slots (breaks round helmet illusion)
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
     ctx.lineWidth = 0.8;
     ctx.beginPath();
-    ctx.moveTo(-7, -23); ctx.lineTo(-7, -9);
-    ctx.moveTo(7, -23); ctx.lineTo(7, -9);
-    ctx.moveTo(-11, -15); ctx.lineTo(-7, -12);
-    ctx.moveTo(11, -15); ctx.lineTo(7, -12);
+    ctx.moveTo(-7, -22); ctx.lineTo(-7, -9);
+    ctx.moveTo(7, -22); ctx.lineTo(7, -9);
     ctx.stroke();
 
-    // Heavy menacing Brow Bar (T-800's angry metal ridge)
-    var browGrad = ctx.createLinearGradient(-14, -9, 14, -6);
-    browGrad.addColorStop(0, '#4e5b6e');
-    browGrad.addColorStop(0.5, '#ffffff');
-    browGrad.addColorStop(1, '#2e3845');
-    ctx.fillStyle = browGrad;
+    // 4. Heavy Menacing Brow Plates (Split in the center for T-800 robotic look)
+    var browGradLeft = ctx.createLinearGradient(-14, -9, -2, -6);
+    browGradLeft.addColorStop(0, '#4e5b6e'); browGradLeft.addColorStop(1, '#ffffff');
+    var browGradRight = ctx.createLinearGradient(2, -9, 14, -6);
+    browGradRight.addColorStop(0, '#ffffff'); browGradRight.addColorStop(1, '#2e3845');
+
     ctx.strokeStyle = 'rgba(0, 255, 136, 0.65)';
+    ctx.lineWidth = 0.9;
+    // Left Brow segment
+    ctx.fillStyle = browGradLeft;
     ctx.beginPath();
-    ctx.moveTo(-15, -9);
-    ctx.lineTo(15, -9);
-    ctx.lineTo(12, -5);
-    ctx.lineTo(-12, -5);
+    ctx.moveTo(-14.5, -9); ctx.lineTo(-1.2, -9); ctx.lineTo(-2.2, -5.5); ctx.lineTo(-11.5, -5.5);
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    // Right Brow segment
+    ctx.fillStyle = browGradRight;
+    ctx.beginPath();
+    ctx.moveTo(14.5, -9); ctx.lineTo(1.2, -9); ctx.lineTo(2.2, -5.5); ctx.lineTo(11.5, -5.5);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
@@ -495,107 +527,104 @@ class SpookySkull{
     ctx.arc(11.5, -7, 1.0, 0, Math.PI*2);
     ctx.fill(); ctx.stroke();
 
-    // 3. Deep Black Eye Sockets (Angled, rectangular mechanical slots)
+    // 5. Deep Black Eye Sockets (Slanted, angular, menacing mechanical sockets)
     ctx.fillStyle = '#05070c';
     ctx.beginPath();
-    ctx.moveTo(-12.5, -8); ctx.lineTo(-1.5, -8); ctx.lineTo(-2.5, -2); ctx.lineTo(-10.5, -2); ctx.closePath();
-    ctx.moveTo(12.5, -8); ctx.lineTo(1.5, -8); ctx.lineTo(2.5, -2); ctx.lineTo(10.5, -2); ctx.closePath();
+    ctx.moveTo(-12.5, -8); ctx.lineTo(-1.8, -8); ctx.lineTo(-2.8, -2.2); ctx.lineTo(-10.5, -2.2); ctx.closePath();
+    ctx.moveTo(12.5, -8); ctx.lineTo(1.8, -8); ctx.lineTo(2.8, -2.2); ctx.lineTo(10.5, -2.2); ctx.closePath();
     ctx.fill();
 
-    // Zygomatic arches (Cheekbones - drawn as separate sharp steel brackets)
+    // Zygomatic Arches (Cheekbones - drawn as separate sharp steel brackets flaring out)
     ctx.fillStyle = chromeGrad;
     ctx.strokeStyle = 'rgba(0, 255, 136, 0.6)';
     ctx.lineWidth = 1.0;
-    
     // Left Cheekbone bracket
     ctx.beginPath();
-    ctx.moveTo(-13, -4);
+    ctx.moveTo(-12.5, -4);
     ctx.lineTo(-15.5, 2.5);
     ctx.lineTo(-10.5, 5);
-    ctx.lineTo(-9.5, 0);
+    ctx.lineTo(-9.0, 0);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
-    
     // Right Cheekbone bracket
     ctx.beginPath();
-    ctx.moveTo(13, -4);
+    ctx.moveTo(12.5, -4);
     ctx.lineTo(15.5, 2.5);
     ctx.lineTo(10.5, 5);
-    ctx.lineTo(9.5, 0);
+    ctx.lineTo(9.0, 0);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
-    // Nose bridge and triangular mechanical nose cavity
+    // Nose bridge and hollow double-chambered mechanical nose cavity
     ctx.fillStyle = '#05070c';
     ctx.beginPath();
-    ctx.moveTo(0, -4);
-    ctx.lineTo(-2, 2.5);
-    ctx.lineTo(-0.7, 2.5);
-    ctx.lineTo(0, 0.5);
-    ctx.lineTo(0.7, 2.5);
-    ctx.lineTo(2, 2.5);
+    ctx.moveTo(0, -4.5);
+    ctx.lineTo(-2.2, 2.0);
+    ctx.lineTo(-0.7, 2.0);
+    ctx.lineTo(0, 0.3); // Split septum ridge
+    ctx.lineTo(0.7, 2.0);
+    ctx.lineTo(2.2, 2.0);
     ctx.closePath();
     ctx.fill();
 
-    // Glowing Red Aperture Eyes
+    // Glowing Red Aperture Eyes (T-800 optical units)
     var eyePulse = 0.75 + Math.sin(this.p * 3.8) * 0.25;
     ctx.strokeStyle = '#5a6b82';
     ctx.lineWidth = 0.6;
-    // Circular aperture rims inside sockets
     ctx.beginPath();
-    ctx.arc(-7, -5, 3.2, 0, Math.PI*2);
-    ctx.arc(7, -5, 3.2, 0, Math.PI*2);
+    ctx.arc(-7, -5.1, 3.2, 0, Math.PI*2);
+    ctx.arc(7, -5.1, 3.2, 0, Math.PI*2);
     ctx.stroke();
 
-    // Glowing core
+    // Glowing laser red lenses
     ctx.fillStyle = 'rgba(255, 0, 68, ' + (eyePulse * 1.0) + ')';
     ctx.shadowColor = 'rgba(255, 0, 68, 1)';
     ctx.shadowBlur = 10;
     ctx.beginPath();
-    ctx.arc(-7, -5, 1.8, 0, Math.PI*2);
-    ctx.arc(7, -5, 1.8, 0, Math.PI*2);
+    ctx.arc(-7, -5.1, 1.8, 0, Math.PI*2);
+    ctx.arc(7, -5.1, 1.8, 0, Math.PI*2);
     ctx.fill();
     ctx.shadowBlur = 0;
 
-    // Laser red reflection dot
+    // Lens reflection highlights
     ctx.fillStyle = '#ffffff';
     ctx.beginPath();
-    ctx.arc(-7.2, -5.2, 0.6, 0, Math.PI*2);
-    ctx.arc(7.2, -5.2, 0.6, 0, Math.PI*2);
+    ctx.arc(-7.2, -5.3, 0.6, 0, Math.PI*2);
+    ctx.arc(7.2, -5.3, 0.6, 0, Math.PI*2);
     ctx.fill();
 
     // Red laser scanning lines
     ctx.strokeStyle = 'rgba(255, 0, 68, 0.4)';
     ctx.lineWidth = 0.5;
     ctx.beginPath();
-    ctx.moveTo(-20, -5); ctx.lineTo(20, -5);
+    ctx.moveTo(-20, -5.1); ctx.lineTo(20, -5.1);
     ctx.stroke();
 
-    // 4. Upper Jaw & Teeth Grill (T-800 metal teeth)
+    // 6. Upper Maxilla & Upper Teeth (Set inside carrier plate)
     ctx.fillStyle = chromeGrad;
     ctx.strokeStyle = 'rgba(0, 255, 136, 0.55)';
     ctx.lineWidth = 1.0;
     ctx.beginPath();
-    ctx.moveTo(-9, 4);
-    ctx.lineTo(9, 4);
-    ctx.lineTo(8.5, 9);
-    ctx.lineTo(-8.5, 9);
+    ctx.moveTo(-8.5, 4);
+    ctx.lineTo(8.5, 4);
+    ctx.lineTo(8.0, 9);
+    ctx.lineTo(-8.0, 9);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
-    // Individual metal upper teeth blocks
-    for (var i = -7.5; i <= 6; i += 1.8) {
+    // Upper Teeth (steel block grid)
+    for (var i = -7.2; i <= 5.8; i += 1.8) {
       var toothGrad = ctx.createLinearGradient(i, 8, i + 1.5, 11);
-      toothGrad.addColorStop(0, '#e2e8f0');
+      toothGrad.addColorStop(0, '#ffffff');
       toothGrad.addColorStop(1, '#a0aec0');
       ctx.fillStyle = toothGrad;
-      ctx.fillRect(i, 9, 1.4, 3);
+      ctx.fillRect(i, 9, 1.3, 3);
       ctx.strokeStyle = '#0c111a';
       ctx.lineWidth = 0.5;
-      ctx.strokeRect(i, 9, 1.4, 3);
+      ctx.strokeRect(i, 9, 1.3, 3);
     }
 
-    // 5. Lower Jaw (moving piston and lower teeth)
+    // 7. Lower Mandible (moving piston and lower teeth)
     var chompRange = Math.abs(Math.sin(this.p * 2.2));
     var jawOffset = 1.0 + chompRange * 6.5;
 

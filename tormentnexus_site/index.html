@@ -427,7 +427,32 @@ class SpookySkull{
     ctx.strokeStyle = 'rgba(0, 255, 136, 0.65)'; // Sleek cyber green glow
     ctx.lineWidth = 1.2;
 
+    // ── Segmented Metal Neck Column (draw behind jaw) ──
+    ctx.fillStyle = '#4f5e73';
+    ctx.strokeStyle = '#1b2330';
+    ctx.lineWidth = 0.8;
+    ctx.fillRect(-3.5, 13, 7, 18); // Central structural post
+    
+    // Neck cylinders
+    ctx.fillStyle = '#2d3748';
+    ctx.fillRect(-7.5, 16, 2.5, 12);
+    ctx.fillRect(5, 16, 2.5, 12);
+    ctx.strokeRect(-7.5, 16, 2.5, 12);
+    ctx.strokeRect(5, 16, 2.5, 12);
+    
+    // Segmented rings
+    ctx.fillStyle = '#73849c';
+    ctx.fillRect(-5.5, 15, 11, 2.2);
+    ctx.fillRect(-5.5, 20, 11, 2.2);
+    ctx.fillRect(-5.5, 25, 11, 2.2);
+    ctx.strokeRect(-5.5, 15, 11, 2.2);
+    ctx.strokeRect(-5.5, 20, 11, 2.2);
+    ctx.strokeRect(-5.5, 25, 11, 2.2);
+
     // ── Detailed Cranium / Forehead Structure ──
+    ctx.fillStyle = chromeGrad;
+    ctx.strokeStyle = 'rgba(0, 255, 136, 0.65)';
+    ctx.lineWidth = 1.2;
     ctx.beginPath();
     ctx.arc(0, -9, 16, Math.PI, 0); // Top Skull Dome
     ctx.lineTo(15, -9);
@@ -441,6 +466,19 @@ class SpookySkull{
     ctx.lineTo(-13, -3);
     ctx.lineTo(-15, -9);
     ctx.closePath();
+    ctx.fill(); ctx.stroke();
+
+    // ── Temple Rivets/Bolts ──
+    ctx.fillStyle = '#73849c';
+    ctx.strokeStyle = '#1b2330';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.arc(-13.5, -13, 1.2, 0, Math.PI*2);
+    ctx.arc(13.5, -13, 1.2, 0, Math.PI*2);
+    ctx.fill(); ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(-12.5, -7, 1.2, 0, Math.PI*2);
+    ctx.arc(12.5, -7, 1.2, 0, Math.PI*2);
     ctx.fill(); ctx.stroke();
 
     // Forehead details: Frontal suture plates and brow ridges
@@ -593,6 +631,41 @@ class SpookySkull{
     }
 
     ctx.restore(); // restore jaw position
+
+    // ── Technical HUD overlay text next to the skull ──
+    if (this.z > 0.45) {
+      ctx.fillStyle = 'rgba(0, 255, 136, 0.7)';
+      ctx.font = 'bold 3.8px monospace';
+      ctx.fillText("SYS_LOC: T-800", 21, -11);
+      ctx.fillStyle = 'rgba(255, 0, 68, 0.7)';
+      ctx.fillText("LOC: " + Math.floor(this.x) + "," + Math.floor(this.y), 21, -6);
+      ctx.fillText("INDEX: " + Math.floor(this.z * 100) + "%", 21, -1);
+      
+      // Cyber target frame brackets
+      ctx.strokeStyle = 'rgba(255, 0, 68, 0.35)';
+      ctx.lineWidth = 0.5;
+      // Top-left bracket
+      ctx.beginPath();
+      ctx.moveTo(-24, -24); ctx.lineTo(-17, -24);
+      ctx.moveTo(-24, -24); ctx.lineTo(-24, -17);
+      ctx.stroke();
+      // Top-right bracket
+      ctx.beginPath();
+      ctx.moveTo(24, -24); ctx.lineTo(17, -24);
+      ctx.moveTo(24, -24); ctx.lineTo(24, -17);
+      ctx.stroke();
+      // Bottom-left bracket
+      ctx.beginPath();
+      ctx.moveTo(-24, 24); ctx.lineTo(-17, 24);
+      ctx.moveTo(-24, 24); ctx.lineTo(-24, 17);
+      ctx.stroke();
+      // Bottom-right bracket
+      ctx.beginPath();
+      ctx.moveTo(24, 24); ctx.lineTo(17, 24);
+      ctx.moveTo(24, 24); ctx.lineTo(24, 17);
+      ctx.stroke();
+    }
+
     ctx.restore(); // restore scale/translation
   }
 }

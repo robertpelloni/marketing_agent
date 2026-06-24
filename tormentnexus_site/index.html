@@ -724,6 +724,16 @@ class SpookySkull{
 
     ctx.restore(); // restore jaw position
 
+    // 8. Shaded Right Half Overlay (Dramatic 3D key-lighting depth)
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
+    ctx.beginPath();
+    ctx.moveTo(0, -24);
+    ctx.lineTo(16, -24);
+    ctx.quadraticCurveTo(18, 0, 16, 28);
+    ctx.lineTo(0, 28);
+    ctx.closePath();
+    ctx.fill();
+
     // ── Cyber target frame brackets next to the skull ──
     if (this.z > 0.45) {
       ctx.strokeStyle = 'rgba(255, 0, 68, 0.35)';

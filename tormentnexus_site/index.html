@@ -629,35 +629,33 @@ class SpookySkull{
     ctx.arc(7.2, -5.3, 0.6, 0, Math.PI*2);
     ctx.fill();
 
-    // Red laser scanning lines
-    ctx.strokeStyle = 'rgba(255, 0, 68, 0.4)';
-    ctx.lineWidth = 0.5;
-    ctx.beginPath();
-    ctx.moveTo(-20, -5.1); ctx.lineTo(20, -5.1);
-    ctx.stroke();
-
-    // 6. Upper Maxilla & Upper Teeth (Set inside carrier plate)
+    // 6. Upper Maxilla (Anatomically curved maxilla plate)
     ctx.fillStyle = chromeGrad;
     ctx.strokeStyle = 'rgba(0, 255, 136, 0.55)';
     ctx.lineWidth = 1.0;
     ctx.beginPath();
     ctx.moveTo(-8.5, 4);
     ctx.lineTo(8.5, 4);
-    ctx.lineTo(8.0, 9);
-    ctx.lineTo(-8.0, 9);
+    ctx.lineTo(8.0, 7.5);
+    ctx.quadraticCurveTo(0, 10.5, -8.0, 7.5); // Curved maxilla border
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
-    // Upper Teeth (steel block grid)
+    // Upper Teeth (grid blocks following the curved maxilla arch)
     for (var i = -7.2; i <= 5.8; i += 1.8) {
-      var toothGrad = ctx.createLinearGradient(i, 8, i + 1.5, 11);
+      var dx = i + 0.6;
+      var curveOffset = (dx * dx) * 0.038;
+      var toothY = 8.5 - curveOffset;
+      var toothHeight = 3.2;
+
+      var toothGrad = ctx.createLinearGradient(i, toothY, i + 1.2, toothY + toothHeight);
       toothGrad.addColorStop(0, '#ffffff');
       toothGrad.addColorStop(1, '#a0aec0');
       ctx.fillStyle = toothGrad;
-      ctx.fillRect(i, 9, 1.3, 3);
+      ctx.fillRect(i, toothY, 1.3, toothHeight);
       ctx.strokeStyle = '#0c111a';
       ctx.lineWidth = 0.5;
-      ctx.strokeRect(i, 9, 1.3, 3);
+      ctx.strokeRect(i, toothY, 1.3, toothHeight);
     }
 
     // 7. Lower Mandible (moving piston and lower teeth)
@@ -667,52 +665,61 @@ class SpookySkull{
     ctx.save();
     ctx.translate(0, jawOffset);
 
-    // Jaw hydraulic pistons on sides (sliding metal shafts)
+    // Jaw hydraulic side pistons
     ctx.fillStyle = '#4f5e73';
-    ctx.fillRect(-12.5, -2 - jawOffset, 2, 7); // Cylinder body fixed to cranium
+    ctx.fillRect(-12.5, -2 - jawOffset, 2, 7);
     ctx.fillRect(10.5, -2 - jawOffset, 2, 7);
     
     ctx.strokeStyle = '#e2e8f0';
     ctx.lineWidth = 0.8;
     ctx.beginPath();
-    ctx.moveTo(-11.5, 4 - jawOffset); ctx.lineTo(-9, 13); // Shaft sliding to jaw
-    ctx.moveTo(11.5, 4 - jawOffset); ctx.lineTo(9, 13);
+    ctx.moveTo(-11.5, 4 - jawOffset); ctx.lineTo(-9.5, 13);
+    ctx.moveTo(11.5, 4 - jawOffset); ctx.lineTo(9.5, 13);
     ctx.stroke();
 
-    // Lower Jaw bracket
+    // Lower Jawbone (Contoured mandible sweeping from gears down to chin)
     ctx.fillStyle = chromeGrad;
     ctx.strokeStyle = 'rgba(0, 255, 136, 0.65)';
     ctx.lineWidth = 1.0;
     ctx.beginPath();
-    ctx.moveTo(-8.5, 12);
-    ctx.lineTo(8.5, 12);
-    ctx.lineTo(5.5, 19);
-    ctx.lineTo(-5.5, 19);
+    ctx.moveTo(-11.5, 4.2 - jawOffset); // Left side hinge gear area
+    ctx.quadraticCurveTo(-11.0, 11.5, -4.5, 15.5); // Left jawbone sweep
+    ctx.lineTo(-3.5, 19.5); // Left chin edge
+    ctx.lineTo(3.5, 19.5);  // Right chin edge
+    ctx.lineTo(4.5, 15.5);
+    ctx.quadraticCurveTo(11.0, 11.5, 11.5, 4.2 - jawOffset); // Right jawbone sweep
+    ctx.lineTo(8.5, 11.5);
+    ctx.quadraticCurveTo(0, 14.5, -8.5, 11.5); // Inner jawline arch
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
-    // Chin Block Plate (classic T-800 squared chin plate)
+    // Squared Chin Plate Accent Block (T-800 heavy chin)
     ctx.fillStyle = '#6d7f99';
     ctx.strokeStyle = '#0c111a';
     ctx.lineWidth = 0.6;
     ctx.beginPath();
-    ctx.moveTo(-3, 16.2);
-    ctx.lineTo(3, 16.2);
-    ctx.lineTo(2, 18.5);
-    ctx.lineTo(-2, 18.5);
+    ctx.moveTo(-3.0, 16.0);
+    ctx.lineTo(3.0, 16.0);
+    ctx.lineTo(2.0, 18.5);
+    ctx.lineTo(-2.0, 18.5);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
-    // Individual lower teeth
+    // Individual lower teeth (following the curved mandible arch)
     for (var i = -6.5; i <= 5; i += 1.8) {
-      var toothGrad = ctx.createLinearGradient(i, 11, i + 1.4, 13);
+      var dx = i + 0.6;
+      var curveOffset = (dx * dx) * 0.038;
+      var toothY = 11.5 - curveOffset;
+      var toothHeight = 2.6;
+
+      var toothGrad = ctx.createLinearGradient(i, toothY, i + 1.2, toothY + toothHeight);
       toothGrad.addColorStop(0, '#cbd5e0');
       toothGrad.addColorStop(1, '#718096');
       ctx.fillStyle = toothGrad;
-      ctx.fillRect(i, 12, 1.3, 2.2);
+      ctx.fillRect(i, toothY, 1.3, toothHeight);
       ctx.strokeStyle = '#0c111a';
       ctx.lineWidth = 0.5;
-      ctx.strokeRect(i, 12, 1.3, 2.2);
+      ctx.strokeRect(i, toothY, 1.3, toothHeight);
     }
 
     ctx.restore(); // restore jaw position

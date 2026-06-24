@@ -11,24 +11,24 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
         :root {
-            --bg: #030408; /* Deep rich corporate black */
-            --glass: rgba(255, 255, 255, 0.015);
-            --glass-border: rgba(212, 175, 55, 0.09); /* Subtle luxury gold border */
-            --glass-hover: rgba(212, 175, 55, 0.03);
-            --glass-border-hover: rgba(212, 175, 55, 0.22);
-            --text: #f5f7fa;
-            --text-secondary: #a0aec0;
-            --text-dim: #4a5568;
-            --primary: #d4af37; /* Royal Metallic Gold */
-            --primary-dark: #aa841a; /* Darker Gold */
-            --primary-glow: rgba(212, 175, 55, 0.15);
-            --primary-glow-intense: rgba(212, 175, 55, 0.35);
-            --primary-subtle: rgba(212, 175, 55, 0.02);
-            --accent: #e5c158; /* Champagne Accent */
-            --accent-glow: rgba(229, 193, 88, 0.15);
-            --gradient-main: linear-gradient(135deg, #d4af37, #f3e5ab, #aa841a); /* Gold gradient */
-            --gradient-accent: linear-gradient(135deg, #e5c158, #ffffff); /* Champagne and white silver */
-            --gradient-warm: linear-gradient(135deg, #aa841a, #d4af37, #e5c158);
+            --bg: #03050a;
+            --glass: rgba(255,255,255,0.02);
+            --glass-border: rgba(255,255,255,0.06);
+            --glass-hover: rgba(255,255,255,0.05);
+            --glass-border-hover: rgba(255,255,255,0.14);
+            --text: #f0f4f8;
+            --text-secondary: #8899b0;
+            --text-dim: #3a4a5a;
+            --primary: #4d7cff;
+            --primary-dark: #3a5fc8;
+            --primary-glow: rgba(77,124,255,0.2);
+            --primary-glow-intense: rgba(77,124,255,0.45);
+            --primary-subtle: rgba(77,124,255,0.04);
+            --accent: #00e5a0;
+            --accent-glow: rgba(0,229,160,0.15);
+            --gradient-main: linear-gradient(135deg, #4d7cff, #7c5cff, #b45cff);
+            --gradient-accent: linear-gradient(135deg, #00e5a0, #4d7cff);
+            --gradient-warm: linear-gradient(135deg, #ff6b6b, #b45cff, #4d7cff);
             --shadow-glow: 0 0 60px var(--primary-glow);
         }
 
@@ -66,19 +66,19 @@
         }
         .ambient-1 {
             width: 1100px; height: 1100px;
-            background: radial-gradient(circle, rgba(212,175,55,0.06), transparent 70%);
+            background: radial-gradient(circle, rgba(77,124,255,0.07), transparent 70%);
             top: -400px; right: -300px;
             animation: ambientDrift 35s ease-in-out infinite;
         }
         .ambient-2 {
             width: 900px; height: 900px;
-            background: radial-gradient(circle, rgba(184,194,208,0.04), transparent 70%);
+            background: radial-gradient(circle, rgba(180,92,255,0.05), transparent 70%);
             bottom: -350px; left: -300px;
             animation: ambientDrift 40s ease-in-out infinite reverse;
         }
         .ambient-3 {
             width: 700px; height: 700px;
-            background: radial-gradient(circle, rgba(229,193,88,0.02), transparent 70%);
+            background: radial-gradient(circle, rgba(0,229,160,0.03), transparent 70%);
             top: 40%; left: 55%;
             animation: ambientDrift 30s ease-in-out infinite 10s;
         }
@@ -779,7 +779,7 @@
                 this.speedX = (Math.random() - 0.5) * 0.15;
                 this.speedY = (Math.random() - 0.5) * 0.15;
                 this.opacity = 0.4 + Math.random() * 0.5; // Shinier
-                this.hue = 42 + Math.random() * 8; // Pure Luxury Gold Hue (42-50)
+                this.hue = 220 + Math.random() * 40; // Original Blue Hue (220-260)
                 this.pulse = Math.random() * Math.PI * 2;
             }
             update() {
@@ -834,14 +834,14 @@
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
                     if (dist < 180) {
-                        const alpha = 0.08 * (1 - dist / 180) * (particles[i].opacity + particles[j].opacity) * 0.5;
+                        const alpha = 0.06 * (1 - dist / 180) * (particles[i].opacity + particles[j].opacity) * 0.5;
 
-                        // Golden glow line
+                        // Glow line
                         ctx.save();
-                        ctx.shadowColor = 'hsla(45, 80%, 60%, 0.18)';
-                        ctx.shadowBlur = 8;
-                        ctx.strokeStyle = 'hsla(45, 80%, 60%, ' + alpha + ')';
-                        ctx.lineWidth = 0.8;
+                        ctx.shadowColor = 'hsla(220, 80%, 60%, 0.08)';
+                        ctx.shadowBlur = 6;
+                        ctx.strokeStyle = 'hsla(220, 80%, 60%, ' + alpha + ')';
+                        ctx.lineWidth = 0.6;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);

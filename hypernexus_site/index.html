@@ -11,24 +11,24 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
         :root {
-            --bg: #03050a;
-            --glass: rgba(255,255,255,0.02);
-            --glass-border: rgba(255,255,255,0.06);
-            --glass-hover: rgba(255,255,255,0.05);
-            --glass-border-hover: rgba(255,255,255,0.14);
-            --text: #f0f4f8;
-            --text-secondary: #8899b0;
-            --text-dim: #3a4a5a;
-            --primary: #4d7cff;
-            --primary-dark: #3a5fc8;
-            --primary-glow: rgba(77,124,255,0.2);
-            --primary-glow-intense: rgba(77,124,255,0.45);
-            --primary-subtle: rgba(77,124,255,0.04);
-            --accent: #00e5a0;
-            --accent-glow: rgba(0,229,160,0.15);
-            --gradient-main: linear-gradient(135deg, #4d7cff, #7c5cff, #b45cff);
-            --gradient-accent: linear-gradient(135deg, #00e5a0, #4d7cff);
-            --gradient-warm: linear-gradient(135deg, #ff6b6b, #b45cff, #4d7cff);
+            --bg: #030408; /* Deep rich corporate black */
+            --glass: rgba(255, 255, 255, 0.015);
+            --glass-border: rgba(212, 175, 55, 0.09); /* Subtle luxury gold border */
+            --glass-hover: rgba(212, 175, 55, 0.03);
+            --glass-border-hover: rgba(212, 175, 55, 0.22);
+            --text: #f5f7fa;
+            --text-secondary: #a0aec0;
+            --text-dim: #4a5568;
+            --primary: #d4af37; /* Royal Metallic Gold */
+            --primary-dark: #aa841a; /* Darker Gold */
+            --primary-glow: rgba(212, 175, 55, 0.15);
+            --primary-glow-intense: rgba(212, 175, 55, 0.35);
+            --primary-subtle: rgba(212, 175, 55, 0.02);
+            --accent: #e5c158; /* Champagne Accent */
+            --accent-glow: rgba(229, 193, 88, 0.15);
+            --gradient-main: linear-gradient(135deg, #d4af37, #f3e5ab, #aa841a); /* Gold gradient */
+            --gradient-accent: linear-gradient(135deg, #e5c158, #ffffff); /* Champagne and white silver */
+            --gradient-warm: linear-gradient(135deg, #aa841a, #d4af37, #e5c158);
             --shadow-glow: 0 0 60px var(--primary-glow);
         }
 
@@ -66,19 +66,19 @@
         }
         .ambient-1 {
             width: 1100px; height: 1100px;
-            background: radial-gradient(circle, rgba(77,124,255,0.07), transparent 70%);
+            background: radial-gradient(circle, rgba(212,175,55,0.06), transparent 70%);
             top: -400px; right: -300px;
             animation: ambientDrift 35s ease-in-out infinite;
         }
         .ambient-2 {
             width: 900px; height: 900px;
-            background: radial-gradient(circle, rgba(180,92,255,0.05), transparent 70%);
+            background: radial-gradient(circle, rgba(184,194,208,0.04), transparent 70%);
             bottom: -350px; left: -300px;
             animation: ambientDrift 40s ease-in-out infinite reverse;
         }
         .ambient-3 {
             width: 700px; height: 700px;
-            background: radial-gradient(circle, rgba(0,229,160,0.03), transparent 70%);
+            background: radial-gradient(circle, rgba(229,193,88,0.02), transparent 70%);
             top: 40%; left: 55%;
             animation: ambientDrift 30s ease-in-out infinite 10s;
         }
@@ -764,7 +764,7 @@
         window.addEventListener('resize', resize);
 
         const particles = [];
-        const PARTICLE_COUNT = 5; // Reduced from 80 to 25
+        const PARTICLE_COUNT = 35; // Increased for a richer starry network
 
         class Particle {
             constructor() {
@@ -775,11 +775,11 @@
             reset() {
                 this.x = Math.random() * W;
                 this.y = Math.random() * H;
-                this.size = 2 + Math.random() * 3; // Bigger particles
-                this.speedX = (Math.random() - 0.5) * 0.2;
-                this.speedY = (Math.random() - 0.5) * 0.2;
-                this.opacity = 0.3 + Math.random() * 0.4;
-                this.hue = 220 + Math.random() * 40;
+                this.size = 1.5 + Math.random() * 2.5; // Sleeker sizes
+                this.speedX = (Math.random() - 0.5) * 0.15;
+                this.speedY = (Math.random() - 0.5) * 0.15;
+                this.opacity = 0.4 + Math.random() * 0.5; // Shinier
+                this.hue = 42 + Math.random() * 8; // Pure Luxury Gold Hue (42-50)
                 this.pulse = Math.random() * Math.PI * 2;
             }
             update() {
@@ -827,118 +827,6 @@
 
         for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
 
-        class SpookySkull {
-            constructor() {
-                this.x = Math.random() * W;
-                this.y = Math.random() * H;
-                this.size = 1.2 + Math.random() * 1.2; // Made larger
-                this.speedX = (Math.random() - 0.5) * 0.6;
-                this.speedY = (Math.random() - 0.5) * 0.6;
-                this.pulse = Math.random() * Math.PI * 2;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.pulse += 0.04;
-                if (this.x < -100 || this.x > W + 100 || this.y < -100 || this.y > H + 100) {
-                    this.x = Math.random() * W;
-                    this.y = Math.random() * H;
-                }
-            }
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.scale(this.size, this.size);
-                ctx.globalAlpha = 0.85; // Increased opacity
-
-                // Main cranium
-                ctx.fillStyle = 'rgba(240, 240, 250, 0.25)'; // Opaque fill
-                ctx.strokeStyle = 'rgba(0, 229, 160, 0.85)'; // Brighter green outline
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.arc(0, -8, 14, Math.PI, 0);
-                ctx.lineTo(13, 4);
-                ctx.lineTo(9, 12);
-                ctx.lineTo(-9, 12);
-                ctx.lineTo(-13, 4);
-                ctx.closePath();
-                ctx.fill(); ctx.stroke();
-
-                // Eye sockets
-                ctx.fillStyle = 'rgba(3, 5, 10, 0.95)';
-                ctx.beginPath();
-                ctx.arc(-6, -4, 4.5, 0, Math.PI * 2);
-                ctx.arc(6, -4, 4.5, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Red eyes
-                var eyeGlow = 0.6 + Math.sin(this.pulse * 2.5) * 0.3;
-                ctx.fillStyle = 'rgba(255, 0, 68, ' + (eyeGlow * 1.0) + ')';
-                ctx.shadowColor = 'rgba(255, 0, 68, 1.0)';
-                ctx.shadowBlur = 12; // Brighter glow
-                ctx.beginPath();
-                ctx.arc(-6, -4, 3, 0, Math.PI * 2);
-                ctx.arc(6, -4, 3, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.shadowBlur = 0;
-
-                // Nose cavity
-                ctx.fillStyle = 'rgba(0, 229, 160, 0.85)';
-                ctx.beginPath();
-                ctx.moveTo(0, -1);
-                ctx.lineTo(-2.5, 4);
-                ctx.lineTo(2.5, 4);
-                ctx.closePath();
-                ctx.fill();
-
-                // Teeth - opening and closing grinning teeth
-                var jawOffset = 2 + Math.abs(Math.sin(this.pulse)) * 7;
-
-                // Upper Teeth (fixed to skull head)
-                ctx.strokeStyle = 'rgba(0, 229, 160, 0.9)';
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                ctx.moveTo(-8, 12);
-                ctx.lineTo(8, 12);
-                ctx.stroke();
-                for (var i = -6; i <= 6; i += 3) {
-                    ctx.beginPath();
-                    ctx.moveTo(i, 12);
-                    ctx.lineTo(i, 9);
-                    ctx.stroke();
-                }
-
-                // Lower Jaw (moving down/up)
-                ctx.save();
-                ctx.translate(0, jawOffset);
-                ctx.fillStyle = 'rgba(240, 240, 250, 0.25)';
-                ctx.strokeStyle = 'rgba(0, 229, 160, 0.85)';
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                ctx.moveTo(-8, 13);
-                ctx.lineTo(8, 13);
-                ctx.lineTo(5, 19);
-                ctx.lineTo(-5, 19);
-                ctx.closePath();
-                ctx.fill(); ctx.stroke();
-
-                // Lower Teeth (on the moving jaw)
-                ctx.strokeStyle = 'rgba(0, 229, 160, 0.9)';
-                for (var i = -6; i <= 6; i += 3) {
-                    ctx.beginPath();
-                    ctx.moveTo(i, 13);
-                    ctx.lineTo(i, 16);
-                    ctx.stroke();
-                }
-                ctx.restore();
-
-                ctx.restore();
-            }
-        }
-
-        const skulls = [];
-        for (let i = 0; i < 15; i++) skulls.push(new SpookySkull());
-
         function drawConnections() {
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
@@ -946,14 +834,14 @@
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
                     if (dist < 180) {
-                        const alpha = 0.06 * (1 - dist / 180) * (particles[i].opacity + particles[j].opacity) * 0.5;
+                        const alpha = 0.08 * (1 - dist / 180) * (particles[i].opacity + particles[j].opacity) * 0.5;
 
-                        // Glow line
+                        // Golden glow line
                         ctx.save();
-                        ctx.shadowColor = 'hsla(220, 80%, 60%, 0.08)';
-                        ctx.shadowBlur = 6;
-                        ctx.strokeStyle = 'hsla(220, 80%, 60%, ' + alpha + ')';
-                        ctx.lineWidth = 0.6;
+                        ctx.shadowColor = 'hsla(45, 80%, 60%, 0.18)';
+                        ctx.shadowBlur = 8;
+                        ctx.strokeStyle = 'hsla(45, 80%, 60%, ' + alpha + ')';
+                        ctx.lineWidth = 0.8;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
@@ -974,7 +862,6 @@
         function animate() {
             ctx.clearRect(0, 0, W, H);
             particles.forEach(p => { p.update(); p.draw(); });
-            skulls.forEach(s => { s.update(); s.draw(); });
             drawConnections();
 
             // Mouse ripple

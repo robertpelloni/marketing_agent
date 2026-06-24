@@ -408,18 +408,22 @@ class SpookySkull{
 
     // High contrast chrome/steel metallic gradient for the skull bones
     var chromeGrad = ctx.createLinearGradient(-15, -20, 15, 15);
-    chromeGrad.addColorStop(0, '#283141');
-    chromeGrad.addColorStop(0.35, '#7b90aa');
-    chromeGrad.addColorStop(0.5, '#ffffff'); // Shiny steel highlight reflection
-    chromeGrad.addColorStop(0.65, '#5d6f88');
-    chromeGrad.addColorStop(1, '#0c111a');
+    chromeGrad.addColorStop(0, '#101725');
+    chromeGrad.addColorStop(0.18, '#526685');
+    chromeGrad.addColorStop(0.35, '#a3b6cf');
+    chromeGrad.addColorStop(0.48, '#ffffff'); // Direct reflection highlight
+    chromeGrad.addColorStop(0.52, '#d6e1f0');
+    chromeGrad.addColorStop(0.7, '#42536e');
+    chromeGrad.addColorStop(0.85, '#738ba8');
+    chromeGrad.addColorStop(1, '#080d14');
 
     // Shiny radial gradient for the 3D cranium dome cap
     var domeGrad = ctx.createRadialGradient(-4, -14, 1, 0, -9, 15);
     domeGrad.addColorStop(0, '#ffffff'); // Glaring white reflection highlight
-    domeGrad.addColorStop(0.3, '#a3b6cf');
-    domeGrad.addColorStop(0.7, '#414e63');
-    domeGrad.addColorStop(1, '#0c111a');
+    domeGrad.addColorStop(0.2, '#dbe6f5');
+    domeGrad.addColorStop(0.45, '#7c93b3');
+    domeGrad.addColorStop(0.75, '#2e3a4e');
+    domeGrad.addColorStop(1, '#06090e');
 
     ctx.fillStyle = chromeGrad;
     ctx.strokeStyle = 'rgba(0, 255, 136, 0.7)'; // Cyber green edge highlight
@@ -547,27 +551,34 @@ class SpookySkull{
 
     // 4. Heavy Menacing Brow Plates (Split in the center for T-800 robotic look)
     var browGradLeft = ctx.createLinearGradient(-14, -9, -2, -6);
-    browGradLeft.addColorStop(0, '#4e5b6e'); browGradLeft.addColorStop(1, '#ffffff');
+    browGradLeft.addColorStop(0, '#2e3845'); browGradLeft.addColorStop(0.5, '#7c93b3'); browGradLeft.addColorStop(1, '#ffffff');
     var browGradRight = ctx.createLinearGradient(2, -9, 14, -6);
-    browGradRight.addColorStop(0, '#ffffff'); browGradRight.addColorStop(1, '#2e3845');
+    browGradRight.addColorStop(0, '#ffffff'); browGradRight.addColorStop(0.5, '#7c93b3'); browGradRight.addColorStop(1, '#2e3845');
 
     ctx.strokeStyle = 'rgba(0, 255, 136, 0.65)';
     ctx.lineWidth = 0.9;
     // Left Brow segment
     ctx.fillStyle = browGradLeft;
     ctx.beginPath();
-    ctx.moveTo(-14.5, -9); ctx.lineTo(-1.2, -9); ctx.lineTo(-2.2, -5.5); ctx.lineTo(-11.5, -5.5);
+    ctx.moveTo(-14.5, -9); ctx.lineTo(-1.5, -9); ctx.lineTo(-2.5, -5.5); ctx.lineTo(-11.5, -5.5);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
     // Right Brow segment
     ctx.fillStyle = browGradRight;
     ctx.beginPath();
-    ctx.moveTo(14.5, -9); ctx.lineTo(1.2, -9); ctx.lineTo(2.2, -5.5); ctx.lineTo(11.5, -5.5);
+    ctx.moveTo(14.5, -9); ctx.lineTo(1.5, -9); ctx.lineTo(2.5, -5.5); ctx.lineTo(11.5, -5.5);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
+    // Brow connector glabella block (with center dividing line)
+    ctx.fillStyle = '#526685';
+    ctx.strokeStyle = '#05070a';
+    ctx.lineWidth = 0.5;
+    ctx.fillRect(-1.5, -9, 3, 3.5);
+    ctx.strokeRect(-1.5, -9, 3, 3.5);
+
     // Temple Rivets/Bolts
-    ctx.fillStyle = '#6d7f99';
+    ctx.fillStyle = '#d6e1f0';
     ctx.strokeStyle = '#0c111a';
     ctx.lineWidth = 0.5;
     ctx.beginPath();
@@ -580,11 +591,16 @@ class SpookySkull{
     ctx.fill(); ctx.stroke();
 
     // 5. Deep Black Eye Sockets (Menacing mechanical cavities)
-    ctx.fillStyle = '#05070c';
+    ctx.fillStyle = '#020305';
     ctx.beginPath();
-    ctx.moveTo(-12.5, -8); ctx.lineTo(-1.8, -8); ctx.lineTo(-2.8, -2.2); ctx.lineTo(-10.5, -2.2); ctx.closePath();
-    ctx.moveTo(12.5, -8); ctx.lineTo(1.8, -8); ctx.lineTo(2.8, -2.2); ctx.lineTo(10.5, -2.2); ctx.closePath();
+    ctx.moveTo(-13.0, -8); ctx.lineTo(-1.8, -8); ctx.lineTo(-2.8, -1.8); ctx.lineTo(-10.5, -1.8); ctx.closePath();
+    ctx.moveTo(13.0, -8); ctx.lineTo(1.8, -8); ctx.lineTo(2.8, -1.8); ctx.lineTo(10.5, -1.8); ctx.closePath();
     ctx.fill();
+
+    // Eye sockets metal backing frame rim
+    ctx.strokeStyle = '#42536e';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
 
     // Zygomatic Arches (Cheekbones - sharp steel brackets flaring out)
     ctx.fillStyle = chromeGrad;
@@ -608,13 +624,26 @@ class SpookySkull{
     ctx.fill(); ctx.stroke();
 
     // Mandibular Hinge Gears (classic round side pivot gears on the cheek sides)
-    ctx.fillStyle = '#5a6b82';
+    ctx.fillStyle = '#7c93b3';
     ctx.strokeStyle = '#05070a';
     ctx.lineWidth = 0.7;
     ctx.beginPath();
     ctx.arc(-11.5, 4.2, 2.5, 0, Math.PI*2);
     ctx.arc(11.5, 4.2, 2.5, 0, Math.PI*2);
     ctx.fill(); ctx.stroke();
+    
+    // Hinge Gear notches
+    ctx.strokeStyle = '#0c111a';
+    ctx.lineWidth = 0.4;
+    for(var ga=0; ga<Math.PI*2; ga+=Math.PI/4) {
+      ctx.beginPath();
+      ctx.moveTo(-11.5 + Math.cos(ga)*1.6, 4.2 + Math.sin(ga)*1.6);
+      ctx.lineTo(-11.5 + Math.cos(ga)*2.6, 4.2 + Math.sin(ga)*2.6);
+      ctx.moveTo(11.5 + Math.cos(ga)*1.6, 4.2 + Math.sin(ga)*1.6);
+      ctx.lineTo(11.5 + Math.cos(ga)*2.6, 4.2 + Math.sin(ga)*2.6);
+      ctx.stroke();
+    }
+
     // Inner gear pivot bolt
     ctx.fillStyle = '#ffffff';
     ctx.beginPath();
@@ -623,7 +652,7 @@ class SpookySkull{
     ctx.fill();
 
     // Nose bridge and spade-shaped mechanical nasal cavity
-    ctx.fillStyle = '#05070c';
+    ctx.fillStyle = '#020305';
     ctx.beginPath();
     ctx.moveTo(0, -4.5);
     ctx.lineTo(-1.8, -1.0);
@@ -636,14 +665,39 @@ class SpookySkull{
     ctx.closePath();
     ctx.fill();
 
+    // Mechanical nose bridge structure
+    ctx.fillStyle = '#526685';
+    ctx.fillRect(-1.0, -4.5, 2, 4.0);
+    ctx.strokeRect(-1.0, -4.5, 2, 4.0);
+
+    // Nasal diagonal support bars/pistons
+    ctx.strokeStyle = '#7c93b3';
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    ctx.moveTo(-1.8, -1.0); ctx.lineTo(-5.5, 0.5);
+    ctx.moveTo(1.8, -1.0); ctx.lineTo(5.5, 0.5);
+    ctx.stroke();
+
     // Glowing Red Aperture Eyes (T-800 camera lenses inside barrels matching photo)
     var eyePulse = 0.75 + Math.sin(this.p * 3.8) * 0.25;
-    ctx.strokeStyle = '#a3b6cf';
-    ctx.lineWidth = 0.7;
+    ctx.fillStyle = '#1b2330';
+    ctx.strokeStyle = '#4e5b6e';
+    ctx.lineWidth = 0.5;
     ctx.beginPath();
-    ctx.arc(-7, -5.1, 2.8, 0, Math.PI*2);
-    ctx.arc(7, -5.1, 2.8, 0, Math.PI*2);
-    ctx.stroke();
+    ctx.arc(-7, -5.1, 3.8, 0, Math.PI*2);
+    ctx.arc(7, -5.1, 3.8, 0, Math.PI*2);
+    ctx.fill(); ctx.stroke();
+
+    // 3 small mounting screws around the lens socket (T-800 detail from reference image)
+    ctx.fillStyle = '#d6e1f0';
+    for (var a = 0; a < Math.PI * 2; a += (Math.PI * 2) / 3) {
+      var sx = Math.cos(a + 0.5) * 3.1;
+      var sy = Math.sin(a + 0.5) * 3.1;
+      ctx.beginPath();
+      ctx.arc(-7 + sx, -5.1 + sy, 0.4, 0, Math.PI * 2);
+      ctx.arc(7 + sx, -5.1 + sy, 0.4, 0, Math.PI * 2);
+      ctx.fill();
+    }
 
     // Glowing laser red lens core
     ctx.fillStyle = 'rgba(255, 0, 68, ' + (eyePulse * 0.95) + ')';
@@ -689,7 +743,6 @@ class SpookySkull{
       ctx.fillStyle = toothGrad;
       
       ctx.beginPath();
-      // Use roundRect if available, fallback to rect
       ctx.roundRect ? ctx.roundRect(i, toothY, 1.3, toothHeight, 0.4) : ctx.rect(i, toothY, 1.3, toothHeight);
       ctx.fill();
       ctx.strokeStyle = '#11151d';
@@ -709,11 +762,20 @@ class SpookySkull{
     ctx.fillRect(-12.5, -2 - jawOffset, 2, 7);
     ctx.fillRect(10.5, -2 - jawOffset, 2, 7);
     
+    // Main jaw hydraulic cylinders
     ctx.strokeStyle = '#e2e8f0';
     ctx.lineWidth = 0.8;
     ctx.beginPath();
     ctx.moveTo(-11.5, 4 - jawOffset); ctx.lineTo(-9.5, 13);
     ctx.moveTo(11.5, 4 - jawOffset); ctx.lineTo(9.5, 13);
+    ctx.stroke();
+
+    // Secondary tension bars behind cheek for mechanical realism
+    ctx.strokeStyle = '#42536e';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(-11.5, 4.2 - jawOffset); ctx.lineTo(-2.5, 12);
+    ctx.moveTo(11.5, 4.2 - jawOffset); ctx.lineTo(2.5, 12);
     ctx.stroke();
 
     // Lower Jawbone (Mandible sweeps)

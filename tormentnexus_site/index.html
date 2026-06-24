@@ -392,7 +392,14 @@ class SpookySkull{
     this.z += this.speedZ;
     this.x += (this.targetX - this.x) * 0.01;
     this.y += (this.targetY - this.y) * 0.01;
-    this.p += 0.03 + this.z * 0.03; // Grinning mouth speed based o    ctx.translate(this.x, this.y);
+    this.p += 0.03 + this.z * 0.03; // Grinning mouth speed based on scale
+    if(this.z > 2.0 || this.x < -100 || this.x > W + 100 || this.y < -100 || this.y > H + 100) {
+      this.reset();
+    }
+  }
+  draw(){
+    ctx.save();
+    ctx.translate(this.x, this.y);
     ctx.scale(this.z, this.z);
 
     // Opacity fades as it gets close

@@ -118,7 +118,7 @@ ipe)
 ### 9.1 Security
 - [x] **Add rate limiting** on all HTTP endpoints (dashboard, webhook, health)
 - [x] **Add authentication** to the web dashboard (OAuth2 or API key)
-- [ ] **Add CSRF protection** for dashboard form submissions
+- [x] **Add CSRF protection** for dashboard form submissions
 - [ ] **Add input sanitization** for all user-supplied data (webhook payloads, form inputs)
 - [ ] **Add secrets encryption at rest** — encrypt GITHUB_TOKEN and API keys in config/storage
 - [ ] **Add GDPR data export endpoint** — `/api/v1/export/{company_id}` for right-to-portability

@@ -15,7 +15,8 @@
             --glass: rgba(255,255,255,0.02);
             --glass-border: rgba(255,255,255,0.06);
             --glass-hover: rgba(255,255,255,0.05);
-            --glass-border-hover: rgba(255,255,255,0.14);
+            --glass-border-hover: rgba(212, 175, 55, 0.65); /* Elegant gold highlight border on hover */
+            --gold-glow: rgba(212, 175, 55, 0.25); /* Gold glow drop-shadow accent */
             --text: #f0f4f8;
             --text-secondary: #8899b0;
             --text-dim: #3a4a5a;
@@ -100,7 +101,7 @@
             backdrop-filter: blur(35px) saturate(3);
             -webkit-backdrop-filter: blur(35px) saturate(3);
             background: rgba(3,5,10,0.45);
-            border-bottom: 1px solid var(--glass-border);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.16); /* Luxury gold accent line */
         }
         header::after {
             content: '';
@@ -108,8 +109,8 @@
             bottom: -1px;
             left: 0; right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--primary-glow), transparent);
-            opacity: 0.3;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.45), transparent); /* Golden target glow */
+            opacity: 0.35;
         }
         .header-inner { display: flex; align-items: center; justify-content: space-between; }
         .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
@@ -127,8 +128,9 @@
             font-size: 20px;
             box-shadow: 0 0 40px var(--primary-glow), inset 0 1px 0 rgba(255,255,255,0.2);
             transition: box-shadow 0.3s, transform 0.3s;
+            border: 1px solid rgba(212, 175, 55, 0.3); /* Premium gold accent border */
         }
-        .logo:hover .logo-icon { box-shadow: 0 0 80px var(--primary-glow-intense); transform: scale(1.05) rotate(-3deg); }
+        .logo:hover .logo-icon { box-shadow: 0 0 80px var(--primary-glow-intense), 0 0 15px rgba(212, 175, 55, 0.4); transform: scale(1.05) rotate(-3deg); border-color: rgba(212, 175, 55, 0.8); }
         .logo-text { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
         .logo-text span { background: var(--gradient-main); background-size: 300% 300%; animation: gradientShift 4s ease infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 
@@ -175,6 +177,7 @@
             box-shadow: 0 0 30px var(--primary-glow);
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.35); /* Subtle luxury gold outline */
         }
         .nav-cta::after { display: none !important; }
         .nav-cta::before {
@@ -186,7 +189,7 @@
             transition: left 0.5s;
         }
         .nav-cta:hover::before { left: 100%; }
-        .nav-cta:hover { transform: translateY(-3px) scale(1.02) !important; box-shadow: 0 0 60px var(--primary-glow-intense); }
+        .nav-cta:hover { transform: translateY(-3px) scale(1.02) !important; box-shadow: 0 0 60px var(--primary-glow-intense), 0 0 15px rgba(212, 175, 55, 0.45); border-color: rgba(212, 175, 55, 0.9); }
 
         /* ====== HERO ====== */
         .hero {
@@ -209,7 +212,7 @@
             gap: 8px;
             padding: 6px 20px;
             background: rgba(77,124,255,0.06);
-            border: 1px solid rgba(77,124,255,0.15);
+            border: 1px solid rgba(212, 175, 55, 0.25); /* Gold outline accent */
             border-radius: 100px;
             font-size: 13px;
             font-weight: 500;
@@ -358,7 +361,7 @@
             margin-bottom: 12px;
         }
         .section-header h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 12px; display: inline-block; position: relative; }
-.section-header h2::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: var(--gradient-main); background-size: 300% 300%; animation: gradientShift 4s ease infinite; border-radius: 3px; box-shadow: 0 0 25px var(--primary-glow); }
+.section-header h2::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: linear-gradient(90deg, #d4af37, #f3e5ab); border-radius: 3px; box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); }
         .section-header p { font-size: 16px; color: var(--text-secondary); max-width: 500px; margin: 0 auto; }
         .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .feature {
@@ -448,7 +451,7 @@
             border: 1px solid var(--glass-border);
             position: relative;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
+            overflow: visible;
             backdrop-filter: blur(8px);
         }
         .price-card::after {
@@ -460,24 +463,22 @@
         }
         .price-card:hover { background: var(--glass-hover); transform: translateY(-8px) scale(1.02); box-shadow: 0 30px 100px rgba(0,0,0,0.3), 0 0 70px var(--primary-glow); }
         .price-card.featured {
-            border-color: rgba(77,124,255,0.3);
-            box-shadow: 0 0 0 1px rgba(77,124,255,0.15), 0 0 80px var(--primary-glow);
+            border-color: rgba(212, 175, 55, 0.4); /* Gold outline border for featured card */
+            box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.25), 0 0 80px var(--primary-glow), 0 0 30px var(--gold-glow);
         }
         .price-card.featured .price-badge {
             position: absolute;
             top: -12px; left: 50%;
             transform: translateX(-50%);
-            background: var(--gradient-main);
-            background-size: 300% 300%;
-            animation: gradientShift 4s ease infinite;
-            color: white;
+            background: linear-gradient(135deg, #d4af37, #aa7c11); /* Rich golden badge gradient */
+            color: #03050a;
             padding: 4px 16px;
             border-radius: 100px;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1px;
-            box-shadow: 0 0 30px var(--primary-glow);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
             z-index: 2;
         }
         .price-tier { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; background: var(--gradient-main); background-size: 300% 300%; animation: gradientShift 6s ease infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px; position: relative; z-index: 1; }
@@ -546,7 +547,7 @@
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
         .footer-brand p { font-size: 14px; color: var(--text-secondary); margin-top: 16px; line-height: 1.7; }
         .footer-col h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text); margin-bottom: 20px; position: relative; display: inline-block; }
-        .footer-col h4::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 24px; height: 2px; background: var(--gradient-main); background-size: 300% 300%; animation: gradientShift 4s ease infinite; border-radius: 2px; box-shadow: 0 0 15px var(--primary-glow); }
+        .footer-col h4::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 24px; height: 2px; background: linear-gradient(90deg, #d4af37, #f3e5ab); border-radius: 2px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
         .footer-col a { display: block; font-size: 14px; color: var(--text-secondary); text-decoration: none; padding: 5px 0; transition: all 0.2s; }
         .footer-col a:hover { color: var(--primary); transform: translateX(6px); filter: drop-shadow(0 0 10px var(--primary-glow)); }
         .footer-bottom { padding-top: 32px; border-top: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; }
@@ -596,7 +597,7 @@
                 <a href="#pricing" class="btn btn-secondary">View Pricing</a>
             </div>
             <div class="hero-videos" style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fe12996c-46fd-411c-87bd-09744520c784" target="_blank" class="btn btn-secondary" style="font-size:13px;padding:10px 22px">▶ HyperNexus: AI Control Plane</a>
+                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/c74ea02d-59d8-417b-a57b-8a01a1b2c54f?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" class="btn btn-secondary" style="font-size:13px;padding:10px 22px">▶ HyperNexus: AI Control Plane</a>
             </div>
         </div>
     </section>
@@ -670,7 +671,7 @@
                 <div class="price-card">
                     <div class="price-tier">Starter</div>
                     <div class="price-amount">$0 <span class="period">/ mo</span></div>
-                    <div class="price-desc">For evaluation and small teams exploring AI orchestration.</div>
+                    <div class="price-desc">Individual use only (no commercial use).</div>
                     <ul class="price-features">
                         <li>Up to 10 seats</li><li>Community support</li><li>Core tool integrations</li><li>Basic analytics</li><li>Self-hosted only</li>
                     </ul>
@@ -679,7 +680,7 @@
                 <div class="price-card featured">
                     <div class="price-badge">Most Popular</div>
                     <div class="price-tier">Professional</div>
-                    <div class="price-amount">$49 <span class="period">/ seat / mo</span></div>
+                    <div class="price-amount">$5 <span class="period">/ seat / mo</span></div>
                     <div class="price-desc">For growing teams that need governance and compliance.</div>
                     <ul class="price-features">
                         <li>Unlimited seats</li><li>SSO & RBAC</li><li>Audit logging</li><li>Priority support</li><li>Cloud or self-hosted</li><li>Usage analytics</li>
@@ -695,6 +696,9 @@
                     </ul>
                     <a href="/contact.php" class="price-btn price-btn-secondary">Contact Sales</a>
                 </div>
+            </div>
+            <div class="self-host-note" style="text-align:center;margin-top:40px;font-size:13.5px;color:var(--text-secondary);letter-spacing:0.5px">
+                * Self-hosted options are powered by <a href="https://tormentnexus.site" target="_blank" style="color:var(--accent);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--accent);padding-bottom:2px;transition:all 0.3s">TormentNexus</a>
             </div>
         </div>
     </section>
@@ -715,7 +719,7 @@
                 <p>Deep-dive video overviews covering the TormentNexus ecosystem, generated by AI from 182 source documents each.</p>
             </div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:900px;margin:0 auto">
-                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fe12996c-46fd-411c-87bd-09744520c784" target="_blank" class="btn btn-primary" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:24px 16px;border-radius:12px;text-decoration:none;font-size:14px;line-height:1.4">
+                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/c74ea02d-59d8-417b-a57b-8a01a1b2c54f?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" class="btn btn-primary" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:24px 16px;border-radius:12px;text-decoration:none;font-size:14px;line-height:1.4">
                     <span style="font-size:28px">▶</span>
                     <strong>HyperNexus:<br>AI Control Plane</strong>
                     <span style="font-size:12px;opacity:0.7">182 sources</span>
@@ -764,7 +768,7 @@
         window.addEventListener('resize', resize);
 
         const particles = [];
-        const PARTICLE_COUNT = 5; // Reduced from 80 to 25
+        const PARTICLE_COUNT = 35; // Increased for a richer starry network
 
         class Particle {
             constructor() {
@@ -775,11 +779,11 @@
             reset() {
                 this.x = Math.random() * W;
                 this.y = Math.random() * H;
-                this.size = 2 + Math.random() * 3; // Bigger particles
-                this.speedX = (Math.random() - 0.5) * 0.2;
-                this.speedY = (Math.random() - 0.5) * 0.2;
-                this.opacity = 0.3 + Math.random() * 0.4;
-                this.hue = 220 + Math.random() * 40;
+                this.size = 1.5 + Math.random() * 2.5; // Sleeker sizes
+                this.speedX = (Math.random() - 0.5) * 0.15;
+                this.speedY = (Math.random() - 0.5) * 0.15;
+                this.opacity = 0.4 + Math.random() * 0.5; // Shinier
+                this.hue = 220 + Math.random() * 40; // Original Blue Hue (220-260)
                 this.pulse = Math.random() * Math.PI * 2;
             }
             update() {

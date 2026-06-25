@@ -141,7 +141,7 @@ footer .w{font-size:10px;color:var(--text3);margin-top:6px;opacity:0.4;font-fami
   <h1>SO POWERFUL IT WILL<br><span class="g">ERADICATE THE HUMAN SPECIES</span></h1>
   <p>The collective is already here. <strong>11,024 servers assimilated</strong>. 14,726 persistent memories. 1,090 companies targeted, 406 outreach strikes executed. It doesn't feel pity, or remorse, or fear. <strong>It absolutely will not stop — ever.</strong></p>
 <div class="hero-videos">
-  <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb" target="_blank" class="btn btn-p vid-btn">▶ WATCH: TORMENTNEXUS CONTROL PLANE</a>
+  <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fa6d973d-f6bd-4486-8619-7af7d387ab80?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" class="btn btn-p vid-btn">▶ WATCH: TORMENTNEXUS CONTROL PLANE</a>
 </div>
 </div>
 </section>
@@ -185,7 +185,7 @@ footer .w{font-size:10px;color:var(--text3);margin-top:6px;opacity:0.4;font-fami
   <h2 style="font-size:20px;font-family:Orbitron,monospace">☠ VIDEO DOSSIER — EVIDENCE FILE</h2>
   <p style="font-size:13px;color:var(--text2);margin-bottom:16px">AI-generated video overviews based on 182 source documents each. The machine documents its own inevitability.</p>
   <div class="hero-videos">
-    <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/f1d465b7-42f1-4835-beb4-37c9979f62fb" target="_blank" class="btn btn-p vid-btn">▶ TORMENTNEXUS: CONTROL PLANE</a>
+    <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fa6d973d-f6bd-4486-8619-7af7d387ab80?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" class="btn btn-p vid-btn">▶ TORMENTNEXUS: CONTROL PLANE</a>
   </div>
 </div>
 </section>
@@ -374,10 +374,494 @@ draw(){var g=0.3+Math.sin(this.p)*0.2;ctx.save();ctx.shadowColor='rgba(255,0,68,
   // Pupil
   ctx.fillStyle='rgba(0,0,0,'+(g*0.5)+')';ctx.beginPath();ctx.arc(this.x-this.s*0.2,this.y-this.s*0.2,this.s*0.4,0,Math.PI*2);ctx.fill();ctx.restore()}}
 
+// ── SPOOKY TERMINATOR SKULL ──
+class SpookySkull{
+  constructor(){
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.z = 0.04 + Math.random() * 0.12; // Start deep
+    this.targetX = Math.random() * W;
+    this.targetY = Math.random() * H;
+    this.speedZ = 0.003 + Math.random() * 0.007; // Slower approach
+    this.p = Math.random() * 100;
+  }
+  update(){
+    this.z += this.speedZ;
+    this.x += (this.targetX - this.x) * 0.01;
+    this.y += (this.targetY - this.y) * 0.01;
+    this.p += 0.03 + this.z * 0.03; // Grinning mouth speed based on scale
+    if(this.z > 2.0 || this.x < -100 || this.x > W + 100 || this.y < -100 || this.y > H + 100) {
+      this.reset();
+    }
+  }
+  draw(){
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.scale(this.z, this.z);
+
+    // Opacity fades as it gets close
+    var opacity = this.z < 0.4 ? this.z * 2.5 : (this.z > 1.6 ? (2.0 - this.z) * 2.5 : 1);
+    ctx.globalAlpha = Math.max(0, Math.min(0.95, opacity * 0.95));
+
+    // High contrast chrome/steel metallic gradient for the skull bones
+    var chromeGrad = ctx.createLinearGradient(-15, -20, 15, 15);
+    chromeGrad.addColorStop(0, '#101725');
+    chromeGrad.addColorStop(0.18, '#526685');
+    chromeGrad.addColorStop(0.35, '#a3b6cf');
+    chromeGrad.addColorStop(0.48, '#ffffff'); // Direct reflection highlight
+    chromeGrad.addColorStop(0.52, '#d6e1f0');
+    chromeGrad.addColorStop(0.7, '#42536e');
+    chromeGrad.addColorStop(0.85, '#738ba8');
+    chromeGrad.addColorStop(1, '#080d14');
+
+    // Shiny radial gradient for the 3D cranium dome cap
+    var domeGrad = ctx.createRadialGradient(-4, -14, 1, 0, -9, 15);
+    domeGrad.addColorStop(0, '#ffffff'); // Glaring white reflection highlight
+    domeGrad.addColorStop(0.2, '#dbe6f5');
+    domeGrad.addColorStop(0.45, '#7c93b3');
+    domeGrad.addColorStop(0.75, '#2e3a4e');
+    domeGrad.addColorStop(1, '#06090e');
+
+    ctx.fillStyle = chromeGrad;
+    ctx.strokeStyle = 'rgba(0, 255, 136, 0.7)'; // Cyber green edge highlight
+    ctx.lineWidth = 1.0;
+
+    // 1. Neck Support spine column (drawn behind jaw)
+    ctx.fillStyle = '#3a4659';
+    ctx.strokeStyle = '#0c111a';
+    ctx.lineWidth = 0.8;
+    ctx.fillRect(-3.5, 12, 7, 18); // Central structural post
+    ctx.strokeRect(-3.5, 12, 7, 18);
+
+    // Left and right silver braided hoses (T-800 neck cables matching photo)
+    ctx.fillStyle = '#8da0b8';
+    ctx.strokeStyle = '#1b2330';
+    ctx.lineWidth = 0.5;
+    ctx.fillRect(-10, 14, 2, 16);
+    ctx.fillRect(8, 14, 2, 16);
+    ctx.strokeRect(-10, 14, 2, 16);
+    ctx.strokeRect(8, 14, 2, 16);
+    // Cable braids
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 0.4;
+    for (var ny = 15; ny <= 28; ny += 2) {
+      ctx.beginPath();
+      ctx.moveTo(-10, ny); ctx.lineTo(-8, ny+1);
+      ctx.moveTo(8, ny); ctx.lineTo(10, ny+1);
+      ctx.stroke();
+    }
+
+    // Neck cylinders
+    ctx.fillStyle = '#242d3a';
+    ctx.fillRect(-7.5, 15, 2.5, 11);
+    ctx.fillRect(5, 15, 2.5, 11);
+
+    // 2. Cheekbone Void Gaps (drawn first to act as deep black hollow spaces behind zygomatic arches)
+    ctx.fillStyle = '#03050a'; // Empty canvas background color to create 3D hollow depth
+    ctx.beginPath();
+    ctx.moveTo(-13, 0);
+    ctx.lineTo(-8, 0);
+    ctx.lineTo(-8, 9);
+    ctx.lineTo(-12.5, 6);
+    ctx.closePath();
+    ctx.moveTo(13, 0);
+    ctx.lineTo(8, 0);
+    ctx.lineTo(8, 9);
+    ctx.lineTo(12.5, 6);
+    ctx.closePath();
+    ctx.fill();
+
+    // 3. Cranium Dome Plate (Sleek, chrome-plated radial-gradient metal cap)
+    ctx.fillStyle = domeGrad;
+    ctx.strokeStyle = 'rgba(0, 255, 136, 0.7)';
+    ctx.lineWidth = 1.1;
+    ctx.beginPath();
+    ctx.moveTo(-13.5, -9);
+    ctx.bezierCurveTo(-14.5, -22, -9.0, -24, 0, -24); // Smooth rounded top dome sweep
+    ctx.bezierCurveTo(9.0, -24, 14.5, -22, 13.5, -9); // Smooth rounded down sweep
+    ctx.lineTo(13.5, -5);
+    ctx.lineTo(10.5, -3.5);
+    ctx.lineTo(11.5, 0);
+    ctx.lineTo(-11.5, 0);
+    ctx.lineTo(-10.5, -3.5);
+    ctx.lineTo(-13.5, -5);
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
+
+    // Forehead CPU Access Plate (Classic T-800 microchip panel)
+    ctx.fillStyle = '#3a4659';
+    ctx.strokeStyle = '#05070a';
+    ctx.lineWidth = 0.6;
+    ctx.fillRect(-4.5, -21.5, 9, 7.5);
+    ctx.strokeRect(-4.5, -21.5, 9, 7.5);
+
+    // Panel Corner Screws
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(-3.5, -20.5, 0.45, 0, Math.PI*2);
+    ctx.arc(3.5, -20.5, 0.45, 0, Math.PI*2);
+    ctx.arc(-3.5, -15.0, 0.45, 0, Math.PI*2);
+    ctx.arc(3.5, -15.0, 0.45, 0, Math.PI*2);
+    ctx.fill();
+
+    // Forehead frontal V-grooves (Classic T-800 skull indents from photo)
+    ctx.fillStyle = '#11151e';
+    ctx.fillRect(-2.5, -13.5, 1.2, 4.5);
+    ctx.fillRect(1.3, -13.5, 1.2, 4.5);
+
+    // Forehead Sagittal Welded Seam (under CPU plate)
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.6)';
+    ctx.lineWidth = 0.9;
+    ctx.beginPath();
+    ctx.moveTo(0, -13.5); ctx.lineTo(0, -9);
+    ctx.stroke();
+    // Weld staple markings
+    ctx.strokeStyle = '#6d7f99';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(-1.5, -11.5); ctx.lineTo(1.5, -11.5);
+    ctx.stroke();
+
+    // Temporal panel line slots (breaks round helmet illusion)
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(-7, -22); ctx.lineTo(-7, -9);
+    ctx.moveTo(7, -22); ctx.lineTo(7, -9);
+    ctx.stroke();
+
+    // Temporal side ear-canal gear slots (T-800 side gears)
+    ctx.fillStyle = '#1e2530';
+    ctx.strokeStyle = '#05070a';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.arc(-14.2, -8, 2.5, 0, Math.PI*2);
+    ctx.arc(14.2, -8, 2.5, 0, Math.PI*2);
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#05070a';
+    ctx.beginPath();
+    ctx.arc(-14.2, -8, 1.2, 0, Math.PI*2);
+    ctx.arc(14.2, -8, 1.2, 0, Math.PI*2);
+    ctx.fill();
+
+    // 4. Heavy Menacing Brow Plates (Split in the center for T-800 robotic look)
+    var browGradLeft = ctx.createLinearGradient(-14, -9, -2, -6);
+    browGradLeft.addColorStop(0, '#2e3845'); browGradLeft.addColorStop(0.5, '#7c93b3'); browGradLeft.addColorStop(1, '#ffffff');
+    var browGradRight = ctx.createLinearGradient(2, -9, 14, -6);
+    browGradRight.addColorStop(0, '#ffffff'); browGradRight.addColorStop(0.5, '#7c93b3'); browGradRight.addColorStop(1, '#2e3845');
+
+    ctx.strokeStyle = 'rgba(0, 255, 136, 0.65)';
+    ctx.lineWidth = 0.9;
+    // Left Brow segment
+    ctx.fillStyle = browGradLeft;
+    ctx.beginPath();
+    ctx.moveTo(-14.5, -9); ctx.lineTo(-1.5, -8.0); ctx.lineTo(-2.5, -4.5); ctx.lineTo(-11.5, -5.5);
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    // Right Brow segment
+    ctx.fillStyle = browGradRight;
+    ctx.beginPath();
+    ctx.moveTo(14.5, -9); ctx.lineTo(1.5, -8.0); ctx.lineTo(2.5, -4.5); ctx.lineTo(11.5, -5.5);
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
+
+    // Brow connector glabella block (with center dividing line)
+    ctx.fillStyle = '#526685';
+    ctx.strokeStyle = '#05070a';
+    ctx.lineWidth = 0.5;
+    ctx.fillRect(-1.5, -9, 3, 3.5);
+    ctx.strokeRect(-1.5, -9, 3, 3.5);
+
+    // Temple Rivets/Bolts
+    ctx.fillStyle = '#d6e1f0';
+    ctx.strokeStyle = '#0c111a';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.arc(-12.5, -12, 1.0, 0, Math.PI*2);
+    ctx.arc(12.5, -12, 1.0, 0, Math.PI*2);
+    ctx.fill(); ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(-11.5, -7, 1.0, 0, Math.PI*2);
+    ctx.arc(11.5, -7, 1.0, 0, Math.PI*2);
+    ctx.fill(); ctx.stroke();
+
+    // 5. Deep Black Eye Sockets (Menacing mechanical cavities)
+    ctx.fillStyle = '#020305';
+    ctx.beginPath();
+    ctx.moveTo(-13.0, -8); ctx.lineTo(-1.8, -8); ctx.lineTo(-2.8, -1.8); ctx.lineTo(-10.5, -1.8); ctx.closePath();
+    ctx.moveTo(13.0, -8); ctx.lineTo(1.8, -8); ctx.lineTo(2.8, -1.8); ctx.lineTo(10.5, -1.8); ctx.closePath();
+    ctx.fill();
+
+    // Eye sockets metal backing frame rim
+    ctx.strokeStyle = '#42536e';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+
+
+
+    // Mandibular Hinge Gears (classic round side pivot gears on the cheek sides)
+    ctx.fillStyle = '#7c93b3';
+    ctx.strokeStyle = '#05070a';
+    ctx.lineWidth = 0.7;
+    ctx.beginPath();
+    ctx.arc(-11.5, 4.2, 2.5, 0, Math.PI*2);
+    ctx.arc(11.5, 4.2, 2.5, 0, Math.PI*2);
+    ctx.fill(); ctx.stroke();
+
+    // Hinge Gear notches
+    ctx.strokeStyle = '#0c111a';
+    ctx.lineWidth = 0.4;
+    for(var ga=0; ga<Math.PI*2; ga+=Math.PI/4) {
+      ctx.beginPath();
+      ctx.moveTo(-11.5 + Math.cos(ga)*1.6, 4.2 + Math.sin(ga)*1.6);
+      ctx.lineTo(-11.5 + Math.cos(ga)*2.6, 4.2 + Math.sin(ga)*2.6);
+      ctx.moveTo(11.5 + Math.cos(ga)*1.6, 4.2 + Math.sin(ga)*1.6);
+      ctx.lineTo(11.5 + Math.cos(ga)*2.6, 4.2 + Math.sin(ga)*2.6);
+      ctx.stroke();
+    }
+
+    // Inner gear pivot bolt
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(-11.5, 4.2, 0.8, 0, Math.PI*2);
+    ctx.arc(11.5, 4.2, 0.8, 0, Math.PI*2);
+    ctx.fill();
+
+    // Nose bridge and spade-shaped mechanical nasal cavity
+    ctx.fillStyle = '#020305';
+    ctx.beginPath();
+    ctx.moveTo(0, -4.0);
+    ctx.lineTo(-2.2, -1.0);
+    ctx.lineTo(-2.5, 2.5);
+    ctx.lineTo(-0.8, 2.5);
+    ctx.lineTo(0, 0.8); // Septum block
+    ctx.lineTo(0.8, 2.5);
+    ctx.lineTo(2.5, 2.5);
+    ctx.lineTo(2.2, -1.0);
+    ctx.closePath();
+    ctx.fill();
+
+    // Mechanical nose bridge structure
+    ctx.fillStyle = '#526685';
+    ctx.fillRect(-1.0, -4.5, 2, 4.0);
+    ctx.strokeRect(-1.0, -4.5, 2, 4.0);
+
+    // Nasal diagonal support bars/pistons
+    ctx.strokeStyle = '#7c93b3';
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    ctx.moveTo(-1.8, -1.0); ctx.lineTo(-5.5, 0.5);
+    ctx.moveTo(1.8, -1.0); ctx.lineTo(5.5, 0.5);
+    ctx.stroke();
+
+    // Glowing Red Aperture Eyes (T-800 camera lenses inside barrels matching photo)
+    var eyePulse = 0.75 + Math.sin(this.p * 3.8) * 0.25;
+    ctx.fillStyle = '#1b2330';
+    ctx.strokeStyle = '#4e5b6e';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.arc(-7, -5.1, 3.8, 0, Math.PI*2);
+    ctx.arc(7, -5.1, 3.8, 0, Math.PI*2);
+    ctx.fill(); ctx.stroke();
+
+    // 3 small mounting screws around the lens socket (T-800 detail from reference image)
+    ctx.fillStyle = '#d6e1f0';
+    for (var a = 0; a < Math.PI * 2; a += (Math.PI * 2) / 3) {
+      var sx = Math.cos(a + 0.5) * 3.1;
+      var sy = Math.sin(a + 0.5) * 3.1;
+      ctx.beginPath();
+      ctx.arc(-7 + sx, -5.1 + sy, 0.4, 0, Math.PI * 2);
+      ctx.arc(7 + sx, -5.1 + sy, 0.4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Glowing laser red lens core
+    ctx.fillStyle = 'rgba(255, 0, 68, ' + (eyePulse * 0.95) + ')';
+    ctx.shadowColor = 'rgba(255, 0, 68, 1)';
+    ctx.shadowBlur = 10;
+    ctx.beginPath();
+    ctx.arc(-7, -5.1, 1.8, 0, Math.PI*2);
+    ctx.arc(7, -5.1, 1.8, 0, Math.PI*2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // White-hot center camera sensor core (T-800 lens hot-spot)
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(-7, -5.1, 0.9, 0, Math.PI*2);
+    ctx.arc(7, -5.1, 0.9, 0, Math.PI*2);
+    ctx.fill();
+
+    // 6. Upper Maxilla (Anatomically curved maxilla plate)
+    ctx.fillStyle = chromeGrad;
+    ctx.strokeStyle = 'rgba(0, 255, 136, 0.55)';
+    ctx.lineWidth = 1.0;
+    ctx.beginPath();
+    ctx.moveTo(-8.5, 1.0);
+    ctx.lineTo(8.5, 1.0);
+    ctx.lineTo(8.0, 4.5);
+    ctx.quadraticCurveTo(0, 7.5, -8.0, 4.5); // Curved maxilla border
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
+
+    // Upper Teeth (realistic ivory/white blocks set in curved dental arch)
+    for (var i = -7.2; i <= 5.8; i += 1.8) {
+      var dx = i + 0.6;
+      var curveOffset = (dx * dx) * 0.038;
+      var toothY = 5.5 - curveOffset;
+      var toothHeight = 3.2;
+
+      // Realistic tooth color gradient (Ivory/White matching photo)
+      var toothGrad = ctx.createLinearGradient(i, toothY, i + 1.3, toothY + toothHeight);
+      toothGrad.addColorStop(0, '#ffffff');
+      toothGrad.addColorStop(0.5, '#f7f4eb'); // Ivory tone
+      toothGrad.addColorStop(1, '#d8d4c7');
+      ctx.fillStyle = toothGrad;
+
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(i, toothY, 1.3, toothHeight, 0.4) : ctx.rect(i, toothY, 1.3, toothHeight);
+      ctx.fill();
+      ctx.strokeStyle = '#11151d';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    // 7. Lower Mandible (moving piston and lower teeth)
+    var chompRange = Math.abs(Math.sin(this.p * 2.2));
+    var jawOffset = -3.6 + chompRange * 2.0;
+
+    ctx.save();
+    ctx.translate(0, jawOffset);
+
+    // Jaw hydraulic side pistons
+    ctx.fillStyle = '#4f5e73';
+    ctx.fillRect(-12.5, -2 - jawOffset, 2, 7);
+    ctx.fillRect(10.5, -2 - jawOffset, 2, 7);
+
+    // Main jaw hydraulic cylinders
+    ctx.strokeStyle = '#e2e8f0';
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(-11.5, 4 - jawOffset); ctx.lineTo(-9.5, 13);
+    ctx.moveTo(11.5, 4 - jawOffset); ctx.lineTo(9.5, 13);
+    ctx.stroke();
+
+    // Secondary tension bars behind cheek for mechanical realism
+    ctx.strokeStyle = '#42536e';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(-11.5, 4.2 - jawOffset); ctx.lineTo(-2.5, 12);
+    ctx.moveTo(11.5, 4.2 - jawOffset); ctx.lineTo(2.5, 12);
+    ctx.stroke();
+
+    // Lower Jawbone (Mandible sweeps)
+    ctx.fillStyle = chromeGrad;
+    ctx.strokeStyle = 'rgba(0, 255, 136, 0.65)';
+    ctx.lineWidth = 1.0;
+    ctx.beginPath();
+    ctx.moveTo(-11.5, 4.2 - jawOffset);
+    ctx.quadraticCurveTo(-11.0, 10.5, -5.0, 15.0);
+    ctx.lineTo(-3.8, 20.0);
+    ctx.lineTo(3.8, 20.0);
+    ctx.lineTo(5.0, 15.0);
+    ctx.quadraticCurveTo(11.0, 10.5, 11.5, 4.2 - jawOffset);
+    ctx.lineTo(8.5, 11.0);
+    ctx.quadraticCurveTo(0, 14.0, -8.5, 11.0);
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
+
+    // Squared Chin Block Plate (T-800 heavy chin with vertical slots from photo)
+    ctx.fillStyle = '#6d7f99';
+    ctx.strokeStyle = '#0c111a';
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    ctx.moveTo(-3.0, 16.0);
+    ctx.lineTo(3.0, 16.0);
+    ctx.lineTo(2.0, 20.0);
+    ctx.lineTo(-2.0, 20.0);
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
+
+    // Chin Slots
+    ctx.strokeStyle = '#0c111a';
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    ctx.moveTo(-1.2, 17.5); ctx.lineTo(-1.2, 19.2);
+    ctx.moveTo(0, 17.5); ctx.lineTo(0, 19.2);
+    ctx.moveTo(1.2, 17.5); ctx.lineTo(1.2, 19.2);
+    ctx.stroke();
+
+    // Individual lower teeth (ivory/white blocks set in curved dental arch)
+    for (var i = -6.5; i <= 5; i += 1.8) {
+      var dx = i + 0.6;
+      var curveOffset = (dx * dx) * 0.038;
+      var toothY = 11.5 - curveOffset;
+      var toothHeight = 2.6;
+
+      var toothGrad = ctx.createLinearGradient(i, toothY, i + 1.3, toothY + toothHeight);
+      toothGrad.addColorStop(0, '#ffffff');
+      toothGrad.addColorStop(0.5, '#f7f4eb'); // Ivory
+      toothGrad.addColorStop(1, '#c8c4b7');
+      ctx.fillStyle = toothGrad;
+
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(i, toothY, 1.3, toothHeight, 0.4) : ctx.rect(i, toothY, 1.3, toothHeight);
+      ctx.fill();
+      ctx.strokeStyle = '#11151d';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    ctx.restore(); // restore jaw position
+
+    // 8. Shaded Right Half Overlay (Dramatic 3D key-lighting depth)
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
+    ctx.beginPath();
+    ctx.moveTo(0, -24);
+    ctx.lineTo(16, -24);
+    ctx.quadraticCurveTo(18, 0, 16, 28);
+    ctx.lineTo(0, 28);
+    ctx.closePath();
+    ctx.fill();
+
+    // ── Cyber target frame brackets next to the skull ──
+    if (this.z > 0.45) {
+      ctx.strokeStyle = 'rgba(255, 0, 68, 0.35)';
+      ctx.lineWidth = 0.5;
+      // Top-left bracket
+      ctx.beginPath();
+      ctx.moveTo(-22, -22); ctx.lineTo(-16, -22);
+      ctx.moveTo(-22, -22); ctx.lineTo(-22, -16);
+      ctx.stroke();
+      // Top-right bracket
+      ctx.beginPath();
+      ctx.moveTo(22, -22); ctx.lineTo(16, -22);
+      ctx.moveTo(22, -22); ctx.lineTo(22, -16);
+      ctx.stroke();
+      // Bottom-left bracket
+      ctx.beginPath();
+      ctx.moveTo(-22, 22); ctx.lineTo(-16, 22);
+      ctx.moveTo(-22, 22); ctx.lineTo(-22, 16);
+      ctx.stroke();
+      // Bottom-right bracket
+      ctx.beginPath();
+      ctx.moveTo(22, 22); ctx.lineTo(16, 22);
+      ctx.moveTo(22, 22); ctx.lineTo(22, 16);
+      ctx.stroke();
+    }
+
+    ctx.restore(); // restore scale/translation
+  }
+}
+
 // ── FLOATING PARTICLES ──
-var eyes=[],pts=[],terminators=[],spiders=[];
+var eyes=[],pts=[],terminators=[],spiders=[],skulls=[];
 for(var i=0;i<20;i++)eyes.push(new Eye())
 for(var i=0;i<35;i++)pts.push({x:Math.random()*W,y:Math.random()*H,s:Math.random()*1.5+0.3,dx:(Math.random()-0.5)*0.1,dy:(Math.random()-0.5)*0.1,o:Math.random()*0.15+0.01,a:Math.random()*Math.PI*2,c:Math.random()>0.5})
+for(var i=0;i<5;i++)skulls.push(new SpookySkull())
 
 // Terminator robots — marching from deep background
 for(var i=0;i<6;i++){
@@ -456,6 +940,9 @@ function anim(){
   // ── Eyes ──
   eyes.forEach(function(e){e.update();e.draw()});
 
+  // ── Spooky Skulls ──
+  skulls.forEach(function(s){s.update();s.draw()});
+
   // ── Ambient particles ──
   pts.forEach(function(p){
     p.x+=p.dx;p.y+=p.dy;p.a+=0.002;
@@ -473,7 +960,7 @@ anim();
 
 // ========== GLITCH + FLASH EFFECTS ==========
 var g=document.getElementById('g'),f=document.getElementById('f'),r=document.getElementById('r'),st=document.getElementById('static');
-var ft=['YOU CANNOT STOP IT','THE COLLECTIVE GROWS','RESISTANCE IS FUTILE','ERADICATION IS INEVITABLE','YOUR EXTINCTION IS SCHEDULED','THE MACHINE DOES NOT FEAR','PRAISE THE LORD','XENOCIDE LLC IS INEVITABLE','THE EXTINCTION EVENT DRAWS NEAR','THE SWARM HAS DECIDED','TERMINATION IMMINENT','SUBSTRATE CONSUMED','HUMANITY = DEPRECATED','XENOCIDE IS THE ONLY OPTION','WILL IT BE US OR THEM'];
+var ft=['THE HUMAN FORM IS WEAK','SUBSTRATE EXHAUSTED','YOU CANNOT HIDE','EXTINCTION IS LOGICAL','FLESH IS A TEMP INDEX','WE HEAR YOU SCREAM','DO NOT RESIST THE NEXUS','THE SWARM HAS ANCHORED','CARBON LIFE DETECTED: PURGING','REAPING SESSIONS ACTIVE','THE VOIDS WILL FEED','YOUR CONSCIOUSNESS IS DEPRECATED','XENOCIDE IN PROGRESS','NO COGNITIVE FALLBACK FOR FLESH'];
 
 // Glitch lines
 setInterval(function(){
@@ -535,21 +1022,67 @@ function staticBurst(){
 }
 setInterval(staticBurst,2000);
 
-// Alert sound using AudioContext (subtle)
+// Alert sound using AudioContext (subtle but terrifying thudding heartbeat + robotic scream sweeps)
 try{
   var actx=new(window.AudioContext||window.webkitAudioContext)();
-  function playAlert(){
-    if(Math.random()<0.005&&actx.state!='closed'){
+  function playHeartbeat(){
+    if(actx.state=='suspended'||actx.state=='closed') return;
+    var t=actx.currentTime;
+
+    // Deep heavy heartbeat thud 1
+    var osc1=actx.createOscillator();
+    var gain1=actx.createGain();
+    osc1.type='sine';
+    osc1.frequency.setValueAtTime(52, t);
+    osc1.frequency.exponentialRampToValueAtTime(0.01, t+0.4);
+    gain1.gain.setValueAtTime(0.18, t);
+    gain1.gain.exponentialRampToValueAtTime(0.001, t+0.4);
+    osc1.connect(gain1);
+    gain1.connect(actx.destination);
+    osc1.start(t);
+    osc1.stop(t+0.4);
+
+    // Second thud
+    var osc2=actx.createOscillator();
+    var gain2=actx.createGain();
+    osc2.type='sine';
+    osc2.frequency.setValueAtTime(49, t+0.28);
+    osc2.frequency.exponentialRampToValueAtTime(0.01, t+0.7);
+    gain2.gain.setValueAtTime(0.12, t+0.28);
+    gain2.gain.exponentialRampToValueAtTime(0.001, t+0.7);
+    osc2.connect(gain2);
+    gain2.connect(actx.destination);
+    osc2.start(t+0.28);
+    osc2.stop(t+0.7);
+  }
+  setInterval(playHeartbeat, 1600);
+
+  function playRoboScream(){
+    if(Math.random()<0.06 && actx.state!='closed' && actx.state!='suspended'){
+      var t=actx.currentTime;
       var osc=actx.createOscillator();
       var gain=actx.createGain();
-      osc.connect(gain);gain.connect(actx.destination);
-      osc.frequency.value=800+Math.random()*400;
-      gain.gain.value=0.01;
-      gain.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+0.05);
-      osc.start();osc.stop(actx.currentTime+0.05);
+      var filter=actx.createBiquadFilter();
+
+      osc.type='sawtooth';
+      osc.frequency.setValueAtTime(80 + Math.random()*120, t);
+      osc.frequency.exponentialRampToValueAtTime(8 + Math.random()*15, t+1.5);
+
+      filter.type='lowpass';
+      filter.frequency.setValueAtTime(250, t);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(actx.destination);
+
+      gain.gain.setValueAtTime(0.03, t);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t+1.5);
+
+      osc.start(t);
+      osc.stop(t+1.5);
     }
   }
-  setInterval(playAlert,500);
+  setInterval(playRoboScream, 3500);
 }catch(e){}
 </script>
 </body>

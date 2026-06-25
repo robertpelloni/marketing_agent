@@ -57,16 +57,20 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 
 func (s *Server) routes() {
 	// Protected routes
-	s.mux.Handle("/", s.auth.Middleware(http.HandlerFunc(s.handleDashboard)))
+	// Initialize rate limiter: 10 requests per second, burst of 20
+	rl := newRateLimiter(10, 20)
+
+	// Protected routes
+	s.mux.Handle("/", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleDashboard))))
 
 	// Public routes
-	s.mux.HandleFunc("/login", s.auth.HandleLogin)
-	s.mux.HandleFunc("/health", s.handleHealth)
-	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
-	s.mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
-		s.mux.HandleFunc("/api/v1/quote", s.handleGenerateQuote)
-	s.mux.Handle("/api/v1/leads", s.auth.Middleware(http.HandlerFunc(s.handleLeadsAPI)))
-	s.mux.Handle("/api/v1/deals", s.auth.Middleware(http.HandlerFunc(s.handleDealsAPI)))
+	s.mux.Handle("/login", rl.middleware(http.HandlerFunc(s.auth.HandleLogin)))
+	s.mux.Handle("/health", rl.middleware(http.HandlerFunc(s.handleHealth)))
+	s.mux.Handle("/health/detailed", rl.middleware(http.HandlerFunc(s.handleDetailedHealth)))
+	s.mux.Handle("/api/v1/webhook/github", rl.middleware(http.HandlerFunc(s.handleGitHubWebhook)))
+	s.mux.Handle("/api/v1/quote", rl.middleware(http.HandlerFunc(s.handleGenerateQuote)))
+	s.mux.Handle("/api/v1/leads", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleLeadsAPI))))
+	s.mux.Handle("/api/v1/deals", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleDealsAPI))))
 }
 
 // ServeHTTP implements the http.Handler interface.

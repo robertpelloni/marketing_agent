@@ -850,9 +850,25 @@
             >▶ WATCH: TORMENTNEXUS AI CONTROL PLANE</a
           >
         </div>
-        <div id="tormentnexus-hero-vid" style="margin-top:16px;max-width:700px;margin-left:auto;margin-right:auto;border-radius:10px;overflow:hidden;border:1px solid rgba(0,255,136,0.15);box-shadow:0 0 40px rgba(0,255,136,0.08)">
-          <video controls style="width:100%;display:block" preload="metadata">
-            <source src="/tormentnexus_ai_control_plane.mp4" type="video/mp4">
+        <div
+          id="tormentnexus-hero-vid"
+          style="
+            margin-top: 16px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.08);
+          "
+        >
+          <video
+            controls
+            style="width: 100%; display: block"
+            preload="metadata"
+          >
+            <source src="/tormentnexus_ai_control_plane.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -1011,9 +1027,25 @@
             >▶ TORMENTNEXUS: AI CONTROL PLANE</a
           >
         </div>
-        <div id="tormentnexus-dossier-vid" style="margin-top:16px;max-width:700px;margin-left:auto;margin-right:auto;border-radius:10px;overflow:hidden;border:1px solid rgba(0,255,136,0.15);box-shadow:0 0 40px rgba(0,255,136,0.08)">
-          <video controls style="width:100%;display:block" preload="metadata">
-            <source src="/tormentnexus_ai_control_plane.mp4" type="video/mp4">
+        <div
+          id="tormentnexus-dossier-vid"
+          style="
+            margin-top: 16px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.08);
+          "
+        >
+          <video
+            controls
+            style="width: 100%; display: block"
+            preload="metadata"
+          >
+            <source src="/tormentnexus_ai_control_plane.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -2045,6 +2077,9 @@
           // LAYER 7: NOSE — Narrow bridge with heart-shaped nasal cavity
           // ══════════════════════════════════════
 
+          ctx.save();
+          ctx.translate(0, 5);
+
           // Nose bridge structure (vertical chrome bar between eyes)
           ctx.fillStyle = "#6e84a0";
           ctx.strokeStyle = "#0a0e14";
@@ -2102,6 +2137,8 @@
           ctx.arc(6, 3, 0.5, 0, Math.PI * 2);
           ctx.fill();
 
+          ctx.restore();
+
           // ══════════════════════════════════════
           // LAYER 8: MANDIBULAR HINGE GEARS (jaw pivot assemblies)
           // ══════════════════════════════════════
@@ -2150,6 +2187,9 @@
           // LAYER 9: UPPER MAXILLA (upper jaw plate + teeth)
           // ══════════════════════════════════════
 
+          ctx.save();
+          ctx.translate(0, 6);
+
           ctx.fillStyle = chromeGrad;
           ctx.strokeStyle = "rgba(120, 180, 255, 0.3)";
           ctx.lineWidth = 0.7;
@@ -2194,13 +2234,11 @@
             ctx.lineWidth = 0.4;
             ctx.stroke();
           });
-
-          // ══════════════════════════════════════
-          // LAYER 10: LOWER MANDIBLE (animated jaw with hydraulics)
+          ctx.restore();
           // ══════════════════════════════════════
 
-var chompRange = 0.3 + Math.abs(Math.sin(this.p * 1.2)) * 0.7;
-var jawDrop = 3 + chompRange * 6;
+          var chompRange = 0.2 + Math.abs(Math.sin(this.p * 0.8)) * 0.8;
+          var jawDrop = 4 + chompRange * 6;
 
           ctx.save();
           ctx.translate(0, jawDrop);

@@ -2097,19 +2097,31 @@
           ctx.scale(0.35, 0.35);
 
           // Nasal cavity (inverted pear/heart shaped skull opening)
-          ctx.fillStyle = "#010204";
+          ctx.fillStyle = "#030508";
           ctx.beginPath();
-          ctx.moveTo(0, -1.5);
-          // Left side arch (narrow curve down and out, then back in)
-          ctx.bezierCurveTo(-1.2, -0.8, -1.8, 0.5, -1.2, 2.0);
-          ctx.lineTo(-0.8, 2.5);
-          ctx.lineTo(0, 1.8); // slight septum bone peak inside
-          ctx.lineTo(0.8, 2.5);
-          ctx.lineTo(1.2, 2.0);
-          // Right side arch
-          ctx.bezierCurveTo(1.8, 0.5, 1.2, -0.8, 0, -1.5);
+          ctx.moveTo(0, -1.0);
+          // Left nostril opening (smaller, tighter arch)
+          ctx.bezierCurveTo(-0.8, -0.5, -1.0, 0.3, -0.6, 1.2);
+          ctx.lineTo(-0.4, 1.6);
+          ctx.lineTo(0, 1.2); // septum
+          ctx.lineTo(0.4, 1.6);
+          ctx.lineTo(0.6, 1.2);
+          // Right nostril opening
+          ctx.bezierCurveTo(1.0, 0.3, 0.8, -0.5, 0, -1.0);
           ctx.closePath();
           ctx.fill();
+
+          // Nostril hole highlights (inner edge glow)
+          ctx.strokeStyle = "rgba(100, 140, 180, 0.3)";
+          ctx.lineWidth = 0.2;
+          ctx.beginPath();
+          ctx.moveTo(0, -1.0);
+          ctx.bezierCurveTo(-0.8, -0.5, -1.0, 0.3, -0.6, 1.2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(0, -1.0);
+          ctx.bezierCurveTo(0.8, -0.5, 1.0, 0.3, 0.6, 1.2);
+          ctx.stroke();
 
           // Nasal support struts (angled pistons from nose to cheek, visible in photo)
           ctx.strokeStyle = "#7a94b0";

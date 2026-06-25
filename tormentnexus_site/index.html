@@ -2077,6 +2077,21 @@
           // LAYER 7: NOSE — Narrow bridge with heart-shaped nasal cavity
           // ══════════════════════════════════════
 
+          // Face Center Maxilla Plate (fills the dark gap under the eyes and between cheekbones)
+          ctx.fillStyle = chromeGrad;
+          ctx.strokeStyle = "rgba(120, 180, 255, 0.35)";
+          ctx.lineWidth = 0.7;
+          ctx.beginPath();
+          ctx.moveTo(-4.5, 1.5); // left inner socket bottom
+          ctx.lineTo(4.5, 1.5);  // right inner socket bottom
+          ctx.lineTo(7, 2);      // right inner cheekbone point
+          ctx.lineTo(10, 9);     // right upper maxilla top
+          ctx.lineTo(-10, 9);    // left upper maxilla top
+          ctx.lineTo(-7, 2);     // left inner cheekbone point
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
           ctx.save();
           ctx.translate(0, 5);
           ctx.scale(0.35, 0.35);

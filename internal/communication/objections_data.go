@@ -231,7 +231,7 @@ const embeddedObjectionData = `{
     {
       "id": "resp_roi_calculation",
       "objection_id": "obj_pricing_roi",
-      "text": "Let's run a quick ROI calculation together. If your team spends 15 engineer-hours/week on tool orchestration, TormentNexus typically recaptures 80%% of that. What does an engineer-hour cost your organization?",
+      "text": "Let's run a quick ROI calculation together. If your team spends 15 engineer-hours/week on tool orchestration, HyperNexus typically recaptures 80%% of that. What does an engineer-hour cost your organization?",
       "approach": "consultative",
       "use_cases": ["engaged", "negotiating"],
       "success_rate": 0.75,
@@ -241,7 +241,7 @@ const embeddedObjectionData = `{
     {
       "id": "resp_security_soc2",
       "objection_id": "obj_security_data_privacy",
-      "text": "Security is our top priority. TormentNexus is designed to run fully on-premise — your data never leaves your network. We have SOC 2 Type II, end-to-end encryption, and can share our security whitepaper and pen test results immediately.",
+      "text": "Security is our top priority. HyperNexus is designed to run fully on-premise — your data never leaves your network. We have SOC 2 Type II, end-to-end encryption, and can share our security whitepaper and pen test results immediately.",
       "approach": "technical",
       "use_cases": ["*"],
       "success_rate": 0.8,
@@ -301,7 +301,7 @@ const embeddedObjectionData = `{
     {
       "id": "resp_competition_differentiation",
       "objection_id": "obj_competition_using_x",
-      "text": "I'd love to understand what you like about your current setup. TormentNexus is unique because it combines progressive MCP routing, cross-harness parity across 6 platforms, and local-first memory in one control plane — no other solution does all three. May I show you a comparison?",
+      "text": "I'd love to understand what you like about your current setup. HyperNexus is unique because it combines progressive MCP routing, cross-harness parity across 6 platforms, and local-first memory in one control plane — no other solution does all three. May I show you a comparison?",
       "approach": "social-proof",
       "use_cases": ["*"],
       "success_rate": 0.62,
@@ -341,7 +341,7 @@ const embeddedObjectionData = `{
     {
       "id": "resp_need_cost_of_internal",
       "objection_id": "obj_need_already_solved",
-      "text": "Building in-house is a strong signal — your team clearly values this capability. The question is whether the maintenance cost is worth it. Our customers who built internal solutions found that TormentNexus saved them 3-4 engineer-months/year in maintenance alone. Want to see the comparison?",
+      "text": "Building in-house is a strong signal — your team clearly values this capability. The question is whether the maintenance cost is worth it. Our customers who built internal solutions found that HyperNexus saved them 3-4 engineer-months/year in maintenance alone. Want to see the comparison?",
       "approach": "value",
       "use_cases": ["*"],
       "success_rate": 0.58,
@@ -371,7 +371,7 @@ const embeddedObjectionData = `{
     {
       "id": "resp_vendor_open_ecosystem",
       "objection_id": "obj_vendor_lock_in",
-      "text": "TormentNexus is built on open standards — MCP, JSON-RPC, SQLite. Your data and configurations are portable. We provide export tools, and you can run our Community Edition indefinitely with no vendor lock-in. Our business model is value, not captivity.",
+      "text": "HyperNexus is built on open standards — MCP, JSON-RPC, SQLite. Your data and configurations are portable. We provide export tools, and you can run our fork or the TormentNexus Community Edition indefinitely with no vendor lock-in. Our business model is value, not captivity.",
       "approach": "technical",
       "use_cases": ["*"],
       "success_rate": 0.75,
@@ -381,7 +381,7 @@ const embeddedObjectionData = `{
     {
       "id": "resp_vendor_longevity",
       "objection_id": "obj_vendor_long_term_bet",
-      "text": "Valid concern. TormentNexus is available under BSL/AGPL — you can self-host forever regardless of our company's fate. We also publish our architecture openly, and the entire CLI and control plane are available on GitHub. Your investment is in the technology, not just our company.",
+      "text": "Valid concern. HyperNexus is built on a stable fork of TormentNexus, which is available under BSL/AGPL — you can self-host forever regardless of our company's fate. We also publish our architecture openly, and the entire fork's code is available on GitHub. Your investment is in the technology, not just our company.",
       "approach": "reassurance",
       "use_cases": ["*"],
       "success_rate": 0.72,
@@ -411,7 +411,7 @@ const embeddedObjectionData = `{
     {
       "id": "resp_integration_stack",
       "objection_id": "obj_integration_doesnt_work_with_our_stack",
-      "text": "What does your current stack look like? TormentNexus integrates with any MCP-compatible tool, supports all major LLM providers (Google, Anthropic, OpenAI, DeepSeek, OpenRouter, local), and works alongside your existing CI/CD and monitoring. I'm confident we can make it work — let's validate together.",
+      "text": "What does your current stack look like? HyperNexus integrates with any MCP-compatible tool, supports all major LLM providers (Google, Anthropic, OpenAI, DeepSeek, OpenRouter, local), and works alongside your existing CI/CD and monitoring. I'm confident we can make it work — let's validate together.",
       "approach": "consultative",
       "use_cases": ["*"],
       "success_rate": 0.68,
@@ -421,7 +421,7 @@ const embeddedObjectionData = `{
     {
       "id": "resp_integration_migration_handholding",
       "objection_id": "obj_integration_migration_cost",
-      "text": "The migration is designed to be incremental — you can run TormentNexus alongside your existing tools and migrate one workflow at a time. Our engineering team provides direct support during the transition, and most teams complete the process in under a week.",
+      "text": "The migration is designed to be incremental — you can run HyperNexus alongside your existing tools and migrate one workflow at a time. Our engineering team provides direct support during the transition, and most teams complete the process in under a week.",
       "approach": "reassurance",
       "use_cases": ["engaged", "negotiating"],
       "success_rate": 0.65,
@@ -441,7 +441,7 @@ const embeddedObjectionData = `{
     {
       "id": "resp_support_on_premise",
       "objection_id": "obj_support_on_premise",
-      "text": "TormentNexus runs entirely on your infrastructure — we're local-first by design. You deploy the Go sidecar and TypeScript control plane on your own servers with full air-gap support. Our Enterprise edition includes on-prem deployment assistance and custom configuration.",
+      "text": "HyperNexus runs entirely on your infrastructure — we're local-first by design. You deploy the Go sidecar and TypeScript control plane on your own servers with full air-gap support. Our Enterprise edition includes on-prem deployment assistance and custom configuration.",
       "approach": "technical",
       "use_cases": ["*"],
       "success_rate": 0.82,

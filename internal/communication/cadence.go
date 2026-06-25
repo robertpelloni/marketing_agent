@@ -38,7 +38,7 @@ func DefaultCadence() CadenceSchedule {
 				Channel:	db.ChannelEmail,
 				DelayAfterPrev:	0,	// First touch immediately
 				TemplateID:	"intro-email",
-				Subject:	"TormentNexus for %s — Quick Question",
+				Subject:	"HyperNexus for %s — Quick Question",
 			},
 			{
 				StepNumber:	2,
@@ -52,14 +52,14 @@ func DefaultCadence() CadenceSchedule {
 				Channel:	db.ChannelEmail,
 				DelayAfterPrev:	72 * time.Hour,	// 3 days after GitHub
 				TemplateID:	"followup-email",
-				Subject:	"Re: TormentNexus for %s — Thoughts?",
+				Subject:	"Re: HyperNexus for %s — Thoughts?",
 			},
 			{
 				StepNumber:	4,
 				Channel:	db.ChannelLinkedIn,
 				DelayAfterPrev:	96 * time.Hour,	// 4 days after email
 				TemplateID:	"linkedin-connect",
-				Subject:	"TormentNexus — AI Infrastructure",
+				Subject:	"HyperNexus — AI Infrastructure",
 			},
 			{
 				StepNumber:	5,

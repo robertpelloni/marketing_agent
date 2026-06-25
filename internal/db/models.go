@@ -124,3 +124,14 @@ type PerformanceMetrics struct {
 	SuccessfulOutreach int            `json:"successful_outreach"`
 	WinRate            float64        `json:"win_rate"`
 }
+
+// SocialPost represents a logged social media post.
+type SocialPost struct {
+	ID              int64     `db:"id"`
+	Brand           string    `db:"brand"`            // "tormentnexus" or "hypernexus"
+	Platform        string    `db:"platform"`         // "reddit", "bluesky", "linkedin", "twitter"
+	AccountUsername string    `db:"account_username"`
+	PostContent     string    `db:"post_content"`
+	Status          string    `db:"status"`           // "posted", "failed", "draft"
+	CreatedAt       time.Time `db:"created_at"`
+}

@@ -776,3 +776,27 @@ func (db *DB) MarkTemplateSuccessForDeal(ctx context.Context, dealID int64) erro
 	}
 	return nil
 }
+
+// CreateSocialPost inserts a new social post log into the database.
+func (db *DB) CreateSocialPost(ctx context.Context, post *SocialPost) error {
+	query := `
+		INSERT INTO social_posts (brand, platform, account_username, post_content, status, created_at)
+		VALUES ($1, $2, $3, $4, $5, $6)
+		RETURNING id
+	`
+	if post.CreatedAt.IsZero() {
+		post.CreatedAt = time.Now()
+	}
+	err := db.Conn.QueryRowContext(ctx, query,
+		post.Brand,
+		post.Platform,
+		post.AccountUsername,
+		post.PostContent,
+		post.Status,
+		post.CreatedAt,
+	).Scan(&post.ID)
+	if err != nil {
+		return fmt.Errorf("failed to create social post: %w", err)
+	}
+	return nil
+}

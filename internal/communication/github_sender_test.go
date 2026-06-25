@@ -70,9 +70,9 @@ func TestGenerateTechHookComment_ContainsIssueTitle(t *testing.T) {
 		t.Errorf("expected comment to contain issue title %q", issue.Title)
 	}
 
-	// Comment should mention TormentNexus
-	if !testContainsStr(comment, "TormentNexus") {
-		t.Error("expected comment to mention TormentNexus")
+	// Comment should mention HyperNexus
+	if !testContainsStr(comment, "HyperNexus") {
+		t.Error("expected comment to mention HyperNexus")
 	}
 
 	// Comment should mention key selling points
@@ -159,8 +159,8 @@ func TestNewGitHubCommentSender_WithoutToken(t *testing.T) {
 	if sender.repo != "robertpelloni/enterprise_sales_bot" {
 		t.Errorf("expected repo to be set, got %q", sender.repo)
 	}
-	if sender.username != "tormentnexus-bot" {
-		t.Errorf("expected default username 'tormentnexus-bot', got %q", sender.username)
+	if sender.username != "hypernexus-bot" {
+		t.Errorf("expected default username 'hypernexus-bot', got %q", sender.username)
 	}
 }
 

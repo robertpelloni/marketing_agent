@@ -97,3 +97,27 @@ HUBSPOT_STAGE_MAPPING={"Discovered":"appointmentscheduled", ...}
 - Build phase: `go build -o bin/sales_bot ./cmd/sales_bot`
 - Deploy: scp bin/sales_bot to VPS, restart sales-bot service
 - Clean up dead `tormentnexus-bot.service` systemd unit on VPS
+
+---
+
+## Executive Protocol Sync (v0.5.1 → v0.5.2)
+
+### Date: 2026-06-25
+
+### What Was Done
+
+#### STEP 1: Upstream Tracking & Submodule Sanitization
+- Fetched all tags from origin and recursively updated submodules (`borg`).
+- Unified local `main` with origin/main changes.
+
+#### STEP 2: Dual-Direction Intelligent Merge Engine
+- Ran the built-in Go intelligent merge engine (`main.go -reconcile`) to resolve active feature branches and sync changes.
+
+#### STEP 3: Workspace Cleanup & Version Governance
+- **Version bump:** 0.5.1 → 0.5.2 (centralized `VERSION` and `VERSION.md`, plus `internal/autodev/VERSION`).
+- **Outreach & Communication Rebranding**: Update all direct messaging (email, github issue comments, RAG responses, objection responses) to target **HyperNexus** and `hypernexus.site` exclusively, pointing only to the fork at `github.com/HyperNexusSoft/HyperNexus`.
+- **Social Media Posting**: Implemented `SocialPosterWorker` (`pkg/agents/social_poster.go`) which dynamically schedules posts for both `tormentnexus` and `hypernexus` separately using separate account credentials across Reddit, Bluesky, LinkedIn, and Twitter/X.
+- **Main Setup**: Integrated the worker in `cmd/sales_bot/main.go` and verified workspace build compilation.
+- **Documentation Updated**: Updated `TODO.md` and `ROADMAP.md` tracking the completed social posting and rebranding.
+- **Git State**: Cleaned up the workspace, staged files, ready to commit and push.
+

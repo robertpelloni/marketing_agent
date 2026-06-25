@@ -203,6 +203,10 @@ func main() {
 		llmProvider = &llm.MockLLMProvider{}
 	}
 
+	// 2k. Setup Social Media Poster Agent
+	socialPoster := agents.NewSocialPosterWorker(database, llmProvider)
+	go socialPoster.Run(ctx, 4*time.Hour)
+
 	// 2g. Setup Intent Classifier
 	var classifier communication.IntentClassifier
 	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {

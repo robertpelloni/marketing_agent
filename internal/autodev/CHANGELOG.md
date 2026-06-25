@@ -182,3 +182,14 @@
 
 ## [0.5.1+1782251881] - 2026-06-23
 - Test integration task
+
+## [0.5.1+1782406247] - 2026-06-25
+- Test integration task
+
+## [0.5.1+1782406330] - 2026-06-25
+- Test integration task
+
+## [0.5.2+1782406335] - 2026-06-25
+- Rebranded direct outreach to HyperNexus
+- Implemented dual-branded social media posting worker agent
+

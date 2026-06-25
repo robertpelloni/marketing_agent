@@ -80,6 +80,22 @@ func (db *DB) RunMigrations(ctx context.Context) error {
 		return fmt.Errorf("migration 4 (response_id column): %w", err)
 	}
 
+	// Migration 5: Create social_posts table
+	m5 := `
+		CREATE TABLE IF NOT EXISTS social_posts (
+			id SERIAL PRIMARY KEY,
+			brand TEXT NOT NULL,
+			platform TEXT NOT NULL,
+			account_username TEXT NOT NULL,
+			post_content TEXT NOT NULL,
+			status TEXT NOT NULL,
+			created_at TIMESTAMP NOT NULL DEFAULT NOW()
+		);
+	`
+	if _, err := db.Conn.ExecContext(ctx, m5); err != nil {
+		return fmt.Errorf("migration 5 (social_posts table): %w", err)
+	}
+
 	// Seed default templates
 	if err := db.seedTemplates(ctx); err != nil {
 		return fmt.Errorf("seed templates: %w", err)
@@ -96,40 +112,42 @@ func (db *DB) seedTemplates(ctx context.Context) error {
 			ID:      "intro-email",
 			Name:    "Introductory Email",
 			Channel: "email",
-			Subject: "TormentNexus for {{company}} — Quick Question",
+			Subject: "HyperNexus for {{company}} — Quick Question",
 			Body: `Hi {{contact}},
 
 I noticed {{company}} is building some really interesting stuff with {{tech_stack}}. The work your team is doing on {{specific_project}} caught my attention.
 
-I'm reaching out because we've built TormentNexus — a local-first cognitive control plane that coordinates multi-agent LLM workflows, MCP tool routing, and provider failover. Teams using similar stacks to yours have seen 3-5x improvements in agent coordination efficiency.
+I'm reaching out because we've built HyperNexus (hypernexus.site) — the enterprise-ready cloud-hosted version of TormentNexus. HyperNexus coordinates multi-agent LLM workflows, MCP tool routing, and provider failover, backed by a stable open-source fork of TormentNexus at github.com/HyperNexusSoft/HyperNexus. Teams using similar stacks to yours have seen 3-5x improvements in agent coordination efficiency.
 
 Would you be open to a quick 15-minute chat this week to explore if this could help your team?
 
-Best,\n[Your Name]`,
+Best,
+[Your Name]`,
 		},
 		{
 			ID:      "github-hook",
 			Name:    "GitHub Comment Hook",
 			Channel: "github",
 			Subject: "",
-			Body: `Hey @{{github_handle}}, I saw your work on {{repo}} — really impressive stuff! We've been tackling similar coordination challenges with TormentNexus (local-first cognitive control plane for multi-agent workflows). Would love to get your thoughts if you're open to it.`,
+			Body: `Hey @{{github_handle}}, I saw your work on {{repo}} — really impressive stuff! We've been tackling similar coordination challenges with HyperNexus (hypernexus.site), the enterprise-grade cloud version of TormentNexus. We maintain our stable fork at github.com/HyperNexusSoft/HyperNexus. Would love to get your thoughts if you're open to it.`,
 		},
 		{
 			ID:      "followup-email",
 			Name:    "Follow-up Email",
 			Channel: "email",
-			Subject: "Re: TormentNexus for {{company}} — Thoughts?",
+			Subject: "Re: HyperNexus for {{company}} — Thoughts?",
 			Body: `Hi {{contact}},
 
-Just wanted to follow up on my previous note about TormentNexus.
+Just wanted to follow up on my previous note about HyperNexus.
 
-I know things get busy, so I'll keep this brief: TormentNexus provides progressive MCP tool routing, dual-tier memory (14K+ persisted memories), and a resilient LLM waterfall that cascades across providers (NVIDIA → OpenRouter → local Ollama) with zero downtime.
+I know things get busy, so I'll keep this brief: HyperNexus (hypernexus.site) provides progressive MCP tool routing, dual-tier memory (14K+ persisted memories), and a resilient LLM waterfall that cascades across providers with zero downtime. It is built as a stable fork of TormentNexus at github.com/HyperNexusSoft/HyperNexus.
 
 If you're even remotely curious about improving your agent coordination, I'd love to share a quick demo.
 
 Worth a conversation?
 
-Best,\n[Your Name]`,
+Best,
+[Your Name]`,
 		},
 		{
 			ID:      "linkedin-connect",
@@ -145,7 +163,7 @@ Best,\n[Your Name]`,
 			Subject: "Should I close your file?",
 			Body: `Hi {{contact}},
 
-I've reached out a few times about TormentNexus, but haven't heard back.
+I've reached out a few times about HyperNexus, but haven't heard back.
 
 I'm guessing this isn't a priority right now, or you're swamped with other initiatives. Either way, I don't want to be a pest.
 
@@ -153,7 +171,8 @@ If you'd like me to close your file on this, just reply "close". If I got the ti
 
 No hard feelings either way.
 
-Best,\n[Your Name]`,
+Best,
+[Your Name]`,
 		},
 	}
 

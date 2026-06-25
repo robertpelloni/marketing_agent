@@ -31,7 +31,7 @@ func NewGitHubCommentSender(repo string) *GitHubCommentSender {
 		return &GitHubCommentSender{
 			client:		github.NewClient(nil),
 			repo:		repo,
-			username:	"tormentnexus-bot",
+			username:	"hypernexus-bot",
 		}
 	}
 
@@ -190,9 +190,9 @@ func CalculateRelevance(term, title, body string) int {
 func GenerateTechHookComment(issue IssueTarget) string {
 	comment := fmt.Sprintf(`Hi there! 👋
 
-I noticed this issue about %s — we've been working on similar challenges with our open-source project **TormentNexus**.
+I noticed this issue about %s — we've been working on similar challenges with **HyperNexus** (hypernexus.site).
 
-TormentNexus is a local-first cognitive control plane that coordinates multi-agent LLM workflows with:
+HyperNexus is the enterprise cloud-hosted version of TormentNexus, built using our stable open-source fork located at github.com/HyperNexusSoft/HyperNexus. It coordinates multi-agent LLM workflows with:
 - **Progressive MCP Tool Routing** — semantic router that injects only the 3 most relevant tools per request (no 50K-token tool dumps)
 - **Cross-Harness Tool Parity** — byte-for-byte identical tool signatures for Claude Code, Cursor, Codex, Gemini CLI, Copilot, and Windsurf
 - **LLM Waterfall** — seamless cascading through cloud providers → aggregators → local models on 429/5xx errors
@@ -200,7 +200,7 @@ TormentNexus is a local-first cognitive control plane that coordinates multi-age
 
 If this resonates with what you're building, I'd love to hear your thoughts. We're always looking for feedback from teams pushing the boundaries of AI infrastructure.
 
-— TormentNexus Bot`, issue.Title)
+— HyperNexus Bot`, issue.Title)
 
 	return comment
 }

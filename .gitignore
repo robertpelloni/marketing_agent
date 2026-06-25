@@ -1,4 +1,5 @@
 # .gitignore
-bin/
 *.exe
 .env
+.memory/branches/main/log.md
+bin/

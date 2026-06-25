@@ -1,5 +1,6 @@
 🛠️ ALPHA SOFTWARE UNDER CONSTRUCTION — Use at your own risk. Backwards compatibility not guaranteed.
 
+```text
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║                     ██╗   ██╗███╗   ██╗██████╗ ███████╗██████╗              ║
@@ -30,6 +31,7 @@
 ║                    ╚══════════════════════════════════════╝                  ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
+```
 
 # TormentNexus Autonomous Sales Pipeline
 
@@ -37,9 +39,10 @@ A fully autonomous B2B sales pipeline written in Go. It discovers potential ente
 
 ### ▶️ Video Overviews
 
-| Video | Description |
-|---|---|
-| [**HyperNexus: AI Control Plane**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fe12996c-46fd-411c-87bd-09744520c784) | AI-generated deep-dive into the HyperNexus enterprise AI orchestration platform, architecture, and capabilities (182 sources) |
+| Video | Description | Direct Download |
+|---|---|---|
+| [**HyperNexus: Ultimate Agent**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/12652b93-e2f0-4b35-bc6a-31c2c8fa51f0?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_) | AI-generated deep-dive into the HyperNexus enterprise AI orchestration platform, architecture, and ultimate agent capabilities (182 sources) | [MP4 →](https://hypernexus.site/hypernexus_ultimate_agent.mp4) |
+| [**TormentNexus: AI Control Plane**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/282cd73a-c108-4fc7-bf6e-1dcdac446a54?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_) | AI-generated overview of the TormentNexus AI Control Plane — the local-first model hypervisor with MCP routing, memory, and autonomous capabilities (182 sources) | [MP4 →](https://tormentnexus.site/tormentnexus_ai_control_plane.mp4) |
 
 ## Table of Contents
 
@@ -554,9 +557,10 @@ The CI pipeline (`.github/workflows/ci.yml`) runs:
 
 AI-generated video overviews based on 182 source documents each:
 
-| Video | Link |
-|---|---|
-| **HyperNexus: AI Control Plane** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/fe12996c-46fd-411c-87bd-09744520c784) |
+| Video | Link | Direct Download |
+|---|---|---|
+| **HyperNexus: Ultimate Agent** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/12652b93-e2f0-4b35-bc6a-31c2c8fa51f0?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_) | [Download MP4 (19.9MB) →](https://hypernexus.site/hypernexus_ultimate_agent.mp4) |
+| **TormentNexus: AI Control Plane** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/282cd73a-c108-4fc7-bf6e-1dcdac446a54?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_) | [Download MP4 (19.9MB) →](https://tormentnexus.site/tormentnexus_ai_control_plane.mp4) |
 
 ---
 

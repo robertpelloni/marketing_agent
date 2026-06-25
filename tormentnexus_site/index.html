@@ -721,10 +721,10 @@ class SpookySkull{
     ctx.strokeStyle = 'rgba(0, 255, 136, 0.55)';
     ctx.lineWidth = 1.0;
     ctx.beginPath();
-    ctx.moveTo(-8.5, 2.5);
-    ctx.lineTo(8.5, 2.5);
-    ctx.lineTo(8.0, 6.0);
-    ctx.quadraticCurveTo(0, 9.0, -8.0, 6.0); // Curved maxilla border
+    ctx.moveTo(-8.5, 1.0);
+    ctx.lineTo(8.5, 1.0);
+    ctx.lineTo(8.0, 4.5);
+    ctx.quadraticCurveTo(0, 7.5, -8.0, 4.5); // Curved maxilla border
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
@@ -732,7 +732,7 @@ class SpookySkull{
     for (var i = -7.2; i <= 5.8; i += 1.8) {
       var dx = i + 0.6;
       var curveOffset = (dx * dx) * 0.038;
-      var toothY = 7.0 - curveOffset;
+      var toothY = 5.5 - curveOffset;
       var toothHeight = 3.2;
 
       // Realistic tooth color gradient (Ivory/White matching photo)
@@ -752,7 +752,7 @@ class SpookySkull{
 
     // 7. Lower Mandible (moving piston and lower teeth)
     var chompRange = Math.abs(Math.sin(this.p * 2.2));
-    var jawOffset = -2.1 + chompRange * 2.0;
+    var jawOffset = -3.6 + chompRange * 2.0;
 
     ctx.save();
     ctx.translate(0, jawOffset);

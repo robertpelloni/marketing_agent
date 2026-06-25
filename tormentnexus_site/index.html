@@ -752,7 +752,7 @@ class SpookySkull{
 
     // 7. Lower Mandible (moving piston and lower teeth)
     var chompRange = Math.abs(Math.sin(this.p * 2.2));
-    var jawOffset = 1.0 + chompRange * 6.5;
+    var jawOffset = -0.6 + chompRange * 2.0;
 
     ctx.save();
     ctx.translate(0, jawOffset);

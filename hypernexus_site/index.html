@@ -6,6 +6,14 @@
 
 
 
+
+
+
+
+
+
+
+
 <html lang="en">
 
 
@@ -14,224 +22,451 @@
 
 
 
+
+
+
+
+
+
+
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>HyperNexus — Enterprise AI Control Plane</title>
+
     <meta name="description" content="The enterprise AI orchestration platform. Secure, compliant, scalable. Deploy anywhere. Control everything.">
+
     <style>
+
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
       :root {
+
         --bg: #f0f2f5;
+
         --card-bg: rgba(255,255,255,0.05);
+
         --glass-border: rgba(77,124,255,0.1);
+
         --neon-blue: #4d7cff;
+
         --neon-purple: #b45cff;
+
         --neon-magenta: #ff44cc;
+
         --neon-cyan: #00e5ff;
+
         --neon-blue-glow: rgba(77,124,255,0.12);
+
         --neon-purple-glow: rgba(180,92,255,0.08);
+
         --text: #1a1e2e;
+
         --text-secondary: #556688;
+
         --text-dim: #99aabb;
+
         --primary: #4d7cff;
+
         --primary-glow: rgba(77,124,255,0.1);
+
         --shadow-card: 0 8px 32px rgba(0,0,0,0.02);
+
         --shadow-card-hover: 0 16px 48px rgba(0,0,0,0.04);
+
         --gradient-neon: linear-gradient(135deg, #4d7cff, #b45cff, #ff44cc, #00e5ff);
+
       }
+
       *{margin:0;padding:0;box-sizing:border-box}
+
       html{scroll-behavior:smooth}
-      body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-y:auto;overflow-x:hidden}
+
+      body{background:linear-gradient(180deg, #e8ecf2 0%, #dde2ea 30%, #e0e5ed 60%, #e8ecf2 100%);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-y:auto;overflow-x:hidden}
+
       ::selection{background:var(--neon-blue);color:white}
+
       
+
       /* ── PARTICLE CANVAS (hidden, JS controlled) ── */
+
       /* ── GLOWING NEON WIRES ── */
+
       
+
         top:30%; left:0; right:0; height:1px;
+
         background: linear-gradient(90deg, transparent, var(--neon-blue), var(--neon-purple), transparent);
+
         box-shadow: 0 0 8px var(--neon-blue), 0 0 20px var(--neon-purple-glow);
+
         animation-delay:0s;
+
       }
+
         top:60%; left:0; right:0; height:1px;
+
         background: linear-gradient(90deg, transparent, var(--neon-purple), var(--neon-cyan), transparent);
+
         box-shadow: 0 0 8px var(--neon-purple), 0 0 20px var(--neon-blue-glow);
+
         animation-delay:1s;
+
       }
+
         top:45%; left:0; right:0; height:1px;
+
         background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-magenta), transparent);
+
         box-shadow: 0 0 8px var(--neon-cyan), 0 0 20px rgba(255,68,204,0.12);
+
         animation-delay:2s;
+
       }
+
         left:20%; top:0; bottom:0; width:1px;
+
         background: linear-gradient(180deg, transparent, var(--neon-blue), var(--neon-purple), transparent);
+
         box-shadow: 0 0 8px var(--neon-blue), 0 0 20px var(--neon-purple-glow);
+
         animation-delay:0.5s;
+
       }
+
         left:70%; top:0; bottom:0; width:1px;
+
         background: linear-gradient(180deg, transparent, var(--neon-magenta), var(--neon-cyan), transparent);
+
         box-shadow: 0 0 8px var(--neon-magenta), 0 0 20px rgba(0,229,255,0.08);
+
         animation-delay:1.5s;
+
       }
+
       
+
         50%{ opacity:0.25; box-shadow: 0 0 12px var(--neon-blue), 0 0 30px var(--neon-purple-glow); }
+
       }
+
             @keyframes gradientDrift{0%,100%{background-position:0%0%,100%0%,50%100%,100%100%,0%100%}20%{background-position:15%10%,85%20%,35%75%,90%70%,10%85%}40%{background-position:30%15%,70%10%,60%70%,80%60%,20%80%}60%{background-position:10%25%,90%8%,45%80%,95%75%,5%90%}80%{background-position:25%5%,75%15%,55%75%,85%65%,15%85%}}
 
+
+
       @keyframes gradientDrift{0%,100%{background-position:0%0%,100%0%,50%100%,100%100%,0%100%}20%{background-position:15%10%,85%20%,35%75%,90%70%,10%85%}40%{background-position:30%15%,70%10%,60%70%,80%60%,20%80%}60%{background-position:10%25%,90%8%,45%80%,95%75%,5%90%}80%{background-position:25%5%,75%15%,55%75%,85%65%,15%85%}}
+
+      body{background-attachment:fixed}
       /* -- GRADIENT GLOW UNDER PANES -- */
+
       body::after {
+
         content:'';
+
         position:fixed; top:0; left:0; right:0; bottom:0;
+
         background-image:
+
           radial-gradient(ellipse 600px 400px at 15% 25%, rgba(77,124,255,0.25) 0%, transparent 70%),
+
           radial-gradient(ellipse 500px 500px at 75% 35%, rgba(180,92,255,0.20) 0%, transparent 70%),
+
           radial-gradient(ellipse 400px 600px at 50% 65%, rgba(0,229,255,0.15) 0%, transparent 70%),
+
           radial-gradient(ellipse 350px 350px at 85% 80%, rgba(255,68,204,0.12) 0%, transparent 70%),
+
           radial-gradient(ellipse 400px 300px at 30% 80%, rgba(77,124,255,0.15) 0%, transparent 70%);
+
         background-size: 120% 120%;
+
         animation: gradientDrift 8s ease-in-out infinite;
+
         pointer-events:none; z-index:0;
+
       }
+
       .ambient{position:fixed;border-radius:50%;filter:blur(180px);pointer-events:none;z-index:0;will-change:transform}
+
       .ambient-1{width:700px;height:700px;background:radial-gradient(circle,rgba(77,124,255,0.05),transparent 70%);top:-250px;right:-150px;animation:ambientDrift 40s ease-in-out infinite}
+
       .ambient-2{width:500px;height:500px;background:radial-gradient(circle,rgba(180,92,255,0.04),transparent 70%);bottom:-200px;left:-150px;animation:ambientDrift 45s ease-in-out infinite reverse}
+
       
+
       .ambient-3{width:400px;height:400px;background:radial-gradient(circle,rgba(0,229,255,0.03),transparent 70%);top:50%;left:60%;animation:ambientDrift 35s ease-in-out infinite 10s}
+
       @keyframes ambientDrift{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(80px,-40px) scale(1.04)}50%{transform:translate(-40px,50px) scale(0.96)}75%{transform:translate(50px,30px) scale(1.02)}}
+
       .container{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:10}
+
       /* ── HEADER ── */
-      header{padding:16px 0;position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.1);backdrop-filter:blur(50px) saturate(4);-webkit-backdrop-filter:blur(50px) saturate(4);border-bottom:1px solid rgba(77,124,255,0.1)}
+
+      header{padding:8px 0;position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.1);backdrop-filter:blur(50px) saturate(4);-webkit-backdrop-filter:blur(50px) saturate(4);border-bottom:1px solid rgba(77,124,255,0.1)}
+
       header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--neon-blue),var(--neon-purple),transparent);opacity:0.5}
+
       .header-inner{display:flex;align-items:center;justify-content:space-between}
+
       .logo{display:flex;align-items:center;gap:14px;text-decoration:none}
+
       .logo-icon{width:42px;height:42px;background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 3s ease infinite;border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:22px;box-shadow:0 0 40px var(--neon-blue-glow),inset 0 1px 0 rgba(255,255,255,0.3);transition:all 0.4s;border:1px solid rgba(77,124,255,0.3)}
+
       .logo:hover .logo-icon{box-shadow:0 0 60px var(--neon-blue-glow),0 0 30px var(--neon-purple-glow);transform:scale(1.08) rotate(-4deg);border-color:var(--neon-blue)}
+
       .logo-text{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.5px}
+
       .logo-text span{background:var(--gradient-neon);background-size:400% 400%;animation:gradientShift 4s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
       @keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
       nav{display:flex;align-items:center;gap:36px}
+
       nav a{color:var(--text-secondary);text-decoration:none;font-size:14px;font-weight:500;transition:all 0.3s;position:relative;padding:4px 0}
+
       nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--neon-blue),var(--neon-purple));transition:width 0.3s;border-radius:2px;box-shadow:0 0 12px var(--neon-blue-glow)}
+
       nav a:hover{color:var(--text)}
+
       nav a:hover::after{width:100%}
+
       .nav-cta{background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 3s ease infinite;color:white !important;padding:12px 28px;border-radius:10px;font-weight:700;transition:all 0.3s !important;box-shadow:0 0 30px var(--neon-blue-glow);position:relative;overflow:hidden;border:1px solid rgba(77,124,255,0.3)}
+
       .nav-cta::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.6s}
+
       .nav-cta:hover::before{left:100%}
+
       .nav-cta:hover{transform:translateY(-3px) scale(1.02) !important;box-shadow:0 0 50px var(--neon-blue-glow),0 0 30px var(--neon-purple-glow)}
+
       /* ── HERO ── */
-      .hero{padding:10px 0 20px;text-align:center;position:relative}
+
+      .hero{padding:4px 0 10px;text-align:center;position:relative}
+
       .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 22px;background:rgba(255,255,255,0.3);backdrop-filter:blur(12px);border:1px solid rgba(77,124,255,0.2);border-radius:100px;font-size:13px;font-weight:600;color:var(--neon-blue);margin-bottom:32px;animation:fadeInUp 0.8s ease-out}
+
       .hero-badge .dot{width:6px;height:6px;background:var(--neon-blue);border-radius:50%;animation:blink 1.5s infinite;box-shadow:0 0 15px var(--neon-blue-glow)}
+
       @keyframes blink{0%,100%{opacity:1}50%{opacity:0.15}}
+
       .hero h1{font-size:clamp(44px,7vw,86px);font-weight:900;letter-spacing:-2.5px;line-height:1.03;margin-bottom:20px;animation:fadeInUp 0.8s ease-out 0.2s both}
+
       .hero h1 .gradient-title{background:var(--gradient-neon);background-size:400% 400%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradientShift 5s ease infinite;filter:drop-shadow(0 0 40px var(--neon-blue-glow)) drop-shadow(0 0 80px var(--neon-purple-glow))}
+
       .hero p{font-size:18px;color:var(--text-secondary);max-width:600px;margin:0 auto 40px;line-height:1.7;animation:fadeInUp 0.8s ease-out 0.4s both}
+
       @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
       .hero-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeInUp 0.8s ease-out 0.6s both}
+
       /* ── BUTTONS ── */
+
       .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;transition:all 0.3s;cursor:pointer;border:none;position:relative;overflow:hidden}
+
       .btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transition:left 0.6s}
+
       .btn:hover::before{left:100%}
+
       .btn-primary{background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 3s ease infinite;color:white;box-shadow:0 0 30px var(--neon-blue-glow)}
+
       .btn-primary:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 0 60px var(--neon-blue-glow),0 0 30px var(--neon-purple-glow)}
+
       .btn-secondary{background:rgba(255,255,255,0.2);backdrop-filter:blur(12px);color:var(--text);border:1px solid rgba(77,124,255,0.25);box-shadow:var(--shadow-card)}
+
       .btn-secondary:hover{background:rgba(255,255,255,0.3);border-color:var(--neon-blue);transform:translateY(-4px);box-shadow:0 0 30px var(--neon-blue-glow)}
+
       /* ── LOGOS ── */
+
       .logos{padding:60px 0;border-top:1px solid rgba(77,124,255,0.06);border-bottom:1px solid rgba(77,124,255,0.06)}
+
       .logos-label{text-align:center;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:3px;color:var(--text-dim);margin-bottom:32px}
+
       .logos-grid{display:flex;justify-content:center;gap:56px;flex-wrap:wrap}
+
       .logo-item{font-size:16px;font-weight:800;background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 6s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0.25;transition:all 0.4s;cursor:default}
+
       .logo-item:hover{opacity:0.9;transform:scale(1.1);letter-spacing:2px}
+
       .logo-item:nth-child(2){animation-delay:0.8s}
+
       .logo-item:nth-child(3){animation-delay:1.6s}
+
       .logo-item:nth-child(4){animation-delay:2.4s}
+
       .logo-item:nth-child(5){animation-delay:3.2s}
+
       /* ── FROSTED STATS ── */
+
       .stats{padding:100px 0}
+
       .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+
       .stat{text-align:center;padding:40px 24px;background:rgba(255,255,255,0.05);border:1px solid rgba(77,124,255,0.06);border-radius:20px;transition:all 0.4s;position:relative;box-shadow:var(--shadow-card);overflow:hidden}
+
       .stat::after{content:'';position:absolute;inset:-1px;border-radius:21px;border:1px solid transparent;background:linear-gradient(135deg,rgba(212,175,55,0.08),rgba(77,124,255,0.06),rgba(180,92,255,0.04),transparent) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:0;opacity:0;transition:opacity 0.5s}
+
       .stat:hover::after{opacity:1}
+
       .stat:hover{background:rgba(255,255,255,0.06);border-color:rgba(77,124,255,0.2);transform:translateY(-8px) scale(1.03);box-shadow:0 0 30px var(--neon-blue-glow),0 0 60px var(--neon-purple-glow)}
+
       .stat-num{font-size:44px;font-weight:900;background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 5s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;letter-spacing:-1px;filter:drop-shadow(0 0 20px var(--neon-blue-glow));position:relative;z-index:1}
+
       .stat-label{font-size:14px;color:var(--text-secondary);font-weight:500;position:relative;z-index:1}
+
       /* ── FROSTED FEATURES ── */
+
       .features{padding:100px 0}
+
       .section-header{text-align:center;margin-bottom:64px}
+
       .section-header .label{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:3px;background:var(--gradient-neon);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
+
       .section-header h2{font-size:38px;font-weight:800;letter-spacing:-0.5px;margin-bottom:12px;display:inline-block;position:relative}
+
       .section-header h2::after{content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:60px;height:3px;background:var(--gradient-neon);border-radius:3px;box-shadow:0 0 25px var(--neon-blue-glow)}
+
       .section-header p{font-size:16px;color:var(--text-secondary);max-width:500px;margin:0 auto}
+
       .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
       .feature{background:rgba(255,255,255,0.05);padding:40px 28px;border-radius:20px;border:1px solid rgba(77,124,255,0.06);transition:all 0.4s;position:relative;overflow:hidden;box-shadow:var(--shadow-card);transform-style:preserve-3d;will-change:transform}
+
       .feature::after{content:'';position:absolute;inset:-1px;border-radius:21px;border:1px solid transparent;background:linear-gradient(135deg,rgba(212,175,55,0.08),rgba(77,124,255,0.06),rgba(180,92,255,0.04),transparent) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:0;opacity:0;transition:opacity 0.5s}
+
       .feature:hover::after{opacity:1}
+
       .feature:hover{background:rgba(255,255,255,0.06);border-color:rgba(77,124,255,0.2);transform:translateY(-6px) scale(1.02);box-shadow:0 0 30px var(--neon-blue-glow),0 0 60px var(--neon-purple-glow)}
+
       .feature-icon{width:52px;height:52px;background:linear-gradient(135deg,rgba(77,124,255,0.06),rgba(180,92,255,0.04));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px;border:1px solid rgba(77,124,255,0.08);transition:all 0.3s;position:relative;z-index:1;box-shadow:inset 0 1px 0 rgba(255,255,255,0.2)}
+
       .feature:hover .feature-icon{background:linear-gradient(135deg,rgba(77,124,255,0.1),rgba(180,92,255,0.06));border-color:rgba(77,124,255,0.2);transform:scale(1.15);box-shadow:0 0 30px var(--neon-blue-glow),inset 0 1px 0 rgba(255,255,255,0.2)}
+
       .feature h3{font-size:18px;font-weight:700;margin-bottom:10px;position:relative;z-index:1}
+
       .feature p{font-size:14px;color:var(--text-secondary);line-height:1.7;position:relative;z-index:1}
+
       /* ── FROSTED COMPLIANCE ── */
+
       .compliance{padding:100px 0}
+
       .compliance-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+
       .compliance-item{text-align:center;padding:40px 24px;border:1px solid rgba(77,124,255,0.06);border-radius:20px;background:rgba(255,255,255,0.05);transition:all 0.3s;position:relative;overflow:hidden;box-shadow:var(--shadow-card)}
+
       .compliance-item::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,rgba(212,175,55,0.4),var(--neon-blue),var(--neon-purple));background-size:300% 300%;animation:gradientShift 4s ease infinite;opacity:0;transition:opacity 0.3s;z-index:1}
+
       .compliance-item:hover::before{opacity:1}
+
       .compliance-item:hover{background:rgba(255,255,255,0.06);border-color:rgba(77,124,255,0.2);transform:translateY(-6px) scale(1.02);box-shadow:0 0 20px var(--neon-blue-glow),0 0 40px var(--neon-purple-glow)}
+
       .compliance-icon{font-size:34px;margin-bottom:12px;display:block;transition:all 0.4s;position:relative;z-index:1}
+
       .compliance-item:hover .compliance-icon{transform:scale(1.25) rotate(-8deg);filter:drop-shadow(0 0 20px var(--neon-blue-glow))}
+
       .compliance-item h4{font-size:15px;font-weight:700;margin-bottom:6px;position:relative;z-index:1}
+
       .compliance-item p{font-size:13px;color:var(--text-secondary);position:relative;z-index:1}
+
       /* ── FROSTED PRICING ── */
+
       .pricing{padding:100px 0}
+
       .pricing-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:800px;margin:0 auto}
+
       .price-card{background:rgba(255,255,255,0.05);padding:44px 32px;border-radius:20px;border:1px solid rgba(77,124,255,0.06);position:relative;transition:all 0.4s;overflow:visible;box-shadow:var(--shadow-card)}
+
       .price-card:hover{background:rgba(255,255,255,0.06);border-color:rgba(77,124,255,0.2);transform:translateY(-8px) scale(1.02);box-shadow:0 0 30px var(--neon-blue-glow),0 0 60px var(--neon-purple-glow)}
+
       .price-card.featured{border-color:rgba(212,175,55,0.25);box-shadow:0 0 0 1px rgba(212,175,55,0.15),var(--shadow-card),0 0 50px rgba(212,175,55,0.08)}
+
       .price-card.featured .price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gradient-neon);color:white;padding:4px 16px;border-radius:100px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;box-shadow:0 0 25px var(--neon-blue-glow);z-index:2}
+
       .price-tier{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;background:var(--gradient-neon);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px;position:relative;z-index:1}
+
       .price-amount{font-size:48px;font-weight:900;margin-bottom:6px;letter-spacing:-2px;position:relative;z-index:1;color:var(--text)}
+
       .price-amount .period{font-size:14px;font-weight:500;color:var(--text-secondary);letter-spacing:0}
+
       .price-desc{font-size:14px;color:var(--text-secondary);margin-bottom:28px;line-height:1.6;position:relative;z-index:1}
+
       .price-features{list-style:none;margin-bottom:28px;position:relative;z-index:1}
+
       .price-features li{padding:8px 0;font-size:14px;display:flex;align-items:center;gap:10px;color:var(--text-secondary);transition:all 0.2s}
+
       .price-features li:hover{transform:translateX(8px);color:var(--text)}
+
       .price-features li::before{content:"\2713";color:var(--neon-blue);font-weight:700;text-shadow:0 0 15px var(--neon-blue-glow)}
+
       .price-btn{display:block;width:100%;padding:14px;text-align:center;border-radius:12px;font-size:15px;font-weight:600;text-decoration:none;transition:all 0.3s;position:relative;overflow:hidden}
+
       .price-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transition:left 0.5s}
+
       .price-btn:hover::before{left:100%}
+
       .price-btn-primary{background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 3s ease infinite;color:white;box-shadow:0 0 30px var(--neon-blue-glow)}
+
       .price-btn-primary:hover{transform:translateY(-3px);box-shadow:0 0 50px var(--neon-blue-glow),0 0 30px var(--neon-purple-glow)}
+
       .price-btn-secondary{background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);color:var(--text);border:1px solid rgba(77,124,255,0.1)}
+
       .price-btn-secondary:hover{background:rgba(255,255,255,0.25);border-color:var(--neon-blue);transform:translateY(-2px);box-shadow:0 0 20px var(--neon-blue-glow)}
+
       /* ── CTA ── */
+
       .cta{padding:100px 0;text-align:center;background:linear-gradient(135deg,rgba(77,124,255,0.03) 0%,rgba(180,92,255,0.02) 100%);border-top:1px solid rgba(77,124,255,0.06);border-bottom:1px solid rgba(77,124,255,0.06);position:relative;overflow:hidden}
+
       .cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(77,124,255,0.04),transparent 70%);pointer-events:none}
+
       .cta h2{font-size:40px;font-weight:800;margin-bottom:12px;letter-spacing:-0.5px;position:relative}
+
       .cta p{font-size:16px;color:var(--text-secondary);margin-bottom:32px;max-width:450px;margin-left:auto;margin-right:auto;position:relative}
+
       .btn-white{background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 3s ease infinite;color:white;padding:16px 44px;font-size:15px;font-weight:700;border-radius:12px;text-decoration:none;display:inline-block;transition:all 0.3s;box-shadow:0 0 40px var(--neon-blue-glow);position:relative;overflow:hidden}
+
       .btn-white::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transition:left 0.6s}
+
       .btn-white:hover::before{left:100%}
+
       .btn-white:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 0 60px var(--neon-blue-glow),0 0 30px var(--neon-purple-glow)}
+
       /* ── FOOTER ── */
+
       footer{padding:60px 0 40px;border-top:1px solid rgba(77,124,255,0.06)}
+
       .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+
       .footer-brand p{font-size:14px;color:var(--text-secondary);margin-top:16px;line-height:1.7}
+
       .footer-col h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text);margin-bottom:20px;position:relative;display:inline-block}
+
       .footer-col h4::after{content:'';position:absolute;bottom:-4px;left:0;width:24px;height:2px;background:var(--gradient-neon);border-radius:2px;box-shadow:0 0 15px var(--neon-blue-glow)}
+
       .footer-col a{display:block;font-size:14px;color:var(--text-secondary);text-decoration:none;padding:5px 0;transition:all 0.2s}
+
       .footer-col a:hover{color:var(--neon-purple);transform:translateX(6px);filter:drop-shadow(0 0 10px var(--neon-purple-glow))}
+
       .footer-bottom{padding-top:32px;border-top:1px solid rgba(77,124,255,0.06);display:flex;justify-content:space-between;align-items:center}
+
       .footer-bottom p{font-size:13px;color:var(--text-dim)}
+
       .footer-bottom a{color:var(--text-secondary);text-decoration:none;transition:all 0.2s}
+
       .footer-bottom a:hover{color:var(--neon-purple);filter:drop-shadow(0 0 10px var(--neon-purple-glow))}
+
       .self-host-note{text-align:center;margin-top:32px;padding:20px 24px;border:1px solid rgba(212,175,55,0.12);border-radius:12px;background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);font-size:13px;color:var(--text-secondary);letter-spacing:0.3px;line-height:1.6}
+
       .self-host-note a{color:var(--neon-purple);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--neon-purple);padding-bottom:2px;transition:all 0.3s}
+
       .self-host-note a:hover{color:rgba(212,175,55,0.8);border-bottom-color:rgba(212,175,55,0.5);filter:drop-shadow(0 0 10px rgba(212,175,55,0.15))}
+
       @media (max-width: 768px){nav{display:none}.stats-grid{grid-template-columns:repeat(2,1fr)}.features-grid{grid-template-columns:1fr}.compliance-grid{grid-template-columns:repeat(2,1fr)}.pricing-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}}
+
     
+
       #particle-canvas{position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none;z-index:0}</style>
+
 </head>
 
 
@@ -240,12 +475,33 @@
 
 
 
+
+
+
+
+
+
+
+
 <body>
+
     <canvas id="particle-canvas"></canvas>
+
     <div class="ambient ambient-1"></div>
+
     <div class="ambient ambient-2"></div>
+
     <div class="ambient ambient-3"></div>
+
     <header>
+
+
+
+
+
+
+
+
 
 
 
@@ -261,7 +517,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <a href="/" class="logo">
+
+
+
+
+
+
+
+
 
 
 
@@ -277,7 +549,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="logo-text">Hyper<span>Nexus</span></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -293,7 +581,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <nav>
+
+
+
+
+
+
+
+
 
 
 
@@ -309,7 +613,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <a href="#compliance">Security</a>
+
+
+
+
+
+
+
+
 
 
 
@@ -325,7 +645,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <a href="https://github.com/NexusSoftMDMA/TormentNexus" target="_blank">Docs</a>
+
+
+
+
+
+
+
+
 
 
 
@@ -341,6 +677,14 @@
 
 
 
+
+
+
+
+
+
+
+
             </nav>
 
 
@@ -349,7 +693,23 @@
 
 
 
+
+
+
+
+
+
+
+
         </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -373,7 +733,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <section class="hero">
+
+
+
+
+
+
+
+
 
 
 
@@ -389,7 +773,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="hero-badge"><span class="dot"></span> SOC 2 Type II Certified · HIPAA Ready · GDPR Compliant</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -405,7 +805,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <p>The secure, compliant AI control plane that gives your organization complete visibility and governance over multi-model workflows. Deploy anywhere. Control everything.</p>
+
+
+
+
+
+
+
+
 
 
 
@@ -421,7 +837,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <a href="/contact.php" class="btn btn-primary">Schedule a Demo →</a>
+
+
+
+
+
+
+
+
 
 
 
@@ -437,7 +869,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -453,7 +901,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/12652b93-e2f0-4b35-bc6a-31c2c8fa51f0?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" class="btn btn-secondary" style="font-size:13px;padding:10px 22px">▶ HyperNexus: Ultimate Agent</a>
+
+
+
+
+
+
+
+
 
 
 
@@ -469,10 +933,38 @@
 
 
 
+
+
+
+
+
+
+
+
         <div id="hypernexus-hero-vid" style="margin-top:20px;max-width:750px;margin-left:auto;margin-right:auto;border-radius:12px;overflow:hidden;border:1px solid rgba(77,124,255,0.2);box-shadow:0 0 30px rgba(77,124,255,0.1);background:#0a0e1a">
+
           <video controls style="width:100%;display:block" preload="auto" playsinline>
+
             <source src="/hypernexus_ultimate_agent.mp4" type="video/mp4">
+
           </video>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
 
 
@@ -481,7 +973,7 @@
 
 
 
-        </div>
+
 
 
 
@@ -490,6 +982,22 @@
 
 
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -513,7 +1021,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="container">
+
+
+
+
+
+
+
+
 
 
 
@@ -529,7 +1053,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="logos-grid">
+
+
+
+
+
+
+
+
 
 
 
@@ -545,7 +1085,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="logo-item">Global Tech</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -561,7 +1117,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="logo-item">HealthCorp</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -577,7 +1149,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -593,7 +1181,31 @@
 
 
 
+
+
+
+
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -617,7 +1229,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="container">
+
+
+
+
+
+
+
+
 
 
 
@@ -633,7 +1261,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="stat"><div class="stat-num" data-target="11000">0</div><div class="stat-label">Tool Integrations</div></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -649,7 +1293,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="stat"><div class="stat-num">&lt;26ms</div><div class="stat-label">Avg Latency</div></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -665,7 +1325,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -681,7 +1357,31 @@
 
 
 
+
+
+
+
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -705,7 +1405,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="container">
+
+
+
+
+
+
+
+
 
 
 
@@ -721,7 +1437,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="label">Platform</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -737,6 +1469,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 <p>A single pane of glass for model orchestration, tool management, and governance.</p>
 
 
@@ -745,7 +1485,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -761,7 +1517,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="feature"><div class="feature-icon">🔐</div><h3>SSO & RBAC</h3><p>SAML 2.0 and OIDC integration with fine-grained role-based access control. Map your existing identity provider in minutes.</p></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -777,7 +1549,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="feature"><div class="feature-icon">🏢</div><h3>Air-Gapped Deployment</h3><p>Run entirely within your VPC. No external calls. Cryptographically signed offline license keys for regulated environments.</p></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -793,7 +1581,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="feature"><div class="feature-icon">🛡️</div><h3>Data Loss Prevention</h3><p>Configurable PII scrubbing and content filtering before prompts reach external models. Keep sensitive data in-house.</p></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -809,7 +1613,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -825,7 +1645,31 @@
 
 
 
+
+
+
+
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -849,7 +1693,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="container">
+
+
+
+
+
+
+
+
 
 
 
@@ -865,7 +1725,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="label">Security & Compliance</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -881,6 +1757,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 <p>Built from the ground up to meet the most stringent regulatory requirements.</p>
 
 
@@ -889,7 +1773,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -905,7 +1805,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="compliance-item"><div class="compliance-icon">🔒</div><h4>SOC 2 Type II</h4><p>Independently audited security controls</p></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -921,7 +1837,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="compliance-item"><div class="compliance-icon">🇪🇺</div><h4>GDPR Compliant</h4><p>Data processing agreements and EU hosting</p></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -937,7 +1869,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -953,7 +1901,31 @@
 
 
 
+
+
+
+
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -977,7 +1949,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="container">
+
+
+
+
+
+
+
+
 
 
 
@@ -993,7 +1981,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="label">Pricing</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1009,6 +2013,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 <p>Start with a proof of concept. Scale to enterprise-wide deployment.</p>
 
 
@@ -1017,7 +2029,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1033,7 +2061,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="price-card featured">
+
+
+
+
+
+
+
+
 
 
 
@@ -1049,7 +2093,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <div class="price-tier">Professional</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1065,6 +2125,14 @@
 
 
 
+
+
+
+
+
+
+
+
                     <div class="price-desc">For growing teams that need governance and compliance.</div>
 
 
@@ -1073,7 +2141,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <ul class="price-features">
+
+
+
+
+
+
+
+
 
 
 
@@ -1089,7 +2173,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     </ul>
+
+
+
+
+
+
+
+
 
 
 
@@ -1105,7 +2205,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1121,7 +2237,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <div class="price-tier">Enterprise</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1137,7 +2269,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <div class="price-desc">For organizations with advanced security and compliance needs.</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1153,7 +2301,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <li>Everything in Professional</li><li>Air-gapped deployment</li><li>Dedicated support SLA</li><li>Custom integrations</li><li>IP indemnification</li><li>On-site training</li>
+
+
+
+
+
+
+
+
 
 
 
@@ -1169,7 +2333,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <a href="/contact.php" class="price-btn price-btn-secondary">Contact Sales</a>
+
+
+
+
+
+
+
+
 
 
 
@@ -1185,7 +2365,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1201,7 +2397,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 For personal use, individual developers, non-commercial, or self-hosted deployments &rarr; <a href="https://tormentnexus.site" target="_blank">TormentNexus.site</a>
+
+
+
+
+
+
+
+
 
 
 
@@ -1217,6 +2429,14 @@
 
 
 
+
+
+
+
+
+
+
+
         </div>
 
 
@@ -1225,7 +2445,31 @@
 
 
 
+
+
+
+
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1249,7 +2493,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="container">
+
+
+
+
+
+
+
+
 
 
 
@@ -1265,7 +2525,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <p>Join the enterprises that trust HyperNexus to orchestrate their AI workflows.</p>
+
+
+
+
+
+
+
+
 
 
 
@@ -1281,6 +2557,14 @@
 
 
 
+
+
+
+
+
+
+
+
         </div>
 
 
@@ -1289,7 +2573,31 @@
 
 
 
+
+
+
+
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1313,7 +2621,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="container">
+
+
+
+
+
+
+
+
 
 
 
@@ -1329,7 +2653,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="label">Video Dossier</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1345,6 +2685,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 <p>Deep-dive video overviews covering the TormentNexus ecosystem, generated by AI from 182 source documents each.</p>
 
 
@@ -1353,7 +2701,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1369,7 +2733,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/12652b93-e2f0-4b35-bc6a-31c2c8fa51f0?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" class="btn btn-primary" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:24px 16px;border-radius:12px;text-decoration:none;font-size:14px;line-height:1.4">
+
+
+
+
+
+
+
+
 
 
 
@@ -1385,7 +2765,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <strong>HyperNexus:<br>Ultimate Agent</strong>
+
+
+
+
+
+
+
+
 
 
 
@@ -1401,7 +2797,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 </a>
+
+
+
+
+
+
+
+
 
 
 
@@ -1417,6 +2829,14 @@
 
 
 
+
+
+
+
+
+
+
+
         </div>
 
 
@@ -1425,7 +2845,23 @@
 
 
 
+
+
+
+
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
 
 
 
@@ -1441,7 +2877,23 @@
 
 
 
+
+
+
+
+
+
+
+
         </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1450,10 +2902,22 @@
 
 
         <div id="hypernexus-dossier-vid" style="margin-top:25px;max-width:750px;margin-left:auto;margin-right:auto;border-radius:12px;overflow:hidden;border:1px solid rgba(77,124,255,0.2);box-shadow:0 0 30px rgba(77,124,255,0.1);background:#0a0e1a">
+
           <video controls style="width:100%;display:block" preload="auto" playsinline>
+
             <source src="/hypernexus_ultimate_agent.mp4" type="video/mp4">
+
           </video>
+
         </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1469,7 +2933,31 @@
 
 
 
+
+
+
+
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1493,7 +2981,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="container">
+
+
+
+
+
+
+
+
 
 
 
@@ -1509,7 +3013,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="footer-brand">
+
+
+
+
+
+
+
+
 
 
 
@@ -1525,7 +3045,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <div class="logo-icon" style="width:32px;height:32px;font-size:16px">H</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1541,7 +3077,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1557,7 +3109,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1573,7 +3141,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="footer-col"><h4>Company</h4><a href="https://tormentnexus.site">About</a><a href="https://tormentnexus.site/blog/">Blog</a><a href="/contact.php">Careers</a><a href="/contact.php">Contact</a></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1589,7 +3173,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1605,7 +3205,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <p>© 2026 HyperNexus, Inc. All rights reserved.</p>
+
+
+
+
+
+
+
+
 
 
 
@@ -1621,6 +3237,14 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
 
 
@@ -1629,7 +3253,23 @@
 
 
 
+
+
+
+
+
+
+
+
         </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1653,7 +3293,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script>
+
+
+
+
+
+
+
+
 
 
 
@@ -1669,6 +3333,14 @@
 
 
 
+
+
+
+
+
+
+
+
         const canvas = document.getElementById('particle-canvas');
 
 
@@ -1677,7 +3349,23 @@
 
 
 
+
+
+
+
+
+
+
+
         const ctx = canvas.getContext('2d');
+
+
+
+
+
+
+
+
 
 
 
@@ -1701,6 +3389,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
 
 
@@ -1709,7 +3413,23 @@
 
 
 
+
+
+
+
+
+
+
+
         resize();
+
+
+
+
+
+
+
+
 
 
 
@@ -1733,7 +3453,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         const particles = [];
+
+
+
+
+
+
+
+
 
 
 
@@ -1757,7 +3501,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         class Particle {
+
+
+
+
+
+
+
+
 
 
 
@@ -1773,7 +3541,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 this.reset();
+
+
+
+
+
+
+
+
 
 
 
@@ -1789,6 +3573,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 this.alphaDir = 1;
 
 
@@ -1797,7 +3589,23 @@
 
 
 
+
+
+
+
+
+
+
+
             }
+
+
+
+
+
+
+
+
 
 
 
@@ -1813,7 +3621,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 this.x = Math.random() * W;
+
+
+
+
+
+
+
+
 
 
 
@@ -1829,7 +3653,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 this.size = 2 + Math.random() * 3; // Bigger particles
+
+
+
+
+
+
+
+
 
 
 
@@ -1845,7 +3685,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 this.speedY = (Math.random() - 0.5) * 0.2;
+
+
+
+
+
+
+
+
 
 
 
@@ -1861,7 +3717,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 this.hue = 220 + Math.random() * 40;
+
+
+
+
+
+
+
+
 
 
 
@@ -1877,7 +3749,23 @@
 
 
 
+
+
+
+
+
+
+
+
             }
+
+
+
+
+
+
+
+
 
 
 
@@ -1893,7 +3781,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 this.x += this.speedX;
+
+
+
+
+
+
+
+
 
 
 
@@ -1909,7 +3813,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 this.pulse += 0.015;
+
+
+
+
+
+
+
+
 
 
 
@@ -1925,7 +3845,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 this.alpha += 0.008 * this.alphaDir;
+
+
+
+
+
+
+
+
 
 
 
@@ -1941,7 +3877,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 this.opacity = 0.15 + this.alpha * 0.4;
+
+
+
+
+
+
+
+
 
 
 
@@ -1957,7 +3909,23 @@
 
 
 
+
+
+
+
+
+
+
+
             draw() {
+
+
+
+
+
+
+
+
 
 
 
@@ -1973,7 +3941,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 var r = this.size * pulseFactor;
+
+
+
+
+
+
+
+
 
 
 
@@ -1997,7 +3981,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 // Outer glow
+
+
+
+
+
+
+
+
 
 
 
@@ -2013,7 +4021,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 grad.addColorStop(0, 'hsla(' + this.hue + ', 80%, 70%, ' + (this.opacity * 0.3) + ')');
+
+
+
+
+
+
+
+
 
 
 
@@ -2029,7 +4053,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 grad.addColorStop(1, 'hsla(' + this.hue + ', 80%, 60%, 0)');
+
+
+
+
+
+
+
+
 
 
 
@@ -2045,7 +4085,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 ctx.beginPath();
+
+
+
+
+
+
+
+
 
 
 
@@ -2061,7 +4117,31 @@
 
 
 
+
+
+
+
+
+
+
+
                 ctx.fill();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2085,7 +4165,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 ctx.shadowColor = 'hsla(' + this.hue + ', 80%, 70%, 0.3)';
+
+
+
+
+
+
+
+
 
 
 
@@ -2101,7 +4197,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 ctx.fillStyle = 'hsla(' + this.hue + ', 80%, 70%, ' + this.opacity + ')';
+
+
+
+
+
+
+
+
 
 
 
@@ -2117,6 +4229,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
 
 
@@ -2125,7 +4245,31 @@
 
 
 
+
+
+
+
+
+
+
+
                 ctx.fill();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2149,7 +4293,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 ctx.shadowBlur = 20;
+
+
+
+
+
+
+
+
 
 
 
@@ -2165,6 +4325,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 ctx.beginPath();
 
 
@@ -2173,7 +4341,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 ctx.arc(this.x, this.y, r * 0.4, 0, Math.PI * 2);
+
+
+
+
+
+
+
+
 
 
 
@@ -2197,7 +4381,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 ctx.restore();
+
+
+
+
+
+
+
+
 
 
 
@@ -2213,7 +4421,31 @@
 
 
 
+
+
+
+
+
+
+
+
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2245,7 +4477,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         function drawConnections() {
+
+
+
+
+
+
+
+
 
 
 
@@ -2261,7 +4517,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 for (let j = i + 1; j < particles.length; j++) {
+
+
+
+
+
+
+
+
 
 
 
@@ -2277,7 +4549,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     const dy = particles[i].y - particles[j].y;
+
+
+
+
+
+
+
+
 
 
 
@@ -2293,7 +4581,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     if (dist < 180) {
+
+
+
+
+
+
+
+
 
 
 
@@ -2317,7 +4621,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         // Glow line
+
+
+
+
+
+
+
+
 
 
 
@@ -2333,7 +4661,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         ctx.shadowColor = 'hsla(220, 80%, 60%, 0.08)';
+
+
+
+
+
+
+
+
 
 
 
@@ -2349,7 +4693,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         ctx.strokeStyle = 'hsla(220, 80%, 60%, ' + alpha + ')';
+
+
+
+
+
+
+
+
 
 
 
@@ -2365,7 +4725,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         ctx.beginPath();
+
+
+
+
+
+
+
+
 
 
 
@@ -2381,7 +4757,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         ctx.lineTo(particles[j].x, particles[j].y);
+
+
+
+
+
+
+
+
 
 
 
@@ -2397,7 +4789,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         ctx.restore();
+
+
+
+
+
+
+
+
 
 
 
@@ -2413,7 +4821,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2429,7 +4853,31 @@
 
 
 
+
+
+
+
+
+
+
+
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2453,7 +4901,23 @@
 
 
 
+
+
+
+
+
+
+
+
         let mouseX = -9999, mouseY = -9999;
+
+
+
+
+
+
+
+
 
 
 
@@ -2469,7 +4933,23 @@
 
 
 
+
+
+
+
+
+
+
+
             mouseX = e.clientX;
+
+
+
+
+
+
+
+
 
 
 
@@ -2485,7 +4965,31 @@
 
 
 
+
+
+
+
+
+
+
+
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2509,6 +5013,14 @@
 
 
 
+
+
+
+
+
+
+
+
             ctx.clearRect(0, 0, W, H);
 
 
@@ -2517,7 +5029,23 @@
 
 
 
+
+
+
+
+
+
+
+
             particles.forEach(p => { p.update(); p.draw(); });
+
+
+
+
+
+
+
+
 
 
 
@@ -2541,7 +5069,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             // Mouse ripple
+
+
+
+
+
+
+
+
 
 
 
@@ -2557,7 +5109,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 particles.forEach(p => {
+
+
+
+
+
+
+
+
 
 
 
@@ -2573,7 +5141,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     const dy = p.y - mouseY;
+
+
+
+
+
+
+
+
 
 
 
@@ -2589,7 +5173,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     if (dist < 250) {
+
+
+
+
+
+
+
+
 
 
 
@@ -2605,7 +5205,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         p.speedX += (dx / dist) * force || 0;
+
+
+
+
+
+
+
+
 
 
 
@@ -2621,7 +5237,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     }
+
+
+
+
+
+
+
+
 
 
 
@@ -2637,7 +5269,31 @@
 
 
 
+
+
+
+
+
+
+
+
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2661,7 +5317,23 @@
 
 
 
+
+
+
+
+
+
+
+
         }
+
+
+
+
+
+
+
+
 
 
 
@@ -2685,7 +5357,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // ========== ANIMATED COUNTERS ==========
+
+
+
+
+
+
+
+
 
 
 
@@ -2701,7 +5397,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+
+
+
+
+
+
+
+
 
 
 
@@ -2717,7 +5429,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 let current = 0;
+
+
+
+
+
+
+
+
 
 
 
@@ -2733,7 +5461,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 const interval = setInterval(() => {
+
+
+
+
+
+
+
+
 
 
 
@@ -2749,7 +5493,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     if (current >= target) { current = target; clearInterval(interval); }
+
+
+
+
+
+
+
+
 
 
 
@@ -2765,7 +5525,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         el.textContent = (current / 100).toFixed(2);
+
+
+
+
+
+
+
+
 
 
 
@@ -2781,7 +5557,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         el.textContent = current.toLocaleString() + '+';
+
+
+
+
+
+
+
+
 
 
 
@@ -2797,7 +5589,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 }, 20);
+
+
+
+
+
+
+
+
 
 
 
@@ -2813,7 +5621,23 @@
 
 
 
+
+
+
+
+
+
+
+
         }
+
+
+
+
+
+
+
+
 
 
 
@@ -2837,7 +5661,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // ========== 3D TILT WITH SHINE FOLLOW ==========
+
+
+
+
+
+
+
+
 
 
 
@@ -2853,7 +5701,23 @@
 
 
 
+
+
+
+
+
+
+
+
             card.addEventListener('mousemove', function(e) {
+
+
+
+
+
+
+
+
 
 
 
@@ -2869,7 +5733,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 var x = e.clientX - r.left, y = e.clientY - r.top;
+
+
+
+
+
+
+
+
 
 
 
@@ -2885,7 +5765,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 var rotX = (y - cy) / cy * -10, rotY = (x - cx) / cx * 10;
+
+
+
+
+
+
+
+
 
 
 
@@ -2901,7 +5797,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 card.style.transform = 'perspective(1200px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateY(-10px) scale(1.04)';
+
+
+
+
+
+
+
+
 
 
 
@@ -2917,7 +5829,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 card.style.setProperty('--shine', shinePos);
+
+
+
+
+
+
+
+
 
 
 
@@ -2933,7 +5861,23 @@
 
 
 
+
+
+
+
+
+
+
+
             });
+
+
+
+
+
+
+
+
 
 
 
@@ -2949,7 +5893,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 card.style.transform = '';
+
+
+
+
+
+
+
+
 
 
 
@@ -2965,7 +5925,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 card.style.background = '';
+
+
+
+
+
+
+
+
 
 
 
@@ -2981,7 +5957,31 @@
 
 
 
+
+
+
+
+
+
+
+
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3005,7 +6005,23 @@
 
 
 
+
+
+
+
+
+
+
+
         var observer = new IntersectionObserver(function(entries) {
+
+
+
+
+
+
+
+
 
 
 
@@ -3021,7 +6037,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 if (e.isIntersecting) {
+
+
+
+
+
+
+
+
 
 
 
@@ -3037,7 +6069,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     e.target.style.transform = 'translateY(0)';
+
+
+
+
+
+
+
+
 
 
 
@@ -3053,6 +6101,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 }
 
 
@@ -3061,7 +6117,23 @@
 
 
 
+
+
+
+
+
+
+
+
             });
+
+
+
+
+
+
+
+
 
 
 
@@ -3085,7 +6157,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         document.querySelectorAll('.feature, .stat, .compliance-item, .price-card, .section-header').forEach(function(el) {
+
+
+
+
+
+
+
+
 
 
 
@@ -3101,7 +6197,23 @@
 
 
 
+
+
+
+
+
+
+
+
             el.style.transform = 'translateY(40px)';
+
+
+
+
+
+
+
+
 
 
 
@@ -3117,6 +6229,14 @@
 
 
 
+
+
+
+
+
+
+
+
             observer.observe(el);
 
 
@@ -3125,7 +6245,31 @@
 
 
 
+
+
+
+
+
+
+
+
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3149,7 +6293,23 @@
 
 
 
+
+
+
+
+
+
+
+
         window.addEventListener('scroll', function() {
+
+
+
+
+
+
+
+
 
 
 
@@ -3165,7 +6325,23 @@
 
 
 
+
+
+
+
+
+
+
+
             var hero = document.querySelector('.hero');
+
+
+
+
+
+
+
+
 
 
 
@@ -3181,7 +6357,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 hero.style.transform = 'translateY(' + (scrollY * 0.03) + 'px)';
+
+
+
+
+
+
+
+
 
 
 
@@ -3197,7 +6389,23 @@
 
 
 
+
+
+
+
+
+
+
+
             }
+
+
+
+
+
+
+
+
 
 
 
@@ -3213,7 +6421,23 @@
 
 
 
+
+
+
+
+
+
+
+
     </script>
+
+
+
+
+
+
+
+
 
 
 
@@ -3229,7 +6453,23 @@
 
 
 
+
+
+
+
+
+
+
+
 </html>
+
+
+
+
+
+
+
+
 
 
 

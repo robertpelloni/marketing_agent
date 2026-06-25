@@ -2079,9 +2079,9 @@
 
           ctx.save();
           ctx.translate(0, 5);
-          ctx.scale(0.55, 0.55);
+          ctx.scale(0.5, 0.5);
 
-          // Nasal cavity (heart/spade shaped dark void) - drawn first as background void
+          // Nasal cavity (heart/spade shaped dark void) - serves directly as the nose hole
           ctx.fillStyle = "#010204";
           ctx.beginPath();
           ctx.moveTo(0, -0.5);
@@ -2097,30 +2097,6 @@
           ctx.bezierCurveTo(3.2, 2.5, 2.2, 0.5, 0, -0.5);
           ctx.closePath();
           ctx.fill();
-
-          // Nose bridge structure (vertical chrome bar/septum) - drawn second on top of void
-          ctx.fillStyle = "#8aa0ba";
-          ctx.strokeStyle = "#05070a";
-          ctx.lineWidth = 0.5;
-          ctx.beginPath();
-          ctx.moveTo(-1.2, -5);
-          ctx.lineTo(1.2, -5);
-          ctx.lineTo(1.5, -1);
-          ctx.lineTo(1.0, 2);
-          ctx.lineTo(0, 3.2);
-          ctx.lineTo(-1.0, 2);
-          ctx.lineTo(-1.5, -1);
-          ctx.closePath();
-          ctx.fill();
-          ctx.stroke();
-
-          // Nose bridge chrome highlight
-          ctx.strokeStyle = "#ffffff";
-          ctx.lineWidth = 0.3;
-          ctx.beginPath();
-          ctx.moveTo(0, -4.5);
-          ctx.lineTo(0, 3.0);
-          ctx.stroke();
 
           // Nasal support struts (angled pistons from nose to cheek, visible in photo)
           ctx.strokeStyle = "#7a94b0";

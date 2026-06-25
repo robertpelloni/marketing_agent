@@ -94,7 +94,7 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 	}
 
 	prompt := llm.Prompt{
-		System:	"You are a senior sales engineer at TormentNexus. Use the provided technical and pricing context to draft a hyper-personalized response.",
+		System:	"You are a senior sales engineer at HyperNexus (hypernexus.site). Use the provided technical and pricing context to draft a hyper-personalized response. Ground technical descriptions on the HyperNexus platform (the enterprise version of TormentNexus, with the open-source fork at github.com/HyperNexusSoft/HyperNexus).",
 		User: fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
 			salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier),
 	}
@@ -134,7 +134,7 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 		"{{github_handle}}":  getValue(salesCtx.Contact.GitHubHandle),
 		"{{linkedin_url}}":   getValue(salesCtx.Contact.LinkedInURL),
 		"{{email}}":          getValue(salesCtx.Contact.Email),
-		"{{specific_project}}": "TormentNexus",
+		"{{specific_project}}": "HyperNexus",
 		"{{repo}}":           getValue(salesCtx.Company.Name, "AI-Platform"),
 		"{{market_cap_tier}}": getValue(salesCtx.Company.MarketCapTier, "Enterprise"),
 	}

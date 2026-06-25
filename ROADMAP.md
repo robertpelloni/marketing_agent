@@ -66,6 +66,7 @@ ipe)
 - [x] **Implement IMAP/POP3 email polling** for inbound message ingestion
 - [x] **Implement LinkedIn message sending** via headless automation
 - [x] **Implement GitHub Issue/PR comment outreach** as a technical hook channel
+- [x] **Implement dual-brand social media posting worker agent** (Reddit, Bluesky, LinkedIn, Twitter/X)
 - [x] **Add channel preference logic** — route outreach via the contact's preferred channel
 - [x] **Add outreach cadence management** — configurable follow-up schedule (e.g., Day 1 → Day 3 → Day 7)
 

@@ -136,7 +136,7 @@ func Load() *Config {
 		SMTPUsername:	os.Getenv("SMTP_USERNAME"),
 		SMTPPassword:	os.Getenv("SMTP_PASSWORD"),
 		SMTPFrom:	os.Getenv("SMTP_FROM"),
-		SMTPFromName:	getEnv("SMTP_FROM_NAME", "TormentNexus Sales"),
+		SMTPFromName:	getEnv("SMTP_FROM_NAME", "HyperNexus Sales"),
 
 		// IMAP
 		IMAPHost:		os.Getenv("IMAP_HOST"),

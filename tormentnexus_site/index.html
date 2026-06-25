@@ -600,26 +600,7 @@ class SpookySkull{
     ctx.lineWidth = 0.5;
     ctx.stroke();
 
-    // Zygomatic Arches (Cheekbones - sharp steel brackets flaring out)
-    ctx.fillStyle = chromeGrad;
-    ctx.strokeStyle = 'rgba(0, 255, 136, 0.6)';
-    ctx.lineWidth = 1.0;
-    // Left Cheekbone bracket
-    ctx.beginPath();
-    ctx.moveTo(-12.5, -2);
-    ctx.lineTo(-16.0, 2.0); // Wider flair
-    ctx.lineTo(-10.0, 5.5);
-    ctx.lineTo(-8.5, 1.5);
-    ctx.closePath();
-    ctx.fill(); ctx.stroke();
-    // Right Cheekbone bracket
-    ctx.beginPath();
-    ctx.moveTo(12.5, -2);
-    ctx.lineTo(16.0, 2.0); // Wider flair
-    ctx.lineTo(10.0, 5.5);
-    ctx.lineTo(8.5, 1.5);
-    ctx.closePath();
-    ctx.fill(); ctx.stroke();
+
 
     // Mandibular Hinge Gears (classic round side pivot gears on the cheek sides)
     ctx.fillStyle = '#7c93b3';

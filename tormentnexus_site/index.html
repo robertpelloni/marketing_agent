@@ -480,15 +480,13 @@ class SpookySkull{
     ctx.lineWidth = 1.1;
     ctx.beginPath();
     ctx.moveTo(-13.5, -9);
-    ctx.bezierCurveTo(-14, -19, -10.5, -23, -8.0, -23); // Higher forehead dome
-    ctx.quadraticCurveTo(-4, -20.5, 0, -20.5); // Center crown dip
-    ctx.quadraticCurveTo(4, -20.5, 8.0, -23);
-    ctx.bezierCurveTo(10.5, -23, 14, -19, 13.5, -9);
+    ctx.bezierCurveTo(-14.5, -22, -9.0, -24, 0, -24); // Smooth rounded top dome sweep
+    ctx.bezierCurveTo(9.0, -24, 14.5, -22, 13.5, -9); // Smooth rounded down sweep
     ctx.lineTo(13.5, -5);
-    ctx.lineTo(10.0, -3.5); // Indent temporal notch
-    ctx.lineTo(11.0, 0);
-    ctx.lineTo(-11.0, 0);
-    ctx.lineTo(-10.0, -3.5);
+    ctx.lineTo(10.5, -3.5);
+    ctx.lineTo(11.5, 0);
+    ctx.lineTo(-11.5, 0);
+    ctx.lineTo(-10.5, -3.5);
     ctx.lineTo(-13.5, -5);
     ctx.closePath();
     ctx.fill(); ctx.stroke();

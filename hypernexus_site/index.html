@@ -2,7 +2,15 @@
 
 
 
+
+
+
+
 <html lang="en">
+
+
+
+
 
 
 
@@ -10,7 +18,15 @@
 
 
 
+
+
+
+
     <meta charset="UTF-8">
+
+
+
+
 
 
 
@@ -18,7 +34,15 @@
 
 
 
+
+
+
+
     <title>HyperNexus — Enterprise AI Control Plane</title>
+
+
+
+
 
 
 
@@ -26,7 +50,15 @@
 
 
 
+
+
+
+
     <style>
+
+
+
+
 
 
 
@@ -34,7 +66,15 @@
 
 
 
+
+
+
+
       :root {
+
+
+
+
 
 
 
@@ -42,7 +82,15 @@
 
 
 
+
+
+
+
         --card-bg: rgba(255,255,255,0.05);
+
+
+
+
 
 
 
@@ -50,7 +98,15 @@
 
 
 
+
+
+
+
         --neon-blue: #4d7cff;
+
+
+
+
 
 
 
@@ -58,7 +114,15 @@
 
 
 
+
+
+
+
         --neon-magenta: #ff44cc;
+
+
+
+
 
 
 
@@ -66,7 +130,15 @@
 
 
 
+
+
+
+
         --neon-blue-glow: rgba(77,124,255,0.12);
+
+
+
+
 
 
 
@@ -74,7 +146,15 @@
 
 
 
+
+
+
+
         --text: #1a1e2e;
+
+
+
+
 
 
 
@@ -82,7 +162,15 @@
 
 
 
+
+
+
+
         --text-dim: #99aabb;
+
+
+
+
 
 
 
@@ -90,7 +178,15 @@
 
 
 
+
+
+
+
         --primary-glow: rgba(77,124,255,0.1);
+
+
+
+
 
 
 
@@ -98,7 +194,15 @@
 
 
 
+
+
+
+
         --shadow-card-hover: 0 16px 48px rgba(0,0,0,0.04);
+
+
+
+
 
 
 
@@ -106,7 +210,15 @@
 
 
 
+
+
+
+
       }
+
+
+
+
 
 
 
@@ -114,7 +226,15 @@
 
 
 
+
+
+
+
       html{scroll-behavior:smooth}
+
+
+
+
 
 
 
@@ -122,7 +242,15 @@
 
 
 
+
+
+
+
         background: var(--bg);
+
+
+
+
 
 
 
@@ -130,7 +258,15 @@
 
 
 
+
+
+
+
         font-family: 'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+
+
+
+
 
 
 
@@ -138,29 +274,37 @@
 
 
 
+
+
+
+
         -webkit-font-smoothing:antialiased;
 
 
 
-        overflow-x:hidden
-position:relative;
 
-      /* -- PARTICLE CANVAS -- */
-      #particle-canvas {
-        position: fixed;
-        top: 0; left: 0;
-        width: 1px; height: 1px;
-        opacity: 0;
-        pointer-events: none;
-        z-index: 0;
-      }
+
+
+
+        overflow-x:hidden
+
+
+
 
 
         position:relative;
 
 
 
+
+
+
+
       }
+
+
+
+
 
 
 
@@ -172,7 +316,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
       /* ── NEON WIRE GRID ── */
+
+
+
+
 
 
 
@@ -180,7 +336,15 @@ position:relative;
 
 
 
+
+
+
+
         content:'';
+
+
+
+
 
 
 
@@ -188,7 +352,15 @@ position:relative;
 
 
 
+
+
+
+
         background-image:
+
+
+
+
 
 
 
@@ -196,7 +368,15 @@ position:relative;
 
 
 
+
+
+
+
           repeating-linear-gradient(0deg, rgba(180,92,255,0.04) 0px, transparent 1px, transparent 80px);
+
+
+
+
 
 
 
@@ -204,11 +384,27 @@ position:relative;
 
 
 
+
+
+
+
         pointer-events:none; z-index:0;
 
 
 
+
+
+
+
       }
+
+
+
+
+
+
+
+
 
 
 
@@ -218,23 +414,45 @@ position:relative;
 
       
 
+
+
       /* ── PARTICLE CANVAS (hidden, JS controlled) ── */
+
+
 
       #particle-canvas {
 
+
+
         position: fixed;
+
+
 
         top: 0; left: 0;
 
+
+
         width: 100vw; height: 100vh;
+
+
 
         z-index: 0;
 
+
+
         pointer-events: none;
+
+
 
         opacity: 0;
 
+
+
       }/* ── GLOWING NEON WIRES ── */
+
+
+
+
 
 
 
@@ -242,7 +460,15 @@ position:relative;
 
 
 
+
+
+
+
         position:fixed; pointer-events:none; z-index:1;
+
+
+
+
 
 
 
@@ -250,11 +476,23 @@ position:relative;
 
 
 
+
+
+
+
         animation: neonPulse 3s ease-in-out infinite;
 
 
 
+
+
+
+
       }
+
+
+
+
 
 
 
@@ -262,7 +500,15 @@ position:relative;
 
 
 
+
+
+
+
         top:30%; left:0; right:0; height:1px;
+
+
+
+
 
 
 
@@ -270,7 +516,15 @@ position:relative;
 
 
 
+
+
+
+
         box-shadow: 0 0 8px var(--neon-blue), 0 0 20px var(--neon-purple-glow);
+
+
+
+
 
 
 
@@ -278,7 +532,15 @@ position:relative;
 
 
 
+
+
+
+
       }
+
+
+
+
 
 
 
@@ -286,7 +548,15 @@ position:relative;
 
 
 
+
+
+
+
         top:60%; left:0; right:0; height:1px;
+
+
+
+
 
 
 
@@ -294,7 +564,15 @@ position:relative;
 
 
 
+
+
+
+
         box-shadow: 0 0 8px var(--neon-purple), 0 0 20px var(--neon-blue-glow);
+
+
+
+
 
 
 
@@ -302,7 +580,15 @@ position:relative;
 
 
 
+
+
+
+
       }
+
+
+
+
 
 
 
@@ -310,7 +596,15 @@ position:relative;
 
 
 
+
+
+
+
         top:45%; left:0; right:0; height:1px;
+
+
+
+
 
 
 
@@ -318,7 +612,15 @@ position:relative;
 
 
 
+
+
+
+
         box-shadow: 0 0 8px var(--neon-cyan), 0 0 20px rgba(255,68,204,0.08);
+
+
+
+
 
 
 
@@ -326,7 +628,15 @@ position:relative;
 
 
 
+
+
+
+
       }
+
+
+
+
 
 
 
@@ -334,7 +644,15 @@ position:relative;
 
 
 
+
+
+
+
         left:20%; top:0; bottom:0; width:1px;
+
+
+
+
 
 
 
@@ -342,7 +660,15 @@ position:relative;
 
 
 
+
+
+
+
         box-shadow: 0 0 8px var(--neon-blue), 0 0 20px var(--neon-purple-glow);
+
+
+
+
 
 
 
@@ -350,7 +676,15 @@ position:relative;
 
 
 
+
+
+
+
       }
+
+
+
+
 
 
 
@@ -358,7 +692,15 @@ position:relative;
 
 
 
+
+
+
+
         left:70%; top:0; bottom:0; width:1px;
+
+
+
+
 
 
 
@@ -366,7 +708,15 @@ position:relative;
 
 
 
+
+
+
+
         box-shadow: 0 0 8px var(--neon-magenta), 0 0 20px rgba(0,229,255,0.08);
+
+
+
+
 
 
 
@@ -374,7 +724,15 @@ position:relative;
 
 
 
+
+
+
+
       }
+
+
+
+
 
 
 
@@ -382,7 +740,15 @@ position:relative;
 
 
 
+
+
+
+
         0%,100%{ opacity:0.08; }
+
+
+
+
 
 
 
@@ -390,7 +756,19 @@ position:relative;
 
 
 
+
+
+
+
       }
+
+
+
+
+
+
+
+
 
 
 
@@ -399,33 +777,26 @@ position:relative;
 
 
             @keyframes gradientDrift{0%,100%{background-position:0%0%,100%0%,50%100%,100%100%,0%100%}25%{background-position:20%10%,80%20%,40%80%,90%70%,10%90%}50%{background-position:30%20%,70%10%,60%70%,80%60%,20%80%}75%{background-position:10%30%,90%5%,45%85%,95%75%,5%95%}}
+
+      @keyframes gradientDrift{0%,100%{background-position:0%0%,100%0%,50%100%,100%100%,0%100%}25%{background-position:20%10%,80%20%,40%80%,90%70%,10%90%}50%{background-position:30%20%,70%10%,60%70%,80%60%,20%80%}75%{background-position:10%30%,90%5%,45%85%,95%75%,5%95%}}
       /* -- GRADIENT GLOW UNDER PANES -- */
-
       body::after {
-
-        content:"";
-
+        content:'';
         position:fixed; top:0; left:0; right:0; bottom:0;
-
         background-image:
-
           radial-gradient(ellipse 600px 400px at 15% 25%, rgba(77,124,255,0.18) 0%, transparent 70%),
-
-          radial-gradient(ellipse 500px 500px at 75% 35%, rgba(180,92,255,0.12) 0%, transparent 70%),
-
-          radial-gradient(ellipse 400px 600px at 50% 65%, rgba(0,229,255,0.10) 0%, transparent 70%),
-
-          radial-gradient(ellipse 350px 350px at 85% 80%, rgba(255,68,204,0.06) 0%, transparent 70%),
-
-          radial-gradient(ellipse 400px 300px at 30% 80%, rgba(77,124,255,0.08) 0%, transparent 70%);
-
+          radial-gradient(ellipse 500px 500px at 75% 35%, rgba(180,92,255,0.15) 0%, transparent 70%),
+          radial-gradient(ellipse 400px 600px at 50% 65%, rgba(0,229,255,0.12) 0%, transparent 70%),
+          radial-gradient(ellipse 350px 350px at 85% 80%, rgba(255,68,204,0.08) 0%, transparent 70%),
+          radial-gradient(ellipse 400px 300px at 30% 80%, rgba(77,124,255,0.10) 0%, transparent 70%);
+        background-size: 120% 120%;
+        animation: gradientDrift 15s ease-in-out infinite;
         pointer-events:none; z-index:0;
-
       }
 
 
 
-      .ambient-1{width:700px;height:700px;background:radial-gradient(circle,rgba(77,124,255,0.05),transparent 70%);top:-250px;right:-150px;animation:ambientDrift 40s ease-in-out infinite}
+
 
 
 
@@ -433,7 +804,19 @@ position:relative;
 
 
 
+
+
+
+
       @keyframes ambientDrift{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(80px,-40px) scale(1.04)}50%{transform:translate(-40px,50px) scale(0.96)}75%{transform:translate(50px,30px) scale(1.02)}}
+
+
+
+
+
+
+
+
 
 
 
@@ -449,7 +832,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
       /* ── HEADER ── */
+
+
+
+
 
 
 
@@ -457,7 +852,15 @@ position:relative;
 
 
 
+
+
+
+
       header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--neon-blue),var(--neon-purple),transparent);opacity:0.5}
+
+
+
+
 
 
 
@@ -465,7 +868,15 @@ position:relative;
 
 
 
+
+
+
+
       .logo{display:flex;align-items:center;gap:14px;text-decoration:none}
+
+
+
+
 
 
 
@@ -473,7 +884,15 @@ position:relative;
 
 
 
+
+
+
+
       .logo:hover .logo-icon{box-shadow:0 0 60px var(--neon-blue-glow),0 0 30px var(--neon-purple-glow);transform:scale(1.08) rotate(-4deg);border-color:var(--neon-blue)}
+
+
+
+
 
 
 
@@ -481,7 +900,15 @@ position:relative;
 
 
 
+
+
+
+
       .logo-text span{background:var(--gradient-neon);background-size:400% 400%;animation:gradientShift 4s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+
+
+
 
 
 
@@ -493,7 +920,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
       nav{display:flex;align-items:center;gap:36px}
+
+
+
+
 
 
 
@@ -501,7 +940,15 @@ position:relative;
 
 
 
+
+
+
+
       nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--neon-blue),var(--neon-purple));transition:width 0.3s;border-radius:2px;box-shadow:0 0 12px var(--neon-blue-glow)}
+
+
+
+
 
 
 
@@ -509,7 +956,15 @@ position:relative;
 
 
 
+
+
+
+
       nav a:hover::after{width:100%}
+
+
+
+
 
 
 
@@ -517,11 +972,23 @@ position:relative;
 
 
 
+
+
+
+
       .nav-cta::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.6s}
 
 
 
+
+
+
+
       .nav-cta:hover::before{left:100%}
+
+
+
+
 
 
 
@@ -533,11 +1000,27 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
       /* ── HERO ── */
 
 
 
-      .hero{padding:60px 0 40px;text-align:center;position:relative}
+
+
+
+
+      .hero{padding:10px 0 20px;text-align:center;position:relative}
+
+
+
+
 
 
 
@@ -545,7 +1028,15 @@ position:relative;
 
 
 
+
+
+
+
       .hero-badge .dot{width:6px;height:6px;background:var(--neon-blue);border-radius:50%;animation:blink 1.5s infinite;box-shadow:0 0 15px var(--neon-blue-glow)}
+
+
+
+
 
 
 
@@ -553,7 +1044,15 @@ position:relative;
 
 
 
+
+
+
+
       .hero h1{font-size:clamp(44px,7vw,86px);font-weight:900;letter-spacing:-2.5px;line-height:1.03;margin-bottom:20px;animation:fadeInUp 0.8s ease-out 0.2s both}
+
+
+
+
 
 
 
@@ -561,11 +1060,23 @@ position:relative;
 
 
 
+
+
+
+
       .hero p{font-size:18px;color:var(--text-secondary);max-width:600px;margin:0 auto 40px;line-height:1.7;animation:fadeInUp 0.8s ease-out 0.4s both}
 
 
 
+
+
+
+
       @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+
+
+
 
 
 
@@ -577,7 +1088,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
       /* ── BUTTONS ── */
+
+
+
+
 
 
 
@@ -585,7 +1108,15 @@ position:relative;
 
 
 
+
+
+
+
       .btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transition:left 0.6s}
+
+
+
+
 
 
 
@@ -593,7 +1124,15 @@ position:relative;
 
 
 
+
+
+
+
       .btn-primary{background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 3s ease infinite;color:white;box-shadow:0 0 30px var(--neon-blue-glow)}
+
+
+
+
 
 
 
@@ -601,7 +1140,15 @@ position:relative;
 
 
 
+
+
+
+
       .btn-secondary{background:rgba(255,255,255,0.2);backdrop-filter:blur(12px);color:var(--text);border:1px solid rgba(77,124,255,0.18);box-shadow:var(--shadow-card)}
+
+
+
+
 
 
 
@@ -613,7 +1160,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
       /* ── LOGOS ── */
+
+
+
+
 
 
 
@@ -621,7 +1180,15 @@ position:relative;
 
 
 
+
+
+
+
       .logos-label{text-align:center;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:3px;color:var(--text-dim);margin-bottom:32px}
+
+
+
+
 
 
 
@@ -629,7 +1196,15 @@ position:relative;
 
 
 
+
+
+
+
       .logo-item{font-size:16px;font-weight:800;background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 6s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0.25;transition:all 0.4s;cursor:default}
+
+
+
+
 
 
 
@@ -637,7 +1212,15 @@ position:relative;
 
 
 
+
+
+
+
       .logo-item:nth-child(2){animation-delay:0.8s}
+
+
+
+
 
 
 
@@ -645,7 +1228,15 @@ position:relative;
 
 
 
+
+
+
+
       .logo-item:nth-child(4){animation-delay:2.4s}
+
+
+
+
 
 
 
@@ -657,7 +1248,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
       /* ── FROSTED STATS ── */
+
+
+
+
 
 
 
@@ -665,7 +1268,15 @@ position:relative;
 
 
 
+
+
+
+
       .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+
+
+
+
 
 
 
@@ -673,7 +1284,15 @@ position:relative;
 
 
 
+
+
+
+
       .stat::after{content:'';position:absolute;inset:-1px;border-radius:21px;border:1px solid transparent;background:linear-gradient(135deg,rgba(212,175,55,0.08),rgba(77,124,255,0.06),rgba(180,92,255,0.04),transparent) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:0;opacity:0;transition:opacity 0.5s}
+
+
+
+
 
 
 
@@ -681,11 +1300,23 @@ position:relative;
 
 
 
+
+
+
+
       .stat:hover{background:rgba(255,255,255,0.06);border-color:rgba(77,124,255,0.2);transform:translateY(-8px) scale(1.03);box-shadow:0 0 30px var(--neon-blue-glow),0 0 60px var(--neon-purple-glow)}
 
 
 
+
+
+
+
       .stat-num{font-size:44px;font-weight:900;background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 5s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;letter-spacing:-1px;filter:drop-shadow(0 0 20px var(--neon-blue-glow));position:relative;z-index:1}
+
+
+
+
 
 
 
@@ -697,7 +1328,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
       /* ── FROSTED FEATURES ── */
+
+
+
+
 
 
 
@@ -705,7 +1348,15 @@ position:relative;
 
 
 
+
+
+
+
       .section-header{text-align:center;margin-bottom:64px}
+
+
+
+
 
 
 
@@ -713,7 +1364,15 @@ position:relative;
 
 
 
+
+
+
+
       .section-header h2{font-size:38px;font-weight:800;letter-spacing:-0.5px;margin-bottom:12px;display:inline-block;position:relative}
+
+
+
+
 
 
 
@@ -721,7 +1380,15 @@ position:relative;
 
 
 
+
+
+
+
       .section-header p{font-size:16px;color:var(--text-secondary);max-width:500px;margin:0 auto}
+
+
+
+
 
 
 
@@ -729,7 +1396,15 @@ position:relative;
 
 
 
+
+
+
+
       .feature{background:rgba(255,255,255,0.02);backdrop-filter:blur(50px);-webkit-backdrop-filter:blur(50px);padding:40px 28px;border-radius:20px;border:1px solid rgba(77,124,255,0.06);transition:all 0.4s;position:relative;overflow:hidden;box-shadow:var(--shadow-card);transform-style:preserve-3d;will-change:transform}
+
+
+
+
 
 
 
@@ -737,7 +1412,15 @@ position:relative;
 
 
 
+
+
+
+
       .feature:hover::after{opacity:1}
+
+
+
+
 
 
 
@@ -745,7 +1428,15 @@ position:relative;
 
 
 
+
+
+
+
       .feature-icon{width:52px;height:52px;background:linear-gradient(135deg,rgba(77,124,255,0.06),rgba(180,92,255,0.04));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px;border:1px solid rgba(77,124,255,0.08);transition:all 0.3s;position:relative;z-index:1;box-shadow:inset 0 1px 0 rgba(255,255,255,0.2)}
+
+
+
+
 
 
 
@@ -753,7 +1444,15 @@ position:relative;
 
 
 
+
+
+
+
       .feature h3{font-size:18px;font-weight:700;margin-bottom:10px;position:relative;z-index:1}
+
+
+
+
 
 
 
@@ -765,7 +1464,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
       /* ── FROSTED COMPLIANCE ── */
+
+
+
+
 
 
 
@@ -773,7 +1484,15 @@ position:relative;
 
 
 
+
+
+
+
       .compliance-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+
+
+
+
 
 
 
@@ -781,7 +1500,15 @@ position:relative;
 
 
 
+
+
+
+
       .compliance-item::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,rgba(212,175,55,0.4),var(--neon-blue),var(--neon-purple));background-size:300% 300%;animation:gradientShift 4s ease infinite;opacity:0;transition:opacity 0.3s;z-index:1}
+
+
+
+
 
 
 
@@ -789,7 +1516,15 @@ position:relative;
 
 
 
+
+
+
+
       .compliance-item:hover{background:rgba(255,255,255,0.06);border-color:rgba(77,124,255,0.2);transform:translateY(-6px) scale(1.02);box-shadow:0 0 20px var(--neon-blue-glow),0 0 40px var(--neon-purple-glow)}
+
+
+
+
 
 
 
@@ -797,11 +1532,23 @@ position:relative;
 
 
 
+
+
+
+
       .compliance-item:hover .compliance-icon{transform:scale(1.25) rotate(-8deg);filter:drop-shadow(0 0 20px var(--neon-blue-glow))}
 
 
 
+
+
+
+
       .compliance-item h4{font-size:15px;font-weight:700;margin-bottom:6px;position:relative;z-index:1}
+
+
+
+
 
 
 
@@ -813,7 +1560,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
       /* ── FROSTED PRICING ── */
+
+
+
+
 
 
 
@@ -821,7 +1580,15 @@ position:relative;
 
 
 
+
+
+
+
       .pricing-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:800px;margin:0 auto}
+
+
+
+
 
 
 
@@ -829,7 +1596,15 @@ position:relative;
 
 
 
+
+
+
+
       .price-card:hover{background:rgba(255,255,255,0.06);border-color:rgba(77,124,255,0.2);transform:translateY(-8px) scale(1.02);box-shadow:0 0 30px var(--neon-blue-glow),0 0 60px var(--neon-purple-glow)}
+
+
+
+
 
 
 
@@ -837,7 +1612,15 @@ position:relative;
 
 
 
+
+
+
+
       .price-card.featured .price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gradient-neon);color:white;padding:4px 16px;border-radius:100px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;box-shadow:0 0 25px var(--neon-blue-glow);z-index:2}
+
+
+
+
 
 
 
@@ -845,7 +1628,15 @@ position:relative;
 
 
 
+
+
+
+
       .price-amount{font-size:48px;font-weight:900;margin-bottom:6px;letter-spacing:-2px;position:relative;z-index:1;color:var(--text)}
+
+
+
+
 
 
 
@@ -853,7 +1644,15 @@ position:relative;
 
 
 
+
+
+
+
       .price-desc{font-size:14px;color:var(--text-secondary);margin-bottom:28px;line-height:1.6;position:relative;z-index:1}
+
+
+
+
 
 
 
@@ -861,7 +1660,15 @@ position:relative;
 
 
 
+
+
+
+
       .price-features li{padding:8px 0;font-size:14px;display:flex;align-items:center;gap:10px;color:var(--text-secondary);transition:all 0.2s}
+
+
+
+
 
 
 
@@ -869,7 +1676,15 @@ position:relative;
 
 
 
+
+
+
+
       .price-features li::before{content:"\2713";color:var(--neon-blue);font-weight:700;text-shadow:0 0 15px var(--neon-blue-glow)}
+
+
+
+
 
 
 
@@ -877,7 +1692,15 @@ position:relative;
 
 
 
+
+
+
+
       .price-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transition:left 0.5s}
+
+
+
+
 
 
 
@@ -885,7 +1708,15 @@ position:relative;
 
 
 
+
+
+
+
       .price-btn-primary{background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 3s ease infinite;color:white;box-shadow:0 0 30px var(--neon-blue-glow)}
+
+
+
+
 
 
 
@@ -893,7 +1724,15 @@ position:relative;
 
 
 
+
+
+
+
       .price-btn-secondary{background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);color:var(--text);border:1px solid rgba(77,124,255,0.1)}
+
+
+
+
 
 
 
@@ -905,7 +1744,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
       /* ── CTA ── */
+
+
+
+
 
 
 
@@ -913,7 +1764,15 @@ position:relative;
 
 
 
+
+
+
+
       .cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(77,124,255,0.04),transparent 70%);pointer-events:none}
+
+
+
+
 
 
 
@@ -921,7 +1780,15 @@ position:relative;
 
 
 
+
+
+
+
       .cta p{font-size:16px;color:var(--text-secondary);margin-bottom:32px;max-width:450px;margin-left:auto;margin-right:auto;position:relative}
+
+
+
+
 
 
 
@@ -929,11 +1796,23 @@ position:relative;
 
 
 
+
+
+
+
       .btn-white::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transition:left 0.6s}
 
 
 
+
+
+
+
       .btn-white:hover::before{left:100%}
+
+
+
+
 
 
 
@@ -945,7 +1824,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
       /* ── FOOTER ── */
+
+
+
+
 
 
 
@@ -953,7 +1844,15 @@ position:relative;
 
 
 
+
+
+
+
       .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+
+
+
+
 
 
 
@@ -961,7 +1860,15 @@ position:relative;
 
 
 
+
+
+
+
       .footer-col h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text);margin-bottom:20px;position:relative;display:inline-block}
+
+
+
+
 
 
 
@@ -969,7 +1876,15 @@ position:relative;
 
 
 
+
+
+
+
       .footer-col a{display:block;font-size:14px;color:var(--text-secondary);text-decoration:none;padding:5px 0;transition:all 0.2s}
+
+
+
+
 
 
 
@@ -977,7 +1892,15 @@ position:relative;
 
 
 
+
+
+
+
       .footer-bottom{padding-top:32px;border-top:1px solid rgba(77,124,255,0.06);display:flex;justify-content:space-between;align-items:center}
+
+
+
+
 
 
 
@@ -985,7 +1908,15 @@ position:relative;
 
 
 
+
+
+
+
       .footer-bottom a{color:var(--text-secondary);text-decoration:none;transition:all 0.2s}
+
+
+
+
 
 
 
@@ -993,7 +1924,15 @@ position:relative;
 
 
 
+
+
+
+
       .self-host-note{text-align:center;margin-top:32px;padding:20px 24px;border:1px solid rgba(212,175,55,0.12);border-radius:12px;background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);font-size:13px;color:var(--text-secondary);letter-spacing:0.3px;line-height:1.6}
+
+
+
+
 
 
 
@@ -1001,11 +1940,23 @@ position:relative;
 
 
 
+
+
+
+
       .self-host-note a:hover{color:rgba(212,175,55,0.8);border-bottom-color:rgba(212,175,55,0.5);filter:drop-shadow(0 0 10px rgba(212,175,55,0.15))}
 
 
 
+
+
+
+
       @media (max-width: 768px){nav{display:none}.stats-grid{grid-template-columns:repeat(2,1fr)}.features-grid{grid-template-columns:1fr}.compliance-grid{grid-template-columns:repeat(2,1fr)}.pricing-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}}
+
+
+
+
 
 
 
@@ -1021,7 +1972,23 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 </head>
+
+
+
+
 
 
 
@@ -1029,7 +1996,15 @@ position:relative;
 
 
 
+
+
+
+
     <canvas id="particle-canvas"></canvas>
+
+
+
+
 
 
 
@@ -1037,7 +2012,15 @@ position:relative;
 
 
 
+
+
+
+
     <div class="ambient ambient-2"></div>
+
+
+
+
 
 
 
@@ -1049,7 +2032,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
     <header>
+
+
+
+
 
 
 
@@ -1057,7 +2052,15 @@ position:relative;
 
 
 
+
+
+
+
             <a href="/" class="logo">
+
+
+
+
 
 
 
@@ -1065,7 +2068,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="logo-text">Hyper<span>Nexus</span></div>
+
+
+
+
 
 
 
@@ -1073,7 +2084,15 @@ position:relative;
 
 
 
+
+
+
+
             <nav>
+
+
+
+
 
 
 
@@ -1081,7 +2100,15 @@ position:relative;
 
 
 
+
+
+
+
                 <a href="#compliance">Security</a>
+
+
+
+
 
 
 
@@ -1089,7 +2116,15 @@ position:relative;
 
 
 
+
+
+
+
                 <a href="https://github.com/NexusSoftMDMA/TormentNexus" target="_blank">Docs</a>
+
+
+
+
 
 
 
@@ -1097,11 +2132,23 @@ position:relative;
 
 
 
+
+
+
+
             </nav>
 
 
 
+
+
+
+
         </div>
+
+
+
+
 
 
 
@@ -1113,7 +2160,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
     <section class="hero">
+
+
+
+
 
 
 
@@ -1121,7 +2180,15 @@ position:relative;
 
 
 
+
+
+
+
             <div class="hero-badge"><span class="dot"></span> SOC 2 Type II Certified · HIPAA Ready · GDPR Compliant</div>
+
+
+
+
 
 
 
@@ -1129,7 +2196,15 @@ position:relative;
 
 
 
+
+
+
+
             <p>The secure, compliant AI control plane that gives your organization complete visibility and governance over multi-model workflows. Deploy anywhere. Control everything.</p>
+
+
+
+
 
 
 
@@ -1137,7 +2212,15 @@ position:relative;
 
 
 
+
+
+
+
                 <a href="/contact.php" class="btn btn-primary">Schedule a Demo →</a>
+
+
+
+
 
 
 
@@ -1145,7 +2228,15 @@ position:relative;
 
 
 
+
+
+
+
             </div>
+
+
+
+
 
 
 
@@ -1153,7 +2244,15 @@ position:relative;
 
 
 
+
+
+
+
                 <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/12652b93-e2f0-4b35-bc6a-31c2c8fa51f0" target="_blank" class="btn btn-secondary" style="font-size:13px;padding:10px 22px">▶ HyperNexus: Ultimate Agent</a>
+
+
+
+
 
 
 
@@ -1161,7 +2260,15 @@ position:relative;
 
 
 
+
+
+
+
         <div id="hypernexus-hero-vid" style="margin-top:24px;max-width:750px;margin-left:auto;margin-right:auto;border-radius:12px;overflow:hidden;border:1px solid rgba(212,175,55,0.2);box-shadow:0 0 50px rgba(77,124,255,0.12)">
+
+
+
+
 
 
 
@@ -1169,7 +2276,15 @@ position:relative;
 
 
 
+
+
+
+
             <source src="/hypernexus_ultimate_agent.mp4" type="video/mp4">
+
+
+
+
 
 
 
@@ -1177,15 +2292,35 @@ position:relative;
 
 
 
+
+
+
+
         </div>
 
 
 
+
+
+
+
         </div>
+
+
+
+
 
 
 
     </section>
+
+
+
+
+
+
+
+
 
 
 
@@ -1197,7 +2332,15 @@ position:relative;
 
 
 
+
+
+
+
         <div class="container">
+
+
+
+
 
 
 
@@ -1205,7 +2348,15 @@ position:relative;
 
 
 
+
+
+
+
             <div class="logos-grid">
+
+
+
+
 
 
 
@@ -1213,7 +2364,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="logo-item">Global Tech</div>
+
+
+
+
 
 
 
@@ -1221,7 +2380,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="logo-item">HealthCorp</div>
+
+
+
+
 
 
 
@@ -1229,7 +2396,15 @@ position:relative;
 
 
 
+
+
+
+
             </div>
+
+
+
+
 
 
 
@@ -1237,7 +2412,19 @@ position:relative;
 
 
 
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
 
 
 
@@ -1249,7 +2436,15 @@ position:relative;
 
 
 
+
+
+
+
         <div class="container">
+
+
+
+
 
 
 
@@ -1257,7 +2452,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="stat"><div class="stat-num" data-target="11000">0</div><div class="stat-label">Tool Integrations</div></div>
+
+
+
+
 
 
 
@@ -1265,7 +2468,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="stat"><div class="stat-num">&lt;26ms</div><div class="stat-label">Avg Latency</div></div>
+
+
+
+
 
 
 
@@ -1273,7 +2484,15 @@ position:relative;
 
 
 
+
+
+
+
             </div>
+
+
+
+
 
 
 
@@ -1281,7 +2500,19 @@ position:relative;
 
 
 
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
 
 
 
@@ -1293,7 +2524,15 @@ position:relative;
 
 
 
+
+
+
+
         <div class="container">
+
+
+
+
 
 
 
@@ -1301,7 +2540,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="label">Platform</div>
+
+
+
+
 
 
 
@@ -1309,11 +2556,23 @@ position:relative;
 
 
 
+
+
+
+
                 <p>A single pane of glass for model orchestration, tool management, and governance.</p>
 
 
 
+
+
+
+
             </div>
+
+
+
+
 
 
 
@@ -1321,7 +2580,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="feature"><div class="feature-icon">🔐</div><h3>SSO & RBAC</h3><p>SAML 2.0 and OIDC integration with fine-grained role-based access control. Map your existing identity provider in minutes.</p></div>
+
+
+
+
 
 
 
@@ -1329,7 +2596,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="feature"><div class="feature-icon">🏢</div><h3>Air-Gapped Deployment</h3><p>Run entirely within your VPC. No external calls. Cryptographically signed offline license keys for regulated environments.</p></div>
+
+
+
+
 
 
 
@@ -1337,7 +2612,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="feature"><div class="feature-icon">🛡️</div><h3>Data Loss Prevention</h3><p>Configurable PII scrubbing and content filtering before prompts reach external models. Keep sensitive data in-house.</p></div>
+
+
+
+
 
 
 
@@ -1345,7 +2628,15 @@ position:relative;
 
 
 
+
+
+
+
             </div>
+
+
+
+
 
 
 
@@ -1353,7 +2644,19 @@ position:relative;
 
 
 
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
 
 
 
@@ -1365,7 +2668,15 @@ position:relative;
 
 
 
+
+
+
+
         <div class="container">
+
+
+
+
 
 
 
@@ -1373,7 +2684,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="label">Security & Compliance</div>
+
+
+
+
 
 
 
@@ -1381,11 +2700,23 @@ position:relative;
 
 
 
+
+
+
+
                 <p>Built from the ground up to meet the most stringent regulatory requirements.</p>
 
 
 
+
+
+
+
             </div>
+
+
+
+
 
 
 
@@ -1393,7 +2724,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="compliance-item"><div class="compliance-icon">🔒</div><h4>SOC 2 Type II</h4><p>Independently audited security controls</p></div>
+
+
+
+
 
 
 
@@ -1401,7 +2740,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="compliance-item"><div class="compliance-icon">🇪🇺</div><h4>GDPR Compliant</h4><p>Data processing agreements and EU hosting</p></div>
+
+
+
+
 
 
 
@@ -1409,7 +2756,15 @@ position:relative;
 
 
 
+
+
+
+
             </div>
+
+
+
+
 
 
 
@@ -1417,7 +2772,19 @@ position:relative;
 
 
 
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
 
 
 
@@ -1429,7 +2796,15 @@ position:relative;
 
 
 
+
+
+
+
         <div class="container">
+
+
+
+
 
 
 
@@ -1437,7 +2812,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="label">Pricing</div>
+
+
+
+
 
 
 
@@ -1445,11 +2828,23 @@ position:relative;
 
 
 
+
+
+
+
                 <p>Start with a proof of concept. Scale to enterprise-wide deployment.</p>
 
 
 
+
+
+
+
             </div>
+
+
+
+
 
 
 
@@ -1457,7 +2852,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="price-card featured">
+
+
+
+
 
 
 
@@ -1465,7 +2868,15 @@ position:relative;
 
 
 
+
+
+
+
                     <div class="price-tier">Professional</div>
+
+
+
+
 
 
 
@@ -1473,11 +2884,23 @@ position:relative;
 
 
 
+
+
+
+
                     <div class="price-desc">For growing teams that need governance and compliance.</div>
 
 
 
+
+
+
+
                     <ul class="price-features">
+
+
+
+
 
 
 
@@ -1485,7 +2908,15 @@ position:relative;
 
 
 
+
+
+
+
                     </ul>
+
+
+
+
 
 
 
@@ -1493,7 +2924,15 @@ position:relative;
 
 
 
+
+
+
+
                 </div>
+
+
+
+
 
 
 
@@ -1501,7 +2940,15 @@ position:relative;
 
 
 
+
+
+
+
                     <div class="price-tier">Enterprise</div>
+
+
+
+
 
 
 
@@ -1509,7 +2956,15 @@ position:relative;
 
 
 
+
+
+
+
                     <div class="price-desc">For organizations with advanced security and compliance needs.</div>
+
+
+
+
 
 
 
@@ -1517,7 +2972,15 @@ position:relative;
 
 
 
+
+
+
+
                         <li>Everything in Professional</li><li>Air-gapped deployment</li><li>Dedicated support SLA</li><li>Custom integrations</li><li>IP indemnification</li><li>On-site training</li>
+
+
+
+
 
 
 
@@ -1525,7 +2988,15 @@ position:relative;
 
 
 
+
+
+
+
                     <a href="/contact.php" class="price-btn price-btn-secondary">Contact Sales</a>
+
+
+
+
 
 
 
@@ -1533,7 +3004,15 @@ position:relative;
 
 
 
+
+
+
+
             </div>
+
+
+
+
 
 
 
@@ -1541,7 +3020,15 @@ position:relative;
 
 
 
+
+
+
+
                 For personal use, individual developers, non-commercial, or self-hosted deployments &rarr; <a href="https://tormentnexus.site" target="_blank">TormentNexus.site</a>
+
+
+
+
 
 
 
@@ -1549,11 +3036,27 @@ position:relative;
 
 
 
+
+
+
+
         </div>
 
 
 
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
 
 
 
@@ -1565,7 +3068,15 @@ position:relative;
 
 
 
+
+
+
+
         <div class="container">
+
+
+
+
 
 
 
@@ -1573,7 +3084,15 @@ position:relative;
 
 
 
+
+
+
+
             <p>Join the enterprises that trust HyperNexus to orchestrate their AI workflows.</p>
+
+
+
+
 
 
 
@@ -1581,11 +3100,27 @@ position:relative;
 
 
 
+
+
+
+
         </div>
 
 
 
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
 
 
 
@@ -1597,7 +3132,15 @@ position:relative;
 
 
 
+
+
+
+
         <div class="container">
+
+
+
+
 
 
 
@@ -1605,7 +3148,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="label">Video Dossier</div>
+
+
+
+
 
 
 
@@ -1613,11 +3164,23 @@ position:relative;
 
 
 
+
+
+
+
                 <p>Deep-dive video overviews covering the TormentNexus ecosystem, generated by AI from 182 source documents each.</p>
 
 
 
+
+
+
+
             </div>
+
+
+
+
 
 
 
@@ -1625,7 +3188,15 @@ position:relative;
 
 
 
+
+
+
+
                 <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/12652b93-e2f0-4b35-bc6a-31c2c8fa51f0" target="_blank" class="btn btn-primary" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:24px 16px;border-radius:12px;text-decoration:none;font-size:14px;line-height:1.4">
+
+
+
+
 
 
 
@@ -1633,7 +3204,15 @@ position:relative;
 
 
 
+
+
+
+
                     <strong>HyperNexus:<br>Ultimate Agent</strong>
+
+
+
+
 
 
 
@@ -1641,7 +3220,15 @@ position:relative;
 
 
 
+
+
+
+
                 </a>
+
+
+
+
 
 
 
@@ -1649,11 +3236,23 @@ position:relative;
 
 
 
+
+
+
+
         </div>
 
 
 
+
+
+
+
     </section>
+
+
+
+
 
 
 
@@ -1661,7 +3260,15 @@ position:relative;
 
 
 
+
+
+
+
         </div>
+
+
+
+
 
 
 
@@ -1669,7 +3276,15 @@ position:relative;
 
 
 
+
+
+
+
           <video controls style="width:100%;display:block" preload="metadata">
+
+
+
+
 
 
 
@@ -1677,7 +3292,15 @@ position:relative;
 
 
 
+
+
+
+
           </video>
+
+
+
+
 
 
 
@@ -1685,11 +3308,27 @@ position:relative;
 
 
 
+
+
+
+
       </div>
 
 
 
+
+
+
+
     </section>
+
+
+
+
+
+
+
+
 
 
 
@@ -1701,7 +3340,15 @@ position:relative;
 
 
 
+
+
+
+
         <div class="container">
+
+
+
+
 
 
 
@@ -1709,7 +3356,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="footer-brand">
+
+
+
+
 
 
 
@@ -1717,7 +3372,15 @@ position:relative;
 
 
 
+
+
+
+
                         <div class="logo-icon" style="width:32px;height:32px;font-size:16px">H</div>
+
+
+
+
 
 
 
@@ -1725,7 +3388,15 @@ position:relative;
 
 
 
+
+
+
+
                     </div>
+
+
+
+
 
 
 
@@ -1733,7 +3404,15 @@ position:relative;
 
 
 
+
+
+
+
                 </div>
+
+
+
+
 
 
 
@@ -1741,7 +3420,15 @@ position:relative;
 
 
 
+
+
+
+
                 <div class="footer-col"><h4>Company</h4><a href="https://tormentnexus.site">About</a><a href="https://tormentnexus.site/blog/">Blog</a><a href="/contact.php">Careers</a><a href="/contact.php">Contact</a></div>
+
+
+
+
 
 
 
@@ -1749,7 +3436,15 @@ position:relative;
 
 
 
+
+
+
+
             </div>
+
+
+
+
 
 
 
@@ -1757,7 +3452,15 @@ position:relative;
 
 
 
+
+
+
+
                 <p>© 2026 HyperNexus, Inc. All rights reserved.</p>
+
+
+
+
 
 
 
@@ -1765,11 +3468,23 @@ position:relative;
 
 
 
+
+
+
+
             </div>
 
 
 
+
+
+
+
         </div>
+
+
+
+
 
 
 
@@ -1781,7 +3496,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
     <script>
+
+
+
+
 
 
 
@@ -1789,11 +3516,23 @@ position:relative;
 
 
 
+
+
+
+
         const canvas = document.getElementById('particle-canvas');
 
 
 
+
+
+
+
         const ctx = canvas.getContext('2d');
+
+
+
+
 
 
 
@@ -1805,11 +3544,27 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
         function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
 
 
 
+
+
+
+
         resize();
+
+
+
+
 
 
 
@@ -1821,7 +3576,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
         const particles = [];
+
+
+
+
 
 
 
@@ -1833,7 +3600,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
         class Particle {
+
+
+
+
 
 
 
@@ -1841,7 +3620,15 @@ position:relative;
 
 
 
+
+
+
+
                 this.reset();
+
+
+
+
 
 
 
@@ -1849,11 +3636,23 @@ position:relative;
 
 
 
+
+
+
+
                 this.alphaDir = 1;
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -1861,7 +3660,15 @@ position:relative;
 
 
 
+
+
+
+
                 this.x = Math.random() * W;
+
+
+
+
 
 
 
@@ -1869,7 +3676,15 @@ position:relative;
 
 
 
+
+
+
+
                 this.size = 2 + Math.random() * 3; // Bigger particles
+
+
+
+
 
 
 
@@ -1877,7 +3692,15 @@ position:relative;
 
 
 
+
+
+
+
                 this.speedY = (Math.random() - 0.5) * 0.2;
+
+
+
+
 
 
 
@@ -1885,7 +3708,15 @@ position:relative;
 
 
 
+
+
+
+
                 this.hue = 220 + Math.random() * 40;
+
+
+
+
 
 
 
@@ -1893,7 +3724,15 @@ position:relative;
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -1901,7 +3740,15 @@ position:relative;
 
 
 
+
+
+
+
                 this.x += this.speedX;
+
+
+
+
 
 
 
@@ -1909,7 +3756,15 @@ position:relative;
 
 
 
+
+
+
+
                 this.pulse += 0.015;
+
+
+
+
 
 
 
@@ -1917,7 +3772,15 @@ position:relative;
 
 
 
+
+
+
+
                 this.alpha += 0.008 * this.alphaDir;
+
+
+
+
 
 
 
@@ -1925,7 +3788,15 @@ position:relative;
 
 
 
+
+
+
+
                 this.opacity = 0.15 + this.alpha * 0.4;
+
+
+
+
 
 
 
@@ -1933,7 +3804,15 @@ position:relative;
 
 
 
+
+
+
+
             draw() {
+
+
+
+
 
 
 
@@ -1941,7 +3820,15 @@ position:relative;
 
 
 
+
+
+
+
                 var r = this.size * pulseFactor;
+
+
+
+
 
 
 
@@ -1953,7 +3840,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
                 // Outer glow
+
+
+
+
 
 
 
@@ -1961,7 +3860,15 @@ position:relative;
 
 
 
+
+
+
+
                 grad.addColorStop(0, 'hsla(' + this.hue + ', 80%, 70%, ' + (this.opacity * 0.3) + ')');
+
+
+
+
 
 
 
@@ -1969,7 +3876,15 @@ position:relative;
 
 
 
+
+
+
+
                 grad.addColorStop(1, 'hsla(' + this.hue + ', 80%, 60%, 0)');
+
+
+
+
 
 
 
@@ -1977,7 +3892,15 @@ position:relative;
 
 
 
+
+
+
+
                 ctx.beginPath();
+
+
+
+
 
 
 
@@ -1985,7 +3908,19 @@ position:relative;
 
 
 
+
+
+
+
                 ctx.fill();
+
+
+
+
+
+
+
+
 
 
 
@@ -1997,7 +3932,15 @@ position:relative;
 
 
 
+
+
+
+
                 ctx.shadowColor = 'hsla(' + this.hue + ', 80%, 70%, 0.3)';
+
+
+
+
 
 
 
@@ -2005,7 +3948,15 @@ position:relative;
 
 
 
+
+
+
+
                 ctx.fillStyle = 'hsla(' + this.hue + ', 80%, 70%, ' + this.opacity + ')';
+
+
+
+
 
 
 
@@ -2013,11 +3964,27 @@ position:relative;
 
 
 
+
+
+
+
                 ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
 
 
 
+
+
+
+
                 ctx.fill();
+
+
+
+
+
+
+
+
 
 
 
@@ -2029,7 +3996,15 @@ position:relative;
 
 
 
+
+
+
+
                 ctx.shadowBlur = 20;
+
+
+
+
 
 
 
@@ -2037,11 +4012,23 @@ position:relative;
 
 
 
+
+
+
+
                 ctx.beginPath();
 
 
 
+
+
+
+
                 ctx.arc(this.x, this.y, r * 0.4, 0, Math.PI * 2);
+
+
+
+
 
 
 
@@ -2053,7 +4040,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
                 ctx.restore();
+
+
+
+
 
 
 
@@ -2061,7 +4060,19 @@ position:relative;
 
 
 
+
+
+
+
         }
+
+
+
+
+
+
+
+
 
 
 
@@ -2077,7 +4088,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
         function drawConnections() {
+
+
+
+
 
 
 
@@ -2085,7 +4108,15 @@ position:relative;
 
 
 
+
+
+
+
                 for (let j = i + 1; j < particles.length; j++) {
+
+
+
+
 
 
 
@@ -2093,7 +4124,15 @@ position:relative;
 
 
 
+
+
+
+
                     const dy = particles[i].y - particles[j].y;
+
+
+
+
 
 
 
@@ -2101,7 +4140,15 @@ position:relative;
 
 
 
+
+
+
+
                     if (dist < 180) {
+
+
+
+
 
 
 
@@ -2113,7 +4160,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
                         // Glow line
+
+
+
+
 
 
 
@@ -2121,7 +4180,15 @@ position:relative;
 
 
 
+
+
+
+
                         ctx.shadowColor = 'hsla(220, 80%, 60%, 0.08)';
+
+
+
+
 
 
 
@@ -2129,7 +4196,15 @@ position:relative;
 
 
 
+
+
+
+
                         ctx.strokeStyle = 'hsla(220, 80%, 60%, ' + alpha + ')';
+
+
+
+
 
 
 
@@ -2137,7 +4212,15 @@ position:relative;
 
 
 
+
+
+
+
                         ctx.beginPath();
+
+
+
+
 
 
 
@@ -2145,7 +4228,15 @@ position:relative;
 
 
 
+
+
+
+
                         ctx.lineTo(particles[j].x, particles[j].y);
+
+
+
+
 
 
 
@@ -2153,7 +4244,15 @@ position:relative;
 
 
 
+
+
+
+
                         ctx.restore();
+
+
+
+
 
 
 
@@ -2161,7 +4260,15 @@ position:relative;
 
 
 
+
+
+
+
                 }
+
+
+
+
 
 
 
@@ -2169,7 +4276,19 @@ position:relative;
 
 
 
+
+
+
+
         }
+
+
+
+
+
+
+
+
 
 
 
@@ -2181,7 +4300,15 @@ position:relative;
 
 
 
+
+
+
+
         let mouseX = -9999, mouseY = -9999;
+
+
+
+
 
 
 
@@ -2189,7 +4316,15 @@ position:relative;
 
 
 
+
+
+
+
             mouseX = e.clientX;
+
+
+
+
 
 
 
@@ -2197,7 +4332,19 @@ position:relative;
 
 
 
+
+
+
+
         });
+
+
+
+
+
+
+
+
 
 
 
@@ -2209,11 +4356,23 @@ position:relative;
 
 
 
+
+
+
+
             ctx.clearRect(0, 0, W, H);
 
 
 
+
+
+
+
             particles.forEach(p => { p.update(); p.draw(); });
+
+
+
+
 
 
 
@@ -2225,7 +4384,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
             // Mouse ripple
+
+
+
+
 
 
 
@@ -2233,7 +4404,15 @@ position:relative;
 
 
 
+
+
+
+
                 particles.forEach(p => {
+
+
+
+
 
 
 
@@ -2241,7 +4420,15 @@ position:relative;
 
 
 
+
+
+
+
                     const dy = p.y - mouseY;
+
+
+
+
 
 
 
@@ -2249,7 +4436,15 @@ position:relative;
 
 
 
+
+
+
+
                     if (dist < 250) {
+
+
+
+
 
 
 
@@ -2257,7 +4452,15 @@ position:relative;
 
 
 
+
+
+
+
                         p.speedX += (dx / dist) * force || 0;
+
+
+
+
 
 
 
@@ -2265,7 +4468,15 @@ position:relative;
 
 
 
+
+
+
+
                     }
+
+
+
+
 
 
 
@@ -2273,7 +4484,19 @@ position:relative;
 
 
 
+
+
+
+
             }
+
+
+
+
+
+
+
+
 
 
 
@@ -2285,7 +4508,15 @@ position:relative;
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -2297,7 +4528,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
         // ========== ANIMATED COUNTERS ==========
+
+
+
+
 
 
 
@@ -2305,7 +4548,15 @@ position:relative;
 
 
 
+
+
+
+
             document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+
+
+
+
 
 
 
@@ -2313,7 +4564,15 @@ position:relative;
 
 
 
+
+
+
+
                 let current = 0;
+
+
+
+
 
 
 
@@ -2321,7 +4580,15 @@ position:relative;
 
 
 
+
+
+
+
                 const interval = setInterval(() => {
+
+
+
+
 
 
 
@@ -2329,7 +4596,15 @@ position:relative;
 
 
 
+
+
+
+
                     if (current >= target) { current = target; clearInterval(interval); }
+
+
+
+
 
 
 
@@ -2337,7 +4612,15 @@ position:relative;
 
 
 
+
+
+
+
                         el.textContent = (current / 100).toFixed(2);
+
+
+
+
 
 
 
@@ -2345,7 +4628,15 @@ position:relative;
 
 
 
+
+
+
+
                         el.textContent = current.toLocaleString() + '+';
+
+
+
+
 
 
 
@@ -2353,7 +4644,15 @@ position:relative;
 
 
 
+
+
+
+
                 }, 20);
+
+
+
+
 
 
 
@@ -2361,7 +4660,15 @@ position:relative;
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -2373,7 +4680,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
         // ========== 3D TILT WITH SHINE FOLLOW ==========
+
+
+
+
 
 
 
@@ -2381,7 +4700,15 @@ position:relative;
 
 
 
+
+
+
+
             card.addEventListener('mousemove', function(e) {
+
+
+
+
 
 
 
@@ -2389,7 +4716,15 @@ position:relative;
 
 
 
+
+
+
+
                 var x = e.clientX - r.left, y = e.clientY - r.top;
+
+
+
+
 
 
 
@@ -2397,7 +4732,15 @@ position:relative;
 
 
 
+
+
+
+
                 var rotX = (y - cy) / cy * -10, rotY = (x - cx) / cx * 10;
+
+
+
+
 
 
 
@@ -2405,7 +4748,15 @@ position:relative;
 
 
 
+
+
+
+
                 card.style.transform = 'perspective(1200px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateY(-10px) scale(1.04)';
+
+
+
+
 
 
 
@@ -2413,7 +4764,15 @@ position:relative;
 
 
 
+
+
+
+
                 card.style.setProperty('--shine', shinePos);
+
+
+
+
 
 
 
@@ -2421,7 +4780,15 @@ position:relative;
 
 
 
+
+
+
+
             });
+
+
+
+
 
 
 
@@ -2429,7 +4796,15 @@ position:relative;
 
 
 
+
+
+
+
                 card.style.transform = '';
+
+
+
+
 
 
 
@@ -2437,7 +4812,15 @@ position:relative;
 
 
 
+
+
+
+
                 card.style.background = '';
+
+
+
+
 
 
 
@@ -2445,7 +4828,19 @@ position:relative;
 
 
 
+
+
+
+
         });
+
+
+
+
+
+
+
+
 
 
 
@@ -2457,7 +4852,15 @@ position:relative;
 
 
 
+
+
+
+
         var observer = new IntersectionObserver(function(entries) {
+
+
+
+
 
 
 
@@ -2465,7 +4868,15 @@ position:relative;
 
 
 
+
+
+
+
                 if (e.isIntersecting) {
+
+
+
+
 
 
 
@@ -2473,7 +4884,15 @@ position:relative;
 
 
 
+
+
+
+
                     e.target.style.transform = 'translateY(0)';
+
+
+
+
 
 
 
@@ -2481,11 +4900,23 @@ position:relative;
 
 
 
+
+
+
+
                 }
 
 
 
+
+
+
+
             });
+
+
+
+
 
 
 
@@ -2497,7 +4928,19 @@ position:relative;
 
 
 
+
+
+
+
+
+
+
+
         document.querySelectorAll('.feature, .stat, .compliance-item, .price-card, .section-header').forEach(function(el) {
+
+
+
+
 
 
 
@@ -2505,7 +4948,15 @@ position:relative;
 
 
 
+
+
+
+
             el.style.transform = 'translateY(40px)';
+
+
+
+
 
 
 
@@ -2513,11 +4964,27 @@ position:relative;
 
 
 
+
+
+
+
             observer.observe(el);
 
 
 
+
+
+
+
         });
+
+
+
+
+
+
+
+
 
 
 
@@ -2529,7 +4996,15 @@ position:relative;
 
 
 
+
+
+
+
         window.addEventListener('scroll', function() {
+
+
+
+
 
 
 
@@ -2537,7 +5012,15 @@ position:relative;
 
 
 
+
+
+
+
             var hero = document.querySelector('.hero');
+
+
+
+
 
 
 
@@ -2545,7 +5028,15 @@ position:relative;
 
 
 
+
+
+
+
                 hero.style.transform = 'translateY(' + (scrollY * 0.03) + 'px)';
+
+
+
+
 
 
 
@@ -2553,7 +5044,15 @@ position:relative;
 
 
 
+
+
+
+
             }
+
+
+
+
 
 
 
@@ -2561,7 +5060,15 @@ position:relative;
 
 
 
+
+
+
+
     </script>
+
+
+
+
 
 
 
@@ -2569,7 +5076,15 @@ position:relative;
 
 
 
+
+
+
+
 </html>
+
+
+
+
 
 
 

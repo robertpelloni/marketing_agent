@@ -320,7 +320,7 @@
       /* Hero with terminal vibe */
       .hero {
         text-align: center;
-        padding: 20px 0 20px;
+        padding: 50px 0 30px;
         position: relative;
       }
       .hero .badge {
@@ -762,26 +762,6 @@
         }
       }
     </style>
-    <style>
-      #c, #g, #f, #r, #static, .scanlines, .scan, .vscan { display: none !important; }
-      body {
-        background: #020408 !important;
-        background-image: 
-          radial-gradient(ellipse at 50% 40%, rgba(0,255,136,0.03) 0%, transparent 60%),
-          radial-gradient(ellipse at 50% 60%, rgba(255,0,68,0.02) 0%, transparent 60%) !important;
-      }
-      .skull-image {
-        position: fixed;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        width: min(80vw, 600px);
-        height: min(80vh, 600px);
-        z-index: 1;
-        opacity: 0.25;
-        pointer-events: none;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><path fill="%2300ff88" opacity="0.8" d="M200 40c-60 0-110 20-140 55-15 18-25 40-30 65-5 25-5 50 0 70 5 20 15 35 25 50 10 15 15 30 10 45l5 5h260l5-5c-5-15 0-30 10-45 10-15 20-30 25-50 5-20 5-45 0-70-5-25-15-47-30-65-30-35-80-55-140-55zm-80 120c15 0 28 10 28 25s-13 25-28 25-28-10-28-25 13-25 28-25zm160 0c15 0 28 10 28 25s-13 25-28 25-28-10-28-25 13-25 28-25zm-140 80c20 0 38 5 50 15 12 10 18 25 18 40s-6 30-18 40c-12 10-30 15-50 15-40 0-70-25-70-55s30-55 70-55zm120 0c20 0 38 5 50 15 12 10 18 25 18 40s-6 30-18 40c-12 10-30 15-50 15-40 0-70-25-70-55s30-55 70-55z"/><circle cx="140" cy="185" r="18" fill="%23020408"/><circle cx="260" cy="185" r="18" fill="%23020408"/><rect x="100" y="260" width="200" height="10" rx="3" fill="%2300ff88" opacity="0.6"/><rect x="130" y="275" width="140" height="6" rx="2" fill="%2300ff88" opacity="0.4"/></svg>') no-repeat center center / contain !important;
-      }
-    </style>
   </head>
   <body>
     <div class="scanlines"></div>
@@ -866,8 +846,11 @@
           >
         </p>
         <div class="hero-videos">
-          <a href="#tormentnexus-hero-vid" class="btn btn-p vid-btn"
-            >▶ WATCH: TORMENTNEXUS AI CONTROL PLANE</a
+          <a
+            href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/282cd73a-c108-4fc7-bf6e-1dcdac446a54?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_"
+            target="_blank"
+            class="btn btn-p vid-btn"
+            >▶ WATCH: TORMENTNEXUS CONTROL PLANE</a
           >
         </div>
         <div
@@ -886,7 +869,9 @@
           <video
             controls
             style="width: 100%; display: block"
-            preload="metadata"
+            preload="auto"
+            playsinline
+            poster="/poster.jpg"
           >
             <source src="/tormentnexus_ai_control_plane.mp4" type="video/mp4" />
           </video>
@@ -1043,8 +1028,11 @@
           machine documents its own inevitability.
         </p>
         <div class="hero-videos">
-          <a href="#tormentnexus-dossier-vid" class="btn btn-p vid-btn"
-            >▶ TORMENTNEXUS: AI CONTROL PLANE</a
+          <a
+            href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/282cd73a-c108-4fc7-bf6e-1dcdac446a54?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_"
+            target="_blank"
+            class="btn btn-p vid-btn"
+            >▶ TORMENTNEXUS: CONTROL PLANE</a
           >
         </div>
         <div
@@ -1063,7 +1051,9 @@
           <video
             controls
             style="width: 100%; display: block"
-            preload="metadata"
+            preload="auto"
+            playsinline
+            poster="/poster.jpg"
           >
             <source src="/tormentnexus_ai_control_plane.mp4" type="video/mp4" />
           </video>
@@ -2097,51 +2087,46 @@
           // LAYER 7: NOSE — Narrow bridge with heart-shaped nasal cavity
           // ══════════════════════════════════════
 
-          // Face Center Maxilla Plate (fills the dark gap under the eyes and between cheekbones)
-          ctx.fillStyle = chromeGrad;
-          ctx.strokeStyle = "rgba(120, 180, 255, 0.35)";
-          ctx.lineWidth = 0.7;
+          // Nose bridge structure (vertical chrome bar between eyes)
+          ctx.fillStyle = "#6e84a0";
+          ctx.strokeStyle = "#0a0e14";
+          ctx.lineWidth = 0.5;
           ctx.beginPath();
-          ctx.moveTo(-4.5, 1.5); // left inner socket bottom
-          ctx.lineTo(4.5, 1.5); // right inner socket bottom
-          ctx.lineTo(7, 2); // right inner cheekbone point
-          ctx.lineTo(10, 9); // right upper maxilla top
-          ctx.lineTo(-10, 9); // left upper maxilla top
-          ctx.lineTo(-7, 2); // left inner cheekbone point
+          ctx.moveTo(-1.5, -5);
+          ctx.lineTo(1.5, -5);
+          ctx.lineTo(2, -1);
+          ctx.lineTo(1.5, 2);
+          ctx.lineTo(0, 3);
+          ctx.lineTo(-1.5, 2);
+          ctx.lineTo(-2, -1);
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
 
-          ctx.save();
-          ctx.translate(0, 12);
-          ctx.scale(0.35, 0.35);
-
-          // Nasal cavity (inverted pear/heart shaped skull opening)
-          ctx.fillStyle = "#030508";
+          // Nose bridge chrome highlight
+          ctx.strokeStyle = "#b0c4da";
+          ctx.lineWidth = 0.3;
           ctx.beginPath();
-          ctx.moveTo(0, -1.0);
-          // Left nostril opening (smaller, tighter arch)
-          ctx.bezierCurveTo(-0.8, -0.5, -1.0, 0.3, -0.6, 1.2);
-          ctx.lineTo(-0.4, 1.6);
-          ctx.lineTo(0, 1.2); // septum
-          ctx.lineTo(0.4, 1.6);
-          ctx.lineTo(0.6, 1.2);
-          // Right nostril opening
-          ctx.bezierCurveTo(1.0, 0.3, 0.8, -0.5, 0, -1.0);
+          ctx.moveTo(0, -4.5);
+          ctx.lineTo(0, 2);
+          ctx.stroke();
+
+          // Nasal cavity (heart/spade shaped dark void)
+          ctx.fillStyle = "#020305";
+          ctx.beginPath();
+          ctx.moveTo(0, -0.5);
+          // Left nostril arch
+          ctx.bezierCurveTo(-2, 0.5, -3, 2.5, -2.5, 4);
+          ctx.lineTo(-1.5, 5);
+          ctx.lineTo(-0.3, 4);
+          ctx.lineTo(0, 3.5); // Septum dip
+          ctx.lineTo(0.3, 4);
+          ctx.lineTo(1.5, 5);
+          ctx.lineTo(2.5, 4);
+          // Right nostril arch
+          ctx.bezierCurveTo(3, 2.5, 2, 0.5, 0, -0.5);
           ctx.closePath();
           ctx.fill();
-
-          // Nostril hole highlights (inner edge glow)
-          ctx.strokeStyle = "rgba(100, 140, 180, 0.3)";
-          ctx.lineWidth = 0.2;
-          ctx.beginPath();
-          ctx.moveTo(0, -1.0);
-          ctx.bezierCurveTo(-0.8, -0.5, -1.0, 0.3, -0.6, 1.2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(0, -1.0);
-          ctx.bezierCurveTo(0.8, -0.5, 1.0, 0.3, 0.6, 1.2);
-          ctx.stroke();
 
           // Nasal support struts (angled pistons from nose to cheek, visible in photo)
           ctx.strokeStyle = "#7a94b0";
@@ -2158,8 +2143,6 @@
           ctx.arc(-6, 3, 0.5, 0, Math.PI * 2);
           ctx.arc(6, 3, 0.5, 0, Math.PI * 2);
           ctx.fill();
-
-          ctx.restore();
 
           // ══════════════════════════════════════
           // LAYER 8: MANDIBULAR HINGE GEARS (jaw pivot assemblies)
@@ -2209,9 +2192,6 @@
           // LAYER 9: UPPER MAXILLA (upper jaw plate + teeth)
           // ══════════════════════════════════════
 
-          ctx.save();
-          ctx.translate(0, 6);
-
           ctx.fillStyle = chromeGrad;
           ctx.strokeStyle = "rgba(120, 180, 255, 0.3)";
           ctx.lineWidth = 0.7;
@@ -2256,11 +2236,13 @@
             ctx.lineWidth = 0.4;
             ctx.stroke();
           });
-          ctx.restore();
+
+          // ══════════════════════════════════════
+          // LAYER 10: LOWER MANDIBLE (animated jaw with hydraulics)
           // ══════════════════════════════════════
 
-          var chompRange = 0.2 + Math.abs(Math.sin(this.p * 0.8)) * 0.8;
-          var jawDrop = 4 + chompRange * 6;
+          var chompRange = Math.abs(Math.sin(this.p * 2.0));
+          var jawDrop = chompRange * 2.5;
 
           ctx.save();
           ctx.translate(0, jawDrop);

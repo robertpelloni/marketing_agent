@@ -2185,7 +2185,7 @@
 
           // Nasal cavity (heart/spade shaped dark void) - drawn above struts & bridge
           ctx.save();
-          ctx.translate(0, 1.8);
+          ctx.translate(0, 1.0);
           ctx.fillStyle = "#020305";
           ctx.beginPath();
           ctx.moveTo(0, -2.0);
@@ -2681,75 +2681,7 @@
       }
       setInterval(staticBurst, 2000);
 
-      // Alert sound using AudioContext (subtle but terrifying thudding heartbeat + robotic scream sweeps)
-      try {
-        var actx = new (window.AudioContext || window.webkitAudioContext)();
-        function playHeartbeat() {
-          if (actx.state == "suspended" || actx.state == "closed") return;
-          var t = actx.currentTime;
-
-          // Deep heavy heartbeat thud 1
-          var osc1 = actx.createOscillator();
-          var gain1 = actx.createGain();
-          osc1.type = "sine";
-          osc1.frequency.setValueAtTime(52, t);
-          osc1.frequency.exponentialRampToValueAtTime(0.01, t + 0.4);
-          gain1.gain.setValueAtTime(0.18, t);
-          gain1.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-          osc1.connect(gain1);
-          gain1.connect(actx.destination);
-          osc1.start(t);
-          osc1.stop(t + 0.4);
-
-          // Second thud
-          var osc2 = actx.createOscillator();
-          var gain2 = actx.createGain();
-          osc2.type = "sine";
-          osc2.frequency.setValueAtTime(49, t + 0.28);
-          osc2.frequency.exponentialRampToValueAtTime(0.01, t + 0.7);
-          gain2.gain.setValueAtTime(0.12, t + 0.28);
-          gain2.gain.exponentialRampToValueAtTime(0.001, t + 0.7);
-          osc2.connect(gain2);
-          gain2.connect(actx.destination);
-          osc2.start(t + 0.28);
-          osc2.stop(t + 0.7);
-        }
-        setInterval(playHeartbeat, 1600);
-
-        function playRoboScream() {
-          if (
-            Math.random() < 0.06 &&
-            actx.state != "closed" &&
-            actx.state != "suspended"
-          ) {
-            var t = actx.currentTime;
-            var osc = actx.createOscillator();
-            var gain = actx.createGain();
-            var filter = actx.createBiquadFilter();
-
-            osc.type = "sawtooth";
-            osc.frequency.setValueAtTime(80 + Math.random() * 120, t);
-            osc.frequency.exponentialRampToValueAtTime(
-              8 + Math.random() * 15,
-              t + 1.5,
-            );
-
-            filter.type = "lowpass";
-            filter.frequency.setValueAtTime(250, t);
-
-            osc.connect(filter);
-            filter.connect(gain);
-            gain.connect(actx.destination);
-
-            gain.gain.setValueAtTime(0.03, t);
-            gain.gain.exponentialRampToValueAtTime(0.0001, t + 1.5);
-
-            osc.start(t);
-            osc.stop(t + 1.5);
-          }
-        }
-        setInterval(playRoboScream, 3500);
-      } catch (e) {}
+      // Alert sound heartbeat / roboscream sweeps AudioContext removed per user request
     </script>
   </body>
 </html>

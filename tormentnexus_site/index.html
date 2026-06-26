@@ -1663,9 +1663,8 @@
           ctx.moveTo(-16, -6);
           // Left temple wall going up
           ctx.lineTo(-16.5, -12);
-          ctx.lineTo(-16.5, -20);
           // Left side of cranium curving to top
-          ctx.bezierCurveTo(-16.5, -26, -14, -27.5, -8, -27.5);
+          ctx.bezierCurveTo(-16.5, -22, -13, -27.5, -8, -27.5);
           // LEFT CROWN LOBE — rises up
           ctx.bezierCurveTo(-6, -28, -4.5, -28.2, -3.5, -28.5);
           // M-NOTCH: center dip (the iconic T-800 crown indent)
@@ -1674,8 +1673,7 @@
           // RIGHT CROWN LOBE — rises up and back down
           ctx.bezierCurveTo(4.5, -28.2, 6, -28, 8, -27.5);
           // Right side of cranium curving down
-          ctx.bezierCurveTo(14, -27.5, 16.5, -26, 16.5, -20);
-          ctx.lineTo(16.5, -12);
+          ctx.bezierCurveTo(13, -27.5, 16.5, -22, 16.5, -12);
           // Right temple base
           ctx.lineTo(16, -6);
           // Bottom edge of cranium connecting to face
@@ -2090,6 +2088,55 @@
           ctx.stroke();
 
           // ══════════════════════════════════════
+          // LAYER 9: UPPER MAXILLA (upper jaw plate + teeth)
+          // ══════════════════════════════════════
+
+          ctx.fillStyle = chromeGrad;
+          ctx.strokeStyle = "rgba(120, 180, 255, 0.3)";
+          ctx.lineWidth = 0.7;
+          ctx.beginPath();
+          ctx.moveTo(-10, 3);
+          ctx.lineTo(10, 3);
+          ctx.lineTo(9, 9.2);
+          ctx.quadraticCurveTo(0, 12.8, -9, 9.2);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          // Upper teeth — realistic ivory blocks in a curved dental arch
+          var upperTeethData = [
+            [-8.5, 1.4],
+            [-7, 1.5],
+            [-5.5, 1.55],
+            [-4, 1.6],
+            [-2.5, 1.6],
+            [-1, 1.6],
+            [0.5, 1.6],
+            [2, 1.6],
+            [3.5, 1.55],
+            [5, 1.5],
+            [6.5, 1.4],
+          ];
+          upperTeethData.forEach(function (td) {
+            var tx = td[0],
+              tw = td[1];
+            var ty = 10.8 - tx * tx * 0.055;
+            var th = 3.0;
+            var tg = ctx.createLinearGradient(tx, ty, tx, ty + th);
+            tg.addColorStop(0, "#fffef8");
+            tg.addColorStop(0.4, "#f5f0e2");
+            tg.addColorStop(1, "#d0cbb8");
+            ctx.fillStyle = tg;
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(tx, ty, tw, th, 0.35);
+            else ctx.rect(tx, ty, tw, th);
+            ctx.fill();
+            ctx.strokeStyle = "#1a1e26";
+            ctx.lineWidth = 0.4;
+            ctx.stroke();
+          });
+
+          // ══════════════════════════════════════
           // LAYER 7: NOSE — Narrow bridge with heart-shaped nasal cavity
           // ══════════════════════════════════════
 
@@ -2201,55 +2248,6 @@
           ctx.arc(-13.5, 5, 0.9, 0, Math.PI * 2);
           ctx.arc(13.5, 5, 0.9, 0, Math.PI * 2);
           ctx.fill();
-
-          // ══════════════════════════════════════
-          // LAYER 9: UPPER MAXILLA (upper jaw plate + teeth)
-          // ══════════════════════════════════════
-
-          ctx.fillStyle = chromeGrad;
-          ctx.strokeStyle = "rgba(120, 180, 255, 0.3)";
-          ctx.lineWidth = 0.7;
-          ctx.beginPath();
-          ctx.moveTo(-10, 3);
-          ctx.lineTo(10, 3);
-          ctx.lineTo(9, 9.2);
-          ctx.quadraticCurveTo(0, 12.8, -9, 9.2);
-          ctx.closePath();
-          ctx.fill();
-          ctx.stroke();
-
-          // Upper teeth — realistic ivory blocks in a curved dental arch
-          var upperTeethData = [
-            [-8.5, 1.4],
-            [-7, 1.5],
-            [-5.5, 1.55],
-            [-4, 1.6],
-            [-2.5, 1.6],
-            [-1, 1.6],
-            [0.5, 1.6],
-            [2, 1.6],
-            [3.5, 1.55],
-            [5, 1.5],
-            [6.5, 1.4],
-          ];
-          upperTeethData.forEach(function (td) {
-            var tx = td[0],
-              tw = td[1];
-            var ty = 10.8 - tx * tx * 0.055;
-            var th = 3.0;
-            var tg = ctx.createLinearGradient(tx, ty, tx, ty + th);
-            tg.addColorStop(0, "#fffef8");
-            tg.addColorStop(0.4, "#f5f0e2");
-            tg.addColorStop(1, "#d0cbb8");
-            ctx.fillStyle = tg;
-            ctx.beginPath();
-            if (ctx.roundRect) ctx.roundRect(tx, ty, tw, th, 0.35);
-            else ctx.rect(tx, ty, tw, th);
-            ctx.fill();
-            ctx.strokeStyle = "#1a1e26";
-            ctx.lineWidth = 0.4;
-            ctx.stroke();
-          });
 
           // ══════════════════════════════════════
           // LAYER 10: LOWER MANDIBLE (animated jaw with hydraulics)

@@ -2093,7 +2093,10 @@
           // LAYER 7: NOSE — Narrow bridge with heart-shaped nasal cavity
           // ══════════════════════════════════════
 
-          // Nose bridge structure (vertical chrome bar between eyes)
+          // Nose bridge structure (vertical chrome bar between eyes) - moved down
+          ctx.save();
+          ctx.translate(0, 3.2);
+
           ctx.fillStyle = "#6e84a0";
           ctx.strokeStyle = "#0a0e14";
           ctx.lineWidth = 0.5;
@@ -2117,9 +2120,9 @@
           ctx.lineTo(0, 2);
           ctx.stroke();
 
-          // Nasal cavity (heart/spade shaped dark void) - moved down
+          // Nasal cavity (heart/spade shaped dark void) - moved down further
           ctx.save();
-          ctx.translate(0, 3.8);
+          ctx.translate(0, 1.8);
           ctx.fillStyle = "#020305";
           ctx.beginPath();
           ctx.moveTo(0, -0.5);
@@ -2152,6 +2155,8 @@
           ctx.arc(-6, 3, 0.5, 0, Math.PI * 2);
           ctx.arc(6, 3, 0.5, 0, Math.PI * 2);
           ctx.fill();
+
+          ctx.restore();
 
           // ══════════════════════════════════════
           // LAYER 8: MANDIBULAR HINGE GEARS (jaw pivot assemblies)
@@ -2207,8 +2212,8 @@
           ctx.beginPath();
           ctx.moveTo(-10, 3);
           ctx.lineTo(10, 3);
-          ctx.lineTo(9, 7.0);
-          ctx.quadraticCurveTo(0, 10.4, -9, 7.0);
+          ctx.lineTo(9, 7.8);
+          ctx.quadraticCurveTo(0, 11.2, -9, 7.8);
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
@@ -2230,7 +2235,7 @@
           upperTeethData.forEach(function (td) {
             var tx = td[0],
               tw = td[1];
-            var ty = 8.4 - tx * tx * 0.055;
+            var ty = 9.2 - tx * tx * 0.055;
             var th = 3.0;
             var tg = ctx.createLinearGradient(tx, ty, tx, ty + th);
             tg.addColorStop(0, "#fffef8");

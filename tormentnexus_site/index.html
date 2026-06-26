@@ -1012,6 +1012,12 @@
             class="btn btn-p"
             >☠ VIEW ON GITHUB</a
           >
+          <a
+            href="https://github.com/robertpelloni/enterprise_sales_bot"
+            target="_blank"
+            class="btn btn-s"
+            >SALES BOT SOURCE →</a
+          >
           <a href="/blog/" class="btn btn-s">READ THE BLOG →</a>
         </div>
       </div>
@@ -2111,7 +2117,9 @@
           ctx.lineTo(0, 2);
           ctx.stroke();
 
-          // Nasal cavity (heart/spade shaped dark void)
+          // Nasal cavity (heart/spade shaped dark void) - moved down
+          ctx.save();
+          ctx.translate(0, 2.0);
           ctx.fillStyle = "#020305";
           ctx.beginPath();
           ctx.moveTo(0, -0.5);
@@ -2127,6 +2135,7 @@
           ctx.bezierCurveTo(3, 2.5, 2, 0.5, 0, -0.5);
           ctx.closePath();
           ctx.fill();
+          ctx.restore();
 
           // Nasal support struts (angled pistons from nose to cheek, visible in photo)
           ctx.strokeStyle = "#7a94b0";
@@ -2198,8 +2207,8 @@
           ctx.beginPath();
           ctx.moveTo(-10, 3);
           ctx.lineTo(10, 3);
-          ctx.lineTo(9, 7);
-          ctx.quadraticCurveTo(0, 9, -9, 7);
+          ctx.lineTo(9, 5.8);
+          ctx.quadraticCurveTo(0, 9.2, -9, 5.8);
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
@@ -2221,7 +2230,7 @@
           upperTeethData.forEach(function (td) {
             var tx = td[0],
               tw = td[1];
-            var ty = 7.2 - tx * tx * 0.025;
+            var ty = 7.2 - tx * tx * 0.055;
             var th = 3.0;
             var tg = ctx.createLinearGradient(tx, ty, tx, ty + th);
             tg.addColorStop(0, "#fffef8");
@@ -2343,7 +2352,7 @@
           lowerTeethData.forEach(function (td) {
             var tx = td[0],
               tw = td[1];
-            var ty = 12.5 - tx * tx * 0.022;
+            var ty = 12.5 - tx * tx * 0.045;
             var th = 2.5;
             var tg = ctx.createLinearGradient(tx, ty, tx, ty + th);
             tg.addColorStop(0, "#fffef8");

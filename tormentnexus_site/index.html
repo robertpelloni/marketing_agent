@@ -2119,7 +2119,7 @@
 
           // Nasal cavity (heart/spade shaped dark void) - moved down
           ctx.save();
-          ctx.translate(0, 2.0);
+          ctx.translate(0, 3.8);
           ctx.fillStyle = "#020305";
           ctx.beginPath();
           ctx.moveTo(0, -0.5);
@@ -2207,8 +2207,8 @@
           ctx.beginPath();
           ctx.moveTo(-10, 3);
           ctx.lineTo(10, 3);
-          ctx.lineTo(9, 5.8);
-          ctx.quadraticCurveTo(0, 9.2, -9, 5.8);
+          ctx.lineTo(9, 7.0);
+          ctx.quadraticCurveTo(0, 10.4, -9, 7.0);
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
@@ -2230,7 +2230,7 @@
           upperTeethData.forEach(function (td) {
             var tx = td[0],
               tw = td[1];
-            var ty = 7.2 - tx * tx * 0.055;
+            var ty = 8.4 - tx * tx * 0.055;
             var th = 3.0;
             var tg = ctx.createLinearGradient(tx, ty, tx, ty + th);
             tg.addColorStop(0, "#fffef8");

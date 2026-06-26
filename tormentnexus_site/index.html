@@ -1833,13 +1833,13 @@
           // LEFT BROW — thick, angular, overhanging the eye
           ctx.fillStyle = browGradL;
           ctx.beginPath();
-          ctx.moveTo(-16, -8); // Outer temple start
-          ctx.lineTo(-14, -12); // Upper outer corner (angled up and in)
+          ctx.moveTo(-16, -10); // Outer temple start
+          ctx.lineTo(-14, -13); // Upper outer corner (angled up and in)
           ctx.lineTo(-1.5, -10.5); // Inner edge near glabella (top)
-          ctx.lineTo(-1.5, -7); // Inner edge near glabella (bottom)
-          ctx.lineTo(-6, -5.5); // Inner lower brow edge
-          ctx.lineTo(-14, -4); // Outer lower brow edge
-          ctx.lineTo(-16, -5.5); // Connect back to outer temple
+          ctx.lineTo(-1.5, -5.5); // Inner edge near glabella (bottom)
+          ctx.lineTo(-6, -6.0); // Inner lower brow edge
+          ctx.lineTo(-14, -6.5); // Outer lower brow edge
+          ctx.lineTo(-16, -8.0); // Connect back to outer temple
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
@@ -1847,13 +1847,13 @@
           // RIGHT BROW — mirror
           ctx.fillStyle = browGradR;
           ctx.beginPath();
-          ctx.moveTo(16, -8);
-          ctx.lineTo(14, -12);
+          ctx.moveTo(16, -10);
+          ctx.lineTo(14, -13);
           ctx.lineTo(1.5, -10.5);
-          ctx.lineTo(1.5, -7);
-          ctx.lineTo(6, -5.5);
-          ctx.lineTo(14, -4);
-          ctx.lineTo(16, -5.5);
+          ctx.lineTo(1.5, -5.5);
+          ctx.lineTo(6, -6.0);
+          ctx.lineTo(14, -6.5);
+          ctx.lineTo(16, -8.0);
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
@@ -1861,21 +1861,21 @@
           // Brow underside shadow (makes brow overhang look deep)
           ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
           ctx.beginPath();
-          ctx.moveTo(-14, -4);
-          ctx.lineTo(-6, -5.5);
-          ctx.lineTo(-1.5, -7);
+          ctx.moveTo(-14, -6.5);
+          ctx.lineTo(-6, -6.0);
           ctx.lineTo(-1.5, -5.5);
-          ctx.lineTo(-6, -4.5);
-          ctx.lineTo(-14, -3);
+          ctx.lineTo(-1.5, -4.5);
+          ctx.lineTo(-6, -5.0);
+          ctx.lineTo(-14, -5.5);
           ctx.closePath();
           ctx.fill();
           ctx.beginPath();
-          ctx.moveTo(14, -4);
-          ctx.lineTo(6, -5.5);
-          ctx.lineTo(1.5, -7);
+          ctx.moveTo(14, -6.5);
+          ctx.lineTo(6, -6.0);
           ctx.lineTo(1.5, -5.5);
-          ctx.lineTo(6, -4.5);
-          ctx.lineTo(14, -3);
+          ctx.lineTo(1.5, -4.5);
+          ctx.lineTo(6, -5.0);
+          ctx.lineTo(14, -5.5);
           ctx.closePath();
           ctx.fill();
 
@@ -1886,11 +1886,11 @@
           ctx.beginPath();
           ctx.moveTo(-1.5, -10.5);
           ctx.lineTo(1.5, -10.5);
-          ctx.lineTo(1.5, -7);
-          ctx.lineTo(0.8, -6);
-          ctx.lineTo(0, -7.5); // V-notch
-          ctx.lineTo(-0.8, -6);
-          ctx.lineTo(-1.5, -7);
+          ctx.lineTo(1.5, -5.5);
+          ctx.lineTo(0.8, -4.5);
+          ctx.lineTo(0, -5.8); // V-notch
+          ctx.lineTo(-0.8, -4.5);
+          ctx.lineTo(-1.5, -5.5);
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
@@ -1901,20 +1901,20 @@
 
           // Deep black socket voids (wide trapezoidal shape from the photo)
           ctx.fillStyle = "#020305";
-          // Left eye socket — wider at top, narrower at bottom
+          // Left eye socket — flaring open wide towards outside
           ctx.beginPath();
-          ctx.moveTo(-14.5, -3.5); // Outer top
-          ctx.lineTo(-2, -6.5); // Inner top
-          ctx.lineTo(-3, 0); // Inner bottom
-          ctx.lineTo(-12, 2.5); // Outer bottom
+          ctx.moveTo(-14.5, -6.0); // Outer top (angled upwards)
+          ctx.lineTo(-2, -5.0); // Inner top
+          ctx.lineTo(-3, 0.5); // Inner bottom
+          ctx.lineTo(-13.5, 4.0); // Outer bottom (angled down sharply)
           ctx.closePath();
           ctx.fill();
           // Right eye socket
           ctx.beginPath();
-          ctx.moveTo(14.5, -3.5);
-          ctx.lineTo(2, -6.5);
-          ctx.lineTo(3, 0);
-          ctx.lineTo(12, 2.5);
+          ctx.moveTo(14.5, -6.0);
+          ctx.lineTo(2, -5.0);
+          ctx.lineTo(3, 0.5);
+          ctx.lineTo(13.5, 4.0);
           ctx.closePath();
           ctx.fill();
 
@@ -1922,17 +1922,17 @@
           ctx.strokeStyle = "#3a4e65";
           ctx.lineWidth = 0.5;
           ctx.beginPath();
-          ctx.moveTo(-14.5, -3.5);
-          ctx.lineTo(-2, -6.5);
-          ctx.lineTo(-3, 0);
-          ctx.lineTo(-12, 2.5);
+          ctx.moveTo(-14.5, -6.0);
+          ctx.lineTo(-2, -5.0);
+          ctx.lineTo(-3, 0.5);
+          ctx.lineTo(-13.5, 4.0);
           ctx.closePath();
           ctx.stroke();
           ctx.beginPath();
-          ctx.moveTo(14.5, -3.5);
-          ctx.lineTo(2, -6.5);
-          ctx.lineTo(3, 0);
-          ctx.lineTo(12, 2.5);
+          ctx.moveTo(14.5, -6.0);
+          ctx.lineTo(2, -5.0);
+          ctx.lineTo(3, 0.5);
+          ctx.lineTo(13.5, 4.0);
           ctx.closePath();
           ctx.stroke();
 
@@ -1941,17 +1941,17 @@
           ctx.lineWidth = 0.3;
           // Left socket internal brackets
           ctx.beginPath();
-          ctx.moveTo(-13.5, -3);
-          ctx.lineTo(-12, 0);
-          ctx.moveTo(-3, -4);
-          ctx.lineTo(-4.5, 0.5);
+          ctx.moveTo(-13.5, -5);
+          ctx.lineTo(-12, 1);
+          ctx.moveTo(-3, -3);
+          ctx.lineTo(-4.5, 1);
           ctx.stroke();
           // Right socket internal brackets
           ctx.beginPath();
-          ctx.moveTo(13.5, -3);
-          ctx.lineTo(12, 0);
-          ctx.moveTo(3, -4);
-          ctx.lineTo(4.5, 0.5);
+          ctx.moveTo(13.5, -5);
+          ctx.lineTo(12, 1);
+          ctx.moveTo(3, -3);
+          ctx.lineTo(4.5, 1);
           ctx.stroke();
 
           // ── Camera lens barrel assembly ──
@@ -2050,12 +2050,12 @@
           ctx.lineWidth = 0.6;
           ctx.beginPath();
           ctx.moveTo(-17.5, -5); // Upper outer (from temple)
-          ctx.lineTo(-13.5, 1.5); // Lower outer corner of eye socket
-          ctx.lineTo(-7, 2); // Inner cheekbone point
-          ctx.lineTo(-6, 5); // Inner lower
+          ctx.lineTo(-13.5, 4.0); // Lower outer corner of eye socket
+          ctx.lineTo(-7, 4.2); // Inner cheekbone point
+          ctx.lineTo(-6, 6.5); // Inner lower
           ctx.lineTo(-10, 10); // Down to jaw hinge area
-          ctx.lineTo(-17, 6); // Outer lower
-          ctx.lineTo(-18.5, -1); // Back up outer wall
+          ctx.lineTo(-17, 7.5); // Outer lower
+          ctx.lineTo(-18.5, 0.5); // Back up outer wall
           ctx.closePath();
           ctx.fill();
           ctx.stroke();
@@ -2069,12 +2069,12 @@
           ctx.fillStyle = zygoGradR;
           ctx.beginPath();
           ctx.moveTo(17.5, -5);
-          ctx.lineTo(13.5, 1.5);
-          ctx.lineTo(7, 2);
-          ctx.lineTo(6, 5);
+          ctx.lineTo(13.5, 4.0);
+          ctx.lineTo(7, 4.2);
+          ctx.lineTo(6, 6.5);
           ctx.lineTo(10, 10);
-          ctx.lineTo(17, 6);
-          ctx.lineTo(18.5, -1);
+          ctx.lineTo(17, 7.5);
+          ctx.lineTo(18.5, 0.5);
           ctx.closePath();
           ctx.fill();
           ctx.stroke();

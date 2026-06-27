@@ -57,16 +57,20 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 
 func (s *Server) routes() {
 	// Protected routes
-	s.mux.Handle("/", s.auth.Middleware(http.HandlerFunc(s.handleDashboard)))
+	// Initialize rate limiter: 10 requests per second, burst of 20
+	rl := newRateLimiter(10, 20)
+
+	// Protected routes
+	s.mux.Handle("/", rl.middleware(s.auth.Middleware(s.csrfMiddleware(http.HandlerFunc(s.handleDashboard)))))
 
 	// Public routes
-	s.mux.HandleFunc("/login", s.auth.HandleLogin)
-	s.mux.HandleFunc("/health", s.handleHealth)
-	s.mux.HandleFunc("/health/detailed", s.handleDetailedHealth)
-	s.mux.HandleFunc("/api/v1/webhook/github", s.handleGitHubWebhook)
-		s.mux.HandleFunc("/api/v1/quote", s.handleGenerateQuote)
-	s.mux.Handle("/api/v1/leads", s.auth.Middleware(http.HandlerFunc(s.handleLeadsAPI)))
-	s.mux.Handle("/api/v1/deals", s.auth.Middleware(http.HandlerFunc(s.handleDealsAPI)))
+	s.mux.Handle("/login", rl.middleware(http.HandlerFunc(s.auth.HandleLogin)))
+	s.mux.Handle("/health", rl.middleware(http.HandlerFunc(s.handleHealth)))
+	s.mux.Handle("/health/detailed", rl.middleware(http.HandlerFunc(s.handleDetailedHealth)))
+	s.mux.Handle("/api/v1/webhook/github", rl.middleware(http.HandlerFunc(s.handleGitHubWebhook)))
+	s.mux.Handle("/api/v1/quote", rl.middleware(http.HandlerFunc(s.handleGenerateQuote)))
+	s.mux.Handle("/api/v1/leads", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleLeadsAPI))))
+	s.mux.Handle("/api/v1/deals", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleDealsAPI))))
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -83,6 +87,10 @@ func (s *Server) ListenAndServe(addr string) error {
 }
 
 func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
+	csrfToken := ""
+	if cookie, err := r.Cookie("csrf_token"); err == nil {
+		csrfToken = cookie.Value
+	}
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
@@ -247,6 +255,7 @@ h1 { color: #333; }
 					<strong>%s</strong> (%s) — 
 					<span style="color: %s;">%s</span>
 					<form method="POST" style="display:inline; margin-left: 8px;">
+						<input type="hidden" name="csrf_token" value="%s">
 						<input type="hidden" name="action" value="update_channel">
 						<input type="hidden" name="contact_id" value="%d">
 						<select name="channel" onchange="this.form.submit()" style="font-size: 0.85em; padding: 2px 4px;">
@@ -259,6 +268,7 @@ h1 { color: #333; }
 					html.EscapeString(c.Name),
 					html.EscapeString(c.Role),
 					"#17a2b8", html.EscapeString(channel),
+					csrfToken,
 					c.ID,
 					map[bool]string{true: " selected", false: ""}[channel == "email"],
 					map[bool]string{true: " selected", false: ""}[channel == "linkedin"],
@@ -275,18 +285,20 @@ h1 { color: #333; }
 <td>%s</td>
 <td>
 <form method="POST" style="display:inline;">
+<input type="hidden" name="csrf_token" value="%s">
 <input type="hidden" name="action" value="enrich">
 <input type="hidden" name="deal_id" value="%d">
 <button type="submit" class="action-btn">Trigger Enrichment</button>
 </form>
 <form method="POST" style="display:inline;">
+<input type="hidden" name="csrf_token" value="%s">
 <input type="hidden" name="action" value="flag_success">
 <input type="hidden" name="interaction_id" value="%d">
 <input type="hidden" name="success" value="true">
 <button type="submit" class="action-btn" style="background-color: #6f42c1;">Flag Success</button>
 </form>
 </td>
-</tr>%s`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), d.ID, latestInteractionID, contactHTML)
+</tr>%s`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), csrfToken, d.ID, csrfToken, latestInteractionID, contactHTML)
 	}
 
 	_, _ = fmt.Fprintf(w, `
@@ -371,10 +383,12 @@ h1 { color: #333; }
 <h2>Self-Service Deployment</h2>
 <p>Manage repository state and trigger system builds autonomously.</p>
 <form method="POST" style="display:inline;">
+<input type="hidden" name="csrf_token" value="%s">
 <input type="hidden" name="action" value="sync">
 <button type="submit" class="action-btn deploy-btn">Sync Repository</button>
 </form>
 <form method="POST" style="display:inline;">
+<input type="hidden" name="csrf_token" value="%s">
 <input type="hidden" name="action" value="build">
 <button type="submit" class="action-btn deploy-btn" style="background-color: #6c757d;">Trigger Build</button>
 </form>
@@ -388,7 +402,7 @@ h1 { color: #333; }
 </ul>
 </div>
 </body>
-</html>`, health, llmColor, llmStatus)
+</html>`, csrfToken, csrfToken, health, llmColor, llmStatus)
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {

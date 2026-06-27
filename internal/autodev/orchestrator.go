@@ -48,12 +48,12 @@ func (o *Orchestrator) Run(ctx context.Context, interval time.Duration) {
 			return
 		case <-ticker.C:
 			o.ExecuteStep(ctx)
-			o.checkPRs(ctx)
+			o.CheckPRs(ctx)
 		}
 	}
 }
 
-func (o *Orchestrator) checkPRs(ctx context.Context) {
+func (o *Orchestrator) CheckPRs(ctx context.Context) {
 	slog.Info("Autodev: Checking status of active autonomous PRs...")
 	prs, err := o.db.ListActivePullRequests(ctx)
 	if err != nil {

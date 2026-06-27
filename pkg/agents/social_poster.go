@@ -48,7 +48,7 @@ func (w *SocialPosterWorker) Run(ctx context.Context, interval time.Duration) {
 
 func (w *SocialPosterWorker) postAll(ctx context.Context) {
 	platforms := []string{"reddit", "bluesky", "linkedin", "twitter"}
-	
+
 	// Separate accounts for both brands
 	usernames := map[string]map[string]string{
 		"tormentnexus": {

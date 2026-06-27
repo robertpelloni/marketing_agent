@@ -97,9 +97,9 @@
 ## Phase 9 — Security, Compliance & Scale
 
 ### Security
-- [ ] Add rate limiting on all HTTP endpoints (dashboard, webhook, health)
+- [x] Add rate limiting on all HTTP endpoints (dashboard, webhook, health)
 - [x] Add authentication to the web dashboard (OAuth2 or API key)
-- [ ] Add CSRF protection for dashboard form submissions
+- [x] Add CSRF protection for dashboard form submissions
 - [ ] Add input sanitization for all user-supplied data (webhook payloads, form inputs)
 - [ ] Add secrets encryption at rest
 - [ ] Add GDPR data export endpoint

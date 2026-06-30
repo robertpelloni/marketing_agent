@@ -56,7 +56,7 @@ func setupTestRepo(t *testing.T) string {
 
 func TestResolveConflictTheirs(t *testing.T) {
 	tempDir := setupTestRepo(t)
-	defer os.RemoveAll(tempDir)
+	defer func() { _ = os.RemoveAll(tempDir) }()
 
 	// Try to merge branchA into branchB (should conflict)
 	// We want to use the strategy to resolve it
@@ -81,7 +81,7 @@ func TestResolveConflictTheirs(t *testing.T) {
 
 func TestResolveConflict_InvalidSource(t *testing.T) {
 	tempDir := setupTestRepo(t)
-	defer os.RemoveAll(tempDir)
+	defer func() { _ = os.RemoveAll(tempDir) }()
 
 	// We can't easily test the exported ResolveConflict without it affecting the real repo
 	// unless we change the working directory or mock the execution.
@@ -95,7 +95,7 @@ func TestAbortMerge_SafeExecute(t *testing.T) {
 
 func TestResolveConflictOurs(t *testing.T) {
 	tempDir := setupTestRepo(t)
-	defer os.RemoveAll(tempDir)
+	defer func() { _ = os.RemoveAll(tempDir) }()
 
 	cmd := exec.Command("git", "merge", "branchA", "-X", "ours")
 	cmd.Dir = tempDir

@@ -140,6 +140,25 @@ func (db *DB) UpdateDealState(ctx context.Context, dealID int64, newState LeadSt
 }
 
 // ListDealsByState retrieves deals in a specific state.
+// ListAllCompanies retrieves all companies in the database.
+func (db *DB) ListAllCompanies(ctx context.Context) ([]Company, error) {
+	rows, err := db.Conn.QueryContext(ctx, "SELECT id, name, domain, tech_stack, hiring_signals, market_cap_tier, created_at, updated_at FROM companies")
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	var companies []Company
+	for rows.Next() {
+		var c Company
+		if err := rows.Scan(&c.ID, &c.Name, &c.Domain, pq.Array(&c.TechStack), pq.Array(&c.HiringSignals), &c.MarketCapTier, &c.CreatedAt, &c.UpdatedAt); err != nil {
+			return nil, err
+		}
+		companies = append(companies, c)
+	}
+	return companies, nil
+}
+
 func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, error) {
 	query := `
 		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at
@@ -150,7 +169,7 @@ func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, er
 	if err != nil {
 		return nil, fmt.Errorf("failed to list deals by state: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var deals []Deal
 	for rows.Next() {
@@ -220,7 +239,7 @@ func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to list recent deals: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var deals []Deal
 	for rows.Next() {
@@ -319,7 +338,7 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 	if err != nil {
 		return nil, fmt.Errorf("failed to list contacts: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var contacts []Contact
 	for rows.Next() {
@@ -430,7 +449,7 @@ func (db *DB) ListSuccessfulInteractions(ctx context.Context, limit int) ([]Inte
 	if err != nil {
 		return nil, fmt.Errorf("failed to list successful interactions: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var interactions []Interaction
 	for rows.Next() {
@@ -465,7 +484,7 @@ func (db *DB) GetPerformanceMetrics(ctx context.Context) (*PerformanceMetrics, e
 	if err != nil {
 		return nil, fmt.Errorf("failed to query state counts: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	total := 0
 	won := 0
@@ -540,7 +559,7 @@ func (db *DB) ListActivePullRequests(ctx context.Context) ([]gitcheck.PullReques
 	if err != nil {
 		return nil, fmt.Errorf("failed to list active PRs: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var prs []gitcheck.PullRequest
 	for rows.Next() {
@@ -565,7 +584,7 @@ func (db *DB) ListInteractionsByContact(ctx context.Context, contactID int64) ([
 	if err != nil {
 		return nil, fmt.Errorf("failed to list interactions: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var interactions []Interaction
 	for rows.Next() {
@@ -637,7 +656,7 @@ func (db *DB) ListTemplates(ctx context.Context) ([]Template, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to list templates: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var templates []Template
 	for rows.Next() {
@@ -675,7 +694,7 @@ func (db *DB) GetTemplateMetrics(ctx context.Context) ([]TemplateMetrics, error)
 	if err != nil {
 		return nil, fmt.Errorf("failed to query template metrics: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var metrics []TemplateMetrics
 	for rows.Next() {
@@ -739,21 +758,45 @@ func (db *DB) MarkTemplateSuccessForDeal(ctx context.Context, dealID int64) erro
 			var interactionID int64
 			var tmplID string
 			if err := rows.Scan(&interactionID, &tmplID); err != nil {
-				rows.Close()
+				_ = rows.Close()
 				return fmt.Errorf("failed to scan interaction row: %w", err)
 			}
 			// Mark interaction as successful
 			if err := db.UpdateInteractionSuccess(ctx, interactionID, true); err != nil {
-				rows.Close()
+				_ = rows.Close()
 				return fmt.Errorf("failed to update interaction success for id %d: %w", interactionID, err)
 			}
 			// Record template success metric
 			if err := db.RecordTemplateSuccess(ctx, tmplID); err != nil {
-				rows.Close()
+				_ = rows.Close()
 				return fmt.Errorf("failed to record template success for %s: %w", tmplID, err)
 			}
 		}
-		rows.Close()
+		_ = rows.Close()
+	}
+	return nil
+}
+
+// CreateSocialPost inserts a new social post log into the database.
+func (db *DB) CreateSocialPost(ctx context.Context, post *SocialPost) error {
+	query := `
+		INSERT INTO social_posts (brand, platform, account_username, post_content, status, created_at)
+		VALUES ($1, $2, $3, $4, $5, $6)
+		RETURNING id
+	`
+	if post.CreatedAt.IsZero() {
+		post.CreatedAt = time.Now()
+	}
+	err := db.Conn.QueryRowContext(ctx, query,
+		post.Brand,
+		post.Platform,
+		post.AccountUsername,
+		post.PostContent,
+		post.Status,
+		post.CreatedAt,
+	).Scan(&post.ID)
+	if err != nil {
+		return fmt.Errorf("failed to create social post: %w", err)
 	}
 	return nil
 }

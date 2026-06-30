@@ -167,7 +167,7 @@ func (g *GitHubIssueSource) searchIssues(ctx context.Context, keyword string) ([
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("GitHub API returned status %d", resp.StatusCode)
@@ -216,7 +216,7 @@ func (g *GitHubIssueSource) getOrgInfo(ctx context.Context, orgName string) (*gi
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("GitHub API returned status %d for org %s", resp.StatusCode, orgName)

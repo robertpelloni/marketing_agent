@@ -11,7 +11,7 @@ func TestGitHubCITracker_GetLatestStatus(t *testing.T) {
 	_ = &GitHubCITracker{}
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		fmt.Fprintln(w, `{
+		_, _ = fmt.Fprintln(w, `{
 			"workflow_runs": [
 				{
 					"status": "completed",

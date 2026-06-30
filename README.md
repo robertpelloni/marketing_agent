@@ -1,6 +1,48 @@
+🛠️ ALPHA SOFTWARE UNDER CONSTRUCTION — Use at your own risk. Backwards compatibility not guaranteed.
+
+```text
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                     ██╗   ██╗███╗   ██╗██████╗ ███████╗██████╗              ║
+║                     ██║   ██║████╗  ██║██╔══██╗██╔════╝██╔══██╗             ║
+║                     ██║   ██║██╔██╗ ██║██║  ██║█████╗  ██████╔╝             ║
+║                     ██║   ██║██║╚██╗██║██║  ██║██╔══╝  ██╔══██╗             ║
+║                     ╚██████╔╝██║ ╚████║██████╔╝███████╗██║  ██║             ║
+║                      ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝             ║
+║                                                                              ║
+║                     ██████╗ ██████╗ ███╗   ██╗███████╗████████╗██████╗      ║
+║                    ██╔════╝██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██╔══██╗     ║
+║                    ██║     ██║   ██║██╔██╗ ██║███████╗   ██║   ██████╔╝     ║
+║                    ██║     ██║   ██║██║╚██╗██║╚════██║   ██║   ██╔══██╗     ║
+║                    ╚██████╗╚██████╔╝██║ ╚████║███████║   ██║   ██║  ██║     ║
+║                     ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝     ║
+║                                                                              ║
+║                     █████╗ ██╗     ██████╗ ██╗  ██╗ █████╗                  ║
+║                    ██╔══██╗██║     ██╔══██╗██║  ██║██╔══██╗                 ║
+║                    ███████║██║     ██████╔╝███████║███████║                 ║
+║                    ██╔══██║██║     ██╔═══╝ ██╔══██║██╔══██║                 ║
+║                    ██║  ██║███████╗██║     ██║  ██║██║  ██║                 ║
+║                    ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝                 ║
+║                                                                              ║
+║                    ╔══════════════════════════════════════╗                  ║
+║                    ║     ⚠️  ALPHA SOFTWARE  ⚠️           ║                  ║
+║                    ║  EXPECT BREAKING CHANGES & BUGS     ║                  ║
+║                    ║  NOT READY FOR PRODUCTION USE       ║                  ║
+║                    ╚══════════════════════════════════════╝                  ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+```
+
 # TormentNexus Autonomous Sales Pipeline
 
 A fully autonomous B2B sales pipeline written in Go. It discovers potential enterprise customers, researches their technical bottlenecks, sends hyper-personalized outreach emails, negotiates deals, invoices won deals via Stripe, and even **modifies its own source code** to improve itself. It runs without human intervention — a software salesperson that never sleeps, writes its own PRs, and learns from its successes.
+
+### ▶️ Video Overviews
+
+| Video | Description | Direct Download |
+|---|---|---|
+| [**HyperNexus: Ultimate Agent**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/12652b93-e2f0-4b35-bc6a-31c2c8fa51f0?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_) | AI-generated deep-dive into the HyperNexus enterprise AI orchestration platform, architecture, and ultimate agent capabilities (182 sources) | [MP4 →](https://hypernexus.site/hypernexus_ultimate_agent.mp4) |
+| [**TormentNexus: AI Control Plane**](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/282cd73a-c108-4fc7-bf6e-1dcdac446a54?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_) | AI-generated overview of the TormentNexus AI Control Plane — the local-first model hypervisor with MCP routing, memory, and autonomous capabilities (182 sources) | [MP4 →](https://tormentnexus.site/tormentnexus_ai_control_plane.mp4) |
 
 ## Table of Contents
 
@@ -508,6 +550,17 @@ The CI pipeline (`.github/workflows/ci.yml`) runs:
 | `build.bat` / `start.bat` | Windows build and start scripts |
 | `--reconcile` flag | Run branch reconciliation standalone |
 | `--inventory` flag | Generate submodule inventory table |
+
+---
+
+### ▶️ Video Dossier — Evidence File
+
+AI-generated video overviews based on 182 source documents each:
+
+| Video | Link | Direct Download |
+|---|---|---|
+| **HyperNexus: Ultimate Agent** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/12652b93-e2f0-4b35-bc6a-31c2c8fa51f0?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_) | [Download MP4 (19.9MB) →](https://hypernexus.site/hypernexus_ultimate_agent.mp4) |
+| **TormentNexus: AI Control Plane** | [Watch on NotebookLM →](https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/282cd73a-c108-4fc7-bf6e-1dcdac446a54?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_) | [Download MP4 (19.9MB) →](https://tormentnexus.site/tormentnexus_ai_control_plane.mp4) |
 
 ---
 

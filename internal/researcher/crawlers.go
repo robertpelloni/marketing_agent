@@ -33,7 +33,7 @@ func (g *GitHubCrawler) Crawl(ctx context.Context, target string) (string, error
 
 		resp, err := g.Client.Do(req)
 		if err == nil && resp.StatusCode == http.StatusOK {
-			defer resp.Body.Close()
+			defer func() { _ = resp.Body.Close() }()
 			_, _ = io.ReadAll(resp.Body)
 			// Heuristic: If they have many repos, they likely have scale issues
 			return fmt.Sprintf("REAL-TIME GitHub INSIGHT for %s: Found active repositories. Analyzing codebase for state management patterns. Detected potential serial processing in orchestration logic.", target), nil

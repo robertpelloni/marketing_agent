@@ -2,6 +2,7 @@ package config
 
 import (
 	"bufio"
+	"encoding/json"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -47,7 +48,17 @@ type Config struct {
 	IMAPUsername		string
 	IMAPPassword		string
 	IMAPFolder		string
-	IMAPPollInterval	time.Duration
+		IMAPPollInterval	time.Duration
+
+	// Webhooks
+	OutboundWebhookURL    string
+	OutboundWebhookSecret string
+
+	// CRM Field Mappings
+	SalesforceStageMapping        map[string]string
+	HubSpotStageMapping           map[string]string
+	SalesforceReverseStageMapping map[string]string
+	HubSpotReverseStageMapping    map[string]string
 }
 
 // Load loads the configuration from environment variables and .env file.
@@ -125,7 +136,7 @@ func Load() *Config {
 		SMTPUsername:	os.Getenv("SMTP_USERNAME"),
 		SMTPPassword:	os.Getenv("SMTP_PASSWORD"),
 		SMTPFrom:	os.Getenv("SMTP_FROM"),
-		SMTPFromName:	getEnv("SMTP_FROM_NAME", "TormentNexus Sales"),
+		SMTPFromName:	getEnv("SMTP_FROM_NAME", "HyperNexus Sales"),
 
 		// IMAP
 		IMAPHost:		os.Getenv("IMAP_HOST"),
@@ -133,7 +144,52 @@ func Load() *Config {
 		IMAPUsername:		os.Getenv("IMAP_USERNAME"),
 		IMAPPassword:		os.Getenv("IMAP_PASSWORD"),
 		IMAPFolder:		getEnv("IMAP_FOLDER", "INBOX"),
-		IMAPPollInterval:	imapPollInterval,
+				IMAPPollInterval:	imapPollInterval,
+
+		// Webhooks
+		OutboundWebhookURL:    os.Getenv("OUTBOUND_WEBHOOK_URL"),
+		OutboundWebhookSecret: os.Getenv("OUTBOUND_WEBHOOK_SECRET"),
+
+		// CRM Field Mappings
+		SalesforceStageMapping: parseMapFromEnv("SALESFORCE_STAGE_MAPPING", map[string]string{
+			"Discovered":       "Prospecting",
+			"Researched":       "Qualification",
+			"Outreach_Sent":    "Needs Analysis",
+			"Engaged":          "Value Proposition",
+			"Negotiating":      "Negotiation/Review",
+			"Pending_Approval": "Id. Decision Makers",
+			"Closed_Won":       "Closed Won",
+			"Closed_Lost":      "Closed Lost",
+		}),
+		HubSpotStageMapping: parseMapFromEnv("HUBSPOT_STAGE_MAPPING", map[string]string{
+			"Discovered":       "appointmentscheduled",
+			"Researched":       "qualifiedtobuy",
+			"Outreach_Sent":    "presentationscheduled",
+			"Engaged":          "decisionmakerboughtin",
+			"Negotiating":      "contractsent",
+			"Pending_Approval": "contractsent",
+			"Closed_Won":       "closedwon",
+			"Closed_Lost":      "closedlost",
+		}),
+		SalesforceReverseStageMapping: parseMapFromEnv("SALESFORCE_REVERSE_STAGE_MAPPING", map[string]string{
+			"Prospecting":         "Discovered",
+			"Qualification":       "Researched",
+			"Needs Analysis":      "Outreach_Sent",
+			"Value Proposition":   "Engaged",
+			"Negotiation/Review":  "Negotiating",
+			"Id. Decision Makers": "Pending_Approval",
+			"Closed Won":          "Closed_Won",
+			"Closed Lost":         "Closed_Lost",
+		}),
+		HubSpotReverseStageMapping: parseMapFromEnv("HUBSPOT_REVERSE_STAGE_MAPPING", map[string]string{
+			"appointmentscheduled":  "Discovered",
+			"qualifiedtobuy":        "Researched",
+			"presentationscheduled": "Outreach_Sent",
+			"decisionmakerboughtin": "Engaged",
+			"contractsent":          "Negotiating",
+			"closedwon":             "Closed_Won",
+			"closedlost":            "Closed_Lost",
+		}),
 	}
 }
 
@@ -149,11 +205,11 @@ func loadDotEnv() {
 	}
 
 	for _, p := range paths {
-		file, err := os.Open(p)
+		file, err := os.Open(filepath.Clean(p))
 		if err != nil {
 			continue	// .env is optional
 		}
-		defer file.Close()
+		defer func() { _ = file.Close() }()
 
 		slog.Info(fmt.Sprintf("Config: Loading environment from %s", p))
 		scanner := bufio.NewScanner(file)
@@ -179,7 +235,7 @@ func loadDotEnv() {
 
 			// Don't overwrite existing env vars
 			if os.Getenv(key) == "" {
-				os.Setenv(key, value)
+				_ = os.Setenv(key, value)
 			}
 		}
 		return	// only load the first .env found
@@ -191,4 +247,18 @@ func getEnv(key, fallback string) string {
 		return value
 	}
 	return fallback
+}
+
+func parseMapFromEnv(key string, defaultMap map[string]string) map[string]string {
+	val := os.Getenv(key)
+	if val == "" {
+		return defaultMap
+	}
+	var m map[string]string
+	err := json.Unmarshal([]byte(val), &m)
+	if err != nil {
+		slog.Error("Config: Failed to parse JSON, using defaults", "key", key, "error", err)
+		return defaultMap
+	}
+	return m
 }

@@ -272,9 +272,9 @@ if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
 
 	// 5. Actually send the communication if sender is configured
 	if m.sender != nil && contact.Email != "" && channel == "email" {
-		subject := fmt.Sprintf("Re: %s — TormentNexus", company.Name)
+		subject := fmt.Sprintf("Re: %s — HyperNexus", company.Name)
 		if text == "START_OUTREACH" {
-			subject = fmt.Sprintf("TormentNexus for %s — Quick Question", company.Name)
+			subject = fmt.Sprintf("HyperNexus for %s — Quick Question", company.Name)
 		}
 
 		emailMsg := EmailMessage{

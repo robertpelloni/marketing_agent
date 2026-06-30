@@ -2,7 +2,7 @@
 
 ## Current State
 
-- The project is at v0.4.8 with Hermes Agent LLM integration.
+- The project is at v0.5.1 with Hermes Agent LLM integration, real-time quote generation, and stabilized CI pipelines.
 - Core modules: scraper, enricher, researcher, communication, CRM, billing, deploy, autodev.
 - **LLM provider is now REAL** via Hermes Agent gateway (WSL) — replaces MockLLMProvider.
 - **Intent classifier is now REAL** via LLMIntentClassifier when Hermes is available.

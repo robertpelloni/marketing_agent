@@ -55,7 +55,7 @@ func (g *GitHubDispatcher) Dispatch(ctx context.Context, workflowFile string, re
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusNoContent {
 		return fmt.Errorf("github api returned status: %d", resp.StatusCode)

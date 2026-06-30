@@ -1,4 +1,5 @@
 # .gitignore
-bin/
 *.exe
 .env
+.memory/
+bin/

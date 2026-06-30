@@ -110,13 +110,13 @@ func (s *SMTPSender) sendSTARTTLS(addr string, tlsConfig *tls.Config, auth smtp.
 	if err != nil {
 		return fmt.Errorf("smtp: connection failed: %w", err)
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	client, err := smtp.NewClient(conn, s.config.Host)
 	if err != nil {
 		return fmt.Errorf("smtp: client creation failed: %w", err)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }()
 
 	// STARTTLS
 	if ok, _ := client.Extension("STARTTLS"); ok {
@@ -166,13 +166,13 @@ func (s *SMTPSender) sendDirectSSL(addr string, tlsConfig *tls.Config, auth smtp
 	if err != nil {
 		return fmt.Errorf("smtp: TLS connection failed: %w", err)
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	client, err := smtp.NewClient(conn, s.config.Host)
 	if err != nil {
 		return fmt.Errorf("smtp: client creation failed: %w", err)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }()
 
 	if auth != nil {
 		if err = client.Auth(auth); err != nil {
@@ -214,13 +214,13 @@ func (s *SMTPSender) HealthCheck(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("smtp health: connection to %s failed: %w", addr, err)
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	client, err := smtp.NewClient(conn, s.config.Host)
 	if err != nil {
 		return fmt.Errorf("smtp health: client creation failed: %w", err)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }()
 
 	// Try STARTTLS if available
 	if ok, _ := client.Extension("STARTTLS"); ok {

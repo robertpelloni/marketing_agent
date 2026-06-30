@@ -76,7 +76,7 @@ func TestPromptRegistry_RecordOutcomes(t *testing.T) {
 	pr := NewPromptRegistry(filepath.Join(dir, "reg.json"))
 
 	v1 := pr.RegisterVersion("test", "Template ${V}")
-	pr.AssignExperiment("test", []string{v1.ID}, []float64{1.0})
+	_ = pr.AssignExperiment("test", []string{v1.ID}, []float64{1.0})
 
 	pr.RecordOutcome("test", v1.ID, true)
 	pr.RecordOutcome("test", v1.ID, true)
@@ -131,5 +131,5 @@ func TestPromptRegistry_Persistence(t *testing.T) {
 	}
 
 	// Cleanup
-	os.Remove(file)
+	_ = os.Remove(file)
 }

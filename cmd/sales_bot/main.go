@@ -68,7 +68,7 @@ func main() {
 	if err != nil {
 		slog.Error(fmt.Sprintf("Could not connect to database: %v", err))
 	}
-	defer database.Close()
+	defer func() { _ = database.Close() }()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -203,6 +203,10 @@ func main() {
 		llmProvider = &llm.MockLLMProvider{}
 	}
 
+	// 2k. Setup Social Media Poster Agent
+	socialPoster := agents.NewSocialPosterWorker(database, llmProvider)
+	go socialPoster.Run(ctx, 4*time.Hour)
+
 	// 2g. Setup Intent Classifier
 	var classifier communication.IntentClassifier
 	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
@@ -244,7 +248,7 @@ func main() {
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
 	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender)
-	
+
 	// Initialize Objection Library and attach to manager
 	objectionLib := communication.NewObjectionLibrary()
 	commManager.SetObjectionLibrary(objectionLib)
@@ -271,7 +275,7 @@ func main() {
 
 	// 3. Initialize Autonomous Development
 	taskManager := autodev.NewTaskManager("TODO.md")
-	agent := &autodev.LocalAgent{}
+	agent := autodev.NewLocalAgent(llmProvider)
 
 	var prManager gitcheck.PRManager
 	if cfg.GitHubRepository != "" {

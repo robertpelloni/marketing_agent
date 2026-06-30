@@ -25,18 +25,6 @@ type HunterSource struct {
 }
 
 // hunterResponse represents the Hunter.io email finder API response.
-type hunterResponse struct {
-	Data	struct {
-		Email		string	`json:"email"`
-		FirstName	string	`json:"first_name"`
-		LastName	string	`json:"last_name"`
-		Position	string	`json:"position"`
-		Company		string	`json:"company"`
-		Confidence	float64	`json:"confidence"`
-		Domain		string	`json:"domain"`
-	}	`json:"data"`
-	Errors	[]string	`json:"errors"`
-}
 
 // hunterDomainResponse represents the Hunter.io domain search API response.
 type hunterDomainResponse struct {
@@ -124,7 +112,7 @@ func (h *HunterSource) domainSearch(ctx context.Context, domain string) ([]db.Co
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -193,7 +181,7 @@ func (h *HunterSource) HealthCheck(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("hunter: account check returned %d", resp.StatusCode)

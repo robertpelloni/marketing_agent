@@ -47,70 +47,70 @@
 
 ### Real Communication Channels
 - [x] Implement SMTP email sender for outbound outreach
-- [x] Implement IMAP/POP3 email polling for inbound ingestion
+- [x] Implement IMAP/POP3 email polling for inbound message ingestion
 - [x] Implement LinkedIn message sending via headless automation
-- [x] Implement GitHub Issue/PR comment outreach as technical hook
+- [x] Implement GitHub Issue/PR comment outreach as a technical hook
+- [x] Implement dual-brand social media posting worker agent (Reddit, Bluesky, LinkedIn, Twitter/X)
 - [x] Add channel preference logic per contact
 - [x] Add outreach cadence management (configurable follow-up schedule)
 
 ### Real LLM Integration
-- [x] Implement Hermes Agent LLM provider (replace mock) — routes through local Hermes gateway with 200+ model support
-- [x] Add provider fallback chain for LLM calls - Hermes handles NVIDIA - OpenRouter - LM Studio/Ollama waterfall natively
-- [x] Add token budget tracking per deal/contact
-- [x] Add prompt versioning with A/B testing capability
-- [x] Add response quality scoring before sending
+- [x] Implement OpenAI/Anthropic LLM provider (replace mock)
+- [x] Add provider fallback chain for LLM calls (primary → secondary → tertiary)
+- [x] Add token budget tracking per deal/contact to control costs
+- [x] Add prompt versioning — store and track prompt templates with A/B testing capability
+- [x] Add response quality scoring — auto-evaluate generated responses before sending
 
 ### Real CRM Integration
-- [x] Implement Salesforce CRM adapter
-- [x] Implement HubSpot CRM adapter
-- [ ] Add CRM field mapping configuration
+- [x] Implement Salesforce CRM adapter (replace generic REST mock)
+- [x] Implement HubSpot CRM adapter as alternative
+- [x] Add CRM field mapping configuration — map local fields to CRM-specific schema
 
 ## Phase 8 — Intelligence & Autonomous Evolution
 
 ### Advanced Lead Intelligence
-- [x] Implement real GitHub repository analysis for tech stack and bottleneck detection
-- [x] Implement real technical blog/RSS ingestion for hiring signals
-- [ ] Add competitor intelligence tracking
-- [ ] Add unified intent signal aggregation
+- [x] Implement real GitHub repository analysis — detect tech stack, architecture patterns, and bottlenecks from actual source code
+- [x] Implement real technical blog/RSS ingestion — parse engineering blogs for hiring signals and pain points
+- [x] Add competitor intelligence tracking
+- [x] Add unified intent signal aggregation
 
 ### Autonomous Development Improvements
-- [ ] Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation
-- [ ] Add rollback mechanism for failed verification
-- [ ] Add PR feedback loop using `GetPRComments`
-- [ ] Add task dependency resolution
-- [ ] Add concurrent task execution for independent tasks
+- [x] Replace hardcoded `LocalAgent.ProposeSolution` with LLM-powered code generation
+- [x] Add rollback mechanism — if verification fails, revert to pre-change state
+- [x] Add PR feedback loop — use `GetPRComments` to refine the agent's code generation accuracy
+- [x] Add task dependency resolution
+- [x] Add concurrent task execution for independent tasks
 
 ### Advanced Sales Strategy
 - [x] Add multi-touch outreach sequences across channels
-- [x] Add A/B testing infrastructure for outreach templates (metrics tracking, impression recording)
-- [x] Add template selection algorithm for A/B testing (conversion-based ranking via GetTopTemplate)
-- [x] Add template success tracking when interactions convert (full integration complete)
-- [x] Add objection handling library with success rates (full integration with outcome tracking)
-- [x] Add human-in-the-loop approval workflow for high-value deals (auto-flag Enterprise/>$100k deals, ApproveDeal method)
-- [x] Add deal forecasting using historical patterns
+- [x] Add A/B testing for outreach templates — track conversion per template variant
+- [x] Add objection handling library — curated rebuttals indexed by objection type with success rates
+- [x] Add human-in-the-loop approval workflow — require explicit approval for deals above a configurable threshold
+- [x] Add deal forecasting — predict close probability and expected revenue using historical patterns
 
 ### Self-Improving Prompts v2
-- [ ] Add A/B prompt testing with vs. without successful examples
-- [x] Add interaction sentiment analysis
-- [ ] Add prompt performance tracking over time
-- [ ] Add negative example injection from failed outreach
+- [ ] Add A/B prompt testing — compare outreach generated with vs. without successful examples
+- [x] Add interaction sentiment analysis — auto-classify sentiment of inbound messages to refine strategy
+- [ ] Add prompt performance tracking — measure response quality over time as few-shot examples accumulate
+- [ ] Add negative example injection — learn from failed outreach (flagged `success=false`) to avoid repeated patterns
 
 ## Phase 9 — Security, Compliance & Scale
 
 ### Security
-- [ ] Add rate limiting on all HTTP endpoints
-- [x] Add authentication to web dashboard (Session-based)
-- [ ] Add CSRF protection for dashboard form submissions
-- [ ] Add input sanitization for webhook payloads and form inputs
+- [x] Add rate limiting on all HTTP endpoints (dashboard, webhook, health)
+- [x] Add authentication to the web dashboard (OAuth2 or API key)
+- [x] Add CSRF protection for dashboard form submissions
+- [ ] Add input sanitization for all user-supplied data (webhook payloads, form inputs)
 - [ ] Add secrets encryption at rest
 - [ ] Add GDPR data export endpoint
 - [ ] Add GDPR data deletion endpoint
 - [ ] Add webhook IP allowlisting
 
 ### Scale & Performance
-- [ ] Add Redis caching layer for frequently accessed data
-- [ ] Add horizontal scaling support (stateless workers)
-- [ ] Add message queue (NATS/RabbitMQ) to decouple workers
+- [ ] Add PostgreSQL connection pooling with configurable limits
+- [ ] Add Redis caching layer for frequently accessed data (company lookups, performance metrics)
+- [ ] Add horizontal scaling support — make workers stateless so multiple instances can run
+- [ ] Add message queue (NATS/RabbitMQ) to decouple workers from direct DB polling
 - [ ] Add database read replicas for dashboard queries
 - [ ] Add pagination to dashboard deal list
 - [ ] Add worker performance profiling
@@ -118,62 +118,40 @@
 ### Deployment & Operations
 - [ ] Add Kubernetes manifests (Deployment, Service, ConfigMap, Secret)
 - [ ] Add Helm chart for one-command cluster deployment
-- [ ] Add Terraform modules for cloud infrastructure
-- [ ] Add blue-green deployment with automatic rollback
-- [ ] Add database backup automation with cloud storage
-- [ ] Add log aggregation to ELK/Datadog/CloudWatch
+- [ ] Add Terraform modules for cloud infrastructure provisioning
+- [ ] Add blue-green deployment strategy with automatic rollback
+- [ ] Add database backup automation — periodic `pg_dump` with S3/blob storage upload
+- [ ] Add log aggregation — ship structured logs to ELK/Datadog/CloudWatch
 
 ## Phase 10 — Platform & Ecosystem
 
 ### API & Extensibility
-- [ ] Add REST API for external pipeline management
-- [ ] Add outbound webhooks on deal state changes
-- [ ] Add plugin system for custom sources, classifiers, and responders
-- [ ] Add multi-tenant support with data isolation
+- [x] Add REST API for external pipeline management (`/api/v1/leads`, `/api/v1/deals`, `/api/v1/interactions`)
+- [x] Add webhook outbound — notify external systems on deal state changes
+- [x] Add plugin system — allow custom enrichment sources, classifiers, and responders
+- [ ] Add multi-tenant support — isolate data and config per organization
 
 ### TormentNexus-as-a-Service
-- [ ] Package the sales engine as a reusable SaaS product
-- [ ] Add SaaS billing with per-seat and per-outreach tiers
-- [ ] Add onboarding wizard for target ICP definition
+- [ ] Package the sales engine as a reusable service
+- [ ] Add SaaS billing with per-seat and per-outreach pricing tiers
+- [ ] Add onboarding wizard
 - [ ] Add community template marketplace
 
-## Completed (Historical)
-- [x] Implement robust CI/CD pipeline with automated PostgreSQL integration testing
-- [x] Mature CI/CD infrastructure for autonomous provisioning
-- [x] Dockerize application for consistent deployment
-- [x] Add Docker build step to deployment workflow
-- [x] Implement CI status tracking interfaces
-- [x] Implement Task 1: Core Database Migrations & Models
-- [x] Implement Task 2: The Target Discovery Scraper Module
-- [x] Implement Task 3: Engineering Contact Enrichment Engine
-- [x] Define Enrichment interfaces
-- [x] Implement Mock Enrichment Source
-- [x] Implement Enricher background worker
-- [x] Add DB persistence for Contacts
-- [x] Implement Task 4: Technical Context Aggregator & Prompt Formatter
-- [x] GitHub crawler for target engineers
-- [x] Technical blog scraper
-- [x] Prompt construction engine
-- [x] Implement Task 5: The Inbound Communication State Machine
-- [x] Define communication interfaces (Classifier, Responder)
-- [x] Implement Mock Intent Classifier
-- [x] Implement pseudo-RAG Response Generator (Dossier-aware)
-- [x] Create Interaction database handlers
-- [x] Implement "Self-Improving Prompts" feedback loop
-- [x] Resolve CI failures related to Gosec and linting
-- [x] Implement autonomous sales-feature code generation
-- [x] Implement the Inbound Communication background worker
-- [x] Add negotiation & pricing engine bounds (Tiered Pricing)
-- [x] Verify pathing in `build.bat` and `start.bat`
-- [x] Implement automated conflict detection tests
-- [x] Implement Dual-Direction Intelligent Merge Engine (Full Branch Reconciliation)
-- [x] Implement automated conflict resolution simulation tests
-- [x] Configure Standardized CI/CD pipeline
-- [x] Implement Post-Deployment Health Checks
-- [x] Implement Autonomous PR generation and merging logic (Mock)
-- [x] Implement Persistent PR tracking and dynamic PR dashboard
-- [x] Implement Real-time CI status tracking and monitoring
-- [x] Implement Self-Service Deployment Pipeline (Sync & Build triggers)
-- [x] Add `borg` submodule for technical documentation reference
-- [x] Implement Task 6: Automated Provisioning for won deals
-- [x] Rebrand from TormentNexus to TormentNexus across all product-facing references
+## Phase 11 — The Elite Enterprise Sales Agent Blueprint
+
+### Core Psychological & Strategic Sales Layer
+- [ ] Add Challenger Sale Framework Integration to deliver "asymmetric insight"
+- [ ] Add MEDDPICC Framework Tracking state machine to db models
+- [ ] Add SPIN Selling Discovery conversational balancing logic
+
+### Advanced Multi-Agent Technical Architecture
+- [ ] Implement Multi-Agent Orchestration Pattern (split LLM context)
+- [ ] Build Sales Strategist Agent for MEDDPICC evaluation and micro-goals
+- [ ] Build Context & Knowledge Agent (GraphRAG) replacing flat vector search
+- [ ] Build Execution/Guardrail Agent for authoritative response filtering
+
+### Persuasion & Behavioral Tuning
+- [ ] Tune system prompts to eliminate AI Tropes (adopt Enterprise AE persona)
+- [ ] Add Asymmetrical Information Leverage context injection
+- [ ] Add Cost of Inaction (COI) calculator and loss aversion framing
+- [ ] Implement tactical empathy (mirroring and labeling) in response templates

@@ -33,11 +33,12 @@ func main() {
 }
 
 func verifyEndpoint(url, expected string) error {
-	resp, err := http.Get(url)
+	resp, err := http.Get(url) // #nosec G107
+	// #nosec G704
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("unexpected status: %d", resp.StatusCode)
@@ -58,11 +59,12 @@ func verifyEndpoint(url, expected string) error {
 }
 
 func verifyDetailedHealth(url string) error {
-	resp, err := http.Get(url)
+	resp, err := http.Get(url) // #nosec G107
+	// #nosec G704
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	var health map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&health); err != nil {

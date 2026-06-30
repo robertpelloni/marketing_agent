@@ -142,7 +142,7 @@ func (a *ApolloSource) peopleSearch(ctx context.Context, domain string) ([]db.Co
 	if err != nil {
 		return nil, fmt.Errorf("API request failed: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -224,7 +224,7 @@ func (a *ApolloSource) HealthCheck(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("apollo health: connection failed: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("apollo health: API returned HTTP %d", resp.StatusCode)

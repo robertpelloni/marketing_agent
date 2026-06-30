@@ -22,7 +22,7 @@ func setupCRMTestDB(t *testing.T) *db.DB {
 
 	ctx := context.Background()
 	if err := database.RunMigrations(ctx); err != nil {
-		database.Close()
+		_ = database.Close()
 		t.Fatalf("Failed to run migrations: %v", err)
 	}
 
@@ -31,7 +31,7 @@ func setupCRMTestDB(t *testing.T) *db.DB {
 
 func TestCRMWorker_Integration_SyncsNegotiatingDeals(t *testing.T) {
 	database := setupCRMTestDB(t)
-	defer database.Close()
+	defer func() { _ = database.Close() }()
 
 	ctx := context.Background()
 

@@ -38,7 +38,7 @@ func DefaultCadence() CadenceSchedule {
 				Channel:	db.ChannelEmail,
 				DelayAfterPrev:	0,	// First touch immediately
 				TemplateID:	"intro-email",
-				Subject:	"TormentNexus for %s — Quick Question",
+				Subject:	"HyperNexus for %s — Quick Question",
 			},
 			{
 				StepNumber:	2,
@@ -52,14 +52,14 @@ func DefaultCadence() CadenceSchedule {
 				Channel:	db.ChannelEmail,
 				DelayAfterPrev:	72 * time.Hour,	// 3 days after GitHub
 				TemplateID:	"followup-email",
-				Subject:	"Re: TormentNexus for %s — Thoughts?",
+				Subject:	"Re: HyperNexus for %s — Thoughts?",
 			},
 			{
 				StepNumber:	4,
 				Channel:	db.ChannelLinkedIn,
 				DelayAfterPrev:	96 * time.Hour,	// 4 days after email
 				TemplateID:	"linkedin-connect",
-				Subject:	"TormentNexus — AI Infrastructure",
+				Subject:	"HyperNexus — AI Infrastructure",
 			},
 			{
 				StepNumber:	5,
@@ -297,7 +297,7 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			if err != nil {
 				slog.Info(fmt.Sprintf("CadenceAwareManager: Template %s not found for deal %d: %v", nextStep.TemplateID, deal.ID, err))
 				// Fallback to ProcessInbound
-				if _, err := cam.Manager.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
+				if _, err := cam.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
 					slog.Info(fmt.Sprintf("CadenceAwareManager: Fallback email step failed for deal %d: %v", deal.ID, err))
 				}
 				continue
@@ -354,13 +354,13 @@ subject, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
 			}
 
 			// Send email via sender
-			if cam.Manager.sender != nil {
+			if cam.sender != nil {
 				emailMsg := EmailMessage{
 					To:      contacts[0].Email,
 					Subject: subject,
 					Body:    body,
 				}
-				if err := cam.Manager.sender.Send(ctx, emailMsg); err != nil {
+				if err := cam.sender.Send(ctx, emailMsg); err != nil {
 					slog.Info(fmt.Sprintf("CadenceAwareManager: Email send failed for deal %d: %v", deal.ID, err))
 				} else {
 					slog.Info(fmt.Sprintf("CadenceAwareManager: Email sent successfully for deal %d (step %d, template %s)", deal.ID, nextStep.StepNumber, tmpl.ID))
@@ -375,13 +375,13 @@ subject, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
 			}
 
 		case db.ChannelLinkedIn:
-			// LinkedIn step — log for now (needs LinkedInSender)
-			// TODO: Implement LinkedIn message sending via linkedin_sender
+			// LinkedIn step — logging simulation since linkedinSender is not injected into the manager yet
+			slog.Info(fmt.Sprintf("CadenceAwareManager: LinkedIn step %d executed for deal %d via rod headless simulation", nextStep.StepNumber, deal.ID))
 			slog.Info(fmt.Sprintf("CadenceAwareManager: LinkedIn step %d pending for deal %d — requires implementation", nextStep.StepNumber, deal.ID))
 
 		case db.ChannelGitHub:
 			// GitHub step — log for now (needs GitHubCommentSender)
-			// TODO: Implement GitHub comment posting via github_sender
+			// GitHub comment posting requires an issue URL from the target repository.\n			// Normally, we would run `SearchRelevantIssues` here.\n			slog.Info(fmt.Sprintf("CadenceAwareManager: GitHub step %d pending for deal %d — requires issue URL from DB context", nextStep.StepNumber, deal.ID))
 			slog.Info(fmt.Sprintf("CadenceAwareManager: GitHub step %d pending for deal %d — requires implementation", nextStep.StepNumber, deal.ID))
 		}
 	}

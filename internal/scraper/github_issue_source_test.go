@@ -12,7 +12,6 @@ import (
 )
 
 // Helper variable for env manipulation in tests
-var testToken = ""
 
 func TestGitHubIssueSource_Discover_WithMockServer(t *testing.T) {
 	// Track which endpoints were called
@@ -22,8 +21,8 @@ func TestGitHubIssueSource_Discover_WithMockServer(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		t.Logf("Mock GitHub API called: %s", r.URL.String())
 
-		switch {
-		case r.URL.Path == "/search/issues":
+		switch r.URL.Path {
+		case "/search/issues":
 			issueSearchCalled = true
 			// Return mock issue search results
 			result := githubIssueSearchResponse{
@@ -50,9 +49,9 @@ func TestGitHubIssueSource_Discover_WithMockServer(t *testing.T) {
 				},
 			}
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(result)
+			_ = json.NewEncoder(w).Encode(result)
 
-		case r.URL.Path == "/search/repositories":
+		case "/search/repositories":
 			repoSearchCalled = true
 			// Return mock repo search results
 			result := struct {
@@ -72,7 +71,7 @@ func TestGitHubIssueSource_Discover_WithMockServer(t *testing.T) {
 				},
 			}
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(result)
+			_ = json.NewEncoder(w).Encode(result)
 
 		default:
 			w.WriteHeader(http.StatusNotFound)
@@ -131,8 +130,8 @@ func TestGitHubIssueSource_Discover_WithMockServer(t *testing.T) {
 
 	t.Run("Discover_returns_empty_without_token", func(t *testing.T) {
 		oldEnvToken := os.Getenv("GITHUB_TOKEN")
-		os.Setenv("GITHUB_TOKEN", "")
-		defer os.Setenv("GITHUB_TOKEN", oldEnvToken)
+		_ = os.Setenv("GITHUB_TOKEN", "")
+		defer func() { _ = os.Setenv("GITHUB_TOKEN", oldEnvToken) }()
 
 		sourceNoToken := &GitHubIssueSource{
 			Client:   http.DefaultClient,

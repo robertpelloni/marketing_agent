@@ -48,7 +48,7 @@ func (g *GitHubCITracker) GetLatestStatus(ctx context.Context, branch string) (C
 	if err != nil {
 		return CIStatusUnknown, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		return CIStatusUnknown, fmt.Errorf("github api returned status: %d", resp.StatusCode)

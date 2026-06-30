@@ -4,6 +4,8 @@ import "context"
 
 // Task represents a unit of work for the autonomous development module.
 type Task struct {
+	Dependencies []string
+
 	ID          string
 	Description string
 	Category    string

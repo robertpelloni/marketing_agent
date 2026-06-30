@@ -26,6 +26,7 @@ type Company struct {
 	MarketCapTier string    `db:"market_cap_tier"`
 	CreatedAt     time.Time `db:"created_at"`
 	UpdatedAt     time.Time `db:"updated_at"`
+	DeletedAt     *time.Time `db:"deleted_at"`
 }
 
 // Channel represents a communication channel for outreach.
@@ -68,6 +69,7 @@ type Contact struct {
 	PreferredChannel string    `db:"preferred_channel"` // "email", "linkedin", "github"
 	CreatedAt        time.Time `db:"created_at"`
 	UpdatedAt        time.Time `db:"updated_at"`
+	DeletedAt        *time.Time `db:"deleted_at"`
 }
 
 // Interaction tracks communications with a contact.
@@ -96,6 +98,7 @@ type Deal struct {
 	CadenceStep        int       `db:"cadence_step"` // 0 = not started, 1+ = current step index
 	CreatedAt          time.Time `db:"created_at"`
 	UpdatedAt          time.Time `db:"updated_at"`
+	DeletedAt          *time.Time `db:"deleted_at"`
 }
 
 // Template represents a reusable outreach message template.
@@ -123,4 +126,15 @@ type PerformanceMetrics struct {
 	LeadsByState       map[LeadState]int `json:"leads_by_state"`
 	SuccessfulOutreach int            `json:"successful_outreach"`
 	WinRate            float64        `json:"win_rate"`
+}
+
+// SocialPost represents a logged social media post.
+type SocialPost struct {
+	ID              int64     `db:"id"`
+	Brand           string    `db:"brand"`            // "tormentnexus" or "hypernexus"
+	Platform        string    `db:"platform"`         // "reddit", "bluesky", "linkedin", "twitter"
+	AccountUsername string    `db:"account_username"`
+	PostContent     string    `db:"post_content"`
+	Status          string    `db:"status"`           // "posted", "failed", "draft"
+	CreatedAt       time.Time `db:"created_at"`
 }

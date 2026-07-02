@@ -26,6 +26,7 @@ type Company struct {
 	MarketCapTier string    `db:"market_cap_tier"`
 	CreatedAt     time.Time `db:"created_at"`
 	UpdatedAt     time.Time `db:"updated_at"`
+	DeletedAt     *time.Time `db:"deleted_at"`
 }
 
 // Channel represents a communication channel for outreach.
@@ -68,6 +69,7 @@ type Contact struct {
 	PreferredChannel string    `db:"preferred_channel"` // "email", "linkedin", "github"
 	CreatedAt        time.Time `db:"created_at"`
 	UpdatedAt        time.Time `db:"updated_at"`
+	DeletedAt        *time.Time `db:"deleted_at"`
 }
 
 // Interaction tracks communications with a contact.
@@ -96,6 +98,7 @@ type Deal struct {
 	CadenceStep        int       `db:"cadence_step"` // 0 = not started, 1+ = current step index
 	CreatedAt          time.Time `db:"created_at"`
 	UpdatedAt          time.Time `db:"updated_at"`
+	DeletedAt          *time.Time `db:"deleted_at"`
 }
 
 // Template represents a reusable outreach message template.

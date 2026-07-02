@@ -1,0 +1,3 @@
+ALTER TABLE companies DROP COLUMN IF EXISTS deleted_at;
+ALTER TABLE contacts DROP COLUMN IF EXISTS deleted_at;
+ALTER TABLE deals DROP COLUMN IF EXISTS deleted_at;

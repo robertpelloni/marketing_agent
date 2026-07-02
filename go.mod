@@ -5,11 +5,12 @@ go 1.25.0
 require (
 	github.com/emersion/go-imap v1.2.1
 	github.com/go-rod/rod v0.116.2
+	github.com/golang-migrate/migrate/v4 v4.19.1
 	github.com/google/go-github/v60 v60.0.0
 	github.com/lib/pq v1.12.3
 	github.com/stripe/stripe-go/v81 v81.4.0
 	golang.org/x/oauth2 v0.30.0
-	golang.org/x/time v0.5.0
+	golang.org/x/time v0.12.0
 )
 
 require (
@@ -22,7 +23,5 @@ require (
 	github.com/ysmood/got v0.40.0 // indirect
 	github.com/ysmood/gson v0.7.3 // indirect
 	github.com/ysmood/leakless v0.9.0 // indirect
-	golang.org/x/crypto v0.53.0 // indirect
-	golang.org/x/net v0.56.0 // indirect
-	golang.org/x/text v0.38.0 // indirect
+	golang.org/x/text v0.31.0 // indirect
 )

@@ -118,13 +118,13 @@
 
       .hero h1{font-size:clamp(44px,7vw,86px);font-weight:900;letter-spacing:-2.5px;line-height:1.03;margin-bottom:20px;animation:fadeInUp 0.8s ease-out 0.2s both;color:#0f172a}
 
-      .hero h1 .gradient-title{background:linear-gradient(90deg, #0284c7 0%, #1e3a8a 35%, #e0f2fe 45%, #ffffff 50%, #e0f2fe 55%, #1e3a8a 65%, #0284c7 100%) !important;background-size:200% auto !important;-webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;background-clip:text !important;filter:drop-shadow(0 2px 4px rgba(2, 132, 199, 0.1));animation:textShineSweep 2.5s linear infinite !important}
+      .hero h1 .gradient-title{display:inline-block !important;background:linear-gradient(90deg, #0284c7 0%, #1e3a8a 35%, #e0f2fe 45%, #ffffff 50%, #e0f2fe 55%, #1e3a8a 65%, #0284c7 100%) !important;background-size:200% 100% !important;-webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;background-clip:text !important;filter:drop-shadow(0 2px 4px rgba(2, 132, 199, 0.1));animation:textShineSweep 2.5s linear infinite !important}
 
-      .hero p{font-size:18px;max-width:600px;margin:0 auto 40px;line-height:1.7;animation:fadeInUp 0.8s ease-out 0.4s both;background:linear-gradient(90deg, #475569 0%, #475569 35%, #ffffff 50%, #475569 65%, #475569 100%) !important;background-size:200% auto !important;-webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;background-clip:text !important;animation:textShineSweep 4s linear infinite !important}
+      .hero p{font-size:18px;max-width:600px;margin:0 auto 40px;line-height:1.7;animation:fadeInUp 0.8s ease-out 0.4s both;display:block !important;background:linear-gradient(90deg, #475569 0%, #475569 35%, #ffffff 50%, #475569 65%, #475569 100%) !important;background-size:200% 100% !important;-webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;background-clip:text !important;animation:textShineSweep 4s linear infinite !important}
 
       @keyframes textShineSweep {
-        0% { background-position: 200% center; }
-        100% { background-position: -200% center; }
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
       }
 
       @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}

@@ -800,3 +800,39 @@ func (db *DB) CreateSocialPost(ctx context.Context, post *SocialPost) error {
 	}
 	return nil
 }
+
+// ListSocialPosts retrieves the most recent social posts.
+func (db *DB) ListSocialPosts(ctx context.Context, limit int) ([]SocialPost, error) {
+	query := `
+		SELECT id, brand, platform, account_username, post_content, status, created_at
+		FROM social_posts
+		ORDER BY created_at DESC
+		LIMIT $1
+	`
+	rows, err := db.Conn.QueryContext(ctx, query, limit)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list social posts: %w", err)
+	}
+	defer rows.Close()
+
+	var posts []SocialPost
+	for rows.Next() {
+		var post SocialPost
+		if err := rows.Scan(
+			&post.ID,
+			&post.Brand,
+			&post.Platform,
+			&post.AccountUsername,
+			&post.PostContent,
+			&post.Status,
+			&post.CreatedAt,
+		); err != nil {
+			return nil, fmt.Errorf("failed to scan social post: %w", err)
+		}
+		posts = append(posts, post)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("social posts iteration error: %w", err)
+	}
+	return posts, nil
+}

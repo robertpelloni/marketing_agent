@@ -36,38 +36,37 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>HyperNexus — Enterprise AI Control Plane</title>
+    <title>HyperNexus — Corporate AI Control Plane</title>
 
-    <meta name="description" content="The enterprise AI orchestration platform. Secure, compliant, scalable. Deploy anywhere. Control everything.">
+    <meta name="description" content="The corporate AI orchestration platform. Secure, compliant, scalable. Deploy anywhere. Control everything.">
 
     <style>
 
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
-      :root {
-        --bg: #f8fafc; /* Slate 50 */
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");      :root {
+        --bg: #f8fafc;
         --card-bg: #ffffff;
-        --glass-border: #e2e8f0; /* Slate 200 */
-        --neon-blue: #0284c7; /* Solid high-trust sky/blue */
-        --neon-purple: #4f46e5; /* Indigo */
+        --glass-border: #e2e8f0;
+        --neon-blue: #0284c7;
+        --neon-purple: #1e3a8a; /* Deep Sapphire */
         --neon-magenta: #0ea5e9;
-        --neon-cyan: #06b6d4;
+        --neon-cyan: #0369a1;
         --neon-blue-glow: rgba(2, 132, 199, 0.05);
-        --neon-purple-glow: rgba(79, 70, 229, 0.03);
-        --text: #0f172a; /* Slate 900 */
-        --text-secondary: #475569; /* Slate 600 */
-        --text-dim: #64748b; /* Slate 500 */
-        --primary: #0284c7; /* corporate blue */
+        --neon-purple-glow: rgba(30, 58, 138, 0.03);
+        --text: #0f172a;
+        --text-secondary: #475569;
+        --text-dim: #64748b;
+        --primary: #0284c7;
         --primary-glow: rgba(2, 132, 199, 0.08);
-        --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-        --shadow-card-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
-        --gradient-neon: linear-gradient(135deg, #0284c7, #4f46e5);
+        --shadow-card: inset 0 1px 0 #ffffff, 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(2, 132, 199, 0.03);
+        --shadow-card-hover: inset 0 1px 0 #ffffff, 0 10px 15px -3px rgba(2, 132, 199, 0.08), 0 4px 6px -4px rgba(2, 132, 199, 0.08), 0 0 0 1px rgba(2, 132, 199, 0.15);
+        --gradient-neon: linear-gradient(135deg, #0284c7 0%, #1e3a8a 50%, #0369a1 100%);
       }
 
       *{margin:0;padding:0;box-sizing:border-box}
 
       html{scroll-behavior:smooth}
 
-      body{background:#f8fafc;color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-y:auto;overflow-x:hidden}
+      body{background:radial-gradient(circle at top, #ffffff 0%, #f1f5f9 100%), #f1f5f9;background-attachment:fixed;color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-y:auto;overflow-x:hidden}
 
       ::selection{background:#0284c7;color:white}
 
@@ -79,7 +78,7 @@
 
       /* ── HEADER ── */
 
-      header{padding:14px 0;position:sticky;top:0;z-index:100;background:#ffffff;border-bottom:1px solid #e2e8f0;box-shadow:0 1px 2px 0 rgba(0, 0, 0, 0.02)}
+      header{padding:14px 0;position:sticky;top:0;z-index:100;background:rgba(255, 255, 255, 0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(226, 232, 240, 0.8);box-shadow:0 1px 2px 0 rgba(0, 0, 0, 0.02)}
 
       header::after{display:none}
 
@@ -87,9 +86,9 @@
 
       .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 
-      .logo-icon{width:36px;height:36px;background:#0284c7;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:18px;box-shadow:none;transition:all 0.2s}
+      .logo-icon{width:36px;height:36px;background:linear-gradient(135deg, #0284c7, #1e3a8a);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:18px;box-shadow:inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 10px rgba(2, 132, 199, 0.2);transition:all 0.25s;border:1px solid #0369a1}
 
-      .logo:hover .logo-icon{transform:scale(1.04);background:#0369a1}
+      .logo:hover .logo-icon{transform:scale(1.04);background:linear-gradient(135deg, #0369a1, #1e3a8a);box-shadow:inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 6px 12px rgba(2, 132, 199, 0.25)}
 
       .logo-text{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.5px}
 
@@ -103,25 +102,25 @@
 
       nav a:hover{color:#0284c7}
 
-      .nav-cta{background:#0284c7;color:white !important;padding:10px 20px;border-radius:6px;font-weight:600;transition:all 0.2s !important;box-shadow:none;border:none}
+      .nav-cta{background:linear-gradient(180deg, #0284c7 0%, #0369a1 100%);color:white !important;padding:10px 20px;border-radius:6px;font-weight:600;transition:all 0.2s !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 10px rgba(2,132,199,0.1);border:1px solid #0284c7;position:relative;overflow:hidden}
 
       .nav-cta::before{display:none}
 
-      .nav-cta:hover{background:#0369a1;transform:translateY(-1px) !important;box-shadow:0 4px 6px -1px rgba(2, 132, 199, 0.2)}
+      .nav-cta:hover{background:linear-gradient(180deg, #0369a1 0%, #0284c7 100%);transform:translateY(-1px) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 12px rgba(2, 132, 199, 0.2)}
 
       /* ── HERO ── */
 
-      .hero{padding:4px 0 10px;text-align:center;position:relative}
+      .hero{padding:20px 0 10px;text-align:center;position:relative}
 
-      .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 22px;background:rgba(255,255,255,0.3);backdrop-filter:blur(12px);border:1px solid rgba(77,124,255,0.2);border-radius:100px;font-size:13px;font-weight:600;color:var(--neon-blue);margin-bottom:32px;animation:fadeInUp 0.8s ease-out}
+      .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 22px;background:rgba(255, 255, 255, 0.8);backdrop-filter:blur(10px);border:1px solid rgba(226, 232, 240, 0.8);border-radius:100px;font-size:13px;font-weight:600;color:#0284c7;margin-bottom:32px;animation:fadeInUp 0.8s ease-out;box-shadow:0 2px 8px rgba(0,0,0,0.02)}
 
-      .hero-badge .dot{width:6px;height:6px;background:var(--neon-blue);border-radius:50%;animation:blink 1.5s infinite;box-shadow:0 0 15px var(--neon-blue-glow)}
+      .hero-badge .dot{width:6px;height:6px;background:#0284c7;border-radius:50%;animation:blink 1.5s infinite;box-shadow:0 0 10px rgba(2, 132, 199, 0.3)}
 
-      @keyframes blink{0%,100%{opacity:1}50%{opacity:0.15}}
+      @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 
-      .hero h1{font-size:clamp(44px,7vw,86px);font-weight:900;letter-spacing:-2.5px;line-height:1.03;margin-bottom:20px;animation:fadeInUp 0.8s ease-out 0.2s both}
+      .hero h1{font-size:clamp(44px,7vw,86px);font-weight:900;letter-spacing:-2.5px;line-height:1.03;margin-bottom:20px;animation:fadeInUp 0.8s ease-out 0.2s both;color:#0f172a}
 
-      .hero h1 .gradient-title{background:var(--gradient-neon);background-size:400% 400%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradientShift 5s ease infinite;filter:drop-shadow(0 0 40px var(--neon-blue-glow)) drop-shadow(0 0 80px var(--neon-purple-glow))}
+      .hero h1 .gradient-title{background:var(--gradient-neon);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 2px 4px rgba(2, 132, 199, 0.1))}
 
       .hero p{font-size:18px;color:var(--text-secondary);max-width:600px;margin:0 auto 40px;line-height:1.7;animation:fadeInUp 0.8s ease-out 0.4s both}
 
@@ -129,21 +128,36 @@
 
       .hero-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeInUp 0.8s ease-out 0.6s both}
 
-      /* ── BUTTONS ── */
+      /* ── BUTTONS & GLOSSY SWEENS ── */
 
-      .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;transition:all 0.3s;cursor:pointer;border:none;position:relative;overflow:hidden}
+      .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;font-size:15px;font-weight:600;text-decoration:none;border-radius:8px;transition:all 0.25s;cursor:pointer;border:none;position:relative;overflow:hidden}
 
-      .btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transition:left 0.6s}
+      /* Glass Shine Sweep reflection effect on hover */
+      .btn::before, .price-btn::before, .price-card::before, .feature::before, .stat::before, .compliance-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -150%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+        transform: skewX(-30deg);
+        pointer-events: none;
+        z-index: 10;
+      }
 
-      .btn:hover::before{left:100%}
+      .btn:hover::before, .price-btn:hover::before, .price-card:hover::before, .feature:hover::before, .stat:hover::before, .compliance-item:hover::before {
+        left: 150%;
+        transition: left 0.75s ease-in-out;
+      }
 
-      .btn-primary{background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 3s ease infinite;color:white;box-shadow:0 0 30px var(--neon-blue-glow)}
+      .btn-primary{background:linear-gradient(180deg, #0284c7 0%, #0369a1 100%);color:white;box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 4px 12px rgba(2, 132, 199, 0.15);border:1px solid #0284c7}
 
-      .btn-primary:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 0 60px var(--neon-blue-glow),0 0 30px var(--neon-purple-glow)}
+      .btn-primary:hover{transform:translateY(-2px);background:linear-gradient(180deg, #0369a1 0%, #0284c7 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,0.35), 0 6px 16px rgba(2, 132, 199, 0.25)}
 
-      .btn-secondary{background:rgba(255,255,255,0.2);backdrop-filter:blur(12px);color:var(--text);border:1px solid rgba(77,124,255,0.25);box-shadow:var(--shadow-card)}
+      .btn-secondary{background:#ffffff;color:var(--text);border:1px solid #cbd5e1;box-shadow:0 2px 4px rgba(0,0,0,0.02)}
 
-      .btn-secondary:hover{background:rgba(255,255,255,0.3);border-color:var(--neon-blue);transform:translateY(-4px);box-shadow:0 0 30px var(--neon-blue-glow)}
+      .btn-secondary:hover{background:#f8fafc;border-color:#94a3b8;transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,0.04)}
 
       /* ── LOGOS ── */
 
@@ -657,7 +671,7 @@
 
 
 
-            <h1>Enterprise AI Orchestration<br><span class="gradient-title">Built for Scale</span></h1>
+            <h1>Corporate AI Orchestration<br><span class="gradient-title">Built for Scale</span></h1>
 
 
 
@@ -905,7 +919,7 @@
 
 
 
-            <div class="logos-label">Trusted by forward-thinking enterprises</div>
+            <div class="logos-label">Trusted by forward-thinking companies</div>
 
 
 
@@ -1337,7 +1351,7 @@
 
 
 
-                <p>A single pane of glass for model orchestration, tool management, and governance.</p>
+                <p>High-value capabilities built for developers and corporate oversight teams alike.</p>
 
 
 
@@ -1369,119 +1383,29 @@
 
 
 
-            <div class="features-grid">
+            <!-- Developer Focus Section -->
+            <h3 style="text-align:left; font-size:20px; font-weight:700; margin-bottom:20px; color:#0f172a; border-bottom:1px solid #cbd5e1; padding-bottom:8px; letter-spacing:-0.3px">Developer Focus</h3>
+            <div class="features-grid" style="margin-bottom:60px">
 
+                <div class="feature"><div class="feature-icon">⚡</div><h3>Progressive Tool Routing</h3><p>Optimise context windows with semantic tool selection, injecting only the top 3 relevant schemas per prompt to prevent token bloat.</p></div>
 
+                <div class="feature"><div class="feature-icon">🌊</div><h3>Resilient Model Cascading</h3><p>Ensure uninterrupted coding by automatically routing around rate limits (429s/5xx) down a waterfall chain to local Ollama backups.</p></div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-                <div class="feature"><div class="feature-icon">🔐</div><h3>SSO & RBAC</h3><p>SAML 2.0 and OIDC integration with fine-grained role-based access control. Map your existing identity provider in minutes.</p></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <div class="feature"><div class="feature-icon">📊</div><h3>Audit & Compliance</h3><p>Immutable audit logs for every tool call, model interaction, and data access. Export-ready for SOC 2, HIPAA, and GDPR.</p></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <div class="feature"><div class="feature-icon">🏢</div><h3>Air-Gapped Deployment</h3><p>Run entirely within your VPC. No external calls. Cryptographically signed offline license keys for regulated environments.</p></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <div class="feature"><div class="feature-icon">⚡</div><h3>Multi-Model Orchestration</h3><p>Route tasks across models based on cost, latency, and capability. Automatic failover across providers with zero downtime.</p></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <div class="feature"><div class="feature-icon">🛡️</div><h3>Data Loss Prevention</h3><p>Configurable PII scrubbing and content filtering before prompts reach external models. Keep sensitive data in-house.</p></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <div class="feature"><div class="feature-icon">📈</div><h3>Usage Analytics</h3><p>Real-time dashboards for token usage, cost allocation, and team productivity. Set budgets and alerts per department.</p></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                <div class="feature"><div class="feature-icon">🩹</div><h3>Autonomous Self-Healing</h3><p>Fixes runtime and syntax errors automatically using an isolated Diagnose-Fix-Verify feedback loop inside secure test execution runners.</p></div>
 
             </div>
+
+            <!-- Corporate Focus Section -->
+            <h3 style="text-align:left; font-size:20px; font-weight:700; margin-bottom:20px; color:#0f172a; border-bottom:1px solid #cbd5e1; padding-bottom:8px; letter-spacing:-0.3px">Corporate Focus</h3>
+             <div class="features-grid">
+
+                <div class="feature"><div class="feature-icon">🔐</div><h3>SSO & Access Control</h3><p>Integrate existing identity systems in minutes using secure SAML 2.0 and OIDC configurations with granular RBAC.</p></div>
+
+                <div class="feature"><div class="feature-icon">📊</div><h3>Immutable Compliance Audits</h3><p>Maintain export-ready logs tracking all model calls, data reads, and tool execution states for SOC 2, HIPAA, and GDPR audit runs.</p></div>
+
+                <div class="feature"><div class="feature-icon">🏢</div><h3>VPC & Air-Gapped Runs</h3><p>Keep proprietary codebase assets behind your perimeter. Run entirely offline with cryptographically signed licensing validation.</p></div>
+
+             </div>
 
 
 
@@ -1609,7 +1533,7 @@
 
 
 
-                <h2>Enterprise-grade by design</h2>
+                <h2>Corporate-grade by design</h2>
 
 
 
@@ -1881,7 +1805,7 @@
 
 
 
-                <p>Start with a proof of concept. Scale to enterprise-wide deployment.</p>
+                <p>Start with a proof of concept. Scale to corporate-wide deployment.</p>
 
 
 
@@ -2105,7 +2029,7 @@
 
 
 
-                    <div class="price-tier">Enterprise</div>
+                    <div class="price-tier">Corporate</div>
 
 
 
@@ -2393,7 +2317,7 @@
 
 
 
-            <p>Join the enterprises that trust HyperNexus to orchestrate their AI workflows.</p>
+            <p>Join the companies that trust HyperNexus to orchestrate their AI workflows.</p>
 
 
 
@@ -2961,7 +2885,7 @@
 
 
 
-                    <p>Enterprise AI orchestration platform. Secure, compliant, and built for scale.</p>
+                    <p>Corporate AI orchestration platform. Secure, compliant, and built for scale.</p>
 
 
 

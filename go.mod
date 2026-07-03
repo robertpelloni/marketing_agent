@@ -1,6 +1,6 @@
 module github.com/robertpelloni/marketing_agent
 
-go 1.25.0
+go 1.22.0
 
 require (
 	github.com/emersion/go-imap v1.2.1

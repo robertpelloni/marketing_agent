@@ -11,15 +11,15 @@
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/robertpelloni/enterprise_sales_bot.git
-   cd enterprise_sales_bot
+   git clone https://github.com/robertpelloni/marketing_agent.git
+   cd marketing_agent
    ```
 
 2. **Environment Variables:** Set up the following environment variables (or use a `.env` file):
 
    | Variable | Required | Description |
    |---|---|---|
-   | `DATABASE_URL` | Yes | `postgres://user:password@localhost:5432/sales_bot?sslmode=disable` |
+   | `DATABASE_URL` | Yes | `postgres://user:password@localhost:5432/marketing_agent?sslmode=disable` |
    | `GITHUB_TOKEN` | Recommended | GitHub PAT for API access (enrichment, CI, PRs) |
    | `GITHUB_REPOSITORY` | Recommended | `owner/repo` for CI tracking and AutoDev |
    | `GITHUB_WEBHOOK_SECRET` | Optional | HMAC secret for webhook verification |
@@ -52,12 +52,12 @@ Run the provided build script:
 build.bat
 ```
 
-This will run integrity tests and compile the binary to `bin/sales_bot.exe`.
+This will run integrity tests and compile the binary to `bin/marketing_agent.exe`.
 
 Alternatively, build manually:
 
 ```bash
-go build -v -o bin/sales_bot ./cmd/sales_bot
+go build -v -o bin/marketing_agent ./cmd/marketing_agent
 ```
 
 ## Self-Service Deployment Dashboard
@@ -89,7 +89,7 @@ start.bat
 Or run directly:
 
 ```bash
-go run ./cmd/sales_bot
+go run ./cmd/marketing_agent
 ```
 
 ### Command-Line Flags

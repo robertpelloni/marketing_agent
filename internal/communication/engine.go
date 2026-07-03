@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+	"github.com/robertpelloni/marketing_agent/internal/crm"
+	"github.com/robertpelloni/marketing_agent/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/llm"
 	"fmt"
 )
 

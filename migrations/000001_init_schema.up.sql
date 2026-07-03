@@ -1,4 +1,4 @@
--- Initial schema for Enterprise Sales Bot
+-- Initial schema for Marketing Agent
 
 CREATE TYPE lead_state AS ENUM (
     'Discovered',

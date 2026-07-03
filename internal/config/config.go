@@ -110,7 +110,7 @@ func Load() *Config {
 	}
 
 	return &Config{
-		DatabaseURL:		getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable"),
+		DatabaseURL:		getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/marketing_agent?sslmode=disable"),
 		GitHubToken:		os.Getenv("GITHUB_TOKEN"),
 		GitHubRepository:	os.Getenv("GITHUB_REPOSITORY"),
 		GitHubWebhookSecret:	os.Getenv("GITHUB_WEBHOOK_SECRET"),

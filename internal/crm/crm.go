@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // LeadUpdate represents a change in lead status from the CRM.

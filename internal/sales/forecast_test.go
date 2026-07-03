@@ -3,7 +3,7 @@ package sales
 import (
 	"testing"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
+	"github.com/robertpelloni/marketing_agent/internal/communication"
 )
 
 func TestForecastingEngine_Basic(t *testing.T) {

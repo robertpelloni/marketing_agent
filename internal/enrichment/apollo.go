@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // ApolloSource implements EnrichmentSource using the Apollo.io People Search API

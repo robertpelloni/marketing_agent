@@ -15,13 +15,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/auth"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/logging"
+	"github.com/robertpelloni/marketing_agent/internal/auth"
+	"github.com/robertpelloni/marketing_agent/internal/communication"
+	"github.com/robertpelloni/marketing_agent/internal/autodev"
+	"github.com/robertpelloni/marketing_agent/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/deploy"
+	"github.com/robertpelloni/marketing_agent/internal/llm"
+	"github.com/robertpelloni/marketing_agent/internal/logging"
 )
 
 // HermesHealthChecker is an optional interface for checking LLM provider health.
@@ -192,7 +192,7 @@ case "build":
 <!DOCTYPE html>
 <html>
 <head>
-<title>Enterprise Sales Bot Dashboard</title>
+<title>Marketing Agent Dashboard</title>
 <style>
 body { font-family: sans-serif; margin: 40px; background-color: #f4f4f9; }
 table { width: 100%%; border-collapse: collapse; margin-top: 20px; background: white; }

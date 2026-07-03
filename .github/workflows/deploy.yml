@@ -38,7 +38,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: sales_bot
+          POSTGRES_DB: marketing_agent
         ports:
           - 5432:5432
         options: >-
@@ -67,7 +67,7 @@ jobs:
         git diff --exit-code go.mod go.sum
     - name: Run Tests with Coverage
       env:
-        DATABASE_URL: postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/marketing_agent?sslmode=disable
       run: |
         go test -v -coverprofile=coverage.out ./...
         go tool cover -func=coverage.out
@@ -99,12 +99,12 @@ jobs:
         go-version: '1.24'
         cache: true
     - name: Build
-      run: go build -v -o bin/sales_bot ./cmd/sales_bot
+      run: go build -v -o bin/marketing_agent ./cmd/marketing_agent
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: sales_bot_bin
-        path: bin/sales_bot
+        path: bin/marketing_agent
 
   production:
     needs: [test, staging, build]
@@ -114,7 +114,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Build Docker Image
       run: |
-        docker build -t enterprise-sales-bot:latest .
+        docker build -t enterprise-marketing-agent:latest .
     - name: Deploy to Production
       uses: appleboy/ssh-action@master
       with:
@@ -122,7 +122,7 @@ jobs:
         username: root
         key: ${{ secrets.DEPLOY_KEY }}
         script: |
-          cd /app/enterprise_sales_bot
+          cd /app/marketing_agent
           git fetch --all --tags
           git checkout ${{ github.sha }}
           git submodule update --init --recursive

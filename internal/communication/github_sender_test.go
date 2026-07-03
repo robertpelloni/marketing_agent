@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // --- CalculateRelevance tests ---
@@ -59,7 +59,7 @@ func TestGenerateTechHookComment_ContainsIssueTitle(t *testing.T) {
 		Relevance:   10,
 	}
 
-	comment := GenerateTechHookComment(issue)
+	comment := GenerateTechHookComment(issue, true)
 
 	if comment == "" {
 		t.Fatal("expected non-empty comment")
@@ -86,6 +86,34 @@ func TestGenerateTechHookComment_ContainsIssueTitle(t *testing.T) {
 		t.Error("expected comment to mention LLM Waterfall")
 	}
 }
+
+func TestGenerateTechHookComment_DeveloperFocus(t *testing.T) {
+	issue := IssueTarget{
+		Owner:       "indie-dev",
+		Repo:        "personal-project",
+		IssueNumber: 1,
+		Title:       "local model memory persistence",
+		URL:         "https://github.com/indie-dev/personal-project/issues/1",
+		Relevance:   10,
+	}
+
+	comment := GenerateTechHookComment(issue, false)
+
+	if comment == "" {
+		t.Fatal("expected non-empty comment")
+	}
+
+	// Comment should mention TormentNexus
+	if !testContainsStr(comment, "TormentNexus") {
+		t.Error("expected comment to mention TormentNexus")
+	}
+
+	// Comment should NOT mention HyperNexus Bot
+	if testContainsStr(comment, "HyperNexus Bot") {
+		t.Error("expected developer comment not to be signed by HyperNexus Bot")
+	}
+}
+
 
 // --- extractOrgFromDomain tests ---
 
@@ -152,11 +180,11 @@ func TestNewGitHubCommentSender_WithoutToken(t *testing.T) {
 	t.Setenv("GITHUB_TOKEN", "")
 	t.Setenv("GITHUB_BOT_USERNAME", "")
 
-	sender := NewGitHubCommentSender("robertpelloni/enterprise_sales_bot")
+	sender := NewGitHubCommentSender("robertpelloni/marketing_agent")
 	if sender == nil {
 		t.Fatal("expected non-nil sender")
 	}
-	if sender.repo != "robertpelloni/enterprise_sales_bot" {
+	if sender.repo != "robertpelloni/marketing_agent" {
 		t.Errorf("expected repo to be set, got %q", sender.repo)
 	}
 	if sender.username != "hypernexus-bot" {

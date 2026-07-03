@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // DefaultDossierProcessor implements the DossierProcessor interface.

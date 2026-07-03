@@ -7,7 +7,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // FallbackSource wraps multiple EnrichmentSource instances and tries each one

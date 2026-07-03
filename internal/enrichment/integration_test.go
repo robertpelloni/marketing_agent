@@ -5,9 +5,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
+	"github.com/robertpelloni/marketing_agent/internal/crm"
+	"github.com/robertpelloni/marketing_agent/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/enrichment"
 )
 
 func setupTestDB(t *testing.T) *db.DB {

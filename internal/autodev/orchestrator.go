@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/gitres"
+	"github.com/robertpelloni/marketing_agent/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/deploy"
+	"github.com/robertpelloni/marketing_agent/internal/gitcheck"
+	"github.com/robertpelloni/marketing_agent/internal/gitres"
 )
 
 // Orchestrator coordinates the autonomous development lifecycle.

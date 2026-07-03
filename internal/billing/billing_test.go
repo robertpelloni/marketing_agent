@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
 func TestStripeBillingClient_Mock(t *testing.T) {

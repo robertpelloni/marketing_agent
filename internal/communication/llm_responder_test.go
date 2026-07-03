@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+	"github.com/robertpelloni/marketing_agent/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/llm"
 )
 
 func TestLLMResponseGenerator_Generate(t *testing.T) {

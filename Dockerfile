@@ -6,14 +6,14 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN go build -o bin/sales_bot ./cmd/sales_bot
+RUN go build -o bin/marketing_agent ./cmd/marketing_agent
 
 # Final stage
 FROM alpine:latest
 
 WORKDIR /app
-COPY --from=builder /app/bin/sales_bot .
+COPY --from=builder /app/bin/marketing_agent .
 COPY --from=builder /app/migrations ./migrations
 
 EXPOSE 8080
-CMD ["./sales_bot"]
+CMD ["./marketing_agent"]

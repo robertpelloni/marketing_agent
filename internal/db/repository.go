@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/lib/pq"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
+	"github.com/robertpelloni/marketing_agent/internal/gitcheck"
 )
 
 // CreateCompany inserts a new company into the database.

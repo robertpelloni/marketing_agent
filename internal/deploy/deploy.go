@@ -8,7 +8,7 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
+	"github.com/robertpelloni/marketing_agent/internal/gitcheck"
 )
 
 // Deployer handles self-service deployment operations.
@@ -95,7 +95,7 @@ func (d *Deployer) ExecuteBuild() error {
 	}
 
 	// Fallback to local 'go build'
-	cmd := exec.Command("go", "build", "-v", "-o", "bin/sales_bot", "./cmd/sales_bot")
+	cmd := exec.Command("go", "build", "-v", "-o", "bin/marketing_agent", "./cmd/marketing_agent")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("build failed: %v, output: %s", err, string(output))

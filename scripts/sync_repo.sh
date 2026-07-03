@@ -13,15 +13,15 @@ git submodule update --init --recursive
 
 # 2b. Generate Inventory
 echo "Updating submodule inventory..."
-go run ./cmd/sales_bot --inventory > borg/SUBMODULE_INVENTORY.md
+go run ./cmd/marketing_agent --inventory > borg/SUBMODULE_INVENTORY.md
 
 # 3. Intelligent Branch Reconciliation
 echo "Executing Dual-Direction Intelligent Merge Engine..."
 # We use a dedicated go routine or sub-command to handle multi-branch reconciliation
-go run ./cmd/sales_bot --reconcile
+go run ./cmd/marketing_agent --reconcile
 
 # 4. Workspace Cleanup & Build
 echo "Validating build..."
-go build -v -o bin/sales_bot ./cmd/sales_bot
+go build -v -o bin/marketing_agent ./cmd/marketing_agent
 
 echo "Sync complete."

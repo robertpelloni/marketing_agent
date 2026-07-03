@@ -1,7 +1,7 @@
 @echo off
-echo Starting Enterprise Sales Bot...
-if not exist "bin/sales_bot" (
+echo Starting Marketing Agent...
+if not exist "bin/marketing_agent" (
     echo Binary not found. Running build...
     call build.bat
 )
-bin\sales_bot %*
+bin\marketing_agent %*

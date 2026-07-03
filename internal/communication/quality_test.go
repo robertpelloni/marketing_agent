@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+	"github.com/robertpelloni/marketing_agent/internal/llm"
 )
 
 // MockLLMProviderForQuality implements llm.LLMProvider for testing.

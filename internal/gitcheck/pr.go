@@ -152,7 +152,7 @@ func (g *GitHubPRManager) MergePullRequest(ctx context.Context, prID string) err
 		MergeMethod: "squash",
 	}
 
-	_, _, err = g.client.PullRequests.Merge(ctx, g.owner, g.repo, number, "Autonomous merge by sales-bot", opts)
+	_, _, err = g.client.PullRequests.Merge(ctx, g.owner, g.repo, number, "Autonomous merge by marketing-agent", opts)
 	if err != nil {
 		return fmt.Errorf("failed to merge PR %s: %w", prID, err)
 	}

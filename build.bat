@@ -13,8 +13,8 @@ if %errorlevel% neq 0 (
     exit /b %errorlevel%
 )
 
-echo Building Enterprise Sales Bot...
-go build -o bin/sales_bot ./cmd/sales_bot
+echo Building Marketing Agent...
+go build -o bin/marketing_agent ./cmd/marketing_agent
 if %errorlevel% neq 0 (
     echo Build failed!
     exit /b %errorlevel%

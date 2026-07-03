@@ -390,7 +390,7 @@ Dashboard at `http://localhost:8080`.
 1. **Set environment variables:**
 
    ```bash
-   export DATABASE_URL="postgres://user:pass@localhost:5432/sales_bot?sslmode=disable"
+   export DATABASE_URL="postgres://user:pass@localhost:5432/marketing_agent?sslmode=disable"
    export GITHUB_TOKEN="ghp_xxxx"           # optional, enables real GitHub integration
    export GITHUB_REPOSITORY="owner/repo"     # optional, enables CI tracking and AutoDev
    export DEPLOY_SYNC_INTERVAL="1h"          # optional, enables background sync
@@ -411,8 +411,8 @@ Dashboard at `http://localhost:8080`.
 4. **Build and run:**
 
    ```bash
-   go build -o bin/sales_bot ./cmd/sales_bot
-   ./bin/sales_bot
+   go build -o bin/marketing_agent ./cmd/marketing_agent
+   ./bin/marketing_agent
    ```
 
    Or use the provided scripts:
@@ -435,7 +435,7 @@ Dashboard at `http://localhost:8080`.
 
 | Variable | Required | Default | Description |
 |---|---|---|---|
-| `DATABASE_URL` | Yes | `postgres://postgres:postgres@localhost:5432/sales_bot?sslmode=disable` | PostgreSQL connection string |
+| `DATABASE_URL` | Yes | `postgres://postgres:postgres@localhost:5432/marketing_agent?sslmode=disable` | PostgreSQL connection string |
 | `GITHUB_TOKEN` | No | — | GitHub PAT for API access (enrichment, CI, PRs) |
 | `GITHUB_REPOSITORY` | No | — | `owner/repo` for CI tracking and AutoDev |
 | `GITHUB_WEBHOOK_SECRET` | No | — | HMAC secret for webhook verification |
@@ -486,10 +486,10 @@ companies(id) → deals(company_id)
 go test ./... -v
 
 # Integration tests (requires DATABASE_URL)
-DATABASE_URL=postgres://user:pass@localhost:5432/sales_bot go test ./... -v -tags=integration
+DATABASE_URL=postgres://user:pass@localhost:5432/marketing_agent go test ./... -v -tags=integration
 
 # E2E tests
-DATABASE_URL=postgres://user:pass@localhost:5432/sales_bot go test ./tests/e2e/... -v
+DATABASE_URL=postgres://user:pass@localhost:5432/marketing_agent go test ./tests/e2e/... -v
 
 # Smoke test against a running instance
 TARGET_URL="https://your-instance.com" go run scripts/smoke_test.go
@@ -519,7 +519,7 @@ The CI pipeline (`.github/workflows/ci.yml`) runs:
 - Integrity tests (`internal/gitcheck`)
 - Conflict resolution tests (`internal/gitres`)
 - Full project test suite (`go test ./...`)
-- Build verification (`go build ./cmd/sales_bot`)
+- Build verification (`go build ./cmd/marketing_agent`)
 
 ---
 

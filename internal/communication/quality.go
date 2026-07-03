@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+	"github.com/robertpelloni/marketing_agent/internal/llm"
 )
 
 // QualityScore represents the assessed quality of an outreach message.

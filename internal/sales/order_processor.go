@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/billing"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/billing"
+	"github.com/robertpelloni/marketing_agent/internal/crm"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // OrderDB defines the database interface needed by the OrderProcessor.

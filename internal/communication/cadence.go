@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // CadenceStep defines a single touch point in an outreach sequence.

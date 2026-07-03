@@ -3,8 +3,8 @@ package enrichment
 import (
 	"context"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/crm"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // EnrichmentSource defines an interface for finding contact details for a company.

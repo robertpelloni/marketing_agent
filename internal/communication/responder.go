@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
+	"github.com/robertpelloni/marketing_agent/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/llm"
 )
 
 // RAGResponseGenerator provides technically grounded replies using Pseudo-RAG.
@@ -93,8 +93,15 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		slog.Info("ObjectionLibrary: No match found for intent, falling through to LLM")
 	}
 
+	isCorp := IsCorporate(salesCtx.Contact.Email, salesCtx.Company.Domain)
+
+	systemPrompt := "You are a senior sales engineer at HyperNexus (hypernexus.site). Use the provided technical and pricing context to draft a hyper-personalized response. Ground technical descriptions on the HyperNexus platform (the corporate version of TormentNexus, with the open-source fork at github.com/HyperNexusSoft/HyperNexus)."
+	if !isCorp {
+		systemPrompt = "You are an expert developer advocate for TormentNexus (tormentnexus.site). Use the provided technical context to draft a hyper-personalized response. Ground technical descriptions on TormentNexus (the local-first cognitive control plane and open-source model hypervisor at github.com/NexusSoftMDMA/TormentNexus). Focus on self-hosting, open-source freedom, developer velocity, and local-first memory."
+	}
+
 	prompt := llm.Prompt{
-		System:	"You are a senior sales engineer at HyperNexus (hypernexus.site). Use the provided technical and pricing context to draft a hyper-personalized response. Ground technical descriptions on the HyperNexus platform (the enterprise version of TormentNexus, with the open-source fork at github.com/HyperNexusSoft/HyperNexus).",
+		System:	systemPrompt,
 		User: fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
 			salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier),
 	}
@@ -125,6 +132,8 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 		return ""
 	}
 
+	isCorp := IsCorporate(salesCtx.Contact.Email, salesCtx.Company.Domain)
+
 	// Placeholder replacements for body
 	replacements := map[string]string{
 		"{{contact}}":        getValue(salesCtx.Contact.Name),
@@ -134,9 +143,14 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 		"{{github_handle}}":  getValue(salesCtx.Contact.GitHubHandle),
 		"{{linkedin_url}}":   getValue(salesCtx.Contact.LinkedInURL),
 		"{{email}}":          getValue(salesCtx.Contact.Email),
-		"{{specific_project}}": "HyperNexus",
+		"{{specific_project}}": func() string {
+			if isCorp {
+				return "HyperNexus"
+			}
+			return "TormentNexus"
+		}(),
 		"{{repo}}":           getValue(salesCtx.Company.Name, "AI-Platform"),
-		"{{market_cap_tier}}": getValue(salesCtx.Company.MarketCapTier, "Enterprise"),
+		"{{market_cap_tier}}": getValue(salesCtx.Company.MarketCapTier, "Corporate"),
 	}
 
 	// Replace placeholders in body
@@ -147,6 +161,20 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 	// Replace placeholders in subject
 	for placeholder, value := range replacements {
 		subject = strings.ReplaceAll(subject, placeholder, value)
+	}
+
+	// If the recipient is not corporate, we dynamically replace HyperNexus references with TormentNexus.
+	if !isCorp {
+		body = strings.ReplaceAll(body, "HyperNexus (hypernexus.site)", "TormentNexus (tormentnexus.site)")
+		body = strings.ReplaceAll(body, "HyperNexus", "TormentNexus")
+		body = strings.ReplaceAll(body, "hypernexus.site", "tormentnexus.site")
+		body = strings.ReplaceAll(body, "the enterprise-ready cloud-hosted version of TormentNexus", "the open-source, local-first model hypervisor")
+		body = strings.ReplaceAll(body, "the enterprise-grade cloud version of TormentNexus", "the open-source, local-first model hypervisor")
+		body = strings.ReplaceAll(body, "stable fork of TormentNexus at github.com/HyperNexusSoft/HyperNexus", "open-source repo at github.com/NexusSoftMDMA/TormentNexus")
+		body = strings.ReplaceAll(body, "github.com/HyperNexusSoft/HyperNexus", "github.com/NexusSoftMDMA/TormentNexus")
+		body = strings.ReplaceAll(body, "Corporate", "Developer")
+
+		subject = strings.ReplaceAll(subject, "HyperNexus", "TormentNexus")
 	}
 
 	return subject, body, nil

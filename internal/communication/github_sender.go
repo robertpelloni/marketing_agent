@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/google/go-github/v60/github"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 	"golang.org/x/oauth2"
 )
 
@@ -17,7 +17,7 @@ import (
 // as a "technical hook" outreach for target companies.
 type GitHubCommentSender struct {
 	client		*github.Client
-	repo		string	// e.g. "robertpelloni/enterprise_sales_bot"
+	repo		string	// e.g. "robertpelloni/marketing_agent"
 	username	string	// GitHub username for the bot account
 }
 
@@ -186,13 +186,14 @@ func CalculateRelevance(term, title, body string) int {
 }
 
 // GenerateTechHookComment generates a helpful, value-first comment related to
-// the issue that positions TormentNexus as a solution.
-func GenerateTechHookComment(issue IssueTarget) string {
-	comment := fmt.Sprintf(`Hi there! 👋
+// the issue that positions either TormentNexus or HyperNexus as a solution.
+func GenerateTechHookComment(issue IssueTarget, isCorporate bool) string {
+	if isCorporate {
+		return fmt.Sprintf(`Hi there! 👋
 
 I noticed this issue about %s — we've been working on similar challenges with **HyperNexus** (hypernexus.site).
 
-HyperNexus is the enterprise cloud-hosted version of TormentNexus, built using our stable open-source fork located at github.com/HyperNexusSoft/HyperNexus. It coordinates multi-agent LLM workflows with:
+HyperNexus is the corporate cloud-hosted version of TormentNexus, built using our stable open-source fork located at github.com/HyperNexusSoft/HyperNexus. It coordinates multi-agent LLM workflows with:
 - **Progressive MCP Tool Routing** — semantic router that injects only the 3 most relevant tools per request (no 50K-token tool dumps)
 - **Cross-Harness Tool Parity** — byte-for-byte identical tool signatures for Claude Code, Cursor, Codex, Gemini CLI, Copilot, and Windsurf
 - **LLM Waterfall** — seamless cascading through cloud providers → aggregators → local models on 429/5xx errors
@@ -201,8 +202,21 @@ HyperNexus is the enterprise cloud-hosted version of TormentNexus, built using o
 If this resonates with what you're building, I'd love to hear your thoughts. We're always looking for feedback from teams pushing the boundaries of AI infrastructure.
 
 — HyperNexus Bot`, issue.Title)
+	}
 
-	return comment
+	return fmt.Sprintf(`Hi there! 👋
+
+I noticed this issue about %s — we've been working on similar challenges with **TormentNexus** (tormentnexus.site).
+
+TormentNexus is a local-first, open-source cognitive control plane (Operating System for AI models) located at github.com/NexusSoftMDMA/TormentNexus. It coordinates multi-agent LLM workflows with:
+- **Progressive MCP Tool Routing** — semantic router that injects only the 3 most relevant tools per request (no 50K-token tool dumps)
+- **Cross-Harness Tool Parity** — byte-for-byte identical tool signatures for Claude Code, Cursor, Codex, Gemini CLI, Copilot, and Windsurf
+- **LLM Waterfall** — seamless cascading through cloud providers → aggregators → local models on 429/5xx errors
+- **Local-First Memory** — 14K+ persisted memories with sqlite-vec semantic search, surviving restarts
+
+If you are building open-source projects or developer workflows, check out tormentnexus.site!
+
+— TormentNexus Team`, issue.Title)
 }
 
 // FindAndComment is a high-level operation that searches for relevant issues
@@ -228,13 +242,14 @@ func (g *GitHubCommentSender) FindAndComment(ctx context.Context, company db.Com
 	}
 
 	// Generate and post the comment
-	comment := GenerateTechHookComment(bestTarget)
+	isCorp := IsCorporate(contact.Email, company.Domain)
+	comment := GenerateTechHookComment(bestTarget, isCorp)
 	if err := g.SendComment(ctx, bestTarget.Owner, bestTarget.Repo, bestTarget.IssueNumber, comment); err != nil {
 		return err
 	}
 
-	slog.Info(fmt.Sprintf("GitHubCommentSender: Technical hook posted for %s on %s/%s#%d",
-		company.Name, bestTarget.Owner, bestTarget.Repo, bestTarget.IssueNumber))
+	slog.Info(fmt.Sprintf("GitHubCommentSender: Technical hook posted for %s on %s/%s#%d (Corporate: %t)",
+		company.Name, bestTarget.Owner, bestTarget.Repo, bestTarget.IssueNumber, isCorp))
 
 	return nil
 }

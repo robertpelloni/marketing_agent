@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/communication"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // mock implementations for communication manager integration test

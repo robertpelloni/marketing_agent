@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 	"github.com/go-rod/rod"
 )
 

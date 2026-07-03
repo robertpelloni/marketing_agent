@@ -6,16 +6,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/autodev"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/communication"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/crm"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/llm"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/deploy"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/enrichment"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/gitcheck"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/researcher"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/scraper"
+	"github.com/robertpelloni/marketing_agent/internal/autodev"
+	"github.com/robertpelloni/marketing_agent/internal/communication"
+	"github.com/robertpelloni/marketing_agent/internal/crm"
+	"github.com/robertpelloni/marketing_agent/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/llm"
+	"github.com/robertpelloni/marketing_agent/internal/deploy"
+	"github.com/robertpelloni/marketing_agent/internal/enrichment"
+	"github.com/robertpelloni/marketing_agent/internal/gitcheck"
+	"github.com/robertpelloni/marketing_agent/internal/researcher"
+	"github.com/robertpelloni/marketing_agent/internal/scraper"
 )
 
 func TestEndToEndSalesWorkflow(t *testing.T) {

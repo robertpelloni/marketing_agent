@@ -1,4 +1,4 @@
-module github.com/robertpelloni/enterprise_sales_bot
+module github.com/robertpelloni/marketing_agent
 
 go 1.25.0
 

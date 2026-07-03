@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // Worker coordinates the synchronization between the local database and the external CRM.

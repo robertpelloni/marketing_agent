@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/stripe/stripe-go/v81"
 	"github.com/stripe/stripe-go/v81/invoice"
-	"github.com/robertpelloni/enterprise_sales_bot/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // InvoiceStatus represents the current state of a deal's billing.

@@ -341,7 +341,38 @@
 
       @media (max-width: 768px){nav{display:none}.stats-grid{grid-template-columns:repeat(2,1fr)}.features-grid{grid-template-columns:1fr}.compliance-grid{grid-template-columns:repeat(2,1fr)}.pricing-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}}
 
-      #particle-canvas{display:none}
+      #particle-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        display: block !important;
+      }
+
+      /* Shimmering Ambient Glow Spheres */
+      .ambient {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(2, 132, 199, 0.08) 0%, rgba(30, 58, 138, 0.03) 50%, transparent 100%);
+        filter: blur(140px);
+        z-index: 1;
+        pointer-events: none;
+        display: block !important;
+        animation: ambientFloat 25s infinite alternate ease-in-out;
+      }
+      .ambient-1 { top: 10%; left: -10%; }
+      .ambient-2 { top: 50%; right: -10%; background: radial-gradient(circle, rgba(251, 191, 36, 0.06) 0%, transparent 70%); animation-delay: -5s; }
+      .ambient-3 { bottom: 10%; left: 20%; background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 70%); animation-delay: -10s; }
+
+      @keyframes ambientFloat {
+        0% { transform: translate(0, 0) scale(1); }
+        100% { transform: translate(60px, 40px) scale(1.15); }
+      }
 
       /* ── HOVER MOUSE GLOW & PREMIUM SHINE ── */
       .feature::after, .stat::after, .compliance-item::after, .price-card::after, .btn::after, .logo-icon::after {
@@ -367,19 +398,22 @@
         50% { background-position: 100% 50%; }
       }
 
-      /* Ultra-Shiny Featured Pricing Card */
-      .price-card.featured {
+      /* Glowing Rainbow Sheen Price Card */
+      .price-card.rainbow {
         border: 2px solid transparent !important;
-        background-image: linear-gradient(#ffffff, #ffffff), linear-gradient(135deg, #0284c7, #38bdf8, #fbbf24, #0284c7) !important;
+        background-image: linear-gradient(#ffffff, #ffffff), linear-gradient(135deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6) !important;
         background-origin: border-box !important;
         background-clip: content-box, border-box !important;
-        box-shadow: 0 10px 30px -10px rgba(2, 132, 199, 0.25), inset 0 1px 0 rgba(255,255,255,0.6) !important;
+        box-shadow: 0 10px 30px -10px rgba(2, 132, 199, 0.15), inset 0 1px 0 rgba(255,255,255,0.6) !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
       }
-      .price-card.featured:hover {
+      .price-card.rainbow:hover {
         transform: translateY(-6px) !important;
-        box-shadow: 0 20px 40px -10px rgba(2, 132, 199, 0.45), inset 0 1px 0 rgba(255,255,255,0.8) !important;
-        background-image: linear-gradient(#ffffff, #ffffff), linear-gradient(135deg, #fbbf24, #0284c7, #38bdf8, #fbbf24) !important;
+        box-shadow: 0 20px 45px -10px rgba(2, 132, 199, 0.35), inset 0 1px 0 rgba(255,255,255,0.8) !important;
+        background-image: linear-gradient(#ffffff, #ffffff), linear-gradient(135deg, #5856d6, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff) !important;
+      }
+      .price-card.rainbow::after {
+        background: radial-gradient(350px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(2, 132, 199, 0.04), rgba(251, 191, 36, 0.04), rgba(239, 68, 68, 0.04), transparent 80%) !important;
       }
       </style>
 
@@ -1899,7 +1933,7 @@
 
 
 
-                <div class="price-card featured">
+                <div class="price-card rainbow">
 
 
 
@@ -1915,7 +1949,7 @@
 
 
 
-                    <div class="price-badge">Most Popular</div>
+
 
 
 

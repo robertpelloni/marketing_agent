@@ -31,6 +31,9 @@ func (w *TargetDiscoveryWorker) Run(ctx context.Context, interval time.Duration)
 
 	slog.Info(fmt.Sprintf("TormentNexus Outreach: Target discovery worker started (interval: %v)...", interval))
 
+	// Run first discovery cycle immediately
+	w.discover(ctx)
+
 	for {
 		select {
 		case <-ctx.Done():

@@ -5,20 +5,23 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/google/go-github/v60/github"
 	"github.com/robertpelloni/marketing_agent/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/llm"
 )
 
 // TargetDiscoveryWorker scans for new opportunities (e.g., GitHub, MCP servers).
 type TargetDiscoveryWorker struct {
-	db *db.DB
+	db  *db.DB
+	llm llm.LLMProvider
 }
 
 // NewTargetDiscoveryWorker creates a new discovery worker.
-func NewTargetDiscoveryWorker(database *db.DB) *TargetDiscoveryWorker {
-	return &TargetDiscoveryWorker{db: database}
+func NewTargetDiscoveryWorker(database *db.DB, llmProvider llm.LLMProvider) *TargetDiscoveryWorker {
+	return &TargetDiscoveryWorker{db: database, llm: llmProvider}
 }
 
 // Run starts the target discovery background loop.
@@ -27,6 +30,9 @@ func (w *TargetDiscoveryWorker) Run(ctx context.Context, interval time.Duration)
 	defer ticker.Stop()
 
 	slog.Info(fmt.Sprintf("TormentNexus Outreach: Target discovery worker started (interval: %v)...", interval))
+
+	// Run first discovery cycle immediately
+	w.discover(ctx)
 
 	for {
 		select {
@@ -49,6 +55,21 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 	}
 
 	query := "model-context-protocol OR mcp-server language:Go language:TypeScript"
+	if w.llm != nil {
+		suggested, err := w.llm.Generate(ctx, llm.Prompt{
+			System: "You are a lead generation strategist for an AI tool router. Suggest a GitHub code/repository search query (maximum 8 words, using OR/AND, tags, or languages) to find developer projects using model context protocol, agent frameworks, or LLM routing. Output ONLY the query string, no other text or quotes. Do not include prefix tags or explanations.",
+			User: "Provide a single query string.",
+		})
+		if err == nil && strings.TrimSpace(suggested) != "" {
+			cleanQuery := strings.TrimSpace(suggested)
+			cleanQuery = strings.Trim(cleanQuery, "\"`'")
+			if cleanQuery != "" {
+				query = cleanQuery
+				slog.Info(fmt.Sprintf("TargetDiscoveryWorker: LLM suggested dynamic search query: %q", query))
+			}
+		}
+	}
+
 	opts := &github.SearchOptions{
 		Sort:	"updated",
 		Order:	"desc",

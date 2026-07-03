@@ -157,8 +157,28 @@ func main() {
 	crmWorker := crm.NewWorker(database, crmClient)
 	go crmWorker.Run(ctx, 30*time.Minute)
 
+	// 2f. Setup LLM Provider — Hermes or Mock
+	var llmProvider llm.LLMProvider
+	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
+		slog.Info(fmt.Sprintf("LLM: Initializing Hermes provider at %s (model: %s)", cfg.HermesAPIURL, cfg.HermesModel))
+		llmProvider = llm.NewHermesLLMProvider(llm.HermesConfig{
+			BaseURL:	cfg.HermesAPIURL,
+			APIKey:		cfg.HermesAPIKey,
+			Model:		cfg.HermesModel,
+		})
+
+		if err := llmProvider.(*llm.HermesLLMProvider).HealthCheck(ctx); err != nil {
+			slog.Info(fmt.Sprintf("LLM: WARNING — Hermes health check failed: %v", err))
+		} else {
+			slog.Info("LLM: Hermes health check passed ✓")
+		}
+	} else {
+		slog.Info("LLM: Initializing Mock LLM Provider (set HERMES_API_URL and HERMES_API_KEY for real LLM).")
+		llmProvider = &llm.MockLLMProvider{}
+	}
+
 	// 2d. Setup Target Discovery
-	outreachWorker := agents.NewTargetDiscoveryWorker(database)
+	outreachWorker := agents.NewTargetDiscoveryWorker(database, llmProvider)
 	go outreachWorker.Run(ctx, 2*time.Hour)
 
 	// 2e. Setup Deployer
@@ -182,26 +202,6 @@ func main() {
 	deployer := deploy.NewDeployer(ciTracker, dispatcher)
 	go deployer.Run(ctx, cfg.DeploySyncInterval)
 	go deployer.MonitorDeployment(ctx, cfg.DeploySyncInterval)
-
-	// 2f. Setup LLM Provider — Hermes or Mock
-	var llmProvider llm.LLMProvider
-	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
-		slog.Info(fmt.Sprintf("LLM: Initializing Hermes provider at %s (model: %s)", cfg.HermesAPIURL, cfg.HermesModel))
-		llmProvider = llm.NewHermesLLMProvider(llm.HermesConfig{
-			BaseURL:	cfg.HermesAPIURL,
-			APIKey:		cfg.HermesAPIKey,
-			Model:		cfg.HermesModel,
-		})
-
-		if err := llmProvider.(*llm.HermesLLMProvider).HealthCheck(ctx); err != nil {
-			slog.Info(fmt.Sprintf("LLM: WARNING — Hermes health check failed: %v", err))
-		} else {
-			slog.Info("LLM: Hermes health check passed ✓")
-		}
-	} else {
-		slog.Info("LLM: Initializing Mock LLM Provider (set HERMES_API_URL and HERMES_API_KEY for real LLM).")
-		llmProvider = &llm.MockLLMProvider{}
-	}
 
 	// 2k. Setup Social Media Poster Agent
 	socialPoster := agents.NewSocialPosterWorker(database, llmProvider)

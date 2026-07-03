@@ -34,7 +34,7 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	}
 
 	// 2. Lead Discovery Phase
-	sources := []scraper.LeadSource{&scraper.MockJobBoardSource{}}
+	sources := []scraper.LeadSource{&scraper.GitHubJobSource{}}
 	s := scraper.NewScraper(database, sources)
 
 	// Discover a lead
@@ -49,7 +49,10 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 
 	// 2b. Enrichment Phase
 	crmMock := &crm.MockCRMClient{}
-	enricher := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{&enrichment.MockApolloSource{}}, crmMock)
+
+	// Create a mock source strictly for this test
+	mockEnrichmentSource := &MockTestApolloSource{}
+	enricher := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{mockEnrichmentSource}, crmMock)
 	enricher.ExecuteEnrichment(ctx)
 
 	// Verify contact was created
@@ -196,4 +199,18 @@ func TestAutonomousCodeGeneration_Pilot(t *testing.T) {
 	if _, err := os.Stat("internal/sales/feature.go"); os.IsNotExist(err) {
 		t.Errorf("Autonomous code generation failed: internal/sales/feature.go not found")
 	}
+}
+
+// MockTestApolloSource is a simulated enrichment source for testing.
+type MockTestApolloSource struct{}
+
+func (m *MockTestApolloSource) Enrich(ctx context.Context, company db.Company) ([]db.Contact, error) {
+	return []db.Contact{
+		{
+			Name:          "Test Contact",
+			Role:          "Test Role",
+			Email:         "test@example.com",
+			GitHubHandle:  "test-github",
+		},
+	}, nil
 }

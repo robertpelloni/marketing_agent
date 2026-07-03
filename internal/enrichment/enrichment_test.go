@@ -10,8 +10,8 @@ import (
 	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
-func TestMockApolloSource_Enrich(t *testing.T) {
-	source := &MockApolloSource{}
+func TestMockSourceForTest_Enrich(t *testing.T) {
+	source := &mockSourceForTest{name: "TestSource", returnContacts: 1}
 	company := db.Company{
 		Name:   "AI Dynamics Corp",
 		Domain: "aidynamics.com",
@@ -23,11 +23,11 @@ func TestMockApolloSource_Enrich(t *testing.T) {
 	}
 
 	if len(contacts) != 1 {
-		t.Errorf("Expected 1 contact, got %d", len(contacts))
+		t.Fatalf("Expected 1 contact, got %d", len(contacts))
 	}
 
-	if contacts[0].Name != "Sarah Chen" {
-		t.Errorf("Expected Sarah Chen, got %s", contacts[0].Name)
+	if contacts[0].Name != "AI Dynamics Corp Contact 1" {
+		t.Errorf("Expected AI Dynamics Corp Contact 1, got %s", contacts[0].Name)
 	}
 }
 
@@ -81,7 +81,7 @@ func TestApolloSource_HealthCheck(t *testing.T) {
 
 func TestEnricher_Initialization(t *testing.T) {
 	database := &db.DB{}
-	sources := []EnrichmentSource{&MockApolloSource{}}
+	sources := []EnrichmentSource{&mockSourceForTest{}}
 	e := NewEnricher(database, sources, nil)
 
 	if e == nil {

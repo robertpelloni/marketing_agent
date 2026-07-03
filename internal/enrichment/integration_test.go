@@ -1,4 +1,4 @@
-package enrichment_test
+package enrichment
 
 import (
 	"context"
@@ -7,7 +7,6 @@ import (
 
 	"github.com/robertpelloni/marketing_agent/internal/crm"
 	"github.com/robertpelloni/marketing_agent/internal/db"
-	"github.com/robertpelloni/marketing_agent/internal/enrichment"
 )
 
 func setupTestDB(t *testing.T) *db.DB {
@@ -71,9 +70,9 @@ func TestEnricher_Integration_EnrichesDiscoveredDeals(t *testing.T) {
 	defer cleanupDeal(t, database, company.Name)
 
 	// Create enricher with mock source
-	mockSource := &enrichment.MockApolloSource{}
+	mockSource := &mockSourceForTest{}
 	mockCRM := crm.NewMockCRMClient()
-	e := enrichment.NewEnricher(database, []enrichment.EnrichmentSource{mockSource}, mockCRM)
+	e := NewEnricher(database, []EnrichmentSource{mockSource}, mockCRM)
 
 	// Run enrichment once
 	e.ExecuteEnrichment(ctx)
@@ -110,9 +109,9 @@ func TestEnricher_Integration_EnrichesDiscoveredDeals(t *testing.T) {
 }
 
 func TestEnricher_Integration_SkipsNilDB(t *testing.T) {
-	mockSource := &enrichment.MockApolloSource{}
+	mockSource := &mockSourceForTest{}
 	mockCRM := crm.NewMockCRMClient()
-	e := enrichment.NewEnricher(nil, []enrichment.EnrichmentSource{mockSource}, mockCRM)
+	e := NewEnricher(nil, []EnrichmentSource{mockSource}, mockCRM)
 
 	ctx := context.Background()
 	e.ExecuteEnrichment(ctx)

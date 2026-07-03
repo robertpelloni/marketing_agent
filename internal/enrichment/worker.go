@@ -108,33 +108,3 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 	return nil
 }
 
-// MockApolloSource is a simulated enrichment source.
-type MockApolloSource struct{}
-
-func (m *MockApolloSource) Enrich(ctx context.Context, company db.Company) ([]db.Contact, error) {
-	slog.Info(fmt.Sprintf("MockApolloSource: Searching for contacts at %s", company.Domain))
-
-	// Simulate finding contacts based on domain
-	switch company.Domain {
-	case "aidynamics.com":
-		return []db.Contact{
-			{
-				Name:          "Sarah Chen",
-				Role:          "Director of AI",
-				Email:         "sarah.chen@aidynamics.com",
-				GitHubHandle:  "schen-ai",
-			},
-		}, nil
-	case "neuralsystems.io":
-		return []db.Contact{
-			{
-				Name:          "James Wilson",
-				Role:          "Principal Systems Architect",
-				Email:         "j.wilson@neuralsystems.io",
-				GitHubHandle:  "jwilson-sys",
-			},
-		}, nil
-	}
-
-	return nil, nil
-}

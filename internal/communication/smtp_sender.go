@@ -244,13 +244,12 @@ func (s *SMTPSender) HealthCheck(ctx context.Context) error {
 	return client.Quit()
 }
 
-// MockEmailSender is a no-op email sender for testing.
-type MockEmailSender struct {
-	Sent []EmailMessage
-}
+// NoopEmailSender is a no-op email sender that satisfies the EmailSender interface
+// without performing any action or logging mocked actions. Used when no email
+// configuration is present.
+type NoopEmailSender struct{}
 
-func (m *MockEmailSender) Send(ctx context.Context, msg EmailMessage) error {
-	m.Sent = append(m.Sent, msg)
-	slog.Info(fmt.Sprintf("MockEmailSender: Would send email to %s (subject: %s)", msg.To, msg.Subject))
+func (n *NoopEmailSender) Send(ctx context.Context, msg EmailMessage) error {
+	slog.Info(fmt.Sprintf("NoopEmailSender: Skipping email send to %s (subject: %s) because email is not configured.", msg.To, msg.Subject))
 	return nil
 }

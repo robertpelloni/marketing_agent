@@ -122,27 +122,3 @@ func (g *GitHubJobSource) Discover(ctx context.Context, keywords []string) ([]db
 	}, nil
 }
 
-// MockJobBoardSource is a simulated lead source for testing and initial development.
-type MockJobBoardSource struct{}
-
-func (m *MockJobBoardSource) Discover(ctx context.Context, keywords []string) ([]db.Company, error) {
-	// Simulate finding leads based on keywords
-	slog.Info(fmt.Sprintf("MockJobBoardSource: Scanning for keywords: %v", keywords))
-
-	return []db.Company{
-		{
-			Name:		"AI Dynamics Corp",
-			Domain:		"aidynamics.com",
-			TechStack:	[]string{"Python", "PyTorch", "Kubernetes"},
-			HiringSignals:	[]string{"Hiring: Senior AI Platform Engineer"},
-			MarketCapTier:	"Mid-Market",
-		},
-		{
-			Name:		"Neural Systems Inc",
-			Domain:		"neuralsystems.io",
-			TechStack:	[]string{"Go", "Rust", "LLMs"},
-			HiringSignals:	[]string{"Hiring: LLM Orchestration Architect"},
-			MarketCapTier:	"Enterprise",
-		},
-	}, nil
-}

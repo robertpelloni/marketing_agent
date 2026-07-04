@@ -800,3 +800,49 @@ func (db *DB) CreateSocialPost(ctx context.Context, post *SocialPost) error {
 	}
 	return nil
 }
+
+// ExportGDPRData retrieves all data associated with a specific email for GDPR export.
+func (db *DB) ExportGDPRData(ctx context.Context, email string) (map[string]interface{}, error) {
+	contact, err := db.GetContactByEmail(ctx, email)
+	if err != nil {
+		return nil, fmt.Errorf("contact not found: %w", err)
+	}
+
+	interactions, err := db.ListInteractionsByContact(ctx, contact.ID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch interactions: %w", err)
+	}
+
+	return map[string]interface{}{
+		"contact":      contact,
+		"interactions": interactions,
+	}, nil
+}
+
+// DeleteGDPRData soft-deletes a contact and anonymizes their interactions for GDPR compliance.
+func (db *DB) DeleteGDPRData(ctx context.Context, email string) error {
+	contact, err := db.GetContactByEmail(ctx, email)
+	if err != nil {
+		return fmt.Errorf("contact not found: %w", err)
+	}
+
+	tx, err := db.Conn.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	// Soft delete contact
+	_, err = tx.ExecContext(ctx, "UPDATE contacts SET deleted_at = CURRENT_TIMESTAMP, name = 'REDACTED', email = 'REDACTED', linkedin_url = '', github_handle = '' WHERE id = $1", contact.ID)
+	if err != nil {
+		return err
+	}
+
+	// Anonymize interactions
+	_, err = tx.ExecContext(ctx, "UPDATE interactions SET raw_text = 'REDACTED', summary = 'REDACTED' WHERE contact_id = $1", contact.ID)
+	if err != nil {
+		return err
+	}
+
+	return tx.Commit()
+}

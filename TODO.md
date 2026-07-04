@@ -91,8 +91,8 @@
 ### Self-Improving Prompts v2
 - [x] Add A/B prompt testing — compare outreach generated with vs. without successful examples
 - [x] Add interaction sentiment analysis — auto-classify sentiment of inbound messages to refine strategy
-- [ ] Add prompt performance tracking — measure response quality over time as few-shot examples accumulate
-- [ ] Add negative example injection — learn from failed outreach (flagged `success=false`) to avoid repeated patterns
+- [x] Add prompt performance tracking — measure response quality over time as few-shot examples accumulate
+- [x] Add negative example injection — learn from failed outreach (flagged `success=false`) to avoid repeated patterns
 
 ## Phase 9 — Security, Compliance & Scale
 
@@ -102,8 +102,8 @@
 - [x] Add CSRF protection for dashboard form submissions
 - [x] Add input sanitization for all user-supplied data (webhook payloads, form inputs)
 - [ ] Add secrets encryption at rest
-- [ ] Add GDPR data export endpoint
-- [ ] Add GDPR data deletion endpoint
+- [x] Add GDPR data export endpoint
+- [x] Add GDPR data deletion endpoint
 - [ ] Add webhook IP allowlisting
 
 ### Scale & Performance

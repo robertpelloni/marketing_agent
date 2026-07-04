@@ -1360,17 +1360,17 @@
         ctx.lineTo(28 - armSwing * 0.5, 32);
         ctx.stroke();
 
-        // Head — skull-like
+        // Head — refined with smaller neck and no flared cheekbones
         ctx.fillStyle = "rgba(0,255,136,0.08)";
         ctx.strokeStyle = "rgba(0,255,136,0.25)";
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(-9, -10);
-        ctx.lineTo(9, -10);
-        ctx.lineTo(11, 0);
-        ctx.lineTo(7, 5);
-        ctx.lineTo(-7, 5);
-        ctx.lineTo(-11, 0);
+        ctx.moveTo(-7, -10);
+        ctx.lineTo(7, -10);
+        ctx.lineTo(7, 0);
+        ctx.lineTo(3, 5); // narrow neck connection (6px wide total)
+        ctx.lineTo(-3, 5);
+        ctx.lineTo(-7, 0);
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
@@ -1380,8 +1380,8 @@
           "rgba(255,0,68," + (0.5 + Math.sin(step * 3) * 0.2) + ")";
         ctx.shadowColor = "rgba(255,0,68,0.3)";
         ctx.shadowBlur = 6;
-        ctx.fillRect(-7, -6, 4, 3);
-        ctx.fillRect(3, -6, 4, 3);
+        ctx.fillRect(-5, -6, 3, 2);
+        ctx.fillRect(2, -6, 3, 2);
         ctx.shadowBlur = 0;
 
         ctx.restore();
@@ -1435,30 +1435,55 @@
         }
         ctx.shadowBlur = 0;
 
-        // Machine gun on front
-        ctx.strokeStyle = "rgba(255,0,68,0.25)";
-        ctx.lineWidth = 2;
+        // Laser turret on top (rotates back and forth)
+        var turretAngle = Math.sin(step * 1.5) * 0.8;
+        ctx.save();
+        ctx.rotate(turretAngle);
+        
+        // Draw laser turret base and barrel
+        ctx.fillStyle = "rgba(0, 255, 136, 0.25)";
+        ctx.strokeStyle = "rgba(0, 255, 136, 0.4)";
+        ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(5, -2);
-        ctx.lineTo(14, -5);
+        ctx.arc(0, 0, 4, 0, Math.PI * 2);
+        ctx.fill();
         ctx.stroke();
+        
+        ctx.strokeStyle = "rgba(255, 0, 68, 0.55)";
+        ctx.lineWidth = 2.5;
         ctx.beginPath();
-        ctx.moveTo(5, 2);
-        ctx.lineTo(14, 5);
+        ctx.moveTo(0, 0);
+        ctx.lineTo(15, 0);
         ctx.stroke();
-
-        // Laser beam effect
-        if (Math.sin(step * 3) > 0.5) {
-          ctx.strokeStyle = "rgba(255,0,68," + 0.15 * Math.sin(step * 6) + ")";
-          ctx.shadowColor = "rgba(255,0,68,0.2)";
-          ctx.shadowBlur = 10;
-          ctx.lineWidth = 0.5;
+        
+        // Laser flash/glowing lens at the tip
+        ctx.fillStyle = "#ff0044";
+        ctx.beginPath();
+        ctx.arc(15, 0, 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Shoot bright red laser beam periodically
+        if (Math.sin(step * 4) > 0.1) {
+          ctx.strokeStyle = "#ff0044";
+          ctx.shadowColor = "#ff0044";
+          ctx.shadowBlur = 12;
+          ctx.lineWidth = 2.5;
           ctx.beginPath();
-          ctx.moveTo(14, -5);
-          ctx.lineTo(30, -15 + Math.sin(step * 8) * 3);
+          ctx.moveTo(15, 0);
+          ctx.lineTo(180, 0);
           ctx.stroke();
+          
+          // Core of the laser (white center energy line)
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(15, 0);
+          ctx.lineTo(180, 0);
+          ctx.stroke();
+          
           ctx.shadowBlur = 0;
         }
+        ctx.restore();
 
         ctx.restore();
       }

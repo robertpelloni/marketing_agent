@@ -97,18 +97,19 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == http.MethodPost {
-		action := r.FormValue("action")
+		action := html.EscapeString(strings.TrimSpace(r.FormValue("action")))
 		switch action {
 		case "enrich":
+			dealID := html.EscapeString(strings.TrimSpace(r.FormValue("deal_id")))
 			// #nosec G706 -- deal_id is used for context in manual action logs
-			slog.InfoContext(r.Context(), "Manual enrichment triggered", "deal_id", r.FormValue("deal_id"))
+			slog.InfoContext(r.Context(), "Manual enrichment triggered", "deal_id", dealID)
 		case "sync":
 			if err := s.deploy.ExecuteSync(); err != nil {
 				slog.WarnContext(r.Context(), "Sync error", "error", err)
 			}
 		case "flag_success":
-			interactionID := r.FormValue("interaction_id")
-			success := r.FormValue("success") == "true"
+			interactionID := html.EscapeString(strings.TrimSpace(r.FormValue("interaction_id")))
+			success := html.EscapeString(strings.TrimSpace(r.FormValue("success"))) == "true"
 			var id int64
 			if _, err := fmt.Sscanf(interactionID, "%d", &id); err != nil {
 				slog.WarnContext(r.Context(), "Invalid interaction ID", "error", err, "interaction_id", interactionID)
@@ -118,8 +119,8 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		case "update_channel":
-			contactID := r.FormValue("contact_id")
-			channel := r.FormValue("channel")
+			contactID := html.EscapeString(strings.TrimSpace(r.FormValue("contact_id")))
+			channel := html.EscapeString(strings.TrimSpace(r.FormValue("channel")))
 			var id int64
 			if _, err := fmt.Sscanf(contactID, "%d", &id); err != nil {
 				slog.WarnContext(r.Context(), "Invalid contact ID", "error", err, "contact_id", contactID)
@@ -135,7 +136,7 @@ case "build":
 				slog.WarnContext(r.Context(), "Build error", "error", err)
 			}
 		case "approve_deal":
-			dealIDStr := r.FormValue("deal_id")
+			dealIDStr := html.EscapeString(strings.TrimSpace(r.FormValue("deal_id")))
 			var id int64
 			if _, err := fmt.Sscanf(dealIDStr, "%d", &id); err != nil {
 				slog.WarnContext(r.Context(), "Invalid deal ID for approval", "error", err)
@@ -512,9 +513,9 @@ func (s *Server) handleGenerateQuote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tier := r.URL.Query().Get("company_size")
+	tier := html.EscapeString(strings.TrimSpace(r.URL.Query().Get("company_size")))
 	if tier == "" {
-		tier = r.URL.Query().Get("market_cap_tier")
+		tier = html.EscapeString(strings.TrimSpace(r.URL.Query().Get("market_cap_tier")))
 	}
 
 	quote := communication.CalculateQuote(tier)
@@ -563,7 +564,7 @@ func (s *Server) handleDealsAPI(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		// Example: List all deals, could support filtering by state via query params
-		stateFilter := r.URL.Query().Get("state")
+		stateFilter := html.EscapeString(strings.TrimSpace(r.URL.Query().Get("state")))
 		var deals []db.Deal
 		var err error
 		if stateFilter != "" {

@@ -51,7 +51,7 @@
 | REST CRM client | ✅ Real | `internal/crm/crm.go` with generic REST |
 | **LLM provider** | **✅ Real** | **`internal/llm/hermes.go::HermesLLMProvider` via Hermes Agent gateway** |
 | **Intent classifier** | **✅ Real** | **`LLMIntentClassifier` via Hermes (keyword mock fallback)** |
-| Enrichment (Apollo) | ❌ Mock | `internal/enrichment/worker.go::MockApolloSource` |
-| Job board scraper | ❌ Mock | `internal/scraper/scraper.go::MockJobBoardSource` |
+| Enrichment (Apollo) | ✅ Real | `internal/enrichment/apollo.go::ApolloSource` |
+| Job board scraper | ✅ Real | `internal/scraper/scraper.go::GitHubJobSource` |
 | Email sending | ❌ Not implemented | Outbound is logged but not sent |
 | Email receiving | ❌ Not implemented | Inbound is simulated by polling DB |

@@ -116,25 +116,7 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 			salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier),
 	}
 
-	response, err := g.llm.Generate(ctx, prompt)
-
-	// Record performance telemetry
-	if g.db != nil && err == nil {
-		metric := &db.PromptPerformance{
-			DealID:          salesCtx.Deal.ID,
-			PromptType:      "RAG",
-			ContextInjected: useExamples,
-			// Quality score is typically gathered asynchronously, initialize to 0
-			ResponseQualityScore: 0.0,
-			// Successful outcome is updated later during the deal pipeline, init to false
-			SuccessfulOutcome: false,
-		}
-		if dbErr := g.db.RecordPromptPerformance(ctx, metric); dbErr != nil {
-			slog.Info(fmt.Sprintf("RAGResponseGenerator: Failed to record telemetry: %v", dbErr))
-		}
-	}
-
-	return response, err
+	return g.llm.Generate(ctx, prompt)
 }
 
 func (g *RAGResponseGenerator) truncateDocs(docs string) string {

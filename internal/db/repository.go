@@ -433,30 +433,6 @@ func (db *DB) UpdateInteractionSuccess(ctx context.Context, interactionID int64,
 	if err != nil {
 		return fmt.Errorf("failed to update interaction success: %w", err)
 	}
-
-	// Also mark prompt_performance as successful outcome if linked via deal (assuming latest performance linked to this deal)
-	// Find contact_id from interaction
-	var contactID int64
-	err = db.Conn.QueryRowContext(ctx, "SELECT contact_id FROM interactions WHERE id = $1", interactionID).Scan(&contactID)
-	if err == nil {
-		// Find deal_id from company
-		var companyID int64
-		err = db.Conn.QueryRowContext(ctx, "SELECT company_id FROM contacts WHERE id = $1", contactID).Scan(&companyID)
-		if err == nil {
-			var dealID int64
-			err = db.Conn.QueryRowContext(ctx, "SELECT id FROM deals WHERE company_id = $1 ORDER BY id DESC LIMIT 1", companyID).Scan(&dealID)
-			if err == nil {
-				updateQuery := `
-					UPDATE prompt_performance
-					SET successful_outcome = $1
-					WHERE deal_id = $2
-					AND id = (SELECT id FROM prompt_performance WHERE deal_id = $2 ORDER BY created_at DESC LIMIT 1)
-				`
-				_, _ = db.Conn.ExecContext(ctx, updateQuery, success, dealID)
-			}
-		}
-	}
-
 	return nil
 }
 
@@ -823,55 +799,4 @@ func (db *DB) CreateSocialPost(ctx context.Context, post *SocialPost) error {
 		return fmt.Errorf("failed to create social post: %w", err)
 	}
 	return nil
-}
-
-// RecordPromptPerformance inserts a new prompt performance metric into the database.
-func (db *DB) RecordPromptPerformance(ctx context.Context, metric *PromptPerformance) error {
-	query := `
-		INSERT INTO prompt_performance (deal_id, prompt_type, context_injected, response_quality_score, successful_outcome, created_at)
-		VALUES ($1, $2, $3, $4, $5, $6)
-		RETURNING id
-	`
-	if metric.CreatedAt.IsZero() {
-		metric.CreatedAt = time.Now()
-	}
-
-	err := db.Conn.QueryRowContext(ctx, query,
-		metric.DealID, metric.PromptType, metric.ContextInjected, metric.ResponseQualityScore, metric.SuccessfulOutcome, metric.CreatedAt).Scan(&metric.ID)
-
-	if err != nil {
-		return fmt.Errorf("failed to record prompt performance: %w", err)
-	}
-
-	return nil
-}
-
-// ListPromptPerformances retrieves all prompt performances (for analysis).
-func (db *DB) ListPromptPerformances(ctx context.Context, limit int) ([]PromptPerformance, error) {
-	query := `
-		SELECT id, deal_id, prompt_type, context_injected, response_quality_score, successful_outcome, created_at
-		FROM prompt_performance
-		ORDER BY created_at DESC
-		LIMIT $1
-	`
-	rows, err := db.Conn.QueryContext(ctx, query, limit)
-	if err != nil {
-		return nil, fmt.Errorf("failed to list prompt performances: %w", err)
-	}
-	defer rows.Close()
-
-	var metrics []PromptPerformance
-	for rows.Next() {
-		var m PromptPerformance
-		if err := rows.Scan(&m.ID, &m.DealID, &m.PromptType, &m.ContextInjected, &m.ResponseQualityScore, &m.SuccessfulOutcome, &m.CreatedAt); err != nil {
-			return nil, fmt.Errorf("failed to scan prompt performance row: %w", err)
-		}
-		metrics = append(metrics, m)
-	}
-
-	if err = rows.Err(); err != nil {
-		return nil, fmt.Errorf("error iterating prompt performance rows: %w", err)
-	}
-
-	return metrics, nil
 }

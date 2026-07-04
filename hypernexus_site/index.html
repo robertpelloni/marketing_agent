@@ -309,6 +309,86 @@
 
       .btn-white:hover{background:#0369a1;transform:translateY(-2px)}
 
+      /* ── MODAL ── */
+
+      .modal-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(4px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+      .modal-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .modal-content {
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+        position: relative;
+      }
+      .modal-overlay.active .modal-content {
+        transform: translateY(0);
+      }
+      .modal-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--text-secondary);
+      }
+      .modal-content h3 {
+        margin-bottom: 8px;
+        font-size: 24px;
+        color: var(--text);
+      }
+      .modal-content p {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 24px;
+      }
+      .form-group {
+        margin-bottom: 16px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--text);
+      }
+      .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+      .form-group input:focus {
+        outline: none;
+        border-color: #0284c7;
+        box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+      }
+      #modal-form-submit {
+        margin-top: 8px;
+      }
+
       /* ── FOOTER ── */
 
       footer{padding:60px 0 40px;border-top:1px solid #e2e8f0;background:#ffffff}
@@ -6235,6 +6315,86 @@
 
 
 
+    <div class="modal-overlay" id="leadModal">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <h3>Request Access</h3>
+        <p>Enter your company domain to join the waitlist.</p>
+        <form id="leadForm">
+          <div class="form-group">
+            <label for="companyName">Company Name</label>
+            <input type="text" id="companyName" placeholder="Acme Corp" required>
+          </div>
+          <div class="form-group">
+            <label for="companyDomain">Company Domain</label>
+            <input type="text" id="companyDomain" placeholder="acme.com" required>
+          </div>
+          <button type="submit" class="btn btn-primary" id="modal-form-submit" style="width: 100%; justify-content: center;">Submit Request</button>
+          <div id="formStatus" style="margin-top: 12px; font-size: 13px; text-align: center; display: none;"></div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      function openModal(e) {
+        if(e) e.preventDefault();
+        document.getElementById('leadModal').classList.add('active');
+        document.getElementById('formStatus').style.display = 'none';
+      }
+
+      function closeModal() {
+        document.getElementById('leadModal').classList.remove('active');
+      }
+
+      // Wire up all demo/contact buttons to open the modal
+      document.querySelectorAll('a[href="/contact.php"]').forEach(el => {
+        el.addEventListener('click', openModal);
+      });
+
+      document.getElementById('leadForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('modal-form-submit');
+        const status = document.getElementById('formStatus');
+        const name = document.getElementById('companyName').value;
+        const domain = document.getElementById('companyDomain').value;
+
+        btn.disabled = true;
+        btn.textContent = 'Submitting...';
+
+        fetch('http://localhost:8080/api/v1/leads', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: name,
+            domain: domain,
+            tech_stack: [],
+            hiring_signals: ["Inbound Web Request"]
+          })
+        })
+        .then(res => {
+          if(!res.ok) throw new Error('Network error');
+          return res.json();
+        })
+        .then(data => {
+          btn.textContent = 'Submitted!';
+          btn.style.background = '#28a745';
+          status.style.display = 'block';
+          status.style.color = '#28a745';
+          status.textContent = 'Thank you! We will evaluate your request shortly.';
+          setTimeout(closeModal, 2000);
+        })
+        .catch(err => {
+          btn.disabled = false;
+          btn.textContent = 'Submit Request';
+          status.style.display = 'block';
+          status.style.color = '#dc3545';
+          status.textContent = 'Error submitting request. Please try again.';
+          console.error(err);
+        });
+      });
+    </script>
 </body>
 
 

@@ -138,3 +138,14 @@ type SocialPost struct {
 	Status          string    `db:"status"`           // "posted", "failed", "draft"
 	CreatedAt       time.Time `db:"created_at"`
 }
+
+// PromptPerformance tracks the effectiveness of different prompt injection strategies.
+type PromptPerformance struct {
+	ID                   int64     `db:"id"`
+	DealID               int64     `db:"deal_id"`
+	PromptType           string    `db:"prompt_type"` // e.g. "RAG", "Template"
+	ContextInjected      bool      `db:"context_injected"` // whether few-shot examples were injected
+	ResponseQualityScore float64   `db:"response_quality_score"`
+	SuccessfulOutcome    bool      `db:"successful_outcome"`
+	CreatedAt            time.Time `db:"created_at"`
+}

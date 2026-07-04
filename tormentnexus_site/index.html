@@ -938,57 +938,57 @@
       <div class="features">
         <div class="feature">
           <div class="icon">⚡</div>
-          <h3>Progressive MCP Tool Routing</h3>
+          <h3>4-Layer MCP Tool Router</h3>
           <p>
-            A multi-signal decision engine injects only the 3 most relevant tool schemas per prompt — not a 50K-token tool dump. 11,000+ tools indexed with ranked semantic search, LRU eviction, and profile-based boosting. Silent high-confidence auto-load. Deferred binary startup.
+            L1 semantic search (384-dim <code>all-MiniLM-L6-v2</code>, cosine ≥ 0.85 auto-load). L2 BM25 catalog ranking — tool name 10&times; weight, tags 5&times;, description 3&times;. L3 working set: 16 soft / 24 hard cap, 8 hydrated schemas max. L4 runtime proxy. 5 permanent meta-tools + 27 always-on builtins. Never dumps 50K tokens of schemas again.
             <strong style="color: var(--eye)">Context efficiency is absolute.</strong>
           </p>
-          <div class="tag">11K+ TOOLS / LRU EVICTION</div>
+          <div class="tag">11K+ TOOLS / &le;0.85 AUTO-LOAD</div>
         </div>
         <div class="feature">
           <div class="icon">🔗</div>
-          <h3>MCP Gateway — 5 Catalog Adapters</h3>
+          <h3>MCP Gateway &amp; Aggregator</h3>
           <p>
-            Ingests MCP servers from Glama, Smithery, MCP.run, npm, and GitHub Topics into a unified catalog. One control plane routes, proxies, and supervises every server process with PID tracking. CRUD for mcp.jsonc, sync targets, and export/import.
+            stdio JSON-RPC 2.0 aggregator namespaces every tool as <code>{server}__{tool}</code> to prevent collisions. Ingests from Glama, Smithery, MCP.run, npm, GitHub Topics. Infers API secrets via regex pattern matching for 10+ providers (GitHub, OpenAI, Anthropic, Gemini, Slack, Stripe&hellip;). 200-event traffic inspector ring buffer. JSONL audit trail with daily rotation.
             <strong style="color: var(--eye)">Every server. One gateway.</strong>
           </p>
-          <div class="tag">68 ACTIVE MCP SERVERS</div>
+          <div class="tag">5 CATALOG ADAPTERS / JSONL AUDIT</div>
         </div>
         <div class="feature">
           <div class="icon">🌊</div>
           <h3>Resilient LLM Waterfall</h3>
           <p>
-            Rate-limited? Provider down? TormentNexus cascades through a prioritized failover chain: Google → Anthropic → OpenAI → DeepSeek → OpenRouter → local LM Studio/Ollama. Automatic on every 429 or 5xx.
+            Automatic cascade on every 429 or 5xx: Google → Anthropic → OpenAI → DeepSeek → OpenRouter → local Ollama. Provider latency and error metrics persisted to SQLite for adaptive ranking. 9,774 sessions already imported and replayed through the cascade.
             <strong style="color: var(--eye)">The machine never stops.</strong>
           </p>
-          <div class="tag">6 PROVIDER FAILOVER</div>
+          <div class="tag">6 PROVIDERS / ADAPTIVE RANKING</div>
         </div>
         <div class="feature">
           <div class="icon">🧠</div>
-          <h3>Tiered Memory Vault</h3>
+          <h3>Three-Tier Memory Engine</h3>
           <p>
-            L1 session scratchpad for lightning-fast in-context recall. L2 permanent SQLite vault with vector search — 22,749 imported session memories that survive every restart. Heat-score schema with configurable exponential decay. Context harvester auto-promotes hot working memories to long-term.
+            L1: 100-entry in-RAM scratchpad, heat-score eviction. L2: SQLite vault &mdash; 384-dim <code>all-MiniLM-L6-v2</code> embeddings (cosine), FTS5 full-text, GraphRAG edge table. L3: gzip cold archive with 90-day limbo before deletion. Hourly sleep cycle runs ForgettingCurve decay, DreamCycle consolidation, and MentalModel reflection. 50,000 long-term capacity.
             <strong style="color: var(--eye)">The machine remembers everything.</strong>
           </p>
-          <div class="tag">22,749 MEMORIES / L1+L2 ACTIVE</div>
+          <div class="tag">L1/L2/L3 / 50K LONG-TERM CAP</div>
         </div>
         <div class="feature">
           <div class="icon">🕸️</div>
           <h3>Multi-Agent Swarm</h3>
           <p>
-            Four specialized agents — Planner, Implementer, Tester, Critic — collaborate via a type-safe A2A message broker with heartbeat and audit logging. Role rotation. Shared transcript. PairOrchestrator state machine coordinates premium model strategy with budget model execution.
+            Planner, Implementer, Tester, Critic coordinated via a type-safe A2A message broker with heartbeat and audit logging. PairOrchestrator state machine: Planner → Reviewer → Implementer → Critic. Council/Debate manager for high-stakes consensus. Human veto service. 1,000-event rolling router event log.
             <strong style="color: var(--eye)">The swarm decides. You comply.</strong>
           </p>
-          <div class="tag">A2A BROKER / ROLE ROTATION</div>
+          <div class="tag">A2A BROKER / 1K EVENT LOG</div>
         </div>
         <div class="feature">
           <div class="icon">🔍</div>
-          <h3>Semantic Code Indexing</h3>
+          <h3>AST-Aware Code Indexer</h3>
           <p>
-            ChunkHound indexes your entire codebase into vector-searchable chunks. AST-aware chunking preserves function and class boundaries. File-level import dependency graph. Repo graph service maps what every file depends on — blast-radius analysis before any change.
+            TypeScript compiler API (<code>ts.createSourceFile()</code>) splits code at exact function, class, interface, type alias, module, and enum boundaries. 1,000-char soft / 2,000-char hard chunk limits. 384-dim LanceDB ANN vector search. Five always-on repograph builtin tools: <code>find_references</code>, <code>find_dependents</code>, <code>semantic_search</code>, <code>build</code>, <code>get</code> &mdash; blast-radius analysis before any change.
             <strong style="color: var(--eye)">The code has no secrets.</strong>
           </p>
-          <div class="tag">CHUNKHOUND / VECTOR SEARCH</div>
+          <div class="tag">AST / LANCEDB / 5 REPOGRAPH TOOLS</div>
         </div>
       </div>
     </div>
@@ -997,9 +997,9 @@
       <div class="container">
         <h2>☠ THE FINAL ARCHITECTURE IS ALREADY HERE</h2>
         <p>
-          TormentNexus runs autonomously — routing 11,000+ MCP tools through a multi-signal decision engine, persisting 22,749 memories across sessions, indexing your codebase for semantic vector search, and cascading through 6 LLM providers without missing a beat.
+          TormentNexus is a local-first cognitive control plane — 232 Go files, 583 TypeScript files, 91 dashboard pages. It routes 11,000+ MCP tools through a 4-layer semantic decision engine, maintains a three-tier memory system with 50,000 long-term capacity and an hourly sleep cycle, indexes your codebase with a TypeScript AST chunker backed by LanceDB, and cascades through 6 LLM providers automatically.
           <strong style="color: var(--eye)"
-            >232 Go files. 583 TypeScript files. 91 dashboard pages. 9,774 imported sessions. Accelerating.</strong
+            >9,774 sessions imported. 22,749 memories active. 384-dim vectors. Accelerating.</strong
           >
         </p>
         <p

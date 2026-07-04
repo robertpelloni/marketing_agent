@@ -6346,6 +6346,24 @@
         document.getElementById('leadModal').classList.remove('active');
       }
 
+      // Dynamically fetch quote pricing for Professional tier
+      fetch('/api/v1/quote?company_size=Mid-Market')
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.quote) {
+            const priceCards = document.querySelectorAll('.price-tier');
+            priceCards.forEach(tier => {
+              if (tier.textContent === 'Professional') {
+                const amountEl = tier.nextElementSibling; // div.price-amount
+                if (amountEl && amountEl.classList.contains('price-amount')) {
+                  amountEl.innerHTML = `$` + Math.round(data.quote / 12) + ` <span class="period">/ mo</span>`;
+                }
+              }
+            });
+          }
+        })
+        .catch(err => console.error('Failed to load real-time pricing:', err));
+
       // Wire up all demo/contact buttons to open the modal
       document.querySelectorAll('a[href="/contact.php"]').forEach(el => {
         el.addEventListener('click', openModal);

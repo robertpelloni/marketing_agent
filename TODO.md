@@ -89,7 +89,7 @@
 - [x] Add deal forecasting — predict close probability and expected revenue using historical patterns
 
 ### Self-Improving Prompts v2
-- [ ] Add A/B prompt testing — compare outreach generated with vs. without successful examples
+- [x] Add A/B prompt testing — compare outreach generated with vs. without successful examples
 - [x] Add interaction sentiment analysis — auto-classify sentiment of inbound messages to refine strategy
 - [ ] Add prompt performance tracking — measure response quality over time as few-shot examples accumulate
 - [ ] Add negative example injection — learn from failed outreach (flagged `success=false`) to avoid repeated patterns

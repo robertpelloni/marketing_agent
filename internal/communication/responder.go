@@ -67,7 +67,17 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 	}
 
 	// SELF-IMPROVING PROMPTS: Inject successful past interactions as few-shot examples
-	if g.db != nil {
+	// Implement A/B testing for prompt generation
+	// Use interaction count or deal ID to determine group
+	useExamples := false
+	if salesCtx.Deal.ID%2 == 0 {
+		useExamples = true
+		slog.Info(fmt.Sprintf("A/B Testing: Injecting few-shot examples for Deal ID %d", salesCtx.Deal.ID))
+	} else {
+		slog.Info(fmt.Sprintf("A/B Testing: NOT injecting few-shot examples for Deal ID %d (control group)", salesCtx.Deal.ID))
+	}
+
+	if g.db != nil && useExamples {
 		successes, err := g.db.ListSuccessfulInteractions(ctx, 3)
 		if err == nil && len(successes) > 0 {
 			examples := []string{}

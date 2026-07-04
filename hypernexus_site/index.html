@@ -118,13 +118,13 @@
 
       .hero h1{font-size:clamp(44px,7vw,86px);font-weight:900;letter-spacing:-2.5px;line-height:1.03;margin-bottom:20px;animation:fadeInUp 0.8s ease-out 0.2s both;color:#0f172a}
 
-      .hero h1 .gradient-title{display:inline-block !important;background:linear-gradient(120deg, #0284c7 0%, #1e3a8a 25%, #ffffff 50%, #1e3a8a 75%, #0284c7 100%) !important;background-size:200% auto !important;-webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;color:transparent !important;background-clip:text !important;animation:textShineSweep 3s linear infinite !important}
+      .hero h1 .gradient-title{display:inline-block;background:linear-gradient(90deg, #0284c7 0%, #1e3a8a 20%, #0284c7 40%, #ffffff 50%, #0284c7 60%, #1e3a8a 80%, #0284c7 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:transparent;background-clip:text;animation:shineSlide 3s linear infinite}
 
-      .hero p{font-size:18px;max-width:600px;margin:0 auto 40px;line-height:1.7;display:block !important;background:linear-gradient(120deg, #475569 0%, #475569 35%, #ffffff 50%, #475569 65%, #475569 100%) !important;background-size:200% auto !important;-webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;color:transparent !important;background-clip:text !important;animation:fadeInUp 0.8s ease-out 0.4s both, textShineSweep 5s linear infinite !important}
+      .hero p{font-size:18px;max-width:600px;margin:0 auto 40px;line-height:1.7;display:block;background:linear-gradient(90deg, #475569 0%, #475569 20%, #475569 40%, #ffffff 50%, #475569 60%, #475569 80%, #475569 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:transparent;background-clip:text;animation:fadeInUp 0.8s ease-out 0.4s both, shineSlide 5s linear 1s infinite}
 
-      @keyframes textShineSweep {
-        0% { background-position: 0px center; }
-        100% { background-position: 800px center; }
+      @keyframes shineSlide {
+        0% { background-position: 100% center; }
+        100% { background-position: -100% center; }
       }
 
       @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
@@ -820,7 +820,7 @@
               <span style="color: var(--neon-blue); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Enterprise System Announcement</span><br>
               <strong>Ultimate MCP Server & Coding Harness Upgrade</strong><br>
               <span style="color: var(--neon-purple); font-weight: 600;">Unstoppable Operational Power Deployed:</span><br>
-              Best-in-Class Memory | Best-in-Class MCP Routing | Best-in-Class MCP Gateway | Best-in-Class Code Indexing | Best-in-Class Native Tools
+              🏅 Best-in-Class Memory | 🏅 Best-in-Class MCP Routing | 🏅 Best-in-Class MCP Gateway | 🏅 Best-in-Class Code Indexing | 🏅 Best-in-Class Native Tools
             </div>
             <p>The secure, compliant AI control plane that gives your organization complete visibility and governance over multi-model workflows. Deploy anywhere. Control everything.</p>
 

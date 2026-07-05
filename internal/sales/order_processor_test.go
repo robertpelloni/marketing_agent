@@ -11,12 +11,24 @@ import (
 )
 
 // Mock Billing Client for detailed testing
-type errorBillingClient struct {
-	billing.MockBillingClient
-}
+type errorBillingClient struct {}
 
 func (e *errorBillingClient) CreateInvoice(ctx context.Context, deal db.Deal, company db.Company) (string, error) {
 	return "", errors.New("billing service down")
+}
+
+func (e *errorBillingClient) GetInvoiceStatus(ctx context.Context, invoiceID string) (billing.InvoiceStatus, error) {
+	return billing.InvoicePending, nil
+}
+
+type successBillingClient struct {}
+
+func (s *successBillingClient) CreateInvoice(ctx context.Context, deal db.Deal, company db.Company) (string, error) {
+	return "INV-TEST", nil
+}
+
+func (s *successBillingClient) GetInvoiceStatus(ctx context.Context, invoiceID string) (billing.InvoiceStatus, error) {
+	return billing.InvoicePending, nil
 }
 
 // Mock CRM Client for detailed testing
@@ -55,7 +67,7 @@ func TestProcessOrder_BillingFailure(t *testing.T) {
 }
 
 func TestProcessOrder_Success(t *testing.T) {
-	billingClient := &billing.MockBillingClient{}
+	billingClient := &successBillingClient{}
 	crmClient := &crm.MockCRMClient{}
 	dbMock := &mockDB{company: &db.Company{ID: 1, Name: "TestCorp"}}
 
@@ -69,7 +81,7 @@ func TestProcessOrder_Success(t *testing.T) {
 
 func TestProcessOrder_CRMWarning(t *testing.T) {
 	// CRM sync failure should only log a warning and not return an error in the current implementation.
-	billingClient := &billing.MockBillingClient{}
+	billingClient := &successBillingClient{}
 	crmClient := &errorCRMClient{}
 	dbMock := &mockDB{company: &db.Company{ID: 1, Name: "TestCorp"}}
 

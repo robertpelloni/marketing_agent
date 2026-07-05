@@ -17,3 +17,4 @@ func (s *CustomSource) HealthCheck() error { return nil }
 func (s *CustomSource) Name() string { return "CustomPluginSource" }
 
 var Source CustomSource
+func main() {}

@@ -801,38 +801,48 @@ func (db *DB) CreateSocialPost(ctx context.Context, post *SocialPost) error {
 	return nil
 }
 
-// ListSocialPosts retrieves the most recent social posts.
-func (db *DB) ListSocialPosts(ctx context.Context, limit int) ([]SocialPost, error) {
-	query := `
-		SELECT id, brand, platform, account_username, post_content, status, created_at
-		FROM social_posts
-		ORDER BY created_at DESC
-		LIMIT $1
-	`
-	rows, err := db.Conn.QueryContext(ctx, query, limit)
+// ExportGDPRData retrieves all data associated with a specific email for GDPR export.
+func (db *DB) ExportGDPRData(ctx context.Context, email string) (map[string]interface{}, error) {
+	contact, err := db.GetContactByEmail(ctx, email)
 	if err != nil {
-		return nil, fmt.Errorf("failed to list social posts: %w", err)
+		return nil, fmt.Errorf("contact not found: %w", err)
 	}
-	defer rows.Close()
 
-	var posts []SocialPost
-	for rows.Next() {
-		var post SocialPost
-		if err := rows.Scan(
-			&post.ID,
-			&post.Brand,
-			&post.Platform,
-			&post.AccountUsername,
-			&post.PostContent,
-			&post.Status,
-			&post.CreatedAt,
-		); err != nil {
-			return nil, fmt.Errorf("failed to scan social post: %w", err)
-		}
-		posts = append(posts, post)
+	interactions, err := db.ListInteractionsByContact(ctx, contact.ID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch interactions: %w", err)
 	}
-	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("social posts iteration error: %w", err)
+
+	return map[string]interface{}{
+		"contact":      contact,
+		"interactions": interactions,
+	}, nil
+}
+
+// DeleteGDPRData soft-deletes a contact and anonymizes their interactions for GDPR compliance.
+func (db *DB) DeleteGDPRData(ctx context.Context, email string) error {
+	contact, err := db.GetContactByEmail(ctx, email)
+	if err != nil {
+		return fmt.Errorf("contact not found: %w", err)
 	}
-	return posts, nil
+
+	tx, err := db.Conn.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	// Soft delete contact
+	_, err = tx.ExecContext(ctx, "UPDATE contacts SET deleted_at = CURRENT_TIMESTAMP, name = 'REDACTED', email = 'REDACTED', linkedin_url = '', github_handle = '' WHERE id = $1", contact.ID)
+	if err != nil {
+		return err
+	}
+
+	// Anonymize interactions
+	_, err = tx.ExecContext(ctx, "UPDATE interactions SET raw_text = 'REDACTED', summary = 'REDACTED' WHERE contact_id = $1", contact.ID)
+	if err != nil {
+		return err
+	}
+
+	return tx.Commit()
 }

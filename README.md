@@ -183,7 +183,7 @@ Discovered → Researched → Outreach_Sent → Engaged → Negotiating → Clos
 Scans job boards and GitHub for companies hiring for AI orchestration roles. Creates a `Company` record and a `Deal` in `Discovered` state.
 
 - **Interface:** `LeadSource.Discover(ctx, keywords) → []Company`
-- **`MockJobBoardSource`** — returns hardcoded companies (AI Dynamics Corp, Neural Systems Inc)
+- **`GitHubJobSource`** — queries GitHub for repositories matching hiring signals
 - **`GitHubJobSource`** — returns verified high-value targets
 - Searches for keywords: "AI Engineer", "LLM Orchestration", "Agentic Workflows"
 
@@ -192,7 +192,7 @@ Scans job boards and GitHub for companies hiring for AI orchestration roles. Cre
 Finds decision-makers (name, role, email, GitHub handle) at discovered companies. Advances deal from `Discovered` → `Researched`. Syncs found contacts to CRM with 3-attempt retry and exponential backoff.
 
 - **Interface:** `EnrichmentSource.Enrich(ctx, company) → []Contact`
-- **`MockApolloSource`** — returns hardcoded contacts per domain
+- **`ApolloSource`** — queries Apollo.io People Search API
 
 ### 3. Researcher (`internal/researcher`) — Technical Dossier Building
 
@@ -289,7 +289,7 @@ The bot **modifies its own source code** through this lifecycle:
 Bidirectional reconciliation: pulls lead updates from CRM, pushes negotiating/closed deals to CRM.
 
 - **`RestCRMClient`** — real REST API client with Bearer auth, 6 methods (PushDeal, GetLeadUpdates, ValidateAccount, SyncInteraction, SyncContacts, FetchDealDetails)
-- **`MockCRMClient`** — for testing
+- **`MockCRMClient`** — mock client for testing only
 - All CRM calls include 3-attempt retry with exponential backoff
 
 ### 10. Target Discovery (`pkg/agents`) — GitHub Scanning
@@ -361,8 +361,8 @@ The system's most interesting architectural feature — a positive feedback loop
 | REST CRM client | ✅ Real | `internal/crm/crm.go` with generic REST |
 | Intent classifier | ⚠️ Hybrid | `MockIntentClassifier` + `LLMIntentClassifier` (exists but mock is default) |
 | LLM provider | ❌ Mock | `internal/llm/llm.go::MockLLMProvider` |
-| Enrichment (Apollo) | ❌ Mock | `internal/enrichment/worker.go::MockApolloSource` |
-| Job board scraper | ❌ Mock | `internal/scraper/scraper.go::MockJobBoardSource` |
+| Enrichment (Apollo) | ✅ Real | `internal/enrichment/apollo.go::ApolloSource` |
+| Job board scraper | ✅ Real | `internal/scraper/scraper.go::GitHubJobSource` |
 | Email sending | ❌ Not implemented | Outbound is logged but not sent |
 | Email receiving | ❌ Not implemented | Inbound is simulated by polling DB |
 

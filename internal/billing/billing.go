@@ -27,16 +27,6 @@ type BillingClient interface {
 	GetInvoiceStatus(ctx context.Context, invoiceID string) (InvoiceStatus, error)
 }
 
-// MockBillingClient provides a simulated implementation for billing tasks.
-type MockBillingClient struct{}
-
-func (m *MockBillingClient) CreateInvoice(ctx context.Context, deal db.Deal, company db.Company) (string, error) {
-	return "INV-MOCK-123", nil
-}
-
-func (m *MockBillingClient) GetInvoiceStatus(ctx context.Context, invoiceID string) (InvoiceStatus, error) {
-	return InvoicePending, nil
-}
 
 // StripeBillingClient implements BillingClient using the Stripe API.
 type StripeBillingClient struct {

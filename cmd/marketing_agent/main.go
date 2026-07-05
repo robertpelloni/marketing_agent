@@ -73,12 +73,11 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// 2. Setup Scraper — HN "Who is Hiring" + LinkedIn + GitHub Issues + Mock fallback
+	// 2. Setup Scraper — HN "Who is Hiring" + LinkedIn + GitHub Issues
 	sources := []scraper.LeadSource{
 		&scraper.HNWhoIsHiringSource{Client: http.DefaultClient},
 		&scraper.LinkedInSource{Client: http.DefaultClient},
 		&scraper.GitHubIssueSource{Client: http.DefaultClient, Token: cfg.GitHubToken},
-		&scraper.MockJobBoardSource{},
 	}
 	s := scraper.NewScraper(database, sources)
 
@@ -95,7 +94,7 @@ func main() {
 		crmClient = crm.NewMockCRMClient()
 	}
 
-	// 2b. Setup Enricher — Hunter.io + Apollo.io + Mock with FallbackSource
+	// 2b. Setup Enricher — Hunter.io + Apollo.io with FallbackSource
 	var enrichmentSources []enrichment.EnrichmentSource
 	var sourceNames []string
 
@@ -115,15 +114,8 @@ func main() {
 		slog.Info("Enrichment: No APOLLO_API_KEY set - skipping Apollo.io.")
 	}
 
-	// Always add mock source as final fallback for development/testing
 	if len(enrichmentSources) == 0 {
-		slog.Info("Enrichment: No real sources configured - using mock source only.")
-		enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
-		sourceNames = append(sourceNames, "Mock")
-	} else {
-		slog.Info("Enrichment: Mock source added as final fallback.")
-		enrichmentSources = append(enrichmentSources, &enrichment.MockApolloSource{})
-		sourceNames = append(sourceNames, "Mock (fallback)")
+		slog.Info("Enrichment: No real sources configured.")
 	}
 
 	// Wrap sources in fallback chain for ordered retry with clear logging
@@ -220,7 +212,7 @@ func main() {
 	responder := communication.NewRAGResponseGenerator(database, llmProvider)
 	strategy := communication.NewLearningSalesEngine(database, crmClient, llmProvider)
 
-	// 2h. Setup Email Sender — SMTP, Draft, or Mock
+	// 2h. Setup Email Sender — SMTP, Draft
 	var emailSender communication.EmailSender
 	if cfg.SMTPHost != "" && cfg.SMTPUsername != "" && cfg.SMTPPassword != "" && !cfg.DryRun {
 		slog.Info(fmt.Sprintf("Email: Initializing SMTP sender via %s:%d as %s", cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUsername))
@@ -241,10 +233,17 @@ func main() {
 		} else {
 			slog.Info("Email: No SMTP configured — outbound emails will be logged but not sent.")
 		}
-		emailSender = &communication.MockEmailSender{}
+		emailSender = &communication.NoopEmailSender{}
 	}
 
-	billingClient := &billing.MockBillingClient{}
+	var billingClient billing.BillingClient
+	if cfg.StripeAPIKey != "" {
+		slog.Info("Billing: Initializing Stripe Billing Client.")
+		billingClient = billing.NewStripeBillingClient(cfg.StripeAPIKey)
+	} else {
+		slog.Info("Billing: No STRIPE_API_KEY set. Billing client disabled.")
+	}
+
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)
 
 	commManager := communication.NewManager(database, classifier, responder, strategy, orderProcessor, emailSender)

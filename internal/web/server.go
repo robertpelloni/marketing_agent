@@ -71,6 +71,10 @@ func (s *Server) routes() {
 	s.mux.Handle("/api/v1/quote", rl.middleware(http.HandlerFunc(s.handleGenerateQuote)))
 	s.mux.Handle("/api/v1/leads", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleLeadsAPI))))
 	s.mux.Handle("/api/v1/deals", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleDealsAPI))))
+
+	// GDPR Endpoints
+	s.mux.Handle("/api/v1/gdpr/export", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleGDPRExport))))
+	s.mux.Handle("/api/v1/gdpr/delete", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleGDPRDelete))))
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -97,18 +101,19 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == http.MethodPost {
-		action := r.FormValue("action")
+		action := html.EscapeString(strings.TrimSpace(r.FormValue("action")))
 		switch action {
 		case "enrich":
+			dealID := html.EscapeString(strings.TrimSpace(r.FormValue("deal_id")))
 			// #nosec G706 -- deal_id is used for context in manual action logs
-			slog.InfoContext(r.Context(), "Manual enrichment triggered", "deal_id", r.FormValue("deal_id"))
+			slog.InfoContext(r.Context(), "Manual enrichment triggered", "deal_id", dealID)
 		case "sync":
 			if err := s.deploy.ExecuteSync(); err != nil {
 				slog.WarnContext(r.Context(), "Sync error", "error", err)
 			}
 		case "flag_success":
-			interactionID := r.FormValue("interaction_id")
-			success := r.FormValue("success") == "true"
+			interactionID := html.EscapeString(strings.TrimSpace(r.FormValue("interaction_id")))
+			success := html.EscapeString(strings.TrimSpace(r.FormValue("success"))) == "true"
 			var id int64
 			if _, err := fmt.Sscanf(interactionID, "%d", &id); err != nil {
 				slog.WarnContext(r.Context(), "Invalid interaction ID", "error", err, "interaction_id", interactionID)
@@ -118,8 +123,8 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		case "update_channel":
-			contactID := r.FormValue("contact_id")
-			channel := r.FormValue("channel")
+			contactID := html.EscapeString(strings.TrimSpace(r.FormValue("contact_id")))
+			channel := html.EscapeString(strings.TrimSpace(r.FormValue("channel")))
 			var id int64
 			if _, err := fmt.Sscanf(contactID, "%d", &id); err != nil {
 				slog.WarnContext(r.Context(), "Invalid contact ID", "error", err, "contact_id", contactID)
@@ -135,7 +140,7 @@ case "build":
 				slog.WarnContext(r.Context(), "Build error", "error", err)
 			}
 		case "approve_deal":
-			dealIDStr := r.FormValue("deal_id")
+			dealIDStr := html.EscapeString(strings.TrimSpace(r.FormValue("deal_id")))
 			var id int64
 			if _, err := fmt.Sscanf(dealIDStr, "%d", &id); err != nil {
 				slog.WarnContext(r.Context(), "Invalid deal ID for approval", "error", err)
@@ -591,9 +596,9 @@ func (s *Server) handleGenerateQuote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tier := r.URL.Query().Get("company_size")
+	tier := html.EscapeString(strings.TrimSpace(r.URL.Query().Get("company_size")))
 	if tier == "" {
-		tier = r.URL.Query().Get("market_cap_tier")
+		tier = html.EscapeString(strings.TrimSpace(r.URL.Query().Get("market_cap_tier")))
 	}
 
 	quote := communication.CalculateQuote(tier)
@@ -638,11 +643,53 @@ func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (s *Server) handleGDPRExport(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	email := r.URL.Query().Get("email")
+	if email == "" {
+		http.Error(w, "Email parameter is required", http.StatusBadRequest)
+		return
+	}
+
+	data, err := s.db.ExportGDPRData(r.Context(), email)
+	if err != nil {
+		http.Error(w, "Failed to export data: "+err.Error(), http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(data)
+}
+
+func (s *Server) handleGDPRDelete(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodDelete {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	email := r.URL.Query().Get("email")
+	if email == "" {
+		http.Error(w, "Email parameter is required", http.StatusBadRequest)
+		return
+	}
+
+	if err := s.db.DeleteGDPRData(r.Context(), email); err != nil {
+		http.Error(w, "Failed to delete data: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
+
 func (s *Server) handleDealsAPI(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		// Example: List all deals, could support filtering by state via query params
-		stateFilter := r.URL.Query().Get("state")
+		stateFilter := html.EscapeString(strings.TrimSpace(r.URL.Query().Get("state")))
 		var deals []db.Deal
 		var err error
 		if stateFilter != "" {

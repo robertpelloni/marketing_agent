@@ -48,7 +48,10 @@ type Config struct {
 	IMAPUsername		string
 	IMAPPassword		string
 	IMAPFolder		string
-		IMAPPollInterval	time.Duration
+	IMAPPollInterval	time.Duration
+
+	// Billing
+	StripeAPIKey string
 
 	// Webhooks
 	OutboundWebhookURL    string
@@ -144,7 +147,10 @@ func Load() *Config {
 		IMAPUsername:		os.Getenv("IMAP_USERNAME"),
 		IMAPPassword:		os.Getenv("IMAP_PASSWORD"),
 		IMAPFolder:		getEnv("IMAP_FOLDER", "INBOX"),
-				IMAPPollInterval:	imapPollInterval,
+		IMAPPollInterval:	imapPollInterval,
+
+		// Billing
+		StripeAPIKey: os.Getenv("STRIPE_API_KEY"),
 
 		// Webhooks
 		OutboundWebhookURL:    os.Getenv("OUTBOUND_WEBHOOK_URL"),

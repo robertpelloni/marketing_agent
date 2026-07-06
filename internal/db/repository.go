@@ -764,8 +764,8 @@ func (db *DB) MarkTemplateSuccessForDeal(ctx context.Context, dealID int64) erro
 	}
 
 	for _, contact := range contacts {
-		// Find outbound interactions with a template that haven't been marked successful yet
-		query := `SELECT id, template_id FROM interactions WHERE contact_id = $1 AND direction = 'Outbound' AND success = false AND template_id IS NOT NULL`
+		// Find outbound interactions that haven't been marked successful yet
+		query := `SELECT id, template_id FROM interactions WHERE contact_id = $1 AND direction = 'Outbound' AND success = false`
 		rows, err := db.Conn.QueryContext(ctx, query, contact.ID)
 		if err != nil {
 			return fmt.Errorf("failed to query interactions for contact %d: %w", contact.ID, err)

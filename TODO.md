@@ -104,10 +104,10 @@
 - [ ] Add secrets encryption at rest
 - [x] Add GDPR data export endpoint
 - [x] Add GDPR data deletion endpoint
-- [x] Add webhook IP allowlisting
+- [ ] Add webhook IP allowlisting
 
 ### Scale & Performance
-- [x] Add PostgreSQL connection pooling with configurable limits
+- [ ] Add PostgreSQL connection pooling with configurable limits
 - [ ] Add Redis caching layer for frequently accessed data (company lookups, performance metrics)
 - [ ] Add horizontal scaling support — make workers stateless so multiple instances can run
 - [ ] Add message queue (NATS/RabbitMQ) to decouple workers from direct DB polling
@@ -147,7 +147,7 @@
 ### Advanced Multi-Agent Technical Architecture
 - [ ] Implement Multi-Agent Orchestration Pattern (split LLM context)
 - [ ] Build Sales Strategist Agent for MEDDPICC evaluation and micro-goals
-- [x] Build Context - [ ] Build Context & Knowledge Agent (GraphRAG) replacing flat vector search Knowledge Agent (GraphRAG) replacing flat vector search
+- [ ] Build Context & Knowledge Agent (GraphRAG) replacing flat vector search
 - [ ] Build Execution/Guardrail Agent for authoritative response filtering
 
 ### Persuasion & Behavioral Tuning

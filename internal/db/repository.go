@@ -1,10 +1,10 @@
 package db
 
 import (
+	"strings"
 	"context"
 	"database/sql"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/lib/pq"
@@ -13,10 +13,6 @@ import (
 
 // CreateCompany inserts a new company into the database.
 func (db *DB) CreateCompany(ctx context.Context, company *Company) error {
-	if db.Conn == nil {
-		return fmt.Errorf("database connection is nil")
-	}
-
 	query := `
 		INSERT INTO companies (name, domain, tech_stack, hiring_signals, market_cap_tier, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7)
@@ -58,10 +54,6 @@ func (db *DB) UpdateDealDetails(ctx context.Context, dealID int64, pricing float
 
 // GetCompanyByID retrieves a company by its ID.
 func (db *DB) GetCompanyByID(ctx context.Context, id int64) (*Company, error) {
-	if db.Conn == nil {
-		return nil, fmt.Errorf("database connection is nil")
-	}
-
 	query := `
 		SELECT id, name, domain, tech_stack, hiring_signals, market_cap_tier, created_at, updated_at
 		FROM companies
@@ -136,10 +128,6 @@ func (db *DB) CreateDeal(ctx context.Context, deal *Deal) error {
 
 // UpdateDealState updates the state of an existing deal.
 func (db *DB) UpdateDealState(ctx context.Context, dealID int64, newState LeadState) error {
-	if db.Conn == nil {
-		return fmt.Errorf("database connection is nil")
-	}
-
 	query := `
 		UPDATE deals
 		SET current_state = $1, updated_at = $2
@@ -378,10 +366,6 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 
 // GetContactByEmail retrieves a contact by their email address.
 func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, error) {
-	if db.Conn == nil {
-		return nil, fmt.Errorf("database connection is nil")
-	}
-
 	query := `
 		SELECT id, company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at
 		FROM contacts
@@ -765,8 +749,8 @@ func (db *DB) MarkTemplateSuccessForDeal(ctx context.Context, dealID int64) erro
 	}
 
 	for _, contact := range contacts {
-		// Find outbound interactions that haven't been marked successful yet
-		query := `SELECT id, template_id FROM interactions WHERE contact_id = $1 AND direction = 'Outbound' AND success = false`
+		// Find outbound interactions with a template that haven't been marked successful yet
+		query := `SELECT id, template_id FROM interactions WHERE contact_id = $1 AND direction = 'Outbound' AND success = false AND template_id IS NOT NULL`
 		rows, err := db.Conn.QueryContext(ctx, query, contact.ID)
 		if err != nil {
 			return fmt.Errorf("failed to query interactions for contact %d: %w", contact.ID, err)
@@ -864,35 +848,35 @@ func (db *DB) DeleteGDPRData(ctx context.Context, email string) error {
 	return tx.Commit()
 }
 
-// ListRecentAuditLogs retrieves the latest audit logs.
-func (db *DB) ListRecentAuditLogs(ctx context.Context, limit int) ([]AuditLog, error) {
+// ListSocialPosts retrieves recent social media posts.
+func (db *DB) ListSocialPosts(ctx context.Context, limit int) ([]SocialPost, error) {
 	if db.Conn == nil {
 		return nil, fmt.Errorf("database connection is nil")
 	}
 
 	query := `
-		SELECT id, entity_id, type, action, actor, metadata, created_at
-		FROM audit_log
+		SELECT id, brand, platform, account_username, post_content, status, created_at
+		FROM social_posts
 		ORDER BY created_at DESC
 		LIMIT $1
 	`
 	rows, err := db.Conn.QueryContext(ctx, query, limit)
 	if err != nil {
 		// Suppress error if table doesn't exist yet for tests without migrations
-		if strings.Contains(err.Error(), "relation \"audit_log\" does not exist") {
-			return []AuditLog{}, nil
+		if strings.Contains(err.Error(), "relation \"social_posts\" does not exist") {
+			return []SocialPost{}, nil
 		}
-		return nil, fmt.Errorf("failed to list audit logs: %w", err)
+		return nil, fmt.Errorf("failed to list social posts: %w", err)
 	}
 	defer rows.Close()
 
-	var logs []AuditLog
+	var posts []SocialPost
 	for rows.Next() {
-		var l AuditLog
-		if err := rows.Scan(&l.ID, &l.EntityID, &l.Type, &l.Action, &l.Actor, &l.Metadata, &l.CreatedAt); err != nil {
+		var p SocialPost
+		if err := rows.Scan(&p.ID, &p.Brand, &p.Platform, &p.AccountUsername, &p.PostContent, &p.Status, &p.CreatedAt); err != nil {
 			return nil, err
 		}
-		logs = append(logs, l)
+		posts = append(posts, p)
 	}
-	return logs, nil
+	return posts, nil
 }

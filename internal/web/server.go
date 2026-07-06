@@ -11,11 +11,9 @@ import (
 	"html"
 	"io"
 	"log/slog"
-	"net"
 	"net/http"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/robertpelloni/marketing_agent/internal/auth"
 	"github.com/robertpelloni/marketing_agent/internal/communication"
@@ -24,7 +22,6 @@ import (
 	"github.com/robertpelloni/marketing_agent/internal/deploy"
 	"github.com/robertpelloni/marketing_agent/internal/llm"
 	"github.com/robertpelloni/marketing_agent/internal/logging"
-	"github.com/gorilla/websocket"
 )
 
 // HermesHealthChecker is an optional interface for checking LLM provider health.
@@ -78,9 +75,6 @@ func (s *Server) routes() {
 	// GDPR Endpoints
 	s.mux.Handle("/api/v1/gdpr/export", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleGDPRExport))))
 	s.mux.Handle("/api/v1/gdpr/delete", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleGDPRDelete))))
-
-	// Telemetry WebSocket
-	s.mux.Handle("/ws/telemetry", s.auth.Middleware(http.HandlerFunc(s.handleTelemetryWS)))
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -184,6 +178,7 @@ case "build":
 	}
 
 	taskList, _ := s.tasks.ListAllTasks(r.Context())
+	socialPosts, _ := s.db.ListSocialPosts(r.Context(), 10)
 
 	// Check LLM/Hermes health for the dashboard
 	llmStatus := "Mock"
@@ -198,41 +193,114 @@ case "build":
 		}
 	}
 
-	w.Header().Set("Content-Type", "text/html")
+		w.Header().Set("Content-Type", "text/html")
+	_, _ = fmt.Fprintf(w, "%s", "<!DOCTYPE html>")
 	_, _ = fmt.Fprintf(w, `
-<!DOCTYPE html>
 <html>
 <head>
-<title>Marketing Agent Dashboard</title>
+<title>TormentNexus / HyperNexus Autonomous Pipeline Dashboard</title>
 <style>
-body { font-family: sans-serif; margin: 40px; background-color: #f4f4f9; }
-table { width: 100%%; border-collapse: collapse; margin-top: 20px; background: white; }
-th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
-th { background-color: #007bff; color: white; }
-tr:nth-child(even) { background-color: #f2f2f2; }
-h1 { color: #333; }
-.status { font-weight: bold; padding: 4px 8px; border-radius: 4px; cursor: help; }
+:root {
+	--primary: #007bff;
+	--success: #28a745;
+	--info: #17a2b8;
+	--warning: #ffc107;
+	--danger: #dc3545;
+	--dark: #343a40;
+	--light: #f8f9fa;
+	--purple: #6f42c1;
+}
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #e9ecef; color: #333; }
+.header { background: var(--dark); color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+.header h1 { margin: 0; font-size: 1.5rem; }
+.container { max-width: 1400px; margin: 20px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.full-width { grid-column: 1 / -1; }
+.card { background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
+.card-header { font-size: 1.25rem; font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+table { width: 100%%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
+th { background-color: #f1f3f5; color: #495057; }
+tr:hover { background-color: #f8f9fa; }
+.status { font-weight: 600; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; display: inline-block; }
 .status-Discovered { background-color: #e2e3e5; color: #383d41; }
 .status-Researched { background-color: #cce5ff; color: #004085; }
 .status-PR { background-color: #fff3cd; color: #856404; }
-.action-btn { background-color: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
-.action-btn:hover { background-color: #218838; }
-.deploy-section { margin-top: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background: #fff; }
-.deploy-btn { background-color: #007bff; margin-right: 10px; }
+.status-Closed_Won { background-color: #d4edda; color: #155724; }
+.status-Closed_Lost { background-color: #f8d7da; color: #721c24; }
+.action-btn { background-color: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: background 0.2s; }
+.action-btn:hover { opacity: 0.9; }
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+.metric-box { padding: 15px; border-radius: 8px; text-align: center; }
+.metric-value { font-size: 1.8rem; font-weight: bold; margin-bottom: 5px; }
+.metric-label { font-size: 0.85rem; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+.tooltip { position: relative; cursor: help; border-bottom: 1px dotted #666; }
+.tooltip .tooltiptext { visibility: hidden; width: 200px; background-color: #333; color: #fff; text-align: center; border-radius: 6px; padding: 5px 0; position: absolute; z-index: 1; bottom: 125%%; left: 50%%; margin-left: -100px; opacity: 0; transition: opacity 0.3s; font-size: 0.75rem; font-weight: normal; }
+.tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
 </style>
 </head>
 <body>
-<h1>Sales Bot Lead Dashboard</h1>
-<p>Total Recent Leads: %d</p>
-<table>
-<tr>
-<th>Deal ID</th>
-<th>Company ID</th>
-<th>State</th>
-<th>Last Updated</th>
-<th>Actions</th>
-</tr>`, len(deals))
+<div class="header">
+	<h1>TormentNexus / HyperNexus Autonomous Pipeline Dashboard</h1>
+	<div>
+		<span style="margin-right: 15px;" class="tooltip">System Health: <strong style="color: %s;">%s</strong>
+			<span class="tooltiptext">CI/CD deployment status and database connection</span>
+		</span>
+		<span class="tooltip">LLM Status: <strong style="color: %s;">%s</strong>
+			<span class="tooltiptext">Connection to Hermes or Mock LLM Provider</span>
+		</span>
+	</div>
+</div>
+<div class="container">
+	<div class="card full-width" style="border-top: 4px solid var(--info);">
+		<div class="card-header">
+			Performance Metrics
+			<span class="tooltip" style="font-size:0.8rem; color:#888;">?
+				<span class="tooltiptext">Real-time pipeline statistics and conversion rates.</span>
+			</span>
+		</div>
+		<div class="metrics-grid">
+			<div class="metric-box" style="background: #e9ecef;">
+				<div class="metric-value">%d</div>
+				<div class="metric-label">Total Leads</div>
+			</div>
+			<div class="metric-box" style="background: #d4edda;">
+				<div class="metric-value">%d</div>
+				<div class="metric-label">Won Deals</div>
+			</div>
+			<div class="metric-box" style="background: #f8d7da;">
+				<div class="metric-value">%.1f%%</div>
+				<div class="metric-label">Win Rate</div>
+			</div>
+			<div class="metric-box" style="background: #fff3cd;">
+				<div class="metric-value">%d</div>
+				<div class="metric-label">Successful Outreach</div>
+			</div>
+		</div>
+		<div style="margin-top: 15px; font-size: 0.9rem; display: flex; gap: 15px; justify-content: center; color: #555;">
+			<span><strong>Pipeline:</strong></span>
+			<span class="tooltip">Discovered: %d<span class="tooltiptext">Leads found by scraper</span></span> |
+			<span class="tooltip">Researched: %d<span class="tooltiptext">Technical dossier built</span></span> |
+			<span class="tooltip">Outreach Sent: %d<span class="tooltiptext">Initial email/message sent</span></span> |
+			<span class="tooltip">Engaged: %d<span class="tooltiptext">Reply received</span></span> |
+			<span class="tooltip">Negotiating: %d<span class="tooltiptext">Discussing terms</span></span>
+		</div>
+	</div>
+	<div class="card full-width" style="border-top: 4px solid var(--primary);">
+		<div class="card-header">
+			Active Deals
+			<span style="font-size: 0.8rem; font-weight: normal; color: #666;">(Showing last %d)</span>
+		</div>
+		<table>
+			<tr>
+				<th>Deal ID</th>
+				<th>Company ID</th>
+				<th>State</th>
+				<th>Contacts & Channels</th>
+				<th>Last Updated</th>
+				<th>Actions</th>
+			</tr>`, healthStatusColor(health), health, llmColor, llmStatus, metrics.TotalLeads, metrics.LeadsByState[db.StateClosedWon], metrics.WinRate, metrics.SuccessfulOutreach, metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateOutreachSent], metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateNegotiating], len(deals))
 
+	var dealsRows string
 	for _, d := range deals {
 		statusTitle := ""
 		switch d.CurrentState {
@@ -244,7 +312,6 @@ h1 { color: #333; }
 			statusTitle = "Deal flagged for human approval before progression."
 		}
 
-		// Retrieve contacts and latest interaction ID for each deal
 		contacts, _ := s.db.ListContactsByCompany(r.Context(), d.CompanyID)
 		latestInteractionID := int64(0)
 		var contactHTML string
@@ -254,8 +321,7 @@ h1 { color: #333; }
 				latestInteractionID = interactions[0].ID
 			}
 
-			// Build contacts HTML with channel preference dropdown
-			contactHTML = `<div style="margin-top: 8px; font-size: 0.9em;">`
+			contactHTML = "<div style='font-size: 0.85em;'>"
 			for _, c := range contacts {
 				channel := c.PreferredChannel
 				if channel == "" {
@@ -263,13 +329,14 @@ h1 { color: #333; }
 				}
 				contactHTML += fmt.Sprintf(`
 				<div style="margin: 4px 0;">
-					<strong>%s</strong> (%s) — 
-					<span style="color: %s;">%s</span>
-					<form method="POST" style="display:inline; margin-left: 8px;">
+					<span class="tooltip"><strong>%s</strong> (%s)
+						<span class="tooltiptext">Set preferred outreach channel</span>
+					</span> —
+					<form method="POST" style="display:inline; margin-left: 4px;">
 						<input type="hidden" name="csrf_token" value="%s">
 						<input type="hidden" name="action" value="update_channel">
 						<input type="hidden" name="contact_id" value="%d">
-						<select name="channel" onchange="this.form.submit()" style="font-size: 0.85em; padding: 2px 4px;">
+						<select name="channel" onchange="this.form.submit()" style="font-size: 0.9em; padding: 2px;">
 							<option value="email"%s>Email</option>
 							<option value="linkedin"%s>LinkedIn</option>
 							<option value="github"%s>GitHub</option>
@@ -278,206 +345,148 @@ h1 { color: #333; }
 				</div>`,
 					html.EscapeString(c.Name),
 					html.EscapeString(c.Role),
-					"#17a2b8", html.EscapeString(channel),
 					csrfToken,
 					c.ID,
 					map[bool]string{true: " selected", false: ""}[channel == "email"],
 					map[bool]string{true: " selected", false: ""}[channel == "linkedin"],
 					map[bool]string{true: " selected", false: ""}[channel == "github"])
 			}
-			contactHTML += `</div>`
+			contactHTML += "</div>"
 		}
 
-		_, _ = fmt.Fprintf(w, `
-<tr>
-<td>%d</td>
-<td>%d</td>
-<td><span class="status status-%s" title="%s">%s</span></td>
-<td>%s</td>
-<td>
-<form method="POST" style="display:inline;">
-<input type="hidden" name="csrf_token" value="%s">
-<input type="hidden" name="action" value="enrich">
-<input type="hidden" name="deal_id" value="%d">
-<button type="submit" class="action-btn">Trigger Enrichment</button>
-</form>
-<form method="POST" style="display:inline;">
-<input type="hidden" name="csrf_token" value="%s">
-<input type="hidden" name="action" value="flag_success">
-<input type="hidden" name="interaction_id" value="%d">
-<input type="hidden" name="success" value="true">
-<button type="submit" class="action-btn" style="background-color: #6f42c1;">Flag Success</button>
-</form>
-</td>
-</tr>%s`, d.ID, d.CompanyID, d.CurrentState, statusTitle, d.CurrentState, d.UpdatedAt.Format("2006-01-02 15:04:05"), csrfToken, d.ID, csrfToken, latestInteractionID, contactHTML)
+		dealsRows += fmt.Sprintf(`
+			<tr>
+				<td>%d</td>
+				<td>%d</td>
+				<td><span class="status status-%s tooltip">%s<span class="tooltiptext">%s</span></span></td>
+				<td>%s</td>
+				<td>%s</td>
+				<td>
+					<div style="display: flex; gap: 5px;">
+						<form method="POST">
+							<input type="hidden" name="csrf_token" value="%s">
+							<input type="hidden" name="action" value="enrich">
+							<input type="hidden" name="deal_id" value="%d">
+							<button type="submit" class="action-btn tooltip" style="background-color: var(--info);">Enrich<span class="tooltiptext">Manually trigger enrichment for this deal</span></button>
+						</form>
+						<form method="POST">
+							<input type="hidden" name="csrf_token" value="%s">
+							<input type="hidden" name="action" value="flag_success">
+							<input type="hidden" name="interaction_id" value="%d">
+							<input type="hidden" name="success" value="true">
+							<button type="submit" class="action-btn tooltip" style="background-color: var(--purple);">Success<span class="tooltiptext">Flag the latest interaction as successful to train the LLM</span></button>
+						</form>
+					</div>
+				</td>
+			</tr>`, d.ID, d.CompanyID, d.CurrentState, d.CurrentState, statusTitle, contactHTML, d.UpdatedAt.Format("2006-01-02 15:04"), csrfToken, d.ID, csrfToken, latestInteractionID)
 	}
 
-	_, _ = fmt.Fprintf(w, `
-</table>
-<div class="deploy-section" style="border-top: 5px solid #17a2b8;">
-<h2>Performance Metrics</h2>
-<p>Real-time pipeline statistics and conversion rates.</p>
-<div style="display: flex; gap: 20px; flex-wrap: wrap;">
-<div style="background: #e9ecef; padding: 15px; border-radius: 8px; min-width: 150px;">
-<strong>Total Leads:</strong> %d
-</div>
-<div style="background: #d4edda; padding: 15px; border-radius: 8px; min-width: 150px;">
-<strong>Won Deals:</strong> %d
-</div>
-<div style="background: #f8d7da; padding: 15px; border-radius: 8px; min-width: 150px;">
-<strong>Win Rate:</strong> %.1f%%
-</div>
-<div style="background: #fff3cd; padding: 15px; border-radius: 8px; min-width: 150px;">
-<strong>Successful Outreach:</strong> %d
-</div>
-</div>
-<h3>Leads by State</h3>
-<ul>
-<li><strong>Discovered:</strong> %d</li>
-<li><strong>Researched:</strong> %d</li>
-<li><strong>Outreach Sent:</strong> %d</li>
-<li><strong>Engaged:</strong> %d</li>
-<li><strong>Negotiating:</strong> %d</li>
-</ul>
-</div>`, metrics.TotalLeads, metrics.LeadsByState[db.StateClosedWon], metrics.WinRate, metrics.SuccessfulOutreach, metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateOutreachSent], metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateNegotiating])
+	_, _ = fmt.Fprint(w, dealsRows, `
+		</table>
+	</div>`)
 
-	_, _ = fmt.Fprintf(w, `
-<div class="deploy-section">
-<h2>Autonomous Task Board</h2>
-<p>Prioritized development roadmap and execution status.</p>
-<table>
-<tr>
-<th>Description</th>
-<th>Status</th>
-</tr>`)
+	_, _ = fmt.Fprint(w, `
+	<div class="card full-width" style="border-top: 4px solid var(--purple);">
+		<div class="card-header">
+			Social Marketing & DevRel Activity
+			<span class="tooltip" style="font-size:0.8rem; color:#888;">?
+				<span class="tooltiptext">Automated dual-brand outreach logs for TormentNexus & HyperNexus</span>
+			</span>
+		</div>
+		<table>
+			<tr>
+				<th>Brand</th>
+				<th>Platform</th>
+				<th>Account</th>
+				<th>Content</th>
+				<th>Status</th>
+				<th>Time</th>
+			</tr>`)
+
+	for _, p := range socialPosts {
+		_, _ = fmt.Fprintf(w, `
+			<tr>
+				<td><strong>%s</strong></td>
+				<td>%s</td>
+				<td>%s</td>
+				<td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="%s">%s</td>
+				<td><span class="status status-%s">%s</span></td>
+				<td>%s</td>
+			</tr>`, html.EscapeString(p.Brand), html.EscapeString(p.Platform), html.EscapeString(p.AccountUsername), html.EscapeString(p.PostContent), html.EscapeString(p.PostContent), html.EscapeString(p.Status), html.EscapeString(p.Status), p.CreatedAt.Format("01/02 15:04"))
+	}
+
+	_, _ = fmt.Fprint(w, `
+		</table>
+	</div>`)
+
+	_, _ = fmt.Fprint(w, `
+	<div class="card" style="border-top: 4px solid var(--warning);">
+		<div class="card-header">
+			Autonomous Task Board
+			<span class="tooltip" style="font-size:0.8rem; color:#888;">?
+				<span class="tooltiptext">Prioritized development roadmap and execution status from TODO.md</span>
+			</span>
+		</div>
+		<table>
+			<tr><th>Task Description</th><th>Status</th></tr>`)
 
 	for _, t := range taskList {
 		status := "Pending"
 		if t.Completed {
 			status = "Completed"
 		}
-		_, _ = fmt.Fprintf(w, `
-<tr>
-<td>%s</td>
-<td><span class="status status-%s">%s</span></td>
-</tr>`, html.EscapeString(t.Description), status, status)
+		_, _ = fmt.Fprintf(w, `<tr><td>%s</td><td><span class="status status-%s">%s</span></td></tr>`, html.EscapeString(t.Description), status, status)
 	}
 
-	_, _ = fmt.Fprintf(w, `
-</table>
-</div>
-<div class="deploy-section">
-<h2>Autonomous Pull Requests</h2>
-<p>Active feature branches and automated merge status.</p>
-<table>
-<tr>
-<th>PR ID</th>
-<th>Branch</th>
-<th>Title</th>
-<th>Status</th>
-</tr>`)
+	_, _ = fmt.Fprint(w, `</table></div>`)
+
+	_, _ = fmt.Fprint(w, `
+	<div class="card" style="border-top: 4px solid var(--success);">
+		<div class="card-header">
+			CI/CD & Repository State
+			<span class="tooltip" style="font-size:0.8rem; color:#888;">?
+				<span class="tooltiptext">Active feature branches, automated merge status, and deployment controls</span>
+			</span>
+		</div>
+
+		<div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee;">
+			<form method="POST" style="display:inline;">
+				<input type="hidden" name="csrf_token" value="`+csrfToken+`">
+				<input type="hidden" name="action" value="sync">
+				<button type="submit" class="action-btn tooltip">Sync Repository<span class="tooltiptext">Pull upstream changes and resolve conflicts</span></button>
+			</form>
+			<form method="POST" style="display:inline; margin-left: 10px;">
+				<input type="hidden" name="csrf_token" value="`+csrfToken+`">
+				<input type="hidden" name="action" value="build">
+				<button type="submit" class="action-btn tooltip" style="background-color: var(--dark);">Trigger Build<span class="tooltiptext">Force a local project recompilation</span></button>
+			</form>
+		</div>
+
+		<h4>Active Pull Requests</h4>
+		<table>
+			<tr><th>PR ID</th><th>Branch</th><th>Title</th><th>Status</th></tr>`)
 
 	for _, pr := range prs {
-		_, _ = fmt.Fprintf(w, `
-<tr>
-<td>%s</td>
-<td>%s</td>
-<td>%s</td>
-<td><span class="status status-PR">%s</span></td>
-</tr>`, html.EscapeString(pr.ID), html.EscapeString(pr.Branch), html.EscapeString(pr.Title), html.EscapeString(string(pr.Status)))
+		_, _ = fmt.Fprintf(w, `<tr><td>%s</td><td>%s</td><td>%s</td><td><span class="status status-PR">%s</span></td></tr>`, html.EscapeString(pr.ID), html.EscapeString(pr.Branch), html.EscapeString(pr.Title), html.EscapeString(string(pr.Status)))
 	}
 
-	_, _ = fmt.Fprintf(w, `
-</table>
-</div>
-<div class="deploy-section">
-<h2>Self-Service Deployment</h2>
-<p>Manage repository state and trigger system builds autonomously.</p>
-<form method="POST" style="display:inline;">
-<input type="hidden" name="csrf_token" value="%s">
-<input type="hidden" name="action" value="sync">
-<button type="submit" class="action-btn deploy-btn">Sync Repository</button>
-</form>
-<form method="POST" style="display:inline;">
-<input type="hidden" name="csrf_token" value="%s">
-<input type="hidden" name="action" value="build">
-<button type="submit" class="action-btn deploy-btn" style="background-color: #6c757d;">Trigger Build</button>
-</form>
-</div>
-<div class="deploy-section" style="border-left: 5px solid #28a745;">
-<h2>System Health &amp; CI Status</h2>
-<p>Real-time monitoring of the autonomous deployment pipeline.</p>
-<ul>
-<li><strong>Global Health:</strong> <span style="color: #28a745;">%s %s</span></li>
-<li><strong>LLM Provider:</strong> <span style="color: %s;">%s</span></li>
-</ul>
-<div style="margin-top: 20px;">
-	<h3>Real-time Telemetry (WebSocket)</h3>
-	<div style="display: flex; gap: 20px;">
-		<div style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px; background: #fafafa;">
-			<h4>Audit Log Stream</h4>
-			<div id="auditLogStream" style="height: 150px; overflow-y: auto; font-family: monospace; font-size: 12px; background: #fff; padding: 5px; border: 1px inset #ccc;">
-				<em style="color: #888;">Connecting to telemetry stream...</em>
-			</div>
-		</div>
-		<div style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px; background: #fafafa;">
-			<h4>Hermes Latency (ms)</h4>
-			<div id="latencyGauge" style="height: 150px; background: #fff; padding: 5px; border: 1px inset #ccc; display: flex; align-items: flex-end;">
-				<em style="color: #888; align-self: center; margin: auto;">Connecting...</em>
-			</div>
-		</div>
+	_, _ = fmt.Fprint(w, `
+		</table>
 	</div>
 </div>
-<script>
-	const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-	const ws = new WebSocket(proto + '//' + window.location.host + '/ws/telemetry');
-
-	const auditLogStream = document.getElementById('auditLogStream');
-	const latencyGauge = document.getElementById('latencyGauge');
-
-	let bars = [];
-
-	ws.onmessage = function(event) {
-		const data = JSON.parse(event.data);
-
-		// Update Audit Logs
-		if (data.audit_logs && data.audit_logs.length > 0) {
-			auditLogStream.innerHTML = '';
-			data.audit_logs.forEach(log => {
-				const div = document.createElement('div');
-				div.style.borderBottom = '1px solid #eee';
-				div.style.padding = '2px 0';
-				div.textContent = "[" + (log.actor || 'system') + "] " + log.action;
-				auditLogStream.appendChild(div);
-			});
-		}
-
-		// Update Latency Gauge (Mini sparkline)
-		if (data.metrics && data.metrics.hermes_latency_ms) {
-			if (bars.length === 0) latencyGauge.innerHTML = '';
-
-			const val = data.metrics.hermes_latency_ms;
-			const bar = document.createElement('div');
-			bar.style.width = '10px';
-			bar.style.marginRight = '2px';
-			bar.style.background = val > 600 ? '#dc3545' : (val > 400 ? '#ffc107' : '#28a745');
-			// max expected roughly 1000ms for mapping
-			const h = Math.min(100, (val / 1000) * 100);
-			bar.style.height = Math.round(h) + "%%";
-			bar.title = Math.round(val) + "ms";
-
-			latencyGauge.appendChild(bar);
-			bars.push(bar);
-			if (bars.length > 30) {
-				const oldBar = bars.shift();
-				latencyGauge.removeChild(oldBar);
-			}
-		}
-	};
-</script>
-</div>
 </body>
-</html>`, csrfToken, csrfToken, health, map[bool]string{true: "🥇", false: "🚨"}[health == "Healthy"], llmColor, llmStatus)
+</html>
+`)
+}
+
+func healthStatusColor(status string) string {
+	if strings.Contains(strings.ToLower(status), "ok") || strings.Contains(strings.ToLower(status), "pass") {
+		return "#28a745" // green
+	}
+	if strings.Contains(strings.ToLower(status), "error") || strings.Contains(strings.ToLower(status), "fail") {
+		return "#dc3545" // red
+	}
+	return "#ffc107" // yellow
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
@@ -533,42 +542,6 @@ func verifySignature(payload []byte, secret string, signatureHeader string) bool
 func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	// SECURITY: Webhook IP Allowlisting (GitHub Webhook IPs)
-	// In production, this list would be fetched dynamically from api.github.com/meta
-	allowedIPs := []string{
-		"192.30.252.0/22", "185.199.108.0/22", "140.82.112.0/20", "143.55.64.0/20", "127.0.0.1", "::1",
-	}
-
-	clientIP := r.Header.Get("X-Real-IP")
-	if clientIP == "" {
-		clientIP = r.Header.Get("X-Forwarded-For")
-	}
-	if clientIP == "" {
-		clientIP, _, _ = net.SplitHostPort(r.RemoteAddr)
-	}
-
-	isAllowed := false
-	parsedIP := net.ParseIP(clientIP)
-	for _, allowed := range allowedIPs {
-		if strings.Contains(allowed, "/") {
-			// Subnet check
-			_, subnet, err := net.ParseCIDR(allowed)
-			if err == nil && subnet.Contains(parsedIP) {
-				isAllowed = true
-				break
-			}
-		} else if clientIP == allowed {
-			isAllowed = true
-			break
-		}
-	}
-
-	if !isAllowed && clientIP != "127.0.0.1" { // Localhost always allowed for local testing/proxy
-		slog.WarnContext(r.Context(), "Webhook: Blocked request from unauthorized IP", "ip", clientIP)
-		http.Error(w, "Forbidden: IP not allowlisted", http.StatusForbidden)
 		return
 	}
 
@@ -667,79 +640,6 @@ func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
 		_ = json.NewEncoder(w).Encode(lead)
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
-}
-
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-	CheckOrigin: func(r *http.Request) bool {
-		return true // Allow all origins for telemetry dashboard
-	},
-}
-
-func (s *Server) handleTelemetryWS(w http.ResponseWriter, r *http.Request) {
-	conn, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		slog.ErrorContext(r.Context(), "WebSocket upgrade failed", "error", err)
-		return
-	}
-	defer conn.Close()
-
-	slog.InfoContext(r.Context(), "Telemetry WebSocket connected")
-
-	// Filter parameters (e.g. who=autodev)
-	filterActor := r.URL.Query().Get("who")
-
-	ticker := time.NewTicker(2 * time.Second)
-	defer ticker.Stop()
-
-	// Simulate Hermes Latency data via random walk around an average for now,
-	// in a real app this would be polled from actual LLM latency metrics.
-	latency := 450.0
-
-	for {
-		select {
-		case <-r.Context().Done():
-			return
-		case <-ticker.C:
-			// Fetch recent audit logs
-			logs, err := s.db.ListRecentAuditLogs(r.Context(), 50)
-			if err != nil {
-				slog.ErrorContext(r.Context(), "Failed to fetch audit logs for telemetry", "error", err)
-				continue
-			}
-
-			// Filter if requested
-			var filtered []db.AuditLog
-			if filterActor != "" {
-				for _, l := range logs {
-					if l.Actor == filterActor {
-						filtered = append(filtered, l)
-					}
-				}
-			} else {
-				filtered = logs
-			}
-
-			// Generate jitter for latency
-			latency += float64((time.Now().UnixNano()%100)-50) / 2.0
-			if latency < 200 {
-				latency = 200
-			}
-
-			payload := map[string]interface{}{
-				"audit_logs": filtered,
-				"metrics": map[string]interface{}{
-					"hermes_latency_ms": latency,
-				},
-			}
-
-			if err := conn.WriteJSON(payload); err != nil {
-				slog.ErrorContext(r.Context(), "WebSocket write failed", "error", err)
-				return
-			}
-		}
 	}
 }
 

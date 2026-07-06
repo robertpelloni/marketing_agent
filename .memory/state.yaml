@@ -7,3 +7,6 @@ sessions:
   - file: "C:\Users\hyper\.pi\agent\sessions\--C--Users-hyper-workspace-enterprise_sales_bot--\2026-06-22T14-41-38-770Z_019eefc7-a3d2-750e-b824-c519776495e9.jsonl"
     branch: main
     started: "2026-06-22T14:41:46.919Z"
+  - file: "C:\Users\hyper\.pi\agent\sessions\--C--Users-hyper-workspace-marketing_agent--\2026-07-05T20-42-41-165Z_019f3404-da8d-7ddd-a5d8-e8d64fa1bf62.jsonl"
+    branch: main
+    started: "2026-07-05T20:43:07.064Z"

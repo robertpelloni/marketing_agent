@@ -138,3 +138,23 @@ type SocialPost struct {
 	Status          string    `db:"status"`           // "posted", "failed", "draft"
 	CreatedAt       time.Time `db:"created_at"`
 }
+
+// MemoryNode represents a knowledge chunk in the GraphRAG memory vault.
+type MemoryNode struct {
+	ID        int64     `db:"id"`
+	Type      string    `db:"type"` // e.g. Document, Interaction, Objection
+	Content   string    `db:"content"`
+	// Embedding handles pgvector representation implicitly in db layer or via custom struct
+	Metadata  string    `db:"metadata"` // JSONB string
+	CreatedAt time.Time `db:"created_at"`
+}
+
+// MemoryEdge represents a relationship between MemoryNodes for GraphRAG traversal.
+type MemoryEdge struct {
+	ID           int64     `db:"id"`
+	SourceNodeID int64     `db:"source_node_id"`
+	TargetNodeID int64     `db:"target_node_id"`
+	RelationType string    `db:"relation_type"`
+	Weight       float64   `db:"weight"`
+	CreatedAt    time.Time `db:"created_at"`
+}

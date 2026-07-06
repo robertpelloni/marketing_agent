@@ -12,6 +12,10 @@ import (
 
 // CreateCompany inserts a new company into the database.
 func (db *DB) CreateCompany(ctx context.Context, company *Company) error {
+	if db.Conn == nil {
+		return fmt.Errorf("database connection is nil")
+	}
+
 	query := `
 		INSERT INTO companies (name, domain, tech_stack, hiring_signals, market_cap_tier, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7)
@@ -53,6 +57,10 @@ func (db *DB) UpdateDealDetails(ctx context.Context, dealID int64, pricing float
 
 // GetCompanyByID retrieves a company by its ID.
 func (db *DB) GetCompanyByID(ctx context.Context, id int64) (*Company, error) {
+	if db.Conn == nil {
+		return nil, fmt.Errorf("database connection is nil")
+	}
+
 	query := `
 		SELECT id, name, domain, tech_stack, hiring_signals, market_cap_tier, created_at, updated_at
 		FROM companies
@@ -127,6 +135,10 @@ func (db *DB) CreateDeal(ctx context.Context, deal *Deal) error {
 
 // UpdateDealState updates the state of an existing deal.
 func (db *DB) UpdateDealState(ctx context.Context, dealID int64, newState LeadState) error {
+	if db.Conn == nil {
+		return fmt.Errorf("database connection is nil")
+	}
+
 	query := `
 		UPDATE deals
 		SET current_state = $1, updated_at = $2
@@ -365,6 +377,10 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 
 // GetContactByEmail retrieves a contact by their email address.
 func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, error) {
+	if db.Conn == nil {
+		return nil, fmt.Errorf("database connection is nil")
+	}
+
 	query := `
 		SELECT id, company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at
 		FROM contacts

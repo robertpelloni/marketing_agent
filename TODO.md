@@ -107,7 +107,7 @@
 - [ ] Add webhook IP allowlisting
 
 ### Scale & Performance
-- [ ] Add PostgreSQL connection pooling with configurable limits
+- [x] Add PostgreSQL connection pooling with configurable limits
 - [ ] Add Redis caching layer for frequently accessed data (company lookups, performance metrics)
 - [ ] Add horizontal scaling support — make workers stateless so multiple instances can run
 - [ ] Add message queue (NATS/RabbitMQ) to decouple workers from direct DB polling

@@ -11,6 +11,7 @@ import (
 	"html"
 	"io"
 	"log/slog"
+	"net"
 	"net/http"
 	"os"
 	"strings"
@@ -463,6 +464,42 @@ func verifySignature(payload []byte, secret string, signatureHeader string) bool
 func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// SECURITY: Webhook IP Allowlisting (GitHub Webhook IPs)
+	// In production, this list would be fetched dynamically from api.github.com/meta
+	allowedIPs := []string{
+		"192.30.252.0/22", "185.199.108.0/22", "140.82.112.0/20", "143.55.64.0/20", "127.0.0.1", "::1",
+	}
+
+	clientIP := r.Header.Get("X-Real-IP")
+	if clientIP == "" {
+		clientIP = r.Header.Get("X-Forwarded-For")
+	}
+	if clientIP == "" {
+		clientIP, _, _ = net.SplitHostPort(r.RemoteAddr)
+	}
+
+	isAllowed := false
+	parsedIP := net.ParseIP(clientIP)
+	for _, allowed := range allowedIPs {
+		if strings.Contains(allowed, "/") {
+			// Subnet check
+			_, subnet, err := net.ParseCIDR(allowed)
+			if err == nil && subnet.Contains(parsedIP) {
+				isAllowed = true
+				break
+			}
+		} else if clientIP == allowed {
+			isAllowed = true
+			break
+		}
+	}
+
+	if !isAllowed && clientIP != "127.0.0.1" { // Localhost always allowed for local testing/proxy
+		slog.WarnContext(r.Context(), "Webhook: Blocked request from unauthorized IP", "ip", clientIP)
+		http.Error(w, "Forbidden: IP not allowlisted", http.StatusForbidden)
 		return
 	}
 

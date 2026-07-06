@@ -104,7 +104,7 @@
 - [ ] Add secrets encryption at rest
 - [x] Add GDPR data export endpoint
 - [x] Add GDPR data deletion endpoint
-- [ ] Add webhook IP allowlisting
+- [x] Add webhook IP allowlisting
 
 ### Scale & Performance
 - [x] Add PostgreSQL connection pooling with configurable limits

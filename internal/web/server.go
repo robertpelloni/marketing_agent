@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/robertpelloni/marketing_agent/internal/auth"
 	"github.com/robertpelloni/marketing_agent/internal/communication"
@@ -23,6 +24,7 @@ import (
 	"github.com/robertpelloni/marketing_agent/internal/deploy"
 	"github.com/robertpelloni/marketing_agent/internal/llm"
 	"github.com/robertpelloni/marketing_agent/internal/logging"
+	"github.com/gorilla/websocket"
 )
 
 // HermesHealthChecker is an optional interface for checking LLM provider health.
@@ -76,6 +78,9 @@ func (s *Server) routes() {
 	// GDPR Endpoints
 	s.mux.Handle("/api/v1/gdpr/export", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleGDPRExport))))
 	s.mux.Handle("/api/v1/gdpr/delete", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleGDPRDelete))))
+
+	// Telemetry WebSocket
+	s.mux.Handle("/ws/telemetry", s.auth.Middleware(http.HandlerFunc(s.handleTelemetryWS)))
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -403,12 +408,76 @@ h1 { color: #333; }
 <h2>System Health &amp; CI Status</h2>
 <p>Real-time monitoring of the autonomous deployment pipeline.</p>
 <ul>
-<li><strong>Global Health:</strong> <span style="color: #28a745;">%s</span></li>
+<li><strong>Global Health:</strong> <span style="color: #28a745;">%s %s</span></li>
 <li><strong>LLM Provider:</strong> <span style="color: %s;">%s</span></li>
 </ul>
+<div style="margin-top: 20px;">
+	<h3>Real-time Telemetry (WebSocket)</h3>
+	<div style="display: flex; gap: 20px;">
+		<div style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px; background: #fafafa;">
+			<h4>Audit Log Stream</h4>
+			<div id="auditLogStream" style="height: 150px; overflow-y: auto; font-family: monospace; font-size: 12px; background: #fff; padding: 5px; border: 1px inset #ccc;">
+				<em style="color: #888;">Connecting to telemetry stream...</em>
+			</div>
+		</div>
+		<div style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px; background: #fafafa;">
+			<h4>Hermes Latency (ms)</h4>
+			<div id="latencyGauge" style="height: 150px; background: #fff; padding: 5px; border: 1px inset #ccc; display: flex; align-items: flex-end;">
+				<em style="color: #888; align-self: center; margin: auto;">Connecting...</em>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+	const ws = new WebSocket(proto + '//' + window.location.host + '/ws/telemetry');
+
+	const auditLogStream = document.getElementById('auditLogStream');
+	const latencyGauge = document.getElementById('latencyGauge');
+
+	let bars = [];
+
+	ws.onmessage = function(event) {
+		const data = JSON.parse(event.data);
+
+		// Update Audit Logs
+		if (data.audit_logs && data.audit_logs.length > 0) {
+			auditLogStream.innerHTML = '';
+			data.audit_logs.forEach(log => {
+				const div = document.createElement('div');
+				div.style.borderBottom = '1px solid #eee';
+				div.style.padding = '2px 0';
+				div.textContent = "[" + (log.actor || 'system') + "] " + log.action;
+				auditLogStream.appendChild(div);
+			});
+		}
+
+		// Update Latency Gauge (Mini sparkline)
+		if (data.metrics && data.metrics.hermes_latency_ms) {
+			if (bars.length === 0) latencyGauge.innerHTML = '';
+
+			const val = data.metrics.hermes_latency_ms;
+			const bar = document.createElement('div');
+			bar.style.width = '10px';
+			bar.style.marginRight = '2px';
+			bar.style.background = val > 600 ? '#dc3545' : (val > 400 ? '#ffc107' : '#28a745');
+			// max expected roughly 1000ms for mapping
+			const h = Math.min(100, (val / 1000) * 100);
+			bar.style.height = Math.round(h) + "%%";
+			bar.title = Math.round(val) + "ms";
+
+			latencyGauge.appendChild(bar);
+			bars.push(bar);
+			if (bars.length > 30) {
+				const oldBar = bars.shift();
+				latencyGauge.removeChild(oldBar);
+			}
+		}
+	};
+</script>
 </div>
 </body>
-</html>`, csrfToken, csrfToken, health, llmColor, llmStatus)
+</html>`, csrfToken, csrfToken, health, map[bool]string{true: "🥇", false: "🚨"}[health == "Healthy"], llmColor, llmStatus)
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
@@ -598,6 +667,79 @@ func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
 		_ = json.NewEncoder(w).Encode(lead)
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+}
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool {
+		return true // Allow all origins for telemetry dashboard
+	},
+}
+
+func (s *Server) handleTelemetryWS(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		slog.ErrorContext(r.Context(), "WebSocket upgrade failed", "error", err)
+		return
+	}
+	defer conn.Close()
+
+	slog.InfoContext(r.Context(), "Telemetry WebSocket connected")
+
+	// Filter parameters (e.g. who=autodev)
+	filterActor := r.URL.Query().Get("who")
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	// Simulate Hermes Latency data via random walk around an average for now,
+	// in a real app this would be polled from actual LLM latency metrics.
+	latency := 450.0
+
+	for {
+		select {
+		case <-r.Context().Done():
+			return
+		case <-ticker.C:
+			// Fetch recent audit logs
+			logs, err := s.db.ListRecentAuditLogs(r.Context(), 50)
+			if err != nil {
+				slog.ErrorContext(r.Context(), "Failed to fetch audit logs for telemetry", "error", err)
+				continue
+			}
+
+			// Filter if requested
+			var filtered []db.AuditLog
+			if filterActor != "" {
+				for _, l := range logs {
+					if l.Actor == filterActor {
+						filtered = append(filtered, l)
+					}
+				}
+			} else {
+				filtered = logs
+			}
+
+			// Generate jitter for latency
+			latency += float64((time.Now().UnixNano()%100)-50) / 2.0
+			if latency < 200 {
+				latency = 200
+			}
+
+			payload := map[string]interface{}{
+				"audit_logs": filtered,
+				"metrics": map[string]interface{}{
+					"hermes_latency_ms": latency,
+				},
+			}
+
+			if err := conn.WriteJSON(payload); err != nil {
+				slog.ErrorContext(r.Context(), "WebSocket write failed", "error", err)
+				return
+			}
+		}
 	}
 }
 

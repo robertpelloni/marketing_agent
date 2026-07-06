@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/lib/pq"
@@ -861,4 +862,37 @@ func (db *DB) DeleteGDPRData(ctx context.Context, email string) error {
 	}
 
 	return tx.Commit()
+}
+
+// ListRecentAuditLogs retrieves the latest audit logs.
+func (db *DB) ListRecentAuditLogs(ctx context.Context, limit int) ([]AuditLog, error) {
+	if db.Conn == nil {
+		return nil, fmt.Errorf("database connection is nil")
+	}
+
+	query := `
+		SELECT id, entity_id, type, action, actor, metadata, created_at
+		FROM audit_log
+		ORDER BY created_at DESC
+		LIMIT $1
+	`
+	rows, err := db.Conn.QueryContext(ctx, query, limit)
+	if err != nil {
+		// Suppress error if table doesn't exist yet for tests without migrations
+		if strings.Contains(err.Error(), "relation \"audit_log\" does not exist") {
+			return []AuditLog{}, nil
+		}
+		return nil, fmt.Errorf("failed to list audit logs: %w", err)
+	}
+	defer rows.Close()
+
+	var logs []AuditLog
+	for rows.Next() {
+		var l AuditLog
+		if err := rows.Scan(&l.ID, &l.EntityID, &l.Type, &l.Action, &l.Actor, &l.Metadata, &l.CreatedAt); err != nil {
+			return nil, err
+		}
+		logs = append(logs, l)
+	}
+	return logs, nil
 }

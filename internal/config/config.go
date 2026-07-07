@@ -27,8 +27,7 @@ type Config struct {
 	Port                string
 	Environment         string
 	// Encryption
-	SecretKey           string
-
+	SecretKey string
 
 	// Safety
 	DryRun bool

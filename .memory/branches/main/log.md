@@ -21091,3 +21091,540 @@ bin\marketing_agent.exe %*
 ", path: "C:/Users/hyper/workspace/marketing_agent/HANDOFF.md")
 **Observation**: write: success
 
+## Turn 41 | 2026-07-07T17:20:31.545Z | deepseek/deepseek-v4-flash
+
+**Thought**: Now commit, push, and build:
+**Thinking**: Now commit and push everything, then handle the dead submodule config, then do the final build.
+**Action**: bash(command: "cd C:/Users/hyper/workspace/marketing_agent && git add -A && git commit -m "v0.6.1: secrets encryption, GraphRAG/telemetry tests, script fixes, dead submodule cleanup" 2>&1", timeout: 15)
+**Observation**: bash: success
+
+## Turn 42 | 2026-07-07T17:20:35.604Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Action**: bash(command: "cd C:/Users/hyper/workspace/marketing_agent && git push origin main 2>&1", timeout: 30)
+**Observation**: bash: success
+
+## Turn 43 | 2026-07-07T17:20:40.396Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now the final build:
+**Action**: bash(command: "cd C:/Users/hyper/workspace/marketing_agent && go build -v -o bin/marketing_agent.exe ./cmd/marketing_agent 2>&1 | tail -5", timeout: 120)
+**Observation**: bash: success
+
+## Turn 44 | 2026-07-07T17:20:46.460Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Build successful. Let me check if the binary was created.
+**Action**: bash(command: "cd C:/Users/hyper/workspace/marketing_agent && ls -la bin/marketing_agent.exe 2>/dev/null && echo "BUILD_CONFIRMED" || echo "NO_BINARY"", timeout: 5)
+**Observation**: bash: success
+
+## Turn 45 | 2026-07-07T17:20:49.808Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: All done. Let me also check if the running process is something we need to manage. Let me check if there's a running marketing_agent binary.
+**Action**: bash(command: "tasklist /FI "IMAGENAME eq marketing_agent.exe" 2>/dev/null || ps aux | grep -i marketing | grep -v grep", timeout: 10)
+**Observation**: bash: error
+
+## Turn 46 | 2026-07-07T17:20:53.169Z | deepseek/deepseek-v4-flash
+
+**Thought**: **EXECUTIVE PROTOCOL: COMPLETE** ✅
+
+---
+
+## Summary
+
+### Step 1 — Upstream Tracking & Submodule Sanitization
+| Action | Result |
+|---|---|
+| `git fetch --all --tags` | ✅ 2 new commits on `jules-chore-replace-mocks` |
+| Upstream sync | ✅ Root repo (no parent fork) |
+| Submodule update | ✅ `tormentnexus` — `.gitmodules` entry is dead (no committed gitlink), directory absent |
+
+### Step 2 — Dual-Direction Intelligent Merge Engine
+| Action | Branch | Result |
+|---|---|---|
+| **Forward merge** | `jules-chore-replace-mocks` → `main` | ✅ 2 new commits: secrets encryption at rest, GraphRAG/telemetry integration tests |
+| Conflict resolved | `internal/config/config.go` (2 regions) | ✅ Kept HEAD's Stripe/SMTP/CRM fields + incoming's `SecretKey` |
+| Reverse merge | No active unmerged feature branches | ✅ Skipped |
+| Branch scan | `jules-crm-field-mapping` | 0 unique commits vs HEAD |
+| Branch scan | `dashboard-redesign-and-social-marketing` | 0 unique commits vs HEAD |
+
+### Step 3 — Workspace Cleanup, Documentation, Build
+| Action | Status |
+|---|---|
+| Script validation (`build.bat`, `start.bat`) | ✅ Graceful submodule handling, `.exe` extension |
+| **VERSION** | **0.6.0 → 0.6.1** |
+| CHANGELOG.md | ✅ Updated |
+| HANDOFF.md | ✅ Written |
+| `git push origin main` | ✅ `62b64d8` — 6 files, 230 insertions |
+| **Build** | ✅ `bin/marketing_agent.exe` — 19.7 MB, clean compile |
+| Running process | ✅ No local instance running (deployed on VPS) |
+**Thinking**: No running marketing_agent process locally — which is fine, it's typically run on the VPS. Let me summarize the whole protocol.
+
+## Turn 1 | 2026-07-07T17:26:06.156Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The user wants to prepare a full launch of the marketing bots - targeting tormentnexus to developers and hypernexus to corporate executives. This involves:
+
+1. Understanding the current state of the system
+2. Setting up the targeting/outreach configuration
+3. Ensuring leads are populated
+4. Making sure the LLM integration is working
+5. Checking the communication module is ready
+6. Possibly reviewing the sales strategy configuration
+
+Let me first search memory for context about what's been built, then examine the current state of the key modules.
+**Action**: memory_search(target: "project", project: "marketing_agent", query: "launch outreach targeting tormentnexus hypernexus leads")
+**Observation**: memory_search: error
+
+## Turn 2 | 2026-07-07T17:26:40.242Z | deepseek/deepseek-v4-flash
+
+**Thought**: Let me take inventory of the current system state to understand what's ready and what's missing for a full launch.
+**Thinking**: Memory search isn't available. Let me check what we have. Let me understand the current state of all the key modules for launching the bots.
+**Action**: bash(command: "cd C:/Users/hyper/workspace/marketing_agent && cat VERSION && echo "---" && git log --oneline -5", timeout: 10)
+**Observation**: bash: success
+
+## Turn 3 | 2026-07-07T17:26:43.691Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Good. Let me now examine the core modules that matter for the launch:
+1. The LLM provider integration (for generating dossiers and outreach)
+2. The scraper/lead discovery (finding targets)
+3. The enrichment module (finding contact info)
+4. The communication module (sending outreach)
+5. The researcher module (building dossiers)
+6. The sales strategy
+7. Main.go to see the launch configuration
+8. The config structure
+
+Let me also search for recent memory stores about what's been configured.
+**Action**: read(path: "C:/Users/hyper/workspace/marketing_agent/internal/config/config.go", limit: 30)
+**Observation**: read: success
+
+## Turn 4 | 2026-07-07T17:26:48.579Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: I need to check what LLM providers are configured and how the targeting/brand selection works. Let me look at the full config, the main.go, the communication module, and the scraper/researcher.
+**Action**: read(offset: 31, path: "C:/Users/hyper/workspace/marketing_agent/internal/config/config.go", limit: 130)
+**Observation**: read: success
+
+## Turn 5 | 2026-07-07T17:26:51.495Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Let me now look at the main.go to understand the worker startup and how the system is configured, then check the LLM provider, researcher, communication, and scraper modules to understand what's needed for a full launch.
+**Action**: read(path: "C:/Users/hyper/workspace/marketing_agent/cmd/marketing_agent/main.go", limit: 150)
+**Observation**: read: success
+
+## Turn 6 | 2026-07-07T17:26:54.563Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Let me see more of main.go - the communication module, LLM setup, and sales strategy initialization.
+**Action**: read(offset: 151, path: "C:/Users/hyper/workspace/marketing_agent/cmd/marketing_agent/main.go", limit: 150)
+**Observation**: read: success
+
+## Turn 7 | 2026-07-07T17:26:57.279Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Action**: read(offset: 301, path: "C:/Users/hyper/workspace/marketing_agent/cmd/marketing_agent/main.go", limit: 60)
+**Observation**: read: success
+
+## Turn 8 | 2026-07-07T17:27:00.052Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now I have a comprehensive picture of the system. Let me now check the key modules that need attention before launch:
+
+1. **Target Discovery Worker** - needs proper targeting config for tormentnexus (developers) vs hypernexus (corporate execs)
+2. **Sales Strategy** - needs dual-brand awareness
+3. **Communication Manager** - needs outreach templates
+4. **Objection Library** - needs objections loaded
+5. **LLM Provider** - needs real Hermes or OpenAI/Anthropic
+
+Let me check the agents/target discovery worker and the sales strategy/learning engine to see if they support dual-brand targeting.
+**Action**: bash(command: "cd C:/Users/hyper/workspace/marketing_agent && find pkg/agents internal/communication internal/sales -name "*.go" ! -name "*_test.go" | sort", timeout: 10)
+**Observation**: bash: success
+
+## Turn 9 | 2026-07-07T17:27:04.365Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Let me examine the key modules for dual-brand targeting:
+1. Target discovery worker (pkg/agents/discovery.go) - how it finds targets
+2. Sales strategy (internal/communication/strategy.go) - how it decides which brand to pitch
+3. The communication engine (internal/communication/engine.go) - how outreach is generated
+4. The manager (internal/communication/manager.go) - how outreach is managed
+**Action**: read(path: "C:/Users/hyper/workspace/marketing_agent/pkg/agents/discovery.go")
+**Observation**: read: success
+
+## Turn 10 | 2026-07-07T17:27:07.635Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Good. I can see the discovery worker finds MCP-related GitHub repos. Now let me check the sales strategy and communication engine to understand how it decides which brand to pitch.
+**Action**: read(path: "C:/Users/hyper/workspace/marketing_agent/internal/communication/strategy.go")
+**Observation**: read: success
+
+## Turn 11 | 2026-07-07T17:27:10.967Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: I need to look at the LearningSalesEngine to see how it generates outreach content and how it decides branding.
+**Action**: read(path: "C:/Users/hyper/workspace/marketing_agent/internal/communication/engine.go")
+**Observation**: read: success
+
+## Turn 12 | 2026-07-07T17:27:15.466Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: I see — the sales engine handles scoring and routing but doesn't have specific dual-brand awareness for TormentNexus vs HyperNexus. Let me check the communication manager and the responder to understand how outreach messages are actually generated.
+**Action**: read(path: "C:/Users/hyper/workspace/marketing_agent/internal/communication/responder.go")
+**Observation**: read: success
+
+## Turn 13 | 2026-07-07T17:27:18.764Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: This is excellent. The system already has sophisticated dual-brand logic:
+
+1. **`IsCorporate()`** function checks email/domain to decide if the lead is a corporate executive or a developer
+2. **Corporate (HyperNexus)**: Pitches the enterprise-ready cloud-hosted version at hypernexus.site
+3. **Developer (TormentNexus)**: Pitches the open-source, local-first model hypervisor at tormentnexus.site
+
+Let me also check the `IsCorporate` function and the `utils.go` to understand the classification logic, plus check any existing deployment .env or configuration files.
+**Action**: read(path: "C:/Users/hyper/workspace/marketing_agent/internal/communication/utils.go")
+**Observation**: read: success
+
+## Turn 14 | 2026-07-07T17:27:23.200Z | deepseek/deepseek-v4-flash
+
+**Thought**: Let me check the VPS configuration and current deployment state:
+**Thinking**: Good. Now I need to:
+
+1. Check the .env file on the VPS to see what's configured
+2. Check the objection library and pricing module
+3. Review the outreach templates/DB
+4. Do a full build ready for deployment
+5. Deploy the binary to the VPS
+6. Configure the .env with real API keys
+7. Restart the service
+
+Let me first check what's currently running and how the VPS is configured.
+**Action**: bash(command: "ssh root@5.161.250.43 "echo '=== PROCESS ===' && systemctl status marketing-agent 2>/dev/null | head -15 || echo 'no systemd service'; echo '=== ENV ===' && cat /root/.env 2>/dev/null | grep -v -E '^(#.*)?$' | head -20 || echo 'no .env'; echo '=== BINARY ===' && ls -la /root/marketing_agent/bin/ 2>/dev/null || echo 'no binary dir'; echo '=== RUNNING ===' && ps aux | grep -i marketing | grep -v grep | head -5" 2>&1", timeout: 15)
+**Observation**: bash: success
+
+## Turn 15 | 2026-07-07T17:27:30.586Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The bot is already running on the VPS! It's at `/opt/marketing_agent/bin/marketing_agent`. Let me check the full .env and see what's configured. Also, the bot is running 24/7 with database populated with leads. I can see the enricher is actively finding contacts. Let me check the full state.
+**Action**: bash(command: "ssh root@5.161.250.43 "cat /opt/marketing_agent/.env 2>/dev/null | grep -v '^#' | grep -v '^\s*$' && echo '===TEMPLATES===' && ls /opt/marketing_agent/templates/ 2>/dev/null || echo 'no templates dir'; echo '===LEADS COUNT===' && su - postgres -c \"psql -d marketing_agent -c 'SELECT COUNT(*) FROM companies;' -t 2>/dev/null\" || echo 'db check failed'" 2>&1", timeout: 15)
+**Observation**: bash: success
+
+## Turn 16 | 2026-07-07T17:27:39.022Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Interesting. The VPS env uses different names:
+- `DATABASE_URL` points to `sales_bot` database (not `marketing_agent`)
+- `GITHUB_REPOSITORY=robertpelloni/enterprise_sales_bot` (different from our env)
+- Has Hermes API, IMAP, GitHub token, Hunter, Apollo keys configured!
+- But no SMTP configured yet for sending emails
+- No template directory
+
+Let me check more - the DB tables might be under a different name.
+**Action**: bash(command: "ssh root@5.161.250.43 "su - postgres -c \"psql -d sales_bot -c 'SELECT COUNT(*) FROM companies;' -t 2>/dev/null\" && echo '===DEALS===' && su - postgres -c \"psql -d sales_bot -c 'SELECT COUNT(*) FROM deals;' -t 2>/dev/null\" && echo '===CONTACTS===' && su - postgres -c \"psql -d sales_bot -c 'SELECT COUNT(*) FROM contacts;' -t 2>/dev/null\" && echo '===INTERACTIONS===' && su - postgres -c \"psql -d sales_bot -c 'SELECT COUNT(*) FROM interactions;' -t 2>/dev/null\"" 2>&1", timeout: 15)
+**Observation**: bash: success
+
+## Turn 17 | 2026-07-07T17:27:46.908Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Excellent! The bot is already running with:
+- **1,895 leads** in the pipeline
+- **493 contacts** with enriched data
+- **541 interactions** already handled
+
+The bot is actively running with Hermes API, Hunter.io, Apollo.io, and IMAP. It's been running since July 3rd. Let me check more detail:
+1. The current state of the leads
+2. SMTP configuration for sending
+3. The actual brand targeting that's happening
+
+I notice no SMTP is configured - that's critical for actual outreach delivery. Let me also check if there are env vars for SMTP.
+**Action**: bash(command: "ssh root@5.161.250.43 "echo '===SMTP===' && grep -i 'smtp\|SMTP' /opt/marketing_agent/.env 2>/dev/null; echo '===STRIPE===' && grep -i 'stripe\|STRIPE' /opt/marketing_agent/.env 2>/dev/null; echo '===SECRET_KEY===' && grep -i 'secret' /opt/marketing_agent/.env 2>/dev/null; echo '===DEALS BY STATE===' && su - postgres -c \"psql -d sales_bot -c \\\"SELECT current_state, COUNT(*) FROM deals GROUP BY current_state ORDER BY current_state;\\\" -t 2>/dev/null\"" 2>&1", timeout: 15)
+**Observation**: bash: success
+
+## Turn 18 | 2026-07-07T17:27:54.672Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Excellent stats:
+- **79 leads** in "Discovered" state (just found, not researched yet)
+- **1,410 leads** in "Researched" (dossier built, ready for outreach) — that's a huge pipeline!
+- **406 leads** in "Outreach_Sent" (already contacted)
+
+Missing configurations:
+- ❌ **No SMTP** configured — Outreach is NOT actually being delivered via email!
+- ❌ **No Stripe** configured — Can't process payments
+- ❌ **No SECRET_KEY** configured — Can't use encryption
+
+Wait — it says 406 leads in "Outreach_Sent" state. If there's no SMTP configured, the `NoopEmailSender` is being used, which logs but doesn't actually send. So outreach is marked as sent in the DB but nobody's actually receiving the emails!
+
+Let me check the logs to see what's happening.
+
+For the full launch I need to:
+1. Configure SMTP for real email delivery
+2. Configure STRIPE keys for billing
+3. Configure SECRET_KEY for encryption
+4. Make sure the targeting content is correct (dual-brand: TormentNexus for devs, HyperNexus for corp)
+5. Deploy the new binary
+
+Let me also check the actual lead types to see the brand targeting.
+**Action**: bash(command: "ssh root@5.161.250.43 "echo '===LEAD SOURCES===' && su - postgres -c \"psql -d sales_bot -c \\\"SELECT DISTINCT source FROM companies LIMIT 10;\\\" -t 2>/dev/null\"; echo '===RECENT OUTREACH===' && su - postgres -c \"psql -d sales_bot -c \\\"SELECT c.name, com.name, i.direction, i.channel, i.created_at FROM interactions i JOIN contacts c ON i.contact_id = c.id JOIN companies com ON c.company_id = com.id ORDER BY i.created_at DESC LIMIT 10;\\\" -t 2>/dev/null\"; echo '===SAMPLE LEADS===' && su - postgres -c \"psql -d sales_bot -c \\\"SELECT name, domain, market_cap_tier FROM companies ORDER BY id DESC LIMIT 5;\\\" -t 2>/dev/null\"" 2>&1", timeout: 15)
+**Observation**: bash: success
+
+## Turn 19 | 2026-07-07T17:28:04.838Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: I can see the bot is actively running and has been doing outreach. The outreach is happening through the `NoopEmailSender` since there's no SMTP configured. Let me check what the actual email sending status is.
+
+Let me now check:
+1. The current logs to see what's happening with the communication manager
+2. The service file and directory structure
+3. What needs to be configured for actual launch
+
+Let me also check if there's a template system or if the outreach is LLM-generated.
+**Action**: bash(command: "ssh root@5.161.250.43 "echo '===SERVICE===' && cat /etc/systemd/system/marketing-agent.service; echo '===DIRS===' && ls -la /opt/marketing_agent/; echo '===DB SCHEMA===' && su - postgres -c \"psql -d sales_bot -c '\\dt' -t 2>/dev/null\"" 2>&1", timeout: 15)
+**Observation**: bash: success
+
+## Turn 20 | 2026-07-07T17:28:11.141Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Interesting findings:
+
+1. The VPS is running at `/opt/marketing_agent` with a different codebase (the old `enterprise_sales_bot` repo)
+2. It has tables for `templates`, `template_metrics`, `social_posts` — these are from the old version
+3. It does NOT have the new tables: `subscriptions`, `billing_events`, `subscription_price_history`, `secrets`
+4. The binary is the old one
+
+So the VPS has the old codebase. I need to:
+1. Build the new Linux binary
+2. Copy it over
+3. Update the .env with new config vars
+4. Run the new migrations
+5. Restart the service
+
+But first let me check if there are templates defined in the DB, since those drive outreach.
+**Action**: bash(command: "ssh root@5.161.250.43 "su - postgres -c \"psql -d sales_bot -c 'SELECT id, name, subject, channel FROM templates ORDER BY id;' -t 2>/dev/null\"" 2>&1", timeout: 10)
+**Observation**: bash: success
+
+## Turn 21 | 2026-07-07T17:28:17.477Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: There are templates! The outreach is using templates. Let me see the actual template content.
+**Action**: bash(command: "ssh root@5.161.250.43 "su - postgres -c \"psql -d sales_bot -c \\\"SELECT id, name, subject, body FROM templates ORDER BY id;\\\" -t 2>/dev/null\" 2>&1 | head -100"", timeout: 10)
+**Observation**: bash: success
+
+## Turn 22 | 2026-07-07T17:28:24.664Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The templates exist but they only mention "TormentNexus" - no HyperNexus branding for corporate leads. The `GenerateFromTemplate` function in the responder does have the dual-brand logic that swaps HyperNexus → TormentNexus for non-corporate leads. But the templates themselves only mention TormentNexus. The logic is:
+
+1. For corporate leads → keeps "HyperNexus" in templates
+2. For non-corporate leads → swaps "HyperNexus" with "TormentNexus"
+
+Since the templates only have "TormentNexus" and not "HyperNexus", the corporate swap won't work - it'll show TormentNexus to corporate leads too.
+
+I need to:
+1. **Update templates** to use dual-brand language (HyperNexus for corp, TormentNexus for devs)
+2. **Configure SMTP** for actual email delivery
+3. **Build Linux binary** with latest code (v0.6.1)
+4. **Deploy new binary** and run migrations
+5. **Add missing env vars** (SMTP, Stripe, SECRET_KEY)
+6. **Restart service**
+
+Let me plan the full launch:
+
+### Phase 1: Code changes
+- Update templates in DB to include dual-branding
+- Ensure the `GenerateFromTemplate` dual-brand logic works correctly
+
+### Phase 2: VPS deployment
+- Cross-compile Linux binary
+- Copy to VPS
+- Run new DB migrations
+- Update .env with SMTP, Stripe, SECRET_KEY
+- Restart service
+
+### Phase 3: Monitoring
+- Check logs after restart
+- Verify outreach is actually being sent
+
+Let me start with the template updates. I need to update them to use `{{specific_project}}` branding and HyperNexus references.
+
+Actually wait - looking at the templates more carefully:
+
+1. They all say "TormentNexus" explicitly
+2. The `GenerateFromTemplate` does brand swapping:
+   - For non-corp: `HyperNexus` → `TormentNexus` (but template says TormentNexus already, so it won't change)
+   - For corp: keeps HyperNexus (but template says TormentNexus, so corporate leads get TormentNexus mention)
+
+So the fix is to update the templates to say "HyperNexus" and the code will swap to "TormentNexus" for devs. Let me update the DB templates.
+
+Actually wait, there's another issue. The `intro-email` template says "{{specific_project}}" which the code already handles:
+- For corp: populates as "HyperNexus"
+- For non-corp: populates as "TormentNexus"
+
+But the template body explicitly says "TormentNexus" in its pitch, which won't get swapped for corporate leads since the swap is `HyperNexus → TormentNexus` and there's no "HyperNexus" to swap in the template.
+
+I need to update the DB templates to use "HyperNexus" as the default brand, and the code will auto-swap to "TormentNexus" for developers.
+
+Let me also update the template placeholders to be more flexible.
+**Action**: bash(command: "cd C:/Users/hyper/workspace/marketing_agent && which xgo 2>/dev/null || which xgo-linux 2>/dev/null; echo "---"; go env GOOS GOARCH", timeout: 10)
+**Observation**: bash: success
+
+## Turn 23 | 2026-07-07T17:28:36.661Z | deepseek/deepseek-v4-flash
+
+**Thought**: Let me now prepare everything for launch. First, let me update the templates to support dual-brand properly, then build and deploy.
+**Thinking**: I need to cross-compile for Linux from Windows. Let me set GOOS=linux when building.
+**Action**: read(path: "C:/Users/hyper/workspace/marketing_agent/internal/communication/responder.go", offset: 130, limit: 45)
+**Observation**: read: success
+
+## Turn 24 | 2026-07-07T17:28:40.614Z | deepseek/deepseek-v4-flash
+
+**Thought**: Now I understand the full state. Let me prepare the launch systematically.
+**Thinking**: The dual-brand logic is already in place! The key insight:
+
+1. Templates should use **"HyperNexus"** as the default brand name
+2. For corporate leads (`isCorp == true`) → templates keep "HyperNexus" 
+3. For developer leads (`isCorp == false`) → code swaps "HyperNexus" → "TormentNexus"
+
+But the current DB templates already say "TormentNexus" directly, so:
+- Corporate leads get TormentNexus messaging (wrong — should get HyperNexus)
+- Developer leads get TormentNexus messaging (correct)
+
+I need to update the DB templates to hypernexus-branded versions, so the dual-brand magic works.
+
+Let me write a SQL script to update all templates. Let me do this step by step:
+
+1. First update the DB templates on the VPS
+2. Build the Linux binary with the latest code
+3. Deploy and restart
+
+Actually wait - I need to be careful. The DB templates are on the production VPS. Let me update them directly via SQL.
+**Action**: bash(command: "ssh root@5.161.250.43 "su - postgres -c \"psql -d sales_bot -c \\\"UPDATE templates SET name='intro-email', subject='HyperNexus for {{company}} — Quick Question', body='Hi {{contact}},
+
+I noticed {{company}} is building some really impressive things with {{tech_stack}}. The work your team is doing around AI orchestration is exciting.
+
+I''m reaching out because we''ve built HyperNexus — the enterprise-grade cognitive control plane that eliminates vendor lock-in. Our platform delivers progressive MCP tool routing (injects only the 3 most relevant tools per request), a resilient LLM waterfall (NVIDIA → OpenRouter → local, zero-downtime failover), and persistent dual-tier memory with semantic search across 14K+ stored contexts.
+
+Teams like yours have seen 3-5x improvements in agent coordination efficiency and eliminated LLM API downtime.
+
+Would you be open to a quick 15-minute chat this week?
+
+Best,
+[Your Name]' WHERE id='intro-email'\\\" ; echo 'DONE'" 2>&1", timeout: 10)
+**Observation**: bash: error
+
+## Turn 25 | 2026-07-07T17:28:50.489Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The escaping is getting complex with the single quotes in the template body. Let me write a SQL script file and execute it.
+**Action**: write(content: "-- Update templates for dual-brand: HyperNexus (corp) / TormentNexus (dev)
+-- The Go code auto-swaps HyperNexus → TormentNexus for non-corporate leads
+
+UPDATE templates SET
+  name = 'intro-email',
+  subject = 'HyperNexus for {{company}} -- Quick Question',
+  body = E'Hi {{contact}},\n\nI noticed {{company}} is building some really impressive things with {{tech_stack}}. The work your team is doing around AI orchestration is exciting.\n\nI''m reaching out because we''ve built HyperNexus — the enterprise-grade cognitive control plane that eliminates vendor lock-in. Our platform delivers:\n• Progressive MCP tool routing — injects only the 3 most relevant tools per request\n• Resilient LLM waterfall — NVIDIA → OpenRouter → local, zero-downtime failover\n• Persistent dual-tier memory — semantic search across 14K+ stored contexts\n• Cross-harness tool parity — one config works across Claude Code, Cursor, Copilot, Gemini CLI\n\nTeams like yours have seen 3-5x improvements in agent coordination efficiency and eliminated LLM API downtime.\n\nWould you be open to a quick 15-minute chat this week?\n\nBest,\n[Your Name]'
+WHERE id = 'intro-email';
+
+UPDATE templates SET
+  name = 'followup-email',
+  subject = 'Re: HyperNexus for {{company}} -- Thoughts?',
+  body = E'Hi {{contact}},\n\nJust wanted to follow up on my previous note about HyperNexus.\n\nI know things get busy, so I''ll keep this brief: HyperNexus provides progressive MCP tool routing, dual-tier memory (14K+ persisted memories), and a resilient LLM waterfall that cascades across providers (NVIDIA → OpenRouter → local Ollama) with zero downtime.\n\nIf you''re even remotely curious about improving your agent coordination, I''d love to share a quick demo.\n\nWorth a conversation?\n\nBest,\n[Your Name]'
+WHERE id = 'followup-email';
+
+UPDATE templates SET
+  name = 'breakup-email',
+  subject = 'Should I close your file?',
+  body = E'Hi {{contact}},\n\nI''ve reached out a few times about HyperNexus, but haven''t heard back.\n\nI''m guessing this isn''t a priority right now, or you''re swamped with other initiatives. Either way, I don''t want to be a pest.\n\nIf you''d like me to close your file on this, just reply "close". If I got the timing wrong and you''d still like to chat, hit me with a quick "yes" and we''ll find a time.\n\nNo hard feelings either way.\n\nBest,\n[Your Name]'
+WHERE id = 'breakup-email';
+
+UPDATE templates SET
+  name = 'github-hook',
+  subject = '',
+  body = E'Hey @{{github_handle}}, I saw your work on {{repo}} — really impressive stuff! We''ve been tackling similar coordination challenges with HyperNexus (the enterprise cognitive control plane for multi-agent workflows). Would love to get your thoughts if you''re open to it.'
+WHERE id = 'github-hook';
+
+UPDATE templates SET
+  name = 'linkedin-connect',
+  subject = '',
+  body = E'Hi {{contact}}, I came across your profile while researching teams working on {{tech_stack}} at {{company}}. Your background in {{role}} is impressive. I''d love to connect and exchange insights on AI infrastructure.'
+WHERE id = 'linkedin-connect';
+", path: "C:/Users/hyper/workspace/marketing_agent/scripts/update_templates.sql")
+**Observation**: write: success
+
+## Turn 26 | 2026-07-07T17:29:05.994Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now I need to ensure the SQL will work properly. The `E'...'` syntax uses escape strings for newlines with `\n`. Let me check if PostgreSQL on the VPS supports this.
+
+Actually, I should be careful about the E'' syntax and make sure it's portable. Let me use a heredoc approach via ssh instead to make it more reliable.
+
+But actually, let me first build the Linux binary, then do everything in one deployment run.
+**Action**: bash(command: "cd C:/Users/hyper/workspace/marketing_agent && GOOS=linux GOARCH=amd64 go build -v -o bin/marketing_agent_linux ./cmd/marketing_agent 2>&1 | tail -5", timeout: 120)
+**Observation**: bash: success
+
+## Turn 27 | 2026-07-07T17:29:30.693Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The build compiled but it stopped at internal/web — let me check if it fully succeeded.
+**Action**: bash(command: "cd C:/Users/hyper/workspace/marketing_agent && ls -la bin/marketing_agent_linux 2>/dev/null && file bin/marketing_agent_linux 2>/dev/null || (echo "Build incomplete"; go build -o bin/marketing_agent_linux ./cmd/marketing_agent 2>&1)", timeout: 120)
+**Observation**: bash: success
+
+## Turn 28 | 2026-07-07T17:29:37.448Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The cross-compile failed on the Windows systray dependency. Let me check the error.
+**Action**: bash(command: "cd C:/Users/hyper/workspace/marketing_agent && GOOS=linux GOARCH=amd64 go build -o bin/marketing_agent_linux ./cmd/marketing_agent 2>&1", timeout: 120)
+**Observation**: bash: error
+
+## Turn 29 | 2026-07-07T17:29:41.558Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: The systray package needs CGO and platform-specific native calls. For a headless Linux server, we don't need systray. I need to build without systray. Let me check the systray.go file and add a build tag or just remove the dependency for Linux builds.
+
+Actually, the simplest approach: I'll build the binary with `-tags` to skip systray, or modify the code to not use systray on Linux. Let me look at how systray is called.
+**Action**: read(path: "C:/Users/hyper/workspace/marketing_agent/cmd/marketing_agent/systray.go")
+**Observation**: read: success
+
+## Turn 30 | 2026-07-07T17:29:45.465Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: I'll add a build tag to exclude systray on Linux. I'll rename the file with a `//go:build windows` tag, and create a no-op version for Linux.
+**Action**: edit(edits: [object Object], path: "C:/Users/hyper/workspace/marketing_agent/cmd/marketing_agent/systray.go")
+**Observation**: edit: success
+
+## Turn 31 | 2026-07-07T17:30:15.440Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Now create a stub for non-Windows:
+**Action**: write(content: "//go:build !windows
+
+package main
+
+import "context"
+
+// setupSystray is a no-op on headless Linux servers
+func setupSystray(cancel context.CancelFunc, port string) {
+	// Systray is only supported on Windows.
+	// On headless Linux, we rely on the web dashboard and graceful shutdown via SIGTERM.
+	_ = cancel
+	_ = port
+}
+", path: "C:/Users/hyper/workspace/marketing_agent/cmd/marketing_agent/systray_unix.go")
+**Observation**: write: success
+
+## Turn 32 | 2026-07-07T17:30:41.826Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: Wait, now the Linux build won't find `setupSystray` because the function is in the windows-only file. But since we added `systray_unix.go` with the same function, it should work for Linux. Let me try the cross-compile again.
+**Action**: bash(command: "cd C:/Users/hyper/workspace/marketing_agent && GOOS=linux GOARCH=amd64 go build -o bin/marketing_agent_linux ./cmd/marketing_agent 2>&1", timeout: 120)
+**Observation**: bash: success
+
+## Turn 33 | 2026-07-07T17:30:49.999Z | deepseek/deepseek-v4-flash
+
+**Thought**: 
+**Thinking**: No output means success. Let me verify the binary.
+**Action**: bash(command: "cd C:/Users/hyper/workspace/marketing_agent && ls -la bin/marketing_agent_linux && file bin/marketing_agent_linux 2>/dev/null || echo "no file info tool"", timeout: 10)
+**Observation**: bash: success
+

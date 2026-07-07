@@ -115,12 +115,13 @@
       .hero-badge .dot{width:6px;height:6px;background:#0284c7;border-radius:50%;animation:blink 1.5s infinite;box-shadow:0 0 10px rgba(2, 132, 199, 0.3)}
 
       @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+      @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
 
       .hero h1{font-size:clamp(44px,7vw,86px);font-weight:900;letter-spacing:-2.5px;line-height:1.03;margin-bottom:20px;animation:fadeInUp 0.8s ease-out 0.2s both;color:#0f172a}
 
       .hero h1 .gradient-title{display:inline-block;background:linear-gradient(90deg, #0284c7 0%, #1e3a8a 20%, #0284c7 40%, #ffffff 50%, #0284c7 60%, #1e3a8a 80%, #0284c7 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:transparent;background-clip:text;animation:shineSlide 3s linear infinite}
 
-      .hero p{font-size:18px;max-width:600px;margin:0 auto 40px;line-height:1.7;display:block;background:linear-gradient(90deg, #475569 0%, #475569 20%, #475569 40%, #ffffff 50%, #475569 60%, #475569 80%, #475569 100%);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:transparent;background-clip:text;animation:fadeInUp 0.8s ease-out 0.4s both, shineSlide 5s linear 1s infinite}
+      .hero p{font-size:18px;max-width:600px;margin:0 auto 40px;line-height:1.7;animation:fadeInUp 0.8s ease-out 0.4s both;color:#475569}
 
       @keyframes shineSlide {
         0% { background-position: 100% center; }
@@ -479,14 +480,14 @@
 
       /* Soft Translucent Rainbow Pulsing Keyframes */
       @keyframes rainbowPulseGlow {
-        0% { box-shadow: 0 10px 30px -10px rgba(255, 59, 48, 0.15), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(255, 59, 48, 0.25); }
-        14% { box-shadow: 0 10px 30px -10px rgba(255, 149, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(255, 149, 0, 0.25); }
-        28% { box-shadow: 0 10px 30px -10px rgba(255, 204, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(255, 204, 0, 0.25); }
-        42% { box-shadow: 0 10px 30px -10px rgba(76, 217, 100, 0.15), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(76, 217, 100, 0.25); }
-        57% { box-shadow: 0 10px 30px -10px rgba(90, 200, 250, 0.15), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(90, 200, 250, 0.25); }
-        71% { box-shadow: 0 10px 30px -10px rgba(0, 122, 255, 0.15), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(0, 122, 255, 0.25); }
-        85% { box-shadow: 0 10px 30px -10px rgba(88, 86, 214, 0.15), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(88, 86, 214, 0.25); }
-        100% { box-shadow: 0 10px 30px -10px rgba(255, 59, 48, 0.15), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(255, 59, 48, 0.25); }
+        0% { box-shadow: 0 10px 30px -10px rgba(255, 59, 48, 0.4), 0 0 40px rgba(255, 59, 48, 0.15), 0 0 80px rgba(255, 59, 48, 0.06), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(255, 59, 48, 0.5); }
+        14% { box-shadow: 0 10px 30px -10px rgba(255, 149, 0, 0.4), 0 0 40px rgba(255, 149, 0, 0.15), 0 0 80px rgba(255, 149, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(255, 149, 0, 0.5); }
+        28% { box-shadow: 0 10px 30px -10px rgba(255, 204, 0, 0.4), 0 0 40px rgba(255, 204, 0, 0.15), 0 0 80px rgba(255, 204, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(255, 204, 0, 0.5); }
+        42% { box-shadow: 0 10px 30px -10px rgba(76, 217, 100, 0.4), 0 0 40px rgba(76, 217, 100, 0.15), 0 0 80px rgba(76, 217, 100, 0.06), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(76, 217, 100, 0.5); }
+        57% { box-shadow: 0 10px 30px -10px rgba(90, 200, 250, 0.4), 0 0 40px rgba(90, 200, 250, 0.15), 0 0 80px rgba(90, 200, 250, 0.06), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(90, 200, 250, 0.5); }
+        71% { box-shadow: 0 10px 30px -10px rgba(0, 122, 255, 0.4), 0 0 40px rgba(0, 122, 255, 0.15), 0 0 80px rgba(0, 122, 255, 0.06), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(0, 122, 255, 0.5); }
+        85% { box-shadow: 0 10px 30px -10px rgba(88, 86, 214, 0.4), 0 0 40px rgba(88, 86, 214, 0.15), 0 0 80px rgba(88, 86, 214, 0.06), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(88, 86, 214, 0.5); }
+        100% { box-shadow: 0 10px 30px -10px rgba(255, 59, 48, 0.4), 0 0 40px rgba(255, 59, 48, 0.15), 0 0 80px rgba(255, 59, 48, 0.06), inset 0 1px 0 rgba(255,255,255,0.6); border-color: rgba(255, 59, 48, 0.5); }
       }
 
       /* Glowing Rainbow Sheen Price Card with Rotating Border */
@@ -498,7 +499,7 @@
         position: relative;
         z-index: 1;
         box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255,255,255,0.6);
-        animation: rainbowPulseGlow 8s infinite alternate ease-in-out;
+        animation: rainbowPulseGlow 4s infinite alternate ease-in-out;
       }
       .price-card.rainbow::before {
         content: '';
@@ -2123,6 +2124,8 @@
 
 
 
+                    <div style="text-decoration:line-through;color:var(--text-secondary);font-size:20px;font-weight:500;letter-spacing:-0.5px;margin-bottom:-2px">$100</div>
+                    <div style="font-size:11px;color:#ff3b30;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;animation:pulse 1.5s infinite">SALE ENDING... SOON!</div>
                     <div class="price-amount">$5 <span class="period">/ seat / mo</span></div>
 
 
@@ -2203,7 +2206,7 @@
 
 
 
-                    <a href="/contact.php" class="price-btn price-btn-primary">Start Free Trial</a>
+                    <a href="/contact.php" class="price-btn price-btn-primary" onclick="startStripeCheckout('professional')">Start Free Trial</a>
 
 
 
@@ -2348,7 +2351,7 @@
 
 
 
-                    <a href="/contact.php" class="price-btn price-btn-secondary">Contact Sales</a>
+                    <a href="/contact.php" class="price-btn price-btn-secondary" onclick="startStripeCheckout('enterprise')">Contact Sales</a>
 
 
 
@@ -6621,6 +6624,31 @@
           console.error(err);
         });
       });
+
+      // ── Stripe Checkout ──
+      function startStripeCheckout(tier) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/v1/billing/checkout', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            var resp = JSON.parse(xhr.responseText);
+            if (resp.url) window.location.href = resp.url;
+          } else {
+            // Fallback to contact form
+            window.location.href = '/contact.php?tier=' + tier;
+          }
+        };
+        xhr.onerror = function() {
+          window.location.href = '/contact.php?tier=' + tier;
+        };
+        xhr.send(JSON.stringify({
+          company_id: 0,
+          tier: tier,
+          success_url: window.location.origin + '/thank-you',
+          cancel_url: window.location.href
+        }));
+      }
     </script>
 </body>
 

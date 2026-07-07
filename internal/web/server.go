@@ -18,8 +18,9 @@ import (
 	"time"
 
 	"github.com/robertpelloni/marketing_agent/internal/auth"
-	"github.com/robertpelloni/marketing_agent/internal/communication"
 	"github.com/robertpelloni/marketing_agent/internal/autodev"
+	"github.com/robertpelloni/marketing_agent/internal/billing"
+	"github.com/robertpelloni/marketing_agent/internal/communication"
 	"github.com/robertpelloni/marketing_agent/internal/db"
 	"github.com/robertpelloni/marketing_agent/internal/deploy"
 	"github.com/robertpelloni/marketing_agent/internal/llm"
@@ -34,25 +35,27 @@ type HermesHealthChecker interface {
 
 // Server handles web dashboard requests.
 type Server struct {
-	db          *db.DB
-	deploy      *deploy.Deployer
-	tracker     deploy.CITracker
-	tasks       *autodev.TaskManager
-	auth        *auth.Authenticator
-	llmProvider llm.LLMProvider
-	mux         *http.ServeMux
+	db            *db.DB
+	deploy        *deploy.Deployer
+	tracker       deploy.CITracker
+	tasks         *autodev.TaskManager
+	auth          *auth.Authenticator
+	llmProvider   llm.LLMProvider
+	billingClient billing.BillingClient
+	mux           *http.ServeMux
 }
 
 // NewServer creates a new Server instance.
-func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, llmProvider llm.LLMProvider) *Server {
+func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, llmProvider llm.LLMProvider, billingClient billing.BillingClient) *Server {
 	s := &Server{
-		db:          database,
-		deploy:      deployer,
-		tracker:     tracker,
-		tasks:       taskManager,
-		auth:        auth.NewAuthenticator(),
-		llmProvider: llmProvider,
-		mux:         http.NewServeMux(),
+		db:            database,
+		deploy:        deployer,
+		tracker:       tracker,
+		tasks:         taskManager,
+		auth:          auth.NewAuthenticator(),
+		llmProvider:   llmProvider,
+		billingClient: billingClient,
+		mux:           http.NewServeMux(),
 	}
 	s.routes()
 	return s
@@ -81,6 +84,15 @@ func (s *Server) routes() {
 
 	// Telemetry WebSocket
 	s.mux.Handle("/ws/telemetry", s.auth.Middleware(http.HandlerFunc(s.handleTelemetryWS)))
+
+	// Stripe Webhook (public, verified by signature)
+	s.mux.Handle("/api/v1/webhook/stripe", rl.middleware(http.HandlerFunc(s.handleStripeWebhook)))
+
+	// Billing API (protected)
+	s.mux.Handle("/api/v1/billing/checkout", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleCreateCheckout))))
+	s.mux.Handle("/api/v1/billing/subscription", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleGetSubscription))))
+	s.mux.Handle("/api/v1/billing/cancel", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleCancelSubscription))))
+	s.mux.Handle("/api/v1/billing/portal", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleBillingPortal))))
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -141,7 +153,7 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 					slog.InfoContext(r.Context(), "Contact channel updated", "contact_id", id, "channel", channel)
 				}
 			}
-case "build":
+		case "build":
 			if err := s.deploy.ExecuteBuild(); err != nil {
 				slog.WarnContext(r.Context(), "Build error", "error", err)
 			}
@@ -199,7 +211,7 @@ case "build":
 		}
 	}
 
-		w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("Content-Type", "text/html")
 	_, _ = fmt.Fprintf(w, "%s", "<!DOCTYPE html>")
 	_, _ = fmt.Fprintf(w, `
 <html>
@@ -885,16 +897,13 @@ func (s *Server) handleGDPRDelete(w http.ResponseWriter, r *http.Request) {
 func (s *Server) handleDealsAPI(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		// Example: List all deals, could support filtering by state via query params
 		stateFilter := html.EscapeString(strings.TrimSpace(r.URL.Query().Get("state")))
 		var deals []db.Deal
 		var err error
 		if stateFilter != "" {
 			deals, err = s.db.ListDealsByState(r.Context(), db.LeadState(stateFilter))
 		} else {
-			// Add a repository method to list all deals if needed,
-			// or just fall back to a specific state for now.
-			deals, err = s.db.ListDealsByState(r.Context(), db.StateDiscovered) // Placeholder
+			deals, err = s.db.ListDealsByState(r.Context(), db.StateDiscovered)
 		}
 
 		if err != nil {
@@ -904,7 +913,6 @@ func (s *Server) handleDealsAPI(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(deals)
 	case http.MethodPost:
-		// Example: Create a new deal
 		var deal db.Deal
 		if err := json.NewDecoder(r.Body).Decode(&deal); err != nil {
 			http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -920,4 +928,119 @@ func (s *Server) handleDealsAPI(w http.ResponseWriter, r *http.Request) {
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
+}
+
+// ── Billing Handlers ──
+
+func (s *Server) handleStripeWebhook(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if s.billingClient == nil {
+		http.Error(w, "Billing not configured", http.StatusServiceUnavailable)
+		return
+	}
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Failed to read body", http.StatusBadRequest)
+		return
+	}
+	sigHeader := r.Header.Get("Stripe-Signature")
+	msg, err := s.billingClient.HandleWebhook(r.Context(), body, sigHeader)
+	if err != nil {
+		slog.Error("Stripe webhook processing failed", "error", err)
+		http.Error(w, "Webhook processing failed: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+	slog.Info("Stripe webhook processed", "msg", msg)
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(msg))
+}
+
+func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if s.billingClient == nil {
+		http.Error(w, "Billing not configured", http.StatusServiceUnavailable)
+		return
+	}
+	var req struct {
+		CompanyID  int64  `json:"company_id"`
+		Tier       string `json:"tier"`
+		SuccessURL string `json:"success_url"`
+		CancelURL  string `json:"cancel_url"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	url, err := s.billingClient.CreateCheckoutSession(r.Context(), req.CompanyID, billing.Tier(req.Tier), req.SuccessURL, req.CancelURL)
+	if err != nil {
+		slog.Error("Failed to create checkout session", "error", err)
+		http.Error(w, "Failed to create checkout: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"url": url})
+}
+
+func (s *Server) handleGetSubscription(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if s.billingClient == nil {
+		http.Error(w, "Billing not configured", http.StatusServiceUnavailable)
+		return
+	}
+	subID := r.URL.Query().Get("stripe_subscription_id")
+	var sub *billing.SubscriptionInfo
+	var err error
+	if subID == "" {
+		http.Error(w, "Missing stripe_subscription_id", http.StatusBadRequest)
+		return
+	}
+	sub, err = s.billingClient.GetSubscription(r.Context(), subID)
+	if err != nil {
+		http.Error(w, "Failed to get subscription: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(sub)
+}
+
+func (s *Server) handleCancelSubscription(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if s.billingClient == nil {
+		http.Error(w, "Billing not configured", http.StatusServiceUnavailable)
+		return
+	}
+	var req struct {
+		StripeSubID string `json:"stripe_subscription_id"`
+		AtPeriodEnd bool   `json:"at_period_end"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	if err := s.billingClient.CancelSubscription(r.Context(), req.StripeSubID, req.AtPeriodEnd); err != nil {
+		http.Error(w, "Failed to cancel: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"status": "canceled"})
+}
+
+func (s *Server) handleBillingPortal(w http.ResponseWriter, r *http.Request) {
+	scheme := "http"
+	if r.TLS != nil {
+		scheme = "https"
+	}
+	http.Redirect(w, r, scheme+"://"+r.Host+"/#billing", http.StatusFound)
 }

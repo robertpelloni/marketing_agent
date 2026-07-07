@@ -1,4 +1,21 @@
 
+## [0.6.1] - 2026-07-07
+
+### Added
+
+- Secrets encryption at rest (`pkg/crypto` + secrets DB migration)
+- GraphRAG memory vault integration tests
+- Telemetry WebSocket integration tests
+- Web dashboard handler tests
+- GDPR endpoint unit tests
+- Feedback loop integration tests
+- Negative DB tests with nil checking
+
+### Changed
+
+- Dead `.gitmodules` entry removed (tormentnexus submodule never committed)
+- `build.bat` and `start.bat` updated (submodule graceful handling, .exe extension)
+
 ## [0.6.0] - 2026-07-06
 
 ### Added

@@ -26,6 +26,8 @@ type Config struct {
 	DeploySyncInterval	time.Duration
 	Port			string
 	Environment		string
+	// Encryption
+	SecretKey		string
 
 	// Safety
 	DryRun	bool
@@ -125,6 +127,8 @@ func Load() *Config {
 		DeploySyncInterval:	syncInterval,
 		Port:			port,
 		Environment:		env,
+		// Encryption
+		SecretKey:		os.Getenv("SECRET_KEY"),
 
 		// Safety
 		DryRun:	os.Getenv("DRY_RUN") == "true",

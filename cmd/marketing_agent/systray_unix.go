@@ -2,12 +2,14 @@
 
 package main
 
-import "context"
+import (
+	"context"
+	"log/slog"
+)
 
-// setupSystray is a no-op on headless Linux servers
+// setupSystray blocks on Linux by waiting forever.
+// The graceful shutdown goroutine in main() triggers os.Exit(0).
 func setupSystray(cancel context.CancelFunc, port string) {
-	// Systray is only supported on Windows.
-	// On headless Linux, we rely on the web dashboard and graceful shutdown via SIGTERM.
-	_ = cancel
-	_ = port
+	slog.Info("Linux headless mode: running (signal handler manages shutdown)...")
+	select {}
 }

@@ -327,6 +327,7 @@ func main() {
 			slog.Info(fmt.Sprintf("Web server shutdown error: %v", err))
 		}
 		slog.Info("Shutting down: Done.")
+		os.Exit(0)
 	}()
 
 	setupSystray(cancel, cfg.Port)

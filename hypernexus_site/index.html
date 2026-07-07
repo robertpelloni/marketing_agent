@@ -132,6 +132,59 @@
 
       .hero-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeInUp 0.8s ease-out 0.6s both}
 
+      /* Animated Flame Border around Hero Header/Video */
+      .flame-wrapper {
+        position: relative;
+        border-radius: 14px;
+        padding: 4px;
+        background: rgba(255, 255, 255, 0.95);
+        margin: 30px auto;
+        box-shadow: 
+          0 10px 30px rgba(2, 132, 199, 0.08),
+          0 1px 3px rgba(0, 0, 0, 0.01);
+        overflow: hidden;
+      }
+      .flame-wrapper::before, .flame-wrapper::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(
+          from 0deg,
+          transparent,
+          rgba(2, 132, 199, 0.35),
+          rgba(30, 58, 138, 0.45),
+          rgba(2, 132, 199, 0.35),
+          transparent
+        );
+        animation: flameRotate 7s linear infinite;
+        z-index: 0;
+      }
+      .flame-wrapper::after {
+        background: conic-gradient(
+          from 180deg,
+          transparent,
+          rgba(139, 92, 246, 0.25),
+          rgba(2, 132, 199, 0.35),
+          rgba(139, 92, 246, 0.25),
+          transparent
+        );
+        animation: flameRotate 10s linear infinite reverse;
+      }
+      .flame-content {
+        position: relative;
+        z-index: 1;
+        background: #f8fafc;
+        border-radius: 11px;
+        padding: 32px;
+      }
+      @keyframes flameRotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
       /* ── BUTTONS & GLOSSY SWEENS ── */
 
       .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;font-size:15px;font-weight:600;text-decoration:none;border-radius:8px;transition:all 0.25s;cursor:pointer;border:none;position:relative;overflow:hidden}
@@ -870,21 +923,8 @@
 
 
             <div class="hero-badge"><span class="dot"></span> SOC 2 Type II Certified · HIPAA Ready · GDPR Compliant</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            <div class="flame-wrapper" style="max-width: 860px; margin: 30px auto;">
+          <div class="flame-content">
             <h1>Corporate AI Orchestration<br><span class="gradient-title">Built for Scale</span></h1>
             <div class="harness-upgrade-banner" style="
               border: 1px solid rgba(2, 132, 199, 0.2);

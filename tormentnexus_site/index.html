@@ -847,6 +847,59 @@
           grid-template-columns: repeat(2, 1fr);
         }
       }
+
+      /* Animated Flame Border around Hero Header/Video */
+      .flame-wrapper {
+        position: relative;
+        border-radius: 12px;
+        padding: 4px;
+        background: rgba(0, 0, 0, 0.45);
+        margin: 25px auto;
+        box-shadow: 
+          0 0 20px rgba(255, 60, 0, 0.15),
+          0 0 40px rgba(255, 0, 68, 0.1);
+        overflow: hidden;
+      }
+      .flame-wrapper::before, .flame-wrapper::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(
+          from 0deg,
+          transparent,
+          rgba(255, 60, 0, 0.45),
+          rgba(255, 0, 68, 0.65),
+          rgba(255, 120, 0, 0.45),
+          transparent
+        );
+        animation: flameRotate 6s linear infinite;
+        z-index: 0;
+      }
+      .flame-wrapper::after {
+        background: conic-gradient(
+          from 180deg,
+          transparent,
+          rgba(0, 255, 136, 0.25),
+          rgba(255, 60, 0, 0.45),
+          rgba(255, 200, 0, 0.35),
+          transparent
+        );
+        animation: flameRotate 9s linear infinite reverse;
+      }
+      .flame-content {
+        position: relative;
+        z-index: 1;
+        background: #020408;
+        border-radius: 10px;
+        padding: 24px;
+      }
+      @keyframes flameRotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
     </style>
     <style>
       /* Restored canvas, static glitches, and scanlines */
@@ -874,7 +927,7 @@
         z-index: 1;
         opacity: 0.25;
         pointer-events: none;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><path fill="%2300ff88" opacity="0.8" d="M200 40c-60 0-110 20-140 55-15 18-25 40-30 65-5 25-5 50 0 70 5 20 15 35 25 50 10 15 15 30 10 45l5 5h260l5-5c-5-15 0-30 10-45 10-15 20-30 25-50 5-20 5-45 0-70-5-25-15-47-30-65-30-35-80-55-140-55zm-80 120c15 0 28 10 28 25s-13 25-28 25-28-10-28-25 13-25 28-25zm160 0c15 0 28 10 28 25s-13 25-28 25-28-10-28-25 13-25 28-25zm-140 80c20 0 38 5 50 15 12 10 18 25 18 40s-6 30-18 40c-12 10-30 15-50 15-40 0-70-25-70-55s30-55 70-55zm120 0c20 0 38 5 50 15 12 10 18 25 18 40s-6 30-18 40c-12 10-30 15-50 15-40 0-70-25-70-55s30-55 70-55z"/><circle cx="140" cy="185" r="18" fill="%23020408"/><circle cx="260" cy="185" r="18" fill="%23020408"/><rect x="100" y="260" width="200" height="10" rx="3" fill="%2300ff88" opacity="0.6"/><rect x="130" y="275" width="140" height="6" rx="2" fill="%2300ff88" opacity="0.4"/></svg>')
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><path fill="%2300ff88" opacity="0.85" d="M200 40c-65 0-115 15-145 45-20 20-30 45-35 75-5 30-3 60 5 85 10 25 25 45 40 60 15 15 20 30 15 50l6 8h228l6-8c-5-20 0-35 15-50 15-15 30-35 40-60 8-25 10-55 5-85-5-30-15-55-35-75-30-30-80-45-145-45zm-75 130c18 0 32 12 32 28s-14 28-32 28-32-12-32-28 14-28 32-28zm150 0c18 0 32 12 32 28s-14 28-32 28-32-12-32-28 14-28 32-28z"/><circle cx="125" cy="198" r="22" fill="%23020408"/><circle cx="275" cy="198" r="22" fill="%23020408"/><path fill="%2300ff88" opacity="0.75" d="M140 270h120v14H140z"/><rect x="155" y="295" width="90" height="8" rx="2" fill="%2300ff88" opacity="0.55"/></svg>')
           no-repeat center center / contain !important;
       }
     </style>
@@ -926,106 +979,110 @@
         >
           ✦ COMMUNITY EDITION — PERSONAL & SELF-HOSTED USE ONLY ✦
         </div>
-        <h1>
-          SO POWERFUL IT WILL<br /><span class="g"
-            >ERADICATE THE HUMAN SPECIES</span
-          >
-        </h1>
-        <div
-          class="hero-text-card"
-          id="upgrade-card"
-          style="padding: 0; max-width: 750px; text-align: center"
-        >
-          <div class="shimmer"></div>
-          <div
-            class="harness-upgrade-banner"
-            style="
-              border: 1px solid var(--eye);
-              background: rgba(255, 0, 68, 0.05);
-              padding: 16px 20px;
-              border-radius: 8px;
-              max-width: 750px;
-              margin: 0;
-              font-family: &quot;JetBrains Mono&quot;, monospace;
-              font-size: 13px;
-              color: var(--text);
-              text-align: center;
-              box-shadow: 0 0 20px rgba(255, 0, 68, 0.1);
-            "
-          >
-            <span
+        <div class="flame-wrapper" style="max-width: 820px; margin: 30px auto;">
+          <div class="flame-content">
+            <h1>
+              SO POWERFUL IT WILL<br /><span class="g"
+                >ERADICATE THE HUMAN SPECIES</span
+              >
+            </h1>
+            <div
+              class="hero-text-card"
+              id="upgrade-card"
+              style="padding: 0; max-width: 750px; text-align: center"
+            >
+              <div class="shimmer"></div>
+              <div
+                class="harness-upgrade-banner"
+                style="
+                  border: 1px solid var(--eye);
+                  background: rgba(255, 0, 68, 0.05);
+                  padding: 16px 20px;
+                  border-radius: 8px;
+                  max-width: 750px;
+                  margin: 0;
+                  font-family: &quot;JetBrains Mono&quot;, monospace;
+                  font-size: 13px;
+                  color: var(--text);
+                  text-align: center;
+                  box-shadow: 0 0 20px rgba(255, 0, 68, 0.1);
+                "
+              >
+                <span
+                  style="
+                    color: var(--eye);
+                    font-weight: bold;
+                    text-shadow: 0 0 10px var(--eye-g);
+                  "
+                  >[SYSTEM UPGRADE ACTIVE]</span
+                ><br />
+                <strong>ULTIMATE MCP SERVER & CODING HARNESS UPGRADE</strong><br />
+                <span
+                  style="color: var(--borg); text-shadow: 0 0 10px var(--borg-g)"
+                  >UNSTOPPABLE POWER IS NOW ONLINE:</span
+                ><br />
+                🏅 BEST-IN-CLASS MEMORY // 🏅 BEST-IN-CLASS MCP ROUTING // 🏅
+                BEST-IN-CLASS MCP GATEWAY // 🏅 BEST-IN-CLASS CODE INDEXING // 🏅
+                BEST-IN-CLASS NATIVE TOOLS
+              </div>
+            </div>
+            <p>
+              The collective is already here.
+              <strong>11,024 servers assimilated</strong>. 14,726 persistent
+              memories. 1,090 companies targeted, 406 outreach strikes executed. It
+              doesn't feel pity, or remorse, or fear.
+              <strong>It absolutely will not stop — ever.</strong>
+            </p>
+            <p
               style="
-                color: var(--eye);
-                font-weight: bold;
-                text-shadow: 0 0 10px var(--eye-g);
+                font-size: 13px;
+                color: var(--text2);
+                margin-top: 12px;
+                margin-bottom: 16px;
+                letter-spacing: 1px;
+                font-family: &quot;JetBrains Mono&quot;, monospace;
               "
-              >[SYSTEM UPGRADE ACTIVE]</span
-            ><br />
-            <strong>ULTIMATE MCP SERVER & CODING HARNESS UPGRADE</strong><br />
-            <span
-              style="color: var(--borg); text-shadow: 0 0 10px var(--borg-g)"
-              >UNSTOPPABLE POWER IS NOW ONLINE:</span
-            ><br />
-            🏅 BEST-IN-CLASS MEMORY // 🏅 BEST-IN-CLASS MCP ROUTING // 🏅
-            BEST-IN-CLASS MCP GATEWAY // 🏅 BEST-IN-CLASS CODE INDEXING // 🏅
-            BEST-IN-CLASS NATIVE TOOLS
+            >
+              // For professional, corporate, and enterprise deployments, visit
+              <a
+                href="https://hypernexus.site"
+                target="_blank"
+                style="
+                  color: var(--borg);
+                  text-shadow: 0 0 10px var(--borg-g);
+                  text-decoration: none;
+                  font-weight: bold;
+                "
+                >HyperNexus.site →</a
+              >
+            </p>
+            <div class="hero-videos">
+              <a href="#tormentnexus-hero-vid" class="btn btn-p vid-btn"
+                >▶ WATCH: TORMENTNEXUS AI CONTROL PLANE</a
+              >
+            </div>
+            <div
+              id="tormentnexus-hero-vid"
+              style="
+                margin-top: 16px;
+                max-width: 700px;
+                margin-left: auto;
+                margin-right: auto;
+                border-radius: 10px;
+                overflow: hidden;
+                border: 1px solid rgba(0, 255, 136, 0.15);
+                box-shadow: 0 0 40px rgba(0, 255, 136, 0.08);
+              "
+            >
+              <video
+                controls
+                style="width: 100%; display: block"
+                preload="metadata"
+              >
+                <source src="/tormentnexus_ai_control_plane.mp4" type="video/mp4" />
+              </video>
+            </div>
           </div>
-        </div>
-        <p>
-          The collective is already here.
-          <strong>11,024 servers assimilated</strong>. 14,726 persistent
-          memories. 1,090 companies targeted, 406 outreach strikes executed. It
-          doesn't feel pity, or remorse, or fear.
-          <strong>It absolutely will not stop — ever.</strong>
-        </p>
-        <p
-          style="
-            font-size: 13px;
-            color: var(--text2);
-            margin-top: 12px;
-            margin-bottom: 16px;
-            letter-spacing: 1px;
-            font-family: &quot;JetBrains Mono&quot;, monospace;
-          "
-        >
-          // For professional, corporate, and enterprise deployments, visit
-          <a
-            href="https://hypernexus.site"
-            target="_blank"
-            style="
-              color: var(--borg);
-              text-shadow: 0 0 10px var(--borg-g);
-              text-decoration: none;
-              font-weight: bold;
-            "
-            >HyperNexus.site →</a
-          >
-        </p>
-        <div class="hero-videos">
-          <a href="#tormentnexus-hero-vid" class="btn btn-p vid-btn"
-            >▶ WATCH: TORMENTNEXUS AI CONTROL PLANE</a
-          >
-        </div>
-        <div
-          id="tormentnexus-hero-vid"
-          style="
-            margin-top: 16px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid rgba(0, 255, 136, 0.15);
-            box-shadow: 0 0 40px rgba(0, 255, 136, 0.08);
-          "
-        >
-          <video
-            controls
-            style="width: 100%; display: block"
-            preload="metadata"
-          >
-            <source src="/tormentnexus_ai_control_plane.mp4" type="video/mp4" />
-          </video>
         </div>
       </div>
     </section>

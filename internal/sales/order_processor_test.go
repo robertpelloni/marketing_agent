@@ -21,6 +21,26 @@ func (e *errorBillingClient) GetInvoiceStatus(ctx context.Context, invoiceID str
 	return billing.InvoicePending, nil
 }
 
+func (e *errorBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier billing.Tier, successURL, cancelURL string) (string, error) {
+	return "", errors.New("billing service down")
+}
+
+func (e *errorBillingClient) GetSubscription(ctx context.Context, subID string) (*billing.SubscriptionInfo, error) {
+	return nil, errors.New("billing service down")
+}
+
+func (e *errorBillingClient) CancelSubscription(ctx context.Context, subID string, atPeriodEnd bool) error {
+	return errors.New("billing service down")
+}
+
+func (e *errorBillingClient) UpdateSubscriptionSeats(ctx context.Context, subID string, seats int) error {
+	return errors.New("billing service down")
+}
+
+func (e *errorBillingClient) HandleWebhook(ctx context.Context, payload []byte, sigHeader string) (string, error) {
+	return "", errors.New("billing service down")
+}
+
 type successBillingClient struct {}
 
 func (s *successBillingClient) CreateInvoice(ctx context.Context, deal db.Deal, company db.Company) (string, error) {
@@ -29,6 +49,26 @@ func (s *successBillingClient) CreateInvoice(ctx context.Context, deal db.Deal, 
 
 func (s *successBillingClient) GetInvoiceStatus(ctx context.Context, invoiceID string) (billing.InvoiceStatus, error) {
 	return billing.InvoicePending, nil
+}
+
+func (s *successBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier billing.Tier, successURL, cancelURL string) (string, error) {
+	return "https://checkout.stripe.com/test", nil
+}
+
+func (s *successBillingClient) GetSubscription(ctx context.Context, subID string) (*billing.SubscriptionInfo, error) {
+	return &billing.SubscriptionInfo{StripeSubID: subID, State: "active"}, nil
+}
+
+func (s *successBillingClient) CancelSubscription(ctx context.Context, subID string, atPeriodEnd bool) error {
+	return nil
+}
+
+func (s *successBillingClient) UpdateSubscriptionSeats(ctx context.Context, subID string, seats int) error {
+	return nil
+}
+
+func (s *successBillingClient) HandleWebhook(ctx context.Context, payload []byte, sigHeader string) (string, error) {
+	return "EVENT-OK", nil
 }
 
 // Mock CRM Client for detailed testing

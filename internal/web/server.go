@@ -17,6 +17,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gorilla/websocket"
 	"github.com/robertpelloni/marketing_agent/internal/auth"
 	"github.com/robertpelloni/marketing_agent/internal/autodev"
 	"github.com/robertpelloni/marketing_agent/internal/billing"
@@ -25,7 +26,6 @@ import (
 	"github.com/robertpelloni/marketing_agent/internal/deploy"
 	"github.com/robertpelloni/marketing_agent/internal/llm"
 	"github.com/robertpelloni/marketing_agent/internal/logging"
-	"github.com/gorilla/websocket"
 )
 
 // HermesHealthChecker is an optional interface for checking LLM provider health.
@@ -207,7 +207,6 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		CreatedAt       time.Time
 	}{}
 
-
 	// Check LLM/Hermes health for the dashboard
 	llmStatus := "Mock"
 	llmColor := "#6c757d"
@@ -374,6 +373,8 @@ tr:hover { background-color: #f8f9fa; }
 				</div>`,
 					html.EscapeString(c.Name),
 					html.EscapeString(c.Role),
+					map[string]string{"email": "var(--info)", "linkedin": "var(--success)", "github": "var(--warning)"}[channel],
+					channel,
 					csrfToken,
 					c.ID,
 					map[bool]string{true: " selected", false: ""}[channel == "email"],

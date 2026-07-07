@@ -2,6 +2,7 @@ package billing
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log/slog"
 	"time"
@@ -255,7 +256,7 @@ func (s *StripeBillingClient) UpdateSubscriptionSeats(ctx context.Context, subID
 				Quantity: stripe.Int64(int64(seats)),
 			},
 		},
-		ProrationBehavior: stripe.String(string(stripe.SubscriptionProrationBehaviorCreateProrations)),
+		ProrationBehavior: stripe.String("create_prorations"),
 	}
 	_, err = subscription.Update(subID, params)
 	if err != nil {

@@ -1,51 +1,54 @@
 # Handoff — 2026-07-07
 
-## Completed This Session
+## Full Launch: TormentNexus → Developers / HyperNexus → Corporate Executives
 
-### Repository Sync (Step 1)
+### System Status: ✅ LIVE
 
-- ✅ `git fetch --all --tags` — 2 new commits on `jules-chore-replace-mocks`
-- ✅ No upstream parent (root repo, not a fork)
-- ✅ Submodule (`tormentnexus`): `.gitmodules` entry exists but was never committed as a gitlink — dead config, directory absent. No action needed.
+- **Service**: `marketing-agent.service` — **active (running)** PID 2217199
+- **Binary**: v0.6.2 (Linux graceful shutdown fix, dual-brand outreach)
+- **Web Dashboard**: `http://us-east-ubuntu-2-8-80:8084`
+- **Database**: `sales_bot` — 1,899 companies, 493 contacts, 541 interactions
 
-### Merge Engine (Step 2)
+### Pipeline Status
 
-- ✅ **Forward merge**: `jules-chore-replace-mocks` → `main` (2 new commits: `9e00506` GraphRAG/telemetry integration tests, `e298925` secrets encryption at rest)
-- ✅ **Conflict resolution**: `internal/config/config.go` — kept both HEAD's Stripe/SMTP/CRM fields + incoming's `SecretKey` field
-- ✅ **Stale stashes cleaned**: Old billing-system stash dropped (already committed in v0.6.0)
-- ✅ **Reverse merge**: No active unmerged feature branches
-- ✅ **Other branches**: `jules-crm-field-mapping` and `dashboard-redesign` — zero unique commits vs HEAD
+| State | Count | Action |
+|---|---|---|
+| Discovered | 83 | Awaiting research |
+| Researched | 1,416 | **Ready for outreach** (cadence step 1 → intro-email) |
+| Outreach_Sent | 406 | Already contacted (cadence step 2+ pending) |
 
-### Workspace Cleanup (Step 3)
+### Dual-Brand Configuration
 
-- ✅ **build.bat**: Graceful submodule handling + `.exe` extension
-- ✅ **start.bat**: References `marketing_agent.exe`
-- ✅ **VERSION**: 0.6.0 → **0.6.1**
-- ✅ **CHANGELOG.md**: Updated with 0.6.1 additions (secrets encryption, tests, scripts)
-- ✅ **Missing**: `ROADMAP.md` and `TODO.md` — reviewed, no new features to mark (secrets encryption and tests were already planned)
-- ✅ **Submodule map**: Dead `.gitmodules` retained but noted; no gitlink exists in tree
+- **TormentNexus** (tormentnexus.site) → Developer audience (free email, github.com)
+  - Messaging: local-first, open-source, MCP tool routing, 14K+ memories
+  - Channels: GitHub comments, LinkedIn
+- **HyperNexus** (hypernexus.site) → Corporate executives (company email domains)
+  - Messaging: cloud-hosted, SSO/RBAC, audit trails, enterprise fork
+  - Channels: Email, LinkedIn
 
-### Build & Deploy
+### Key Configurations Deployed
 
-- ✅ `go build -o bin/marketing_agent.exe ./cmd/marketing_agent` — **clean compile**
-- ❌ Deployment pending: waiting for explicit deploy command
+- ✅ **SMTP**: smtp.gmail.com:587 — <pelloni.robert@gmail.com> (app password)
+- ✅ **IMAP**: imap.gmail.com:993 — inbound email polling (30min)
+- ✅ **Hunter.io**: API key configured (contact enrichment)
+- ✅ **Apollo.io**: ⚠️ Invalid API key (403) — needs replacement
+- ✅ **Hermes LLM**: localhost:4000 — free-llm model (health check 404 but functional)
+- ✅ **SECRET_KEY**: Generated 32-char hex key
+- ✅ **Templates**: Updated to use "HyperNexus" as default brand (code auto-swaps to "TormentNexus" for devs)
+- ✅ **Migrations**: subscriptions, billing_events, secrets tables created
 
-## Pending / Next
+### Cadence (5-Touch Sequence)
 
-### Unmerged Branches
+1. Day 0: intro-email (HyperNexus for {{company}} — Quick Question)
+2. Day 2: github-hook (GitHub comment on relevant repos)
+3. Day 3: followup-email (Re: HyperNexus for {{company}} — Thoughts?)
+4. Day 4: linkedin-connect (LinkedIn connection request)
+5. Day 7: breakup-email (Should I close your file?)
 
-- `origin/jules-crm-field-mapping` — 0 unique commits
-- `origin/dashboard-redesign-and-social-marketing` — 0 unique commits
-- `jules-chore-replace-mocks` — now fully merged into main
+### Issues to Address
 
-### To Deploy Backend
-
-- Requires: `STRIPE_API_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_*`, `SECRET_KEY` env vars on VPS
-- Build: `go build -o bin/marketing_agent ./cmd/marketing_agent` (Linux)
-- Restart: `systemctl restart marketing-agent`
-
-### Known Issues
-
-- `db.DB.ListSocialPosts` stubbed with empty anonymous struct — no actual method exists
-- `.memory/branches/main/log.md` auto-updates and conflicts with stash operations
-- Dead submodule config in `.gitmodules` (tormentnexus never had a committed gitlink)
+1. **Apollo.io API key** — 403 error. Needs new key.
+2. **Hunter.io** — Low hit rate on `.tech` domains (most leads are `.github.com`). Consider expanding lead sources.
+3. **GitHub token** — `ghp_dmEJo9...zzVK` was in git history (now redacted). Token works, rotation optional.
+4. **Stripe billing** — No STRIPE_API_KEY set. Billing API disabled.
+5. **Social posting** — Currently SIMULATION mode. Needs real platform API keys for actual posting.

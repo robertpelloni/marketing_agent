@@ -68,6 +68,20 @@ type Config struct {
 	HubSpotStageMapping           map[string]string
 	SalesforceReverseStageMapping map[string]string
 	HubSpotReverseStageMapping    map[string]string
+	// Social Media API Keys
+	BlueskyHandle    string
+	BlueskyAppPass   string
+	RedditClientID   string
+	RedditClientSec  string
+	RedditUsername   string
+	RedditPassword   string
+	TwitterBearer    string
+	TwitterAPIKey    string
+	TwitterAPISec    string
+	TwitterAccToken  string
+	TwitterAccSec    string
+	LinkedInUsername string
+	LinkedInPassword string
 }
 
 // Load loads the configuration from environment variables and .env file.

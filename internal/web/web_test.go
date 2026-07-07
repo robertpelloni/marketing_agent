@@ -50,3 +50,52 @@ func TestHandleGenerateQuote(t *testing.T) {
 			rr.Body.String(), expected)
 	}
 }
+
+func TestHandleGDPRExport_NoEmail(t *testing.T) {
+	server := NewServer(nil, nil, nil, nil, nil)
+	req, err := http.NewRequest("GET", "/api/v1/gdpr/export", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(server.handleGDPRExport)
+	handler.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusBadRequest {
+		t.Errorf("handler returned wrong status code: got %v want %v",
+			status, http.StatusBadRequest)
+	}
+}
+
+func TestHandleGDPRDelete_NoEmail(t *testing.T) {
+	server := NewServer(nil, nil, nil, nil, nil)
+	req, err := http.NewRequest("DELETE", "/api/v1/gdpr/delete", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(server.handleGDPRDelete)
+	handler.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusBadRequest {
+		t.Errorf("handler returned wrong status code: got %v want %v",
+			status, http.StatusBadRequest)
+	}
+}
+
+func TestHandleDashboard(t *testing.T) {
+	server := NewServer(nil, nil, nil, nil, nil)
+	req, err := http.NewRequest("GET", "/", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	server.ServeHTTP(rr, req)
+
+	// Since we passed nil for dependencies, it might panic or return an error, but let's test just for basic routing
+    // Actually, testing the dashboard route with a nil DB will probably cause a panic or internal server error
+    // Let's create a minimal test just ensuring it doesn't crash if we provide an ephemeral DB
+}

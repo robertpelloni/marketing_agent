@@ -11,6 +11,7 @@ import (
 	"github.com/stripe/stripe-go/v81/checkout/session"
 	"github.com/stripe/stripe-go/v81/customer"
 	"github.com/stripe/stripe-go/v81/invoice"
+	"github.com/stripe/stripe-go/v81/price"
 	"github.com/stripe/stripe-go/v81/subscription"
 	"github.com/stripe/stripe-go/v81/webhook"
 
@@ -158,8 +159,20 @@ func (s *StripeBillingClient) CreateCheckoutSession(ctx context.Context, company
 		return "", fmt.Errorf("unknown tier: %s", tier)
 	}
 
+	// Determine if the price is recurring (subscription) or one-time (payment)
+	// by fetching the price from Stripe.
+	price, err := getPrice(ctx, priceID)
+	if err != nil {
+		return "", fmt.Errorf("failed to fetch price %s: %w", priceID, err)
+	}
+
+	mode := stripe.CheckoutSessionModePayment
+	if price.Recurring != nil {
+		mode = stripe.CheckoutSessionModeSubscription
+	}
+
 	params := &stripe.CheckoutSessionParams{
-		Mode:       stripe.String(string(stripe.CheckoutSessionModeSubscription)),
+		Mode:       stripe.String(string(mode)),
 		SuccessURL: stripe.String(successURL),
 		CancelURL:  stripe.String(cancelURL),
 		LineItems: []*stripe.CheckoutSessionLineItemParams{
@@ -179,6 +192,11 @@ func (s *StripeBillingClient) CreateCheckoutSession(ctx context.Context, company
 		return "", fmt.Errorf("stripe checkout session creation failed: %w", err)
 	}
 	return sess.URL, nil
+}
+
+// getPrice fetches a Stripe price object to check if it's recurring or one-time.
+func getPrice(_ context.Context, priceID string) (*stripe.Price, error) {
+	return price.Get(priceID, nil)
 }
 
 func (s *StripeBillingClient) GetSubscription(ctx context.Context, subID string) (*SubscriptionInfo, error) {

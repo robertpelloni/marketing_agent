@@ -13,9 +13,9 @@ import (
 
 // SocialPosterWorker handles scheduled posting to social media platforms.
 type SocialPosterWorker struct {
-	db   *db.DB
-	llm  llm.LLMProvider
-	hub  *SocialPosterHub
+	db  *db.DB
+	llm llm.LLMProvider
+	hub *SocialPosterHub
 }
 
 // NewSocialPosterWorker creates a new social poster worker.

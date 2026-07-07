@@ -50,14 +50,14 @@ type atprotoRecord struct {
 
 // blueskyPost is the schema for app.bsky.feed.post
 type blueskyPost struct {
-	Text      string         `json:"text"`
-	CreatedAt string         `json:"createdAt"`
-	Facets    []any          `json:"facets,omitempty"`
-	Embed     *blueskyEmbed  `json:"embed,omitempty"`
+	Text      string        `json:"text"`
+	CreatedAt string        `json:"createdAt"`
+	Facets    []any         `json:"facets,omitempty"`
+	Embed     *blueskyEmbed `json:"embed,omitempty"`
 }
 
 type blueskyEmbed struct {
-	Type    string       `json:"$type"`
+	Type     string          `json:"$type"`
 	External blueskyExternal `json:"external"`
 }
 
@@ -186,7 +186,7 @@ func (p *RedditProvider) Post(ctx context.Context, req PostRequest) error {
 	// For simplicity, we submit to the user's profile feed.
 	data := strings.NewReader(fmt.Sprintf(
 		"kind=self&sr=%s&title=%s&text=%s&resubmit=true",
-		"u_" + p.Username,
+		"u_"+p.Username,
 		truncate(stripNewlines(req.Content), 300), req.Content,
 	))
 

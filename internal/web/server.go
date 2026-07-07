@@ -88,8 +88,10 @@ func (s *Server) routes() {
 	// Stripe Webhook (public, verified by signature)
 	s.mux.Handle("/api/v1/webhook/stripe", rl.middleware(http.HandlerFunc(s.handleStripeWebhook)))
 
-	// Billing API (protected)
-	s.mux.Handle("/api/v1/billing/checkout", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleCreateCheckout))))
+	// Create Checkout Session (public — called from hypernexus.site pricing buttons)
+	s.mux.Handle("/api/v1/billing/checkout", rl.middleware(http.HandlerFunc(s.handleCreateCheckout)))
+
+	// Billing API (protected — requires auth)
 	s.mux.Handle("/api/v1/billing/subscription", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleGetSubscription))))
 	s.mux.Handle("/api/v1/billing/cancel", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleCancelSubscription))))
 	s.mux.Handle("/api/v1/billing/portal", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleBillingPortal))))

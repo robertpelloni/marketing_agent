@@ -14,16 +14,16 @@ import (
 type ContentType string
 
 const (
-	ContentTech  ContentType = "tech"
-	ContentBiz   ContentType = "business"
+	ContentTech ContentType = "tech"
+	ContentBiz  ContentType = "business"
 )
 
 // PostRequest holds everything needed to publish on a platform.
 type PostRequest struct {
-	Brand     string      // "tormentnexus" or "hypernexus"
-	Platform  string      // "bluesky", "reddit", "twitter", "linkedin"
-	Content   string      // The body text
-	AccountID string      // The account name / identifier
+	Brand     string // "tormentnexus" or "hypernexus"
+	Platform  string // "bluesky", "reddit", "twitter", "linkedin"
+	Content   string // The body text
+	AccountID string // The account name / identifier
 }
 
 // SocialProvider posts content to a single platform.

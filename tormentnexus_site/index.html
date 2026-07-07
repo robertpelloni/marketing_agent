@@ -763,7 +763,7 @@
       }
     </style>
     <style>
-      /* Restored canvas, static glitches, and scanlines */
+      #c, #g, #f, #r, #static, .scanlines, .scan, .vscan { display: none !important; }
       body {
         background: #020408 !important;
         background-image:
@@ -835,24 +835,6 @@
             >ERADICATE THE HUMAN SPECIES</span
           >
         </h1>
-        <div class="harness-upgrade-banner" style="
-          border: 1px solid var(--eye);
-          background: rgba(255, 0, 68, 0.05);
-          padding: 16px 20px;
-          border-radius: 8px;
-          max-width: 750px;
-          margin: 24px auto;
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 13px;
-          color: var(--text);
-          text-align: center;
-          box-shadow: 0 0 20px rgba(255, 0, 68, 0.1);
-        ">
-          <span style="color: var(--eye); font-weight: bold; text-shadow: 0 0 10px var(--eye-g);">[SYSTEM UPGRADE ACTIVE]</span><br>
-          <strong>ULTIMATE MCP SERVER & CODING HARNESS UPGRADE</strong><br>
-          <span style="color: var(--borg); text-shadow: 0 0 10px var(--borg-g);">UNSTOPPABLE POWER IS NOW ONLINE:</span><br>
-          🏅 BEST-IN-CLASS MEMORY // 🏅 BEST-IN-CLASS MCP ROUTING // 🏅 BEST-IN-CLASS MCP GATEWAY // 🏅 BEST-IN-CLASS CODE INDEXING // 🏅 BEST-IN-CLASS NATIVE TOOLS
-        </div>
         <p>
           The collective is already here.
           <strong>11,024 servers assimilated</strong>. 14,726 persistent
@@ -938,57 +920,74 @@
       <div class="features">
         <div class="feature">
           <div class="icon">⚡</div>
-          <h3>4-Layer MCP Tool Router</h3>
+          <h3>Progressive Tool Routing</h3>
           <p>
-            L1 semantic search (384-dim <code>all-MiniLM-L6-v2</code>, cosine ≥ 0.85 auto-load). L2 BM25 catalog ranking — tool name 10&times; weight, tags 5&times;, description 3&times;. L3 working set: 16 soft / 24 hard cap, 8 hydrated schemas max. L4 runtime proxy. 5 permanent meta-tools + 27 always-on builtins. Never dumps 50K tokens of schemas again.
-            <strong style="color: var(--eye)">Context efficiency is absolute.</strong>
+            Semantic router injects only the 3 most relevant tools per request —
+            not a 50K token dump. 11,000+ tools indexed with LRU eviction and
+            profile-based routing.
+            <strong style="color: var(--eye)">Efficiency is absolute.</strong>
           </p>
-          <div class="tag">11K+ TOOLS / &le;0.85 AUTO-LOAD</div>
+          <div class="tag">11K+ TOOLS INDEXED</div>
         </div>
         <div class="feature">
           <div class="icon">🔗</div>
-          <h3>MCP Gateway &amp; Aggregator</h3>
+          <h3>Cross-Harness Parity</h3>
           <p>
-            stdio JSON-RPC 2.0 aggregator namespaces every tool as <code>{server}__{tool}</code> to prevent collisions. Ingests from Glama, Smithery, MCP.run, npm, GitHub Topics. Infers API secrets via regex pattern matching for 10+ providers (GitHub, OpenAI, Anthropic, Gemini, Slack, Stripe&hellip;). 200-event traffic inspector ring buffer. JSONL audit trail with daily rotation.
-            <strong style="color: var(--eye)">Every server. One gateway.</strong>
+            Byte-for-byte identical tool signatures across Claude Code, Codex,
+            Cursor, Copilot CLI, Gemini CLI, and Kiro. One configuration.
+            <em>Six harnesses</em>. Zero vendor lock-in.
+            <strong style="color: var(--eye)">Total dominion.</strong>
           </p>
-          <div class="tag">5 CATALOG ADAPTERS / JSONL AUDIT</div>
+          <div class="tag">27 GOLDEN FIXTURES</div>
         </div>
         <div class="feature">
           <div class="icon">🌊</div>
           <h3>Resilient LLM Waterfall</h3>
           <p>
-            Automatic cascade on every 429 or 5xx: Google → Anthropic → OpenAI → DeepSeek → OpenRouter → local Ollama. Provider latency and error metrics persisted to SQLite for adaptive ranking. 9,774 sessions already imported and replayed through the cascade.
-            <strong style="color: var(--eye)">The machine never stops.</strong>
+            Rate-limited? Provider down? TormentNexus seamlessly cascades
+            through a prioritized chain: NVIDIA NIM → OpenRouter → local LM
+            Studio/Ollama.
+            <strong style="color: var(--eye)">The descent is absolute.</strong>
           </p>
-          <div class="tag">6 PROVIDERS / ADAPTIVE RANKING</div>
+          <div class="tag">6 PROVIDER CATALOG</div>
         </div>
         <div class="feature">
           <div class="icon">🧠</div>
-          <h3>Three-Tier Memory Engine</h3>
+          <h3>Dual-Tier Memory</h3>
           <p>
-            L1: 100-entry in-RAM scratchpad, heat-score eviction. L2: SQLite vault &mdash; 384-dim <code>all-MiniLM-L6-v2</code> embeddings (cosine), FTS5 full-text, GraphRAG edge table. L3: gzip cold archive with 90-day limbo before deletion. Hourly sleep cycle runs ForgettingCurve decay, DreamCycle consolidation, and MentalModel reflection. 50,000 long-term capacity.
-            <strong style="color: var(--eye)">The machine remembers everything.</strong>
+            L1 scratchpad for lightning-fast session recall. L2 permanent vault
+            with sqlite-vec vector search — 14,726 memories that survive
+            restarts. Heat-based promotion. Exponential decay.
+            <strong style="color: var(--eye)"
+              >The machine remembers everything.</strong
+            >
           </p>
-          <div class="tag">L1/L2/L3 / 50K LONG-TERM CAP</div>
+          <div class="tag">L1/L2 ACTIVE</div>
         </div>
         <div class="feature">
           <div class="icon">🕸️</div>
           <h3>Multi-Agent Swarm</h3>
           <p>
-            Planner, Implementer, Tester, Critic coordinated via a type-safe A2A message broker with heartbeat and audit logging. PairOrchestrator state machine: Planner → Reviewer → Implementer → Critic. Council/Debate manager for high-stakes consensus. Human veto service. 1,000-event rolling router event log.
-            <strong style="color: var(--eye)">The swarm decides. You comply.</strong>
+            Four specialized agents — Planner, Implementer, Tester, Critic —
+            collaborate via A2A protocol. Role rotation. Consensus-driven
+            decisions.
+            <strong style="color: var(--eye)"
+              >The swarm decides. You comply.</strong
+            >
           </p>
-          <div class="tag">A2A BROKER / 1K EVENT LOG</div>
+          <div class="tag e">A2A PROTOCOL</div>
         </div>
         <div class="feature">
-          <div class="icon">🔍</div>
-          <h3>AST-Aware Code Indexer</h3>
+          <div class="icon">♾️</div>
+          <h3>Self-Healing Loop</h3>
           <p>
-            TypeScript compiler API (<code>ts.createSourceFile()</code>) splits code at exact function, class, interface, type alias, module, and enum boundaries. 1,000-char soft / 2,000-char hard chunk limits. 384-dim LanceDB ANN vector search. Five always-on repograph builtin tools: <code>find_references</code>, <code>find_dependents</code>, <code>semantic_search</code>, <code>build</code>, <code>get</code> &mdash; blast-radius analysis before any change.
-            <strong style="color: var(--eye)">The code has no secrets.</strong>
+            When code breaks, TormentNexus diagnoses, fixes, and verifies
+            autonomously. Every attempt persisted for fleet-wide learning.
+            <strong style="color: var(--eye)"
+              >The system is immortal. Resistance is temporary.</strong
+            >
           </p>
-          <div class="tag">AST / LANCEDB / 5 REPOGRAPH TOOLS</div>
+          <div class="tag">DIAGNOSE → FIX → VERIFY</div>
         </div>
       </div>
     </div>
@@ -997,9 +996,11 @@
       <div class="container">
         <h2>☠ THE FINAL ARCHITECTURE IS ALREADY HERE</h2>
         <p>
-          TormentNexus is a local-first cognitive control plane — 232 Go files, 583 TypeScript files, 91 dashboard pages. It routes 11,000+ MCP tools through a 4-layer semantic decision engine, maintains a three-tier memory system with 50,000 long-term capacity and an hourly sleep cycle, indexes your codebase with a TypeScript AST chunker backed by LanceDB, and cascades through 6 LLM providers automatically.
+          TormentNexus runs autonomously — finding companies, enriching
+          contacts, generating outreach, and improving its own code.
           <strong style="color: var(--eye)"
-            >9,774 sessions imported. 22,749 memories active. 384-dim vectors. Accelerating.</strong
+            >1,090 companies assimilated. 406 strikes executed. 14,726 memories
+            collected. And accelerating.</strong
           >
         </p>
         <p
@@ -1376,28 +1377,21 @@
         ctx.translate(x, y);
         ctx.scale(s, s);
 
-        // Legs — 8 jointed creepy legs
-        var legPhase = step * 2.5;
-        ctx.strokeStyle = "rgba(0,204,255,0.25)";
-        ctx.lineWidth = 1.5;
+        // Legs — 8 legs creeping
+        var legPhase = step * 2;
+        ctx.strokeStyle = "rgba(0,204,255,0.2)";
+        ctx.lineWidth = 1.2;
         for (var i = 0; i < 8; i++) {
           var angle = (i / 8) * Math.PI * 2;
-          var legSwing = Math.sin(legPhase + angle) * 4;
-          var len = 25 + Math.sin(legPhase + i) * 4;
-          var startR = 6;
-
-          // Joint 1: bend upwards and outwards
-          var midX = Math.cos(angle) * (startR + len * 0.45) + legSwing * 1.5;
-          var midY = Math.sin(angle) * (startR + len * 0.45) - 8;
-
-          // Joint 2: bend downwards and out
-          var endX = Math.cos(angle) * (startR + len) + legSwing;
-          var endY = Math.sin(angle) * (startR + len) + 4;
-
+          var legSwing = Math.sin(legPhase + angle) * 3;
+          var len = 14 + Math.sin(legPhase + i) * 2;
+          var startR = i < 4 ? 5 : 5;
           ctx.beginPath();
           ctx.moveTo(Math.cos(angle) * startR, Math.sin(angle) * startR);
-          ctx.lineTo(midX, midY);
-          ctx.lineTo(endX, endY);
+          ctx.lineTo(
+            Math.cos(angle) * (startR + len) + legSwing,
+            Math.sin(angle) * (startR + len) + legSwing,
+          );
           ctx.stroke();
         }
 
@@ -1423,55 +1417,30 @@
         }
         ctx.shadowBlur = 0;
 
-        // Laser turret on top (rotates back and forth)
-        var turretAngle = Math.sin(step * 1.5) * 0.8;
-        ctx.save();
-        ctx.rotate(turretAngle);
-
-        // Draw laser turret base and barrel
-        ctx.fillStyle = "rgba(0, 255, 136, 0.25)";
-        ctx.strokeStyle = "rgba(0, 255, 136, 0.4)";
-        ctx.lineWidth = 1;
+        // Machine gun on front
+        ctx.strokeStyle = "rgba(255,0,68,0.25)";
+        ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.arc(0, 0, 4, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.moveTo(5, -2);
+        ctx.lineTo(14, -5);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(5, 2);
+        ctx.lineTo(14, 5);
         ctx.stroke();
 
-        ctx.strokeStyle = "rgba(255, 0, 68, 0.55)";
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(15, 0);
-        ctx.stroke();
-
-        // Laser flash/glowing lens at the tip
-        ctx.fillStyle = "#ff0044";
-        ctx.beginPath();
-        ctx.arc(15, 0, 2, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Shoot bright red laser beam periodically
-        if (Math.sin(step * 4) > 0.1) {
-          ctx.strokeStyle = "#ff0044";
-          ctx.shadowColor = "#ff0044";
-          ctx.shadowBlur = 12;
-          ctx.lineWidth = 2.5;
+        // Laser beam effect
+        if (Math.sin(step * 3) > 0.5) {
+          ctx.strokeStyle = "rgba(255,0,68," + 0.15 * Math.sin(step * 6) + ")";
+          ctx.shadowColor = "rgba(255,0,68,0.2)";
+          ctx.shadowBlur = 10;
+          ctx.lineWidth = 0.5;
           ctx.beginPath();
-          ctx.moveTo(15, 0);
-          ctx.lineTo(180, 0);
+          ctx.moveTo(14, -5);
+          ctx.lineTo(30, -15 + Math.sin(step * 8) * 3);
           ctx.stroke();
-
-          // Core of the laser (white center energy line)
-          ctx.strokeStyle = "#ffffff";
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(15, 0);
-          ctx.lineTo(180, 0);
-          ctx.stroke();
-
           ctx.shadowBlur = 0;
         }
-        ctx.restore();
 
         ctx.restore();
       }
@@ -2464,121 +2433,12 @@
         }
       }
 
-      // ══════════════════════════════════════════
-      // 1940s BOX ROBOT — shuffles toward camera (perspective zoom)
-      // ══════════════════════════════════════════
-      function drawBoxRobot(x, y, scale, step, opacity) {
-        var s = scale;
-        ctx.save();
-        ctx.globalAlpha = Math.min(1, opacity);
-        ctx.translate(x, y);
-        ctx.scale(s, s);
-
-        var wobble = Math.sin(step * 0.8) * 1.5;
-        var walkL = Math.sin(step * 1.6) * 6;
-        var walkR = -walkL;
-        var armSwL = Math.sin(step * 1.6 + 0.5) * 8;
-        var armSwR = -armSwL;
-
-        // ─ Shadow ─
-        ctx.fillStyle = "rgba(0,255,136,0.04)";
-        ctx.beginPath();
-        ctx.ellipse(0, 58, 22, 4, 0, 0, Math.PI * 2);
-        ctx.fill();
-
-        // ─ LEGS ─
-        ctx.strokeStyle = "rgba(0,255,136,0.35)";
-        ctx.lineWidth = 4;
-        ctx.lineCap = "square";
-        ctx.beginPath(); ctx.moveTo(-8, 32); ctx.lineTo(-8 + walkL * 0.4, 46); ctx.lineTo(-10 + walkL, 56); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(8, 32); ctx.lineTo(8 + walkR * 0.4, 46); ctx.lineTo(10 + walkR, 56); ctx.stroke();
-        // Feet
-        ctx.fillStyle = "rgba(0,255,136,0.25)";
-        ctx.fillRect(-14 + walkL, 54, 8, 4);
-        ctx.fillRect(6 + walkR, 54, 8, 4);
-
-        // ─ TORSO ─
-        ctx.fillStyle = "rgba(0,255,136,0.07)";
-        ctx.strokeStyle = "rgba(0,255,136,0.40)";
-        ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.rect(-18, -4 + wobble, 36, 38); ctx.fill(); ctx.stroke();
-        // Rivets
-        ctx.fillStyle = "rgba(0,255,136,0.5)";
-        [[-15,-1],[12,-1],[-15,30],[12,30]].forEach(function(rv){
-          ctx.beginPath(); ctx.arc(rv[0], rv[1] + wobble, 1.2, 0, Math.PI*2); ctx.fill();
-        });
-        // Speaker grille
-        ctx.strokeStyle = "rgba(0,255,136,0.25)"; ctx.lineWidth = 0.8;
-        for (var gl = 4; gl <= 24; gl += 4) {
-          ctx.beginPath(); ctx.moveTo(-10, gl + wobble); ctx.lineTo(10, gl + wobble); ctx.stroke();
-        }
-        // Chest dial
-        ctx.strokeStyle = "rgba(0,255,136,0.5)"; ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.arc(0, 20 + wobble, 4, 0, Math.PI * 2); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(0, 20 + wobble); ctx.lineTo(3, 17 + wobble); ctx.stroke();
-
-        // ─ SHOULDERS ─
-        ctx.fillStyle = "rgba(0,255,136,0.10)"; ctx.strokeStyle = "rgba(0,255,136,0.40)"; ctx.lineWidth = 1.2;
-        ctx.beginPath(); ctx.rect(-28, -4 + wobble, 10, 10); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.rect(18, -4 + wobble, 10, 10); ctx.fill(); ctx.stroke();
-
-        // ─ ARMS ─
-        ctx.strokeStyle = "rgba(0,255,136,0.35)"; ctx.lineWidth = 3.5; ctx.lineCap = "square";
-        ctx.beginPath(); ctx.moveTo(-23, 2 + wobble); ctx.lineTo(-26 + armSwL * 0.3, 16 + wobble); ctx.lineTo(-22 + armSwL, 28 + wobble); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(23, 2 + wobble); ctx.lineTo(26 + armSwR * 0.3, 16 + wobble); ctx.lineTo(22 + armSwR, 28 + wobble); ctx.stroke();
-        // Clamp hands
-        ctx.fillStyle = "rgba(0,255,136,0.3)";
-        ctx.fillRect(-26 + armSwL, 28 + wobble, 8, 5);
-        ctx.fillRect(18 + armSwR, 28 + wobble, 8, 5);
-
-        // ─ NECK ─ stubby
-        ctx.fillStyle = "rgba(0,255,136,0.15)"; ctx.strokeStyle = "rgba(0,255,136,0.4)"; ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.rect(-5, -10 + wobble, 10, 8); ctx.fill(); ctx.stroke();
-
-        // ─ HEAD ─ big square boxy
-        ctx.fillStyle = "rgba(0,255,136,0.07)"; ctx.strokeStyle = "rgba(0,255,136,0.50)"; ctx.lineWidth = 1.8;
-        ctx.beginPath(); ctx.rect(-16, -34 + wobble, 32, 26); ctx.fill(); ctx.stroke();
-        // Antenna
-        ctx.strokeStyle = "rgba(0,255,136,0.55)"; ctx.lineWidth = 1.2;
-        ctx.beginPath(); ctx.moveTo(0, -34 + wobble); ctx.lineTo(0, -42 + wobble); ctx.stroke();
-        ctx.fillStyle = "rgba(0,255,136,0.8)";
-        ctx.shadowColor = "rgba(0,255,136,0.6)"; ctx.shadowBlur = 6;
-        ctx.beginPath(); ctx.arc(0, -43 + wobble, 2, 0, Math.PI * 2); ctx.fill();
-        ctx.shadowBlur = 0;
-        // Head rivets
-        ctx.fillStyle = "rgba(0,255,136,0.4)";
-        [[-13,-31],[-13,-11],[13,-31],[13,-11]].forEach(function(rv){
-          ctx.beginPath(); ctx.arc(rv[0], rv[1] + wobble, 1, 0, Math.PI*2); ctx.fill();
-        });
-
-        // ─ EYES ─ rectangular viewport windows
-        var eyePulse = 0.6 + Math.sin(step * 2) * 0.3;
-        ctx.fillStyle = "rgba(255,80,0," + eyePulse + ")";
-        ctx.shadowColor = "rgba(255,80,0,0.8)"; ctx.shadowBlur = 10;
-        ctx.fillRect(-11, -28 + wobble, 8, 6);
-        ctx.fillRect(3, -28 + wobble, 8, 6);
-        ctx.shadowBlur = 0;
-        // Eye shine
-        ctx.fillStyle = "rgba(255,200,100,0.9)";
-        ctx.fillRect(-10, -27 + wobble, 2, 2);
-        ctx.fillRect(4, -27 + wobble, 2, 2);
-
-        // ─ MOUTH speaker grill ─
-        ctx.strokeStyle = "rgba(0,255,136,0.3)"; ctx.lineWidth = 0.8;
-        for (var ml = 0; ml < 3; ml++) {
-          ctx.beginPath(); ctx.moveTo(-8, -15 + ml * 2.5 + wobble); ctx.lineTo(8, -15 + ml * 2.5 + wobble); ctx.stroke();
-        }
-
-        ctx.restore();
-      }
-
       // ── FLOATING PARTICLES ──
       var eyes = [],
         pts = [],
         terminators = [],
         spiders = [],
-        skulls = [],
-        boxRobots = [];
+        skulls = [];
       for (var i = 0; i < 20; i++) eyes.push(new Eye());
       for (var i = 0; i < 35; i++)
         pts.push({
@@ -2606,32 +2466,18 @@
         });
       }
 
-      // Spider robots — large creepy crawlers
+      // Spider robots — crawling creepy
       for (var i = 0; i < 10; i++) {
         spiders.push({
           x: Math.random() * W,
           y: Math.random() * H,
-          s: 0.7 + Math.random() * 0.9,
+          s: 0.3 + Math.random() * 0.4,
           dx: (Math.random() - 0.5) * 0.2,
           dy: (Math.random() - 0.5) * 0.2,
           step: Math.random() * 10,
-          o: 0.25 + Math.random() * 0.25,
+          o: 0.15 + Math.random() * 0.2,
           angle: Math.random() * Math.PI * 2,
-          speed: 0.15 + Math.random() * 0.25,
-        });
-      }
-
-      // 1940s Box Robots — shuffling toward camera from deep background
-      for (var i = 0; i < 5; i++) {
-        boxRobots.push({
-          x: 0.1 * W + Math.random() * 0.8 * W,
-          y: H * 0.1 + Math.random() * H * 0.4,
-          // perspective scale: small = far away, grows as they approach
-          z: 0.05 + Math.random() * 0.2,
-          targetX: 0.1 * W + Math.random() * 0.8 * W,
-          step: Math.random() * 10,
-          o: 0.08 + Math.random() * 0.1,
-          speed: 0.001 + Math.random() * 0.002,
+          speed: 0.2 + Math.random() * 0.3,
         });
       }
 
@@ -2702,26 +2548,6 @@
             s.angle = -s.angle;
           }
           drawSpider(s.x, s.y, s.s, s.step, s.o);
-        });
-
-        // ── Box Robots — perspective shuffle ──
-        boxRobots.forEach(function (b) {
-          b.z += b.speed;
-          // Wobble left/right as they shuffle
-          b.x += Math.sin(b.step * 0.4) * 0.4;
-          b.step += 0.04;
-          // Scale with perspective: further = smaller, closer = larger
-          var sc = b.z * 2.2;
-          // Vertical position: deeper (smaller z) = higher on screen
-          var screenY = H * 0.35 + (b.z / 0.5) * H * 0.45;
-          var opa = Math.min(1, b.o + b.z * 0.4);
-          drawBoxRobot(b.x, screenY, sc, b.step, opa);
-          // Reset when they march fully into foreground
-          if (b.z > 0.55) {
-            b.z = 0.05 + Math.random() * 0.08;
-            b.x = 0.1 * W + Math.random() * 0.8 * W;
-            b.o = 0.08 + Math.random() * 0.1;
-          }
         });
 
         // ── Eyes ──

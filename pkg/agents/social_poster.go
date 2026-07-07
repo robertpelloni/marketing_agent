@@ -71,9 +71,6 @@ func (w *SocialPosterWorker) postAll(ctx context.Context) {
 		// Post for HyperNexus
 		w.generateAndPost(ctx, "hypernexus", platform, usernames["hypernexus"][platform])
 	}
-
-	w.SendDirectMarketing(ctx, "tormentnexus")
-	w.SendDirectMarketing(ctx, "hypernexus")
 }
 
 func (w *SocialPosterWorker) generateAndPost(ctx context.Context, brand, platform, username string) {
@@ -115,44 +112,5 @@ func (w *SocialPosterWorker) generateAndPost(ctx context.Context, brand, platfor
 		if err := w.db.CreateSocialPost(ctx, post); err != nil {
 			slog.Error("SocialPoster DB Error: failed to save post log", "error", err)
 		}
-	}
-}
-
-// SendDirectMarketing simulates sending direct marketing emails to target audiences.
-func (w *SocialPosterWorker) SendDirectMarketing(ctx context.Context, brand string) {
-	var targetAudience string
-	var systemPrompt string
-	if brand == "tormentnexus" {
-		targetAudience = "independent developers and creators"
-		systemPrompt = "Draft a direct marketing email for TormentNexus targeting independent developers and creators. Emphasize local-first, open-source, and developer velocity. Keep it concise."
-	} else {
-		targetAudience = "corporate and enterprise buyers"
-		systemPrompt = "Draft a direct marketing email for HyperNexus targeting corporate and enterprise buyers. Emphasize SOC 2 compliance, SSO, RBAC, and secure cloud hosting. Keep it professional."
-	}
-
-	prompt := llm.Prompt{
-		System: systemPrompt,
-		User:   "Draft the email subject and body.",
-	}
-
-	content, err := w.llm.Generate(ctx, prompt)
-	if err != nil {
-		slog.Error("SocialPoster: Failed to generate direct marketing", "error", err)
-		return
-	}
-
-	slog.Info(fmt.Sprintf("SocialPoster [DIRECT MARKETING] — Brand: %s | Target: %s\nContent:\n%s", brand, targetAudience, content))
-
-	// Also log this as a social post for visibility on dashboard
-	if w.db != nil {
-		post := &db.SocialPost{
-			Brand:           brand,
-			Platform:        "direct_email",
-			AccountUsername: "Marketing_Team",
-			PostContent:     content,
-			Status:          "sent",
-			CreatedAt:       time.Now(),
-		}
-		_ = w.db.CreateSocialPost(ctx, post)
 	}
 }

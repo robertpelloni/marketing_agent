@@ -1,9 +1,0 @@
-CREATE TABLE IF NOT EXISTS social_posts (
-    id SERIAL PRIMARY KEY,
-    brand VARCHAR(255) NOT NULL,
-    platform VARCHAR(255) NOT NULL,
-    account_username VARCHAR(255) NOT NULL,
-    post_content TEXT NOT NULL,
-    status VARCHAR(50) NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);

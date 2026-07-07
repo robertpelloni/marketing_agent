@@ -311,17 +311,18 @@ func main() {
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
-	go func() {
-		<-sigChan
-		slog.Info("Shutting down: Signal received, initiating graceful drain...")
-		cancel()
-		shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
-		defer shutdownCancel()
-		if err := srv.Shutdown(shutdownCtx); err != nil {
-			slog.Info(fmt.Sprintf("Web server shutdown error: %v", err))
-		}
-		slog.Info("Shutting down: Done.")
-	}()
+	<-sigChan
+	slog.Info("Shutting down: Signal received, initiating graceful drain...")
 
-	setupSystray(cancel, cfg.Port)
+	cancel()
+
+	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer shutdownCancel()
+
+	if err := srv.Shutdown(shutdownCtx); err != nil {
+		slog.Info(fmt.Sprintf("Web server shutdown error: %v", err))
+	}
+
+	time.Sleep(2 * time.Second)
+	slog.Info("Shutting down: Done.")
 }

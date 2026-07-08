@@ -198,14 +198,11 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 	}
 
 	taskList, _ := s.tasks.ListAllTasks(r.Context())
-	socialPosts := []struct {
-		Brand           string
-		Platform        string
-		AccountUsername string
-		PostContent     string
-		Status          string
-		CreatedAt       time.Time
-	}{}
+	socialPosts, err := s.db.ListRecentSocialPosts(r.Context(), 15)
+	if err != nil {
+		slog.WarnContext(r.Context(), "Error listing social posts", "error", err)
+		socialPosts = []db.SocialPost{}
+	}
 
 	// Check LLM/Hermes health for the dashboard
 	llmStatus := "Mock"

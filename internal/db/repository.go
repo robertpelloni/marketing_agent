@@ -819,6 +819,37 @@ func (db *DB) CreateSocialPost(ctx context.Context, post *SocialPost) error {
 	return nil
 }
 
+// ListRecentSocialPosts retrieves the latest logged social media posts.
+func (db *DB) ListRecentSocialPosts(ctx context.Context, limit int) ([]SocialPost, error) {
+	if db.Conn == nil {
+		return nil, fmt.Errorf("database connection is nil")
+	}
+	query := `
+		SELECT id, brand, platform, account_username, post_content, status, created_at
+		FROM social_posts
+		ORDER BY created_at DESC
+		LIMIT $1
+	`
+	rows, err := db.Conn.QueryContext(ctx, query, limit)
+	if err != nil {
+		if strings.Contains(err.Error(), "relation \"social_posts\" does not exist") {
+			return []SocialPost{}, nil
+		}
+		return nil, fmt.Errorf("failed to list social posts: %w", err)
+	}
+	defer rows.Close()
+
+	var posts []SocialPost
+	for rows.Next() {
+		var p SocialPost
+		if err := rows.Scan(&p.ID, &p.Brand, &p.Platform, &p.AccountUsername, &p.PostContent, &p.Status, &p.CreatedAt); err != nil {
+			return nil, err
+		}
+		posts = append(posts, p)
+	}
+	return posts, nil
+}
+
 // ExportGDPRData retrieves all data associated with a specific email for GDPR export.
 func (db *DB) ExportGDPRData(ctx context.Context, email string) (map[string]interface{}, error) {
 	contact, err := db.GetContactByEmail(ctx, email)

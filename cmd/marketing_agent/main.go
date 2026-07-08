@@ -96,7 +96,7 @@ func main() {
 		crmClient = crm.NewMockCRMClient()
 	}
 
-	// 2b. Setup Enricher — Hunter.io + Apollo.io with FallbackSource
+	// 2b. Setup Enricher — Hunter.io + Apollo.io + GitHub fallback with FallbackSource
 	var enrichmentSources []enrichment.EnrichmentSource
 	var sourceNames []string
 
@@ -114,6 +114,15 @@ func main() {
 		sourceNames = append(sourceNames, "Apollo.io")
 	} else {
 		slog.Info("Enrichment: No APOLLO_API_KEY set - skipping Apollo.io.")
+	}
+
+	// GitHub commit email fallback — works even when Hunter/Apollo fail
+	if cfg.GitHubToken != "" {
+		slog.Info("Enrichment: Initializing GitHub commit email source (last-resort fallback).")
+		enrichmentSources = append(enrichmentSources, enrichment.NewGitHubEnrichSource(cfg.GitHubToken))
+		sourceNames = append(sourceNames, "GitHub Commits")
+	} else {
+		slog.Info("Enrichment: No GITHUB_TOKEN set - skipping GitHub commit email fallback.")
 	}
 
 	if len(enrichmentSources) == 0 {
@@ -151,9 +160,21 @@ func main() {
 	crmWorker := crm.NewWorker(database, crmClient)
 	go crmWorker.Run(ctx, 30*time.Minute)
 
-	// 2f. Setup LLM Provider — Hermes or Mock
+	// 2f. Setup LLM Provider — DeepSeek > Hermes > Mock
 	var llmProvider llm.LLMProvider
-	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
+	if cfg.DeepSeekAPIKey != "" {
+		slog.Info(fmt.Sprintf("LLM: Initializing DeepSeek provider (model: %s)", cfg.DeepSeekModel))
+		llmProvider = llm.NewDeepSeekLLMProvider(llm.DeepSeekConfig{
+			APIKey: cfg.DeepSeekAPIKey,
+			Model:  cfg.DeepSeekModel,
+		})
+
+		if err := llmProvider.(*llm.DeepSeekLLMProvider).HealthCheck(ctx); err != nil {
+			slog.Info(fmt.Sprintf("LLM: WARNING — DeepSeek health check failed: %v", err))
+		} else {
+			slog.Info("LLM: DeepSeek health check passed ✓")
+		}
+	} else if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
 		slog.Info(fmt.Sprintf("LLM: Initializing Hermes provider at %s (model: %s)", cfg.HermesAPIURL, cfg.HermesModel))
 		llmProvider = llm.NewHermesLLMProvider(llm.HermesConfig{
 			BaseURL: cfg.HermesAPIURL,
@@ -167,7 +188,7 @@ func main() {
 			slog.Info("LLM: Hermes health check passed ✓")
 		}
 	} else {
-		slog.Info("LLM: Initializing Mock LLM Provider (set HERMES_API_URL and HERMES_API_KEY for real LLM).")
+		slog.Info("LLM: Initializing Mock LLM Provider (set DEEPSEEK_API_KEY or HERMES_API_URL + HERMES_API_KEY for real LLM).")
 		llmProvider = &llm.MockLLMProvider{}
 	}
 

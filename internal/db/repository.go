@@ -303,6 +303,13 @@ func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
 	query := `
 		INSERT INTO contacts (company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+		ON CONFLICT (email) DO UPDATE 
+		SET company_id = EXCLUDED.company_id,
+		    name = EXCLUDED.name,
+		    role = EXCLUDED.role,
+		    github_handle = COALESCE(NULLIF(EXCLUDED.github_handle, ''), contacts.github_handle),
+		    linkedin_url = COALESCE(NULLIF(EXCLUDED.linkedin_url, ''), contacts.linkedin_url),
+		    updated_at = EXCLUDED.updated_at
 		RETURNING id
 	`
 	now := time.Now()
@@ -322,7 +329,7 @@ func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
 	).Scan(&contact.ID)
 
 	if err != nil {
-		return fmt.Errorf("failed to create contact: %w", err)
+		return fmt.Errorf("failed to create or upsert contact: %w", err)
 	}
 	return nil
 }

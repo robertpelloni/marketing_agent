@@ -15,32 +15,32 @@ import (
 
 // GitHubIssueSource implements LeadSource by searching GitHub issues for companies with relevant technical challenges.
 type GitHubIssueSource struct {
-	Client		*http.Client
-	Token		string
-	Keywords	[]string
+	Client   *http.Client
+	Token    string
+	Keywords []string
 }
 
 // githubIssueSearchResponse represents the GitHub Search API response for issues.
 type githubIssueSearchResponse struct {
-	TotalCount	int	`json:"total_count"`
-	Issues		[]struct {
-		HTMLURL		string	`json:"html_url"`
-		Title		string	`json:"title"`
-		Body		string	`json:"body"`
-		RepoURL		string	`json:"repository_url"`
-		CreatedAt	string	`json:"created_at"`
-	}	`json:"items"`
+	TotalCount int `json:"total_count"`
+	Issues     []struct {
+		HTMLURL   string `json:"html_url"`
+		Title     string `json:"title"`
+		Body      string `json:"body"`
+		RepoURL   string `json:"repository_url"`
+		CreatedAt string `json:"created_at"`
+	} `json:"items"`
 }
 
 // githubRepo represents a GitHub repository.
 type githubRepo struct {
-	FullName	string	`json:"full_name"`
-	HTMLURL		string	`json:"html_url"`
-	Description	string	`json:"description"`
-	Language	string	`json:"language"`
-	Owner		struct {
+	FullName    string `json:"full_name"`
+	HTMLURL     string `json:"html_url"`
+	Description string `json:"description"`
+	Language    string `json:"language"`
+	Owner       struct {
 		Login string `json:"login"`
-	}	`json:"owner"`
+	} `json:"owner"`
 }
 
 // Discover searches GitHub for open issues matching TormentNexus-relevant keywords,
@@ -122,11 +122,11 @@ func (g *GitHubIssueSource) Discover(ctx context.Context, keywords []string) ([]
 				}
 
 				company := &db.Company{
-					Name:		repoInfo.Owner.Login,
-					Domain:		domain,
-					TechStack:	[]string{repoInfo.Language},
-					HiringSignals:	[]string{fmt.Sprintf("GitHub Issue: %s - %s", issue.Title, issue.HTMLURL)},
-					MarketCapTier:	g.inferMarketCap(repoInfo),
+					Name:          repoInfo.Owner.Login,
+					Domain:        domain,
+					TechStack:     []string{repoInfo.Language},
+					HiringSignals: []string{fmt.Sprintf("GitHub Issue: %s - %s", issue.Title, issue.HTMLURL)},
+					MarketCapTier: g.inferMarketCap(repoInfo),
 				}
 				companiesMap[domain] = company
 			}
@@ -145,11 +145,11 @@ func (g *GitHubIssueSource) Discover(ctx context.Context, keywords []string) ([]
 
 // searchIssues queries the GitHub Search API for issues matching the given keyword.
 func (g *GitHubIssueSource) searchIssues(ctx context.Context, keyword string) ([]struct {
-	HTMLURL		string	`json:"html_url"`
-	Title		string	`json:"title"`
-	Body		string	`json:"body"`
-	RepoURL		string	`json:"repository_url"`
-	CreatedAt	string	`json:"created_at"`
+	HTMLURL   string `json:"html_url"`
+	Title     string `json:"title"`
+	Body      string `json:"body"`
+	RepoURL   string `json:"repository_url"`
+	CreatedAt string `json:"created_at"`
 }, error) {
 	// Build search query: keyword in title/body, open issues only, exclude very large orgs
 	query := fmt.Sprintf("%s type:issue state:open", keyword)
@@ -194,7 +194,7 @@ func (g *GitHubIssueSource) extractOrgFromRepoURL(repoURL string) (string, error
 	repo := parts[len(parts)-1]
 
 	// Return owner (org name)
-	_ = repo	// repo name not used here
+	_ = repo // repo name not used here
 	return owner, nil
 }
 
@@ -255,10 +255,10 @@ func (g *GitHubIssueSource) isExcludedOrg(orgName string) bool {
 	return false
 }
 
-// orgToDomain attempts to map a GitHub organization name to a domain.
-// This is a heuristic - real implementation would use a lookup service.
+// orgToDomain maps a GitHub organization name to a realistic domain.
+// Uses the GitHub API to fetch the org's listed website/blog URL first.
+// Falls back to heuristics: AI/ML → .io, everything else → .com
 func (g *GitHubIssueSource) orgToDomain(orgName string) string {
-	// Try common patterns
 	name := strings.ToLower(orgName)
 
 	// Remove common suffixes
@@ -269,13 +269,73 @@ func (g *GitHubIssueSource) orgToDomain(orgName string) string {
 	name = strings.TrimSuffix(name, "-labs")
 	name = strings.TrimSuffix(name, "-tech")
 
-	// Add .tech or .io domains as defaults for tech companies
+	// Fetch org's actual website from GitHub API
+	if domain := g.fetchOrgWebsite(orgName); domain != "" {
+		return domain
+	}
+
+	// Heuristic: AI/ML companies → .io, everything else → .com
 	if strings.Contains(name, "ai") || strings.Contains(name, "ml") ||
-		strings.Contains(name, "neural") || strings.Contains(name, "logic") {
+		strings.Contains(name, "neural") || strings.Contains(name, "logic") ||
+		strings.Contains(name, "deep") || strings.Contains(name, "cortex") ||
+		strings.Contains(name, "bot") || strings.Contains(name, "agent") ||
+		strings.Contains(name, "intelli") || strings.Contains(name, "data") {
 		return name + ".io"
 	}
 
-	return name + ".tech"
+	return name + ".com"
+}
+
+// fetchOrgWebsite attempts to retrieve the organization's listed website
+// from the GitHub API. Returns empty string on failure.
+func (g *GitHubIssueSource) fetchOrgWebsite(orgName string) string {
+	apiURL := fmt.Sprintf("https://api.github.com/orgs/%s", url.PathEscape(orgName))
+
+	req, err := http.NewRequest(http.MethodGet, apiURL, nil)
+	if err != nil {
+		return ""
+	}
+
+	req.Header.Set("Accept", "application/vnd.github.v3+json")
+	if g.Token != "" {
+		req.Header.Set("Authorization", "token "+g.Token)
+	}
+
+	resp, err := g.Client.Do(req)
+	if err != nil {
+		return ""
+	}
+	defer func() { _ = resp.Body.Close() }()
+
+	if resp.StatusCode != http.StatusOK {
+		return ""
+	}
+
+	var orgData struct {
+		Blog string `json:"blog"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&orgData); err != nil {
+		return ""
+	}
+
+	if orgData.Blog == "" {
+		return ""
+	}
+
+	// Extract domain from the blog URL
+	blog := strings.TrimSpace(orgData.Blog)
+	blog = strings.TrimPrefix(blog, "https://")
+	blog = strings.TrimPrefix(blog, "http://")
+	blog = strings.TrimPrefix(blog, "www.")
+	blog = strings.Split(blog, "/")[0]
+	blog = strings.Split(blog, "?")[0]
+
+	if blog != "" && strings.Contains(blog, ".") {
+		slog.Info(fmt.Sprintf("GitHubIssueSource: Found org website %s for %s", blog, orgName))
+		return blog
+	}
+
+	return ""
 }
 
 // inferMarketCap infers a company's market cap tier from repository metadata.

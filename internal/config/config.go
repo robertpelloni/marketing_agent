@@ -29,6 +29,10 @@ type Config struct {
 	// Encryption
 	SecretKey string
 
+	// DeepSeek LLM (alternative to Hermes)
+	DeepSeekAPIKey string
+	DeepSeekModel  string
+
 	// Safety
 	DryRun bool
 
@@ -147,6 +151,10 @@ func Load() *Config {
 		Environment:         env,
 		// Encryption
 		SecretKey: os.Getenv("SECRET_KEY"),
+
+		// DeepSeek LLM
+		DeepSeekAPIKey: os.Getenv("DEEPSEEK_API_KEY"),
+		DeepSeekModel:  getEnv("DEEPSEEK_MODEL", "deepseek-chat"),
 
 		// Safety
 		DryRun: os.Getenv("DRY_RUN") == "true",

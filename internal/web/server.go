@@ -225,41 +225,52 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 <title>TormentNexus / HyperNexus Autonomous Pipeline Dashboard</title>
 <style>
 :root {
-	--primary: #007bff;
-	--success: #28a745;
-	--info: #17a2b8;
-	--warning: #ffc107;
-	--danger: #dc3545;
-	--dark: #343a40;
-	--light: #f8f9fa;
-	--purple: #6f42c1;
+	--primary: #5865F2;
+	--primary-hover: #4752C4;
+	--success: #23A55A;
+	--info: #00b0f4;
+	--warning: #F0B232;
+	--danger: #F23F43;
+	--dark: #0f172a;
+	--light: #f8fafc;
+	--purple: #9b5de5;
+	--bg-main: #f1f5f9;
+	--border-color: #e2e8f0;
+	--text-main: #334155;
 }
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #e9ecef; color: #333; }
-.header { background: var(--dark); color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
-.header h1 { margin: 0; font-size: 1.5rem; }
-.container { max-width: 1400px; margin: 20px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.full-width { grid-column: 1 / -1; }
-.card { background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
-.card-header { font-size: 1.25rem; font-weight: bold; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; background-color: var(--bg-main); color: var(--text-main); line-height: 1.5; }
+.header { background: linear-gradient(135deg, #1e293b, var(--dark)); color: white; padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-bottom: 2px solid #334155; }
+.header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; letter-spacing: -0.5px; background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.container { max-width: 1400px; margin: 30px auto; padding: 0 24px; display: flex; flex-direction: column; gap: 24px; }
+.card { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03); padding: 24px; border: 1px solid var(--border-color); position: relative; transition: transform 0.2s, box-shadow 0.2s; }
+.card:hover { transform: translateY(-1px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08); }
+.card-header { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; color: #1e293b; }
 table { width: 100%%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
-th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
-th { background-color: #f1f3f5; color: #495057; }
-tr:hover { background-color: #f8f9fa; }
-.status { font-weight: 600; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; display: inline-block; }
-.status-Discovered { background-color: #e2e3e5; color: #383d41; }
-.status-Researched { background-color: #cce5ff; color: #004085; }
-.status-PR { background-color: #fff3cd; color: #856404; }
-.status-Closed_Won { background-color: #d4edda; color: #155724; }
-.status-Closed_Lost { background-color: #f8d7da; color: #721c24; }
-.action-btn { background-color: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: background 0.2s; }
-.action-btn:hover { opacity: 0.9; }
-.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
-.metric-box { padding: 15px; border-radius: 8px; text-align: center; }
-.metric-value { font-size: 1.8rem; font-weight: bold; margin-bottom: 5px; }
-.metric-label { font-size: 0.85rem; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
-.tooltip { position: relative; cursor: help; border-bottom: 1px dotted #666; }
-.tooltip .tooltiptext { visibility: hidden; width: 200px; background-color: #333; color: #fff; text-align: center; border-radius: 6px; padding: 5px 0; position: absolute; z-index: 1; bottom: 125%%; left: 50%%; margin-left: -100px; opacity: 0; transition: opacity 0.3s; font-size: 0.75rem; font-weight: normal; }
+th, td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); text-align: left; vertical-align: middle; }
+th { background-color: #f8fafc; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; }
+tr:hover { background-color: #f8fafc; }
+.status { font-weight: 600; padding: 6px 12px; border-radius: 9999px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.status-Discovered { background-color: #f1f5f9; color: #475569; }
+.status-Researched { background-color: #e0f2fe; color: #0369a1; }
+.status-PR { background-color: #fef3c7; color: #d97706; }
+.status-Closed_Won { background-color: #dcfce7; color: #15803d; }
+.status-Closed_Lost { background-color: #fee2e2; color: #b91c1c; }
+.status-Pending { background-color: #f1f5f9; color: #64748b; }
+.status-Completed { background-color: #dcfce7; color: #15803d; }
+.action-btn { background-color: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: background-color 0.2s, transform 0.1s; }
+.action-btn:hover { background-color: var(--primary-hover); }
+.action-btn:active { transform: scale(0.98); }
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+.metric-box { padding: 20px; border-radius: 10px; text-align: center; border: 1px solid var(--border-color); background: var(--light); box-shadow: inset 0 1px 2px rgba(0,0,0,0.02); }
+.metric-value { font-size: 2.2rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -1px; }
+.metric-label { font-size: 0.75rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+.tooltip { position: relative; cursor: help; border-bottom: 1px dashed #94a3b8; }
+.tooltip .tooltiptext { visibility: hidden; width: 220px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 8px; padding: 8px 12px; position: absolute; z-index: 10; bottom: 125%%; left: 50%%; margin-left: -110px; opacity: 0; transition: opacity 0.2s; font-size: 0.75rem; font-weight: normal; line-height: 1.4; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
 .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+.tag-badge { background: #f1f5f9; border-radius: 4px; padding: 2px 6px; font-size: 0.75rem; font-weight: 600; color: #475569; border: 1px solid #e2e8f0; margin-right: 4px; display: inline-block; }
+.deploy-section { background: white; border-radius: 12px; border: 1px solid var(--border-color); padding: 24px; margin-top: 10px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+.deploy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 900px) { .deploy-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -410,52 +421,92 @@ tr:hover { background-color: #f8f9fa; }
 
 	_, _ = fmt.Fprint(w, dealsRows, `
 		</table>
-	</div>`)
+	</div>
 
-	_, _ = fmt.Fprint(w, `
-	<div class="card full-width" style="border-top: 4px solid var(--purple);">
-		<div class="card-header">
-			Social Marketing & DevRel Activity
-			<span class="tooltip" style="font-size:0.8rem; color:#888;">?
-				<span class="tooltiptext">Automated dual-brand outreach logs for TormentNexus & HyperNexus</span>
-			</span>
-		</div>
-		<table>
-			<tr>
-				<th>Brand</th>
-				<th>Platform</th>
-				<th>Account</th>
-				<th>Content</th>
-				<th>Status</th>
-				<th>Time</th>
-			</tr>`)
+	<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; width: 100%;">
+		<!-- Left Column: Social Activity & Telemetry -->
+		<div style="display: flex; flex-direction: column; gap: 24px;">
+			<div class="card" style="border-top: 4px solid var(--purple); margin-bottom: 0;">
+				<div class="card-header">
+					Social Marketing & DevRel Activity
+					<span class="tooltip" style="font-size:0.8rem; color:#888;">?
+						<span class="tooltiptext">Automated dual-brand outreach logs for TormentNexus & HyperNexus</span>
+					</span>
+				</div>
+				<table>
+					<tr>
+						<th>Brand</th>
+						<th>Platform</th>
+						<th>Account</th>
+						<th>Content</th>
+						<th>Status</th>
+						<th>Time</th>
+					</tr>`)
 
 	for _, p := range socialPosts {
 		_, _ = fmt.Fprintf(w, `
-			<tr>
-				<td><strong>%s</strong></td>
-				<td>%s</td>
-				<td>%s</td>
-				<td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="%s">%s</td>
-				<td><span class="status status-%s">%s</span></td>
-				<td>%s</td>
-			</tr>`, html.EscapeString(p.Brand), html.EscapeString(p.Platform), html.EscapeString(p.AccountUsername), html.EscapeString(p.PostContent), html.EscapeString(p.PostContent), html.EscapeString(p.Status), html.EscapeString(p.Status), p.CreatedAt.Format("01/02 15:04"))
+					<tr>
+						<td><strong>%s</strong></td>
+						<td>%s</td>
+						<td>%s</td>
+						<td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="%s">%s</td>
+						<td><span class="status status-%s">%s</span></td>
+						<td>%s</td>
+					</tr>`, html.EscapeString(p.Brand), html.EscapeString(p.Platform), html.EscapeString(p.AccountUsername), html.EscapeString(p.PostContent), html.EscapeString(p.PostContent), html.EscapeString(p.Status), html.EscapeString(p.Status), p.CreatedAt.Format("01/02 15:04"))
 	}
 
 	_, _ = fmt.Fprint(w, `
-		</table>
-	</div>`)
+				</table>
+			</div>
+
+			<div class="card" style="border-top: 4px solid var(--success); margin-bottom: 0;">
+				<div class="card-header">
+					System Health &amp; Telemetry
+					<span class="tooltip" style="font-size:0.8rem; color:#888;">?
+						<span class="tooltiptext">Real-time monitoring of the autonomous deployment pipeline</span>
+					</span>
+				</div>
+				<div class="deploy-grid" style="grid-template-columns: 1fr 1.5fr; gap: 20px;">
+					<div>
+						<h4>Deployment Info</h4>
+						<ul style="padding-left: 20px; font-size: 0.9rem;">`)
+
+	_, _ = fmt.Fprintf(w, `
+							<li style="margin-bottom: 8px;"><strong>Global Health:</strong> <span style="color: #23A55A; font-weight: bold;">%s %s</span></li>
+							<li style="margin-bottom: 8px;"><strong>LLM Provider:</strong> <span style="color: %s; font-weight: bold;">%s</span></li>`,
+		health, map[bool]string{true: "🥇", false: "🚨"}[health == "Healthy"], llmColor, llmStatus)
 
 	_, _ = fmt.Fprint(w, `
-	<div class="card" style="border-top: 4px solid var(--warning);">
-		<div class="card-header">
-			Autonomous Task Board
-			<span class="tooltip" style="font-size:0.8rem; color:#888;">?
-				<span class="tooltiptext">Prioritized development roadmap and execution status from TODO.md</span>
-			</span>
+						</ul>
+					</div>
+					<div>
+						<h4>WebSocket Activity Logs</h4>
+						<div id="auditLogStream" style="height: 120px; overflow-y: auto; font-family: monospace; font-size: 11px; background: #fafafa; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px;">
+							<em style="color: #888;">Connecting to telemetry stream...</em>
+						</div>
+					</div>
+				</div>
+
+				<div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+					<h4>Hermes Latency History (ms)</h4>
+					<div id="latencyGauge" style="height: 60px; background: #fafafa; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; display: flex; align-items: flex-end;">
+						<em style="color: #888; align-self: center; margin: auto;">Connecting...</em>
+					</div>
+				</div>
+			</div>
 		</div>
-		<table>
-			<tr><th>Task Description</th><th>Status</th></tr>`)
+
+		<!-- Right Column: Task Board & Repository Control -->
+		<div style="display: flex; flex-direction: column; gap: 24px;">
+			<div class="card" style="border-top: 4px solid var(--warning); margin-bottom: 0;">
+				<div class="card-header">
+					Autonomous Task Board
+					<span class="tooltip" style="font-size:0.8rem; color:#888;">?
+						<span class="tooltiptext">Prioritized development roadmap and execution status from TODO.md</span>
+					</span>
+				</div>
+				<table>
+					<tr><th>Task Description</th><th>Status</th></tr>`)
 
 	for _, t := range taskList {
 		status := "Pending"
@@ -465,79 +516,46 @@ tr:hover { background-color: #f8f9fa; }
 		_, _ = fmt.Fprintf(w, `<tr><td>%s</td><td><span class="status status-%s">%s</span></td></tr>`, html.EscapeString(t.Description), status, status)
 	}
 
-	_, _ = fmt.Fprint(w, `</table></div>`)
-
 	_, _ = fmt.Fprint(w, `
-	<div class="card" style="border-top: 4px solid var(--success);">
-		<div class="card-header">
-			CI/CD & Repository State
-			<span class="tooltip" style="font-size:0.8rem; color:#888;">?
-				<span class="tooltiptext">Active feature branches, automated merge status, and deployment controls</span>
-			</span>
-		</div>
+				</table>
+			</div>
 
-		<div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee;">
-			<form method="POST" style="display:inline;">
-				<input type="hidden" name="csrf_token" value="`+csrfToken+`">
-				<input type="hidden" name="action" value="sync">
-				<button type="submit" class="action-btn tooltip">Sync Repository<span class="tooltiptext">Pull upstream changes and resolve conflicts</span></button>
-			</form>
-			<form method="POST" style="display:inline; margin-left: 10px;">
-				<input type="hidden" name="csrf_token" value="`+csrfToken+`">
-				<input type="hidden" name="action" value="build">
-				<button type="submit" class="action-btn tooltip" style="background-color: var(--dark);">Trigger Build<span class="tooltiptext">Force a local project recompilation</span></button>
-			</form>
-		</div>
+			<div class="card" style="border-top: 4px solid var(--dark); margin-bottom: 0;">
+				<div class="card-header">
+					Repository & Pipeline Controls
+					<span class="tooltip" style="font-size:0.8rem; color:#888;">?
+						<span class="tooltiptext">Active feature branches, automated merge status, and deployment controls</span>
+					</span>
+				</div>
 
-		<h4>Active Pull Requests</h4>
-		<table>
-			<tr><th>PR ID</th><th>Branch</th><th>Title</th><th>Status</th></tr>`)
+				<div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); display: flex; gap: 10px;">
+					<form method="POST" style="flex: 1;">
+						<input type="hidden" name="csrf_token" value="`+csrfToken+`">
+						<input type="hidden" name="action" value="sync">
+						<button type="submit" class="action-btn tooltip" style="width: 100%; text-align: center;">Sync Repo<span class="tooltiptext">Pull upstream changes and resolve conflicts</span></button>
+					</form>
+					<form method="POST" style="flex: 1;">
+						<input type="hidden" name="csrf_token" value="`+csrfToken+`">
+						<input type="hidden" name="action" value="build">
+						<button type="submit" class="action-btn tooltip" style="background-color: var(--dark); width: 100%; text-align: center;">Build Project<span class="tooltiptext">Force a local project recompilation</span></button>
+					</form>
+				</div>
+
+				<h4>Active Pull Requests</h4>
+				<table>
+					<tr><th>PR ID</th><th>Branch</th><th>Status</th></tr>`)
 
 	for _, pr := range prs {
-		_, _ = fmt.Fprintf(w, `<tr><td>%s</td><td>%s</td><td>%s</td><td><span class="status status-PR">%s</span></td></tr>`, html.EscapeString(pr.ID), html.EscapeString(pr.Branch), html.EscapeString(pr.Title), html.EscapeString(string(pr.Status)))
+		_, _ = fmt.Fprintf(w, `<tr><td>%s</td><td>%s</td><td><span class="status status-PR">%s</span></td></tr>`, html.EscapeString(pr.ID), html.EscapeString(pr.Branch), html.EscapeString(string(pr.Status)))
 	}
 
-	_, _ = fmt.Fprintf(w, `
-</table>
-</div>
-<div class="deploy-section">
-<h2>Self-Service Deployment</h2>
-<p>Manage repository state and trigger system builds autonomously.</p>
-<form method="POST" style="display:inline;">
-<input type="hidden" name="csrf_token" value="%s">
-<input type="hidden" name="action" value="sync">
-<button type="submit" class="action-btn deploy-btn">Sync Repository</button>
-</form>
-<form method="POST" style="display:inline;">
-<input type="hidden" name="csrf_token" value="%s">
-<input type="hidden" name="action" value="build">
-<button type="submit" class="action-btn deploy-btn" style="background-color: #6c757d;">Trigger Build</button>
-</form>
-</div>
-<div class="deploy-section" style="border-left: 5px solid #28a745;">
-<h2>System Health &amp; CI Status</h2>
-<p>Real-time monitoring of the autonomous deployment pipeline.</p>
-<ul>
-<li><strong>Global Health:</strong> <span style="color: #28a745;">%s %s</span></li>
-<li><strong>LLM Provider:</strong> <span style="color: %s;">%s</span></li>
-</ul>
-<div style="margin-top: 20px;">
-	<h3>Real-time Telemetry (WebSocket)</h3>
-	<div style="display: flex; gap: 20px;">
-		<div style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px; background: #fafafa;">
-			<h4>Audit Log Stream</h4>
-			<div id="auditLogStream" style="height: 150px; overflow-y: auto; font-family: monospace; font-size: 12px; background: #fff; padding: 5px; border: 1px inset #ccc;">
-				<em style="color: #888;">Connecting to telemetry stream...</em>
-			</div>
-		</div>
-		<div style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px; background: #fafafa;">
-			<h4>Hermes Latency (ms)</h4>
-			<div id="latencyGauge" style="height: 150px; background: #fff; padding: 5px; border: 1px inset #ccc; display: flex; align-items: flex-end;">
-				<em style="color: #888; align-self: center; margin: auto;">Connecting...</em>
+	_, _ = fmt.Fprint(w, `
+				</table>
 			</div>
 		</div>
 	</div>
 </div>
+
 <script>
 	const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 	const ws = new WebSocket(proto + '//' + window.location.host + '/ws/telemetry');
@@ -555,7 +573,8 @@ tr:hover { background-color: #f8f9fa; }
 			data.audit_logs.forEach(log => {
 				const div = document.createElement('div');
 				div.style.borderBottom = '1px solid #eee';
-				div.style.padding = '2px 0';
+				div.style.padding = '4px 0';
+				div.style.fontSize = '11px';
 				div.textContent = "[" + (log.actor || 'system') + "] " + log.action;
 				auditLogStream.appendChild(div);
 			});
@@ -566,25 +585,24 @@ tr:hover { background-color: #f8f9fa; }
 
 			const val = data.metrics.hermes_latency_ms;
 			const bar = document.createElement('div');
-			bar.style.width = '10px';
+			bar.style.width = '8px';
 			bar.style.marginRight = '2px';
-			bar.style.background = val > 600 ? '#dc3545' : (val > 400 ? '#ffc107' : '#28a745');
+			bar.style.background = val > 600 ? 'var(--danger)' : (val > 400 ? 'var(--warning)' : 'var(--success)');
 			const h = Math.min(100, (val / 1000) * 100);
 			bar.style.height = Math.round(h) + "%%";
 			bar.title = Math.round(val) + "ms";
 
 			latencyGauge.appendChild(bar);
 			bars.push(bar);
-			if (bars.length > 30) {
+			if (bars.length > 40) {
 				const oldBar = bars.shift();
 				latencyGauge.removeChild(oldBar);
 			}
 		}
 	};
 </script>
-</div>
 </body>
-</html>`, csrfToken, csrfToken, health, map[bool]string{true: "🥇", false: "🚨"}[health == "Healthy"], llmColor, llmStatus)
+</html>`)
 }
 
 func healthStatusColor(status string) string {

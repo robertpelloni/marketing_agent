@@ -17,9 +17,8 @@ import (
 // DB handles database interactions.
 type DB struct {
 	Conn *sql.DB
+	SecretKey string
 }
-
-// NewDB creates a new database instance.
 func NewDB(dataSourceName string) (*DB, error) {
 	conn, err := sql.Open("postgres", dataSourceName)
 	if err != nil {
@@ -35,7 +34,10 @@ func NewDB(dataSourceName string) (*DB, error) {
 		return nil, fmt.Errorf("failed to ping database: %w", err)
 	}
 
-	db := &DB{Conn: conn}
+	db := &DB{
+		Conn:      conn,
+		SecretKey: os.Getenv("SECRET_KEY"),
+	}
 	// Run migrations on startup
 	if err := db.RunMigrations(context.Background()); err != nil {
 		return nil, fmt.Errorf("database migrations failed: %w", err)
@@ -182,4 +184,9 @@ Best,
 	}
 
 	return nil
+}
+
+// SetSecretKey sets the encryption key for encrypting secrets at rest.
+func (db *DB) SetSecretKey(key string) {
+    db.SecretKey = key
 }

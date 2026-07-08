@@ -7,29 +7,29 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
-	"strings"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
 	"github.com/robertpelloni/marketing_agent/internal/autodev"
 	"github.com/robertpelloni/marketing_agent/internal/billing"
-	"github.com/robertpelloni/marketing_agent/internal/config"
 	"github.com/robertpelloni/marketing_agent/internal/communication"
-	"github.com/robertpelloni/marketing_agent/internal/llm"
+	"github.com/robertpelloni/marketing_agent/internal/config"
 	"github.com/robertpelloni/marketing_agent/internal/crm"
 	"github.com/robertpelloni/marketing_agent/internal/db"
 	"github.com/robertpelloni/marketing_agent/internal/deploy"
-	"github.com/robertpelloni/marketing_agent/internal/gitres"
-	"github.com/robertpelloni/marketing_agent/internal/gitcheck"
 	"github.com/robertpelloni/marketing_agent/internal/enrichment"
+	"github.com/robertpelloni/marketing_agent/internal/gitcheck"
+	"github.com/robertpelloni/marketing_agent/internal/gitres"
+	"github.com/robertpelloni/marketing_agent/internal/llm"
 	"github.com/robertpelloni/marketing_agent/internal/researcher"
 	"github.com/robertpelloni/marketing_agent/internal/sales"
 	"github.com/robertpelloni/marketing_agent/internal/scraper"
 	"github.com/robertpelloni/marketing_agent/internal/web"
 	"github.com/robertpelloni/marketing_agent/pkg/agents"
 
-	_ "github.com/lib/pq"	// PostgreSQL driver
+	_ "github.com/lib/pq" // PostgreSQL driver
 )
 
 func main() {
@@ -67,6 +67,8 @@ func main() {
 	database, err := db.NewDB(cfg.DatabaseURL)
 	if err != nil {
 		slog.Error(fmt.Sprintf("Could not connect to database: %v", err))
+	} else if cfg.SecretKey != "" {
+		database.SetSecretKey(cfg.SecretKey)
 	}
 	defer func() { _ = database.Close() }()
 
@@ -138,7 +140,7 @@ func main() {
 		&researcher.GitHubCrawler{Client: http.DefaultClient},
 		&researcher.BlogCrawler{Client: http.DefaultClient},
 		&researcher.RSSFeedCrawler{
-			Feeds: rssFeeds,
+			Feeds:  rssFeeds,
 			Client: http.DefaultClient,
 		},
 	}
@@ -154,9 +156,9 @@ func main() {
 	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
 		slog.Info(fmt.Sprintf("LLM: Initializing Hermes provider at %s (model: %s)", cfg.HermesAPIURL, cfg.HermesModel))
 		llmProvider = llm.NewHermesLLMProvider(llm.HermesConfig{
-			BaseURL:	cfg.HermesAPIURL,
-			APIKey:		cfg.HermesAPIKey,
-			Model:		cfg.HermesModel,
+			BaseURL: cfg.HermesAPIURL,
+			APIKey:  cfg.HermesAPIKey,
+			Model:   cfg.HermesModel,
 		})
 
 		if err := llmProvider.(*llm.HermesLLMProvider).HealthCheck(ctx); err != nil {
@@ -217,12 +219,12 @@ func main() {
 	if cfg.SMTPHost != "" && cfg.SMTPUsername != "" && cfg.SMTPPassword != "" && !cfg.DryRun {
 		slog.Info(fmt.Sprintf("Email: Initializing SMTP sender via %s:%d as %s", cfg.SMTPHost, cfg.SMTPPort, cfg.SMTPUsername))
 		emailSender = communication.NewSMTPSender(communication.SMTPConfig{
-			Host:		cfg.SMTPHost,
-			Port:		cfg.SMTPPort,
-			Username:	cfg.SMTPUsername,
-			Password:	cfg.SMTPPassword,
-			From:		cfg.SMTPFrom,
-			FromName:	cfg.SMTPFromName,
+			Host:     cfg.SMTPHost,
+			Port:     cfg.SMTPPort,
+			Username: cfg.SMTPUsername,
+			Password: cfg.SMTPPassword,
+			From:     cfg.SMTPFrom,
+			FromName: cfg.SMTPFromName,
 		})
 	} else if cfg.DryRun && cfg.IMAPHost != "" && cfg.IMAPUsername != "" && cfg.IMAPPassword != "" {
 		slog.Info(fmt.Sprintf("Email: DRY RUN mode — saving drafts to %s via IMAP.", cfg.IMAPFolder))
@@ -239,7 +241,13 @@ func main() {
 	var billingClient billing.BillingClient
 	if cfg.StripeAPIKey != "" {
 		slog.Info("Billing: Initializing Stripe Billing Client.")
-		billingClient = billing.NewStripeBillingClient(cfg.StripeAPIKey)
+		priceIDs := map[billing.Tier]string{
+			billing.TierCommunity:    cfg.StripePriceCommunity,
+			billing.TierProfessional: cfg.StripePriceProfessional,
+			billing.TierEnterprise:   cfg.StripePriceEnterprise,
+		}
+		billingStore := &billing.DBAdapter{DB: database.Conn}
+		billingClient = billing.NewStripeBillingClient(cfg.StripeAPIKey, cfg.StripeWebhookSecret, priceIDs, billingStore)
 	} else {
 		slog.Info("Billing: No STRIPE_API_KEY set. Billing client disabled.")
 	}
@@ -255,17 +263,17 @@ func main() {
 
 	// 2j. Setup Cadence-aware outreach scheduling
 	cadenceManager := communication.NewCadenceAwareManager(commManager, database)
-	go cadenceManager.RunCadence(ctx, 12*time.Hour)	// checks every 12 h for next touch
+	go cadenceManager.RunCadence(ctx, 12*time.Hour) // checks every 12 h for next touch
 
 	// 2i. Setup IMAP Email Receiver
 	if cfg.IMAPHost != "" && cfg.IMAPUsername != "" && cfg.IMAPPassword != "" {
 		slog.Info(fmt.Sprintf("Email: Initializing IMAP receiver from %s:%d (polling every %v)", cfg.IMAPHost, cfg.IMAPPort, cfg.IMAPPollInterval))
 		imapReceiver := communication.NewEmailReceiver(communication.IMAPConfig{
-			Host:		cfg.IMAPHost,
-			Port:		cfg.IMAPPort,
-			Username:	cfg.IMAPUsername,
-			Password:	cfg.IMAPPassword,
-			Folder:		cfg.IMAPFolder,
+			Host:     cfg.IMAPHost,
+			Port:     cfg.IMAPPort,
+			Username: cfg.IMAPUsername,
+			Password: cfg.IMAPPassword,
+			Folder:   cfg.IMAPFolder,
 		}, commManager)
 		go imapReceiver.Run(ctx, cfg.IMAPPollInterval)
 	} else {
@@ -293,11 +301,11 @@ func main() {
 	go orchestrator.Run(ctx, 1*time.Hour)
 
 	// 4. Start Web Server
-	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider)
+	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider, billingClient)
 
 	srv := &http.Server{
-		Addr:		":" + cfg.Port,
-		Handler:	webServer,
+		Addr:    ":" + cfg.Port,
+		Handler: webServer,
 	}
 
 	go func() {
@@ -311,18 +319,18 @@ func main() {
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
-	<-sigChan
-	slog.Info("Shutting down: Signal received, initiating graceful drain...")
+	go func() {
+		<-sigChan
+		slog.Info("Shutting down: Signal received, initiating graceful drain...")
+		cancel()
+		shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer shutdownCancel()
+		if err := srv.Shutdown(shutdownCtx); err != nil {
+			slog.Info(fmt.Sprintf("Web server shutdown error: %v", err))
+		}
+		slog.Info("Shutting down: Done.")
+		os.Exit(0)
+	}()
 
-	cancel()
-
-	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer shutdownCancel()
-
-	if err := srv.Shutdown(shutdownCtx); err != nil {
-		slog.Info(fmt.Sprintf("Web server shutdown error: %v", err))
-	}
-
-	time.Sleep(2 * time.Second)
-	slog.Info("Shutting down: Done.")
+	setupSystray(cancel, cfg.Port)
 }

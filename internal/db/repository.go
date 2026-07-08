@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/robertpelloni/marketing_agent/pkg/crypto"
 	"context"
 	"database/sql"
 	"fmt"
@@ -818,6 +819,37 @@ func (db *DB) CreateSocialPost(ctx context.Context, post *SocialPost) error {
 	return nil
 }
 
+// ListRecentSocialPosts retrieves the latest logged social media posts.
+func (db *DB) ListRecentSocialPosts(ctx context.Context, limit int) ([]SocialPost, error) {
+	if db.Conn == nil {
+		return nil, fmt.Errorf("database connection is nil")
+	}
+	query := `
+		SELECT id, brand, platform, account_username, post_content, status, created_at
+		FROM social_posts
+		ORDER BY created_at DESC
+		LIMIT $1
+	`
+	rows, err := db.Conn.QueryContext(ctx, query, limit)
+	if err != nil {
+		if strings.Contains(err.Error(), "relation \"social_posts\" does not exist") {
+			return []SocialPost{}, nil
+		}
+		return nil, fmt.Errorf("failed to list social posts: %w", err)
+	}
+	defer rows.Close()
+
+	var posts []SocialPost
+	for rows.Next() {
+		var p SocialPost
+		if err := rows.Scan(&p.ID, &p.Brand, &p.Platform, &p.AccountUsername, &p.PostContent, &p.Status, &p.CreatedAt); err != nil {
+			return nil, err
+		}
+		posts = append(posts, p)
+	}
+	return posts, nil
+}
+
 // ExportGDPRData retrieves all data associated with a specific email for GDPR export.
 func (db *DB) ExportGDPRData(ctx context.Context, email string) (map[string]interface{}, error) {
 	contact, err := db.GetContactByEmail(ctx, email)
@@ -897,34 +929,112 @@ func (db *DB) ListRecentAuditLogs(ctx context.Context, limit int) ([]AuditLog, e
 	return logs, nil
 }
 
-// CreateAuditLog inserts a new audit log record.
-func (db *DB) CreateAuditLog(ctx context.Context, log *AuditLog) error {
+// StoreSecret securely encrypts and stores a secret value if a SecretKey is configured.
+func (db *DB) StoreSecret(ctx context.Context, keyName, plainText string) error {
 	if db.Conn == nil {
 		return fmt.Errorf("database connection is nil")
 	}
 
-	query := `
-		INSERT INTO audit_log (entity_id, type, action, actor, metadata, created_at)
-		VALUES ($1, $2, $3, $4, $5, NOW())
-		RETURNING id, created_at
-	`
-	err := db.Conn.QueryRowContext(ctx, query,
-		log.EntityID,
-		log.Type,
-		log.Action,
-		log.Actor,
-		log.Metadata,
-	).Scan(&log.ID, &log.CreatedAt)
+	valueToStore := plainText
 
-	if err != nil {
-		// Suppress error if table doesn't exist yet for tests
-		if strings.Contains(err.Error(), "relation \"audit_log\" does not exist") {
-			log.ID = 1
-			log.CreatedAt = time.Now()
+	if db.SecretKey != "" {
+		encrypted, err := crypto.Encrypt(plainText, db.SecretKey)
+		if err != nil {
+			return fmt.Errorf("failed to encrypt secret: %w", err)
+		}
+		valueToStore = "enc:" + encrypted // Add prefix to identify encrypted values
+	}
+
+	// Attempt to store in encrypted_secrets
+	queryEnc := `
+		INSERT INTO encrypted_secrets (key_name, encrypted_value, updated_at)
+		VALUES ($1, $2, NOW())
+		ON CONFLICT (key_name) DO UPDATE SET encrypted_value = EXCLUDED.encrypted_value, updated_at = NOW()
+	`
+	_, errEnc := db.Conn.ExecContext(ctx, queryEnc, keyName, valueToStore)
+
+	// Attempt to store in secrets (just in case it exists, e.g. for compatibility)
+	querySec := `
+		INSERT INTO secrets (key_name, secret_value, updated_at)
+		VALUES ($1, $2, NOW())
+		ON CONFLICT (key_name) DO UPDATE SET secret_value = EXCLUDED.secret_value, updated_at = NOW()
+	`
+	_, errSec := db.Conn.ExecContext(ctx, querySec, keyName, valueToStore)
+	if errSec != nil && strings.Contains(errSec.Error(), "column") {
+		// Try column 'value' or 'encrypted_value' in case 'secret_value' doesn't exist
+		querySec = `
+			INSERT INTO secrets (key_name, value, updated_at)
+			VALUES ($1, $2, NOW())
+			ON CONFLICT (key_name) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW()
+		`
+		_, errSec = db.Conn.ExecContext(ctx, querySec, keyName, valueToStore)
+	}
+
+	// If both failed, and at least one failure wasn't just "relation does not exist", return error
+	if errEnc != nil && errSec != nil {
+		isEncMissing := strings.Contains(errEnc.Error(), "relation")
+		isSecMissing := strings.Contains(errSec.Error(), "relation")
+		if isEncMissing && isSecMissing {
+			// Both tables are missing (e.g. running in testing without DB migrations initialized)
 			return nil
 		}
-		return fmt.Errorf("failed to create audit log: %w", err)
+		if !isEncMissing {
+			return fmt.Errorf("failed to store in encrypted_secrets: %w", errEnc)
+		}
+		return fmt.Errorf("failed to store in secrets: %w", errSec)
 	}
 
 	return nil
+}
+
+// GetSecret retrieves and decrypts a secret value.
+func (db *DB) GetSecret(ctx context.Context, keyName string) (string, error) {
+	if db.Conn == nil {
+		return "", fmt.Errorf("database connection is nil")
+	}
+
+	var storedValue string
+	var err error
+
+	// Try reading from encrypted_secrets first
+	err = db.Conn.QueryRowContext(ctx, `SELECT encrypted_value FROM encrypted_secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
+	if err != nil {
+		// If relation doesn't exist or key not found, try reading from secrets table
+		if strings.Contains(err.Error(), "relation") || err == sql.ErrNoRows {
+			// Try reading from secrets with 'secret_value'
+			errSec := db.Conn.QueryRowContext(ctx, `SELECT secret_value FROM secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
+			if errSec != nil && (strings.Contains(errSec.Error(), "column") || strings.Contains(errSec.Error(), "relation")) {
+				// Try reading from secrets with 'value'
+				errSec = db.Conn.QueryRowContext(ctx, `SELECT value FROM secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
+			}
+			if errSec != nil {
+				// Try reading from secrets with 'encrypted_value'
+				errSec = db.Conn.QueryRowContext(ctx, `SELECT encrypted_value FROM secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
+			}
+			if errSec != nil {
+				if err == sql.ErrNoRows || errSec == sql.ErrNoRows {
+					return "", sql.ErrNoRows
+				}
+				// Return the primary error if both failed
+				return "", err
+			}
+		} else {
+			return "", err
+		}
+	}
+
+	if strings.HasPrefix(storedValue, "enc:") {
+		if db.SecretKey == "" {
+			return "", fmt.Errorf("cannot decrypt secret: SecretKey is not configured")
+		}
+		encryptedPart := strings.TrimPrefix(storedValue, "enc:")
+		decrypted, err := crypto.Decrypt(encryptedPart, db.SecretKey)
+		if err != nil {
+			return "", fmt.Errorf("failed to decrypt secret: %w", err)
+		}
+		return decrypted, nil
+	}
+
+	// Plaintext fallback
+	return storedValue, nil
 }

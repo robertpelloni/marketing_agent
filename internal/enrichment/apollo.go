@@ -150,7 +150,8 @@ func (a *ApolloSource) peopleSearch(ctx context.Context, domain string) ([]db.Co
 	}
 
 	if resp.StatusCode == 401 || resp.StatusCode == 403 {
-		return nil, fmt.Errorf("apollo: invalid API key (HTTP %d)", resp.StatusCode)
+		slog.Info(fmt.Sprintf("ApolloSource: API key invalid or expired (HTTP %d). Skipping Apollo enrichment.", resp.StatusCode))
+		return nil, nil // return empty slice so fallback chain proceeds to other active sources
 	}
 	if resp.StatusCode == 429 {
 		return nil, fmt.Errorf("apollo: rate limited")

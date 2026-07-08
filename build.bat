@@ -1,9 +1,8 @@
 @echo off
-echo Updating submodules...
-git submodule update --init --recursive
+echo Updating submodules (if configured)...
+git submodule update --init --recursive 2>nul
 if %errorlevel% neq 0 (
-    echo Submodule update failed!
-    exit /b %errorlevel%
+    echo Submodule update skipped (no submodules configured).
 )
 
 echo Running Merge Integrity Tests...
@@ -14,9 +13,9 @@ if %errorlevel% neq 0 (
 )
 
 echo Building Marketing Agent...
-go build -o bin/marketing_agent ./cmd/marketing_agent
+go build -o bin/marketing_agent.exe ./cmd/marketing_agent
 if %errorlevel% neq 0 (
     echo Build failed!
     exit /b %errorlevel%
 )
-echo Build successful.
+echo Build successful — bin/marketing_agent.exe

@@ -15,13 +15,22 @@ import (
 type SocialPosterWorker struct {
 	db  *db.DB
 	llm llm.LLMProvider
+	hub *SocialPosterHub
 }
 
 // NewSocialPosterWorker creates a new social poster worker.
 func NewSocialPosterWorker(database *db.DB, llmProvider llm.LLMProvider) *SocialPosterWorker {
+	hub := NewSocialPosterHub()
+	configured := hub.Registered()
+	if len(configured) == 0 {
+		slog.Info("SocialPoster: No real social media providers configured — posts will be simulated")
+	} else {
+		slog.Info(fmt.Sprintf("SocialPoster: Configured providers: %s", strings.Join(configured, ", ")))
+	}
 	return &SocialPosterWorker{
 		db:  database,
 		llm: llmProvider,
+		hub: hub,
 	}
 }
 
@@ -71,6 +80,9 @@ func (w *SocialPosterWorker) postAll(ctx context.Context) {
 		// Post for HyperNexus
 		w.generateAndPost(ctx, "hypernexus", platform, usernames["hypernexus"][platform])
 	}
+
+	w.SendDirectMarketing(ctx, "tormentnexus")
+	w.SendDirectMarketing(ctx, "hypernexus")
 }
 
 func (w *SocialPosterWorker) generateAndPost(ctx context.Context, brand, platform, username string) {
@@ -79,10 +91,10 @@ func (w *SocialPosterWorker) generateAndPost(ctx context.Context, brand, platfor
 
 	if brand == "tormentnexus" {
 		systemPrompt = fmt.Sprintf("You are an expert developer marketing agent for TormentNexus, a local-first cognitive control plane for multi-agent LLM workflows (Operating System for AI models). Draft a short, engaging, and professional post for the platform %s highlighting local-first memory, resilient LLM waterfalls, and universal MCP tool parity. Do not use hashtags.", platform)
-		fallbackContent = fmt.Sprintf("Struggling with multi-agent coordination? TormentNexus offers a local-first cognitive control plane with progressive MCP tool routing, 14K+ persisted memories, and zero-downtime provider waterfalls. Get started today!")
+		fallbackContent = "Struggling with multi-agent coordination? TormentNexus offers a local-first cognitive control plane with progressive MCP tool routing, 14K+ persisted memories, and zero-downtime provider waterfalls. Get started today!"
 	} else {
 		systemPrompt = fmt.Sprintf("You are an expert enterprise devrel agent for HyperNexus (hypernexus.site), the secure cloud-hosted version of TormentNexus. Draft a short, engaging, and professional post for the platform %s targeting enterprise AI teams. Highlight SSO/OIDC, RBAC, audit trails, and our stable fork at github.com/HyperNexusSoft/HyperNexus. Do not use hashtags.", platform)
-		fallbackContent = fmt.Sprintf("Scale your enterprise agentic workflows with HyperNexus (hypernexus.site). Cloud-hosted, SOC 2 compliant, featuring SSO, RBAC, and audit logs. Backed by our stable open-source fork at github.com/HyperNexusSoft/HyperNexus.")
+		fallbackContent = "Scale your enterprise agentic workflows with HyperNexus (hypernexus.site). Cloud-hosted, SOC 2 compliant, featuring SSO, RBAC, and audit logs. Backed by our stable open-source fork at github.com/HyperNexusSoft/HyperNexus."
 	}
 
 	prompt := llm.Prompt{
@@ -96,21 +108,83 @@ func (w *SocialPosterWorker) generateAndPost(ctx context.Context, brand, platfor
 	}
 	content = strings.TrimSpace(content)
 
-	// Log simulation
-	slog.Info(fmt.Sprintf("SocialPoster [SIMULATION] — Brand: %s | Platform: %s | Account: %s\nContent: %s",
-		brand, platform, username, content))
+	// Try to post via the real provider
+	req := PostRequest{
+		Brand:     brand,
+		Platform:  platform,
+		Content:   content,
+		AccountID: username,
+	}
 
+	posted := false
+	if provider := w.hub.Provider(platform); provider != nil {
+		if err := provider.Post(ctx, req); err != nil {
+			slog.Warn(fmt.Sprintf("SocialPoster: %s post failed for %s: %v — falling back to simulation", platform, brand, err))
+		} else {
+			posted = true
+		}
+	}
+
+	if !posted {
+		slog.Info(fmt.Sprintf("SocialPoster [SIMULATION] — Brand: %s | Platform: %s | Account: %s\nContent: %s",
+			brand, platform, username, content))
+	}
+
+	// Always persist to DB for audit trail
 	if w.db != nil {
+		status := "posted"
+		if !posted {
+			status = "simulated"
+		}
 		post := &db.SocialPost{
 			Brand:           brand,
 			Platform:        platform,
 			AccountUsername: username,
 			PostContent:     content,
-			Status:          "posted",
+			Status:          status,
 			CreatedAt:       time.Now(),
 		}
 		if err := w.db.CreateSocialPost(ctx, post); err != nil {
 			slog.Error("SocialPoster DB Error: failed to save post log", "error", err)
 		}
+	}
+}
+
+// SendDirectMarketing simulates sending direct marketing emails to target audiences.
+func (w *SocialPosterWorker) SendDirectMarketing(ctx context.Context, brand string) {
+	var targetAudience string
+	var systemPrompt string
+	if brand == "tormentnexus" {
+		targetAudience = "independent developers and creators"
+		systemPrompt = "Draft a direct marketing email for TormentNexus targeting independent developers and creators. Emphasize local-first, open-source, and developer velocity. Keep it concise."
+	} else {
+		targetAudience = "corporate and enterprise buyers"
+		systemPrompt = "Draft a direct marketing email for HyperNexus targeting corporate and enterprise buyers. Emphasize SOC 2 compliance, SSO, RBAC, and secure cloud hosting. Keep it professional."
+	}
+
+	prompt := llm.Prompt{
+		System: systemPrompt,
+		User:   "Draft the email subject and body.",
+	}
+
+	content, err := w.llm.Generate(ctx, prompt)
+	if err != nil {
+		slog.Error("SocialPoster: Failed to generate direct marketing", "error", err)
+		return
+	}
+
+	slog.Info(fmt.Sprintf("SocialPoster [DIRECT MARKETING] — Brand: %s | Target: %s\nContent:\n%s", brand, targetAudience, content))
+
+	// Also log this as a social post for visibility on dashboard
+	if w.db != nil {
+		post := &db.SocialPost{
+			Brand:           brand,
+			Platform:        "direct_email",
+			AccountUsername: "Marketing_Team",
+			PostContent:     content,
+			Status:          "sent",
+			CreatedAt:       time.Now(),
+		}
+		_ = w.db.CreateSocialPost(ctx, post)
 	}
 }

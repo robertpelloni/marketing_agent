@@ -3,56 +3,61 @@ package config
 import (
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
-	"fmt"
 )
 
 // Config holds the application configuration.
 type Config struct {
-	DatabaseURL		string
-	GitHubToken		string
-	GitHubRepository	string
-	GitHubWebhookSecret	string
-	CRMBaseURL		string
-	CRMAPIKey		string
-	HermesAPIURL		string
-	HermesAPIKey		string
-	HermesModel		string
-	DeploySyncInterval	time.Duration
-	Port			string
-	Environment		string
+	DatabaseURL         string
+	GitHubToken         string
+	GitHubRepository    string
+	GitHubWebhookSecret string
+	CRMBaseURL          string
+	CRMAPIKey           string
+	HermesAPIURL        string
+	HermesAPIKey        string
+	HermesModel         string
+	DeploySyncInterval  time.Duration
+	Port                string
+	Environment         string
+	// Encryption
+	SecretKey string
 
 	// Safety
-	DryRun	bool
+	DryRun bool
 
 	// Lead Discovery
-	HunterAPIKey	string
-	ApolloAPIKey	string
+	HunterAPIKey string
+	ApolloAPIKey string
 
 	// Email - SMTP
-	SMTPHost	string
-	SMTPPort	int
-	SMTPUsername	string
-	SMTPPassword	string
-	SMTPFrom	string
-	SMTPFromName	string
+	SMTPHost     string
+	SMTPPort     int
+	SMTPUsername string
+	SMTPPassword string
+	SMTPFrom     string
+	SMTPFromName string
 
 	// Email - IMAP
-	IMAPHost		string
-	IMAPPort		int
-	IMAPUsername		string
-	IMAPPassword		string
-	IMAPFolder		string
-	IMAPPollInterval	time.Duration
+	IMAPHost         string
+	IMAPPort         int
+	IMAPUsername     string
+	IMAPPassword     string
+	IMAPFolder       string
+	IMAPPollInterval time.Duration
 
 	// Billing
-	StripeAPIKey string
-	StripeWebhookSecret string
+	StripeAPIKey            string
+	StripeWebhookSecret     string
+	StripePriceCommunity    string
+	StripePriceProfessional string
+	StripePriceEnterprise   string
 
 	// Webhooks
 	OutboundWebhookURL    string
@@ -63,6 +68,20 @@ type Config struct {
 	HubSpotStageMapping           map[string]string
 	SalesforceReverseStageMapping map[string]string
 	HubSpotReverseStageMapping    map[string]string
+	// Social Media API Keys
+	BlueskyHandle    string
+	BlueskyAppPass   string
+	RedditClientID   string
+	RedditClientSec  string
+	RedditUsername   string
+	RedditPassword   string
+	TwitterBearer    string
+	TwitterAPIKey    string
+	TwitterAPISec    string
+	TwitterAccToken  string
+	TwitterAccSec    string
+	LinkedInUsername string
+	LinkedInPassword string
 }
 
 // Load loads the configuration from environment variables and .env file.
@@ -114,45 +133,50 @@ func Load() *Config {
 	}
 
 	return &Config{
-		DatabaseURL:		getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/marketing_agent?sslmode=disable"),
-		GitHubToken:		os.Getenv("GITHUB_TOKEN"),
-		GitHubRepository:	os.Getenv("GITHUB_REPOSITORY"),
-		GitHubWebhookSecret:	os.Getenv("GITHUB_WEBHOOK_SECRET"),
-		CRMBaseURL:		os.Getenv("CRM_BASE_URL"),
-		CRMAPIKey:		os.Getenv("CRM_API_KEY"),
-		HermesAPIURL:		os.Getenv("HERMES_API_URL"),
-		HermesAPIKey:		os.Getenv("HERMES_API_KEY"),
-		HermesModel:		hermesModel,
-		DeploySyncInterval:	syncInterval,
-		Port:			port,
-		Environment:		env,
+		DatabaseURL:         getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/marketing_agent?sslmode=disable"),
+		GitHubToken:         os.Getenv("GITHUB_TOKEN"),
+		GitHubRepository:    os.Getenv("GITHUB_REPOSITORY"),
+		GitHubWebhookSecret: os.Getenv("GITHUB_WEBHOOK_SECRET"),
+		CRMBaseURL:          os.Getenv("CRM_BASE_URL"),
+		CRMAPIKey:           os.Getenv("CRM_API_KEY"),
+		HermesAPIURL:        os.Getenv("HERMES_API_URL"),
+		HermesAPIKey:        os.Getenv("HERMES_API_KEY"),
+		HermesModel:         hermesModel,
+		DeploySyncInterval:  syncInterval,
+		Port:                port,
+		Environment:         env,
+		// Encryption
+		SecretKey: os.Getenv("SECRET_KEY"),
 
 		// Safety
-		DryRun:	os.Getenv("DRY_RUN") == "true",
+		DryRun: os.Getenv("DRY_RUN") == "true",
 
 		// Lead Discovery
-		HunterAPIKey:	os.Getenv("HUNTER_API_KEY"),
-		ApolloAPIKey:	os.Getenv("APOLLO_API_KEY"),
+		HunterAPIKey: os.Getenv("HUNTER_API_KEY"),
+		ApolloAPIKey: os.Getenv("APOLLO_API_KEY"),
 
 		// SMTP
-		SMTPHost:	os.Getenv("SMTP_HOST"),
-		SMTPPort:	smtpPort,
-		SMTPUsername:	os.Getenv("SMTP_USERNAME"),
-		SMTPPassword:	os.Getenv("SMTP_PASSWORD"),
-		SMTPFrom:	os.Getenv("SMTP_FROM"),
-		SMTPFromName:	getEnv("SMTP_FROM_NAME", "HyperNexus Sales"),
+		SMTPHost:     os.Getenv("SMTP_HOST"),
+		SMTPPort:     smtpPort,
+		SMTPUsername: os.Getenv("SMTP_USERNAME"),
+		SMTPPassword: os.Getenv("SMTP_PASSWORD"),
+		SMTPFrom:     os.Getenv("SMTP_FROM"),
+		SMTPFromName: getEnv("SMTP_FROM_NAME", "HyperNexus Sales"),
 
 		// IMAP
-		IMAPHost:		os.Getenv("IMAP_HOST"),
-		IMAPPort:		imapPort,
-		IMAPUsername:		os.Getenv("IMAP_USERNAME"),
-		IMAPPassword:		os.Getenv("IMAP_PASSWORD"),
-		IMAPFolder:		getEnv("IMAP_FOLDER", "INBOX"),
-		IMAPPollInterval:	imapPollInterval,
+		IMAPHost:         os.Getenv("IMAP_HOST"),
+		IMAPPort:         imapPort,
+		IMAPUsername:     os.Getenv("IMAP_USERNAME"),
+		IMAPPassword:     os.Getenv("IMAP_PASSWORD"),
+		IMAPFolder:       getEnv("IMAP_FOLDER", "INBOX"),
+		IMAPPollInterval: imapPollInterval,
 
 		// Billing
-		StripeAPIKey: os.Getenv("STRIPE_API_KEY"),
-		StripeWebhookSecret: os.Getenv("STRIPE_WEBHOOK_SECRET"),
+		StripeAPIKey:            os.Getenv("STRIPE_API_KEY"),
+		StripeWebhookSecret:     os.Getenv("STRIPE_WEBHOOK_SECRET"),
+		StripePriceCommunity:    os.Getenv("STRIPE_PRICE_COMMUNITY"),
+		StripePriceProfessional: os.Getenv("STRIPE_PRICE_PROFESSIONAL"),
+		StripePriceEnterprise:   os.Getenv("STRIPE_PRICE_ENTERPRISE"),
 
 		// Webhooks
 		OutboundWebhookURL:    os.Getenv("OUTBOUND_WEBHOOK_URL"),
@@ -198,6 +222,20 @@ func Load() *Config {
 			"closedwon":             "Closed_Won",
 			"closedlost":            "Closed_Lost",
 		}),
+		// Social Media keys initialization
+		BlueskyHandle:    os.Getenv("BLUESKY_HANDLE"),
+		BlueskyAppPass:   os.Getenv("BLUESKY_APP_PASSWORD"),
+		RedditClientID:   os.Getenv("REDDIT_CLIENT_ID"),
+		RedditClientSec:  os.Getenv("REDDIT_CLIENT_SECRET"),
+		RedditUsername:   os.Getenv("REDDIT_USERNAME"),
+		RedditPassword:   os.Getenv("REDDIT_PASSWORD"),
+		TwitterBearer:    os.Getenv("TWITTER_BEARER_TOKEN"),
+		TwitterAPIKey:    os.Getenv("TWITTER_API_KEY"),
+		TwitterAPISec:    os.Getenv("TWITTER_API_SECRET"),
+		TwitterAccToken:  os.Getenv("TWITTER_ACCESS_TOKEN"),
+		TwitterAccSec:    os.Getenv("TWITTER_ACCESS_SECRET"),
+		LinkedInUsername: os.Getenv("LINKEDIN_USERNAME"),
+		LinkedInPassword: os.Getenv("LINKEDIN_PASSWORD"),
 	}
 }
 
@@ -215,7 +253,7 @@ func loadDotEnv() {
 	for _, p := range paths {
 		file, err := os.Open(filepath.Clean(p))
 		if err != nil {
-			continue	// .env is optional
+			continue // .env is optional
 		}
 		defer func() { _ = file.Close() }()
 
@@ -246,7 +284,7 @@ func loadDotEnv() {
 				_ = os.Setenv(key, value)
 			}
 		}
-		return	// only load the first .env found
+		return // only load the first .env found
 	}
 }
 

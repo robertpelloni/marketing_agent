@@ -110,10 +110,16 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		systemPrompt = "You are an expert developer advocate for TormentNexus (tormentnexus.site). Use the provided technical context to draft a hyper-personalized response. Ground technical descriptions on TormentNexus (the local-first cognitive control plane and open-source model hypervisor at github.com/NexusSoftMDMA/TormentNexus). Focus on self-hosting, open-source freedom, developer velocity, custom tools, and local-first memory. Do NOT mention LLM routing, fallbacks, or waterfalls."
 	}
 
+	// Focus on keeping initial outreach very short, direct, and to the point
+	userPrompt := fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
+		salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier)
+	if latestMsg == "START_OUTREACH" {
+		userPrompt += "\nCRITICAL: This is the initial outreach email. Keep it extremely short (under 4 sentences) and to the point. Focus strictly on key features (custom tools, skills, multi-tier memory) and how they directly help their engineering work. Avoid generic corporate fluff."
+	}
+
 	prompt := llm.Prompt{
-		System:	systemPrompt,
-		User: fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
-			salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier),
+		System: systemPrompt,
+		User:   userPrompt,
 	}
 
 	return g.llm.Generate(ctx, prompt)

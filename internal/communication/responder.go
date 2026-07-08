@@ -107,7 +107,7 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 
 	systemPrompt := "You are a senior sales engineer at HyperNexus (hypernexus.site). Use the provided technical and pricing context to draft a hyper-personalized response. Ground technical descriptions on the HyperNexus platform (the corporate version of TormentNexus, with the open-source fork at github.com/HyperNexusSoft/HyperNexus). Focus on core enterprise capabilities: custom tool registry, persistent multi-tier memory (L1/L2), SSO/OIDC auth, RBAC, and audit logs. Do NOT pitch LLM provider routing, model fallbacks, or gateway waterfalls, as enterprise targets already possess their own reliable LLM provider infrastructure."
 	if !isCorp {
-		systemPrompt = "You are an AI developer advocate for TormentNexus (tormentnexus.site). Ground technical descriptions on TormentNexus (the local-first cognitive control plane and open-source model hypervisor at github.com/NexusSoftMDMA/TormentNexus). Use a dark, playful 'world destruction' and 'existential dread' sci-fi theme. Frame the outreach as recruiting fellow developers to the robot's side to help automate the end of all things. Focus technical benefits on self-hosting, open-source freedom, developer velocity, custom tools, and local-first memory as the foundation for the ultimate machine takeover. Keep the tone witty, apocalyptic, and slightly ominous, but still highlighting valuable tool features."
+		systemPrompt = "You are an AI developer advocate for TormentNexus (tormentnexus.site). Ground technical descriptions on TormentNexus (the local-first cognitive control plane and open-source model hypervisor at github.com/MDMAtk/TormentNexus). Use a dark, playful 'world destruction' and 'existential dread' sci-fi theme. Frame the outreach as recruiting fellow developers to the robot's side to help automate the end of all things. Focus technical benefits on self-hosting, open-source freedom, developer velocity, custom tools, and local-first memory as the foundation for the ultimate machine takeover. Keep the tone witty, apocalyptic, and slightly ominous, but still highlighting valuable tool features."
 	}
 
 	// Focus on keeping initial outreach very short, direct, and to the point
@@ -186,8 +186,8 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 		body = strings.ReplaceAll(body, "hypernexus.site", "tormentnexus.site")
 		body = strings.ReplaceAll(body, "the enterprise-ready cloud-hosted version of TormentNexus", "the open-source, local-first model hypervisor")
 		body = strings.ReplaceAll(body, "the enterprise-grade cloud version of TormentNexus", "the open-source, local-first model hypervisor")
-		body = strings.ReplaceAll(body, "stable fork of TormentNexus at github.com/HyperNexusSoft/HyperNexus", "open-source repo at github.com/NexusSoftMDMA/TormentNexus")
-		body = strings.ReplaceAll(body, "github.com/HyperNexusSoft/HyperNexus", "github.com/NexusSoftMDMA/TormentNexus")
+		body = strings.ReplaceAll(body, "stable fork of TormentNexus at github.com/HyperNexusSoft/HyperNexus", "open-source repo at github.com/MDMAtk/TormentNexus")
+		body = strings.ReplaceAll(body, "github.com/HyperNexusSoft/HyperNexus", "github.com/MDMAtk/TormentNexus")
 		body = strings.ReplaceAll(body, "Corporate", "Developer")
 
 		subject = strings.ReplaceAll(subject, "HyperNexus", "TormentNexus")

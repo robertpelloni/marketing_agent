@@ -222,6 +222,20 @@ func Load() *Config {
 			"closedwon":             "Closed_Won",
 			"closedlost":            "Closed_Lost",
 		}),
+		// Social Media keys initialization
+		BlueskyHandle:    os.Getenv("BLUESKY_HANDLE"),
+		BlueskyAppPass:   os.Getenv("BLUESKY_APP_PASSWORD"),
+		RedditClientID:   os.Getenv("REDDIT_CLIENT_ID"),
+		RedditClientSec:  os.Getenv("REDDIT_CLIENT_SECRET"),
+		RedditUsername:   os.Getenv("REDDIT_USERNAME"),
+		RedditPassword:   os.Getenv("REDDIT_PASSWORD"),
+		TwitterBearer:    os.Getenv("TWITTER_BEARER_TOKEN"),
+		TwitterAPIKey:    os.Getenv("TWITTER_API_KEY"),
+		TwitterAPISec:    os.Getenv("TWITTER_API_SECRET"),
+		TwitterAccToken:  os.Getenv("TWITTER_ACCESS_TOKEN"),
+		TwitterAccSec:    os.Getenv("TWITTER_ACCESS_SECRET"),
+		LinkedInUsername: os.Getenv("LINKEDIN_USERNAME"),
+		LinkedInPassword: os.Getenv("LINKEDIN_PASSWORD"),
 	}
 }
 

@@ -34,7 +34,10 @@ func NewDB(dataSourceName string) (*DB, error) {
 		return nil, fmt.Errorf("failed to ping database: %w", err)
 	}
 
-	db := &DB{Conn: conn}
+	db := &DB{
+		Conn:      conn,
+		SecretKey: os.Getenv("SECRET_KEY"),
+	}
 	// Run migrations on startup
 	if err := db.RunMigrations(context.Background()); err != nil {
 		return nil, fmt.Errorf("database migrations failed: %w", err)

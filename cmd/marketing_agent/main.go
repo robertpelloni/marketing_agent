@@ -67,6 +67,8 @@ func main() {
 	database, err := db.NewDB(cfg.DatabaseURL)
 	if err != nil {
 		slog.Error(fmt.Sprintf("Could not connect to database: %v", err))
+	} else if cfg.SecretKey != "" {
+		database.SetSecretKey(cfg.SecretKey)
 	}
 	defer func() { _ = database.Close() }()
 

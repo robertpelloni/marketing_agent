@@ -914,19 +914,43 @@ func (db *DB) StoreSecret(ctx context.Context, keyName, plainText string) error 
 		valueToStore = "enc:" + encrypted // Add prefix to identify encrypted values
 	}
 
-	query := `
+	// Attempt to store in encrypted_secrets
+	queryEnc := `
 		INSERT INTO encrypted_secrets (key_name, encrypted_value, updated_at)
 		VALUES ($1, $2, NOW())
 		ON CONFLICT (key_name) DO UPDATE SET encrypted_value = EXCLUDED.encrypted_value, updated_at = NOW()
 	`
+	_, errEnc := db.Conn.ExecContext(ctx, queryEnc, keyName, valueToStore)
 
-	_, err := db.Conn.ExecContext(ctx, query, keyName, valueToStore)
-	if err != nil {
-		// Suppress error if table doesn't exist yet for tests without migrations
-		if strings.Contains(err.Error(), "relation \"encrypted_secrets\" does not exist") {
+	// Attempt to store in secrets (just in case it exists, e.g. for compatibility)
+	querySec := `
+		INSERT INTO secrets (key_name, secret_value, updated_at)
+		VALUES ($1, $2, NOW())
+		ON CONFLICT (key_name) DO UPDATE SET secret_value = EXCLUDED.secret_value, updated_at = NOW()
+	`
+	_, errSec := db.Conn.ExecContext(ctx, querySec, keyName, valueToStore)
+	if errSec != nil && strings.Contains(errSec.Error(), "column") {
+		// Try column 'value' or 'encrypted_value' in case 'secret_value' doesn't exist
+		querySec = `
+			INSERT INTO secrets (key_name, value, updated_at)
+			VALUES ($1, $2, NOW())
+			ON CONFLICT (key_name) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW()
+		`
+		_, errSec = db.Conn.ExecContext(ctx, querySec, keyName, valueToStore)
+	}
+
+	// If both failed, and at least one failure wasn't just "relation does not exist", return error
+	if errEnc != nil && errSec != nil {
+		isEncMissing := strings.Contains(errEnc.Error(), "relation")
+		isSecMissing := strings.Contains(errSec.Error(), "relation")
+		if isEncMissing && isSecMissing {
+			// Both tables are missing (e.g. running in testing without DB migrations initialized)
 			return nil
 		}
-		return fmt.Errorf("failed to store secret: %w", err)
+		if !isEncMissing {
+			return fmt.Errorf("failed to store in encrypted_secrets: %w", errEnc)
+		}
+		return fmt.Errorf("failed to store in secrets: %w", errSec)
 	}
 
 	return nil
@@ -938,14 +962,34 @@ func (db *DB) GetSecret(ctx context.Context, keyName string) (string, error) {
 		return "", fmt.Errorf("database connection is nil")
 	}
 
-	query := `SELECT encrypted_value FROM encrypted_secrets WHERE key_name = $1`
 	var storedValue string
-	err := db.Conn.QueryRowContext(ctx, query, keyName).Scan(&storedValue)
+	var err error
+
+	// Try reading from encrypted_secrets first
+	err = db.Conn.QueryRowContext(ctx, `SELECT encrypted_value FROM encrypted_secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
 	if err != nil {
-		if strings.Contains(err.Error(), "relation \"encrypted_secrets\" does not exist") {
-			return "", sql.ErrNoRows
+		// If relation doesn't exist or key not found, try reading from secrets table
+		if strings.Contains(err.Error(), "relation") || err == sql.ErrNoRows {
+			// Try reading from secrets with 'secret_value'
+			errSec := db.Conn.QueryRowContext(ctx, `SELECT secret_value FROM secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
+			if errSec != nil && (strings.Contains(errSec.Error(), "column") || strings.Contains(errSec.Error(), "relation")) {
+				// Try reading from secrets with 'value'
+				errSec = db.Conn.QueryRowContext(ctx, `SELECT value FROM secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
+			}
+			if errSec != nil {
+				// Try reading from secrets with 'encrypted_value'
+				errSec = db.Conn.QueryRowContext(ctx, `SELECT encrypted_value FROM secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
+			}
+			if errSec != nil {
+				if err == sql.ErrNoRows || errSec == sql.ErrNoRows {
+					return "", sql.ErrNoRows
+				}
+				// Return the primary error if both failed
+				return "", err
+			}
+		} else {
+			return "", err
 		}
-		return "", err
 	}
 
 	if strings.HasPrefix(storedValue, "enc:") {

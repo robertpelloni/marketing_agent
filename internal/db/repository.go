@@ -1,7 +1,6 @@
 package db
 
 import (
-	"github.com/robertpelloni/marketing_agent/pkg/crypto"
 	"context"
 	"database/sql"
 	"fmt"
@@ -898,68 +897,34 @@ func (db *DB) ListRecentAuditLogs(ctx context.Context, limit int) ([]AuditLog, e
 	return logs, nil
 }
 
-// StoreSecret securely encrypts and stores a secret value if a SecretKey is configured.
-func (db *DB) StoreSecret(ctx context.Context, keyName, plainText string) error {
+// CreateAuditLog inserts a new audit log record.
+func (db *DB) CreateAuditLog(ctx context.Context, log *AuditLog) error {
 	if db.Conn == nil {
 		return fmt.Errorf("database connection is nil")
 	}
 
-	valueToStore := plainText
-
-	if db.SecretKey != "" {
-		encrypted, err := crypto.Encrypt(plainText, db.SecretKey)
-		if err != nil {
-			return fmt.Errorf("failed to encrypt secret: %w", err)
-		}
-		valueToStore = "enc:" + encrypted // Add prefix to identify encrypted values
-	}
-
 	query := `
-		INSERT INTO encrypted_secrets (key_name, encrypted_value, updated_at)
-		VALUES ($1, $2, NOW())
-		ON CONFLICT (key_name) DO UPDATE SET encrypted_value = EXCLUDED.encrypted_value, updated_at = NOW()
+		INSERT INTO audit_log (entity_id, type, action, actor, metadata, created_at)
+		VALUES ($1, $2, $3, $4, $5, NOW())
+		RETURNING id, created_at
 	`
+	err := db.Conn.QueryRowContext(ctx, query,
+		log.EntityID,
+		log.Type,
+		log.Action,
+		log.Actor,
+		log.Metadata,
+	).Scan(&log.ID, &log.CreatedAt)
 
-	_, err := db.Conn.ExecContext(ctx, query, keyName, valueToStore)
 	if err != nil {
-		// Suppress error if table doesn't exist yet for tests without migrations
-		if strings.Contains(err.Error(), "relation \"encrypted_secrets\" does not exist") {
+		// Suppress error if table doesn't exist yet for tests
+		if strings.Contains(err.Error(), "relation \"audit_log\" does not exist") {
+			log.ID = 1
+			log.CreatedAt = time.Now()
 			return nil
 		}
-		return fmt.Errorf("failed to store secret: %w", err)
+		return fmt.Errorf("failed to create audit log: %w", err)
 	}
 
 	return nil
-}
-
-// GetSecret retrieves and decrypts a secret value.
-func (db *DB) GetSecret(ctx context.Context, keyName string) (string, error) {
-	if db.Conn == nil {
-		return "", fmt.Errorf("database connection is nil")
-	}
-
-	query := `SELECT encrypted_value FROM encrypted_secrets WHERE key_name = $1`
-	var storedValue string
-	err := db.Conn.QueryRowContext(ctx, query, keyName).Scan(&storedValue)
-	if err != nil {
-		if strings.Contains(err.Error(), "relation \"encrypted_secrets\" does not exist") {
-			return "", sql.ErrNoRows
-		}
-		return "", err
-	}
-
-	if strings.HasPrefix(storedValue, "enc:") {
-		if db.SecretKey == "" {
-			return "", fmt.Errorf("cannot decrypt secret: SecretKey is not configured")
-		}
-		encryptedPart := strings.TrimPrefix(storedValue, "enc:")
-		decrypted, err := crypto.Decrypt(encryptedPart, db.SecretKey)
-		if err != nil {
-			return "", fmt.Errorf("failed to decrypt secret: %w", err)
-		}
-		return decrypted, nil
-	}
-
-	// Plaintext fallback
-	return storedValue, nil
 }

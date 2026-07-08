@@ -17,8 +17,9 @@ import (
 // DB handles database interactions.
 type DB struct {
 	Conn *sql.DB
-	SecretKey string
 }
+
+// NewDB creates a new database instance.
 func NewDB(dataSourceName string) (*DB, error) {
 	conn, err := sql.Open("postgres", dataSourceName)
 	if err != nil {
@@ -181,9 +182,4 @@ Best,
 	}
 
 	return nil
-}
-
-// SetSecretKey sets the encryption key for encrypting secrets at rest.
-func (db *DB) SetSecretKey(key string) {
-    db.SecretKey = key
 }

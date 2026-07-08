@@ -92,3 +92,8 @@ func TestProcessOrder_CRMWarning(t *testing.T) {
 		t.Fatalf("ProcessOrder should not fail on CRM error, but got: %v", err)
 	}
 }
+
+func (m *successBillingClient) CancelSubscription(ctx context.Context, subID string, prorate bool) error { return nil }
+func (m *errorBillingClient) CancelSubscription(ctx context.Context, subID string, prorate bool) error { return errors.New("cancel failed") }
+func (m *successBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier string, successURL string, cancelURL string) (string, error) { return "http://checkout.url", nil }
+func (m *errorBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier string, successURL string, cancelURL string) (string, error) { return "", errors.New("failed") }

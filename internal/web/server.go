@@ -71,6 +71,7 @@ func (s *Server) routes() {
 	s.mux.Handle("/health", rl.middleware(http.HandlerFunc(s.handleHealth)))
 	s.mux.Handle("/health/detailed", rl.middleware(http.HandlerFunc(s.handleDetailedHealth)))
 	s.mux.Handle("/api/v1/webhook/github", rl.middleware(http.HandlerFunc(s.handleGitHubWebhook)))
+	s.mux.Handle("/api/v1/webhook/stripe", rl.middleware(http.HandlerFunc(s.handleStripeWebhook)))
 	s.mux.Handle("/api/v1/quote", rl.middleware(http.HandlerFunc(s.handleGenerateQuote)))
 	s.mux.Handle("/api/v1/leads", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleLeadsAPI))))
 	s.mux.Handle("/api/v1/deals", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleDealsAPI))))

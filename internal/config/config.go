@@ -26,8 +26,6 @@ type Config struct {
 	DeploySyncInterval	time.Duration
 	Port			string
 	Environment		string
-	// Encryption
-	SecretKey		string
 
 	// Safety
 	DryRun	bool
@@ -54,6 +52,7 @@ type Config struct {
 
 	// Billing
 	StripeAPIKey string
+	StripeWebhookSecret string
 
 	// Webhooks
 	OutboundWebhookURL    string
@@ -127,8 +126,6 @@ func Load() *Config {
 		DeploySyncInterval:	syncInterval,
 		Port:			port,
 		Environment:		env,
-		// Encryption
-		SecretKey:		os.Getenv("SECRET_KEY"),
 
 		// Safety
 		DryRun:	os.Getenv("DRY_RUN") == "true",
@@ -155,6 +152,7 @@ func Load() *Config {
 
 		// Billing
 		StripeAPIKey: os.Getenv("STRIPE_API_KEY"),
+		StripeWebhookSecret: os.Getenv("STRIPE_WEBHOOK_SECRET"),
 
 		// Webhooks
 		OutboundWebhookURL:    os.Getenv("OUTBOUND_WEBHOOK_URL"),

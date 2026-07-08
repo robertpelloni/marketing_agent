@@ -75,8 +75,8 @@ func (s *Server) routes() {
 	s.mux.Handle("/health/detailed", rl.middleware(http.HandlerFunc(s.handleDetailedHealth)))
 	s.mux.Handle("/api/v1/webhook/github", rl.middleware(http.HandlerFunc(s.handleGitHubWebhook)))
 	s.mux.Handle("/api/v1/quote", rl.middleware(http.HandlerFunc(s.handleGenerateQuote)))
-	s.mux.Handle("/api/v1/leads", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleLeadsAPI))))
-	s.mux.Handle("/api/v1/deals", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleDealsAPI))))
+	s.mux.Handle("/api/v1/leads", rl.middleware(http.HandlerFunc(s.handleLeadsAPI)))
+	s.mux.Handle("/api/v1/deals", rl.middleware(http.HandlerFunc(s.handleDealsAPI)))
 
 	// GDPR Endpoints
 	s.mux.Handle("/api/v1/gdpr/export", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleGDPRExport))))
@@ -761,6 +761,16 @@ func (s *Server) handleGenerateQuote(w http.ResponseWriter, r *http.Request) {
 
 // REST API for external pipeline management
 func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
+	// CORS Headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
 	switch r.Method {
 	case http.MethodGet:
 		// Example: List all leads
@@ -906,6 +916,16 @@ func (s *Server) handleGDPRDelete(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handleDealsAPI(w http.ResponseWriter, r *http.Request) {
+	// CORS Headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
 	switch r.Method {
 	case http.MethodGet:
 		stateFilter := html.EscapeString(strings.TrimSpace(r.URL.Query().Get("state")))

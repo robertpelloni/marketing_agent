@@ -44,21 +44,18 @@
    git submodule update --init --recursive
    ```
 
-## Building the Application
-
-Run the provided build script:
-
+### Windows (Local)
 ```batch
 build.bat
 ```
+This runs integrity tests and compiles the binary to `bin/marketing_agent.exe`.
 
-This will run integrity tests and compile the binary to `bin/marketing_agent.exe`.
-
-Alternatively, build manually:
-
+### Linux / Headless (Hetzner VPS)
 ```bash
-go build -v -o bin/marketing_agent ./cmd/marketing_agent
+chmod +x build.sh
+./build.sh
 ```
+This handles headless specific build tags (skipping the GUI system tray component) and compiles the binary to `bin/marketing_agent`.
 
 ## Self-Service Deployment Dashboard
 

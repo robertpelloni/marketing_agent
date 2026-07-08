@@ -105,9 +105,9 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 
 	isCorp := IsCorporate(salesCtx.Contact.Email, salesCtx.Company.Domain)
 
-	systemPrompt := "You are a senior sales engineer at HyperNexus (hypernexus.site). Use the provided technical and pricing context to draft a hyper-personalized response. Ground technical descriptions on the HyperNexus platform (the corporate version of TormentNexus, with the open-source fork at github.com/HyperNexusSoft/HyperNexus)."
+	systemPrompt := "You are a senior sales engineer at HyperNexus (hypernexus.site). Use the provided technical and pricing context to draft a hyper-personalized response. Ground technical descriptions on the HyperNexus platform (the corporate version of TormentNexus, with the open-source fork at github.com/HyperNexusSoft/HyperNexus). Focus on core enterprise capabilities: custom tool registry, persistent multi-tier memory (L1/L2), SSO/OIDC auth, RBAC, and audit logs. Do NOT pitch LLM provider routing, model fallbacks, or gateway waterfalls, as enterprise targets already possess their own reliable LLM provider infrastructure."
 	if !isCorp {
-		systemPrompt = "You are an expert developer advocate for TormentNexus (tormentnexus.site). Use the provided technical context to draft a hyper-personalized response. Ground technical descriptions on TormentNexus (the local-first cognitive control plane and open-source model hypervisor at github.com/NexusSoftMDMA/TormentNexus). Focus on self-hosting, open-source freedom, developer velocity, and local-first memory."
+		systemPrompt = "You are an expert developer advocate for TormentNexus (tormentnexus.site). Use the provided technical context to draft a hyper-personalized response. Ground technical descriptions on TormentNexus (the local-first cognitive control plane and open-source model hypervisor at github.com/NexusSoftMDMA/TormentNexus). Focus on self-hosting, open-source freedom, developer velocity, custom tools, and local-first memory. Do NOT mention LLM routing, fallbacks, or waterfalls."
 	}
 
 	prompt := llm.Prompt{

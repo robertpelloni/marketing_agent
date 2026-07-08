@@ -117,8 +117,14 @@ func (g *GitHubEnrichSource) Enrich(ctx context.Context, company db.Company) ([]
 				continue
 			}
 
-			// Skip no-reply GitHub emails
-			if strings.Contains(email, "noreply.github.com") || strings.Contains(email, "users.noreply.github.com") {
+			// Skip no-reply, action bots, and system emails to avoid bounces
+			lowerEmail := strings.ToLower(email)
+			if strings.Contains(lowerEmail, "noreply") || 
+				strings.Contains(lowerEmail, "github-actions") || 
+				strings.Contains(lowerEmail, "web-flow") ||
+				strings.HasPrefix(lowerEmail, "support@") ||
+				strings.HasPrefix(lowerEmail, "admin@") ||
+				strings.HasPrefix(lowerEmail, "info@") {
 				continue
 			}
 

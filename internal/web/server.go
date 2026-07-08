@@ -774,6 +774,10 @@ func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		// Example: List all leads
+		if s.db == nil {
+			http.Error(w, "Database connection unavailable", http.StatusServiceUnavailable)
+			return
+		}
 		companies, err := s.db.ListAllCompanies(r.Context())
 		if err != nil {
 			http.Error(w, "Failed to retrieve leads", http.StatusInternalServerError)
@@ -783,6 +787,10 @@ func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
 		_ = json.NewEncoder(w).Encode(companies)
 	case http.MethodPost:
 		// Example: Create a new lead
+		if s.db == nil {
+			http.Error(w, "Database connection unavailable", http.StatusServiceUnavailable)
+			return
+		}
 		var lead db.Company
 		if err := json.NewDecoder(r.Body).Decode(&lead); err != nil {
 			http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -928,6 +936,10 @@ func (s *Server) handleDealsAPI(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodGet:
+		if s.db == nil {
+			http.Error(w, "Database connection unavailable", http.StatusServiceUnavailable)
+			return
+		}
 		stateFilter := html.EscapeString(strings.TrimSpace(r.URL.Query().Get("state")))
 		var deals []db.Deal
 		var err error
@@ -944,6 +956,10 @@ func (s *Server) handleDealsAPI(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(deals)
 	case http.MethodPost:
+		if s.db == nil {
+			http.Error(w, "Database connection unavailable", http.StatusServiceUnavailable)
+			return
+		}
 		var deal db.Deal
 		if err := json.NewDecoder(r.Body).Decode(&deal); err != nil {
 			http.Error(w, "Invalid request body", http.StatusBadRequest)

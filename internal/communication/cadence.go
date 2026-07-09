@@ -212,14 +212,16 @@ func (ct *CadenceTracker) ShouldEngageContact(ctx context.Context, dealID int64,
 // It integrates with the existing Manager to provide multi-touch outreach.
 type CadenceAwareManager struct {
 	*Manager
-	tracker	*CadenceTracker
+	tracker        *CadenceTracker
+	linkedinSender *LinkedInSender
 }
 
 // NewCadenceAwareManager wraps an existing Manager with cadence tracking.
 func NewCadenceAwareManager(mgr *Manager, database *db.DB) *CadenceAwareManager {
 	return &CadenceAwareManager{
-		Manager:	mgr,
-		tracker:	NewCadenceTracker(database),
+		Manager:        mgr,
+		tracker:        NewCadenceTracker(database),
+		linkedinSender: NewLinkedInSender(),
 	}
 }
 
@@ -375,9 +377,76 @@ subject, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
 			}
 
 		case db.ChannelLinkedIn:
-			// LinkedIn step — logging simulation since linkedinSender is not injected into the manager yet
-			slog.Info(fmt.Sprintf("CadenceAwareManager: LinkedIn step %d executed for deal %d via rod headless simulation", nextStep.StepNumber, deal.ID))
-			slog.Info(fmt.Sprintf("CadenceAwareManager: LinkedIn step %d pending for deal %d — requires implementation", nextStep.StepNumber, deal.ID))
+			if contacts[0].LinkedInURL == "" {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Skipping LinkedIn step %d for deal %d — no LinkedIn profile URL populated", nextStep.StepNumber, deal.ID))
+				continue
+			}
+
+			// Load template
+			tmpl, err := cam.db.GetTemplate(ctx, nextStep.TemplateID)
+			if err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Template %s not found for LinkedIn step: %v", nextStep.TemplateID, err))
+				continue
+			}
+
+			company, err := cam.db.GetCompanyByID(ctx, deal.CompanyID)
+			if err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Could not get company details for LinkedIn step: %v", err))
+				continue
+			}
+
+			salesCtx := SalesContext{
+				Company:      *company,
+				Deal:         deal,
+				Contact:      contacts[0],
+				Interactions: interactions,
+				LatestIntent: IntentGeneral,
+			}
+
+			ragResponder, ok := cam.responder.(*RAGResponseGenerator)
+			if !ok {
+				slog.Info("CadenceAwareManager: Responder does not support templates for LinkedIn")
+				continue
+			}
+
+			subject, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
+			if err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: LinkedIn template rendering failed: %v", err))
+				continue
+			}
+
+			// Create outbound interaction record
+			outbound := db.Interaction{
+				ContactID:  contacts[0].ID,
+				Channel:    nextStep.Channel.String(),
+				Direction:  "Outbound",
+				RawText:    body,
+				Summary:    fmt.Sprintf("Cadence step %d: %s via %s", nextStep.StepNumber, tmpl.ID, nextStep.Channel),
+				TemplateID: tmpl.ID,
+			}
+			if err := cam.db.CreateInteraction(ctx, &outbound); err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Failed to log LinkedIn interaction: %v", err))
+				continue
+			}
+
+			// Trigger send via active LinkedInSender
+			if cam.linkedinSender != nil {
+				lkMsg := LinkedInMessage{
+					ProfileURL: contacts[0].LinkedInURL,
+					Subject:    subject,
+					Body:       body,
+				}
+				if err := cam.linkedinSender.Send(ctx, lkMsg); err != nil {
+					slog.Info(fmt.Sprintf("CadenceAwareManager: LinkedIn send failed for deal %d: %v", deal.ID, err))
+				} else {
+					slog.Info(fmt.Sprintf("CadenceAwareManager: LinkedIn message sent successfully to %s (step %d, template %s)", contacts[0].LinkedInURL, nextStep.StepNumber, tmpl.ID))
+				}
+			}
+
+			// Update cadence step in DB
+			if err := cam.db.SetCadenceStep(ctx, deal.ID, nextStep.StepNumber); err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Failed to update cadence step for deal %d: %v", deal.ID, err))
+			}
 
 		case db.ChannelGitHub:
 			// GitHub step — log for now (needs GitHubCommentSender)

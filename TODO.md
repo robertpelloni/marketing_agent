@@ -152,7 +152,7 @@
 
 - [ ] Package the sales engine as a reusable service
 - [x] Add Stripe subscription billing with grandfathering, webhooks, and checkout API
-- [x] Add SaaS billing with per-seat and per-outreach pricing tiers
+- [ ] Add SaaS billing with per-seat and per-outreach pricing tiers
 - [ ] Add onboarding wizard
 - [ ] Add community template marketplace
 

@@ -101,9 +101,9 @@ func (db *DB) seedTemplates(ctx context.Context) error {
 
 I noticed {{company}} is building some really interesting stuff with {{tech_stack}}. The work your team is doing on {{specific_project}} caught my attention.
 
-I'm reaching out because we've built HyperNexus (hypernexus.site) — the enterprise-ready cloud-hosted version of TormentNexus. HyperNexus coordinates multi-agent LLM workflows, MCP tool routing, and provider failover, backed by a stable open-source fork of TormentNexus at github.com/HyperNexusSoft/HyperNexus. Teams using similar stacks to yours have seen 3-5x improvements in agent coordination efficiency.
+I'm reaching out because we've built HyperNexus (hypernexus.site) — the enterprise-ready cloud-hosted version of TormentNexus. HyperNexus coordinates multi-agent LLM workflows, MCP tool routing, and provider failover, backed by a stable open-source fork of TormentNexus at github.com/MDMAtk/TormentNexus.
 
-Would you be open to a quick 15-minute chat this week to explore if this could help your team?
+Would you be open to a quick chat to explore if this could help your team?
 
 Best,
 HyperNexus Team`,
@@ -113,7 +113,7 @@ HyperNexus Team`,
 			Name:    "GitHub Comment Hook",
 			Channel: "github",
 			Subject: "",
-			Body: `Hey @{{github_handle}}, I saw your work on {{repo}} — really impressive stuff! We've been tackling similar coordination challenges with HyperNexus (hypernexus.site), the enterprise-grade cloud version of TormentNexus. We maintain our stable fork at github.com/HyperNexusSoft/HyperNexus. Would love to get your thoughts if you're open to it.`,
+			Body: `Hey @{{github_handle}}, I saw your work on {{repo}} — really impressive stuff! We've been tackling similar coordination challenges with HyperNexus (hypernexus.site), the enterprise-grade cloud version of TormentNexus. We maintain our stable fork at github.com/MDMAtk/TormentNexus. Would love to get your thoughts if you're open to it.`,
 		},
 		{
 			ID:      "followup-email",
@@ -124,9 +124,7 @@ HyperNexus Team`,
 
 Just wanted to follow up on my previous note about HyperNexus.
 
-I know things get busy, so I'll keep this brief: HyperNexus (hypernexus.site) provides progressive MCP tool routing, dual-tier memory (14K+ persisted memories), and a resilient LLM waterfall that cascades across providers with zero downtime. It is built as a stable fork of TormentNexus at github.com/HyperNexusSoft/HyperNexus.
-
-If you're even remotely curious about improving your agent coordination, I'd love to share a quick demo.
+I know things get busy, so I'll keep this brief: HyperNexus (hypernexus.site) provides progressive MCP tool routing, dual-tier memory (14K+ persisted memories), and a resilient LLM waterfall that cascades across providers with zero downtime. It is built as a stable fork of TormentNexus at github.com/MDMAtk/TormentNexus.
 
 Worth a conversation?
 
@@ -149,11 +147,7 @@ HyperNexus Team`,
 
 I've reached out a few times about HyperNexus, but haven't heard back.
 
-I'm guessing this isn't a priority right now, or you're swamped with other initiatives. Either way, I don't want to be a pest.
-
-If you'd like me to close your file on this, just reply "close". If I got the timing wrong and you'd still like to chat, hit me with a quick "yes" and we'll find a time.
-
-No hard feelings either way.
+I'm guessing this isn't a priority right now. If you'd like me to close your file on this, just reply "close". If I got the timing wrong and you'd still like to chat, hit me with a quick "yes" and we'll find a time.
 
 Best,
 HyperNexus Team`,

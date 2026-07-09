@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/go-rod/rod"
+	"github.com/go-rod/rod/lib/launcher"
 )
 
 // LinkedInSender sends messages via LinkedIn messaging.
@@ -62,7 +63,9 @@ func (l *LinkedInSender) sendViaRod(ctx context.Context, msg LinkedInMessage) (e
 		}
 	}()
 
-	browser := rod.New().MustConnect()
+	// Configure rod launcher with --no-sandbox to run cleanly inside Docker and Linux VPS root systemd environments
+	u := launcher.New().NoSandbox(true).MustLaunch()
+	browser := rod.New().ControlURL(u).MustConnect()
 	defer func() { _ = browser.Close() }()
 
 	page := browser.MustPage()

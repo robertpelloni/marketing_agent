@@ -99,11 +99,9 @@ func (db *DB) seedTemplates(ctx context.Context) error {
 			Subject: "HyperNexus for {{company}} — Quick Question",
 			Body: `Hi {{contact}},
 
-I noticed {{company}} is building some really interesting stuff with {{tech_stack}}. The work your team is doing on {{specific_project}} caught my attention.
+I noticed {{company}} is building some really interesting stuff with {{tech_stack}}. The work your team is doing caught my attention.
 
-I'm reaching out because we've built HyperNexus (hypernexus.site) — the enterprise-ready cloud-hosted version of TormentNexus. HyperNexus coordinates multi-agent LLM workflows, MCP tool routing, and provider failover, backed by a stable open-source fork of TormentNexus at github.com/MDMAtk/TormentNexus.
-
-Would you be open to a quick chat to explore if this could help your team?
+I'm reaching out because we've built HyperNexus (hypernexus.site) — the enterprise-ready cloud-hosted version of TormentNexus. It coordinates multi-agent LLM workflows with progressive MCP tool routing (only loading the 3 most relevant tools dynamically to prevent context bloat), local-first memory (14K+ persisted memories surviving restarts with sqlite-vec semantic search), and cross-harness tool signature parity (Claude Code, Cursor, Copilot, Windsurf). We maintain our stable fork at github.com/HyperNexusSoft/HyperNexus.
 
 Best,
 HyperNexus Team`,
@@ -113,7 +111,7 @@ HyperNexus Team`,
 			Name:    "GitHub Comment Hook",
 			Channel: "github",
 			Subject: "",
-			Body: `Hey @{{github_handle}}, I saw your work on {{repo}} — really impressive stuff! We've been tackling similar coordination challenges with HyperNexus (hypernexus.site), the enterprise-grade cloud version of TormentNexus. We maintain our stable fork at github.com/MDMAtk/TormentNexus. Would love to get your thoughts if you're open to it.`,
+			Body: `Hey @{{github_handle}}, I saw your work on {{repo}} — really impressive stuff! We've been tackling similar coordination challenges with HyperNexus (hypernexus.site), the enterprise-grade cloud version of TormentNexus. We maintain our stable fork at github.com/HyperNexusSoft/HyperNexus.`,
 		},
 		{
 			ID:      "followup-email",
@@ -122,11 +120,9 @@ HyperNexus Team`,
 			Subject: "Re: HyperNexus for {{company}} — Thoughts?",
 			Body: `Hi {{contact}},
 
-Just wanted to follow up on my previous note about HyperNexus.
+Just wanted to follow up on my previous note about HyperNexus (hypernexus.site).
 
-I know things get busy, so I'll keep this brief: HyperNexus (hypernexus.site) provides progressive MCP tool routing, dual-tier memory (14K+ persisted memories), and a resilient LLM waterfall that cascades across providers with zero downtime. It is built as a stable fork of TormentNexus at github.com/MDMAtk/TormentNexus.
-
-Worth a conversation?
+It provides progressive MCP tool routing, local-first dual-tier memory (sqlite-vec semantic search), and cross-harness tool parity to maximize developer velocity when coordinating multi-agent systems. It is built as a stable fork of TormentNexus at github.com/HyperNexusSoft/HyperNexus.
 
 Best,
 HyperNexus Team`,
@@ -136,7 +132,7 @@ HyperNexus Team`,
 			Name:    "LinkedIn Connection Request",
 			Channel: "linkedin",
 			Subject: "",
-			Body: `Hi {{contact}}, I came across your profile while researching teams working on {{tech_stack}} at {{company}}. Your background in {{role}} is impressive. I'd love to connect and exchange insights on AI infrastructure.`,
+			Body: `Hi {{contact}}, I came across your profile while researching teams working on {{tech_stack}} at {{company}}. Your background in {{role}} is impressive. I'd love to connect.`,
 		},
 		{
 			ID:      "breakup-email",
@@ -145,9 +141,11 @@ HyperNexus Team`,
 			Subject: "Should I close your file?",
 			Body: `Hi {{contact}},
 
-I've reached out a few times about HyperNexus, but haven't heard back.
+I've reached out a few times about HyperNexus (hypernexus.site).
 
-I'm guessing this isn't a priority right now. If you'd like me to close your file on this, just reply "close". If I got the timing wrong and you'd still like to chat, hit me with a quick "yes" and we'll find a time.
+I'm guessing this isn't a priority right now, or you're swamped with other initiatives.
+
+If you would like to explore the platform in the future, the open-source fork is always available at github.com/HyperNexusSoft/HyperNexus.
 
 Best,
 HyperNexus Team`,

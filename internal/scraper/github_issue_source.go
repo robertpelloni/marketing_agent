@@ -289,6 +289,9 @@ func (g *GitHubIssueSource) orgToDomain(orgName string) string {
 // fetchOrgWebsite attempts to retrieve the organization's listed website
 // from the GitHub API. Returns empty string on failure.
 func (g *GitHubIssueSource) fetchOrgWebsite(orgName string) string {
+	if g.Token == "GITHUB_TOKEN_PLACEHOLDER" || g.Token == "" {
+		return "" // Skip real network lookup for test fixtures
+	}
 	apiURL := fmt.Sprintf("https://api.github.com/orgs/%s", url.PathEscape(orgName))
 
 	req, err := http.NewRequest(http.MethodGet, apiURL, nil)

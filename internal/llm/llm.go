@@ -21,5 +21,5 @@ type LLMProvider interface {
 type MockLLMProvider struct{}
 
 func (m *MockLLMProvider) Generate(ctx context.Context, prompt Prompt) (string, error) {
-	return fmt.Sprintf("[MOCK LLM RESPONSE based on system: %s | user: %s]", prompt.System, prompt.User), nil
+	return fmt.Sprintf("[MOCK LLM RESPONSE based on: %s]", prompt.User), nil
 }

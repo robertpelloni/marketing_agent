@@ -106,7 +106,7 @@ I'm reaching out because we've built HyperNexus (hypernexus.site) — the enterp
 Would you be open to a quick 15-minute chat this week to explore if this could help your team?
 
 Best,
-[Your Name]`,
+HyperNexus Team`,
 		},
 		{
 			ID:      "github-hook",
@@ -131,7 +131,7 @@ If you're even remotely curious about improving your agent coordination, I'd lov
 Worth a conversation?
 
 Best,
-[Your Name]`,
+HyperNexus Team`,
 		},
 		{
 			ID:      "linkedin-connect",
@@ -156,7 +156,7 @@ If you'd like me to close your file on this, just reply "close". If I got the ti
 No hard feelings either way.
 
 Best,
-[Your Name]`,
+HyperNexus Team`,
 		},
 	}
 

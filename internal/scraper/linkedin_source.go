@@ -11,6 +11,7 @@ import (
 
 	"github.com/robertpelloni/marketing_agent/internal/db"
 	"github.com/go-rod/rod"
+	"github.com/go-rod/rod/lib/launcher"
 )
 
 // LinkedInSource implements LeadSource by searching for companies and contacts via LinkedIn.
@@ -72,8 +73,9 @@ func (l *LinkedInSource) scrapeLinkedIn(ctx context.Context, keywords []string) 
 		}
 	}()
 
-	// Connect to browser (auto-launch if needed)
-	browser := rod.New().MustConnect()
+	// Connect to browser (auto-launch with no-sandbox flag)
+	u := launcher.New().NoSandbox(true).MustLaunch()
+	browser := rod.New().ControlURL(u).MustConnect()
 	defer func() { _ = browser.Close() }()
 
 	page := browser.MustPage()

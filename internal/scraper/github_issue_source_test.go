@@ -107,8 +107,8 @@ func TestGitHubIssueSource_Discover_WithMockServer(t *testing.T) {
 		}{
 			{"acme-ai", "acme-ai.io"},
 			{"neuralsystems", "neuralsystems.io"},
-			{"startup-corp", "startup.tech"},
-			{"my-org", "my-org.tech"},
+			{"startup-corp", "startup.com"},
+			{"my-org", "my-org.com"},
 		}
 		for _, tt := range tests {
 			got := source.orgToDomain(tt.input)

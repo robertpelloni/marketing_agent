@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"os"
 	"time"
 
 	"github.com/robertpelloni/marketing_agent/internal/db"
@@ -214,14 +215,20 @@ type CadenceAwareManager struct {
 	*Manager
 	tracker        *CadenceTracker
 	linkedinSender *LinkedInSender
+	githubSender   *GitHubCommentSender
 }
 
 // NewCadenceAwareManager wraps an existing Manager with cadence tracking.
 func NewCadenceAwareManager(mgr *Manager, database *db.DB) *CadenceAwareManager {
+	botRepo := os.Getenv("GITHUB_BOT_REPOSITORY")
+	if botRepo == "" {
+		botRepo = "MDMAtk/TormentNexus" // Default to main TormentNexus project repo
+	}
 	return &CadenceAwareManager{
 		Manager:        mgr,
 		tracker:        NewCadenceTracker(database),
 		linkedinSender: NewLinkedInSender(),
+		githubSender:   NewGitHubCommentSender(botRepo),
 	}
 }
 
@@ -449,9 +456,81 @@ subject, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
 			}
 
 		case db.ChannelGitHub:
-			// GitHub step — log for now (needs GitHubCommentSender)
-			// GitHub comment posting requires an issue URL from the target repository.\n			// Normally, we would run `SearchRelevantIssues` here.\n			slog.Info(fmt.Sprintf("CadenceAwareManager: GitHub step %d pending for deal %d — requires issue URL from DB context", nextStep.StepNumber, deal.ID))
-			slog.Info(fmt.Sprintf("CadenceAwareManager: GitHub step %d pending for deal %d — requires implementation", nextStep.StepNumber, deal.ID))
+			if contacts[0].GitHubHandle == "" {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Skipping GitHub step %d for deal %d — no GitHub handle populated", nextStep.StepNumber, deal.ID))
+				continue
+			}
+
+			// Load template
+			tmpl, err := cam.db.GetTemplate(ctx, nextStep.TemplateID)
+			if err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Template %s not found for GitHub step: %v", nextStep.TemplateID, err))
+				continue
+			}
+
+			company, err := cam.db.GetCompanyByID(ctx, deal.CompanyID)
+			if err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Could not get company details for GitHub step: %v", err))
+				continue
+			}
+
+			salesCtx := SalesContext{
+				Company:      *company,
+				Deal:         deal,
+				Contact:      contacts[0],
+				Interactions: interactions,
+				LatestIntent: IntentGeneral,
+			}
+
+			ragResponder, ok := cam.responder.(*RAGResponseGenerator)
+			if !ok {
+				slog.Info("CadenceAwareManager: Responder does not support templates for GitHub")
+				continue
+			}
+
+			_, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
+			if err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: GitHub template rendering failed: %v", err))
+				continue
+			}
+
+			// Create outbound interaction record
+			outbound := db.Interaction{
+				ContactID:  contacts[0].ID,
+				Channel:    nextStep.Channel.String(),
+				Direction:  "Outbound",
+				RawText:    body,
+				Summary:    fmt.Sprintf("Cadence step %d: %s via %s", nextStep.StepNumber, tmpl.ID, nextStep.Channel),
+				TemplateID: tmpl.ID,
+			}
+			if err := cam.db.CreateInteraction(ctx, &outbound); err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Failed to log GitHub interaction: %v", err))
+				continue
+			}
+
+			// Trigger active comment search and post
+			if cam.githubSender != nil {
+				// Search for issues in the target's org repository
+				orgName := extractOrgFromDomain(company.Domain)
+				targets, err := cam.githubSender.SearchRelevantIssues(ctx, orgName)
+				if err == nil && len(targets) > 0 {
+					// Post to the first relevant issue found
+					target := targets[0]
+					err = cam.githubSender.SendComment(ctx, target.Owner, target.Repo, target.IssueNumber, body)
+					if err != nil {
+						slog.Info(fmt.Sprintf("CadenceAwareManager: GitHub comment failed for deal %d: %v", deal.ID, err))
+					} else {
+						slog.Info(fmt.Sprintf("CadenceAwareManager: GitHub comment posted successfully on %s/%s#%d (step %d)", target.Owner, target.Repo, target.IssueNumber, nextStep.StepNumber))
+					}
+				} else {
+					slog.Info(fmt.Sprintf("CadenceAwareManager: No relevant GitHub issues found for org %s to comment on", orgName))
+				}
+			}
+
+			// Update cadence step in DB
+			if err := cam.db.SetCadenceStep(ctx, deal.ID, nextStep.StepNumber); err != nil {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Failed to update cadence step for deal %d: %v", deal.ID, err))
+			}
 		}
 	}
 }

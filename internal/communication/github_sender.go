@@ -208,7 +208,7 @@ If this resonates with what you're building, I'd love to hear your thoughts. We'
 
 I noticed this issue about %s — we've been working on similar challenges with **TormentNexus** (tormentnexus.site).
 
-TormentNexus is a local-first, open-source cognitive control plane (Operating System for AI models) located at github.com/NexusSoftMDMA/TormentNexus. It coordinates multi-agent LLM workflows with:
+TormentNexus is a local-first, open-source cognitive control plane (Operating System for AI models) located at github.com/MDMAtk/TormentNexus. It coordinates multi-agent LLM workflows with:
 - **Progressive MCP Tool Routing** — semantic router that injects only the 3 most relevant tools per request (no 50K-token tool dumps)
 - **Cross-Harness Tool Parity** — byte-for-byte identical tool signatures for Claude Code, Cursor, Codex, Gemini CLI, Copilot, and Windsurf
 - **LLM Waterfall** — seamless cascading through cloud providers → aggregators → local models on 429/5xx errors

@@ -416,7 +416,7 @@ tr:hover { background-color: #f8fafc; }
 						</form>
 					</div>
 				</td>
-			</tr>`, d.ID, d.CompanyID, string(d.CurrentState), string(d.CurrentState), statusTitle, contactHTML, d.UpdatedAt.Format("2006-01-02 15:04"), csrfToken, d.ID, csrfToken, latestInteractionID)
+			</tr>`, d.ID, d.CompanyID, d.CurrentState, d.CurrentState, statusTitle, contactHTML, d.UpdatedAt.Format("2006-01-02 15:04"), csrfToken, d.ID, csrfToken, latestInteractionID)
 	}
 
 	_, _ = fmt.Fprint(w, dealsRows, `

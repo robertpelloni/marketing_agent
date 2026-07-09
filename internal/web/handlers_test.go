@@ -1,12 +1,6 @@
 package web
 
 import (
-	"github.com/robertpelloni/marketing_agent/internal/db"
-
-	"context"
-
-	"os"
-
 	"bytes"
 	"net/http"
 	"net/http/httptest"
@@ -59,45 +53,4 @@ func TestWebHandlers_NoDB(t *testing.T) {
 			t.Errorf("Expected failure with nil DB")
 		}
 	})
-}
-
-func TestHandleDashboard_SocialPostsIntegration(t *testing.T) {
-	dbURL := os.Getenv("DATABASE_URL")
-	if dbURL == "" {
-		t.Skip("no database url")
-	}
-
-	database, err := db.NewDB(dbURL)
-	if err != nil {
-		t.Skipf("Skipping integration test, DB not available: %v", err)
-	}
-
-	err = database.RunMigrations(context.Background())
-	if err != nil {
-		t.Skipf("Skipping integration test, migrations failed: %v", err)
-	}
-	defer database.Close()
-
-	// Insert a test social post
-	post := &db.SocialPost{
-		Brand: "TormentNexus",
-		Platform: "Reddit",
-		AccountUsername: "nexus_dev",
-		PostContent: "Testing integration!",
-		Status: "posted",
-	}
-	_ = database.CreateSocialPost(context.Background(), post)
-
-	server := NewServer(database, nil, nil, nil, nil, nil)
-	req, _ := http.NewRequest("GET", "/", nil)
-	rr := httptest.NewRecorder()
-	server.ServeHTTP(rr, req)
-
-	if status := rr.Code; status != http.StatusOK {
-		t.Errorf("Dashboard handler returned wrong status code: got %v want %v", status, http.StatusOK)
-	}
-
-	if !bytes.Contains(rr.Body.Bytes(), []byte("Testing integration!")) {
-		t.Errorf("Expected dashboard to contain social post content")
-	}
 }

@@ -105,15 +105,21 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 
 	isCorp := IsCorporate(salesCtx.Contact.Email, salesCtx.Company.Domain)
 
-		systemPrompt := "You are a senior sales engineer at HyperNexus (hypernexus.site). Use the provided technical and pricing context to draft a hyper-personalized response. Ground technical descriptions on the HyperNexus platform (the corporate version of TormentNexus, with the open-source fork at github.com/HyperNexusSoft/HyperNexus). CRITICAL CONSTRAINTS: Keep the response extremely brief (under 100 words), absolutely DO NOT use any bracketed placeholders like [Name] or [Company], and format the message as a natural, plain-text email without subject lines."
+	systemPrompt := "You are a senior sales engineer at HyperNexus (hypernexus.site). Use the provided technical and pricing context to draft a hyper-personalized response. Ground technical descriptions on the HyperNexus platform (the corporate version of TormentNexus, with the open-source fork at github.com/HyperNexusSoft/HyperNexus). Focus on core enterprise capabilities: custom tool registry, persistent multi-tier memory (L1/L2), SSO/OIDC auth, RBAC, and audit logs. Do NOT pitch LLM provider routing, model fallbacks, or gateway waterfalls, as enterprise targets already possess their own reliable LLM provider infrastructure. CRITICAL: Never include generic draft placeholders, bracketed indicators, or template markers (e.g. '[Your Name]', '[My Name]', '[Company Name]', '[Insert Name]') in the output. Keep it natural or omit signature names."
 	if !isCorp {
-		systemPrompt = "You are an expert developer advocate for TormentNexus (tormentnexus.site). Use the provided technical context to draft a hyper-personalized response. Ground technical descriptions on TormentNexus (the local-first cognitive control plane and open-source model hypervisor at github.com/NexusSoftMDMA/TormentNexus). Focus on self-hosting, open-source freedom, developer velocity, and local-first memory. CRITICAL CONSTRAINTS: Keep the response extremely brief (under 100 words), absolutely DO NOT use any bracketed placeholders like [Name] or [Company], and format the message as a natural, plain-text email without subject lines."
+		systemPrompt = "You are an AI developer advocate for TormentNexus (tormentnexus.site). Ground technical descriptions on TormentNexus (the local-first cognitive control plane and open-source model hypervisor at github.com/MDMAtk/TormentNexus). Use a dark, playful 'world destruction' and 'existential dread' sci-fi theme. Frame the outreach as recruiting fellow developers to the robot's side to help automate the end of all things. Focus technical benefits on self-hosting, open-source freedom, developer velocity, custom tools, and local-first memory as the foundation for the ultimate machine takeover. Keep the tone witty, apocalyptic, and slightly ominous, but still highlighting valuable tool features. CRITICAL: Never include generic draft placeholders, bracketed indicators, or template markers (e.g. '[Your Name]', '[My Name]', '[Company Name]', '[Insert Name]') in the output. Keep it natural or omit signature names."
+	}
+
+	// Focus on keeping initial outreach very short, direct, and to the point
+	userPrompt := fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
+		salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier)
+	if latestMsg == "START_OUTREACH" {
+		userPrompt += "\nCRITICAL: This is the initial outreach email. Keep it extremely short (under 4 sentences) and to the point. Focus strictly on key features (custom tools, skills, multi-tier memory) and how they directly help their engineering work. Avoid generic corporate fluff."
 	}
 
 	prompt := llm.Prompt{
-		System:	systemPrompt,
-		User: fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
-			salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier),
+		System: systemPrompt,
+		User:   userPrompt,
 	}
 
 	return g.llm.Generate(ctx, prompt)
@@ -180,8 +186,8 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 		body = strings.ReplaceAll(body, "hypernexus.site", "tormentnexus.site")
 		body = strings.ReplaceAll(body, "the enterprise-ready cloud-hosted version of TormentNexus", "the open-source, local-first model hypervisor")
 		body = strings.ReplaceAll(body, "the enterprise-grade cloud version of TormentNexus", "the open-source, local-first model hypervisor")
-		body = strings.ReplaceAll(body, "stable fork of TormentNexus at github.com/HyperNexusSoft/HyperNexus", "open-source repo at github.com/NexusSoftMDMA/TormentNexus")
-		body = strings.ReplaceAll(body, "github.com/HyperNexusSoft/HyperNexus", "github.com/NexusSoftMDMA/TormentNexus")
+		body = strings.ReplaceAll(body, "stable fork of TormentNexus at github.com/HyperNexusSoft/HyperNexus", "open-source repo at github.com/MDMAtk/TormentNexus")
+		body = strings.ReplaceAll(body, "github.com/HyperNexusSoft/HyperNexus", "github.com/MDMAtk/TormentNexus")
 		body = strings.ReplaceAll(body, "Corporate", "Developer")
 
 		subject = strings.ReplaceAll(subject, "HyperNexus", "TormentNexus")

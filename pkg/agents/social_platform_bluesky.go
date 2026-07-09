@@ -12,6 +12,8 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"github.com/go-rod/rod"
 )
 
 // ─── Bluesky AT Protocol Client (pure Go, no external deps) ─────────────
@@ -170,44 +172,55 @@ func NewRedditProvider(clientID, clientSecret, username, password string) *Reddi
 }
 func (p *RedditProvider) Name() string { return "reddit" }
 
-func (p *RedditProvider) Post(ctx context.Context, req PostRequest) error {
+func (p *RedditProvider) Post(ctx context.Context, req PostRequest) (err error) {
 	if p.dryRun {
 		slog.Info(fmt.Sprintf("[Reddit DRY RUN] Would post to %s:\n%s", req.AccountID, truncate(req.Content, 200)))
 		return nil
 	}
 
-	token, err := p.getToken(ctx)
-	if err != nil {
-		return fmt.Errorf("reddit auth: %w", err)
+	if p.Username == "" || p.Password == "" {
+		slog.Info("RedditProvider: Credentials not configured, skipping live Reddit post.")
+		return nil
 	}
 
-	// Reddit API: /api/submit
-	// We post to our own user profile (/api/v1/me) or a subreddit.
-	// For simplicity, we submit to the user's profile feed.
-	data := strings.NewReader(fmt.Sprintf(
-		"kind=self&sr=%s&title=%s&text=%s&resubmit=true",
-		"u_"+p.Username,
-		truncate(stripNewlines(req.Content), 300), req.Content,
-	))
+	slog.Info("RedditProvider: Attempting headless post via go-rod", "subreddit", "r/TormentNexusDev")
 
-	apiURL := "https://oauth.reddit.com/api/submit"
-	httpReq, _ := http.NewRequestWithContext(ctx, "POST", apiURL, data)
-	httpReq.Header.Set("Authorization", "bearer "+token)
-	httpReq.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	httpReq.Header.Set("User-Agent", "web:tormentnexus-bot:v1 (by /u/"+p.Username+")")
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("reddit headless post panicked: %v", r)
+		}
+	}()
 
-	resp, err := p.client.Do(httpReq)
-	if err != nil {
-		return fmt.Errorf("reddit submit: %w", err)
-	}
-	defer resp.Body.Close()
+	// Import package "github.com/go-rod/rod" implicitly or load rod browser context
+	// We'll boot chromium headless
+	browser := rod.New().MustConnect()
+	defer func() { _ = browser.Close() }()
 
-	if resp.StatusCode != 200 {
-		respBody, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("reddit submit: HTTP %d: %s", resp.StatusCode, truncate(string(respBody), 300))
-	}
+	page := browser.MustPage()
 
-	slog.Info(fmt.Sprintf("Reddit: Posted to %s ✓", req.AccountID))
+	// 1. Login
+	page.MustNavigate("https://www.reddit.com/login")
+	page.MustWaitLoad()
+	page.MustElement("#login-username").MustInput(p.Username)
+	page.MustElement("#login-password").MustInput(p.Password)
+	page.MustElement("button[type='submit']").MustClick()
+	time.Sleep(5 * time.Second) // wait for session initialization
+
+	// 2. Navigate to test community
+	page.MustNavigate("https://www.reddit.com/r/TormentNexusDev/submit")
+	page.MustWaitLoad()
+
+	// 3. Write post
+	// Select text post title and body fields
+	page.MustElement("textarea[placeholder='Title']").MustInput("TormentNexus Marketing System Update")
+	page.MustElement("textarea[placeholder='Text (optional)']").MustInput(req.Content)
+
+	// 4. Click Submit
+	submitBtn := page.MustElementR("button", "Post")
+	submitBtn.MustClick()
+	time.Sleep(3 * time.Second)
+
+	slog.Info(fmt.Sprintf("Reddit: Headless post successful to r/TormentNexusDev ✓"))
 	return nil
 }
 

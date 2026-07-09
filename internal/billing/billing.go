@@ -85,6 +85,10 @@ type SubscriptionStore interface {
 	CancelSubscription(ctx context.Context, stripeSubID string, at time.Time) error
 	SetGrandfatheredRate(ctx context.Context, stripeSubID string, rate float64) error
 	RecordPriceChange(ctx context.Context, subID int64, prevRate, newRate float64) error
+
+	UpdateDealState(ctx context.Context, dealID int64, newState db.LeadState) error
+	UpdateDealDetails(ctx context.Context, dealID int64, pricing float64, requirements string) error
+	CreateAuditLog(ctx context.Context, log *db.AuditLog) error
 }
 
 // NewStripeBillingClient creates a new Stripe-based billing client.
@@ -373,6 +377,76 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 		"rate", rate,
 	)
 
+
+	if dealIDStr, ok := sess.Metadata["deal_id"]; ok {
+		var dealID int64
+		fmt.Sscanf(dealIDStr, "%d", &dealID)
+
+		// Update deal state and pricing
+		amountTotal := sess.AmountTotal // Amount is in cents
+		actualRevenue := float64(amountTotal) / 100.0
+
+		// Use the DB to update the deal details
+		// Update Deal State to StateClosedWon
+		err = s.db.UpdateDealState(ctx, dealID, db.StateClosedWon)
+		if err != nil {
+			slog.Error("Failed to update deal state", "deal_id", dealID, "error", err)
+		} else {
+			// Ensure deal pricing matches actual paid amount
+			err = s.db.UpdateDealDetails(ctx, dealID, actualRevenue, "Processed via Stripe Checkout")
+			if err != nil {
+				slog.Error("Failed to update deal details", "deal_id", dealID, "error", err)
+			}
+
+			// Log audit event for this state transition
+			err = s.db.CreateAuditLog(ctx, &db.AuditLog{
+				EntityID: dealID,
+				Type:     "deal_transition",
+				Action:   string(db.StateClosedWon),
+				Actor:    "stripe_webhook",
+				Metadata: string(event.Data.Raw),
+			})
+			if err != nil {
+				slog.Warn("Failed to create audit log", "deal_id", dealID, "error", err)
+			}
+		}
+	}
+
+
+	if dealIDStr, ok := sess.Metadata["deal_id"]; ok {
+		var dealID int64
+		fmt.Sscanf(dealIDStr, "%d", &dealID)
+
+		// Update deal state and pricing
+		amountTotal := sess.AmountTotal // Amount is in cents
+		actualRevenue := float64(amountTotal) / 100.0
+
+		// Use the DB to update the deal details
+		// Update Deal State to StateClosedWon
+		err = s.db.UpdateDealState(ctx, dealID, db.StateClosedWon)
+		if err != nil {
+			slog.Error("Failed to update deal state", "deal_id", dealID, "error", err)
+		} else {
+			// Ensure deal pricing matches actual paid amount
+			err = s.db.UpdateDealDetails(ctx, dealID, actualRevenue, "Processed via Stripe Checkout")
+			if err != nil {
+				slog.Error("Failed to update deal details", "deal_id", dealID, "error", err)
+			}
+
+			// Log audit event for this state transition
+			err = s.db.CreateAuditLog(ctx, &db.AuditLog{
+				EntityID: dealID,
+				Type:     "deal_transition",
+				Action:   string(db.StateClosedWon),
+				Actor:    "stripe_webhook",
+				Metadata: string(event.Data.Raw),
+			})
+			if err != nil {
+				slog.Warn("Failed to create audit log", "deal_id", dealID, "error", err)
+			}
+		}
+	}
+
 	return fmt.Sprintf("subscription created: %s", sub.ID), nil
 }
 
@@ -464,4 +538,16 @@ func (s *StripeBillingClient) handleSubscriptionDeleted(ctx context.Context, eve
 	}
 
 	return fmt.Sprintf("subscription deleted: %s", sub.ID), nil
+}
+
+func (d *DBAdapter) UpdateDealState(ctx context.Context, dealID int64, newState db.LeadState) error {
+	return d.UpdateDealState(ctx, dealID, newState)
+}
+
+func (d *DBAdapter) UpdateDealDetails(ctx context.Context, dealID int64, pricing float64, requirements string) error {
+	return d.UpdateDealDetails(ctx, dealID, pricing, requirements)
+}
+
+func (d *DBAdapter) CreateAuditLog(ctx context.Context, log *db.AuditLog) error {
+	return d.CreateAuditLog(ctx, log)
 }

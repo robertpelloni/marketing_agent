@@ -77,6 +77,9 @@ func (db *DB) RunMigrations(ctx context.Context) error {
 		return fmt.Errorf("could not run up migrations: %w", err)
 	}
 
+	// Ensure 'Pending_Approval' is in lead_state enum (executed outside migration transaction)
+	_, _ = db.Conn.ExecContext(ctx, "ALTER TYPE lead_state ADD VALUE IF NOT EXISTS 'Pending_Approval'")
+
 	// Seed default templates after migrations run
 	if err := db.seedTemplates(ctx); err != nil {
 		return fmt.Errorf("seed templates: %w", err)

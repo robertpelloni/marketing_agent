@@ -111,13 +111,15 @@ jobs:
     needs: [test, staging, build]
     if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')))
     runs-on: ubuntu-latest
+    env:
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
     steps:
     - uses: actions/checkout@v4
     - name: Build Docker Image
       run: |
         docker build -t enterprise-marketing-agent:latest .
     - name: Deploy to Production
-      if: ${{ secrets.DEPLOY_HOST != '' }}
+      if: env.DEPLOY_HOST != ''
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.DEPLOY_HOST }}
@@ -130,7 +132,7 @@ jobs:
           git submodule update --init --recursive
           docker compose up -d --build
     - name: Production Smoke Test
-      if: ${{ secrets.DEPLOY_HOST != '' }}
+      if: env.DEPLOY_HOST != ''
       run: |
         go run scripts/smoke.go
       env:

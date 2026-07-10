@@ -63,7 +63,7 @@ func StartContainer(ctx context.Context, companyID int64) error {
 	mountDir := fmt.Sprintf("/var/lib/tormentnexus/company_%d", companyID)
 
 	// Ensure mount directory exists on the host
-	exec.CommandContext(ctx, "mkdir", "-p", mountDir).Run()
+	_ = exec.CommandContext(ctx, "mkdir", "-p", mountDir).Run()
 
 	// Check if already exists
 	info, err := GetContainerStatus(ctx, companyID)

@@ -319,7 +319,7 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 	companyIDStr, ok := sess.Metadata["company_id"]
 	var companyID int64
 	if ok {
-		fmt.Sscanf(companyIDStr, "%d", &companyID)
+		_, _ = fmt.Sscanf(companyIDStr, "%d", &companyID)
 	}
 
 	if companyID == 0 {

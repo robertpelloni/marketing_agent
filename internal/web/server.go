@@ -1244,7 +1244,7 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, r *http.Request) {
 	}
 	slog.Info("Stripe webhook processed", "msg", msg)
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(msg))
+	_, _ = w.Write([]byte(msg))
 }
 
 func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
@@ -1273,7 +1273,7 @@ func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"url": url})
+	_ = json.NewEncoder(w).Encode(map[string]string{"url": url})
 }
 
 func (s *Server) handleGetSubscription(w http.ResponseWriter, r *http.Request) {
@@ -1298,7 +1298,7 @@ func (s *Server) handleGetSubscription(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(sub)
+	_ = json.NewEncoder(w).Encode(sub)
 }
 
 func (s *Server) handleCancelSubscription(w http.ResponseWriter, r *http.Request) {
@@ -1323,7 +1323,7 @@ func (s *Server) handleCancelSubscription(w http.ResponseWriter, r *http.Request
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"status": "canceled"})
+	_ = json.NewEncoder(w).Encode(map[string]string{"status": "canceled"})
 }
 
 func (s *Server) handleBillingPortal(w http.ResponseWriter, r *http.Request) {
@@ -1345,14 +1345,14 @@ func (s *Server) handleContainerStart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var companyID int64
-	fmt.Sscanf(cookie.Value, "company_%d", &companyID)
+	_, _ = fmt.Sscanf(cookie.Value, "company_%d", &companyID)
 
 	if err := StartContainer(r.Context(), companyID); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"status": "running"})
+	_ = json.NewEncoder(w).Encode(map[string]string{"status": "running"})
 }
 
 func (s *Server) handleContainerStop(w http.ResponseWriter, r *http.Request) {
@@ -1366,14 +1366,14 @@ func (s *Server) handleContainerStop(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var companyID int64
-	fmt.Sscanf(cookie.Value, "company_%d", &companyID)
+	_, _ = fmt.Sscanf(cookie.Value, "company_%d", &companyID)
 
 	if err := StopContainer(r.Context(), companyID); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"status": "stopped"})
+	_ = json.NewEncoder(w).Encode(map[string]string{"status": "stopped"})
 }
 
 func (s *Server) handleContainerRestart(w http.ResponseWriter, r *http.Request) {
@@ -1387,14 +1387,14 @@ func (s *Server) handleContainerRestart(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	var companyID int64
-	fmt.Sscanf(cookie.Value, "company_%d", &companyID)
+	_, _ = fmt.Sscanf(cookie.Value, "company_%d", &companyID)
 
 	if err := RestartContainer(r.Context(), companyID); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"status": "running"})
+	_ = json.NewEncoder(w).Encode(map[string]string{"status": "running"})
 }
 
 func (s *Server) handleDemoDashboard(w http.ResponseWriter, r *http.Request) {

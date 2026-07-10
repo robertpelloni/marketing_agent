@@ -886,7 +886,7 @@ func (db *DB) DeleteGDPRData(ctx context.Context, email string) error {
 	if err != nil {
 		return err
 	}
-	defer tx.Rollback()
+	defer func() { _ = tx.Rollback() }()
 
 	// Soft delete contact
 	_, err = tx.ExecContext(ctx, "UPDATE contacts SET deleted_at = CURRENT_TIMESTAMP, name = 'REDACTED', email = 'REDACTED', linkedin_url = '', github_handle = '' WHERE id = $1", contact.ID)

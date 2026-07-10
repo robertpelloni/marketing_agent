@@ -2,6 +2,7 @@ package web
 
 import (
 	"bytes"
+	"database/sql"
 	"context"
 	"crypto/hmac"
 	"crypto/sha256"
@@ -217,6 +218,42 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// Get active subscription info
+	subTier := "Free / Community"
+	subState := "active"
+	subSeats := 1
+	subEndStr := "Never"
+	subTimeLeftStr := "Unlimited"
+
+	// Query the most recent subscription
+	var currentPeriodEnd sql.NullTime
+	var seats int
+	var tier string
+	var state string
+	err = s.db.Conn.QueryRowContext(r.Context(),
+		"SELECT tier, state, seats, current_period_end FROM subscriptions ORDER BY id DESC LIMIT 1").Scan(&tier, &state, &seats, &currentPeriodEnd)
+	if err == nil {
+		subTier = tier
+		subState = state
+		subSeats = seats
+		if currentPeriodEnd.Valid {
+			subEndStr = currentPeriodEnd.Time.Format("January 2, 2006")
+			timeLeft := time.Until(currentPeriodEnd.Time)
+			if timeLeft > 0 {
+				days := int(timeLeft.Hours() / 24)
+				if days > 0 {
+					subTimeLeftStr = fmt.Sprintf("%d days", days)
+				} else {
+					hours := int(timeLeft.Hours())
+					subTimeLeftStr = fmt.Sprintf("%d hours", hours)
+				}
+			} else {
+				subTimeLeftStr = "Expired"
+				subState = "expired"
+			}
+		}
+	}
+
 	w.Header().Set("Content-Type", "text/html")
 	_, _ = fmt.Fprintf(w, "%s", "<!DOCTYPE html>")
 	_, _ = fmt.Fprintf(w, `
@@ -286,6 +323,27 @@ tr:hover { background-color: #f8fafc; }
 	</div>
 </div>
 <div class="container">
+`, healthStatusColor(health), health, llmColor, llmStatus)
+
+	_, _ = fmt.Fprintf(w, `
+	<div class="card full-width" style="border-top: 4px solid var(--purple); display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+		<div>
+			<h3 style="margin: 0 0 8px 0; font-size: 1.2rem; color: #1e293b;">Active Subscription Info</h3>
+			<p style="margin: 0; font-size: 0.9rem; color: #64748b;">
+				<strong>Tier:</strong> <span style="text-transform: capitalize; color: var(--purple); font-weight: 600;">%s</span> | 
+				<strong>Status:</strong> <span style="color: var(--success); font-weight: 600;">%s</span> | 
+				<strong>Seats:</strong> %d | 
+				<strong>Subscription Ends / Renews:</strong> <span style="font-weight: 600; color: #1e293b;">%s</span> 
+				<span style="font-size: 0.8rem; margin-left: 8px; color: #888;">(%s remaining)</span>
+			</p>
+		</div>
+		<div>
+			<a href="/api/v1/billing/portal" class="action-btn" style="background-color: var(--purple); text-decoration: none; padding: 10px 20px; display: inline-block;">Manage Billing &amp; Invoices</a>
+		</div>
+	</div>
+`, subTier, subState, subSeats, subEndStr, subTimeLeftStr)
+
+	_, _ = fmt.Fprintf(w, `
 	<div class="card full-width" style="border-top: 4px solid var(--info);">
 		<div class="card-header">
 			Performance Metrics
@@ -333,7 +391,7 @@ tr:hover { background-color: #f8fafc; }
 				<th>Contacts & Channels</th>
 				<th>Last Updated</th>
 				<th>Actions</th>
-			</tr>`, healthStatusColor(health), health, llmColor, llmStatus, metrics.TotalLeads, metrics.LeadsByState[db.StateClosedWon], metrics.WinRate, metrics.SuccessfulOutreach, metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateOutreachSent], metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateNegotiating], len(deals))
+			</tr>`, metrics.TotalLeads, metrics.LeadsByState[db.StateClosedWon], metrics.WinRate, metrics.SuccessfulOutreach, metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateOutreachSent], metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateNegotiating], len(deals))
 
 	var dealsRows string
 	for _, d := range deals {

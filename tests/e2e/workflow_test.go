@@ -94,6 +94,12 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 		Channel:   "email",
 		RawText:   "Initial interest email.",
 	})
+	_ = database.CreateInteraction(ctx, &db.Interaction{
+		ContactID: contacts[0].ID,
+		Direction: "Outbound",
+		Channel:   "email",
+		RawText:   "Outreach reply.",
+	})
 
 	// 2d. Outreach Phase
 	classifier := &communication.MockIntentClassifier{}

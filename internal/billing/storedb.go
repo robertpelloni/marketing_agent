@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -139,4 +140,72 @@ func (a *DBAdapter) RecordPriceChange(ctx context.Context, subID int64, prevRate
 		subID, prevRate, newRate,
 	)
 	return err
+}
+
+// ResolveCompanyID extracts the domain from the customer's email address, checks if a company already exists for it,
+// and if not, creates a new company in the database.
+func (a *DBAdapter) ResolveCompanyID(ctx context.Context, email, name string) (int64, error) {
+	email = strings.ToLower(strings.TrimSpace(email))
+	if email == "" {
+		return 0, fmt.Errorf("email is empty")
+	}
+
+	parts := strings.Split(email, "@")
+	if len(parts) != 2 {
+		return 0, fmt.Errorf("invalid email format: %s", email)
+	}
+	username := parts[0]
+	domain := parts[1]
+
+	// Determine if domain is corporate
+	isCorp := true
+	freeProviders := []string{
+		"gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "live.com",
+		"proton.me", "protonmail.com", "icloud.com", "mail.com", "aol.com", "gmx.com",
+	}
+	for _, p := range freeProviders {
+		if domain == p {
+			isCorp = false
+			break
+		}
+	}
+
+	companyDomain := domain
+	companyName := name
+	if !isCorp {
+		// For free providers, domain is unique to the user to avoid collisions
+		companyDomain = email
+		if companyName == "" {
+			companyName = username + " (" + domain + ")"
+		}
+	} else {
+		if companyName == "" {
+			// e.g. "microsoft.com" -> "Microsoft"
+			domainParts := strings.Split(domain, ".")
+			if len(domainParts) > 0 {
+				companyName = strings.Title(domainParts[0])
+			} else {
+				companyName = domain
+			}
+		}
+	}
+
+	// Try to find existing company by domain
+	var id int64
+	err := a.DB.QueryRowContext(ctx, "SELECT id FROM companies WHERE domain = $1", companyDomain).Scan(&id)
+	if err == nil {
+		return id, nil
+	} else if err != sql.ErrNoRows {
+		return 0, fmt.Errorf("failed to query company by domain: %w", err)
+	}
+
+	// Not found, insert new company
+	err = a.DB.QueryRowContext(ctx,
+		"INSERT INTO companies (name, domain) VALUES ($1, $2) RETURNING id",
+		companyName, companyDomain).Scan(&id)
+	if err != nil {
+		return 0, fmt.Errorf("failed to insert new company: %w", err)
+	}
+
+	return id, nil
 }

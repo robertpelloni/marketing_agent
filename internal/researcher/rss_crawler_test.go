@@ -18,19 +18,19 @@ const testRSSFeed = `<?xml version="1.0" encoding="UTF-8"?>
 <title>Acme Corp is hiring senior ML engineers</title>
 <link>https://techblog.example.com/acme-hiring</link>
 <description>Acme Corp is looking for experienced machine learning engineers to join their AI team. Competitive salary and remote options available.</description>
-<pubDate>Mon, 10 Jun 2026 12:00:00 +0000</pubDate>
+<pubDate>Mon, 10 Jun 2030 12:00:00 +0000</pubDate>
 </item>
 <item>
 <title>Building scalable infrastructure with Rust</title>
 <link>https://techblog.example.com/rust-infra</link>
 <description>A deep dive into how we migrated our microservices to Rust for better performance and safety.</description>
-<pubDate>Mon, 03 Jun 2026 09:00:00 +0000</pubDate>
+<pubDate>Mon, 03 Jun 2030 09:00:00 +0000</pubDate>
 </item>
 <item>
 <title>Announcing our new open source LLM framework</title>
 <link>https://techblog.example.com/llm-framework</link>
 <description>We are excited to announce our new open source framework for building LLM-powered applications. Built on top of the latest advances in agent orchestration.</description>
-<pubDate>Mon, 20 May 2026 14:00:00 +0000</pubDate>
+<pubDate>Mon, 20 May 2030 14:00:00 +0000</pubDate>
 </item>
 </channel>
 </rss>`
@@ -39,18 +39,18 @@ const testAtomFeed = `<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 <title>Engineering Blog</title>
 <link href="https://engblog.example.com"/>
-<updated>2026-06-14T12:00:00Z</updated>
+<updated>2030-06-14T12:00:00Z</updated>
 <entry>
 <title>GlobalTech Inc is hiring AI engineers</title>
 <link href="https://engblog.example.com/globaltech-hiring"/>
 <summary>GlobalTech Inc is expanding their AI division and hiring multiple engineers for their agentic workflow platform team.</summary>
-<updated>2026-06-12T10:00:00Z</updated>
+<updated>2030-06-12T10:00:00Z</updated>
 </entry>
 <entry>
 <title>How we reduced latency by 60%</title>
 <link href="https://engblog.example.com/latency-reduction"/>
 <summary>Our engineering team implemented a new caching strategy that dramatically reduced API latency across our platform.</summary>
-<updated>2026-06-05T08:00:00Z</updated>
+<updated>2030-06-05T08:00:00Z</updated>
 </entry>
 </feed>`
 

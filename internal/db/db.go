@@ -57,23 +57,20 @@ func (db *DB) RunMigrations(ctx context.Context) error {
 		return fmt.Errorf("could not create postgres driver for migrations: %w", err)
 	}
 
-	m, err := migrate.NewWithDatabaseInstance(
-		"file://migrations",
-		"postgres", driver)
-	if err != nil {
-		// If migrations dir does not exist (e.g. running from tests in subdirs), we might skip or warn
-		if os.IsNotExist(err) {
-			slog.Warn("Migrations directory not found. Skipping golang-migrate runner.")
-			return nil
-		}
-		// Attempt to fallback relative to project root
-		m, err = migrate.NewWithDatabaseInstance(
-			"file://../../migrations",
-			"postgres", driver)
+	var m *migrate.Migrate
+	if _, err := os.Stat("migrations"); err == nil {
+		m, err = migrate.NewWithDatabaseInstance("file://migrations", "postgres", driver)
 		if err != nil {
-			slog.Warn("Migrations directory not found in fallback path either. Skipping golang-migrate runner.")
-			return nil
+			return fmt.Errorf("failed to initialize migrations from file://migrations: %w", err)
 		}
+	} else if _, err := os.Stat("../../migrations"); err == nil {
+		m, err = migrate.NewWithDatabaseInstance("file://../../migrations", "postgres", driver)
+		if err != nil {
+			return fmt.Errorf("failed to initialize migrations from file://../../migrations: %w", err)
+		}
+	} else {
+		slog.Warn("Migrations directory not found in relative paths. Skipping golang-migrate schema runner.")
+		return nil
 	}
 
 	if err := m.Up(); err != nil && err != migrate.ErrNoChange {

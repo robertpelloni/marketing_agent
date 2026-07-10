@@ -50,7 +50,9 @@ func TestAutonomousLoop_Integration(t *testing.T) {
 
 	// We skip the sync protocol to avoid git errors in CI environment
 	_ = os.Setenv("SKIP_AUTODEV_SYNC", "true")
+	_ = os.Setenv("GO_TEST_MODE", "true")
 	defer func() { _ = os.Unsetenv("SKIP_AUTODEV_SYNC") }()
+	defer func() { _ = os.Unsetenv("GO_TEST_MODE") }()
 
 	// Run one cycle manually
 	orchestrator.ExecuteStep(ctx)
@@ -94,7 +96,9 @@ func TestMultiAgentWorkflow_Integration(t *testing.T) {
 	orchestrator := NewOrchestrator(database, manager, agent, prManager, tracker)
 
 	_ = os.Setenv("SKIP_AUTODEV_SYNC", "true")
+	_ = os.Setenv("GO_TEST_MODE", "true")
 	defer func() { _ = os.Unsetenv("SKIP_AUTODEV_SYNC") }()
+	defer func() { _ = os.Unsetenv("GO_TEST_MODE") }()
 
 	// Execute two steps
 	orchestrator.ExecuteStep(ctx)

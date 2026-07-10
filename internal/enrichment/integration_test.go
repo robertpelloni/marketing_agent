@@ -41,6 +41,18 @@ func cleanupDeal(t *testing.T, database *db.DB, companyName string) {
 	}
 }
 
+type mockSourceForIntegration struct{}
+
+func (m *mockSourceForIntegration) Enrich(ctx context.Context, company db.Company) ([]db.Contact, error) {
+	return []db.Contact{
+		{
+			Name:  "Sarah Chen",
+			Email: "sarah.chen@aidynamics.com",
+			Role:  "CTO",
+		},
+	}, nil
+}
+
 func TestEnricher_Integration_EnrichesDiscoveredDeals(t *testing.T) {
 	database := setupTestDB(t)
 	defer func() { _ = database.Close() }()
@@ -70,7 +82,7 @@ func TestEnricher_Integration_EnrichesDiscoveredDeals(t *testing.T) {
 	defer cleanupDeal(t, database, company.Name)
 
 	// Create enricher with mock source
-	mockSource := &mockSourceForTest{}
+	mockSource := &mockSourceForIntegration{}
 	mockCRM := crm.NewMockCRMClient()
 	e := NewEnricher(database, []EnrichmentSource{mockSource}, mockCRM)
 

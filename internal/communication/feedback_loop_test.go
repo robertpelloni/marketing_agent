@@ -34,15 +34,16 @@ func TestFeedbackLoop_Integration(t *testing.T) {
 	company := &db.Company{
 		Name:          "FeedbackLoop Corp",
 		Domain:        "feedbackloop.com",
-		MarketCapTier: "Mid-Market",
+		MarketCapTier: "Enterprise",
 	}
 	if err := database.CreateCompany(ctx, company); err != nil {
 		t.Fatalf("CreateCompany failed: %v", err)
 	}
 
 	deal := &db.Deal{
-		CompanyID:    company.ID,
-		CurrentState: db.StateEngaged,
+		CompanyID:        company.ID,
+		CurrentState:     db.StateEngaged,
+		TechnicalDossier: "BOTTLENECK INFRASTRUCTURE",
 	}
 	if err := database.CreateDeal(ctx, deal); err != nil {
 		t.Fatalf("CreateDeal failed: %v", err)
@@ -67,12 +68,22 @@ func TestFeedbackLoop_Integration(t *testing.T) {
 		t.Fatalf("CreateInteraction failed: %v", err)
 	}
 
+	inbound := &db.Interaction{
+		ContactID: contact.ID,
+		Direction: "Inbound",
+		RawText:   "Interested.",
+		Success:   false,
+	}
+	if err := database.CreateInteraction(ctx, inbound); err != nil {
+		t.Fatalf("CreateInteraction failed: %v", err)
+	}
+
 	// 1. Simulate StateClosedWon
 	salesCtx := SalesContext{
 		Deal:         *deal,
 		Company:      *company,
 		Contact:      *contact,
-		Interactions: []db.Interaction{*outbound, *outbound, *outbound, *outbound}, // To trigger shouldAdvanceState logic
+		Interactions: []db.Interaction{*outbound, *outbound, *outbound, *outbound, *inbound, *inbound, *inbound}, // To trigger shouldAdvanceState logic
 		LatestIntent: IntentFollowUp, // FollowUp + high interactions = advancing to ClosedWon for mid-market
 	}
 

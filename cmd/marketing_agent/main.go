@@ -75,22 +75,12 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-
 	// 2. Setup Scraper — HN "Who is Hiring" + LinkedIn + GitHub Issues
-	linkedInSource := scraper.NewLinkedInSource()
-	if os.Getenv("LINKEDIN_USERNAME") != "" && os.Getenv("LINKEDIN_PASSWORD") != "" {
-		linkedInSource.SetCredentials(os.Getenv("LINKEDIN_USERNAME"), os.Getenv("LINKEDIN_PASSWORD"))
-		slog.Info("Scraper: LinkedIn credentials configured.")
-	} else {
-		slog.Info("Scraper: No LinkedIn credentials found, running in simulation mode.")
-	}
-
 	sources := []scraper.LeadSource{
 		&scraper.HNWhoIsHiringSource{Client: http.DefaultClient},
-		linkedInSource,
+		&scraper.LinkedInSource{Client: http.DefaultClient},
 		&scraper.GitHubIssueSource{Client: http.DefaultClient, Token: cfg.GitHubToken},
 	}
-
 	s := scraper.NewScraper(database, sources)
 
 	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows", "AI Platform", "ML Infrastructure"}

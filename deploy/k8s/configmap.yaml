@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: marketing-agent-config
+  namespace: tormentnexus
+data:
+  ENVIRONMENT: "production"
+  PORT: "8080"
+  HERMES_MODEL: "hermes-3-llama-3.1-8b"
+  DEEPSEEK_MODEL: "deepseek-chat"
+  SMTP_HOST: "smtp.example.com"
+  SMTP_PORT: "587"
+  SMTP_FROM: "sales@hypernexus.site"
+  SMTP_FROM_NAME: "HyperNexus Sales"
+  IMAP_HOST: "imap.example.com"
+  IMAP_PORT: "993"
+  IMAP_FOLDER: "INBOX"
+  IMAP_POLL_INTERVAL: "30m"
+  DEPLOY_SYNC_INTERVAL: "1h"
+  DRY_RUN: "false"

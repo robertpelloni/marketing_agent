@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marketing-agent
+  namespace: tormentnexus
+  labels:
+    app: marketing-agent
+spec:
+  replicas: 1 # Scale appropriately, ensuring background workers are deduplicated or locked via DB/Redis
+  selector:
+    matchLabels:
+      app: marketing-agent
+  template:
+    metadata:
+      labels:
+        app: marketing-agent
+    spec:
+      containers:
+      - name: marketing-agent
+        image: ghcr.io/robertpelloni/marketing_agent:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        envFrom:
+        - configMapRef:
+            name: marketing-agent-config
+        - secretRef:
+            name: marketing-agent-secrets
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "512Mi"
+          limits:
+            cpu: "1000m"
+            memory: "2Gi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10

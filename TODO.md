@@ -132,7 +132,7 @@
 
 ### Deployment & Operations
 
-- [ ] Add Kubernetes manifests (Deployment, Service, ConfigMap, Secret)
+- [x] Add Kubernetes manifests (Deployment, Service, ConfigMap, Secret)
 - [ ] Add Helm chart for one-command cluster deployment
 - [ ] Add Terraform modules for cloud infrastructure provisioning
 - [ ] Add blue-green deployment strategy with automatic rollback

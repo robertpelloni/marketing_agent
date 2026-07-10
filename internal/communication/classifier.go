@@ -25,6 +25,9 @@ func (m *MockIntentClassifier) Classify(ctx context.Context, text string) (Inten
 	if containsAny(text, "no", "not interested", "stop") {
 		return IntentObjection, nil
 	}
+	if containsAny(text, "proceed", "proposal", "interest", "follow up") {
+		return IntentFollowUp, nil
+	}
 
 	return IntentTechnical, nil
 }

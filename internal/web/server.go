@@ -1403,103 +1403,262 @@ func (s *Server) handleDemoDashboard(w http.ResponseWriter, r *http.Request) {
 	_, _ = fmt.Fprintf(w, `
 <html>
 <head>
-<title>HyperNexus Demo Console</title>
+<title>TormentNexus Cloud Console</title>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <style>
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@400;700;900&display=swap");
 :root {
-	--primary: #5865F2;
-	--primary-hover: #4752C4;
-	--success: #23A55A;
-	--info: #00b0f4;
-	--warning: #F0B232;
-	--danger: #F23F43;
-	--dark: #0f172a;
-	--light: #f8fafc;
-	--purple: #9b5de5;
-	--bg-main: #f1f5f9;
-	--border-color: #e2e8f0;
-	--text-main: #334155;
+	--bg: #020408;
+	--card-bg: #080c16;
+	--border: #1e293b;
+	--borg: #00ff88;
+	--eye: #ff0044;
+	--text: #cbd5e1;
+	--text-dim: #64748b;
 }
-body { font-family: 'Inter', sans-serif; margin: 0; background-color: var(--bg-main); color: var(--text-main); line-height: 1.5; }
-.header { background: linear-gradient(135deg, #1e293b, var(--dark)); color: white; padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; }
-.header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.container { max-width: 1400px; margin: 30px auto; padding: 0 24px; display: flex; flex-direction: column; gap: 24px; }
-.card { background: white; border-radius: 12px; padding: 24px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-.card-header { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; color: #1e293b; }
-.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-.metric-box { padding: 20px; border-radius: 10px; text-align: center; border: 1px solid var(--border-color); background: var(--light); }
-.metric-value { font-size: 2.2rem; font-weight: 800; margin-bottom: 6px; }
-.metric-label { font-size: 0.75rem; color: #64748b; font-weight: 700; text-transform: uppercase; }
-table { width: 100%%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
-th, td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); text-align: left; }
-th { background-color: #f8fafc; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; }
-.btn { background-color: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; text-decoration: none; display: inline-block; }
-.btn-success { background-color: var(--success); }
-.btn-danger { background-color: var(--danger); }
-.status-badge { font-weight: 700; padding: 4px 10px; border-radius: 9999px; font-size: 0.75rem; }
-.status-running { background-color: #dcfce7; color: #15803d; }
+body {
+	font-family: 'JetBrains Mono', monospace;
+	background-color: var(--bg);
+	color: var(--text);
+	margin: 0;
+	line-height: 1.6;
+	overflow-x: hidden;
+}
+.header {
+	background: rgba(8, 12, 22, 0.9);
+	border-bottom: 2px solid var(--border);
+	padding: 20px 40px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-shadow: 0 0 20px rgba(0, 255, 136, 0.05);
+	backdrop-filter: blur(8px);
+}
+.header h1 {
+	font-family: 'Orbitron', sans-serif;
+	margin: 0;
+	font-size: 1.5rem;
+	font-weight: 900;
+	background: linear-gradient(135deg, var(--borg), #00e5ff);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	letter-spacing: 1px;
+}
+.container {
+	max-width: 1400px;
+	margin: 30px auto;
+	padding: 0 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+.card {
+	background: var(--card-bg);
+	border-radius: 8px;
+	padding: 24px;
+	border: 1px solid var(--border);
+	box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+	position: relative;
+}
+.card::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%%;
+	height: 3px;
+	background: linear-gradient(90deg, var(--borg), transparent);
+}
+.card-header {
+	font-family: 'Orbitron', sans-serif;
+	font-size: 1.1rem;
+	font-weight: 700;
+	margin-bottom: 18px;
+	border-bottom: 1px solid var(--border);
+	padding-bottom: 10px;
+	color: var(--borg);
+	letter-spacing: 0.5px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.metrics-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 20px;
+}
+.metric-box {
+	padding: 20px;
+	border-radius: 6px;
+	text-align: center;
+	border: 1px solid var(--border);
+	background: rgba(2, 4, 8, 0.5);
+}
+.metric-value {
+	font-family: 'Orbitron', sans-serif;
+	font-size: 2.2rem;
+	font-weight: 900;
+	margin-bottom: 6px;
+	color: #00e5ff;
+	text-shadow: 0 0 10px rgba(0,229,255,0.2);
+}
+.metric-label {
+	font-size: 0.75rem;
+	color: var(--text-dim);
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+table {
+	width: 100%%;
+	border-collapse: collapse;
+	margin-top: 10px;
+	font-size: 0.85rem;
+}
+th, td {
+	padding: 12px 16px;
+	border-bottom: 1px solid var(--border);
+	text-align: left;
+}
+th {
+	background-color: rgba(2, 4, 8, 0.5);
+	color: var(--borg);
+	font-weight: 600;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 0.5px;
+}
+.btn {
+	background-color: transparent;
+	color: var(--borg);
+	border: 1px solid var(--borg);
+	padding: 8px 16px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 0.8rem;
+	font-family: 'JetBrains Mono', monospace;
+	font-weight: 700;
+	transition: all 0.3s;
+	text-decoration: none;
+	display: inline-block;
+	box-shadow: 0 0 8px rgba(0, 255, 136, 0.1);
+}
+.btn:hover {
+	background-color: var(--borg);
+	color: var(--bg);
+	box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+}
+.btn-success {
+	color: var(--borg);
+	border-color: var(--borg);
+}
+.btn-danger {
+	color: var(--eye);
+	border-color: var(--eye);
+	box-shadow: 0 0 8px rgba(255, 0, 68, 0.1);
+}
+.btn-danger:hover {
+	background-color: var(--eye);
+	color: var(--bg);
+	box-shadow: 0 0 15px rgba(255, 0, 68, 0.4);
+}
+.status-badge {
+	font-weight: 700;
+	padding: 4px 10px;
+	border-radius: 4px;
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+.status-running {
+	background-color: rgba(0, 255, 136, 0.1);
+	color: var(--borg);
+	border: 1px solid rgba(0, 255, 136, 0.2);
+}
+.status-stopped {
+	background-color: rgba(255, 0, 68, 0.1);
+	color: var(--eye);
+	border: 1px solid rgba(255, 0, 68, 0.2);
+}
+.terminal {
+	background: #020408;
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	padding: 15px;
+	font-size: 0.8rem;
+	color: #38bdf8;
+	height: 150px;
+	overflow-y: auto;
+	margin-top: 15px;
+	box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+}
 </style>
 </head>
 <body>
 <div class="header">
-	<h1>HyperNexus Interactive Demo Console</h1>
+	<h1>TORMENTNEXUS // MOCK CLOUD CONSOLE</h1>
 	<div>
-		<span style="margin-right: 15px;">System Health: <strong style="color: #23A55A;">Healthy</strong></span>
-		<span>LLM Status: <strong style="color: #23A55A;">Hermes: Connected</strong></span>
+		<span style="margin-right: 15px; font-size: 0.8rem;">SYSTEM HEALTH: <strong style="color: var(--borg); text-shadow: 0 0 8px rgba(0,255,136,0.3);">SECURED</strong></span>
+		<span style="font-size: 0.8rem;">ENGINE STACK: <strong style="color: var(--borg);">HERMES-V2</strong></span>
 	</div>
 </div>
 <div class="container">
 	<!-- Subscription Card -->
-	<div class="card" style="border-top: 4px solid var(--purple); display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+	<div class="card" style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
 		<div>
-			<h3 style="margin: 0 0 8px 0; font-size: 1.2rem; color: #1e293b;">Active Subscription Info (Demo Mode)</h3>
-			<p style="margin: 0; font-size: 0.9rem; color: #64748b;">
-				<strong>Tier:</strong> <span style="text-transform: capitalize; color: var(--purple); font-weight: 600;">Professional</span> | 
-				<strong>Status:</strong> <span style="color: var(--success); font-weight: 600;">active</span> | 
+			<h3 style="margin: 0 0 8px 0; font-size: 1.1rem; color: var(--borg); font-family: 'Orbitron', sans-serif;">Active Subscription Info (Demo Mode)</h3>
+			<p style="margin: 0; font-size: 0.85rem; color: var(--text-dim);">
+				<strong>Tier:</strong> <span style="text-transform: uppercase; color: #00e5ff; font-weight: 700;">Professional</span> | 
+				<strong>Status:</strong> <span style="color: var(--borg); font-weight: 700;">ACTIVE</span> | 
 				<strong>Seats:</strong> 5 | 
-				<strong>Subscription Ends / Renews:</strong> <span style="font-weight: 600; color: #1e293b;">December 31, 2026</span> 
-				<span style="font-size: 0.8rem; margin-left: 8px; color: #888;">(240 days remaining)</span>
+				<strong>Subscription Ends / Renews:</strong> <span style="font-weight: 700; color: var(--text);">December 31, 2026</span> 
+				<span style="font-size: 0.8rem; margin-left: 8px; color: var(--text-dim);">(240 days remaining)</span>
 			</p>
 		</div>
 		<div>
-			<a href="#" onclick="alert('This is a demo dashboard. Billing portal is disabled.'); return false;" class="btn" style="background-color: var(--purple);">Manage Billing &amp; Invoices</a>
+			<a href="#" onclick="alert('This is a demo dashboard. Billing portal is disabled.'); return false;" class="btn" style="color: #9b5de5; border-color: #9b5de5; box-shadow: none;">Manage Billing &amp; Invoices</a>
 		</div>
 	</div>
 
 	<!-- Container Management Card -->
-	<div class="card" style="border-top: 4px solid var(--info);">
+	<div class="card">
 		<div class="card-header">Isolated TormentNexus Container (Demo Mode)</div>
-		<p>Your demo account is pre-connected to a container running TormentNexus in corporate mode.</p>
-		<div style="background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 20px;">
-			<p style="margin-top: 0;"><strong>Container Name:</strong> <code>tormentnexus_company_demo</code></p>
-			<p><strong>Status:</strong> <span id="containerState" class="status-badge status-running">running</span></p>
-			<p><strong>Uptime:</strong> <span id="containerUptime">14 days, 6 hours</span></p>
-			<p style="margin-bottom: 0;"><strong>Isolated Writeable Directory:</strong> <code>/var/lib/tormentnexus/company_demo</code></p>
+		<p style="font-size: 0.85rem; color: var(--text); margin-top: 0;">Your demo account is pre-connected to a container running TormentNexus in corporate mode.</p>
+		<div style="background: rgba(2, 4, 8, 0.5); padding: 20px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 20px;">
+			<p style="margin-top: 0; font-size: 0.85rem;"><strong>Container Name:</strong> <code>tormentnexus_company_demo</code></p>
+			<p style="font-size: 0.85rem;"><strong>Status:</strong> <span id="containerState" class="status-badge status-running">running</span></p>
+			<p style="font-size: 0.85rem;"><strong>Uptime:</strong> <span id="containerUptime">14 days, 6 hours</span></p>
+			<p style="margin-bottom: 0; font-size: 0.85rem;"><strong>Isolated Writeable Directory:</strong> <code>/var/lib/tormentnexus/company_demo</code></p>
 		</div>
 		<div>
 			<button onclick="mockContainerAction('start')" class="btn btn-success">Start Container</button>
 			<button onclick="mockContainerAction('stop')" class="btn btn-danger">Stop Container</button>
 			<button onclick="mockContainerAction('restart')" class="btn">Restart Container</button>
 		</div>
-		<p id="demoApiStatus" style="margin-top: 15px; display: none; font-weight: 600; color: var(--success);"></p>
+		
+		<div class="terminal" id="termLogs">> system: tormentnexus container initialised.
+> system: corporate mode verified on host mount '/var/lib/tormentnexus/company_demo'
+> worker_0: listening for outreach pipeline signals on port 8086...</div>
 	</div>
 
 	<!-- Performance Metrics -->
-	<div class="card" style="border-top: 4px solid var(--info);">
+	<div class="card">
 		<div class="card-header">Performance Metrics</div>
 		<div class="metrics-grid">
-			<div class="metric-box" style="background: #e9ecef;">
+			<div class="metric-box">
 				<div class="metric-value">1,250</div>
 				<div class="metric-label">Total Leads</div>
 			</div>
-			<div class="metric-box" style="background: #d4edda;">
+			<div class="metric-box">
 				<div class="metric-value">248</div>
 				<div class="metric-label">Won Deals</div>
 			</div>
-			<div class="metric-box" style="background: #f8d7da;">
+			<div class="metric-box">
 				<div class="metric-value">19.8%%</div>
 				<div class="metric-label">Win Rate</div>
 			</div>
-			<div class="metric-box" style="background: #fff3cd;">
+			<div class="metric-box">
 				<div class="metric-value">842</div>
 				<div class="metric-label">Successful Outreach</div>
 			</div>
@@ -1507,27 +1666,27 @@ th { background-color: #f8fafc; color: #64748b; font-weight: 600; text-transform
 	</div>
 
 	<!-- Active Deals -->
-	<div class="card" style="border-top: 4px solid var(--primary);">
-		<div class="card-header">Active Deals (Demo Mode)</div>
+	<div class="card">
+		<div class="card-header">Active Pipelines (Demo Mode)</div>
 		<table>
 			<tr>
-				<th>Deal ID</th>
-				<th>Company Name</th>
+				<th>Pipeline ID</th>
+				<th>Company Target</th>
 				<th>State</th>
 				<th>Contacts & Channels</th>
-				<th>Last Updated</th>
+				<th>Discovery Time</th>
 			</tr>
 			<tr>
 				<td>1001</td>
 				<td>Stripe Inc.</td>
-				<td><span class="status-badge status-running" style="background: #e0f2fe; color: #0369a1;">Researched</span></td>
+				<td><span class="status-badge status-running" style="background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.2);">Researched</span></td>
 				<td>John Collison (email)</td>
 				<td>2 hours ago</td>
 			</tr>
 			<tr>
 				<td>1002</td>
 				<td>Supabase Ltd</td>
-				<td><span class="status-badge status-running" style="background: #dcfce7; color: #15803d;">Closed_Won</span></td>
+				<td><span class="status-badge status-running" style="background: rgba(35, 165, 90, 0.1); color: var(--borg); border: 1px solid rgba(35, 165, 90, 0.2);">Closed_Won</span></td>
 				<td>Ant Wilson (github)</td>
 				<td>1 day ago</td>
 			</tr>
@@ -1536,32 +1695,32 @@ th { background-color: #f8fafc; color: #64748b; font-weight: 600; text-transform
 </div>
 <script>
 function mockContainerAction(action) {
-	const status = document.getElementById('demoApiStatus');
-	status.style.display = 'block';
-	status.style.color = '#334155';
-	status.textContent = 'Sending command to mock container...';
+	const term = document.getElementById('termLogs');
+	const stateBadge = document.getElementById('containerState');
+	const uptimeText = document.getElementById('containerUptime');
+	
+	const p = document.createElement('div');
+	p.textContent = '> system: sending signal ' + action.toUpperCase() + ' to tormentnexus daemon...';
+	term.appendChild(p);
+	term.scrollTop = term.scrollHeight;
 	
 	setTimeout(() => {
-		const stateBadge = document.getElementById('containerState');
-		const uptimeText = document.getElementById('containerUptime');
-		
+		const res = document.createElement('div');
 		if (action === 'stop') {
 			stateBadge.textContent = 'stopped';
-			stateBadge.className = 'status-badge';
-			stateBadge.style.backgroundColor = '#fee2e2';
-			stateBadge.style.color = '#b91c1c';
+			stateBadge.className = 'status-badge status-stopped';
 			uptimeText.textContent = 'N/A';
-			status.style.color = 'var(--danger)';
-			status.textContent = 'Demo Container Stopped.';
+			res.textContent = '> system: tormentnexus container stopped successfully.';
+			res.style.color = 'var(--eye)';
 		} else {
 			stateBadge.textContent = 'running';
 			stateBadge.className = 'status-badge status-running';
-			stateBadge.style.backgroundColor = '#dcfce7';
-			stateBadge.style.color = '#15803d';
 			uptimeText.textContent = action === 'restart' ? '0s' : '14 days, 6 hours';
-			status.style.color = 'var(--success)';
-			status.textContent = 'Demo Container ' + (action === 'start' ? 'Started' : 'Restarted') + ' successfully.';
+			res.textContent = '> system: tormentnexus container started on port 8086. Mode: Corporate.';
+			res.style.color = 'var(--borg)';
 		}
+		term.appendChild(res);
+		term.scrollTop = term.scrollHeight;
 	}, 1000);
 }
 </script>

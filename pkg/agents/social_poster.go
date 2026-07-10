@@ -61,13 +61,13 @@ func (w *SocialPosterWorker) postAll(ctx context.Context) {
 	// Separate accounts for both brands
 	usernames := map[string]map[string]string{
 		"tormentnexus": {
-			"reddit":   "tormentnexus-reddit",
+			"reddit":   "MDMAtk",
 			"bluesky":  "tormentnexus.bsky.social",
 			"linkedin": "TormentNexus Community",
 			"twitter":  "@tormentnexus",
 		},
 		"hypernexus": {
-			"reddit":   "hypernexus-reddit",
+			"reddit":   "MDMAtk",
 			"bluesky":  "hypernexus.bsky.social",
 			"linkedin": "HyperNexus Enterprise",
 			"twitter":  "@hypernexus_site",

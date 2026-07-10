@@ -52,11 +52,14 @@ func (db *DB) Close() error {
 
 // RunMigrations applies all database schema migrations.
 func (db *DB) RunMigrations(ctx context.Context) error {
-	// Obtain advisory lock to serialize concurrent migrations across packages
-	_, _ = db.Conn.ExecContext(ctx, "SELECT pg_advisory_lock(837492)")
-	defer func() {
-		_, _ = db.Conn.ExecContext(ctx, "SELECT pg_advisory_unlock(837492)")
-	}()
+	// Obtain advisory lock on a single connection to serialize concurrent migrations across packages
+	if conn, err := db.Conn.Conn(ctx); err == nil {
+		defer conn.Close()
+		_, _ = conn.ExecContext(ctx, "SELECT pg_advisory_lock(837492)")
+		defer func() {
+			_, _ = conn.ExecContext(ctx, "SELECT pg_advisory_unlock(837492)")
+		}()
+	}
 
 	driver, err := postgres.WithInstance(db.Conn, &postgres.Config{})
 	if err != nil {

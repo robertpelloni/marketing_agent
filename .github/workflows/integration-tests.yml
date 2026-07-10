@@ -14,7 +14,7 @@ jobs:
     # Start PostgreSQL container for tests
     services:
       postgres:
-        image: postgres:15-alpine
+        image: pgvector/pgvector:pg15
         env:
           POSTGRES_PASSWORD: secret
           POSTGRES_USER: torbnexus

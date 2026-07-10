@@ -135,8 +135,8 @@
 - [ ] Add Kubernetes manifests (Deployment, Service, ConfigMap, Secret)
 - [ ] Add Helm chart for one-command cluster deployment
 - [ ] Add Terraform modules for cloud infrastructure provisioning
-- [x] Add blue-green deployment strategy with automatic rollback
-- [ ] Add database backup automation — periodic `pg_dump` with S3/blob storage upload
+- [ ] Add blue-green deployment strategy with automatic rollback
+- [x] Add database backup automation — periodic `pg_dump` with S3/blob storage upload
 - [ ] Add log aggregation — ship structured logs to ELK/Datadog/CloudWatch
 
 ## Phase 10 — Platform & Ecosystem

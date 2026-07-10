@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"math/rand"
 	"os"
 	"strconv"
 	"strings"
@@ -187,7 +188,7 @@ type MockPRManager struct{}
 
 func (m *MockPRManager) CreatePullRequest(ctx context.Context, branch string, title string, body string) (*PullRequest, error) {
 	return &PullRequest{
-		ID:	"mock-456",
+		ID:	fmt.Sprintf("mock-%d", rand.Intn(1000000)),
 		Branch:	branch,
 		Title:	title,
 		Status:	PRStatusOpen,

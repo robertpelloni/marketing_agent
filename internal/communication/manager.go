@@ -184,6 +184,14 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		return "", fmt.Errorf("failed to get deal for strategy: %w", err)
 	}
 
+	if deal.CurrentState == db.StateResearched || deal.CurrentState == db.StateOutreachSent {
+		if err := m.db.UpdateDealState(ctx, deal.ID, db.StateEngaged); err != nil {
+			slog.Info(fmt.Sprintf("Comm Manager: Failed to update deal state to Engaged: %v", err))
+		} else {
+			deal.CurrentState = db.StateEngaged
+		}
+	}
+
 	salesCtx := SalesContext{
 		Company:	*company,
 		Deal:		*deal,

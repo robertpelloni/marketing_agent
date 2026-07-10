@@ -377,7 +377,11 @@
 
       .price-card{background:rgba(255,255,255,0.05);padding:44px 32px;border-radius:20px;border:1px solid rgba(77,124,255,0.06);position:relative;transition:all 0.4s;overflow:visible;box-shadow:var(--shadow-card)}
 
-      .price-card:hover{background:rgba(255,255,255,0.06);border-color:rgba(77,124,255,0.2);transform:translateY(-8px) scale(1.02);box-shadow:0 0 30px var(--neon-blue-glow),0 0 60px var(--neon-purple-glow)}
+      .price-card:hover{background:rgba(255,255,255,0.35) !important;backdrop-filter:blur(30px) !important;border-color:rgba(255,255,255,0.5) !important;transform:translateY(-8px) scale(1.02);box-shadow:0 15px 40px rgba(255,255,255,0.25),0 0 30px var(--neon-blue-glow),0 0 60px var(--neon-purple-glow)}
+      .price-card.rainbow:hover .price-card-inner {
+        background: rgba(255, 255, 255, 0.9) !important;
+        box-shadow: 0 0 35px rgba(255,255,255,0.35) !important;
+      }
 
       .price-card.featured{border-color:rgba(212,175,55,0.25);box-shadow:0 0 0 1px rgba(212,175,55,0.15),var(--shadow-card),0 0 50px rgba(212,175,55,0.08)}
 

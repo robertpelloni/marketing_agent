@@ -316,7 +316,11 @@
 
       .price-card{background:#ffffff;padding:44px 32px;border-radius:12px;border:1px solid #e2e8f0;position:relative;transition:all 0.3s;overflow:visible;box-shadow:var(--shadow-card)}
 
-      .price-card:hover{background:#ffffff;border-color:#0284c7;transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
+      .price-card:hover{background:rgba(255,255,255,0.75) !important;backdrop-filter:blur(30px) !important;border-color:#0284c7 !important;transform:translateY(-4px);box-shadow:0 15px 30px rgba(2, 132, 199, 0.15), var(--shadow-card-hover)}
+      .price-card.rainbow:hover .price-card-inner {
+        background: rgba(255, 255, 255, 0.85) !important;
+        box-shadow: 0 0 35px rgba(255,255,255,0.35) !important;
+      }
 
       .price-card.featured{border-color:#0284c7;box-shadow:var(--shadow-card)}
 
@@ -795,22 +799,8 @@
 
 
                 <a href="https://github.com/MDMAtk/TormentNexus" target="_blank">Docs</a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <a href="/contact.php" class="nav-cta">Request Demo →</a>
+                <a href="/login" style="margin-right: 15px;">Login</a>
+                <a href="#pricing" class="nav-cta">Sign Up</a>
 
 
 
@@ -2194,7 +2184,7 @@
 
 
                 <div class="price-card rainbow">
-                    <div class="price-card-inner" style="background:#ffffff; border-radius:10px; padding:44px 32px; height:100%; display:flex; flex-direction:column; justify-content:space-between; position:relative; z-index:1;">
+                    <div class="price-card-inner" style="background: rgba(255, 255, 255, 0.95); border-radius: 10px; padding: 44px 32px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative; z-index: 1; transition: all 0.3s ease;">
 
 
 
@@ -2324,7 +2314,7 @@
 
 
 
-                    <a href="/contact.php" class="price-btn price-btn-primary" onclick="startStripeCheckout('professional')">Start Free Trial</a>
+                    <a href="#" onclick="startStripeCheckout('professional'); return false;" class="price-btn price-btn-primary">Start Free Trial</a>
 
 
 

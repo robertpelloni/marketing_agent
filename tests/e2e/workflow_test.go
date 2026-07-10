@@ -85,6 +85,16 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 	}
 	crmMock.PushDealCalled = false // Reset for next phase verification
 
+	// Boost company qualification metrics so deal can progress to ClosedWon
+	_, _ = database.Conn.ExecContext(ctx, "UPDATE companies SET market_cap_tier = 'Mid-Market' WHERE id = $1", deal.CompanyID)
+	_, _ = database.Conn.ExecContext(ctx, "UPDATE deals SET technical_dossier = 'BOTTLENECK INFRASTRUCTURE' WHERE id = $1", deal.ID)
+	_ = database.CreateInteraction(ctx, &db.Interaction{
+		ContactID: contacts[0].ID,
+		Direction: "Inbound",
+		Channel:   "email",
+		RawText:   "Initial interest email.",
+	})
+
 	// 2d. Outreach Phase
 	classifier := &communication.MockIntentClassifier{}
 	responder := communication.NewRAGResponseGenerator(database, &llm.MockLLMProvider{})

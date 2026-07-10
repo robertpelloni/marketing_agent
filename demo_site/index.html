@@ -224,7 +224,7 @@ th {
 	<!-- Container Management Card -->
 	<div class="card">
 		<div class="card-header">Isolated TormentNexus Container (Demo Mode)</div>
-		<p style="font-size: 0.85rem; color: var(--text); margin-top: 0;">Your demo account is pre-connected to a container running TormentNexus in corporate mode.</p>
+		<p style="font-size: 0.85rem; color: var(--text); margin-top: 0;">Your demo account is pre-connected to a container running TormentNexus in commercial mode.</p>
 		<div style="background: rgba(2, 4, 8, 0.5); padding: 20px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 20px;">
 			<p style="margin-top: 0; font-size: 0.85rem;"><strong>Container Name:</strong> <code>tormentnexus_company_demo</code></p>
 			<p style="font-size: 0.85rem;"><strong>Status:</strong> <span id="containerState" class="status-badge status-running">running</span></p>
@@ -238,7 +238,7 @@ th {
 		</div>
 		
 		<div class="terminal" id="termLogs">> system: tormentnexus container initialised.
-> system: corporate mode verified on host mount '/var/lib/tormentnexus/company_demo'
+> system: commercial mode verified on host mount '/var/lib/tormentnexus/company_demo'
 > worker_0: listening for outreach pipeline signals on port 8086...</div>
 	</div>
 
@@ -316,7 +316,7 @@ function mockContainerAction(action) {
 			stateBadge.textContent = 'running';
 			stateBadge.className = 'status-badge status-running';
 			uptimeText.textContent = action === 'restart' ? '0s' : '14 days, 6 hours';
-			res.textContent = '> system: tormentnexus container started on port 8086. Mode: Corporate.';
+			res.textContent = '> system: tormentnexus container started on port 8086. Mode: Commercial.';
 			res.style.color = 'var(--borg)';
 		}
 		term.appendChild(res);

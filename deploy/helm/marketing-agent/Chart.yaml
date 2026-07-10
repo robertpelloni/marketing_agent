@@ -1,6 +1,0 @@
-apiVersion: v2
-name: marketing-agent
-description: A Helm chart for the TormentNexus Marketing Agent
-type: application
-version: 0.1.0
-appVersion: "1.0.0"

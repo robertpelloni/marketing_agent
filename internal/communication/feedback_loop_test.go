@@ -34,7 +34,7 @@ func TestFeedbackLoop_Integration(t *testing.T) {
 	company := &db.Company{
 		Name:          "FeedbackLoop Corp",
 		Domain:        "feedbackloop.com",
-		MarketCapTier: "Enterprise",
+		MarketCapTier: "Mid-Market",
 	}
 	if err := database.CreateCompany(ctx, company); err != nil {
 		t.Fatalf("CreateCompany failed: %v", err)

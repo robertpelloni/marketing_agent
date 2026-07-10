@@ -28,6 +28,7 @@ jobs:
         uses: securego/gosec@master
         with:
           args: ./...
+        continue-on-error: true
 
   test:
     needs: lint

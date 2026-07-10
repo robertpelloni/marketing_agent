@@ -534,8 +534,3 @@ subject, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
 		}
 	}
 }
-
-// ExecuteCadenceCheck manually triggers a checkCadence cycle (exported for testing).
-func (cam *CadenceAwareManager) ExecuteCadenceCheck(ctx context.Context) {
-	cam.checkCadence(ctx)
-}

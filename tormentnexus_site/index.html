@@ -1461,17 +1461,19 @@
       setTimeout(ac, 600);
 
       // Live stats
-      fetch("http://localhost:8086/stats")
-        .then((r) => r.json())
-        .then(function (d) {
-          if (!d || !d.companies) return;
-          var els = document.querySelectorAll(".stat-num[data-target]");
-          if (els.length >= 4) {
-            els[2].textContent = d.companies.toLocaleString();
-            els[3].textContent = (d.deals && d.deals["Outreach_Sent"]) || 0;
-          }
-        })
-        .catch(function () {});
+      if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+        fetch("http://localhost:8086/stats")
+          .then((r) => r.json())
+          .then(function (d) {
+            if (!d || !d.companies) return;
+            var els = document.querySelectorAll(".stat-num[data-target]");
+            if (els.length >= 4) {
+              els[2].textContent = d.companies.toLocaleString();
+              els[3].textContent = (d.deals && d.deals["Outreach_Sent"]) || 0;
+            }
+          })
+          .catch(function () {});
+      }
 
       // ========== CANVAS — TERMINATORS, SPIDER ROBOTS, EYES, PARTICLES ==========
       var c = document.getElementById("c"),

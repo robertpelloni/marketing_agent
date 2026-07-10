@@ -1001,10 +1001,9 @@ func (db *DB) GetSecret(ctx context.Context, keyName string) (string, error) {
 	}
 
 	var storedValue string
-	var err error
 
 	// Try reading from encrypted_secrets first
-	err = db.Conn.QueryRowContext(ctx, `SELECT encrypted_value FROM encrypted_secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
+	err := db.Conn.QueryRowContext(ctx, `SELECT encrypted_value FROM encrypted_secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
 	if err != nil {
 		// If relation doesn't exist or key not found, try reading from secrets table
 		if strings.Contains(err.Error(), "relation") || err == sql.ErrNoRows {

@@ -183,7 +183,10 @@ func (a *DBAdapter) ResolveCompanyID(ctx context.Context, email, name string) (i
 			// e.g. "microsoft.com" -> "Microsoft"
 			domainParts := strings.Split(domain, ".")
 			if len(domainParts) > 0 {
-				companyName = strings.Title(domainParts[0])
+				val := domainParts[0]
+				if len(val) > 0 {
+					companyName = strings.ToUpper(val[:1]) + val[1:]
+				}
 			} else {
 				companyName = domain
 			}

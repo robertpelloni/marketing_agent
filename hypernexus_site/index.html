@@ -35,6 +35,8 @@
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <title>HyperNexus — Corporate AI Control Plane</title>
 
@@ -2166,6 +2168,15 @@
 
 
 
+
+            <div class="pricing-toggle-container" style="display: flex; justify-content: center; align-items: center; gap: 16px; margin: -20px auto 40px auto; z-index: 10; position: relative;">
+                <span id="monthly-label" style="font-weight: 700; color: var(--text); font-size: 15px;">Monthly</span>
+                <label class="switch">
+                    <input type="checkbox" id="pricing-toggle" onchange="togglePricing()">
+                    <span class="slider"></span>
+                </label>
+                <span id="annual-label" style="font-weight: 500; color: var(--text-secondary); font-size: 15px;">Annual <span style="background: #23A55A; color: white; padding: 2px 8px; border-radius: 12px; font-size: 10.5px; margin-left: 4px; font-weight: 700;">Save 17%</span></span>
+            </div>
 
             <div class="pricing-grid">
 
@@ -6732,6 +6743,27 @@
           console.error(err);
         });
       });
+
+      function togglePricing() {
+        const isAnnual = document.getElementById('pricing-toggle').checked;
+        const priceAmount = document.querySelector('.price-amount');
+        const monthlyLabel = document.getElementById('monthly-label');
+        const annualLabel = document.getElementById('annual-label');
+        
+        if (isAnnual) {
+          priceAmount.innerHTML = `$50 <span class="period">/ seat / yr</span>`;
+          monthlyLabel.style.fontWeight = '500';
+          monthlyLabel.style.color = 'var(--text-secondary)';
+          annualLabel.style.fontWeight = '700';
+          annualLabel.style.color = 'var(--text)';
+        } else {
+          priceAmount.innerHTML = `$5 <span class="period">/ seat / mo</span>`;
+          monthlyLabel.style.fontWeight = '700';
+          monthlyLabel.style.color = 'var(--text)';
+          annualLabel.style.fontWeight = '500';
+          annualLabel.style.color = 'var(--text-secondary)';
+        }
+      }
 
       // ── Stripe Checkout ──
       function startStripeCheckout(tier) {

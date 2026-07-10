@@ -2,10 +2,13 @@ package auth
 
 import (
 	"crypto/sha256"
+	"database/sql"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -13,10 +16,11 @@ import (
 type Authenticator struct {
 	adminPasswordHash string
 	sessionCookieName string
+	db                *sql.DB
 }
 
 // NewAuthenticator creates a new Authenticator instance.
-func NewAuthenticator() *Authenticator {
+func NewAuthenticator(db *sql.DB) *Authenticator {
 	password := os.Getenv("ADMIN_PASSWORD")
 	if password == "" {
 		password = "admin" // Default for development
@@ -26,32 +30,49 @@ func NewAuthenticator() *Authenticator {
 	return &Authenticator{
 		adminPasswordHash: hex.EncodeToString(hash[:]),
 		sessionCookieName: "sales_bot_session",
+		db:                db,
 	}
 }
 
 // Login verifies the password and sets a session cookie.
 func (a *Authenticator) Login(password string) (string, error) {
 	hash := sha256.Sum256([]byte(password))
-	if hex.EncodeToString(hash[:]) != a.adminPasswordHash {
-		return "", errors.New("invalid password")
+	if hex.EncodeToString(hash[:]) == a.adminPasswordHash {
+		return "authorized_admin_session", nil
 	}
 
-	// In a real system, we'd generate a secure random session ID and store it in a DB/Redis.
-	// For this module, we use a simple static session token for the admin.
-	return "authorized_admin_session", nil
+	// Check if this is a paid company logging in using domain, name, or Stripe customer ID
+	if a.db != nil {
+		var companyID int64
+		var tier string
+		var state string
+		query := `
+			SELECT c.id, s.tier, s.state 
+			FROM companies c
+			JOIN subscriptions s ON c.id = s.company_id
+			WHERE (c.domain = $1 OR c.name = $1 OR s.stripe_customer_id = $1)
+			  AND s.state IN ('active', 'trialing')
+			LIMIT 1`
+		err := a.db.QueryRow(query, password).Scan(&companyID, &tier, &state)
+		if err == nil {
+			return fmt.Sprintf("company_%d", companyID), nil
+		}
+	}
+
+	return "", errors.New("invalid password or inactive company subscription")
 }
 
 // Middleware provides an HTTP middleware to protect routes.
 func (a *Authenticator) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Skip auth for health and webhook endpoints
-		if r.URL.Path == "/health" || r.URL.Path == "/health/detailed" || r.URL.Path == "/api/v1/webhook/github" || r.URL.Path == "/login" {
+		if r.URL.Path == "/health" || r.URL.Path == "/health/detailed" || r.URL.Path == "/api/v1/webhook/github" || r.URL.Path == "/login" || r.URL.Path == "/demo" {
 			next.ServeHTTP(w, r)
 			return
 		}
 
 		cookie, err := r.Cookie(a.sessionCookieName)
-		if err != nil || cookie.Value != "authorized_admin_session" {
+		if err != nil || (cookie.Value != "authorized_admin_session" && !strings.HasPrefix(cookie.Value, "company_")) {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}

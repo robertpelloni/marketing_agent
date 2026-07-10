@@ -48,12 +48,16 @@ type Server struct {
 
 // NewServer creates a new Server instance.
 func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, llmProvider llm.LLMProvider, billingClient billing.BillingClient) *Server {
+	var dbConn *sql.DB
+	if database != nil {
+		dbConn = database.Conn
+	}
 	s := &Server{
 		db:            database,
 		deploy:        deployer,
 		tracker:       tracker,
 		tasks:         taskManager,
-		auth:          auth.NewAuthenticator(),
+		auth:          auth.NewAuthenticator(dbConn),
 		llmProvider:   llmProvider,
 		billingClient: billingClient,
 		mux:           http.NewServeMux(),
@@ -70,7 +74,13 @@ func (s *Server) routes() {
 	// Protected routes
 	s.mux.Handle("/", rl.middleware(s.auth.Middleware(s.csrfMiddleware(http.HandlerFunc(s.handleDashboard)))))
 
+	// Container management API (protected)
+	s.mux.Handle("/api/v1/container/start", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleContainerStart))))
+	s.mux.Handle("/api/v1/container/stop", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleContainerStop))))
+	s.mux.Handle("/api/v1/container/restart", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleContainerRestart))))
+
 	// Public routes
+	s.mux.Handle("/demo", rl.middleware(http.HandlerFunc(s.handleDemoDashboard)))
 	s.mux.Handle("/login", rl.middleware(http.HandlerFunc(s.auth.HandleLogin)))
 	s.mux.Handle("/health", rl.middleware(http.HandlerFunc(s.handleHealth)))
 	s.mux.Handle("/health/detailed", rl.middleware(http.HandlerFunc(s.handleDetailedHealth)))
@@ -174,6 +184,165 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	// Determine if this is a company session
+	var companyID int64
+	var isCompanySession bool
+	cookieSession, errSession := r.Cookie("sales_bot_session")
+	if errSession == nil && strings.HasPrefix(cookieSession.Value, "company_") {
+		if _, errScan := fmt.Sscanf(cookieSession.Value, "company_%d", &companyID); errScan == nil {
+			isCompanySession = true
+		}
+	}
+
+	if isCompanySession {
+		var err error
+		// Fetch company details
+		var companyName string
+		var companyDomain string
+		err = s.db.Conn.QueryRowContext(r.Context(), "SELECT name, domain FROM companies WHERE id = $1", companyID).Scan(&companyName, &companyDomain)
+		if err != nil {
+			http.Error(w, "Company not found: "+err.Error(), http.StatusNotFound)
+			return
+		}
+
+		// Fetch subscription details
+		subTier := "Free / Community"
+		subState := "active"
+		subSeats := 1
+		subEndStr := "Never"
+		subTimeLeftStr := "Unlimited"
+
+		var currentPeriodEnd sql.NullTime
+		var seats int
+		var tier string
+		var state string
+		err = s.db.Conn.QueryRowContext(r.Context(),
+			"SELECT tier, state, seats, current_period_end FROM subscriptions WHERE company_id = $1 ORDER BY id DESC LIMIT 1", companyID).Scan(&tier, &state, &seats, &currentPeriodEnd)
+		if err == nil {
+			subTier = tier
+			subState = state
+			subSeats = seats
+			if currentPeriodEnd.Valid {
+				subEndStr = currentPeriodEnd.Time.Format("January 2, 2006")
+				timeLeft := time.Until(currentPeriodEnd.Time)
+				if timeLeft > 0 {
+					days := int(timeLeft.Hours() / 24)
+					if days > 0 {
+						subTimeLeftStr = fmt.Sprintf("%d days", days)
+					} else {
+						hours := int(timeLeft.Hours())
+						subTimeLeftStr = fmt.Sprintf("%d hours", hours)
+					}
+				} else {
+					subTimeLeftStr = "Expired"
+					subState = "expired"
+				}
+			}
+		}
+
+		// Fetch actual container status
+		info, err := GetContainerStatus(r.Context(), companyID)
+		if err != nil {
+			info = &ContainerInfo{State: "unknown", Uptime: "N/A", MountPath: fmt.Sprintf("/var/lib/tormentnexus/company_%d", companyID)}
+		}
+
+		w.Header().Set("Content-Type", "text/html")
+		_, _ = fmt.Fprintf(w, `<!DOCTYPE html>
+<html>
+<head>
+<title>HyperNexus Tenant Console</title>
+<style>
+:root {
+	--primary: #5865F2;
+	--primary-hover: #4752C4;
+	--success: #23A55A;
+	--info: #00b0f4;
+	--warning: #F0B232;
+	--danger: #F23F43;
+	--dark: #0f172a;
+	--light: #f8fafc;
+	--purple: #9b5de5;
+	--bg-main: #f1f5f9;
+	--border-color: #e2e8f0;
+	--text-main: #334155;
+}
+body { font-family: 'Inter', sans-serif; margin: 0; background-color: var(--bg-main); color: var(--text-main); }
+.header { background: linear-gradient(135deg, #1e293b, var(--dark)); color: white; padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; }
+.header h1 { margin: 0; font-size: 1.6rem; }
+.container { max-width: 1000px; margin: 40px auto; padding: 0 24px; display: flex; flex-direction: column; gap: 24px; }
+.card { background: white; border-radius: 12px; padding: 24px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+.card-header { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+.btn { background-color: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; text-decoration: none; display: inline-block; margin-right: 10px; }
+.btn-success { background-color: var(--success); }
+.btn-danger { background-color: var(--danger); }
+.status-badge { font-weight: 700; padding: 6px 12px; border-radius: 9999px; font-size: 0.85rem; }
+.status-running { background-color: #dcfce7; color: #15803d; }
+.status-stopped { background-color: #fee2e2; color: #b91c1c; }
+.status-not_created { background-color: #f1f5f9; color: #475569; }
+</style>
+</head>
+<body>
+<div class="header">
+	<h1>HyperNexus Tenant Console — %s</h1>
+	<a href="/login" class="btn" style="background: transparent; border: 1px solid white; margin: 0;">Log Out</a>
+</div>
+<div class="container">
+	<div class="card" style="border-top: 4px solid var(--purple);">
+		<div class="card-header">Active Subscription Info</div>
+		<p>
+			<strong>Tier:</strong> <span style="text-transform: capitalize; color: var(--purple); font-weight: 700;">%s</span> | 
+			<strong>Status:</strong> <span style="color: var(--success); font-weight: 600;">%s</span> | 
+			<strong>Seats:</strong> %d | 
+			<strong>Renewal Date:</strong> %s (%s remaining)
+		</p>
+		<a href="/api/v1/billing/portal" class="btn" style="background-color: var(--purple);">Manage Subscription</a>
+	</div>
+
+	<div class="card" style="border-top: 4px solid var(--info);">
+		<div class="card-header">Isolated TormentNexus Container</div>
+		<p>Your account is connected to an isolated Docker container running the TormentNexus binary in corporate mode.</p>
+		<div style="background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 20px;">
+			<p style="margin-top: 0;"><strong>Container Name:</strong> <code>tormentnexus_company_%d</code></p>
+			<p><strong>Status:</strong> <span class="status-badge status-%s">%s</span></p>
+			<p><strong>Uptime:</strong> %s</p>
+			<p style="margin-bottom: 0;"><strong>Isolated Writeable Directory:</strong> <code>%s</code></p>
+		</div>
+		<div>
+			<button onclick="controlContainer('start')" class="btn btn-success">Start Container</button>
+			<button onclick="controlContainer('stop')" class="btn btn-danger">Stop Container</button>
+			<button onclick="controlContainer('restart')" class="btn">Restart Container</button>
+		</div>
+		<p id="apiStatus" style="margin-top: 15px; display: none; font-weight: 600;"></p>
+	</div>
+</div>
+<script>
+function controlContainer(action) {
+	const statusText = document.getElementById('apiStatus');
+	statusText.style.display = 'block';
+	statusText.style.color = '#334155';
+	statusText.textContent = 'Sending command...';
+	
+	fetch('/api/v1/container/' + action, { method: 'POST' })
+	.then(res => {
+		if(!res.ok) throw new Error('API error');
+		return res.json();
+	})
+	.then(data => {
+		statusText.style.color = 'var(--success)';
+		statusText.textContent = 'Success! Container is ' + action + 'ing. Reloading page...';
+		setTimeout(() => location.reload(), 1500);
+	})
+	.catch(err => {
+		statusText.style.color = 'var(--danger)';
+		statusText.textContent = 'Failed to execute command. Please try again.';
+	});
+}
+</script>
+</body>
+</html>`, companyName, subTier, subState, subSeats, subEndStr, subTimeLeftStr, companyID, info.State, info.State, info.Uptime, info.MountPath)
 		return
 	}
 
@@ -1163,4 +1332,240 @@ func (s *Server) handleBillingPortal(w http.ResponseWriter, r *http.Request) {
 		scheme = "https"
 	}
 	http.Redirect(w, r, scheme+"://"+r.Host+"/#billing", http.StatusFound)
+}
+
+func (s *Server) handleContainerStart(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	cookie, err := r.Cookie("sales_bot_session")
+	if err != nil || !strings.HasPrefix(cookie.Value, "company_") {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	var companyID int64
+	fmt.Sscanf(cookie.Value, "company_%d", &companyID)
+
+	if err := StartContainer(r.Context(), companyID); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"status": "running"})
+}
+
+func (s *Server) handleContainerStop(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	cookie, err := r.Cookie("sales_bot_session")
+	if err != nil || !strings.HasPrefix(cookie.Value, "company_") {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	var companyID int64
+	fmt.Sscanf(cookie.Value, "company_%d", &companyID)
+
+	if err := StopContainer(r.Context(), companyID); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"status": "stopped"})
+}
+
+func (s *Server) handleContainerRestart(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	cookie, err := r.Cookie("sales_bot_session")
+	if err != nil || !strings.HasPrefix(cookie.Value, "company_") {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	var companyID int64
+	fmt.Sscanf(cookie.Value, "company_%d", &companyID)
+
+	if err := RestartContainer(r.Context(), companyID); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"status": "running"})
+}
+
+func (s *Server) handleDemoDashboard(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	_, _ = fmt.Fprintf(w, "%s", "<!DOCTYPE html>")
+	_, _ = fmt.Fprintf(w, `
+<html>
+<head>
+<title>HyperNexus Demo Console</title>
+<style>
+:root {
+	--primary: #5865F2;
+	--primary-hover: #4752C4;
+	--success: #23A55A;
+	--info: #00b0f4;
+	--warning: #F0B232;
+	--danger: #F23F43;
+	--dark: #0f172a;
+	--light: #f8fafc;
+	--purple: #9b5de5;
+	--bg-main: #f1f5f9;
+	--border-color: #e2e8f0;
+	--text-main: #334155;
+}
+body { font-family: 'Inter', sans-serif; margin: 0; background-color: var(--bg-main); color: var(--text-main); line-height: 1.5; }
+.header { background: linear-gradient(135deg, #1e293b, var(--dark)); color: white; padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; }
+.header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.container { max-width: 1400px; margin: 30px auto; padding: 0 24px; display: flex; flex-direction: column; gap: 24px; }
+.card { background: white; border-radius: 12px; padding: 24px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+.card-header { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; color: #1e293b; }
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+.metric-box { padding: 20px; border-radius: 10px; text-align: center; border: 1px solid var(--border-color); background: var(--light); }
+.metric-value { font-size: 2.2rem; font-weight: 800; margin-bottom: 6px; }
+.metric-label { font-size: 0.75rem; color: #64748b; font-weight: 700; text-transform: uppercase; }
+table { width: 100%%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+th, td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); text-align: left; }
+th { background-color: #f8fafc; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; }
+.btn { background-color: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; text-decoration: none; display: inline-block; }
+.btn-success { background-color: var(--success); }
+.btn-danger { background-color: var(--danger); }
+.status-badge { font-weight: 700; padding: 4px 10px; border-radius: 9999px; font-size: 0.75rem; }
+.status-running { background-color: #dcfce7; color: #15803d; }
+</style>
+</head>
+<body>
+<div class="header">
+	<h1>HyperNexus Interactive Demo Console</h1>
+	<div>
+		<span style="margin-right: 15px;">System Health: <strong style="color: #23A55A;">Healthy</strong></span>
+		<span>LLM Status: <strong style="color: #23A55A;">Hermes: Connected</strong></span>
+	</div>
+</div>
+<div class="container">
+	<!-- Subscription Card -->
+	<div class="card" style="border-top: 4px solid var(--purple); display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+		<div>
+			<h3 style="margin: 0 0 8px 0; font-size: 1.2rem; color: #1e293b;">Active Subscription Info (Demo Mode)</h3>
+			<p style="margin: 0; font-size: 0.9rem; color: #64748b;">
+				<strong>Tier:</strong> <span style="text-transform: capitalize; color: var(--purple); font-weight: 600;">Professional</span> | 
+				<strong>Status:</strong> <span style="color: var(--success); font-weight: 600;">active</span> | 
+				<strong>Seats:</strong> 5 | 
+				<strong>Subscription Ends / Renews:</strong> <span style="font-weight: 600; color: #1e293b;">December 31, 2026</span> 
+				<span style="font-size: 0.8rem; margin-left: 8px; color: #888;">(240 days remaining)</span>
+			</p>
+		</div>
+		<div>
+			<a href="#" onclick="alert('This is a demo dashboard. Billing portal is disabled.'); return false;" class="btn" style="background-color: var(--purple);">Manage Billing &amp; Invoices</a>
+		</div>
+	</div>
+
+	<!-- Container Management Card -->
+	<div class="card" style="border-top: 4px solid var(--info);">
+		<div class="card-header">Isolated TormentNexus Container (Demo Mode)</div>
+		<p>Your demo account is pre-connected to a container running TormentNexus in corporate mode.</p>
+		<div style="background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 20px;">
+			<p style="margin-top: 0;"><strong>Container Name:</strong> <code>tormentnexus_company_demo</code></p>
+			<p><strong>Status:</strong> <span id="containerState" class="status-badge status-running">running</span></p>
+			<p><strong>Uptime:</strong> <span id="containerUptime">14 days, 6 hours</span></p>
+			<p style="margin-bottom: 0;"><strong>Isolated Writeable Directory:</strong> <code>/var/lib/tormentnexus/company_demo</code></p>
+		</div>
+		<div>
+			<button onclick="mockContainerAction('start')" class="btn btn-success">Start Container</button>
+			<button onclick="mockContainerAction('stop')" class="btn btn-danger">Stop Container</button>
+			<button onclick="mockContainerAction('restart')" class="btn">Restart Container</button>
+		</div>
+		<p id="demoApiStatus" style="margin-top: 15px; display: none; font-weight: 600; color: var(--success);"></p>
+	</div>
+
+	<!-- Performance Metrics -->
+	<div class="card" style="border-top: 4px solid var(--info);">
+		<div class="card-header">Performance Metrics</div>
+		<div class="metrics-grid">
+			<div class="metric-box" style="background: #e9ecef;">
+				<div class="metric-value">1,250</div>
+				<div class="metric-label">Total Leads</div>
+			</div>
+			<div class="metric-box" style="background: #d4edda;">
+				<div class="metric-value">248</div>
+				<div class="metric-label">Won Deals</div>
+			</div>
+			<div class="metric-box" style="background: #f8d7da;">
+				<div class="metric-value">19.8%%</div>
+				<div class="metric-label">Win Rate</div>
+			</div>
+			<div class="metric-box" style="background: #fff3cd;">
+				<div class="metric-value">842</div>
+				<div class="metric-label">Successful Outreach</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Active Deals -->
+	<div class="card" style="border-top: 4px solid var(--primary);">
+		<div class="card-header">Active Deals (Demo Mode)</div>
+		<table>
+			<tr>
+				<th>Deal ID</th>
+				<th>Company Name</th>
+				<th>State</th>
+				<th>Contacts & Channels</th>
+				<th>Last Updated</th>
+			</tr>
+			<tr>
+				<td>1001</td>
+				<td>Stripe Inc.</td>
+				<td><span class="status-badge status-running" style="background: #e0f2fe; color: #0369a1;">Researched</span></td>
+				<td>John Collison (email)</td>
+				<td>2 hours ago</td>
+			</tr>
+			<tr>
+				<td>1002</td>
+				<td>Supabase Ltd</td>
+				<td><span class="status-badge status-running" style="background: #dcfce7; color: #15803d;">Closed_Won</span></td>
+				<td>Ant Wilson (github)</td>
+				<td>1 day ago</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<script>
+function mockContainerAction(action) {
+	const status = document.getElementById('demoApiStatus');
+	status.style.display = 'block';
+	status.style.color = '#334155';
+	status.textContent = 'Sending command to mock container...';
+	
+	setTimeout(() => {
+		const stateBadge = document.getElementById('containerState');
+		const uptimeText = document.getElementById('containerUptime');
+		
+		if (action === 'stop') {
+			stateBadge.textContent = 'stopped';
+			stateBadge.className = 'status-badge';
+			stateBadge.style.backgroundColor = '#fee2e2';
+			stateBadge.style.color = '#b91c1c';
+			uptimeText.textContent = 'N/A';
+			status.style.color = 'var(--danger)';
+			status.textContent = 'Demo Container Stopped.';
+		} else {
+			stateBadge.textContent = 'running';
+			stateBadge.className = 'status-badge status-running';
+			stateBadge.style.backgroundColor = '#dcfce7';
+			stateBadge.style.color = '#15803d';
+			uptimeText.textContent = action === 'restart' ? '0s' : '14 days, 6 hours';
+			status.style.color = 'var(--success)';
+			status.textContent = 'Demo Container ' + (action === 'start' ? 'Started' : 'Restarted') + ' successfully.';
+		}
+	}, 1000);
+}
+</script>
+</body>
+</html>
+`)
 }

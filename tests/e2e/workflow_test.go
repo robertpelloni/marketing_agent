@@ -25,6 +25,9 @@ func TestEndToEndSalesWorkflow(t *testing.T) {
 		t.Skip("DATABASE_URL not set, skipping E2E test")
 	}
 
+	_ = os.Setenv("GO_TEST_MODE", "true")
+	defer func() { _ = os.Unsetenv("GO_TEST_MODE") }()
+
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
@@ -189,8 +192,10 @@ func TestAutonomousCodeGeneration_Pilot(t *testing.T) {
 
 	_ = os.Setenv("SKIP_AUTODEV_SYNC", "true")
 	_ = os.Setenv("SKIP_AUTODEV_TESTS", "true")
+	_ = os.Setenv("GO_TEST_MODE", "true")
 	defer func() { _ = os.Unsetenv("SKIP_AUTODEV_SYNC") }()
 	defer func() { _ = os.Unsetenv("SKIP_AUTODEV_TESTS") }()
+	defer func() { _ = os.Unsetenv("GO_TEST_MODE") }()
 
 	// 2. Trigger Loop
 	orchestrator.ExecuteStep(ctx)

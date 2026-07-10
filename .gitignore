@@ -3,3 +3,6 @@
 .env
 .memory/
 bin/
+coverage.out
+*.test
+

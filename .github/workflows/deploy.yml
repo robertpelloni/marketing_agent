@@ -82,7 +82,7 @@ jobs:
     - name: Build and Run Staging
       run: docker compose -f docker-compose.staging.yml up -d --build
     - name: Run Staging Validation
-      run: sleep 10 && go run scripts/smoke_test.go
+      run: sleep 10 && go run scripts/smoke.go
       env:
         TARGET_URL: http://localhost:8081
     - name: Cleanup Staging
@@ -130,6 +130,6 @@ jobs:
           docker compose up -d --build
     - name: Production Smoke Test
       run: |
-        go run scripts/smoke_test.go
+        go run scripts/smoke.go
       env:
         TARGET_URL: ${{ secrets.PRODUCTION_URL }}

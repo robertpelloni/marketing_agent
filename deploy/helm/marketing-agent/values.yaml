@@ -1,0 +1,75 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/robertpelloni/marketing_agent
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+config:
+  environment: "production"
+  port: "8080"
+  hermesModel: "hermes-3-llama-3.1-8b"
+  deepseekModel: "deepseek-chat"
+  smtpHost: "smtp.example.com"
+  smtpPort: "587"
+  smtpFrom: "sales@hypernexus.site"
+  smtpFromName: "HyperNexus Sales"
+  imapHost: "imap.example.com"
+  imapPort: "993"
+  imapFolder: "INBOX"
+  imapPollInterval: "30m"
+  deploySyncInterval: "1h"
+  dryRun: "false"
+
+secrets:
+  databaseUrl: ""
+  secretKey: ""
+  githubToken: ""
+  githubWebhookSecret: ""
+  crmBaseUrl: ""
+  crmApiKey: ""
+  hermesApiUrl: ""
+  hermesApiKey: ""
+  deepseekApiKey: ""
+  hunterApiKey: ""
+  apolloApiKey: ""
+  smtpUsername: ""
+  smtpPassword: ""
+  imapUsername: ""
+  imapPassword: ""
+  stripeApiKey: ""
+  stripeWebhookSecret: ""
+  outboundWebhookUrl: ""
+  outboundWebhookSecret: ""
+  linkedinUsername: ""
+  linkedinPassword: ""
+  redisUrl: ""

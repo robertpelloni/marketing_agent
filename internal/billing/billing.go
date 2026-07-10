@@ -85,6 +85,7 @@ type SubscriptionStore interface {
 	CancelSubscription(ctx context.Context, stripeSubID string, at time.Time) error
 	SetGrandfatheredRate(ctx context.Context, stripeSubID string, rate float64) error
 	RecordPriceChange(ctx context.Context, subID int64, prevRate, newRate float64) error
+	ResolveCompanyID(ctx context.Context, email, name string) (int64, error)
 }
 
 // NewStripeBillingClient creates a new Stripe-based billing client.
@@ -316,16 +317,32 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 	}
 
 	companyIDStr, ok := sess.Metadata["company_id"]
-	if !ok {
-		return "no company_id in metadata", nil
+	var companyID int64
+	if ok {
+		fmt.Sscanf(companyIDStr, "%d", &companyID)
 	}
+
+	if companyID == 0 {
+		var email, name string
+		if sess.CustomerDetails != nil {
+			email = sess.CustomerDetails.Email
+			name = sess.CustomerDetails.Name
+		}
+		if email == "" {
+			return "", fmt.Errorf("companyID is 0 and no customer email available in checkout session details")
+		}
+		var err error
+		companyID, err = s.db.ResolveCompanyID(ctx, email, name)
+		if err != nil {
+			return "", fmt.Errorf("failed to resolve company ID for email %s: %w", email, err)
+		}
+		companyIDStr = fmt.Sprintf("%d", companyID)
+	}
+
 	tierStr, ok := sess.Metadata["tier"]
 	if !ok {
 		tierStr = "professional"
 	}
-
-	var companyID int64
-	fmt.Sscanf(companyIDStr, "%d", &companyID)
 
 	// Create Stripe customer if not exists
 	custParams := &stripe.CustomerParams{
@@ -464,4 +481,46 @@ func (s *StripeBillingClient) handleSubscriptionDeleted(ctx context.Context, eve
 	}
 
 	return fmt.Sprintf("subscription deleted: %s", sub.ID), nil
+}
+
+// MockBillingClient implements BillingClient for testing and offline development.
+type MockBillingClient struct {
+	db SubscriptionStore
+}
+
+func NewMockBillingClient(store SubscriptionStore) *MockBillingClient {
+	return &MockBillingClient{db: store}
+}
+
+func (m *MockBillingClient) CreateInvoice(ctx context.Context, deal db.Deal, company db.Company) (string, error) {
+	return "mock_invoice_id", nil
+}
+
+func (m *MockBillingClient) GetInvoiceStatus(ctx context.Context, invoiceID string) (InvoiceStatus, error) {
+	return InvoicePaid, nil
+}
+
+func (m *MockBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string) (string, error) {
+	return "http://localhost:8087/checkout/success", nil
+}
+
+func (m *MockBillingClient) GetSubscription(ctx context.Context, subID string) (*SubscriptionInfo, error) {
+	return &SubscriptionInfo{
+		StripeSubID: subID,
+		State:       "active",
+		Tier:        TierProfessional,
+		CurrentRate: 49.00,
+	}, nil
+}
+
+func (m *MockBillingClient) CancelSubscription(ctx context.Context, subID string, atPeriodEnd bool) error {
+	return nil
+}
+
+func (m *MockBillingClient) UpdateSubscriptionSeats(ctx context.Context, subID string, seats int) error {
+	return nil
+}
+
+func (m *MockBillingClient) HandleWebhook(ctx context.Context, payload []byte, sigHeader string) (string, error) {
+	return "mock webhook processed", nil
 }

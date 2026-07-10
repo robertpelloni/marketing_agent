@@ -67,7 +67,9 @@ func main() {
 	database, err := db.NewDB(cfg.DatabaseURL)
 	if err != nil {
 		slog.Error(fmt.Sprintf("Could not connect to database: %v", err))
-	} else if cfg.SecretKey != "" {
+		os.Exit(1)
+	}
+	if cfg.SecretKey != "" {
 		database.SetSecretKey(cfg.SecretKey)
 	}
 	defer func() { _ = database.Close() }()
@@ -75,12 +77,25 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// 2. Setup Scraper — HN "Who is Hiring" + LinkedIn + GitHub Issues
+
+	// 2. Setup Scraper — HN "Who is Hiring" + LinkedIn + GitHub Issues + Reddit
+	linkedInSource := scraper.NewLinkedInSource()
+	if os.Getenv("LINKEDIN_USERNAME") != "" && os.Getenv("LINKEDIN_PASSWORD") != "" {
+		linkedInSource.SetCredentials(os.Getenv("LINKEDIN_USERNAME"), os.Getenv("LINKEDIN_PASSWORD"))
+		slog.Info("Scraper: LinkedIn credentials configured.")
+	} else {
+		slog.Info("Scraper: No LinkedIn credentials found, running in simulation mode.")
+	}
+
+	redditSource := scraper.NewRedditSource()
+
 	sources := []scraper.LeadSource{
 		&scraper.HNWhoIsHiringSource{Client: http.DefaultClient},
-		&scraper.LinkedInSource{Client: http.DefaultClient},
+		linkedInSource,
 		&scraper.GitHubIssueSource{Client: http.DefaultClient, Token: cfg.GitHubToken},
+		redditSource,
 	}
+
 	s := scraper.NewScraper(database, sources)
 
 	keywords := []string{"AI Engineer", "LLM Orchestration", "Agentic Workflows", "AI Platform", "ML Infrastructure"}
@@ -270,7 +285,9 @@ func main() {
 		billingStore := &billing.DBAdapter{DB: database.Conn}
 		billingClient = billing.NewStripeBillingClient(cfg.StripeAPIKey, cfg.StripeWebhookSecret, priceIDs, billingStore)
 	} else {
-		slog.Info("Billing: No STRIPE_API_KEY set. Billing client disabled.")
+		slog.Info("Billing: No STRIPE_API_KEY set. Initializing Mock Billing Client.")
+		billingStore := &billing.DBAdapter{DB: database.Conn}
+		billingClient = billing.NewMockBillingClient(billingStore)
 	}
 
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)

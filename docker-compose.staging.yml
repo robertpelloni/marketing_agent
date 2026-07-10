@@ -16,7 +16,7 @@ services:
         condition: service_healthy
 
   postgres-staging:
-    image: postgres:15
+    image: ankane/pgvector:v0.5.1
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

@@ -193,3 +193,8 @@ func (l *LinkedInSource) SetTargetTitles(titles []string) {
 
 // Ensure LinkedInSource implements LeadSource interface
 var _ LeadSource = (*LinkedInSource)(nil)
+
+// NewLinkedInSource creates a new LinkedInSource
+func NewLinkedInSource() *LinkedInSource {
+	return &LinkedInSource{}
+}

@@ -137,7 +137,7 @@
 - [ ] Add Terraform modules for cloud infrastructure provisioning
 - [ ] Add blue-green deployment strategy with automatic rollback
 - [ ] Add database backup automation — periodic `pg_dump` with S3/blob storage upload
-- [x] Add log aggregation — ship structured logs to ELK/Datadog/CloudWatch
+- [ ] Add log aggregation — ship structured logs to ELK/Datadog/CloudWatch
 
 ## Phase 10 — Platform & Ecosystem
 

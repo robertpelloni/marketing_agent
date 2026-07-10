@@ -465,3 +465,46 @@ func (s *StripeBillingClient) handleSubscriptionDeleted(ctx context.Context, eve
 
 	return fmt.Sprintf("subscription deleted: %s", sub.ID), nil
 }
+
+// MockBillingClient implements BillingClient for testing and offline development.
+type MockBillingClient struct {
+	db SubscriptionStore
+}
+
+func NewMockBillingClient(store SubscriptionStore) *MockBillingClient {
+	return &MockBillingClient{db: store}
+}
+
+func (m *MockBillingClient) CreateInvoice(ctx context.Context, deal db.Deal, company db.Company) (string, error) {
+	return "mock_invoice_id", nil
+}
+
+func (m *MockBillingClient) GetInvoiceStatus(ctx context.Context, invoiceID string) (InvoiceStatus, error) {
+	return InvoicePaid, nil
+}
+
+func (m *MockBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string) (string, error) {
+	return "http://localhost:8087/checkout/success", nil
+}
+
+func (m *MockBillingClient) GetSubscription(ctx context.Context, subID string) (*SubscriptionInfo, error) {
+	return &SubscriptionInfo{
+		StripeSubID: subID,
+		State:       "active",
+		Tier:        TierProfessional,
+		CurrentRate: 49.00,
+	}, nil
+}
+
+func (m *MockBillingClient) CancelSubscription(ctx context.Context, subID string, atPeriodEnd bool) error {
+	return nil
+}
+
+func (m *MockBillingClient) UpdateSubscriptionSeats(ctx context.Context, subID string, seats int) error {
+	return nil
+}
+
+func (m *MockBillingClient) HandleWebhook(ctx context.Context, payload []byte, sigHeader string) (string, error) {
+	return "mock webhook processed", nil
+}
+

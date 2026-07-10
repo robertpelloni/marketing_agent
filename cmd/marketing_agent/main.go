@@ -270,7 +270,9 @@ func main() {
 		billingStore := &billing.DBAdapter{DB: database.Conn}
 		billingClient = billing.NewStripeBillingClient(cfg.StripeAPIKey, cfg.StripeWebhookSecret, priceIDs, billingStore)
 	} else {
-		slog.Info("Billing: No STRIPE_API_KEY set. Billing client disabled.")
+		slog.Info("Billing: No STRIPE_API_KEY set. Initializing Mock Billing Client.")
+		billingStore := &billing.DBAdapter{DB: database.Conn}
+		billingClient = billing.NewMockBillingClient(billingStore)
 	}
 
 	orderProcessor := sales.NewOrderProcessor(database, billingClient, crmClient)

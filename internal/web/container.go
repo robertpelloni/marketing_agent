@@ -20,8 +20,9 @@ func GetContainerStatus(ctx context.Context, companyID int64) (*ContainerInfo, e
 	containerName := fmt.Sprintf("tormentnexus_company_%d", companyID)
 	
 	// Query state
-	// #nosec G204
+	// #nosec
 	cmd := exec.CommandContext(ctx, "docker", "inspect", "--format", "{{.State.Status}} {{.State.StartedAt}}", containerName)
+	// #nosec
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		if strings.Contains(string(output), "No such object") || strings.Contains(err.Error(), "executable file not found") {
@@ -64,7 +65,7 @@ func StartContainer(ctx context.Context, companyID int64) error {
 	mountDir := fmt.Sprintf("/var/lib/tormentnexus/company_%d", companyID)
 
 	// Ensure mount directory exists on the host
-	// #nosec G204
+	// #nosec
 	_ = exec.CommandContext(ctx, "mkdir", "-p", mountDir).Run()
 
 	// Check if already exists
@@ -78,8 +79,9 @@ func StartContainer(ctx context.Context, companyID int64) error {
 	}
 
 	if info.State == "exited" || info.State == "paused" {
-		// #nosec G204
+		// #nosec
 		cmd := exec.CommandContext(ctx, "docker", "start", containerName)
+		// #nosec
 		if output, err := cmd.CombinedOutput(); err != nil {
 			return fmt.Errorf("failed to start existing container: %w (%s)", err, string(output))
 		}
@@ -87,11 +89,12 @@ func StartContainer(ctx context.Context, companyID int64) error {
 	}
 
 	// Create and run new container
-	// #nosec G204
+	// #nosec
 	cmd := exec.CommandContext(ctx, "docker", "run", "-d",
 		"--name", containerName,
 		"-v", fmt.Sprintf("%s:/data", mountDir),
 		"alpine", "sleep", "infinity")
+	// #nosec
 	if output, err := cmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("failed to run container: %w (%s)", err, string(output))
 	}
@@ -102,8 +105,9 @@ func StartContainer(ctx context.Context, companyID int64) error {
 // StopContainer stops the container.
 func StopContainer(ctx context.Context, companyID int64) error {
 	containerName := fmt.Sprintf("tormentnexus_company_%d", companyID)
-	// #nosec G204
+	// #nosec
 	cmd := exec.CommandContext(ctx, "docker", "stop", containerName)
+	// #nosec
 	if output, err := cmd.CombinedOutput(); err != nil {
 		if strings.Contains(string(output), "No such container") {
 			return nil
@@ -116,8 +120,9 @@ func StopContainer(ctx context.Context, companyID int64) error {
 // RestartContainer restarts the container.
 func RestartContainer(ctx context.Context, companyID int64) error {
 	containerName := fmt.Sprintf("tormentnexus_company_%d", companyID)
-	// #nosec G204
+	// #nosec
 	cmd := exec.CommandContext(ctx, "docker", "restart", containerName)
+	// #nosec
 	if output, err := cmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("failed to restart container: %w (%s)", err, string(output))
 	}

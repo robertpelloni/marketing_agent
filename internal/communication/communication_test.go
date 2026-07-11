@@ -33,7 +33,7 @@ func TestSalesEngine_Decide(t *testing.T) {
 			},
 		}
 
-		action, err := engine.Decide(context.Background(), &salesCtx)
+		action, err := engine.Decide(context.Background(), salesCtx)
 		if err != nil {
 			t.Fatalf("Decision failed: %v", err)
 		}
@@ -54,7 +54,7 @@ func TestSalesEngine_Decide(t *testing.T) {
 			},
 		}
 
-		action, err := engine.Decide(context.Background(), &salesCtx)
+		action, err := engine.Decide(context.Background(), salesCtx)
 		if err != nil {
 			t.Fatalf("Decision failed: %v", err)
 		}

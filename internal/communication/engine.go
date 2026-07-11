@@ -40,17 +40,14 @@ func NewLearningSalesEngine(database *db.DB, crmClient crm.CRMClient, llmProvide
 }
 
 // Decide determines the next action for a lead.
-func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx *SalesContext) (Action, error) {
-	if salesCtx == nil {
-		return ActionWait, nil
-	}
+func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext) (Action, error) {
 	slog.Info(fmt.Sprintf("LearningSalesEngine: Deciding next action for deal %d (Latest Intent: %s)", salesCtx.Deal.ID, salesCtx.LatestIntent))
 
 	// 1. Analyze historical performance and lead quality
-	if e.shouldAdvanceState(*salesCtx) {
+	if e.shouldAdvanceState(salesCtx) {
 		newState := db.StateNegotiating
 		// If highly qualified and intent is positive, we might jump to closing
-		if e.QualifyLead(*salesCtx) >= 80 && salesCtx.LatestIntent == IntentFollowUp {
+		if e.QualifyLead(salesCtx) >= 80 && salesCtx.LatestIntent == IntentFollowUp {
 			newState = db.StateClosedWon
 		}
 
@@ -76,7 +73,7 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx *SalesContext
 						updatedDeal.CurrentState = newState
 						maxRetries := 3
 						for i := 0; i < maxRetries; i++ {
-							if err := e.crmClient.PushDeal(ctx, updatedDeal, salesCtx.Company, e.RouteLead(*salesCtx)); err != nil {
+							if err := e.crmClient.PushDeal(ctx, updatedDeal, salesCtx.Company, e.RouteLead(salesCtx)); err != nil {
 								slog.Info(fmt.Sprintf("LearningSalesEngine: Immediate CRM Push failed (attempt %d/%d): %v", i+1, maxRetries, err))
 								time.Sleep(time.Duration(i+1) * 2 * time.Second)
 								continue
@@ -106,8 +103,9 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx *SalesContext
 			} else {
 				slog.Info(fmt.Sprintf("LearningSalesEngine: LLM strategy generated for deal %d: %s", salesCtx.Deal.ID, proposal))
 				// We ingest this successfully into the RAG context (TechnicalDossier in this simplified implementation)
-				salesCtx.Deal.TechnicalDossier += "\n[RAG Ingestion]: " + proposal
 				if e.db != nil {
+					// We just append to TechnicalDossier
+					salesCtx.Deal.TechnicalDossier += "\n[RAG Ingestion]: " + proposal
 					err := e.db.UpdateTechnicalDossier(ctx, salesCtx.Deal.ID, salesCtx.Deal.TechnicalDossier)
 					if err != nil {
 						slog.Info(fmt.Sprintf("LearningSalesEngine: Failed to update deal dossier for deal %d: %v", salesCtx.Deal.ID, err))
@@ -118,7 +116,7 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx *SalesContext
 	}
 
 	// 3. Base intent-driven logic
-	if salesCtx.LatestIntent == IntentFollowUp && e.shouldAdvanceState(*salesCtx) {
+	if salesCtx.LatestIntent == IntentFollowUp && e.shouldAdvanceState(salesCtx) {
 		return ActionAdvanceState, nil
 	}
 
@@ -126,7 +124,7 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx *SalesContext
 	case IntentTechnical:
 		return ActionRespond, nil
 	case IntentPricing:
-		if e.isHighValueLead(*salesCtx) {
+		if e.isHighValueLead(salesCtx) {
 			return ActionRespond, nil
 		}
 		return ActionEscalate, nil	// Escalate high-tier pricing negotiation

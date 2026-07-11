@@ -304,6 +304,7 @@ func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
 		INSERT INTO contacts (company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 		ON CONFLICT (email) DO UPDATE 
+		ON CONFLICT (email) DO UPDATE
 		SET company_id = EXCLUDED.company_id,
 		    name = EXCLUDED.name,
 		    role = EXCLUDED.role,
@@ -1004,6 +1005,10 @@ func (db *DB) GetSecret(ctx context.Context, keyName string) (string, error) {
 
 	// Try reading from encrypted_secrets first
 	err := db.Conn.QueryRowContext(ctx, `SELECT encrypted_value FROM encrypted_secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
+	var err error
+
+	// Try reading from encrypted_secrets first
+	err = db.Conn.QueryRowContext(ctx, `SELECT encrypted_value FROM encrypted_secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
 	if err != nil {
 		// If relation doesn't exist or key not found, try reading from secrets table
 		if strings.Contains(err.Error(), "relation") || err == sql.ErrNoRows {

@@ -141,12 +141,14 @@ func defaultAccounts() map[string]map[string]string {
 		"tormentnexus": {
 			"bluesky":  "tormentnexus.bsky.social",
 			"reddit":   "MDMAtk",
+			"reddit":   "tormentnexus-reddit",
 			"twitter":  "@tormentnexus",
 			"linkedin": "TormentNexus Community",
 		},
 		"hypernexus": {
 			"bluesky":  "hypernexus.bsky.social",
 			"reddit":   "MDMAtk",
+			"reddit":   "hypernexus-reddit",
 			"twitter":  "@hypernexus_site",
 			"linkedin": "HyperNexus Enterprise",
 		},

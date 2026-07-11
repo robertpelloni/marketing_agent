@@ -142,6 +142,7 @@
         background: rgba(255, 255, 255, 0.95);
         margin: 30px auto;
         box-shadow: 
+        box-shadow:
           0 10px 30px rgba(2, 132, 199, 0.08),
           0 1px 3px rgba(0, 0, 0, 0.01);
         overflow: hidden;
@@ -575,6 +576,14 @@
           rgba(90, 200, 250, 0.25), 
           rgba(0, 122, 255, 0.25), 
           rgba(88, 86, 214, 0.25), 
+        background: conic-gradient(from 0deg,
+          rgba(255, 59, 48, 0.25),
+          rgba(255, 149, 0, 0.25),
+          rgba(255, 204, 0, 0.25),
+          rgba(76, 217, 100, 0.25),
+          rgba(90, 200, 250, 0.25),
+          rgba(0, 122, 255, 0.25),
+          rgba(88, 86, 214, 0.25),
           rgba(255, 59, 48, 0.25)
         );
         animation: rotateRainbow 2s linear infinite;
@@ -599,6 +608,14 @@
           #5ac8fa, 
           #007aff, 
           #5856d6, 
+        background: conic-gradient(from 0deg,
+          #ff3b30,
+          #ff9500,
+          #ffcc00,
+          #4cd964,
+          #5ac8fa,
+          #007aff,
+          #5856d6,
           #ff3b30
         ) !important;
       }
@@ -612,6 +629,14 @@
           rgba(90, 200, 250, 0.08) 60%, 
           rgba(0, 122, 255, 0.08) 75%, 
           rgba(88, 86, 214, 0.08) 90%, 
+        background: radial-gradient(350px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+          rgba(255, 59, 48, 0.08) 0%,
+          rgba(255, 149, 0, 0.08) 15%,
+          rgba(255, 204, 0, 0.08) 30%,
+          rgba(76, 217, 100, 0.08) 45%,
+          rgba(90, 200, 250, 0.08) 60%,
+          rgba(0, 122, 255, 0.08) 75%,
+          rgba(88, 86, 214, 0.08) 90%,
           transparent 100%) !important;
       }
       </style>
@@ -818,6 +843,22 @@
 
 
 
+                <a href="/contact.php" class="nav-cta">Request Demo →</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </nav>
 
 
@@ -931,6 +972,7 @@
               box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
             ">
               <span style="color: var(--neon-blue); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Corporate System Announcement</span><br>
+              <span style="color: var(--neon-blue); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Enterprise System Announcement</span><br>
               <strong>Ultimate MCP Server & Coding Harness Upgrade</strong><br>
               <span style="color: var(--neon-purple); font-weight: 600;">Unstoppable Operational Power Deployed:</span><br>
               🏅 Best-in-Class Memory | 🏅 Best-in-Class MCP Routing | 🏅 Best-in-Class Skill Routing | 🏅 Best-in-Class Context Harvesting | 🏅 Best-in-Class Memory Formation | 🏅 Best-in-Class Code Indexing | 🏅 Best-in-Class AI Accessory
@@ -1654,6 +1696,7 @@
              <div class="features-grid">
 
                 <div class="feature"><div class="feature-icon">🔐</div><h3>SSO &amp; RBAC</h3><p>HTTP middleware validates <code>X-Corporate-SSO</code> tokens via your identity provider. Three built-in RBAC roles: Admin (read/write/admin/audit), Operator (read/write/execute), Viewer (read-only). Granular resource-level authorization via <code>SecurityProvider.Authorize()</code>. Up to 10-node cluster support.</p></div>
+                <div class="feature"><div class="feature-icon">🔐</div><h3>SSO &amp; RBAC</h3><p>HTTP middleware validates <code>X-Enterprise-SSO</code> tokens via your identity provider. Three built-in RBAC roles: Admin (read/write/admin/audit), Operator (read/write/execute), Viewer (read-only). Granular resource-level authorization via <code>SecurityProvider.Authorize()</code>. Up to 10-node cluster support.</p></div>
 
                 <div class="feature"><div class="feature-icon">🏢</div><h3>VPC &amp; Air-Gapped Deployment</h3><p>The entire MCP gateway, memory vault, and code indexer run fully on-premises with no data egress required. Cryptographically signed licensing. L3 cold archive in gzip-compressed JSONL stays entirely within your perimeter. JSONL audit trail in daily-rotating files ready for your SIEM.</p></div>
 
@@ -2228,6 +2271,7 @@
 
                 <div class="price-card rainbow">
                     <div class="price-card-inner" style="background: rgba(255, 255, 255, 0.95); border-radius: 10px; padding: 44px 32px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative; z-index: 1; transition: all 0.3s ease;">
+                    <div class="price-card-inner" style="background:#ffffff; border-radius:10px; padding:44px 32px; height:100%; display:flex; flex-direction:column; justify-content:space-between; position:relative; z-index:1;">
 
 
 
@@ -2358,6 +2402,7 @@
 
 
                     <a href="#" onclick="startStripeCheckout('professional'); return false;" class="price-btn price-btn-primary">Start Free Trial</a>
+                    <a href="/contact.php" class="price-btn price-btn-primary" onclick="startStripeCheckout('professional')">Start Free Trial</a>
 
 
 
@@ -2503,6 +2548,7 @@
 
 
                     <a href="#" onclick="startStripeCheckout('enterprise'); return false;" class="price-btn price-btn-secondary">Contact Sales</a>
+                    <a href="/contact.php" class="price-btn price-btn-secondary" onclick="startStripeCheckout('enterprise')">Contact Sales</a>
 
 
 

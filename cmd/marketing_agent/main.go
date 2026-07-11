@@ -70,6 +70,7 @@ func main() {
 		os.Exit(1)
 	}
 	if cfg.SecretKey != "" {
+	} else if cfg.SecretKey != "" {
 		database.SetSecretKey(cfg.SecretKey)
 	}
 	defer func() { _ = database.Close() }()

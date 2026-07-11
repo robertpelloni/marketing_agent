@@ -339,10 +339,16 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 		companyIDStr = fmt.Sprintf("%d", companyID)
 	}
 
+	if !ok {
+		return "no company_id in metadata", nil
+	}
 	tierStr, ok := sess.Metadata["tier"]
 	if !ok {
 		tierStr = "professional"
 	}
+
+	var companyID int64
+	fmt.Sscanf(companyIDStr, "%d", &companyID)
 
 	// Create Stripe customer if not exists
 	custParams := &stripe.CustomerParams{

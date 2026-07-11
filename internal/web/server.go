@@ -58,6 +58,7 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 		tracker:       tracker,
 		tasks:         taskManager,
 		auth:          auth.NewAuthenticator(dbConn),
+		auth:          auth.NewAuthenticator(),
 		llmProvider:   llmProvider,
 		billingClient: billingClient,
 		mux:           http.NewServeMux(),
@@ -561,6 +562,55 @@ tr:hover { background-color: #f8fafc; }
 				<th>Last Updated</th>
 				<th>Actions</th>
 			</tr>`, metrics.TotalLeads, metrics.LeadsByState[db.StateClosedWon], metrics.WinRate, metrics.SuccessfulOutreach, metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateOutreachSent], metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateNegotiating], len(deals))
+
+	<div class="card full-width" style="border-top: 4px solid var(--info);">
+		<div class="card-header">
+			Performance Metrics
+			<span class="tooltip" style="font-size:0.8rem; color:#888;">?
+				<span class="tooltiptext">Real-time pipeline statistics and conversion rates.</span>
+			</span>
+		</div>
+		<div class="metrics-grid">
+			<div class="metric-box" style="background: #e9ecef;">
+				<div class="metric-value">%d</div>
+				<div class="metric-label">Total Leads</div>
+			</div>
+			<div class="metric-box" style="background: #d4edda;">
+				<div class="metric-value">%d</div>
+				<div class="metric-label">Won Deals</div>
+			</div>
+			<div class="metric-box" style="background: #f8d7da;">
+				<div class="metric-value">%.1f%%</div>
+				<div class="metric-label">Win Rate</div>
+			</div>
+			<div class="metric-box" style="background: #fff3cd;">
+				<div class="metric-value">%d</div>
+				<div class="metric-label">Successful Outreach</div>
+			</div>
+		</div>
+		<div style="margin-top: 15px; font-size: 0.9rem; display: flex; gap: 15px; justify-content: center; color: #555;">
+			<span><strong>Pipeline:</strong></span>
+			<span class="tooltip">Discovered: %d<span class="tooltiptext">Leads found by scraper</span></span> |
+			<span class="tooltip">Researched: %d<span class="tooltiptext">Technical dossier built</span></span> |
+			<span class="tooltip">Outreach Sent: %d<span class="tooltiptext">Initial email/message sent</span></span> |
+			<span class="tooltip">Engaged: %d<span class="tooltiptext">Reply received</span></span> |
+			<span class="tooltip">Negotiating: %d<span class="tooltiptext">Discussing terms</span></span>
+		</div>
+	</div>
+	<div class="card full-width" style="border-top: 4px solid var(--primary);">
+		<div class="card-header">
+			Active Deals
+			<span style="font-size: 0.8rem; font-weight: normal; color: #666;">(Showing last %d)</span>
+		</div>
+		<table>
+			<tr>
+				<th>Deal ID</th>
+				<th>Company ID</th>
+				<th>State</th>
+				<th>Contacts & Channels</th>
+				<th>Last Updated</th>
+				<th>Actions</th>
+			</tr>`, healthStatusColor(health), health, llmColor, llmStatus, metrics.TotalLeads, metrics.LeadsByState[db.StateClosedWon], metrics.WinRate, metrics.SuccessfulOutreach, metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateOutreachSent], metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateNegotiating], len(deals))
 
 	var dealsRows string
 	for _, d := range deals {
@@ -1245,6 +1295,7 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, r *http.Request) {
 	slog.Info("Stripe webhook processed", "msg", msg)
 	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write([]byte(msg))
+	w.Write([]byte(msg))
 }
 
 func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
@@ -1274,6 +1325,7 @@ func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(map[string]string{"url": url})
+	json.NewEncoder(w).Encode(map[string]string{"url": url})
 }
 
 func (s *Server) handleGetSubscription(w http.ResponseWriter, r *http.Request) {
@@ -1299,6 +1351,7 @@ func (s *Server) handleGetSubscription(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(sub)
+	json.NewEncoder(w).Encode(sub)
 }
 
 func (s *Server) handleCancelSubscription(w http.ResponseWriter, r *http.Request) {
@@ -1324,6 +1377,7 @@ func (s *Server) handleCancelSubscription(w http.ResponseWriter, r *http.Request
 	}
 	w.WriteHeader(http.StatusOK)
 	_ = json.NewEncoder(w).Encode(map[string]string{"status": "canceled"})
+	json.NewEncoder(w).Encode(map[string]string{"status": "canceled"})
 }
 
 func (s *Server) handleBillingPortal(w http.ResponseWriter, r *http.Request) {

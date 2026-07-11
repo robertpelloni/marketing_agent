@@ -121,6 +121,8 @@ func (g *GitHubEnrichSource) Enrich(ctx context.Context, company db.Company) ([]
 			lowerEmail := strings.ToLower(email)
 			if strings.Contains(lowerEmail, "noreply") || 
 				strings.Contains(lowerEmail, "github-actions") || 
+			if strings.Contains(lowerEmail, "noreply") ||
+				strings.Contains(lowerEmail, "github-actions") ||
 				strings.Contains(lowerEmail, "web-flow") ||
 				strings.HasPrefix(lowerEmail, "support@") ||
 				strings.HasPrefix(lowerEmail, "admin@") ||

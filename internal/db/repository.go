@@ -1002,9 +1002,6 @@ func (db *DB) GetSecret(ctx context.Context, keyName string) (string, error) {
 	}
 
 	var storedValue string
-
-	// Try reading from encrypted_secrets first
-	err := db.Conn.QueryRowContext(ctx, `SELECT encrypted_value FROM encrypted_secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
 	var err error
 
 	// Try reading from encrypted_secrets first

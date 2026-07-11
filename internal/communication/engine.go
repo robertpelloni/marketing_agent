@@ -92,6 +92,27 @@ func (e *LearningSalesEngine) Decide(ctx context.Context, salesCtx SalesContext)
 	// In production, this would call e.llm.Generate to analyze sentiment and adjust Action
 	if e.llm != nil {
 		slog.Info(fmt.Sprintf("LearningSalesEngine: Analyzing sentiment and adapting strategy via LLM for deal %d", salesCtx.Deal.ID))
+		if salesCtx.Deal.CurrentState == db.StateEngaged {
+			prompt := llm.Prompt{
+				System: "You are the execution and guardrail agent. Evaluate the latest interaction and context to generate a proposal for the next step.",
+				User:   fmt.Sprintf("Deal Context: %v\nLatest Intent: %s\nInteractions: %v\nDetermine the optimal strategy and generate dynamic proposal parameters.", salesCtx.Deal, salesCtx.LatestIntent, salesCtx.Interactions),
+			}
+			proposal, err := e.llm.Generate(ctx, prompt)
+			if err != nil {
+				slog.Info(fmt.Sprintf("LearningSalesEngine: LLM strategy generation failed for deal %d: %v", salesCtx.Deal.ID, err))
+			} else {
+				slog.Info(fmt.Sprintf("LearningSalesEngine: LLM strategy generated for deal %d: %s", salesCtx.Deal.ID, proposal))
+				// We ingest this successfully into the RAG context (TechnicalDossier in this simplified implementation)
+				if e.db != nil {
+					// We just append to TechnicalDossier
+					salesCtx.Deal.TechnicalDossier += "\n[RAG Ingestion]: " + proposal
+					err := e.db.UpdateTechnicalDossier(ctx, salesCtx.Deal.ID, salesCtx.Deal.TechnicalDossier)
+					if err != nil {
+						slog.Info(fmt.Sprintf("LearningSalesEngine: Failed to update deal dossier for deal %d: %v", salesCtx.Deal.ID, err))
+					}
+				}
+			}
+		}
 	}
 
 	// 3. Base intent-driven logic

@@ -183,10 +183,7 @@ func (a *DBAdapter) ResolveCompanyID(ctx context.Context, email, name string) (i
 			// e.g. "microsoft.com" -> "Microsoft"
 			domainParts := strings.Split(domain, ".")
 			if len(domainParts) > 0 {
-				val := domainParts[0]
-				if len(val) > 0 {
-					companyName = strings.ToUpper(val[:1]) + val[1:]
-				}
+				companyName = strings.Title(domainParts[0])
 			} else {
 				companyName = domain
 			}
@@ -211,4 +208,9 @@ func (a *DBAdapter) ResolveCompanyID(ctx context.Context, email, name string) (i
 	}
 
 	return id, nil
+}
+
+// NewDBAdapter creates a new DBAdapter wrapping a sql.DB connection.
+func NewDBAdapter(db *sql.DB) *DBAdapter {
+	return &DBAdapter{DB: db}
 }

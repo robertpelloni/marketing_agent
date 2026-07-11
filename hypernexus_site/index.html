@@ -843,22 +843,6 @@
 
 
 
-                <a href="/contact.php" class="nav-cta">Request Demo →</a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             </nav>
 
 
@@ -2091,7 +2075,7 @@
       <div class="container">
         <h2 class="section-title">Live Autonomous Pipeline Activity</h2>
         <p class="section-subtitle">Real-time status feed of our active sales development pipelines.</p>
-        
+
         <div style="background: white; border-radius: 12px; border: 1px solid var(--glass-border); padding: 24px; max-width: 800px; margin: 0 auto; box-shadow: var(--shadow-card);">
           <div class="feed-container" id="deals-feed">
              <div class="loading-text">Connecting to pipeline API stream...</div>
@@ -2271,7 +2255,6 @@
 
                 <div class="price-card rainbow">
                     <div class="price-card-inner" style="background: rgba(255, 255, 255, 0.95); border-radius: 10px; padding: 44px 32px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative; z-index: 1; transition: all 0.3s ease;">
-                    <div class="price-card-inner" style="background:#ffffff; border-radius:10px; padding:44px 32px; height:100%; display:flex; flex-direction:column; justify-content:space-between; position:relative; z-index:1;">
 
 
 
@@ -2402,7 +2385,6 @@
 
 
                     <a href="#" onclick="startStripeCheckout('professional'); return false;" class="price-btn price-btn-primary">Start Free Trial</a>
-                    <a href="/contact.php" class="price-btn price-btn-primary" onclick="startStripeCheckout('professional')">Start Free Trial</a>
 
 
 
@@ -6941,7 +6923,7 @@
               const response = await fetch('/api/v1/deals');
               if (!response.ok) throw new Error('API server returned error status');
               const deals = await response.json();
-              
+
               if (deals.length === 0) {
                   feedContainer.innerHTML = '<div class="loading-text">No active pipelines currently in discovery phase.</div>';
                   return;
@@ -6955,7 +6937,7 @@
                       hour: '2-digit',
                       minute: '2-digit'
                   });
-                  
+
                   html += `
                       <div class="feed-item">
                           <div class="feed-info">

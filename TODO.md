@@ -168,8 +168,8 @@
 
 - [ ] Implement Multi-Agent Orchestration Pattern (split LLM context)
 - [ ] Build Sales Strategist Agent for MEDDPICC evaluation and micro-goals
-- [x] Build Context - [ ] Build Context & Knowledge Agent (GraphRAG) replacing flat vector search Knowledge Agent (GraphRAG) replacing flat vector search
-- [ ] Build Execution/Guardrail Agent for authoritative response filtering
+- [x] Build Context & Knowledge Agent (GraphRAG) replacing flat vector search
+- [x] Build Execution/Guardrail Agent for authoritative response filtering
 
 ### Persuasion & Behavioral Tuning
 

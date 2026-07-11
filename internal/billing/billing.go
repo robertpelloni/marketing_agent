@@ -319,7 +319,7 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 	companyIDStr, ok := sess.Metadata["company_id"]
 	var companyID int64
 	if ok {
-		_, _ = fmt.Sscanf(companyIDStr, "%d", &companyID)
+		fmt.Sscanf(companyIDStr, "%d", &companyID)
 	}
 
 	if companyID == 0 {
@@ -339,16 +339,10 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 		companyIDStr = fmt.Sprintf("%d", companyID)
 	}
 
-	if !ok {
-		return "no company_id in metadata", nil
-	}
 	tierStr, ok := sess.Metadata["tier"]
 	if !ok {
 		tierStr = "professional"
 	}
-
-	var companyID int64
-	fmt.Sscanf(companyIDStr, "%d", &companyID)
 
 	// Create Stripe customer if not exists
 	custParams := &stripe.CustomerParams{
@@ -530,4 +524,3 @@ func (m *MockBillingClient) UpdateSubscriptionSeats(ctx context.Context, subID s
 func (m *MockBillingClient) HandleWebhook(ctx context.Context, payload []byte, sigHeader string) (string, error) {
 	return "mock webhook processed", nil
 }
-

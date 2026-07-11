@@ -27,5 +27,5 @@ type SalesContext struct {
 // SalesStrategy defines the interface for the autonomous sales workflow engine.
 type SalesStrategy interface {
 	// Decide determines the next action based on the current sales context.
-	Decide(ctx context.Context, salesCtx SalesContext) (Action, error)
+	Decide(ctx context.Context, salesCtx *SalesContext) (Action, error)
 }

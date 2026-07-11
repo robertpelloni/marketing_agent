@@ -192,7 +192,7 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		LatestIntent:	intent,
 	}
 
-	action, err := m.strategy.Decide(ctx, salesCtx)
+	action, err := m.strategy.Decide(ctx, &salesCtx)
 	if err != nil {
 		return "", err
 	}

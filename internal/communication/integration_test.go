@@ -25,7 +25,7 @@ func (m *mockResponder) Generate(ctx context.Context, salesCtx communication.Sal
 
 type mockStrategy struct{}
 
-func (m *mockStrategy) Decide(ctx context.Context, salesCtx communication.SalesContext) (communication.Action, error) {
+func (m *mockStrategy) Decide(ctx context.Context, salesCtx *communication.SalesContext) (communication.Action, error) {
 	return communication.ActionAdvanceState, nil
 }
 

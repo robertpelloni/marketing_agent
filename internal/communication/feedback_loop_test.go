@@ -76,7 +76,7 @@ func TestFeedbackLoop_Integration(t *testing.T) {
 		LatestIntent: IntentFollowUp, // FollowUp + high interactions = advancing to ClosedWon for mid-market
 	}
 
-	action, err := strategy.Decide(ctx, salesCtx)
+	action, err := strategy.Decide(ctx, &salesCtx)
 	if err != nil {
 		t.Fatalf("Decide failed: %v", err)
 	}

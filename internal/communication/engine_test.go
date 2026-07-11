@@ -2,9 +2,11 @@ package communication
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/robertpelloni/marketing_agent/internal/db"
+	"github.com/robertpelloni/marketing_agent/internal/llm"
 )
 
 
@@ -78,12 +80,37 @@ func TestDecide_AdvanceToWon(t *testing.T) {
 	t.Logf("Qualification: %d", qual)
 
 	// QualifyLead should be >= 80
-	action, err := engine.Decide(ctx, salesCtx)
+	action, err := engine.Decide(ctx, &salesCtx)
 	if err != nil {
 		t.Fatalf("Decide failed: %v", err)
 	}
 
 	if action != ActionAdvanceState {
 		t.Errorf("Expected ActionAdvanceState, got %s", action)
+	}
+}
+
+func TestDecide_RAGIngestion(t *testing.T) {
+	engine := NewLearningSalesEngine(nil, nil, &llm.MockLLMProvider{})
+	ctx := context.Background()
+
+	salesCtx := SalesContext{
+		Company: db.Company{MarketCapTier: "Enterprise"},
+		Deal: db.Deal{
+			ID:               1,
+			CurrentState:     db.StateEngaged,
+			TechnicalDossier: "Initial Dossier.",
+		},
+		Interactions: []db.Interaction{},
+		LatestIntent: IntentPricing,
+	}
+
+	_, err := engine.Decide(ctx, &salesCtx)
+	if err != nil {
+		t.Fatalf("Decide failed: %v", err)
+	}
+
+	if !strings.Contains(salesCtx.Deal.TechnicalDossier, "[RAG Ingestion]") {
+		t.Errorf("Expected RAG Ingestion in TechnicalDossier, got: %s", salesCtx.Deal.TechnicalDossier)
 	}
 }

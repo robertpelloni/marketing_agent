@@ -122,7 +122,17 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		User:   userPrompt,
 	}
 
-	return g.llm.Generate(ctx, prompt)
+	response, err := g.llm.Generate(ctx, prompt)
+	if err == nil {
+		// Log the prompt in shadow mode for debugging / tuning
+		slog.Info("Shadow Mode: Prompt Diff",
+			"system", prompt.System,
+			"user", prompt.User,
+			"response", response,
+		)
+	}
+
+	return response, err
 }
 
 func (g *RAGResponseGenerator) truncateDocs(docs string) string {

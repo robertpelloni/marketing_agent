@@ -115,6 +115,12 @@ jobs:
     - name: Build Docker Image
       run: |
         docker build -t enterprise-marketing-agent:latest .
+    - name: Verify Deploy Host
+      run: |
+        if [ -z "${{ secrets.DEPLOY_HOST }}" ]; then
+          echo "DEPLOY_HOST is not set. Deployment will fail."
+          exit 1
+        fi
     - name: Deploy to Production
       uses: appleboy/ssh-action@master
       with:

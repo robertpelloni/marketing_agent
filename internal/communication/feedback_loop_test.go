@@ -119,3 +119,31 @@ func TestFeedbackLoop_Integration(t *testing.T) {
 		t.Error("Expected at least one interaction to be marked success=true after ClosedWon transition")
 	}
 }
+
+func TestRAGResponseGenerator_ShadowMode(t *testing.T) {
+	ctx := context.Background()
+	mockLLM := &llm.MockLLMProvider{}
+	generator := NewRAGResponseGenerator(nil, mockLLM)
+
+	salesCtx := SalesContext{
+		Deal: db.Deal{
+			ID:               99,
+			TechnicalDossier: "Prior successful interaction mapped to ClosedWon.",
+		},
+		LatestIntent: IntentTechnical,
+		Company: db.Company{
+			Domain: "independent-dev.com", // Forces TormentNexus persona
+		},
+	}
+
+	response, err := generator.Generate(ctx, salesCtx, ActionRespond)
+	if err != nil {
+		t.Fatalf("Generation failed: %v", err)
+	}
+
+	if response == "" {
+		t.Errorf("Expected response, got empty string")
+	}
+
+	// This validates the code path runs cleanly; the actual shadow mode output goes to the slog logger.
+}

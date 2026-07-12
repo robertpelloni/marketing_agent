@@ -112,8 +112,8 @@ func (db *DB) GetCompanyByDomain(ctx context.Context, domain string) (*Company, 
 // CreateDeal inserts a new deal for a company.
 func (db *DB) CreateDeal(ctx context.Context, deal *Deal) error {
 	query := `
-		INSERT INTO deals (company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, meddpicc_metrics, meddpicc_eco_buyer, meddpicc_decision_criteria, meddpicc_decision_process, meddpicc_paper_process, meddpicc_identify_pain, meddpicc_champion, meddpicc_competition, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+		INSERT INTO deals (company_id, current_state, quoted_pricing, custom_requirements, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6)
 		RETURNING id
 	`
 	now := time.Now()
@@ -125,15 +125,6 @@ func (db *DB) CreateDeal(ctx context.Context, deal *Deal) error {
 		deal.CurrentState,
 		deal.QuotedPricing,
 		deal.CustomRequirements,
-		deal.TechnicalDossier,
-		deal.MEDDPICCMetrics,
-		deal.MEDDPICCEcoBuyer,
-		deal.MEDDPICCDecisionCriteria,
-		deal.MEDDPICCDecisionProcess,
-		deal.MEDDPICCPaperProcess,
-		deal.MEDDPICCIdentifyPain,
-		deal.MEDDPICCChampion,
-		deal.MEDDPICCCompetition,
 		deal.CreatedAt,
 		deal.UpdatedAt,
 	).Scan(&deal.ID)
@@ -184,8 +175,7 @@ func (db *DB) ListAllCompanies(ctx context.Context) ([]Company, error) {
 
 func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, error) {
 	query := `
-		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier,
-		meddpicc_metrics, meddpicc_eco_buyer, meddpicc_decision_criteria, meddpicc_decision_process, meddpicc_paper_process, meddpicc_identify_pain, meddpicc_champion, meddpicc_competition, created_at, updated_at
+		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at
 		FROM deals
 		WHERE current_state = $1
 	`
@@ -223,8 +213,7 @@ func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, er
 // GetDealByCompanyID retrieves the most recent deal for a specific company.
 func (db *DB) GetDealByCompanyID(ctx context.Context, companyID int64) (*Deal, error) {
 	query := `
-		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier,
-		meddpicc_metrics, meddpicc_eco_buyer, meddpicc_decision_criteria, meddpicc_decision_process, meddpicc_paper_process, meddpicc_identify_pain, meddpicc_champion, meddpicc_competition, created_at, updated_at
+		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at
 		FROM deals
 		WHERE company_id = $1
 		ORDER BY updated_at DESC
@@ -233,7 +222,6 @@ func (db *DB) GetDealByCompanyID(ctx context.Context, companyID int64) (*Deal, e
 	deal := &Deal{}
 	var pricing sql.NullFloat64
 	var requirements, dossier sql.NullString
-	var metrics, ecoBuyer, decisionC, decisionP, paperProc, identifyP, champion, comp sql.NullString
 	err := db.Conn.QueryRowContext(ctx, query, companyID).Scan(
 		&deal.ID,
 		&deal.CompanyID,
@@ -241,7 +229,6 @@ func (db *DB) GetDealByCompanyID(ctx context.Context, companyID int64) (*Deal, e
 		&pricing,
 		&requirements,
 		&dossier,
-		&metrics, &ecoBuyer, &decisionC, &decisionP, &paperProc, &identifyP, &champion, &comp,
 		&deal.CreatedAt,
 		&deal.UpdatedAt,
 	)
@@ -251,22 +238,13 @@ func (db *DB) GetDealByCompanyID(ctx context.Context, companyID int64) (*Deal, e
 	deal.QuotedPricing = pricing.Float64
 	deal.CustomRequirements = requirements.String
 	deal.TechnicalDossier = dossier.String
-	deal.MEDDPICCMetrics = metrics.String
-	deal.MEDDPICCEcoBuyer = ecoBuyer.String
-	deal.MEDDPICCDecisionCriteria = decisionC.String
-	deal.MEDDPICCDecisionProcess = decisionP.String
-	deal.MEDDPICCPaperProcess = paperProc.String
-	deal.MEDDPICCIdentifyPain = identifyP.String
-	deal.MEDDPICCChampion = champion.String
-	deal.MEDDPICCCompetition = comp.String
 	return deal, nil
 }
 
 // ListRecentDeals retrieves the most recently updated deals.
 func (db *DB) ListRecentDeals(ctx context.Context, limit int) ([]Deal, error) {
 	query := `
-		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier,
-		meddpicc_metrics, meddpicc_eco_buyer, meddpicc_decision_criteria, meddpicc_decision_process, meddpicc_paper_process, meddpicc_identify_pain, meddpicc_champion, meddpicc_competition, created_at, updated_at
+		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at
 		FROM deals
 		ORDER BY updated_at DESC
 		LIMIT $1
@@ -1066,38 +1044,4 @@ func (db *DB) GetSecret(ctx context.Context, keyName string) (string, error) {
 
 	// Plaintext fallback
 	return storedValue, nil
-}
-
-// UpdateDeal updates all fields of an existing deal.
-func (db *DB) UpdateDeal(ctx context.Context, deal *Deal) error {
-	query := `
-		UPDATE deals
-		SET current_state = $1, quoted_pricing = $2, custom_requirements = $3, technical_dossier = $4, cadence_step = $5,
-		meddpicc_metrics = $6, meddpicc_eco_buyer = $7, meddpicc_decision_criteria = $8, meddpicc_decision_process = $9,
-		meddpicc_paper_process = $10, meddpicc_identify_pain = $11, meddpicc_champion = $12, meddpicc_competition = $13,
-		updated_at = $14
-		WHERE id = $15
-	`
-	deal.UpdatedAt = time.Now()
-	_, err := db.Conn.ExecContext(ctx, query,
-		deal.CurrentState,
-		deal.QuotedPricing,
-		deal.CustomRequirements,
-		deal.TechnicalDossier,
-		deal.CadenceStep,
-		deal.MEDDPICCMetrics,
-		deal.MEDDPICCEcoBuyer,
-		deal.MEDDPICCDecisionCriteria,
-		deal.MEDDPICCDecisionProcess,
-		deal.MEDDPICCPaperProcess,
-		deal.MEDDPICCIdentifyPain,
-		deal.MEDDPICCChampion,
-		deal.MEDDPICCCompetition,
-		deal.UpdatedAt,
-		deal.ID,
-	)
-	if err != nil {
-		return fmt.Errorf("failed to update deal: %w", err)
-	}
-	return nil
 }

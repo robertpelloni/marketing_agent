@@ -6762,7 +6762,7 @@
       async function fetchDeals() {
           const feedContainer = document.getElementById('deals-feed');
           try {
-              const response = await fetch('/api/v1/public/deals-feed');
+              const response = await fetch('/api/v1/deals');
               if (!response.ok) throw new Error('API server returned error status');
               const deals = await response.json();
 

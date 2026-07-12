@@ -115,6 +115,11 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		contextInjection += "\n[Challenger Insight]: Teach the prospect something new about the unrecognized cost of inaction regarding fragmented LLM multi-agent systems and missing cognitive memory. Destabilize their current assumptions before pitching."
 	}
 
+	// SPIN SELLING FRAMEWORK: Conversational Balancing
+	if salesCtx.Deal.CurrentState == db.StateEngaged && salesCtx.LatestIntent != IntentPricing {
+		contextInjection += "\n[SPIN Discovery]: Do not just pitch. Ask a high-value implication or need-payoff question related to their current tech stack to uncover pain points."
+	}
+
 	// Focus on keeping initial outreach very short, direct, and to the point
 	userPrompt := fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
 		salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier)

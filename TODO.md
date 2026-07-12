@@ -173,7 +173,7 @@
 
 ### Persuasion & Behavioral Tuning
 
-- [ ] Tune system prompts to eliminate AI Tropes (adopt Enterprise AE persona)
+- [x] Tune system prompts to eliminate AI Tropes (adopt Enterprise AE persona)
 - [ ] Add Asymmetrical Information Leverage context injection
 - [ ] Add Cost of Inaction (COI) calculator and loss aversion framing
 - [ ] Implement tactical empathy (mirroring and labeling) in response templates

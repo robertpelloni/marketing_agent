@@ -75,8 +75,11 @@ func (s *Server) routes() {
 	s.mux.Handle("/health/detailed", rl.middleware(http.HandlerFunc(s.handleDetailedHealth)))
 	s.mux.Handle("/api/v1/webhook/github", rl.middleware(http.HandlerFunc(s.handleGitHubWebhook)))
 	s.mux.Handle("/api/v1/quote", rl.middleware(http.HandlerFunc(s.handleGenerateQuote)))
-	s.mux.Handle("/api/v1/leads", rl.middleware(http.HandlerFunc(s.handleLeadsAPI)))
-	s.mux.Handle("/api/v1/deals", rl.middleware(http.HandlerFunc(s.handleDealsAPI)))
+	s.mux.Handle("/api/v1/leads", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleLeadsAPI))))
+	s.mux.Handle("/api/v1/deals", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleDealsAPI))))
+
+	// Public read-only feed for website
+	s.mux.Handle("/api/v1/public/deals-feed", rl.middleware(http.HandlerFunc(s.handlePublicDealsFeed)))
 
 	// GDPR Endpoints
 	s.mux.Handle("/api/v1/gdpr/export", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleGDPRExport))))
@@ -677,12 +680,10 @@ func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
 		"192.30.252.0/22", "185.199.108.0/22", "140.82.112.0/20", "143.55.64.0/20", "127.0.0.1", "::1",
 	}
 
-	clientIP := r.Header.Get("X-Real-IP")
-	if clientIP == "" {
-		clientIP = r.Header.Get("X-Forwarded-For")
-	}
-	if clientIP == "" {
-		clientIP, _, _ = net.SplitHostPort(r.RemoteAddr)
+	// Use RemoteAddr directly to prevent X-Forwarded-For spoofing unless behind a trusted proxy
+	clientIP, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		clientIP = r.RemoteAddr
 	}
 
 	isAllowed := false
@@ -1105,4 +1106,34 @@ func (s *Server) handleBillingPortal(w http.ResponseWriter, r *http.Request) {
 		scheme = "https"
 	}
 	http.Redirect(w, r, scheme+"://"+r.Host+"/#billing", http.StatusFound)
+}
+
+func (s *Server) handlePublicDealsFeed(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	deals, err := s.db.ListRecentDeals(r.Context(), 10)
+	if err != nil {
+		http.Error(w, "Failed to retrieve deals", http.StatusInternalServerError)
+		return
+	}
+
+	// Redact sensitive info
+	type PublicDeal struct {
+		ID    int64  `json:"id"`
+		State string `json:"state"`
+	}
+
+	var redacted []PublicDeal
+	for _, d := range deals {
+		redacted = append(redacted, PublicDeal{
+			ID:    d.ID,
+			State: string(d.CurrentState),
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(redacted)
 }

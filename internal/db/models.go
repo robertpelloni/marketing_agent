@@ -96,6 +96,17 @@ type Deal struct {
 	CustomRequirements string    `db:"custom_requirements"`
 	TechnicalDossier   string    `db:"technical_dossier"`
 	CadenceStep        int       `db:"cadence_step"` // 0 = not started, 1+ = current step index
+
+	// MEDDPICC Framework Tracking
+	MEDDPICCMetrics         string `db:"meddpicc_metrics" json:"meddpicc_metrics,omitempty"`
+	MEDDPICCEcoBuyer        string `db:"meddpicc_eco_buyer" json:"meddpicc_eco_buyer,omitempty"`
+	MEDDPICCDecisionCriteria string `db:"meddpicc_decision_criteria" json:"meddpicc_decision_criteria,omitempty"`
+	MEDDPICCDecisionProcess  string `db:"meddpicc_decision_process" json:"meddpicc_decision_process,omitempty"`
+	MEDDPICCPaperProcess     string `db:"meddpicc_paper_process" json:"meddpicc_paper_process,omitempty"`
+	MEDDPICCIdentifyPain     string `db:"meddpicc_identify_pain" json:"meddpicc_identify_pain,omitempty"`
+	MEDDPICCChampion         string `db:"meddpicc_champion" json:"meddpicc_champion,omitempty"`
+	MEDDPICCCompetition      string `db:"meddpicc_competition" json:"meddpicc_competition,omitempty"`
+
 	CreatedAt          time.Time `db:"created_at"`
 	UpdatedAt          time.Time `db:"updated_at"`
 	DeletedAt          *time.Time `db:"deleted_at"`

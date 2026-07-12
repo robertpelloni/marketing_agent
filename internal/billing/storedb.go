@@ -209,8 +209,3 @@ func (a *DBAdapter) ResolveCompanyID(ctx context.Context, email, name string) (i
 
 	return id, nil
 }
-
-// NewDBAdapter creates a new DBAdapter wrapping a sql.DB connection.
-func NewDBAdapter(db *sql.DB) *DBAdapter {
-	return &DBAdapter{DB: db}
-}

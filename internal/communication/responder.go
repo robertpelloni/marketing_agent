@@ -110,11 +110,16 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		systemPrompt = "You are an AI developer advocate for TormentNexus (tormentnexus.site). Ground technical descriptions on TormentNexus (the local-first cognitive control plane and open-source model hypervisor at github.com/MDMAtk/TormentNexus). Use a dark, playful 'world destruction' and 'existential dread' sci-fi theme. Frame the outreach as recruiting fellow developers to the robot's side to help automate the end of all things. Focus technical benefits on self-hosting, open-source freedom, developer velocity, custom tools, and local-first memory as the foundation for the ultimate machine takeover. Keep the tone witty, apocalyptic, and slightly ominous, but still highlighting valuable tool features. CRITICAL: Never include generic draft placeholders, bracketed indicators, or template markers (e.g. '[Your Name]', '[My Name]', '[Company Name]', '[Insert Name]') in the output. Keep it natural or omit signature names. CRITICAL: Do NOT ask to schedule a call, book a meeting, jump on a chat, or view a demo. Simply state the software features, how they help their work, and end the email."
 	}
 
+	// CHALLENGER SALE FRAMEWORK: Deliver Asymmetric Insight
+	if salesCtx.Deal.CurrentState == db.StateResearched || salesCtx.Deal.CurrentState == db.StateEngaged {
+		contextInjection += "\n[Challenger Insight]: Teach the prospect something new about the unrecognized cost of inaction regarding fragmented LLM multi-agent systems and missing cognitive memory. Destabilize their current assumptions before pitching."
+	}
+
 	// Focus on keeping initial outreach very short, direct, and to the point
 	userPrompt := fmt.Sprintf("Draft a reply to %s at %s. Intent: %s. Action: %s. %s\nLatest Message: %s\nTechnical Dossier: %s",
 		salesCtx.Contact.Name, salesCtx.Company.Name, salesCtx.LatestIntent, action, contextInjection, latestMsg, salesCtx.Deal.TechnicalDossier)
 	if latestMsg == "START_OUTREACH" {
-		userPrompt += "\nCRITICAL: This is the initial outreach email. Keep it extremely short (under 4 sentences) and to the point. Focus strictly on key features (custom tools, skills, multi-tier memory) and how they directly help their engineering work. Avoid generic corporate fluff."
+		userPrompt += "\nCRITICAL: This is the initial outreach email. Keep it extremely short (under 4 sentences) and to the point. Focus strictly on key features (custom tools, skills, multi-tier memory) and how they directly help their engineering work. Avoid generic corporate fluff. Start by delivering the Challenger Insight."
 	}
 
 	prompt := llm.Prompt{
@@ -122,17 +127,7 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		User:   userPrompt,
 	}
 
-	response, err := g.llm.Generate(ctx, prompt)
-	if err == nil {
-		// Log the prompt in shadow mode for debugging / tuning
-		slog.Info("Shadow Mode: Prompt Diff",
-			"system", prompt.System,
-			"user", prompt.User,
-			"response", response,
-		)
-	}
-
-	return response, err
+	return g.llm.Generate(ctx, prompt)
 }
 
 func (g *RAGResponseGenerator) truncateDocs(docs string) string {

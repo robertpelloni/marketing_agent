@@ -6666,46 +6666,23 @@
         document.getElementById('leadModal').classList.remove('active');
       }
 
-      // Interactive Seat Pricing Slider
-      const setupPricingSlider = () => {
-        const priceCards = document.querySelectorAll('.price-tier');
-        let profCard = null;
-        let amountEl = null;
-
-        priceCards.forEach(tier => {
-          if (tier.textContent === 'Professional') {
-            profCard = tier.parentElement;
-            // The structure is: .price-tier -> div (strike) -> div (sale) -> .price-amount
-            amountEl = profCard.querySelector('.price-amount');
+      // Dynamically fetch quote pricing for Professional tier
+      fetch('/api/v1/quote?company_size=Mid-Market')
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.quote) {
+            const priceCards = document.querySelectorAll('.price-tier');
+            priceCards.forEach(tier => {
+              if (tier.textContent === 'Professional') {
+                const amountEl = tier.nextElementSibling; // div.price-amount
+                if (amountEl && amountEl.classList.contains('price-amount')) {
+                  amountEl.innerHTML = `$` + Math.round(data.quote / 12) + ` <span class="period">/ mo</span>`;
+                }
+              }
+            });
           }
-        });
-
-        if (profCard && amountEl) {
-          const sliderContainer = document.createElement('div');
-          sliderContainer.style.margin = '20px 0';
-          sliderContainer.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <span style="font-size: 14px; font-weight: 600; color: var(--text-secondary);">Number of Seats</span>
-              <span id="seatCountVal" style="font-size: 16px; font-weight: 700; color: #0284c7;">1</span>
-            </div>
-            <input type="range" id="seatSlider" min="1" max="50" value="1" style="width: 100%; cursor: pointer;">
-          `;
-
-          amountEl.after(sliderContainer);
-
-          const updatePrice = () => {
-             const seats = document.getElementById('seatSlider').value;
-             document.getElementById('seatCountVal').textContent = seats;
-             // $5 per seat
-             const total = seats * 5;
-             amountEl.innerHTML = `$` + total + ` <span class="period">/ mo</span>`;
-          };
-
-          document.getElementById('seatSlider').addEventListener('input', updatePrice);
-        }
-      };
-
-      setupPricingSlider();
+        })
+        .catch(err => console.error('Failed to load real-time pricing:', err));
 
       // Wire up all demo/contact buttons to open the modal
       document.querySelectorAll('a[href="/contact.php"]').forEach(el => {

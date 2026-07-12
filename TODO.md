@@ -160,7 +160,7 @@
 
 ### Core Psychological & Strategic Sales Layer
 
-- [ ] Add Challenger Sale Framework Integration to deliver "asymmetric insight"
+- [x] Add Challenger Sale Framework Integration to deliver "asymmetric insight"
 - [ ] Add MEDDPICC Framework Tracking state machine to db models
 - [ ] Add SPIN Selling Discovery conversational balancing logic
 
@@ -168,8 +168,8 @@
 
 - [ ] Implement Multi-Agent Orchestration Pattern (split LLM context)
 - [ ] Build Sales Strategist Agent for MEDDPICC evaluation and micro-goals
-- [x] Build Context & Knowledge Agent (GraphRAG) replacing flat vector search
-- [x] Build Execution/Guardrail Agent for authoritative response filtering
+- [x] Build Context - [ ] Build Context & Knowledge Agent (GraphRAG) replacing flat vector search Knowledge Agent (GraphRAG) replacing flat vector search
+- [ ] Build Execution/Guardrail Agent for authoritative response filtering
 
 ### Persuasion & Behavioral Tuning
 

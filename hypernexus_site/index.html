@@ -426,31 +426,35 @@
       .blue-side-left, .blue-side-right {
         position: fixed;
         top: 0;
-        width: 300px;
+        width: 500px;
         height: 100vh;
         pointer-events: none;
         z-index: 1;
-        opacity: 0.4;
+        opacity: 0.85;
       }
       .blue-side-left {
         left: 0;
-        background: linear-gradient(90deg, rgba(2, 132, 199, 0.15) 0%, transparent 100%);
+        background: linear-gradient(90deg, rgba(2, 132, 199, 0.4) 0%, rgba(14, 165, 233, 0.15) 60%, transparent 100%);
       }
       .blue-side-right {
         right: 0;
-        background: linear-gradient(-90deg, rgba(2, 132, 199, 0.15) 0%, transparent 100%);
+        background: linear-gradient(-90deg, rgba(2, 132, 199, 0.4) 0%, rgba(14, 165, 233, 0.15) 60%, transparent 100%);
       }
 
       /* ══════ ROTATING BLUE OUTLINE AROUND MAIN CONTENT ══════ */
       .rotating-outline {
         position: relative;
-        border: 2px solid transparent;
-        border-radius: 24px;
-        padding: 2px;
-        background: linear-gradient(var(--bg), var(--bg)) padding-box,
+        max-width: 1248px;
+        margin: 0 auto 40px;
+        border: 3px solid transparent;
+        border-radius: 28px;
+        padding: 3px;
+        background: linear-gradient(#f8fafc, #f1f5f9) padding-box,
                     conic-gradient(from var(--angle, 0deg),
-                      #0284c7 0%, #1e3a8a 25%, #0ea5e9 50%, #1e3a8a 75%, #0284c7 100%) border-box;
-        animation: rotateOutline 3s linear infinite;
+                      #0284c7 0%, #0ea5e9 12%, #38bdf8 25%, #0284c7 37%,
+                      #1e3a8a 50%, #0369a1 62%, #0ea5e9 75%, #38bdf8 87%, #0284c7 100%) border-box;
+        animation: rotateOutline 2s linear infinite;
+        box-shadow: 0 0 20px rgba(2, 132, 199, 0.15), 0 0 60px rgba(14, 165, 233, 0.08), inset 0 0 20px rgba(2, 132, 199, 0.03);
       }
       @keyframes rotateOutline {
         to { --angle: 360deg; }
@@ -879,10 +883,7 @@
 
     </header>
 
-
-
-
-
+    <div class="rotating-outline">
 
 
 
@@ -2934,6 +2935,8 @@
 
 
 
+
+    </div> <!-- /rotating-outline -->
 
     <footer>
 

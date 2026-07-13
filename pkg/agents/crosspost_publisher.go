@@ -160,13 +160,19 @@ func CrossPostBlog(ctx context.Context, devto *DevToPublisher, hashnode *Hashnod
 	markdown := htmlToMarkdownSimple(post.Content)
 	markdown += fmt.Sprintf("\n\n---\n\n*Originally published at [tormentnexus.site](%s)*", canonicalURL)
 
-	tags := []string{"ai", "llm", "opensource", "mcp", "agents"}
+	tags := []string{"ai", "llm", "opensource", "mcp"}
 	if post.Brand == "hypernexus" {
 		tags = append(tags, "enterprise", "devops")
 	}
 
+	// dev.to allows max 4 tags, hashnode allows more
+	devtoTags := tags
+	if len(devtoTags) > 4 {
+		devtoTags = devtoTags[:4]
+	}
+
 	if devto != nil {
-		if err := devto.PublishToDevTo(ctx, post.Title, markdown, tags); err != nil {
+		if err := devto.PublishToDevTo(ctx, post.Title, markdown, devtoTags); err != nil {
 			slog.Error("CrossPostBlog: dev.to publish failed", "error", err, "title", post.Title)
 		}
 	}

@@ -15,6 +15,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -44,10 +45,17 @@ type Server struct {
 	llmProvider   llm.LLMProvider
 	billingClient billing.BillingClient
 	mux           *http.ServeMux
+	blogEngine    blogTriggerer // optional manual blog trigger
+}
+
+// blogTriggerer allows the server to trigger blog post generation.
+type blogTriggerer interface {
+	GenerateNextPost(ctx context.Context)
+	GenerateBatch(ctx context.Context, n int) int
 }
 
 // NewServer creates a new Server instance.
-func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, llmProvider llm.LLMProvider, billingClient billing.BillingClient) *Server {
+func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITracker, taskManager *autodev.TaskManager, llmProvider llm.LLMProvider, billingClient billing.BillingClient, blogEngine blogTriggerer) *Server {
 	var dbConn *sql.DB
 	if database != nil {
 		dbConn = database.Conn
@@ -61,6 +69,7 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 		llmProvider:   llmProvider,
 		billingClient: billingClient,
 		mux:           http.NewServeMux(),
+		blogEngine:    blogEngine,
 	}
 	s.routes()
 	return s
@@ -106,6 +115,9 @@ func (s *Server) routes() {
 	s.mux.Handle("/api/v1/billing/subscription", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleGetSubscription))))
 	s.mux.Handle("/api/v1/billing/cancel", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleCancelSubscription))))
 	s.mux.Handle("/api/v1/billing/portal", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleBillingPortal))))
+
+	// Blog generation trigger (protected)
+	s.mux.Handle("/api/v1/blog/generate", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleBlogGenerate))))
 
 	// Social content API (public — serves content for Devvit Reddit app)
 	s.mux.Handle("/api/v1/social/reddit", rl.middleware(http.HandlerFunc(s.handleRedditContent)))
@@ -1399,6 +1411,34 @@ func (s *Server) handleBillingPortal(w http.ResponseWriter, r *http.Request) {
 		scheme = "https"
 	}
 	http.Redirect(w, r, scheme+"://"+r.Host+"/#billing", http.StatusFound)
+}
+
+// handleBlogGenerate triggers one or more blog post generation cycles.
+// POST /api/v1/blog/generate?count=N — protected, requires auth.
+func (s *Server) handleBlogGenerate(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "POST required", http.StatusMethodNotAllowed)
+		return
+	}
+	if s.blogEngine == nil {
+		http.Error(w, "Blog engine not available", http.StatusServiceUnavailable)
+		return
+	}
+	// Parse optional count param — default 1
+	count := 1
+	if c := r.URL.Query().Get("count"); c != "" {
+		if n, err := strconv.Atoi(c); err == nil && n > 0 && n <= 30 {
+			count = n
+		}
+	}
+	// Use background context since LLM generation may exceed HTTP timeout
+	go s.blogEngine.GenerateBatch(context.Background(), count)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusAccepted)
+	_ = json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "accepted",
+		"count":  count,
+	})
 }
 
 // handleRedditContent returns the latest generated Reddit post content as JSON.

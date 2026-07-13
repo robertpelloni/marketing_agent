@@ -395,7 +395,7 @@ func (be *BlogEngine) Run(ctx context.Context, interval time.Duration) {
 		interval, be.outputDir, len(blogTopics)))
 
 	// Generate first post immediately
-	be.generateNextPost(ctx)
+	be.GenerateNextPost(ctx)
 
 	for {
 		select {
@@ -403,7 +403,7 @@ func (be *BlogEngine) Run(ctx context.Context, interval time.Duration) {
 			slog.Info("BlogEngine: Stopping...")
 			return
 		case <-ticker.C:
-			be.generateNextPost(ctx)
+			be.GenerateNextPost(ctx)
 		}
 	}
 }
@@ -463,8 +463,27 @@ func (be *BlogEngine) nextTopic() BlogTopic {
 	return selected
 }
 
-func (be *BlogEngine) generateNextPost(ctx context.Context) {
+func (be *BlogEngine) GenerateNextPost(ctx context.Context) {
 	topic := be.nextTopic()
+
+	be.generateAndPublish(ctx, topic)
+}
+
+// GenerateBatch generates up to N posts sequentially, waiting for each to complete.
+// Returns how many were generated. Useful for bulk-filling the blog catalog.
+func (be *BlogEngine) GenerateBatch(ctx context.Context, n int) int {
+	count := 0
+	for i := 0; i < n; i++ {
+		topic := be.nextTopic()
+		be.generateAndPublish(ctx, topic)
+		count++
+		// Quick pause between generations to avoid rate limits
+		time.Sleep(2 * time.Second)
+	}
+	return count
+}
+
+func (be *BlogEngine) generateAndPublish(ctx context.Context, topic BlogTopic) {
 
 	brand := "tormentnexus"
 	if topic.Category == "enterprise" {

@@ -1086,11 +1086,15 @@ func (s *Server) handleTelemetryWS(w http.ResponseWriter, r *http.Request) {
 		case <-r.Context().Done():
 			return
 		case <-ticker.C:
-			// Fetch recent audit logs
-			logs, err := s.db.ListRecentAuditLogs(r.Context(), 50)
-			if err != nil {
-				slog.ErrorContext(r.Context(), "Failed to fetch audit logs for telemetry", "error", err)
-				continue
+			var logs []db.AuditLog
+			if s.db != nil {
+				// Fetch recent audit logs
+				var err error
+				logs, err = s.db.ListRecentAuditLogs(r.Context(), 50)
+				if err != nil {
+					slog.ErrorContext(r.Context(), "Failed to fetch audit logs for telemetry", "error", err)
+					continue
+				}
 			}
 
 			// Filter if requested

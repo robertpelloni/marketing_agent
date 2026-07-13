@@ -1,4 +1,46 @@
 
+## [0.7.1] - 2026-07-13
+
+### Fixed
+
+- **Email template variables**: Added `stripTemplateVars()` regex filter that removes any bracketed
+  placeholders (`[Your Name]`, `[Company Name]`, etc.) from LLM-generated email content.
+  Even when the system prompt says "never include these", LLMs sometimes slip them in.
+  This post-processing filter catches them all.
+- **HN scraper broken**: HN's Algolia search API started returning HTML instead of JSON
+  (rate-limiting). Rewrote to use Firebase user endpoint (`/user/whoishiring.json`).
+  Added Algolia fallback with Content-Type check to avoid JSON parse errors.
+
+### Added
+
+- **Scraper constructors**: `NewLinkedInSource()` and `NewRedditSource()` restore build
+  after partial merge. Reddit stubs search across r/LocalLLaMA, r/MachineLearning, etc.
+
+### Changed
+
+- **Blog engine rewritten**: 28 diverse topics (was 8), each with 3 angle variations.
+  JSON state persistence prevents duplicates. Max tokens 3000.
+- **Dashboard**: Pipeline funnel bar replaces text summary.
+- **Systray**: Added Open Blog, Open Site, Restart Service menu items.
+- **Project**: Scripts archived to `scripts/archive/`.
+
+## [0.7.0] - 2026-07-13
+
+### Fixed
+
+- Template variable placeholder stripping in LLM emails
+- Scraper constructors restored after branch merge
+- TormentNexus TTY crash via script wrapper
+- Orphaned `GetLastProvisionedCompany` call in server
+
+### Added
+
+- CDP poster for Twitter/Reddit silent posting
+- Blog cross-post publisher (dev.to, hashnode)
+- GitHub Discussions engager
+- Launch materials (Product Hunt, Show HN)
+- Stripe checkout with seat quantities
+
 ## [0.6.1] - 2026-07-07
 
 ### Added

@@ -473,6 +473,11 @@ tr:hover { background-color: #f8fafc; }
 .metric-box { padding: 20px; border-radius: 10px; text-align: center; border: 1px solid var(--border-color); background: var(--light); box-shadow: inset 0 1px 2px rgba(0,0,0,0.02); }
 .metric-value { font-size: 2.2rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -1px; }
 .metric-label { font-size: 0.75rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+.funnel-bar { display: flex; height: 48px; border-radius: 8px; overflow: hidden; gap: 2px; }
+.funnel-step { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 60px; transition: flex 0.3s ease; cursor: default; position: relative; }
+.funnel-step:hover { filter: brightness(1.1); }
+.funnel-label { font-size: 0.65rem; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1; }
+.funnel-count { font-size: 0.85rem; font-weight: 800; color: #1e293b; line-height: 1; }
 .tooltip { position: relative; cursor: help; border-bottom: 1px dashed #94a3b8; }
 .tooltip .tooltiptext { visibility: hidden; width: 220px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 8px; padding: 8px 12px; position: absolute; z-index: 10; bottom: 125%%; left: 50%%; margin-left: -110px; opacity: 0; transition: opacity 0.2s; font-size: 0.75rem; font-weight: normal; line-height: 1.4; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
 .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
@@ -541,13 +546,16 @@ tr:hover { background-color: #f8fafc; }
 				<div class="metric-label">Successful Outreach</div>
 			</div>
 		</div>
-		<div style="margin-top: 15px; font-size: 0.9rem; display: flex; gap: 15px; justify-content: center; color: #555;">
-			<span><strong>Pipeline:</strong></span>
-			<span class="tooltip">Discovered: %d<span class="tooltiptext">Leads found by scraper</span></span> |
-			<span class="tooltip">Researched: %d<span class="tooltiptext">Technical dossier built</span></span> |
-			<span class="tooltip">Outreach Sent: %d<span class="tooltiptext">Initial email/message sent</span></span> |
-			<span class="tooltip">Engaged: %d<span class="tooltiptext">Reply received</span></span> |
-			<span class="tooltip">Negotiating: %d<span class="tooltiptext">Discussing terms</span></span>
+		<div style="margin-top: 18px;">
+			<div style="font-size: 0.75rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Pipeline Funnel</div>
+			<div class="funnel-bar">
+				<div class="funnel-step" style="flex: %d; background: #e2e8f0;" title="Discovered: %d leads found by scrapers"><span class="funnel-label">Discovered</span><span class="funnel-count">%d</span></div>
+				<div class="funnel-step" style="flex: %d; background: #bae6fd;" title="Researched: %d with technical dossiers"><span class="funnel-label">Researched</span><span class="funnel-count">%d</span></div>
+				<div class="funnel-step" style="flex: %d; background: #7dd3fc;" title="Outreach Sent: %d initial emails/messages"><span class="funnel-label">Outreach</span><span class="funnel-count">%d</span></div>
+				<div class="funnel-step" style="flex: %d; background: #38bdf8;" title="Engaged: %d replied"><span class="funnel-label">Engaged</span><span class="funnel-count">%d</span></div>
+				<div class="funnel-step" style="flex: %d; background: #0ea5e9;" title="Negotiating: %d discussing terms"><span class="funnel-label">Negotiating</span><span class="funnel-count">%d</span></div>
+				<div class="funnel-step" style="flex: %d; background: #22c55e;" title="Won: %d closed deals"><span class="funnel-label">Won</span><span class="funnel-count">%d</span></div>
+			</div>
 		</div>
 	</div>
 	<div class="card full-width" style="border-top: 4px solid var(--primary);">
@@ -563,7 +571,14 @@ tr:hover { background-color: #f8fafc; }
 				<th>Contacts & Channels</th>
 				<th>Last Updated</th>
 				<th>Actions</th>
-			</tr>`, metrics.TotalLeads, metrics.LeadsByState[db.StateClosedWon], metrics.WinRate, metrics.SuccessfulOutreach, metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateOutreachSent], metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateNegotiating], len(deals))
+			</tr>`, metrics.TotalLeads, metrics.LeadsByState[db.StateClosedWon], metrics.WinRate, metrics.SuccessfulOutreach,
+		metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateDiscovered],
+		metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateResearched],
+		metrics.LeadsByState[db.StateOutreachSent], metrics.LeadsByState[db.StateOutreachSent], metrics.LeadsByState[db.StateOutreachSent],
+		metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateEngaged],
+		metrics.LeadsByState[db.StateNegotiating], metrics.LeadsByState[db.StateNegotiating], metrics.LeadsByState[db.StateNegotiating],
+		metrics.LeadsByState[db.StateClosedWon], metrics.LeadsByState[db.StateClosedWon], metrics.LeadsByState[db.StateClosedWon],
+		len(deals))
 
 	var dealsRows string
 	for _, d := range deals {

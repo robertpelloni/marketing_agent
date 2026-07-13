@@ -9,9 +9,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
+	"github.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // LinkedInSource implements LeadSource by searching for companies and contacts via LinkedIn.

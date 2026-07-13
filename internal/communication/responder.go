@@ -13,10 +13,10 @@ import (
 
 // RAGResponseGenerator provides technically grounded replies using Pseudo-RAG.
 type RAGResponseGenerator struct {
-	db			*db.DB
-	llm			llm.LLMProvider
-	tormentNexusDocs	string
-	objectionLib	*ObjectionLibrary
+	db               *db.DB
+	llm              llm.LLMProvider
+	tormentNexusDocs string
+	objectionLib     *ObjectionLibrary
 }
 
 // NewRAGResponseGenerator creates a new generator with TormentNexus context.
@@ -47,10 +47,10 @@ func NewRAGResponseGenerator(database *db.DB, provider llm.LLMProvider) *RAGResp
 	}
 
 	return &RAGResponseGenerator{
-		db:			database,
-		llm:			provider,
-		tormentNexusDocs:	string(content),
-		objectionLib:	NewObjectionLibrary(),
+		db:               database,
+		llm:              provider,
+		tormentNexusDocs: string(content),
+		objectionLib:     NewObjectionLibrary(),
 	}
 }
 
@@ -165,20 +165,20 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 
 	// Placeholder replacements for body
 	replacements := map[string]string{
-		"{{contact}}":        getValue(salesCtx.Contact.Name),
-		"{{company}}":        getValue(salesCtx.Company.Name),
-		"{{tech_stack}}":     strings.Join(salesCtx.Company.TechStack, ", "),
-		"{{role}}":           getValue(salesCtx.Contact.Role),
-		"{{github_handle}}":  getValue(salesCtx.Contact.GitHubHandle),
-		"{{linkedin_url}}":   getValue(salesCtx.Contact.LinkedInURL),
-		"{{email}}":          getValue(salesCtx.Contact.Email),
+		"{{contact}}":       getValue(salesCtx.Contact.Name),
+		"{{company}}":       getValue(salesCtx.Company.Name),
+		"{{tech_stack}}":    strings.Join(salesCtx.Company.TechStack, ", "),
+		"{{role}}":          getValue(salesCtx.Contact.Role),
+		"{{github_handle}}": getValue(salesCtx.Contact.GitHubHandle),
+		"{{linkedin_url}}":  getValue(salesCtx.Contact.LinkedInURL),
+		"{{email}}":         getValue(salesCtx.Contact.Email),
 		"{{specific_project}}": func() string {
 			if isCorp {
 				return "HyperNexus"
 			}
 			return "TormentNexus"
 		}(),
-		"{{repo}}":           getValue(salesCtx.Company.Name, "AI-Platform"),
+		"{{repo}}":            getValue(salesCtx.Company.Name, "AI-Platform"),
 		"{{market_cap_tier}}": getValue(salesCtx.Company.MarketCapTier, "Corporate"),
 	}
 

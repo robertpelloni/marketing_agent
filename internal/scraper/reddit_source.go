@@ -12,10 +12,10 @@ import (
 // RedditSource implements LeadSource by searching Reddit for companies
 // discussing MCP, LLM orchestration, and AI infrastructure.
 type RedditSource struct {
-	Client      *http.Client
-	Username    string
-	Password    string
-	Subreddits  []string
+	Client     *http.Client
+	Username   string
+	Password   string
+	Subreddits []string
 }
 
 // NewRedditSource creates a new RedditSource.

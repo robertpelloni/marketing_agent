@@ -311,6 +311,8 @@ func (s *StripeBillingClient) HandleWebhook(ctx context.Context, payload []byte,
 	switch event.Type {
 	case "checkout.session.completed":
 		return s.handleCheckoutCompleted(ctx, event)
+	case "checkout.session.expired":
+		return s.handleCheckoutExpired(ctx, event)
 	case "invoice.paid":
 		return s.handleInvoicePaid(ctx, event)
 	case "invoice.payment_failed":
@@ -408,6 +410,21 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 	go provisionTN(ctx, sess.CustomerDetails.Email, sess.CustomerDetails.Name, tierStr, seats)
 
 	return fmt.Sprintf("subscription created: %s", sub.ID), nil
+}
+
+// handleCheckoutExpired tracks abandoned checkouts for conversion funnel analysis.
+func (s *StripeBillingClient) handleCheckoutExpired(ctx context.Context, event stripe.Event) (string, error) {
+	var sess stripe.CheckoutSession
+	if err := json.Unmarshal(event.Data.Raw, &sess); err != nil {
+		return "", fmt.Errorf("expired checkout unmarshal: %w", err)
+	}
+	email := "unknown"
+	if sess.CustomerDetails != nil && sess.CustomerDetails.Email != "" {
+		email = sess.CustomerDetails.Email
+	}
+	slog.Info("checkout abandoned", "session_id", sess.ID, "email", email,
+		"amount", sess.AmountTotal, "currency", string(sess.Currency))
+	return fmt.Sprintf("checkout abandoned: session %s (email: %s)", sess.ID, email), nil
 }
 
 func (s *StripeBillingClient) handleInvoicePaid(ctx context.Context, event stripe.Event) (string, error) {

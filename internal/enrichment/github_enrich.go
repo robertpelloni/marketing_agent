@@ -253,11 +253,15 @@ func (g *GitHubEnrichSource) fetchRecentCommits(ctx context.Context, fullName st
 }
 
 // companyToOrgName derives a GitHub org name from a company record.
+// Includes sanity checks to avoid passing garbage HN comment text as GitHub queries.
 func (g *GitHubEnrichSource) companyToOrgName(company db.Company) string {
-	// If the company name is a GitHub-style handle, use it directly
 	name := strings.TrimSpace(company.Name)
-	if name != "" && !strings.Contains(name, " ") && len(name) > 2 {
-		return name
+
+	// If the name looks like a valid GitHub handle, use it directly
+	if name != "" && !strings.Contains(name, " ") && len(name) > 2 && len(name) < 40 {
+		if isValidOrgName(name) {
+			return name
+		}
 	}
 
 	// Try extracting from domain
@@ -271,11 +275,39 @@ func (g *GitHubEnrichSource) companyToOrgName(company db.Company) string {
 	domain = strings.TrimSuffix(domain, ".org")
 	domain = strings.TrimSuffix(domain, ".net")
 
-	if domain != "" && !strings.Contains(domain, ".") {
+	if domain != "" && !strings.Contains(domain, ".") && isValidOrgName(domain) {
 		return domain
 	}
 
 	return ""
+}
+
+// isValidOrgName checks whether a string looks like a plausible GitHub org name.
+// Rejects garbage from HN comment parsing (HTML entities, URL encoding, etc).
+func isValidOrgName(s string) bool {
+	// Reject strings containing HTML entities or URL encoding artifacts
+	if strings.Contains(s, "&") || strings.Contains(s, "%") ||
+		strings.Contains(s, "#") || strings.Contains(s, "+") ||
+		strings.Contains(s, "://") || strings.Contains(s, "<") {
+		return false
+	}
+	// Reject strings that look like raw URLs
+	if strings.HasPrefix(s, "http") || strings.HasPrefix(s, "www.") {
+		return false
+	}
+	// Reject strings that are too short or look like single chars
+	if len(s) < 2 {
+		return false
+	}
+	// GitHub org names only use alphanumeric + hyphens
+	for _, r := range s {
+		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') ||
+			(r >= '0' && r <= '9') || r == '-' || r == '_' {
+			continue
+		}
+		return false
+	}
+	return true
 }
 
 // compile-time interface check

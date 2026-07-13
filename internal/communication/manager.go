@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"strings"
 	"time"
 
 	"github.com/robertpelloni/marketing_agent/internal/db"
@@ -214,6 +215,29 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		return "", err
 	}
 
+	// 2b. Check for unsubscribe/bounce/opt-out signals before any processing.
+	// Immediately close the deal and send a confirmation to prevent further emails.
+	if isUnsubscribe(text) {
+		slog.Info(fmt.Sprintf("Comm Manager: Unsubscribe detected from %s — closing deal %d", contact.Email, contact.CompanyID))
+		deal, dealErr := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
+		if dealErr == nil {
+			_ = m.db.UpdateDealState(ctx, deal.ID, db.StateClosedLost)
+		}
+		return "You have been unsubscribed from further communications. No additional emails will be sent.", nil
+	}
+
+	// 2c. Check for email bounce (delivery failure notifications)
+	if isBounce(text) {
+		slog.Info(fmt.Sprintf("Comm Manager: Email bounce detected for %s — marking contact as invalid", contact.Email))
+		deal, dealErr := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
+		if dealErr == nil {
+			_ = m.db.UpdateDealState(ctx, deal.ID, db.StateClosedLost)
+		}
+		// Mark the contact's email as invalid so we don't try again
+		_ = m.db.UpdateContactEmail(ctx, contact.ID, "")
+		return "", nil
+	}
+
 	// 2a. Decide next action using strategy engine
 	company, err := m.db.GetCompanyByID(ctx, contact.CompanyID)
 	if err != nil {
@@ -374,4 +398,41 @@ func (m *Manager) RejectDeal(ctx context.Context, dealID int64) error {
 	}
 	slog.Info(fmt.Sprintf("Manager: Deal %d rejected by human review, marked as Closed_Lost", dealID))
 	return nil
+}
+
+// isUnsubscribe detects opt-out, unsubscribe, or removal requests in inbound text.
+// Returns true if the text indicates the recipient wants no further contact.
+func isUnsubscribe(text string) bool {
+	lower := strings.ToLower(text)
+	unsubPhrases := []string{
+		"unsubscribe", "opt out", "opt-out", "remove me",
+		"take me off", "stop emailing", "do not contact",
+		"don't contact", "please remove", "stop sending",
+		"no more emails", "leave me alone", "spam",
+	}
+	for _, phrase := range unsubPhrases {
+		if strings.Contains(lower, phrase) {
+			return true
+		}
+	}
+	return false
+}
+
+// isBounce detects email delivery failure notifications.
+// Matches common bounce formats: mailer-daemon, delivery failure, etc.
+func isBounce(text string) bool {
+	lower := strings.ToLower(text)
+	bouncePhrases := []string{
+		"mailer-daemon", "mail delivery", "delivery status notification",
+		"undelivered mail", "returned mail", "delivery failure",
+		"could not be delivered", "message blocked", "address rejected",
+		"no such user", "mailbox full", "user unknown",
+		"recipient rejected", "550 5.1.1", "550 5.4.1",
+	}
+	for _, phrase := range bouncePhrases {
+		if strings.Contains(lower, phrase) {
+			return true
+		}
+	}
+	return false
 }

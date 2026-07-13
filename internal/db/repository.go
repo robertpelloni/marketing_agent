@@ -348,6 +348,16 @@ func (db *DB) UpdateContactPreferredChannel(ctx context.Context, contactID int64
 	return nil
 }
 
+// UpdateContactEmail clears the email for a contact (used when email bounces).
+func (db *DB) UpdateContactEmail(ctx context.Context, contactID int64, email string) error {
+	query := `UPDATE contacts SET email = $1, updated_at = $2 WHERE id = $3`
+	_, err := db.Conn.ExecContext(ctx, query, email, time.Now(), contactID)
+	if err != nil {
+		return fmt.Errorf("failed to update contact email: %w", err)
+	}
+	return nil
+}
+
 // ListContactsByCompany retrieves all contacts for a specific company.
 func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Contact, error) {
 	query := `

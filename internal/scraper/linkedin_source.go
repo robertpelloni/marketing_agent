@@ -191,5 +191,12 @@ func (l *LinkedInSource) SetTargetTitles(titles []string) {
 	l.TargetTitles = titles
 }
 
+// NewLinkedInSource creates a new LinkedInSource with default HTTP client.
+func NewLinkedInSource() *LinkedInSource {
+	return &LinkedInSource{
+		Client: http.DefaultClient,
+	}
+}
+
 // Ensure LinkedInSource implements LeadSource interface
 var _ LeadSource = (*LinkedInSource)(nil)

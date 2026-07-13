@@ -585,29 +585,6 @@
       /* ══════ RAINBOW BORDER CARD ══════ */
       .price-card.rainbow {
         border: none !important;
-        background: transparent !important;
-        padding: 4px !important;
-        overflow: visible;
-        position: relative;
-        z-index: 1;
-        transform-style: preserve-3d;
-        perspective: 800px;
-        transition: transform 0.15s ease-out, box-shadow 0.3s ease;
-        box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
-      }
-      /* Badge above border */
-      .price-card.rainbow .price-badge {
-        position: absolute;
-        top: -12px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10;
-      }
-      /* Rainbow rotating border */
-      .price-card.rainbow::before {
-        content: '';
-        position: absolute;
-        inset: 0;
         background: conic-gradient(from 180deg,
           rgba(255, 59, 48, 0.9),
           rgba(255, 149, 0, 0.9),
@@ -617,22 +594,24 @@
           rgba(0, 122, 255, 0.9),
           rgba(88, 86, 214, 0.9),
           rgba(255, 59, 48, 0.9)
-        );
+        ) !important;
+        padding: 4px !important;
+        overflow: visible;
+        position: relative;
+        z-index: 1;
+        transform-style: preserve-3d;
+        perspective: 800px;
+        transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+        box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
         animation: rotateRainbowReverse 0.6s linear infinite;
-        z-index: -2;
-        pointer-events: none;
-        display: block !important;
-        border-radius: 12px;
       }
-      /* White center covering rainbow, leaving4px border */
-      .price-card.rainbow::after {
-        content: '';
+      /* Badge above border */
+      .price-card.rainbow .price-badge {
         position: absolute;
-        inset: 4px;
-        background: #fff;
-        border-radius: 8px;
-        z-index: -1;
-        pointer-events: none;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
       }
       @keyframes rotateRainbowReverse {
         from { transform: rotate(360deg); }
@@ -659,8 +638,6 @@
       /* Hover: faster border, stronger glow */
       .price-card.rainbow:hover {
         box-shadow: 0 0 50px rgba(255, 59, 48, 0.5), 0 0 120px rgba(255, 149, 0, 0.3), 0 0 180px rgba(0, 122, 255, 0.2) !important;
-      }
-      .price-card.rainbow:hover::before {
         animation-duration: 0.3s !important;
       }
 
@@ -2263,8 +2240,9 @@
 
 
 
-                                <div class="price-card rainbow featured">
-                    <div style="position:relative;z-index:1"><div class="price-badge">Early Adopter Sale</div>
+                                                <div class="price-card rainbow featured" style="padding:4px;border-radius:12px;position:relative;overflow:visible">
+                    <div style="position:relative;z-index:1;background:#fff;border-radius:8px;padding:32px 28px">
+                        ><div class="price-badge">Early Adopter Sale</div>
                     <div class="price-tier">Professional</div>
                     <div style="text-decoration:line-through;color:#94a3b8;font-size:20px;font-weight:500;letter-spacing:-0.5px;margin-bottom:2px">$100</div>
                     <div style="font-size:12px;color:#ef4444;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;animation:pulse 1.5s infinite">SALE ENDING... SOON!</div>
@@ -2334,24 +2312,8 @@
 
 
                     <a href="/contact.php" class="price-btn price-btn-primary">Buy Now!!!</a>
-                </div>
-                
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            </div></div>
+                    </div>
+                </div></div>
 
 
 

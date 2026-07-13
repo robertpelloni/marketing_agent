@@ -585,25 +585,15 @@
       /* ══════ RAINBOW BORDER CARD ══════ */
       .price-card.rainbow {
         border: none !important;
-        background: conic-gradient(from 180deg,
-          rgba(255, 59, 48, 0.9),
-          rgba(255, 149, 0, 0.9),
-          rgba(255, 204, 0, 0.9),
-          rgba(76, 217, 100, 0.9),
-          rgba(90, 200, 250, 0.9),
-          rgba(0, 122, 255, 0.9),
-          rgba(88, 86, 214, 0.9),
-          rgba(255, 59, 48, 0.9)
-        ) !important;
+        background: transparent !important;
         padding: 4px !important;
-        overflow: visible;
+        overflow: hidden;
         position: relative;
         z-index: 1;
         transform-style: preserve-3d;
         perspective: 800px;
         transition: transform 0.15s ease-out, box-shadow 0.3s ease;
         box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
-        animation: rotateRainbowReverse 0.6s linear infinite;
       }
       /* Badge above border */
       .price-card.rainbow .price-badge {
@@ -613,41 +603,42 @@
         transform: translateX(-50%);
         z-index: 10;
       }
-      /* Inner white background covering center, leaving rainbow border visible */
+      /* Rainbow rotating border */
       .price-card.rainbow::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: conic-gradient(from 180deg,
+          rgba(255, 59, 48, 0.9),
+          rgba(255, 149, 0, 0.9),
+          rgba(255, 204, 0, 0.9),
+          rgba(76, 217, 100, 0.9),
+          rgba(90, 200, 250, 0.9),
+          rgba(0, 122, 255, 0.9),
+          rgba(88, 86, 214, 0.9),
+          rgba(255, 59, 48, 0.9)
+        );
+        animation: rotateRainbowReverse 0.6s linear infinite;
+        z-index: -2;
+        pointer-events: none;
+        display: block !important;
+        border-radius: 12px;
+      }
+      /* White center covering rainbow, leaving4px border */
+      .price-card.rainbow::after {
         content: '';
         position: absolute;
         inset: 4px;
         background: #fff;
         border-radius: 8px;
-        z-index: 1;
+        z-index: -1;
         pointer-events: none;
       }
       @keyframes rotateRainbowReverse {
         from { transform: rotate(360deg); }
         to { transform: rotate(0deg); }
       }
-      /* Pale rainbow spinner fill — embedded inside card */
-      .price-card.rainbow::after {
-        content: '';
-        position: absolute;
-        inset: 4px;
-        z-index: 2;
-        background: conic-gradient(from 0deg,
-          rgba(255, 59, 48, 0.06),
-          rgba(255, 149, 0, 0.06),
-          rgba(255, 204, 0, 0.06),
-          rgba(76, 217, 100, 0.06),
-          rgba(90, 200, 250, 0.06),
-          rgba(0, 122, 255, 0.06),
-          rgba(88, 86, 214, 0.06),
-          rgba(255, 59, 48, 0.06)
-        );
-        animation: rotateRainbow 2.5s linear infinite;
-        border-radius: 8px;
-        z-index: 0;
-        pointer-events: none;
-      }
+
       @keyframes rotateRainbow {
         from { transform: rotate(0deg); }
         to { transform: rotate(360deg); }
@@ -665,28 +656,12 @@
       .price-card.rainbow {
         animation: rainbowPulseGlow 1.2s infinite alternate ease-in-out;
       }
-      /* Hover: intense spinner, faster border, 3D tilt handled by JS */
+      /* Hover: faster border, stronger glow */
       .price-card.rainbow:hover {
         box-shadow: 0 0 50px rgba(255, 59, 48, 0.5), 0 0 120px rgba(255, 149, 0, 0.3), 0 0 180px rgba(0, 122, 255, 0.2) !important;
       }
-      .price-card.rainbow:hover {
+      .price-card.rainbow:hover::before {
         animation-duration: 0.3s !important;
-        background: conic-gradient(from 180deg,
-          #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30
-        ) !important;
-      }
-      .price-card.rainbow:hover::after {
-        background: conic-gradient(from 0deg,
-          rgba(255, 59, 48, 0.2),
-          rgba(255, 149, 0, 0.2),
-          rgba(255, 204, 0, 0.2),
-          rgba(76, 217, 100, 0.2),
-          rgba(90, 200, 250, 0.2),
-          rgba(0, 122, 255, 0.2),
-          rgba(88, 86, 214, 0.2),
-          rgba(255, 59, 48, 0.2)
-        ) !important;
-        animation-duration: 1s !important;
       }
 
       /* ══════ TESTIMONIALS ══════ */
@@ -1182,7 +1157,7 @@
 
 
 
-                <a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/12652b93-e2f0-4b35-bc6a-31c2c8fa51f0?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" class="btn btn-secondary" style="font-size:13px;padding:10px 22px">▶ HyperNexus: Ultimate Agent</a>
+                <div style="text-align:center;margin-top:16px"><a href="https://notebooklm.google.com/notebook/0a540934-3f43-4c52-91e0-ebc622071409/artifact/12652b93-e2f0-4b35-bc6a-31c2c8fa51f0?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" class="btn btn-secondary" style="font-size:13px;padding:10px 22px">▶ HyperNexus: Ultimate Agent</a></div>
 
 
 
@@ -2288,25 +2263,8 @@
 
 
 
-                <div class="price-card rainbow featured">
-                    <div style="position:relative;z-index:1;background:#fff;border-radius:10px;padding:44px 32px;height:100%;display:flex;flex-direction:column;justify-content:space-between">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    <div class="price-badge">Early Adopter Sale</div>
+                                <div class="price-card rainbow featured">
+                    <div style="position:relative;z-index:1"><div class="price-badge">Early Adopter Sale</div>
                     <div class="price-tier">Professional</div>
                     <div style="text-decoration:line-through;color:#94a3b8;font-size:20px;font-weight:500;letter-spacing:-0.5px;margin-bottom:2px">$100</div>
                     <div style="font-size:12px;color:#ef4444;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;animation:pulse 1.5s infinite">SALE ENDING... SOON!</div>
@@ -2376,22 +2334,6 @@
 
 
                     <a href="/contact.php" class="price-btn price-btn-primary">Buy Now!!!</a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                </div>
                 </div>
                 
 
@@ -2409,7 +2351,7 @@
 
 
 
-            </div>
+            </div></div>
 
 
 

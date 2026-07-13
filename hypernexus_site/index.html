@@ -429,7 +429,7 @@
         width: 500px;
         height: 100vh;
         pointer-events: none;
-        z-index: 1;
+        z-index: -1;
         opacity: 0.85;
       }
       .blue-side-left {
@@ -450,7 +450,8 @@
         border: 3px solid transparent;
         border-radius: 28px;
         padding: 40px 48px;
-        background: linear-gradient(135deg, rgba(255,255,255,0.93) 0%, rgba(241,245,249,0.95) 50%, rgba(255,255,255,0.93) 100%) padding-box,
+        z-index: 2;
+        background: linear-gradient(135deg, rgba(255,255,255,0.97) 0%, rgba(248,250,252,0.98) 50%, rgba(255,255,255,0.97) 100%) padding-box,
                     conic-gradient(from var(--angle, 0deg),
                       #0284c7 0%, #0ea5e9 12%, #38bdf8 25%, #0284c7 37%,
                       #1e3a8a 50%, #0369a1 62%, #0ea5e9 75%, #38bdf8 87%, #0284c7 100%) border-box;
@@ -587,7 +588,7 @@
         border: none !important;
         background: transparent !important;
         padding: 4px !important;
-        overflow: hidden;
+        overflow: visible;
         position: relative;
         z-index: 1;
         transform-style: preserve-3d;
@@ -595,11 +596,19 @@
         transition: transform 0.15s ease-out, box-shadow 0.3s ease;
         box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
       }
-      /* Thick rainbow border — reverse direction, fast — fills card bounds */
+      /* Badge above border */
+      .price-card.rainbow .price-badge {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+      }
+      /* Thick rainbow border — reverse direction, fast — extends to edge */
       .price-card.rainbow::before {
         content: '';
         position: absolute;
-        inset: 0;
+        inset: -4px;
         background: conic-gradient(from 180deg,
           rgba(255, 59, 48, 0.9),
           rgba(255, 149, 0, 0.9),
@@ -1205,7 +1214,7 @@
 
 
 
-        <div id="hypernexus-hero-vid" style="position:relative;z-index:20;margin-top:20px;max-width:750px;margin-left:auto;margin-right:auto;border-radius:12px;overflow:hidden;border:1px solid rgba(77,124,255,0.2);box-shadow:0 0 30px rgba(77,124,255,0.1);background:#0a0e1a">
+        <div id="hypernexus-hero-vid" style="position:relative;z-index:50;margin-top:20px;max-width:750px;margin-left:auto;margin-right:auto;border-radius:12px;overflow:hidden;border:1px solid rgba(77,124,255,0.2);box-shadow:0 0 30px rgba(77,124,255,0.1);background:#0a0e1a">
 
           <video controls style="width:100%;display:block" preload="auto" playsinline>
 
@@ -2928,7 +2937,7 @@
 
 
 
-        <div id="hypernexus-dossier-vid" style="position:relative;z-index:20;margin-top:25px;max-width:750px;margin-left:auto;margin-right:auto;border-radius:12px;overflow:hidden;border:1px solid rgba(77,124,255,0.2);box-shadow:0 0 30px rgba(77,124,255,0.1);background:#0a0e1a">
+        <div id="hypernexus-dossier-vid" style="position:relative;z-index:50;margin-top:25px;max-width:750px;margin-left:auto;margin-right:auto;border-radius:12px;overflow:hidden;border:1px solid rgba(77,124,255,0.2);box-shadow:0 0 30px rgba(77,124,255,0.1);background:#0a0e1a">
 
           <video controls style="width:100%;display:block" preload="auto" playsinline>
 

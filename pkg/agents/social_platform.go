@@ -57,14 +57,14 @@ func NewSocialPosterHub() *SocialPosterHub {
 		slog.Info("SocialPosterHub: Bluesky not configured (set BLUESKY_HANDLE + BLUESKY_APP_PASSWORD)")
 	}
 
-	// Reddit (uses env REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_USERNAME, REDDIT_PASSWORD)
-	if id := os.Getenv("REDDIT_CLIENT_ID"); id != "" {
+	// Reddit — uses headless browser (go-rod) with REDDIT_USERNAME + REDDIT_PASSWORD
+	if u := os.Getenv("REDDIT_USERNAME"); u != "" {
 		register(NewRedditProvider(
-			id, os.Getenv("REDDIT_CLIENT_SECRET"),
-			os.Getenv("REDDIT_USERNAME"), os.Getenv("REDDIT_PASSWORD"),
+			os.Getenv("REDDIT_CLIENT_ID"), os.Getenv("REDDIT_CLIENT_SECRET"),
+			u, os.Getenv("REDDIT_PASSWORD"),
 		))
 	} else {
-		slog.Info("SocialPosterHub: Reddit not configured (set REDDIT_CLIENT_ID + REDDIT_CLIENT_SECRET + REDDIT_USERNAME + REDDIT_PASSWORD)")
+		slog.Info("SocialPosterHub: Reddit not configured (set REDDIT_USERNAME + REDDIT_PASSWORD)")
 	}
 
 	// Twitter / X (uses env TWITTER_BEARER_TOKEN, or TWITTER_API_KEY + TWITTER_API_SECRET + TWITTER_ACCESS_TOKEN + TWITTER_ACCESS_SECRET)

@@ -2,10 +2,10 @@ package web
 
 import (
 	"bytes"
-	"database/sql"
 	"context"
 	"crypto/hmac"
 	"crypto/sha256"
+	"database/sql"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -58,7 +58,6 @@ func NewServer(database *db.DB, deployer *deploy.Deployer, tracker deploy.CITrac
 		tracker:       tracker,
 		tasks:         taskManager,
 		auth:          auth.NewAuthenticator(dbConn),
-		auth:          auth.NewAuthenticator(),
 		llmProvider:   llmProvider,
 		billingClient: billingClient,
 		mux:           http.NewServeMux(),
@@ -107,6 +106,9 @@ func (s *Server) routes() {
 	s.mux.Handle("/api/v1/billing/subscription", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleGetSubscription))))
 	s.mux.Handle("/api/v1/billing/cancel", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleCancelSubscription))))
 	s.mux.Handle("/api/v1/billing/portal", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleBillingPortal))))
+
+	// Social content API (public — serves content for Devvit Reddit app)
+	s.mux.Handle("/api/v1/social/reddit", rl.middleware(http.HandlerFunc(s.handleRedditContent)))
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -562,55 +564,6 @@ tr:hover { background-color: #f8fafc; }
 				<th>Last Updated</th>
 				<th>Actions</th>
 			</tr>`, metrics.TotalLeads, metrics.LeadsByState[db.StateClosedWon], metrics.WinRate, metrics.SuccessfulOutreach, metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateOutreachSent], metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateNegotiating], len(deals))
-
-	<div class="card full-width" style="border-top: 4px solid var(--info);">
-		<div class="card-header">
-			Performance Metrics
-			<span class="tooltip" style="font-size:0.8rem; color:#888;">?
-				<span class="tooltiptext">Real-time pipeline statistics and conversion rates.</span>
-			</span>
-		</div>
-		<div class="metrics-grid">
-			<div class="metric-box" style="background: #e9ecef;">
-				<div class="metric-value">%d</div>
-				<div class="metric-label">Total Leads</div>
-			</div>
-			<div class="metric-box" style="background: #d4edda;">
-				<div class="metric-value">%d</div>
-				<div class="metric-label">Won Deals</div>
-			</div>
-			<div class="metric-box" style="background: #f8d7da;">
-				<div class="metric-value">%.1f%%</div>
-				<div class="metric-label">Win Rate</div>
-			</div>
-			<div class="metric-box" style="background: #fff3cd;">
-				<div class="metric-value">%d</div>
-				<div class="metric-label">Successful Outreach</div>
-			</div>
-		</div>
-		<div style="margin-top: 15px; font-size: 0.9rem; display: flex; gap: 15px; justify-content: center; color: #555;">
-			<span><strong>Pipeline:</strong></span>
-			<span class="tooltip">Discovered: %d<span class="tooltiptext">Leads found by scraper</span></span> |
-			<span class="tooltip">Researched: %d<span class="tooltiptext">Technical dossier built</span></span> |
-			<span class="tooltip">Outreach Sent: %d<span class="tooltiptext">Initial email/message sent</span></span> |
-			<span class="tooltip">Engaged: %d<span class="tooltiptext">Reply received</span></span> |
-			<span class="tooltip">Negotiating: %d<span class="tooltiptext">Discussing terms</span></span>
-		</div>
-	</div>
-	<div class="card full-width" style="border-top: 4px solid var(--primary);">
-		<div class="card-header">
-			Active Deals
-			<span style="font-size: 0.8rem; font-weight: normal; color: #666;">(Showing last %d)</span>
-		</div>
-		<table>
-			<tr>
-				<th>Deal ID</th>
-				<th>Company ID</th>
-				<th>State</th>
-				<th>Contacts & Channels</th>
-				<th>Last Updated</th>
-				<th>Actions</th>
-			</tr>`, healthStatusColor(health), health, llmColor, llmStatus, metrics.TotalLeads, metrics.LeadsByState[db.StateClosedWon], metrics.WinRate, metrics.SuccessfulOutreach, metrics.LeadsByState[db.StateDiscovered], metrics.LeadsByState[db.StateResearched], metrics.LeadsByState[db.StateOutreachSent], metrics.LeadsByState[db.StateEngaged], metrics.LeadsByState[db.StateNegotiating], len(deals))
 
 	var dealsRows string
 	for _, d := range deals {
@@ -1292,10 +1245,47 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Webhook processing failed: "+err.Error(), http.StatusBadRequest)
 		return
 	}
+
+	// When a subscription is created via checkout, tell TormentNexus to provision
+	if strings.Contains(msg, "subscription created") {
+		go s.notifyTormentNexusProvision(r.Context(), msg)
+	}
+
 	slog.Info("Stripe webhook processed", "msg", msg)
 	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write([]byte(msg))
-	w.Write([]byte(msg))
+}
+
+// notifyTormentNexusProvision fires a POST to TormentNexus's provisioning endpoint.
+// TormentNexus (port 8090) handles account creation, container provisioning,
+// and admin dashboard setup.
+func (s *Server) notifyTormentNexusProvision(ctx context.Context, checkoutMsg string) {
+	provisionURL := os.Getenv("TN_PROVISION_URL")
+	if provisionURL == "" {
+		provisionURL = "http://127.0.0.1:8090/api/account/provision"
+	}
+
+	payload := map[string]string{
+		"source":       "stripe_checkout",
+		"checkout_msg": checkoutMsg,
+	}
+	body, _ := json.Marshal(payload)
+
+	client := &http.Client{Timeout: 10 * time.Second}
+	resp, err := client.Post(provisionURL, "application/json", bytes.NewReader(body))
+	if err != nil {
+		slog.WarnContext(ctx, "Failed to notify TormentNexus for provisioning", "url", provisionURL, "error", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 300 {
+		respBody, _ := io.ReadAll(resp.Body)
+		slog.WarnContext(ctx, "TormentNexus provisioning failed", "status", resp.StatusCode, "body", string(respBody))
+		return
+	}
+
+	slog.InfoContext(ctx, "TormentNexus provisioning triggered", "url", provisionURL)
 }
 
 func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
@@ -1310,6 +1300,7 @@ func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		CompanyID  int64  `json:"company_id"`
 		Tier       string `json:"tier"`
+		Seats      int    `json:"seats"`
 		SuccessURL string `json:"success_url"`
 		CancelURL  string `json:"cancel_url"`
 	}
@@ -1317,7 +1308,13 @@ func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	url, err := s.billingClient.CreateCheckoutSession(r.Context(), req.CompanyID, billing.Tier(req.Tier), req.SuccessURL, req.CancelURL)
+	if req.Seats <= 0 {
+		req.Seats = 5
+	}
+	if req.Seats > 100000 {
+		req.Seats = 100000
+	}
+	url, err := s.billingClient.CreateCheckoutSession(r.Context(), req.CompanyID, billing.Tier(req.Tier), req.SuccessURL, req.CancelURL, req.Seats)
 	if err != nil {
 		slog.Error("Failed to create checkout session", "error", err)
 		http.Error(w, "Failed to create checkout: "+err.Error(), http.StatusInternalServerError)
@@ -1325,7 +1322,6 @@ func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(map[string]string{"url": url})
-	json.NewEncoder(w).Encode(map[string]string{"url": url})
 }
 
 func (s *Server) handleGetSubscription(w http.ResponseWriter, r *http.Request) {
@@ -1351,7 +1347,6 @@ func (s *Server) handleGetSubscription(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(sub)
-	json.NewEncoder(w).Encode(sub)
 }
 
 func (s *Server) handleCancelSubscription(w http.ResponseWriter, r *http.Request) {
@@ -1377,7 +1372,6 @@ func (s *Server) handleCancelSubscription(w http.ResponseWriter, r *http.Request
 	}
 	w.WriteHeader(http.StatusOK)
 	_ = json.NewEncoder(w).Encode(map[string]string{"status": "canceled"})
-	json.NewEncoder(w).Encode(map[string]string{"status": "canceled"})
 }
 
 func (s *Server) handleBillingPortal(w http.ResponseWriter, r *http.Request) {
@@ -1386,6 +1380,38 @@ func (s *Server) handleBillingPortal(w http.ResponseWriter, r *http.Request) {
 		scheme = "https"
 	}
 	http.Redirect(w, r, scheme+"://"+r.Host+"/#billing", http.StatusFound)
+}
+
+// handleRedditContent returns the latest generated Reddit post content as JSON.
+// Used by the Devvit Reddit app to fetch fresh content for scheduled posts.
+func (s *Server) handleRedditContent(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	if s.db == nil {
+		_ = json.NewEncoder(w).Encode(map[string]string{
+			"title":   "TormentNexus — The OS for AI Models",
+			"content": "TormentNexus is a local-first cognitive control plane for multi-agent LLM workflows. Progressive MCP tool routing, cross-harness parity, LLM waterfall, and 14K+ persisted memories. Open source at github.com/MDMAtk/TormentNexus.",
+			"brand":   "tormentnexus",
+		})
+		return
+	}
+
+	posts, err := s.db.ListRecentSocialPosts(r.Context(), 5)
+	if err != nil || len(posts) == 0 {
+		_ = json.NewEncoder(w).Encode(map[string]string{
+			"title":   "TormentNexus — The OS for AI Models",
+			"content": "TormentNexus is a local-first cognitive control plane for multi-agent LLM workflows. Progressive MCP tool routing, cross-harness parity, LLM waterfall, and 14K+ persisted memories. Open source at github.com/MDMAtk/TormentNexus.",
+			"brand":   "tormentnexus",
+		})
+		return
+	}
+
+	_ = json.NewEncoder(w).Encode(map[string]string{
+		"title":   "TormentNexus & HyperNexus — AI Infrastructure Update",
+		"content": posts[0].PostContent,
+		"brand":   posts[0].Brand,
+	})
 }
 
 func (s *Server) handleContainerStart(w http.ResponseWriter, r *http.Request) {

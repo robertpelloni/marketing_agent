@@ -58,7 +58,7 @@ type SubscriptionInfo struct {
 type BillingClient interface {
 	CreateInvoice(ctx context.Context, deal db.Deal, company db.Company) (string, error)
 	GetInvoiceStatus(ctx context.Context, invoiceID string) (InvoiceStatus, error)
-	CreateCheckoutSession(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string) (string, error)
+	CreateCheckoutSession(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int) (string, error)
 	GetSubscription(ctx context.Context, subID string) (*SubscriptionInfo, error)
 	CancelSubscription(ctx context.Context, subID string, atPeriodEnd bool) error
 	UpdateSubscriptionSeats(ctx context.Context, subID string, seats int) error
@@ -152,16 +152,21 @@ func (s *StripeBillingClient) priceIDForTier(tier Tier) string {
 	}
 }
 
-func (s *StripeBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string) (string, error) {
+func (s *StripeBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int) (string, error) {
 	s.stripe()
+
+	if seats <= 0 {
+		seats = 5
+	}
+	if seats > 100000 {
+		seats = 100000
+	}
 
 	priceID := s.priceIDForTier(tier)
 	if priceID == "" {
 		return "", fmt.Errorf("unknown tier: %s", tier)
 	}
 
-	// Determine if the price is recurring (subscription) or one-time (payment)
-	// by fetching the price from Stripe.
 	price, err := getPrice(ctx, priceID)
 	if err != nil {
 		return "", fmt.Errorf("failed to fetch price %s: %w", priceID, err)
@@ -179,12 +184,13 @@ func (s *StripeBillingClient) CreateCheckoutSession(ctx context.Context, company
 		LineItems: []*stripe.CheckoutSessionLineItemParams{
 			{
 				Price:    stripe.String(priceID),
-				Quantity: stripe.Int64(1),
+				Quantity: stripe.Int64(int64(seats)),
 			},
 		},
 		Metadata: map[string]string{
 			"company_id": fmt.Sprintf("%d", companyID),
 			"tier":       string(tier),
+			"seats":      fmt.Sprintf("%d", seats),
 		},
 	}
 
@@ -289,7 +295,7 @@ func (s *StripeBillingClient) UpdateSubscriptionSeats(ctx context.Context, subID
 func (s *StripeBillingClient) HandleWebhook(ctx context.Context, payload []byte, sigHeader string) (string, error) {
 	s.stripe()
 
-	event, err := webhook.ConstructEvent(payload, sigHeader, s.WebhookSecret)
+	event, err := webhook.ConstructEventWithOptions(payload, sigHeader, s.WebhookSecret, webhook.ConstructEventOptions{IgnoreAPIVersionMismatch: true})
 	if err != nil {
 		return "", fmt.Errorf("stripe webhook signature verification failed: %w", err)
 	}
@@ -500,7 +506,7 @@ func (m *MockBillingClient) GetInvoiceStatus(ctx context.Context, invoiceID stri
 	return InvoicePaid, nil
 }
 
-func (m *MockBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string) (string, error) {
+func (m *MockBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int) (string, error) {
 	return "http://localhost:8087/checkout/success", nil
 }
 

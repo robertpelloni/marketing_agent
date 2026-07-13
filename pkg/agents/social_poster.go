@@ -56,7 +56,7 @@ func (w *SocialPosterWorker) Run(ctx context.Context, interval time.Duration) {
 }
 
 func (w *SocialPosterWorker) postAll(ctx context.Context) {
-	platforms := []string{"reddit", "bluesky", "linkedin", "twitter"}
+	platforms := []string{"reddit", "bluesky", "twitter", "linkedin"}
 
 	// Separate accounts for both brands
 	usernames := map[string]map[string]string{
@@ -118,7 +118,9 @@ func (w *SocialPosterWorker) generateAndPost(ctx context.Context, brand, platfor
 
 	posted := false
 	if provider := w.hub.Provider(platform); provider != nil {
-		if err := provider.Post(ctx, req); err != nil {
+		postCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
+		defer cancel()
+		if err := provider.Post(postCtx, req); err != nil {
 			slog.Warn(fmt.Sprintf("SocialPoster: %s post failed for %s: %v — falling back to simulation", platform, brand, err))
 		} else {
 			posted = true

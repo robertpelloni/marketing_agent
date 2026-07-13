@@ -82,7 +82,6 @@ func (g *GitHubEnrichSource) Enrich(ctx context.Context, company db.Company) ([]
 	// Try to find the org's repos
 	repos, err := g.searchOrgRepos(ctx, orgName)
 	if err != nil {
-		// Try searching by company name as a fallback
 		repos, err = g.searchByCompanyName(ctx, company.Name)
 		if err != nil {
 			return nil, fmt.Errorf("github: repo search failed for %s: %w", orgName, err)
@@ -94,18 +93,16 @@ func (g *GitHubEnrichSource) Enrich(ctx context.Context, company db.Company) ([]
 		return nil, nil
 	}
 
-	// Extract unique committer emails from all repos
 	seen := make(map[string]bool)
 	var contacts []db.Contact
 
 	for _, repo := range repos {
 		if len(contacts) >= 5 {
-			break // cap at 5 contacts
+			break
 		}
 
 		commits, err := g.fetchRecentCommits(ctx, repo.FullName, 20)
 		if err != nil {
-			slog.Info(fmt.Sprintf("GitHubEnrichSource: Failed to fetch commits for %s: %v", repo.FullName, err))
 			continue
 		}
 
@@ -117,10 +114,7 @@ func (g *GitHubEnrichSource) Enrich(ctx context.Context, company db.Company) ([]
 				continue
 			}
 
-			// Skip no-reply, action bots, and system emails to avoid bounces
 			lowerEmail := strings.ToLower(email)
-			if strings.Contains(lowerEmail, "noreply") || 
-				strings.Contains(lowerEmail, "github-actions") || 
 			if strings.Contains(lowerEmail, "noreply") ||
 				strings.Contains(lowerEmail, "github-actions") ||
 				strings.Contains(lowerEmail, "web-flow") ||
@@ -132,17 +126,24 @@ func (g *GitHubEnrichSource) Enrich(ctx context.Context, company db.Company) ([]
 
 			seen[email] = true
 
-			// Derive role from commit count heuristic
 			role := "Engineer"
 			if strings.Contains(strings.ToLower(commit.Commit.Message), "merge") ||
 				strings.Contains(strings.ToLower(commit.Commit.Message), "release") {
 				role = "Lead Engineer"
 			}
 
+			// Extract GitHub handle from repo owner if personal repo
+			ghHandle := ""
+			parts := strings.Split(repo.FullName, "/")
+			if len(parts) == 2 && strings.EqualFold(parts[0], orgName) {
+				ghHandle = orgName
+			}
+
 			contacts = append(contacts, db.Contact{
-				Name:  name,
-				Email: email,
-				Role:  role,
+				Name:         name,
+				Email:        email,
+				Role:         role,
+				GitHubHandle: ghHandle,
 			})
 
 			slog.Info(fmt.Sprintf("GitHubEnrichSource: Found committer %s <%s> in %s", name, email, repo.FullName))

@@ -13,14 +13,14 @@ import (
 type Intent string
 
 const (
-	IntentTechnical		Intent	= "Technical"
-	IntentPricing		Intent	= "Pricing"
-	IntentObjection		Intent	= "Objection"
-	IntentMeetingRequest	Intent	= "MeetingRequest"
-	IntentFollowUp		Intent	= "FollowUp"
-	IntentSpam		Intent	= "Spam"
-	IntentUnknown		Intent	= "Unknown"
-	IntentGeneral		Intent	= "General"
+	IntentTechnical      Intent = "Technical"
+	IntentPricing        Intent = "Pricing"
+	IntentObjection      Intent = "Objection"
+	IntentMeetingRequest Intent = "MeetingRequest"
+	IntentFollowUp       Intent = "FollowUp"
+	IntentSpam           Intent = "Spam"
+	IntentUnknown        Intent = "Unknown"
+	IntentGeneral        Intent = "General"
 )
 
 // IntentClassifier defines the interface for categorizing inbound communication.
@@ -40,13 +40,13 @@ type OrderProcessor interface {
 
 // Manager coordinates the inbound communication state machine.
 type Manager struct {
-	db		*db.DB
-	classifier	IntentClassifier
-	responder	ResponseGenerator
-	strategy	SalesStrategy
-	processor	OrderProcessor
-	sender		EmailSender	// nil = no email sending (log only)
-	objections	*ObjectionLibrary
+	db         *db.DB
+	classifier IntentClassifier
+	responder  ResponseGenerator
+	strategy   SalesStrategy
+	processor  OrderProcessor
+	sender     EmailSender // nil = no email sending (log only)
+	objections *ObjectionLibrary
 }
 
 // NewManager creates a new communication Manager.
@@ -54,12 +54,12 @@ type Manager struct {
 // objections is optional — if nil, objection handling is disabled.
 func NewManager(database *db.DB, classifier IntentClassifier, responder ResponseGenerator, strategy SalesStrategy, processor OrderProcessor, sender EmailSender) *Manager {
 	return &Manager{
-		db:		database,
-		classifier:	classifier,
-		responder:	responder,
-		strategy:	strategy,
-		processor:	processor,
-		sender:		sender,
+		db:         database,
+		classifier: classifier,
+		responder:  responder,
+		strategy:   strategy,
+		processor:  processor,
+		sender:     sender,
 	}
 }
 
@@ -100,37 +100,83 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 		slog.Info("Comm Manager: DB unavailable, skipping poll cycle")
 		return
 	}
-	// Check for 'Researched' deals that haven't had an outbound interaction yet
+
+	// Process Researched deals: initiate first outreach
 	deals, err := m.db.ListDealsByState(ctx, db.StateResearched)
 	if err != nil {
 		slog.Info(fmt.Sprintf("Comm Manager: Error polling deals: %v", err))
-		return
+	} else {
+		for _, deal := range deals {
+			contacts, err := m.db.ListContactsByCompany(ctx, deal.CompanyID)
+			if err != nil || len(contacts) == 0 {
+				continue
+			}
+
+			interactions, _ := m.db.ListInteractionsByContact(ctx, contacts[0].ID)
+			hasOutbound := false
+			for _, i := range interactions {
+				if i.Direction == "Outbound" {
+					hasOutbound = true
+					break
+				}
+			}
+
+			if !hasOutbound {
+				slog.Info(fmt.Sprintf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email))
+				if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
+					slog.Info(fmt.Sprintf("Comm Manager Error: Failed to initiate outreach for deal %d: %v", deal.ID, err))
+				}
+				if err := m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent); err != nil {
+					slog.Info(fmt.Sprintf("Comm Manager Error: Failed to update deal state to OutreachSent for deal %d: %v", deal.ID, err))
+				}
+			}
+		}
 	}
 
-	for _, deal := range deals {
-		contacts, err := m.db.ListContactsByCompany(ctx, deal.CompanyID)
-		if err != nil || len(contacts) == 0 {
-			continue
-		}
-
-		// Check if we already sent outreach
-		interactions, _ := m.db.ListInteractionsByContact(ctx, contacts[0].ID)
-		hasOutbound := false
-		for _, i := range interactions {
-			if i.Direction == "Outbound" {
-				hasOutbound = true
-				break
+	// Retry OutreachSent deals that never got a reply (email may have bounced or auth failed)
+	retryDeals, err := m.db.ListDealsByState(ctx, db.StateOutreachSent)
+	if err != nil {
+		slog.Info(fmt.Sprintf("Comm Manager: Error listing retry deals: %v", err))
+	} else {
+		for _, deal := range retryDeals {
+			contacts, err := m.db.ListContactsByCompany(ctx, deal.CompanyID)
+			if err != nil || len(contacts) == 0 {
+				continue
 			}
-		}
 
-		if !hasOutbound {
-			slog.Info(fmt.Sprintf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email))
-			// Trigger outreach
-			if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
-				slog.Info(fmt.Sprintf("Comm Manager Error: Failed to initiate outreach for deal %d: %v", deal.ID, err))
+			interactions, _ := m.db.ListInteractionsByContact(ctx, contacts[0].ID)
+			hasReply := false
+			outboundCount := 0
+			var lastOutbound time.Time
+			for _, i := range interactions {
+				if i.Direction == "Inbound" {
+					hasReply = true
+					break
+				}
+				if i.Direction == "Outbound" {
+					outboundCount++
+					if i.CreatedAt.After(lastOutbound) {
+						lastOutbound = i.CreatedAt
+					}
+				}
 			}
-			if err := m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent); err != nil {
-				slog.Info(fmt.Sprintf("Comm Manager Error: Failed to update deal state to OutreachSent for deal %d: %v", deal.ID, err))
+
+			// Retry: up to 3 immediate retries, or cooldown retry (every 24h after 3)
+			shouldRetry := false
+			if !hasReply && contacts[0].Email != "" {
+				if outboundCount < 3 {
+					shouldRetry = true
+				} else if outboundCount < 10 && time.Since(lastOutbound) > 24*time.Hour {
+					shouldRetry = true
+				}
+			}
+
+			if shouldRetry {
+				slog.Info(fmt.Sprintf("Comm Manager: Retrying outreach for deal %d to %s (attempt %d)", deal.ID, contacts[0].Email, outboundCount+1))
+				if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
+					slog.Info(fmt.Sprintf("Comm Manager Error: Retry failed for deal %d: %v", deal.ID, err))
+				}
+				// Don't change state — keep in OutreachSent
 			}
 		}
 	}
@@ -152,10 +198,10 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 
 	// 1. Persist inbound interaction
 	inbound := db.Interaction{
-		ContactID:	contact.ID,
-		Channel:	channel,
-		Direction:	"Inbound",
-		RawText:	text,
+		ContactID: contact.ID,
+		Channel:   channel,
+		Direction: "Inbound",
+		RawText:   text,
 	}
 	err := m.db.CreateInteraction(ctx, &inbound)
 	if err != nil {
@@ -193,11 +239,11 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	}
 
 	salesCtx := SalesContext{
-		Company:	*company,
-		Deal:		*deal,
-		Contact:	contact,
-		Interactions:	interactions,
-		LatestIntent:	intent,
+		Company:      *company,
+		Deal:         *deal,
+		Contact:      contact,
+		Interactions: interactions,
+		LatestIntent: intent,
 	}
 
 	action, err := m.strategy.Decide(ctx, salesCtx)
@@ -246,7 +292,7 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 			slog.Info(fmt.Sprintf("Comm Manager: Deal %d won! Flagging past outbound interactions as successful.", updatedDeal.ID))
 			for _, interaction := range interactions {
 				if interaction.Direction == "Outbound" {
-if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
+					if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
 						slog.Info(fmt.Sprintf("Comm Manager Error: Failed to mark interaction %d as successful: %v", interaction.ID, err))
 					}
 					if interaction.ResponseID != "" && m.objections != nil {
@@ -266,12 +312,12 @@ if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
 
 	// 4. Persist outbound interaction
 	outbound := db.Interaction{
-		ContactID:	contact.ID,
-		Channel:	channel,
-		Direction:	"Outbound",
-		RawText:	replyText,
-		Summary:	fmt.Sprintf("Reply to intent: %s", intent),
-		ResponseID:	responseID,
+		ContactID:  contact.ID,
+		Channel:    channel,
+		Direction:  "Outbound",
+		RawText:    replyText,
+		Summary:    fmt.Sprintf("Reply to intent: %s", intent),
+		ResponseID: responseID,
 	}
 	err = m.db.CreateInteraction(ctx, &outbound)
 	if err != nil {
@@ -286,9 +332,9 @@ if err := m.db.UpdateInteractionSuccess(ctx, interaction.ID, true); err != nil {
 		}
 
 		emailMsg := EmailMessage{
-			To:		contact.Email,
-			Subject:	subject,
-			Body:		replyText,
+			To:      contact.Email,
+			Subject: subject,
+			Body:    replyText,
 		}
 
 		if err := m.sender.Send(ctx, emailMsg); err != nil {

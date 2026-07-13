@@ -3,17 +3,23 @@ package agents
 import (
 	"bytes"
 	"context"
+	"crypto/hmac"
+	"crypto/rand"
+	"crypto/sha1"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log/slog"
 	"net/http"
+	"net/url"
 	"os"
+	"sort"
 	"strings"
 	"time"
 
 	"github.com/go-rod/rod"
+	"github.com/go-rod/rod/lib/launcher"
 )
 
 // ─── Bluesky AT Protocol Client (pure Go, no external deps) ─────────────
@@ -191,40 +197,34 @@ func (p *RedditProvider) Post(ctx context.Context, req PostRequest) (err error) 
 		}
 	}()
 
-	// Import package "github.com/go-rod/rod" implicitly or load rod browser context
-	// We'll boot chromium headless
-	browser := rod.New().MustConnect()
+	// Launch headless Chromium with no-sandbox for Linux VPS compatibility
+	u := launcher.New().NoSandbox(true).MustLaunch()
+	browser := rod.New().ControlURL(u).MustConnect()
 	defer func() { _ = browser.Close() }()
 
 	page := browser.MustPage()
 
-	// 1. Login
-	page.MustNavigate("https://www.reddit.com/login")
+	// 1. Login via old.reddit.com (simpler form, no anti-bot JS)
+	page.MustNavigate("https://old.reddit.com/login")
 	page.MustWaitLoad()
-	page.MustElement("#login-username").MustInput(p.Username)
-	page.MustElement("#login-password").MustInput(p.Password)
+	page.MustElement("input[name='user']").MustInput(p.Username)
+	page.MustElement("input[name='passwd']").MustInput(p.Password)
 	page.MustElement("button[type='submit']").MustClick()
-	time.Sleep(5 * time.Second) // wait for session initialization
+	time.Sleep(3 * time.Second)
 
-	// 2. Navigate to test community
-	page.MustNavigate("https://www.reddit.com/r/TormentNexusDev/submit")
+	// 2. Navigate to submit page
+	page.MustNavigate("https://old.reddit.com/r/TormentNexusDev/submit")
 	page.MustWaitLoad()
 
 	// 3. Write post
-	// Select text post title and body fields
-	page.MustElement("textarea[placeholder='Title']").MustInput("TormentNexus Marketing System Update")
-	page.MustElement("textarea[placeholder='Text (optional)']").MustInput(req.Content)
+	page.MustElement("input[name='title']").MustInput("TormentNexus Marketing System Update")
+	page.MustElement("textarea[name='text']").MustInput(req.Content)
 
 	// 4. Click Submit
-	submitBtn := page.MustElementR("button", "Post")
-	submitBtn.MustClick()
+	page.MustElement("button[type='submit']").MustClick()
 	time.Sleep(3 * time.Second)
 
 	slog.Info("Reddit: Headless post successful to r/TormentNexusDev ✓")
-	return nil
-}
-
-	slog.Info(fmt.Sprintf("Reddit: Headless post successful to r/TormentNexusDev ✓"))
 	return nil
 }
 
@@ -298,7 +298,6 @@ func (p *TwitterProvider) Post(ctx context.Context, req PostRequest) error {
 		return nil
 	}
 
-	// Twitter API v2: POST /2/tweets
 	payload := map[string]string{"text": req.Content}
 	body, _ := json.Marshal(payload)
 
@@ -306,12 +305,14 @@ func (p *TwitterProvider) Post(ctx context.Context, req PostRequest) error {
 	httpReq, _ := http.NewRequestWithContext(ctx, "POST", apiURL, bytes.NewReader(body))
 	httpReq.Header.Set("Content-Type", "application/json")
 
-	if p.BearerToken != "" {
+	// Try OAuth 2.0 Bearer token first (Read+Write app permissions)
+	if p.BearerToken != "" && len(p.BearerToken) > 50 {
 		httpReq.Header.Set("Authorization", "Bearer "+p.BearerToken)
-	} else if p.APIKey != "" && p.APISecret != "" && p.AccessToken != "" && p.AccessSecret != "" {
-		// OAuth 1.0a — for a full implementation we'd use a signed header
-		// For now, fall back to Bearer token for user-context
-		httpReq.Header.Set("Authorization", "Bearer "+p.BearerToken)
+	} else if p.AccessToken != "" && p.APISecret != "" && p.AccessSecret != "" {
+		// Fall back to OAuth 1.0a
+		httpReq.Header.Set("Authorization", oauth1Header("POST", apiURL, p.APIKey, p.APISecret, p.AccessToken, p.AccessSecret))
+	} else {
+		return fmt.Errorf("twitter: no valid auth credentials configured")
 	}
 
 	resp, err := p.client.Do(httpReq)
@@ -329,6 +330,61 @@ func (p *TwitterProvider) Post(ctx context.Context, req PostRequest) error {
 	return nil
 }
 
+// ─── OAuth 1.0a Signing ──────────────────────────────────────────────
+
+// oauth1Header generates an OAuth 1.0a Authorization header for Twitter API.
+func oauth1Header(method, urlStr, consumerKey, consumerSecret, token, tokenSecret string) string {
+	nonce := randomNonce(16)
+	timestamp := fmt.Sprintf("%d", time.Now().Unix())
+
+	params := map[string]string{
+		"oauth_consumer_key":     consumerKey,
+		"oauth_nonce":            nonce,
+		"oauth_signature_method": "HMAC-SHA1",
+		"oauth_timestamp":        timestamp,
+		"oauth_token":            token,
+		"oauth_version":          "1.0",
+	}
+
+	signingKey := url.QueryEscape(consumerSecret) + "&" + url.QueryEscape(tokenSecret)
+	signatureBase := signatureBaseString(method, urlStr, params)
+	signature := hmacSHA1(signingKey, signatureBase)
+	params["oauth_signature"] = signature
+
+	// Build header
+	var headerParts []string
+	for k, v := range params {
+		headerParts = append(headerParts, fmt.Sprintf("%s=\"%s\"", url.QueryEscape(k), url.QueryEscape(v)))
+	}
+	return "OAuth " + strings.Join(headerParts, ", ")
+}
+
+func signatureBaseString(method, urlStr string, params map[string]string) string {
+	var sorted []string
+	for k, v := range params {
+		sorted = append(sorted, fmt.Sprintf("%s=%s", url.QueryEscape(k), url.QueryEscape(v)))
+	}
+	sort.Strings(sorted)
+	paramStr := strings.Join(sorted, "&")
+	return strings.ToUpper(method) + "&" + url.QueryEscape(urlStr) + "&" + url.QueryEscape(paramStr)
+}
+
+func hmacSHA1(key, data string) string {
+	mac := hmac.New(sha1.New, []byte(key))
+	mac.Write([]byte(data))
+	return base64.StdEncoding.EncodeToString(mac.Sum(nil))
+}
+
+func randomNonce(length int) string {
+	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	b := make([]byte, length)
+	for i := range b {
+		randByte := make([]byte, 1)
+		_, _ = rand.Read(randByte)
+		b[i] = charset[int(randByte[0])%len(charset)]
+	}
+	return string(b)
+}
 
 // ─── Helpers ──────────────────────────────────────────────────────────
 

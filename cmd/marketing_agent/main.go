@@ -77,7 +77,6 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-
 	// 2. Setup Scraper — HN "Who is Hiring" + LinkedIn + GitHub Issues + Reddit
 	linkedInSource := scraper.NewLinkedInSource()
 	if os.Getenv("LINKEDIN_USERNAME") != "" && os.Getenv("LINKEDIN_PASSWORD") != "" {
@@ -236,6 +235,14 @@ func main() {
 	// 2k. Setup Social Media Poster Agent
 	socialPoster := agents.NewSocialPosterWorker(database, llmProvider)
 	go socialPoster.Run(ctx, 4*time.Hour)
+
+	// 2l. Setup Auto-Blog Engine (SEO content for tormentnexus.site & hypernexus.site)
+	blogEngine := agents.NewBlogEngine(llmProvider, "/opt/marketing_agent/blog_output")
+	go blogEngine.Run(ctx, 12*time.Hour)
+
+	// 2m. Setup GitHub Discussions Engager (reply to MCP/AI discussions)
+	githubDiscussions := agents.NewGitHubDiscussionsEngager(cfg.GitHubToken)
+	go githubDiscussions.Run(ctx, 6*time.Hour)
 
 	// 2g. Setup Intent Classifier
 	var classifier communication.IntentClassifier

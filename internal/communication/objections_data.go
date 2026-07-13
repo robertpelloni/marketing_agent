@@ -201,7 +201,7 @@ const embeddedObjectionData = `{
     {
       "id": "resp_pricing_tier",
       "objection_id": "obj_pricing_too_high",
-      "text": "Many teams start with our Community Edition (free, self-hosted) to prove value before committing. Once you see the impact, the Enterprise tier becomes an easy conversation.",
+      "text": "Many teams start with our Community Edition (free, self-hosted) to prove value before committing. Once you see the impact, the Commercial tier becomes an easy conversation.",
       "approach": "value",
       "use_cases": ["discovered", "researched", "outreach_sent", "engaged"],
       "success_rate": 0.68,
@@ -431,7 +431,7 @@ const embeddedObjectionData = `{
     {
       "id": "resp_support_dedicated",
       "objection_id": "obj_support_no_account_manager",
-      "text": "Enterprise customers receive a dedicated Customer Success Manager, 4-hour SLA support, and direct access to our engineering team. Even Community Edition users get support via our active Discord community and GitHub discussions.",
+      "text": "Commercial customers receive a dedicated Customer Success Manager, 4-hour SLA support, and direct access to our engineering team. Even Community Edition users get support via our active Discord community and GitHub discussions.",
       "approach": "reassurance",
       "use_cases": ["*"],
       "success_rate": 0.7,
@@ -441,7 +441,7 @@ const embeddedObjectionData = `{
     {
       "id": "resp_support_on_premise",
       "objection_id": "obj_support_on_premise",
-      "text": "HyperNexus runs entirely on your infrastructure — we're local-first by design. You deploy the Go sidecar and TypeScript control plane on your own servers with full air-gap support. Our Enterprise edition includes on-prem deployment assistance and custom configuration.",
+      "text": "HyperNexus runs entirely on your infrastructure — we're local-first by design. You deploy the Go sidecar and TypeScript control plane on your own servers with full air-gap support. Our Commercial edition includes on-prem deployment assistance and custom configuration.",
       "approach": "technical",
       "use_cases": ["*"],
       "success_rate": 0.82,

@@ -1,0 +1,8 @@
+version: "1.0"
+
+name: "tormentnexus-reddit-bot"
+slug: "tormentnexus-reddit-bot"
+
+permissions:
+  - read
+  - write

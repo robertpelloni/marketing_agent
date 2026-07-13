@@ -1,10 +1,10 @@
 package db
 
 import (
-	"github.com/robertpelloni/marketing_agent/pkg/crypto"
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/robertpelloni/marketing_agent/pkg/crypto"
 	"strings"
 	"time"
 
@@ -303,7 +303,6 @@ func (db *DB) CreateContact(ctx context.Context, contact *Contact) error {
 	query := `
 		INSERT INTO contacts (company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-		ON CONFLICT (email) DO UPDATE 
 		ON CONFLICT (email) DO UPDATE
 		SET company_id = EXCLUDED.company_id,
 		    name = EXCLUDED.name,
@@ -384,7 +383,6 @@ func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Con
 	return contacts, nil
 }
 
-
 // GetContactByEmail retrieves a contact by their email address.
 func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, error) {
 	if db.Conn == nil {
@@ -418,6 +416,7 @@ func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, er
 	}
 	return contact, nil
 }
+
 // CreateInteraction inserts a new interaction into the database.
 func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) error {
 	query := `

@@ -12,62 +12,62 @@ import (
 
 // CadenceStep defines a single touch point in an outreach sequence.
 type CadenceStep struct {
-	StepNumber	int		// Order in the sequence (1-based)
-	Channel		db.Channel	// email, linkedin, github
-	DelayAfterPrev	time.Duration	// How long to wait after the previous step
-	TemplateID	string		// Identifier for the message template
-	Subject		string		// Subject line override
+	StepNumber     int           // Order in the sequence (1-based)
+	Channel        db.Channel    // email, linkedin, github
+	DelayAfterPrev time.Duration // How long to wait after the previous step
+	TemplateID     string        // Identifier for the message template
+	Subject        string        // Subject line override
 }
 
 // CadenceSchedule defines a multi-touch outreach sequence.
 type CadenceSchedule struct {
-	Name		string		// e.g., "Standard B2B Tech Outreach"
-	Description	string		// Human-readable description
-	Steps		[]CadenceStep	// Ordered list of touch points
-	MaxAttempts	int		// Maximum total touches before marking as exhausted
+	Name        string        // e.g., "Standard B2B Tech Outreach"
+	Description string        // Human-readable description
+	Steps       []CadenceStep // Ordered list of touch points
+	MaxAttempts int           // Maximum total touches before marking as exhausted
 }
 
 // DefaultCadence returns the default outreach cadence for new leads.
 func DefaultCadence() CadenceSchedule {
 	return CadenceSchedule{
-		Name:		"Standard B2B Tech Outreach",
-		Description:	"Default 5-touch sequence across email, GitHub, and LinkedIn",
-		MaxAttempts:	5,
+		Name:        "Standard B2B Tech Outreach",
+		Description: "Default 5-touch sequence across email, GitHub, and LinkedIn",
+		MaxAttempts: 5,
 		Steps: []CadenceStep{
 			{
-				StepNumber:	1,
-				Channel:	db.ChannelEmail,
-				DelayAfterPrev:	0,	// First touch immediately
-				TemplateID:	"intro-email",
-				Subject:	"HyperNexus for %s — Quick Question",
+				StepNumber:     1,
+				Channel:        db.ChannelEmail,
+				DelayAfterPrev: 0, // First touch immediately
+				TemplateID:     "intro-email",
+				Subject:        "HyperNexus for %s — Quick Question",
 			},
 			{
-				StepNumber:	2,
-				Channel:	db.ChannelGitHub,
-				DelayAfterPrev:	48 * time.Hour,	// 2 days after email
-				TemplateID:	"github-hook",
-				Subject:	"",
+				StepNumber:     2,
+				Channel:        db.ChannelGitHub,
+				DelayAfterPrev: 48 * time.Hour, // 2 days after email
+				TemplateID:     "github-hook",
+				Subject:        "",
 			},
 			{
-				StepNumber:	3,
-				Channel:	db.ChannelEmail,
-				DelayAfterPrev:	72 * time.Hour,	// 3 days after GitHub
-				TemplateID:	"followup-email",
-				Subject:	"Re: HyperNexus for %s — Thoughts?",
+				StepNumber:     3,
+				Channel:        db.ChannelEmail,
+				DelayAfterPrev: 72 * time.Hour, // 3 days after GitHub
+				TemplateID:     "followup-email",
+				Subject:        "Re: HyperNexus for %s — Thoughts?",
 			},
 			{
-				StepNumber:	4,
-				Channel:	db.ChannelLinkedIn,
-				DelayAfterPrev:	96 * time.Hour,	// 4 days after email
-				TemplateID:	"linkedin-connect",
-				Subject:	"HyperNexus — AI Infrastructure",
+				StepNumber:     4,
+				Channel:        db.ChannelLinkedIn,
+				DelayAfterPrev: 96 * time.Hour, // 4 days after email
+				TemplateID:     "linkedin-connect",
+				Subject:        "HyperNexus — AI Infrastructure",
 			},
 			{
-				StepNumber:	5,
-				Channel:	db.ChannelEmail,
-				DelayAfterPrev:	168 * time.Hour,	// 7 days after LinkedIn
-				TemplateID:	"breakup-email",
-				Subject:	"Should I close your file?",
+				StepNumber:     5,
+				Channel:        db.ChannelEmail,
+				DelayAfterPrev: 168 * time.Hour, // 7 days after LinkedIn
+				TemplateID:     "breakup-email",
+				Subject:        "Should I close your file?",
 			},
 		},
 	}
@@ -85,13 +85,13 @@ func NewCadenceTracker(database *db.DB) *CadenceTracker {
 
 // CadenceProgress represents the current cadence state for a deal.
 type CadenceProgress struct {
-	DealID			int64
-	ScheduleName		string
-	NextStepNumber		int
-	LastTouchTime		time.Time
-	NextScheduledTime	time.Time
-	TotalAttempts		int
-	IsExhausted		bool
+	DealID            int64
+	ScheduleName      string
+	NextStepNumber    int
+	LastTouchTime     time.Time
+	NextScheduledTime time.Time
+	TotalAttempts     int
+	IsExhausted       bool
 }
 
 // GetNextStep determines which cadence step to execute next for a deal.
@@ -113,11 +113,11 @@ func (ct *CadenceTracker) GetNextStep(ctx context.Context, dealID int64, schedul
 	// Check if max attempts exceeded
 	if totalAttempts >= schedule.MaxAttempts {
 		return nil, &CadenceProgress{
-			DealID:		dealID,
-			ScheduleName:	schedule.Name,
-			NextStepNumber:	len(schedule.Steps) + 1,
-			TotalAttempts:	totalAttempts,
-			IsExhausted:	true,
+			DealID:         dealID,
+			ScheduleName:   schedule.Name,
+			NextStepNumber: len(schedule.Steps) + 1,
+			TotalAttempts:  totalAttempts,
+			IsExhausted:    true,
 		}, nil
 	}
 
@@ -154,28 +154,28 @@ func (ct *CadenceTracker) GetNextStep(ctx context.Context, dealID int64, schedul
 
 	if nextStep == nil {
 		return nil, &CadenceProgress{
-			DealID:		dealID,
-			ScheduleName:	schedule.Name,
-			NextStepNumber:	nextStepNumber,
-			TotalAttempts:	totalAttempts,
-			IsExhausted:	nextStepNumber > len(schedule.Steps),
+			DealID:         dealID,
+			ScheduleName:   schedule.Name,
+			NextStepNumber: nextStepNumber,
+			TotalAttempts:  totalAttempts,
+			IsExhausted:    nextStepNumber > len(schedule.Steps),
 		}, nil
 	}
 
 	// Calculate next scheduled time
 	nextScheduled := lastOutboundTime.Add(nextStep.DelayAfterPrev)
 	if lastOutboundTime.IsZero() {
-		nextScheduled = time.Now()	// First step is immediate
+		nextScheduled = time.Now() // First step is immediate
 	}
 
 	return nextStep, &CadenceProgress{
-		DealID:			dealID,
-		ScheduleName:		schedule.Name,
-		NextStepNumber:		nextStepNumber,
-		LastTouchTime:		lastOutboundTime,
-		NextScheduledTime:	nextScheduled,
-		TotalAttempts:		totalAttempts,
-		IsExhausted:		false,
+		DealID:            dealID,
+		ScheduleName:      schedule.Name,
+		NextStepNumber:    nextStepNumber,
+		LastTouchTime:     lastOutboundTime,
+		NextScheduledTime: nextScheduled,
+		TotalAttempts:     totalAttempts,
+		IsExhausted:       false,
 	}, nil
 }
 
@@ -292,7 +292,7 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 		}
 
 		if nextStep == nil {
-			continue	// Not time yet or exhausted
+			continue // Not time yet or exhausted
 		}
 
 		slog.Info(fmt.Sprintf("CadenceAwareManager: Executing cadence step %d (%s) for deal %d via %s",
@@ -322,9 +322,9 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			// Build SalesContext for template rendering
 			contact := contacts[0]
 			salesCtx := SalesContext{
-				Company:     *company,
-				Deal:        deal,
-				Contact:     contact,
+				Company:      *company,
+				Deal:         deal,
+				Contact:      contact,
 				Interactions: interactions,
 				LatestIntent: IntentGeneral, // We're proactively reaching out
 			}
@@ -337,7 +337,7 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			}
 
 			// Generate subject and body from template
-subject, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
+			subject, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
 			if err != nil {
 				slog.Info(fmt.Sprintf("CadenceAwareManager: Template rendering failed for deal %d: %v", deal.ID, err))
 				continue
@@ -456,11 +456,7 @@ subject, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
 			}
 
 		case db.ChannelGitHub:
-			if contacts[0].GitHubHandle == "" {
-				slog.Info(fmt.Sprintf("CadenceAwareManager: Skipping GitHub step %d for deal %d — no GitHub handle populated", nextStep.StepNumber, deal.ID))
-				continue
-			}
-
+			// Don't require GitHub handle — we search by org domain, not user handle
 			// Load template
 			tmpl, err := cam.db.GetTemplate(ctx, nextStep.TemplateID)
 			if err != nil {

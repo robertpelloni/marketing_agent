@@ -1,0 +1,12 @@
+{
+  "name": "tormentnexus-reddit-bot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@devvit/public-api": "latest"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

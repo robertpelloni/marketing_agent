@@ -449,13 +449,33 @@
         margin: 0 auto 40px;
         border: 3px solid transparent;
         border-radius: 28px;
-        padding: 3px;
-        background: linear-gradient(#f8fafc, #f1f5f9) padding-box,
+        padding: 40px 48px;
+        background: linear-gradient(135deg, rgba(255,255,255,0.85) 0%, rgba(241,245,249,0.9) 50%, rgba(255,255,255,0.85) 100%) padding-box,
                     conic-gradient(from var(--angle, 0deg),
                       #0284c7 0%, #0ea5e9 12%, #38bdf8 25%, #0284c7 37%,
                       #1e3a8a 50%, #0369a1 62%, #0ea5e9 75%, #38bdf8 87%, #0284c7 100%) border-box;
         animation: rotateOutline 2s linear infinite;
-        box-shadow: 0 0 20px rgba(2, 132, 199, 0.15), 0 0 60px rgba(14, 165, 233, 0.08), inset 0 0 20px rgba(2, 132, 199, 0.03);
+        box-shadow: 0 8px 32px rgba(2, 132, 199, 0.12), 0 0 80px rgba(14, 165, 233, 0.06), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        overflow: hidden;
+      }
+      /* Shine sweep on the panel */
+      .rotating-outline::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+        animation: panelShine 4s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 10;
+      }
+      @keyframes panelShine {
+        0%, 100% { left: -100%; }
+        50% { left: 150%; }
       }
       @keyframes rotateOutline {
         to { --angle: 360deg; }
@@ -486,20 +506,38 @@
         50% { left: 150%; }
       }
 
-      /* ══════ 3D GLASS PANELS ══════ */
+      /* ══════ 3D GLASS PANELS — VERY SHINY ══════ */
       .feature, .stat, .compliance-item {
-        background: rgba(255, 255, 255, 0.6) !important;
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border: 1px solid rgba(255, 255, 255, 0.5) !important;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+        background: rgba(255, 255, 255, 0.75) !important;
+        backdrop-filter: blur(24px) saturate(200%);
+        -webkit-backdrop-filter: blur(24px) saturate(200%);
+        border: 1px solid rgba(255, 255, 255, 0.7) !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 2px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(0, 0, 0, 0.02) !important;
         transform-style: preserve-3d;
-        perspective: 1000px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+        perspective: 800px;
+        transition: transform 0.2s ease-out, box-shadow 0.3s ease !important;
+        position: relative;
+        overflow: hidden;
+      }
+      /* Shine reflection on cards */
+      .feature::after, .stat::after, .compliance-item::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+        transition: left 0.6s ease;
+        pointer-events: none;
+      }
+      .feature:hover::after, .stat:hover::after, .compliance-item:hover::after {
+        left: 150%;
       }
       .feature:hover, .stat:hover, .compliance-item:hover {
-        box-shadow: 0 16px 48px rgba(2, 132, 199, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
-        background: rgba(255, 255, 255, 0.85) !important;
+        box-shadow: 0 20px 60px rgba(2, 132, 199, 0.2), 0 0 40px rgba(2, 132, 199, 0.08), inset 0 2px 0 rgba(255, 255, 255, 0.95) !important;
+        background: rgba(255, 255, 255, 0.92) !important;
+        transform: perspective(800px) translateZ(20px) !important;
       }
 
       /* ══════ RAINBOW BORDER CARD ══════ */
@@ -904,8 +942,6 @@
 
     </header>
 
-    <div class="rotating-outline">
-
 
 
 
@@ -980,6 +1016,10 @@
 
 
             <h1>Corporate AI Orchestration<br><span class="gradient-title">Built for Scale</span></h1>
+
+    <div class="rotating-outline">
+
+
 
 
 
@@ -6510,16 +6550,16 @@ function togglePricing(){
   }
 }
 
-// 3D tilt on glass panels + rainbow card
+// 3D tilt on glass panels + rainbow card with zoom
 document.querySelectorAll('.feature,.stat,.compliance-item,.price-card.rainbow').forEach(function(card){
   card.addEventListener('mousemove',function(e){
     var r=card.getBoundingClientRect();
     var x=(e.clientX-r.left)/r.width-0.5;
     var y=(e.clientY-r.top)/r.height-0.5;
-    card.style.transform='perspective(800px) rotateY('+x*15+'deg) rotateX('+-y*15+'deg) translateY(-4px)';
+    card.style.transform='perspective(800px) rotateY('+x*18+'deg) rotateX('+-y*18+'deg) translateZ(24px) scale(1.03)';
   });
   card.addEventListener('mouseleave',function(){
-    card.style.transform='perspective(800px) rotateY(0) rotateX(0)';
+    card.style.transform='perspective(800px) rotateY(0) rotateX(0) translateZ(0) scale(1)';
   });
 });
 

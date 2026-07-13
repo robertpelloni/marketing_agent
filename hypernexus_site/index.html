@@ -486,10 +486,50 @@
         inherits: false;
       }
 
-      /* ══════ HERO TITLE SHINE EFFECT ══════ */
+      /* ══════ HERO TITLE SHINE EFFECT — WHOLE TITLE ══════ */
+      .hero h1 {
+        position: relative;
+        overflow: hidden;
+      }
+      /* Top half shine — left to right */
+      .hero h1::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 50%;
+        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+        animation: heroShineTop 3s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 2;
+      }
+      /* Bottom half shine — right to left */
+      .hero h1::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: -100%;
+        width: 50%;
+        height: 50%;
+        background: linear-gradient(-90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+        animation: heroShineBottom 3s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 2;
+      }
+      @keyframes heroShineTop {
+        0%, 100% { left: -100%; }
+        50% { left: 150%; }
+      }
+      @keyframes heroShineBottom {
+        0%, 100% { right: -100%; }
+        50% { right: 150%; }
+      }
+      /* Stronger shine on the blue gradient text */
       .gradient-title {
         position: relative;
         display: inline-block;
+        overflow: hidden;
       }
       .gradient-title::after {
         content: '';
@@ -498,10 +538,12 @@
         left: -100%;
         width: 60%;
         height: 100%;
-        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
-        animation: heroShine 3s ease-in-out infinite;
+        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 40%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.6) 60%, transparent 100%);
+        animation: gradientShine 2.5s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 3;
       }
-      @keyframes heroShine {
+      @keyframes gradientShine {
         0%, 100% { left: -100%; }
         50% { left: 150%; }
       }

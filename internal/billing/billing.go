@@ -1,10 +1,14 @@
 package billing
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"net/http"
+	"regexp"
+	"strings"
 	"time"
 
 	"github.com/stripe/stripe-go/v81"
@@ -17,6 +21,10 @@ import (
 
 	"github.com/robertpelloni/marketing_agent/internal/db"
 )
+
+const tnProvisionURL = "http://127.0.0.1:8090/api/account/provision"
+
+var subdomainRe = regexp.MustCompile(`[^a-z0-9-]+`)
 
 // InvoiceStatus represents the current state of a deal's billing.
 type InvoiceStatus string
@@ -396,6 +404,9 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 		"rate", rate,
 	)
 
+	// Provision TormentNexus tenant (non-blocking side effect)
+	go provisionTN(ctx, sess.CustomerDetails.Email, sess.CustomerDetails.Name, tierStr, seats)
+
 	return fmt.Sprintf("subscription created: %s", sub.ID), nil
 }
 
@@ -529,4 +540,79 @@ func (m *MockBillingClient) UpdateSubscriptionSeats(ctx context.Context, subID s
 
 func (m *MockBillingClient) HandleWebhook(ctx context.Context, payload []byte, sigHeader string) (string, error) {
 	return "mock webhook processed", nil
+}
+
+// --- TormentNexus Tenant Provisioning ---
+
+// provisionTN calls the TormentNexus account provision API to create a tenant
+// dashboard. Runs in a goroutine — failures are logged but do not block webhook response.
+func provisionTN(ctx context.Context, email, name, tier string, seats int) {
+	subdomain := deriveSubdomain(email, name)
+	payload := map[string]interface{}{
+		"email":     email,
+		"plan":      mapTierToPlan(tier),
+		"seats":     max(seats, 1),
+		"subdomain": subdomain,
+	}
+
+	body, err := json.Marshal(payload)
+	if err != nil {
+		slog.Error("tn-provision: marshal failed", "err", err)
+		return
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, tnProvisionURL, bytes.NewReader(body))
+	if err != nil {
+		slog.Error("tn-provision: request creation failed", "err", err)
+		return
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{Timeout: 10 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		slog.Warn("tn-provision: TormentNexus unreachable", "err", err, "subdomain", subdomain)
+		return
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 300 {
+		slog.Warn("tn-provision: TN returned error", "status", resp.StatusCode, "subdomain", subdomain)
+		return
+	}
+
+	slog.Info("tn-provision: tenant created",
+		"subdomain", subdomain,
+		"email", email,
+		"tier", tier,
+		"seats", seats,
+		"dashboard", fmt.Sprintf("https://%s.hypernexus.site", subdomain),
+	)
+}
+
+func deriveSubdomain(email, name string) string {
+	parts := strings.Split(email, "@")
+	if len(parts) > 0 {
+		candidate := strings.ToLower(parts[0])
+		candidate = subdomainRe.ReplaceAllString(candidate, "-")
+		candidate = strings.Trim(candidate, "-")
+		if len(candidate) > 2 {
+			if len(candidate) > 32 {
+				candidate = candidate[:32]
+			}
+			return candidate
+		}
+	}
+	return fmt.Sprintf("org-%d", time.Now().Unix()%100000)
+}
+
+func mapTierToPlan(tier string) string {
+	switch strings.ToLower(tier) {
+	case "starter", "basic":
+		return "basic"
+	case "professional", "pro":
+		return "pro"
+	default:
+		return "commercial"
+	}
 }

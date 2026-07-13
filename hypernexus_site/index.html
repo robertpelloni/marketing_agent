@@ -545,11 +545,7 @@
       .price-card.rainbow::after {
         content: '';
         position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 90%;
-        height: 90%;
-        transform: translate(-50%, -50%);
+        inset: 4px;
         background: conic-gradient(from 0deg,
           rgba(255, 59, 48, 0.06),
           rgba(255, 149, 0, 0.06),
@@ -561,14 +557,13 @@
           rgba(255, 59, 48, 0.06)
         );
         animation: rotateRainbow 2.5s linear infinite;
-        border-radius: 10px;
+        border-radius: 8px;
         z-index: 0;
         pointer-events: none;
-        transition: background 0.3s, animation-duration 0.3s;
       }
       @keyframes rotateRainbow {
-        from { transform: translate(-50%, -50%) rotate(0deg); }
-        to { transform: translate(-50%, -50%) rotate(360deg); }
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
       }
       @keyframes rainbowPulseGlow {
         0% { box-shadow: 0 0 30px rgba(255, 59, 48, 0.4), 0 0 80px rgba(255, 59, 48, 0.15); }
@@ -2204,6 +2199,8 @@
 
 
                 <div class="price-card rainbow featured">
+                    <div style="position:relative;z-index:1;background:#fff;border-radius:10px;padding:44px 32px;height:100%;display:flex;flex-direction:column;justify-content:space-between">
+
 
 
 
@@ -2305,6 +2302,8 @@
 
 
                 </div>
+                </div>
+                
 
 
 

@@ -62,6 +62,13 @@ func (f *FallbackSource) Enrich(ctx context.Context, company db.Company) ([]db.C
 	f.mu.RLock()
 	defer f.mu.RUnlock()
 
+	// Skip companies with obviously garbage domains/names to avoid
+	// wasting API calls on HN comment parsing artifacts.
+	if isGarbageLead(company) {
+		slog.Info(fmt.Sprintf("FallbackSource: Skipping garbage lead %q (domain: %q)", company.Name, company.Domain))
+		return nil, nil
+	}
+
 	report := &FallbackReport{
 		CompanyName:	company.Name,
 		CompanyDomain:	company.Domain,
@@ -136,6 +143,46 @@ func (f *FallbackSource) Sources() []EnrichmentSource {
 	cp := make([]EnrichmentSource, len(f.sources))
 	copy(cp, f.sources)
 	return cp
+}
+
+// isGarbageLead returns true if the company has an obviously invalid domain
+// or name that resulted from HN comment parsing errors. Skips the entire
+// enrichment chain to avoid wasting API calls.
+func isGarbageLead(company db.Company) bool {
+	domain := strings.ToLower(company.Domain)
+	name := strings.ToLower(company.Name)
+
+	// Domain must have at least one dot and valid TLD-like structure
+	if domain == "" || domain == ".com" {
+		return true
+	}
+	// Domain must contain a dot
+	if !strings.Contains(domain, ".") {
+		return true
+	}
+	// Reject domains that contain URL encoding artifacts or HTML fragments
+	garbageDomainPatterns := []string{
+		"x2f", "x26", "x3b", "x3d", "x27", // URL-encoded HTML entities
+		"&#",        // Raw HTML entities
+		"https", "http", "www.", "://", // URLs embedded in domain
+		"%20", "%2f", "%26", "%23", // URL-encoded chars
+	}
+	for _, p := range garbageDomainPatterns {
+		if strings.Contains(domain, p) {
+			return true
+		}
+	}
+	// Reject names that are clearly garbage from HN parsing
+	if strings.Contains(name, "&#") || strings.Contains(name, "x2f") ||
+		strings.Contains(name, "___") || strings.Contains(name, "http") ||
+		len(name) > 120 {
+		return true
+	}
+	// Reject domains that look like concatenated garbage
+	if strings.Count(domain, ".") > 3 {
+		return true // Too many dots
+	}
+	return false
 }
 
 // Names returns the human-readable names for each source.

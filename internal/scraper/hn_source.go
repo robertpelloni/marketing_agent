@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"html"
 	"log/slog"
 	"net/http"
 	"regexp"
@@ -499,24 +500,19 @@ func isExcludedDomain(domain string) bool {
 	return false
 }
 
-// stripHTML removes HTML tags from HN comment text.
+// stripHTML removes HTML tags and decodes all HTML entities from HN comment text.
+// Uses the standard library html.UnescapeString for comprehensive entity decoding.
 func stripHTML(s string) string {
 	// Replace <p> with newlines
 	s = strings.ReplaceAll(s, "<p>", "\n")
-	// Replace <br> with newlines
 	s = strings.ReplaceAll(s, "<br>", "\n")
 	s = strings.ReplaceAll(s, "<br/>", "\n")
 	s = strings.ReplaceAll(s, "<br />", "\n")
 	// Remove remaining HTML tags
 	re := regexp.MustCompile(`<[^>]*>`)
 	s = re.ReplaceAllString(s, "")
-	// Decode common HTML entities
-	s = strings.ReplaceAll(s, "&amp;", "&")
-	s = strings.ReplaceAll(s, "&lt;", "<")
-	s = strings.ReplaceAll(s, "&gt;", ">")
-	s = strings.ReplaceAll(s, "&quot;", "\"")
-	s = strings.ReplaceAll(s, "&#x27;", "'")
-	s = strings.ReplaceAll(s, "&apos;", "'")
+	// Decode ALL HTML entities using stdlib (handles &amp;, &#x2F;, &#x27;, etc.)
+	s = html.UnescapeString(s)
 	// Clean up whitespace
 	s = strings.TrimSpace(s)
 	return s

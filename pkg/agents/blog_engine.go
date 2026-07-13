@@ -32,10 +32,10 @@ type BlogEngine struct {
 
 // blogState tracks which topics have been used and general engine stats.
 type blogState struct {
-	TotalPosts  int                `json:"total_posts"`
-	UsedTopics  []string           `json:"used_topics"`  // topic titles already published
-	LastTopicAt map[string]string  `json:"last_topic_at"` // topic -> ISO8601 timestamp
-	LastRun     string             `json:"last_run"`
+	TotalPosts  int               `json:"total_posts"`
+	UsedTopics  []string          `json:"used_topics"`   // topic titles already published
+	LastTopicAt map[string]string `json:"last_topic_at"` // topic -> ISO8601 timestamp
+	LastRun     string            `json:"last_run"`
 }
 
 // BlogPost represents a generated blog article.

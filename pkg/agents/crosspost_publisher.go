@@ -166,10 +166,14 @@ func CrossPostBlog(ctx context.Context, devto *DevToPublisher, hashnode *Hashnod
 	}
 
 	if devto != nil {
-		_ = devto.PublishToDevTo(ctx, post.Title, markdown, tags)
+		if err := devto.PublishToDevTo(ctx, post.Title, markdown, tags); err != nil {
+			slog.Error("CrossPostBlog: dev.to publish failed", "error", err, "title", post.Title)
+		}
 	}
 	if hashnode != nil {
-		_ = hashnode.PublishToHashnode(ctx, post.Title, markdown, tags, os.Getenv("HASHNODE_PUBLICATION_ID"))
+		if err := hashnode.PublishToHashnode(ctx, post.Title, markdown, tags, os.Getenv("HASHNODE_PUBLICATION_ID")); err != nil {
+			slog.Error("CrossPostBlog: hashnode publish failed", "error", err, "title", post.Title)
+		}
 	}
 }
 

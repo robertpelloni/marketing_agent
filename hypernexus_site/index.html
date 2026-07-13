@@ -505,12 +505,16 @@
       .price-card.rainbow {
         border: none !important;
         background: transparent !important;
-        padding: 3px !important;
+        padding: 4px !important;
         overflow: visible;
         position: relative;
         z-index: 1;
-        box-shadow: 0 0 20px rgba(255, 59, 48, 0.2), 0 0 60px rgba(2, 132, 199, 0.15);
+        transform-style: preserve-3d;
+        perspective: 800px;
+        transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+        box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
       }
+      /* Thick rainbow border — reverse direction, fast */
       .price-card.rainbow::before {
         content: '';
         position: absolute;
@@ -518,50 +522,27 @@
         left: -50%;
         width: 200%;
         height: 200%;
-        background: conic-gradient(from 0deg,
-          rgba(255, 59, 48, 0.7),
-          rgba(255, 149, 0, 0.7),
-          rgba(255, 204, 0, 0.7),
-          rgba(76, 217, 100, 0.7),
-          rgba(90, 200, 250, 0.7),
-          rgba(0, 122, 255, 0.7),
-          rgba(88, 86, 214, 0.7),
-          rgba(255, 59, 48, 0.7)
+        background: conic-gradient(from 180deg,
+          rgba(255, 59, 48, 0.9),
+          rgba(255, 149, 0, 0.9),
+          rgba(255, 204, 0, 0.9),
+          rgba(76, 217, 100, 0.9),
+          rgba(90, 200, 250, 0.9),
+          rgba(0, 122, 255, 0.9),
+          rgba(88, 86, 214, 0.9),
+          rgba(255, 59, 48, 0.9)
         );
-        animation: rotateRainbow 1s linear infinite;
+        animation: rotateRainbowReverse 0.6s linear infinite;
         z-index: -2;
         pointer-events: none;
         display: block !important;
       }
-      @keyframes rotateRainbow {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
+      @keyframes rotateRainbowReverse {
+        from { transform: rotate(360deg); }
+        to { transform: rotate(0deg); }
       }
-      @keyframes rainbowPulseGlow {
-        0% { box-shadow: 0 0 20px rgba(255, 59, 48, 0.4), 0 0 60px rgba(255, 59, 48, 0.15); }
-        14% { box-shadow: 0 0 20px rgba(255, 149, 0, 0.4), 0 0 60px rgba(255, 149, 0, 0.15); }
-        28% { box-shadow: 0 0 20px rgba(255, 204, 0, 0.4), 0 0 60px rgba(255, 204, 0, 0.15); }
-        42% { box-shadow: 0 0 20px rgba(76, 217, 100, 0.4), 0 0 60px rgba(76, 217, 100, 0.15); }
-        57% { box-shadow: 0 0 20px rgba(90, 200, 250, 0.4), 0 0 60px rgba(90, 200, 250, 0.15); }
-        71% { box-shadow: 0 0 20px rgba(0, 122, 255, 0.4), 0 0 60px rgba(0, 122, 255, 0.15); }
-        85% { box-shadow: 0 0 20px rgba(88, 86, 214, 0.4), 0 0 60px rgba(88, 86, 214, 0.15); }
-        100% { box-shadow: 0 0 20px rgba(255, 59, 48, 0.4), 0 0 60px rgba(255, 59, 48, 0.15); }
-      }
-      .price-card.rainbow {
-        animation: rainbowPulseGlow 1.5s infinite alternate ease-in-out;
-      }
-      .price-card.rainbow:hover {
-        box-shadow: 0 0 40px rgba(255, 59, 48, 0.5), 0 0 100px rgba(255, 149, 0, 0.3), 0 0 150px rgba(0, 122, 255, 0.2) !important;
-        transform: translateY(-4px) scale(1.02);
-      }
-      .price-card.rainbow:hover::before {
-        animation-duration: 0.4s !important;
-        background: conic-gradient(from 0deg,
-          #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30
-        ) !important;
-      }
-      /* Spinning rainbow inside on hover */
-      .price-card.rainbow:hover::after {
+      /* Pale rainbow spinner fill — embedded inside card */
+      .price-card.rainbow::after {
         content: '';
         position: absolute;
         top: 50%;
@@ -570,19 +551,60 @@
         height: 90%;
         transform: translate(-50%, -50%);
         background: conic-gradient(from 0deg,
-          rgba(255, 59, 48, 0.08),
-          rgba(255, 149, 0, 0.08),
-          rgba(255, 204, 0, 0.08),
-          rgba(76, 217, 100, 0.08),
-          rgba(90, 200, 250, 0.08),
-          rgba(0, 122, 255, 0.08),
-          rgba(88, 86, 214, 0.08),
-          rgba(255, 59, 48, 0.08)
+          rgba(255, 59, 48, 0.06),
+          rgba(255, 149, 0, 0.06),
+          rgba(255, 204, 0, 0.06),
+          rgba(76, 217, 100, 0.06),
+          rgba(90, 200, 250, 0.06),
+          rgba(0, 122, 255, 0.06),
+          rgba(88, 86, 214, 0.06),
+          rgba(255, 59, 48, 0.06)
         );
-        animation: rotateRainbow 1.5s linear infinite;
+        animation: rotateRainbow 2.5s linear infinite;
         border-radius: 10px;
         z-index: 0;
         pointer-events: none;
+        transition: background 0.3s, animation-duration 0.3s;
+      }
+      @keyframes rotateRainbow {
+        from { transform: translate(-50%, -50%) rotate(0deg); }
+        to { transform: translate(-50%, -50%) rotate(360deg); }
+      }
+      @keyframes rainbowPulseGlow {
+        0% { box-shadow: 0 0 30px rgba(255, 59, 48, 0.4), 0 0 80px rgba(255, 59, 48, 0.15); }
+        14% { box-shadow: 0 0 30px rgba(255, 149, 0, 0.4), 0 0 80px rgba(255, 149, 0, 0.15); }
+        28% { box-shadow: 0 0 30px rgba(255, 204, 0, 0.4), 0 0 80px rgba(255, 204, 0, 0.15); }
+        42% { box-shadow: 0 0 30px rgba(76, 217, 100, 0.4), 0 0 80px rgba(76, 217, 100, 0.15); }
+        57% { box-shadow: 0 0 30px rgba(90, 200, 250, 0.4), 0 0 80px rgba(90, 200, 250, 0.15); }
+        71% { box-shadow: 0 0 30px rgba(0, 122, 255, 0.4), 0 0 80px rgba(0, 122, 255, 0.15); }
+        85% { box-shadow: 0 0 30px rgba(88, 86, 214, 0.4), 0 0 80px rgba(88, 86, 214, 0.15); }
+        100% { box-shadow: 0 0 30px rgba(255, 59, 48, 0.4), 0 0 80px rgba(255, 59, 48, 0.15); }
+      }
+      .price-card.rainbow {
+        animation: rainbowPulseGlow 1.2s infinite alternate ease-in-out;
+      }
+      /* Hover: intense spinner, faster border, 3D tilt handled by JS */
+      .price-card.rainbow:hover {
+        box-shadow: 0 0 50px rgba(255, 59, 48, 0.5), 0 0 120px rgba(255, 149, 0, 0.3), 0 0 180px rgba(0, 122, 255, 0.2) !important;
+      }
+      .price-card.rainbow:hover::before {
+        animation-duration: 0.3s !important;
+        background: conic-gradient(from 180deg,
+          #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30
+        ) !important;
+      }
+      .price-card.rainbow:hover::after {
+        background: conic-gradient(from 0deg,
+          rgba(255, 59, 48, 0.2),
+          rgba(255, 149, 0, 0.2),
+          rgba(255, 204, 0, 0.2),
+          rgba(76, 217, 100, 0.2),
+          rgba(90, 200, 250, 0.2),
+          rgba(0, 122, 255, 0.2),
+          rgba(88, 86, 214, 0.2),
+          rgba(255, 59, 48, 0.2)
+        ) !important;
+        animation-duration: 1s !important;
       }
 
       /* ══════ TESTIMONIALS ══════ */
@@ -627,6 +649,11 @@
         z-index: 0;
       }
 
+    
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
     </style>
 
 </head>
@@ -2192,54 +2219,11 @@
 
 
 
-                    <div class="price-badge">Limited Time</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    <div class="price-badge">Early Adopter Sale</div>
                     <div class="price-tier">Professional</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    <div style="text-decoration:line-through;color:#94a3b8;font-size:20px;font-weight:500;letter-spacing:-0.5px;margin-bottom:2px">$100</div>
+                    <div style="font-size:12px;color:#ef4444;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;animation:pulse 1.5s infinite">SALE ENDING... SOON!</div>
                     <div class="price-amount">$5 <span class="period">/ seat / mo</span></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     <div class="price-desc">For growing teams that need governance and compliance.</div>
 
 
@@ -6528,16 +6512,16 @@ function togglePricing(){
   }
 }
 
-// 3D tilt on glass panels
-document.querySelectorAll('.feature,.stat,.compliance-item').forEach(function(card){
+// 3D tilt on glass panels + rainbow card
+document.querySelectorAll('.feature,.stat,.compliance-item,.price-card.rainbow').forEach(function(card){
   card.addEventListener('mousemove',function(e){
     var r=card.getBoundingClientRect();
     var x=(e.clientX-r.left)/r.width-0.5;
     var y=(e.clientY-r.top)/r.height-0.5;
-    card.style.transform='perspective(1000px) rotateY('+x*12+'deg) rotateX('+-y*12+'deg) translateY(-4px)';
+    card.style.transform='perspective(800px) rotateY('+x*15+'deg) rotateX('+-y*15+'deg) translateY(-4px)';
   });
   card.addEventListener('mouseleave',function(){
-    card.style.transform='perspective(1000px) rotateY(0) rotateX(0)';
+    card.style.transform='perspective(800px) rotateY(0) rotateX(0)';
   });
 });
 

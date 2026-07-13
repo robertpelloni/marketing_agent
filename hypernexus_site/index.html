@@ -635,10 +635,14 @@
       .price-card.rainbow {
         animation: rainbowPulseGlow 1.2s infinite alternate ease-in-out;
       }
-      /* Hover: faster border, stronger glow */
+      /* Hover: faster border, stronger glow, vibrant spinner */
       .price-card.rainbow:hover {
         box-shadow: 0 0 50px rgba(255, 59, 48, 0.5), 0 0 120px rgba(255, 149, 0, 0.3), 0 0 180px rgba(0, 122, 255, 0.2) !important;
         animation-duration: 0.3s !important;
+      }
+      .price-card.rainbow:hover .card-inner {
+        background: linear-gradient(rgba(255,255,255,0.85),rgba(255,255,255,0.85)),conic-gradient(from 0deg,rgba(255,59,48,0.2),rgba(255,149,0,0.2),rgba(255,204,0,0.2),rgba(76,217,100,0.2),rgba(90,200,250,0.2),rgba(0,122,255,0.2),rgba(88,86,214,0.2),rgba(255,59,48,0.2)) !important;
+        animation-duration: 1.5s !important;
       }
 
       /* ══════ TESTIMONIALS ══════ */
@@ -2241,7 +2245,7 @@
 
 
                                                 <div class="price-card rainbow featured" style="padding:4px;border-radius:12px;position:relative;overflow:visible">
-                    <div style="position:relative;z-index:1;background:#fff;border-radius:8px;padding:32px 28px">
+                    <div class="card-inner" style="position:relative;z-index:1;background:linear-gradient(#fff,#fff),conic-gradient(from 0deg,rgba(255,59,48,0.06),rgba(255,149,0,0.06),rgba(255,204,0,0.06),rgba(76,217,100,0.06),rgba(90,200,250,0.06),rgba(0,122,255,0.06),rgba(88,86,214,0.06),rgba(255,59,48,0.06));background-blend-mode:screen;border-radius:8px;padding:32px 28px;animation:rotateRainbow 3s linear infinite">
                         ><div class="price-badge">Early Adopter Sale</div>
                     <div class="price-tier">Professional</div>
                     <div style="text-decoration:line-through;color:#94a3b8;font-size:20px;font-weight:500;letter-spacing:-0.5px;margin-bottom:2px">$100</div>
@@ -6505,16 +6509,16 @@ function togglePricing(){
   }
 }
 
-// 3D tilt on glass panels + rainbow card with zoom
+// 3D tilt on glass panels + rainbow card
 document.querySelectorAll('.feature,.stat,.compliance-item,.price-card.rainbow').forEach(function(card){
   card.addEventListener('mousemove',function(e){
     var r=card.getBoundingClientRect();
     var x=(e.clientX-r.left)/r.width-0.5;
     var y=(e.clientY-r.top)/r.height-0.5;
-    card.style.transform='perspective(800px) rotateY('+x*18+'deg) rotateX('+-y*18+'deg) translateZ(24px) scale(1.03)';
+    card.style.transform='rotateY('+x*20+'deg) rotateX('+-y*20+'deg) translateZ(16px)';
   });
   card.addEventListener('mouseleave',function(){
-    card.style.transform='perspective(800px) rotateY(0) rotateX(0) translateZ(0) scale(1)';
+    card.style.transform='rotateY(0deg) rotateX(0deg) translateZ(0px)';
   });
 });
 

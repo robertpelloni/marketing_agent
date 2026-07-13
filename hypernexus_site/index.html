@@ -444,7 +444,8 @@
       /* ══════ ROTATING BLUE OUTLINE AROUND MAIN CONTENT ══════ */
       .rotating-outline {
         position: relative;
-        max-width: 1248px;
+        max-width: 80%;
+        width: 80%;
         margin: 0 auto 40px;
         border: 3px solid transparent;
         border-radius: 28px;
@@ -506,7 +507,7 @@
         border: none !important;
         background: transparent !important;
         padding: 4px !important;
-        overflow: visible;
+        overflow: hidden;
         position: relative;
         z-index: 1;
         transform-style: preserve-3d;
@@ -514,14 +515,11 @@
         transition: transform 0.15s ease-out, box-shadow 0.3s ease;
         box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
       }
-      /* Thick rainbow border — reverse direction, fast */
+      /* Thick rainbow border — reverse direction, fast — fills card bounds */
       .price-card.rainbow::before {
         content: '';
         position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
+        inset: 0;
         background: conic-gradient(from 180deg,
           rgba(255, 59, 48, 0.9),
           rgba(255, 149, 0, 0.9),
@@ -536,6 +534,7 @@
         z-index: -2;
         pointer-events: none;
         display: block !important;
+        border-radius: 12px;
       }
       @keyframes rotateRainbowReverse {
         from { transform: rotate(360deg); }

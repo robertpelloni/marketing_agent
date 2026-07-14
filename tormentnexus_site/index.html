@@ -3144,10 +3144,10 @@
         pts.push({
           x: Math.random() * W,
           y: Math.random() * H,
-          s: Math.random() * 1.5 + 0.3,
-          dx: (Math.random() - 0.5) * 0.1,
-          dy: (Math.random() - 0.5) * 0.1,
-          o: Math.random() * 0.15 + 0.01,
+          s: Math.random() * 2 + 0.5,
+          dx: (Math.random() - 0.5) * 0.5,
+          dy: (Math.random() - 0.5) * 0.5,
+          o: Math.random() * 0.3 + 0.1,
           a: Math.random() * Math.PI * 2,
           c: Math.random() > 0.5,
         });
@@ -3157,12 +3157,12 @@
       for (var i = 0; i < 6; i++) {
         terminators.push({
           x: Math.random() * W,
-          y: 80 - Math.random() * 200, // start off-screen top
+          y: Math.random() * H,
           s: 0.3 + Math.random() * 0.4,
-          dx: (Math.random() - 0.5) * 0.1,
-          dy: 0.3 + Math.random() * 0.4, // march down
+          dx: (Math.random() - 0.5) * 0.5,
+          dy: 1 + Math.random() * 2,
           step: Math.random() * 10,
-          o: 0.1 + Math.random() * 0.15,
+          o: 0.3 + Math.random() * 0.3,
         });
       }
 
@@ -3175,9 +3175,9 @@
           dx: (Math.random() - 0.5) * 0.2,
           dy: (Math.random() - 0.5) * 0.2,
           step: Math.random() * 10,
-          o: 0.25 + Math.random() * 0.25,
+          o: 0.4 + Math.random() * 0.3,
           angle: Math.random() * Math.PI * 2,
-          speed: 0.15 + Math.random() * 0.25,
+          speed: 1 + Math.random() * 2,
         });
       }
 
@@ -3195,7 +3195,18 @@
         });
       }
 
+      var _frame = 0;
       function anim() {
+        _frame++;
+        if (_frame <= 5)
+          console.log(
+            "frame",
+            _frame,
+            "t0y",
+            terminators[0] ? terminators[0].y.toFixed(1) : "?",
+            "s0x",
+            spiders[0] ? spiders[0].x.toFixed(1) : "?",
+          );
         ctx.clearRect(0, 0, W, H);
         if (ctxTop) {
           ctxTop.clearRect(0, 0, W, H);

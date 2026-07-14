@@ -584,18 +584,11 @@
       .price-card.rainbow {
         border: none !important;
         background: transparent !important;
-        padding: 4px !important;
+        padding: 0 !important;
         overflow: hidden;
         position: relative;
         z-index: 1;
         border-radius: 12px;
-        box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
-      }
-      /* Rainbow rotating border — pseudo-element */
-      .price-card.rainbow::before {
-        content: '';
-        position: absolute;
-        inset: 0;
         background: conic-gradient(from 180deg,
           rgba(255, 59, 48, 0.9),
           rgba(255, 149, 0, 0.9),
@@ -605,21 +598,9 @@
           rgba(0, 122, 255, 0.9),
           rgba(88, 86, 214, 0.9),
           rgba(255, 59, 48, 0.9)
-        );
+        ) !important;
         animation: rotateRainbowReverse 0.6s linear infinite;
-        border-radius: 12px;
-        z-index: 0;
-        pointer-events: none;
-      }
-      /* White center covering rainbow, leaving 4px border */
-      .price-card.rainbow::after {
-        content: '';
-        position: absolute;
-        inset: 4px;
-        background: #fff;
-        border-radius: 8px;
-        z-index: 1;
-        pointer-events: none;
+        box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
       }
       /* Badge above border */
       .price-card.rainbow .price-badge {
@@ -632,12 +613,15 @@
       /* Spinning faded rainbow fill — on inner wrapper */
       .rainbow-spinner {
         position: relative;
-        z-index: 2;
+        overflow: hidden;
       }
       .rainbow-spinner::before {
         content: '';
         position: absolute;
-        inset: 0;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
         background: conic-gradient(from 0deg,
           rgba(255, 59, 48, 0.08),
           rgba(255, 149, 0, 0.08),
@@ -649,8 +633,6 @@
           rgba(255, 59, 48, 0.08)
         );
         animation: rotateRainbow 4s linear infinite;
-        border-radius: 8px;
-        z-index: -1;
         pointer-events: none;
       }
       .price-card.rainbow:hover .rainbow-spinner::before {
@@ -665,6 +647,9 @@
           rgba(255, 59, 48, 0.2)
         );
         animation-duration: 1.5s !important;
+      }
+      .price-card.rainbow:hover {
+        animation-duration: 0.3s !important;
       }
       @keyframes rotateRainbowReverse {
         from { transform: rotate(360deg); }
@@ -2296,7 +2281,7 @@
 
 
                                                 <div class="price-card rainbow featured">
-                    <div class="rainbow-spinner" style="padding:32px 28px;border-radius:8px;background:#fff">
+                    <div class="rainbow-spinner" style="margin:4px;padding:32px 28px;border-radius:8px;background:#fff">
                         <div class="price-badge">Early Adopter Sale</div>
                     <div class="price-tier">Professional</div>
                     <div style="text-decoration:line-through;color:#94a3b8;font-size:20px;font-weight:500;letter-spacing:-0.5px;margin-bottom:2px">$100</div>

@@ -1628,7 +1628,7 @@
               color: #00ff88;
               font-weight: 700;
               font-size: 14px;
-              text-transform: uppercase;
+              text-transform: none;
               letter-spacing: 3px;
             "
             >"fuck it"</span
@@ -3196,7 +3196,6 @@
       }
 
       function anim() {
-        try {
           ctx.clearRect(0, 0, W, H);
           if (ctxTop) {
             ctxTop.clearRect(0, 0, W, H);
@@ -3324,10 +3323,6 @@
           ctx.shadowBlur = 0;
 
           requestAnimationFrame(anim);
-        } catch (e) {
-          console.error("anim error:", e);
-          requestAnimationFrame(anim);
-        }
       }
       anim();
 

@@ -2384,7 +2384,27 @@
 
 
 
-                    <a href="/contact.php" class="price-btn price-btn-primary">Buy Now!!!</a>
+                    <div style="display:flex;align-items:center;gap:8px;margin-top:16px">
+                      <label style="font-size:13px;color:#64748b">Seats:</label>
+                      <select id="seats-select" style="padding:6px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;background:#fff">
+                        <option value="1">1</option>
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                      </select>
+                      <button onclick="buyNow()" class="price-btn price-btn-primary" style="flex:1;cursor:pointer">Buy Now!!!</button>
+                    </div>
+                    <script>
+                    function buyNow(){
+                      var seats=document.getElementById('seats-select').value;
+                      fetch('/api/v1/billing/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier:'professional',seats:parseInt(seats),success_url:location.origin+'/success.html',cancel_url:location.origin+'/#pricing'})})
+                      .then(function(r){return r.json()})
+                      .then(function(d){if(d.url)window.location.href=d.url;else alert('Error: '+(d.error||'Unknown'))})
+                      .catch(function(e){alert('Error: '+e.message)})
+                    }
+                    </script>
                     </div>
                 </div></div>
                 </div>

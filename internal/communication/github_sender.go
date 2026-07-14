@@ -50,6 +50,10 @@ func NewGitHubCommentSender(repo string) *GitHubCommentSender {
 // issueNumber: the issue or PR number to comment on
 // commentBody: the message body to post
 func (g *GitHubCommentSender) SendComment(ctx context.Context, owner, repo string, issueNumber int, commentBody string) error {
+	if os.Getenv("GITHUB_POSTING_DISABLED") == "true" {
+		slog.Info("GitHubCommentSender: Posting disabled via GITHUB_POSTING_DISABLED env var")
+		return fmt.Errorf("GitHubCommentSender: posting disabled")
+	}
 	if g.client == nil {
 		return fmt.Errorf("GitHubCommentSender: client not initialized")
 	}

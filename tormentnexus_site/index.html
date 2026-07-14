@@ -3210,14 +3210,20 @@
           console.error("no ctx!");
           return;
         }
-        ctx.clearRect(0, 0, W, H);
-        if (ctxTop) {
-          ctxTop.clearRect(0, 0, W, H);
+        // Removed clearRect to test if canvas updates
+
+        // DEBUG: flash canvas background
+        if (_frame < 120) {
+          ctx.fillStyle =
+            _frame % 2 === 0 ? "rgba(0,255,0,0.3)" : "rgba(0,0,255,0.3)";
+          ctx.fillRect(0, 0, W, H);
         }
 
-        // DEBUG: bright test bar that moves
-        ctx.fillStyle = "rgba(255,0,0,0.8)";
-        ctx.fillRect(_frame % W, 0, 50, 10);
+        // DEBUG: big bright bars that move fast
+        ctx.fillStyle = "rgba(255,0,0,0.9)";
+        ctx.fillRect((_frame * 5) % W, 50, 200, 50);
+        ctx.fillStyle = "rgba(255,255,0,0.9)";
+        ctx.fillRect((_frame * 3) % W, 150, 100, 30);
 
         // ── Background grid lines ──
         ctx.strokeStyle = "rgba(0,255,136,0.012)";

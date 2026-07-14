@@ -193,6 +193,11 @@ func (s *StripeBillingClient) CreateCheckoutSession(ctx context.Context, company
 			{
 				Price:    stripe.String(priceID),
 				Quantity: stripe.Int64(int64(seats)),
+				AdjustableQuantity: &stripe.CheckoutSessionLineItemAdjustableQuantityParams{
+					Enabled: stripe.Bool(true),
+					Minimum: stripe.Int64(1),
+					Maximum: stripe.Int64(10000),
+				},
 			},
 		},
 		Metadata: map[string]string{

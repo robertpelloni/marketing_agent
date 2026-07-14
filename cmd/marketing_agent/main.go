@@ -179,8 +179,9 @@ func main() {
 	if cfg.DeepSeekAPIKey != "" {
 		slog.Info(fmt.Sprintf("LLM: Initializing DeepSeek provider (model: %s)", cfg.DeepSeekModel))
 		llmProvider = llm.NewDeepSeekLLMProvider(llm.DeepSeekConfig{
-			APIKey: cfg.DeepSeekAPIKey,
-			Model:  cfg.DeepSeekModel,
+			APIKey:  cfg.DeepSeekAPIKey,
+			Model:   cfg.DeepSeekModel,
+			BaseURL: cfg.DeepSeekBaseURL,
 		})
 
 		if err := llmProvider.(*llm.DeepSeekLLMProvider).HealthCheck(ctx); err != nil {

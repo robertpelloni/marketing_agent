@@ -19,13 +19,15 @@ import (
 type DeepSeekLLMProvider struct {
 	APIKey     string
 	Model      string
+	BaseURL    string
 	HTTPClient *http.Client
 }
 
 // DeepSeekConfig holds the configuration for connecting to DeepSeek API.
 type DeepSeekConfig struct {
-	APIKey string // DeepSeek API key (sk-...)
-	Model  string // e.g. "deepseek-chat" or "deepseek-reasoner"
+	APIKey  string // DeepSeek API key (sk-...)
+	Model   string // e.g. "deepseek-chat" or "deepseek-reasoner"
+	BaseURL string // Override base URL (default: https://api.deepseek.com)
 }
 
 // NewDeepSeekLLMProvider creates a provider that calls DeepSeek directly.
@@ -33,9 +35,13 @@ func NewDeepSeekLLMProvider(cfg DeepSeekConfig) *DeepSeekLLMProvider {
 	if cfg.Model == "" {
 		cfg.Model = "deepseek-chat"
 	}
+	if cfg.BaseURL == "" {
+		cfg.BaseURL = "https://api.deepseek.com"
+	}
 	return &DeepSeekLLMProvider{
-		APIKey: cfg.APIKey,
-		Model:  cfg.Model,
+		APIKey:  cfg.APIKey,
+		Model:   cfg.Model,
+		BaseURL: cfg.BaseURL,
 		HTTPClient: &http.Client{
 			Timeout: 120 * time.Second,
 		},
@@ -72,7 +78,7 @@ func (d *DeepSeekLLMProvider) Generate(ctx context.Context, prompt Prompt) (stri
 		return "", fmt.Errorf("deepseek: failed to marshal request: %w", err)
 	}
 
-	url := "https://api.deepseek.com/v1/chat/completions"
+	url := d.BaseURL + "/v1/chat/completions"
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(bodyBytes))
 	if err != nil {
 		return "", fmt.Errorf("deepseek: failed to create request: %w", err)
@@ -125,7 +131,7 @@ func (d *DeepSeekLLMProvider) HealthCheck(ctx context.Context) error {
 	}
 
 	// Try fetching models list as a lightweight auth check
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "https://api.deepseek.com/models", nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, d.BaseURL+"/models", nil)
 	if err != nil {
 		return fmt.Errorf("deepseek health: failed to create request: %w", err)
 	}

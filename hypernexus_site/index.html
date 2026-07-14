@@ -584,7 +584,7 @@
       .price-card.rainbow {
         border: none !important;
         padding: 4px !important;
-        overflow: visible;
+        overflow: hidden;
         position: relative;
         border-radius: 12px;
         background: conic-gradient(from 180deg,
@@ -597,28 +597,31 @@
           rgba(88, 86, 214, 0.9),
           rgba(255, 59, 48, 0.9)
         ) !important;
-        animation: rotateRainbowReverse 0.3s linear infinite;
+        animation: rotateRainbowReverse 0.3s linear infinite, rainbowPulseGlow 1.2s infinite alternate ease-in-out;
         box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
         transition: transform 0.2s ease-out, box-shadow 0.3s ease !important;
       }
-      /* Badge — rainbow shifting gradient, pops out */
-      .price-card.rainbow .price-badge {
-        position: absolute;
-        top: -14px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10;
-        background: linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);
-        background-size: 200% 100%;
-        animation: badgeShimmer 2s linear infinite;
-        color: #fff;
-        font-weight: 800;
-        padding: 4px 14px;
-        border-radius: 20px;
-        font-size: 11px;
-        letter-spacing: 1px;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-        box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4), 0 0 20px rgba(255, 149, 0, 0.3);
+      .price-card.rainbow:hover {
+        animation-duration: 0.08s, 1.2s !important;
+        box-shadow: 0 0 60px rgba(255, 59, 48, 0.6), 0 0 140px rgba(255, 149, 0, 0.4), 0 0 200px rgba(0, 122, 255, 0.3) !important;
+      }
+      @keyframes rotateRainbowReverse {
+        from { transform: rotate(360deg); }
+        to { transform: rotate(0deg); }
+      }
+      @keyframes rotateRainbow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes rainbowPulseGlow {
+        0% { box-shadow: 0 0 30px rgba(255, 59, 48, 0.4), 0 0 80px rgba(255, 59, 48, 0.15); }
+        14% { box-shadow: 0 0 30px rgba(255, 149, 0, 0.4), 0 0 80px rgba(255, 149, 0, 0.15); }
+        28% { box-shadow: 0 0 30px rgba(255, 204, 0, 0.4), 0 0 80px rgba(255, 204, 0, 0.15); }
+        42% { box-shadow: 0 0 30px rgba(76, 217, 100, 0.4), 0 0 80px rgba(76, 217, 100, 0.15); }
+        57% { box-shadow: 0 0 30px rgba(90, 200, 250, 0.4), 0 0 80px rgba(90, 200, 250, 0.15); }
+        71% { box-shadow: 0 0 30px rgba(0, 122, 255, 0.4), 0 0 80px rgba(0, 122, 255, 0.15); }
+        85% { box-shadow: 0 0 30px rgba(88, 86, 214, 0.4), 0 0 80px rgba(88, 86, 214, 0.15); }
+        100% { box-shadow: 0 0 30px rgba(255, 59, 48, 0.4), 0 0 80px rgba(255, 59, 48, 0.15); }
       }
       @keyframes badgeShimmer {
         0% { background-position: 0% 50%; }
@@ -630,13 +633,11 @@
         overflow: hidden;
         background: #fff;
         border-radius: 8px;
-        margin: 0;
       }
       .rainbow-spinner::before {
         content: '';
         position: absolute;
-        top: -50%;
-        left: -50%;
+        inset: -50%;
         width: 200%;
         height: 200%;
         background: conic-gradient(from 0deg,
@@ -653,6 +654,7 @@
         pointer-events: none;
       }
       .price-card.rainbow:hover .rainbow-spinner::before {
+        animation-duration: 1s !important;
         background: conic-gradient(from 0deg,
           rgba(255, 59, 48, 0.2),
           rgba(255, 149, 0, 0.2),
@@ -662,14 +664,7 @@
           rgba(0, 122, 255, 0.2),
           rgba(88, 86, 214, 0.2),
           rgba(255, 59, 48, 0.2)
-        );
-        animation-duration: 1s !important;
-      }
-      /* Hover: super fast border, stronger glow, zoom */
-      .price-card.rainbow:hover {
-        box-shadow: 0 0 60px rgba(255, 59, 48, 0.6), 0 0 140px rgba(255, 149, 0, 0.4), 0 0 200px rgba(0, 122, 255, 0.3) !important;
-        animation-duration: 0.08s !important;
-        transform: scale(1.05) !important;
+        ) !important;
       }
       /* Shine sweep on text + buttons */
       .price-card.rainbow .price-tier,
@@ -704,28 +699,6 @@
       @keyframes textShine {
         from { left: -100%; }
         to { left: 200%; }
-      }
-      @keyframes rotateRainbowReverse {
-        from { transform: rotate(360deg); }
-        to { transform: rotate(0deg); }
-      }
-
-      @keyframes rotateRainbow {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-      @keyframes rainbowPulseGlow {
-        0% { box-shadow: 0 0 30px rgba(255, 59, 48, 0.4), 0 0 80px rgba(255, 59, 48, 0.15); }
-        14% { box-shadow: 0 0 30px rgba(255, 149, 0, 0.4), 0 0 80px rgba(255, 149, 0, 0.15); }
-        28% { box-shadow: 0 0 30px rgba(255, 204, 0, 0.4), 0 0 80px rgba(255, 204, 0, 0.15); }
-        42% { box-shadow: 0 0 30px rgba(76, 217, 100, 0.4), 0 0 80px rgba(76, 217, 100, 0.15); }
-        57% { box-shadow: 0 0 30px rgba(90, 200, 250, 0.4), 0 0 80px rgba(90, 200, 250, 0.15); }
-        71% { box-shadow: 0 0 30px rgba(0, 122, 255, 0.4), 0 0 80px rgba(0, 122, 255, 0.15); }
-        85% { box-shadow: 0 0 30px rgba(88, 86, 214, 0.4), 0 0 80px rgba(88, 86, 214, 0.15); }
-        100% { box-shadow: 0 0 30px rgba(255, 59, 48, 0.4), 0 0 80px rgba(255, 59, 48, 0.15); }
-      }
-      .price-card.rainbow {
-        animation: rainbowPulseGlow 1.2s infinite alternate ease-in-out;
       }
       /* Sparkles! */
       .sparkle {
@@ -2343,8 +2316,9 @@
 
 
 
-                                                <div class="price-card rainbow featured">
-                    <div class="price-badge">Early Adopter Sale</div>
+                                                <div style="position:relative">
+                    <div class="price-badge" style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);z-index:10;background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#4cd964,#5ac8fa,#007aff,#5856d6,#ff3b30);background-size:200% 100%;animation:badgeShimmer 2s linear infinite;color:#fff;font-weight:800;padding:4px 14px;border-radius:20px;font-size:11px;letter-spacing:1px;text-shadow:0 1px 2px rgba(0,0,0,0.3);box-shadow:0 4px 15px rgba(255,59,48,0.4),0 0 20px rgba(255,149,0,0.3)">Early Adopter Sale</div>
+                    <div class="price-card rainbow featured">
                     <div class="rainbow-spinner" style="padding:32px 28px">
                     <div class="price-tier">Professional</div>
                     <div style="text-decoration:line-through;color:#94a3b8;font-size:20px;font-weight:500;letter-spacing:-0.5px;margin-bottom:2px">$100</div>
@@ -2417,6 +2391,7 @@
                     <a href="/contact.php" class="price-btn price-btn-primary">Buy Now!!!</a>
                     </div>
                 </div></div>
+                </div>
 
 
 

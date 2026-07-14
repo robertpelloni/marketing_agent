@@ -16,9 +16,9 @@ import (
 // GitHubCommentSender posts technical comments on GitHub Issues and PRs
 // as a "technical hook" outreach for target companies.
 type GitHubCommentSender struct {
-	client		*github.Client
-	repo		string	// e.g. "robertpelloni/marketing_agent"
-	username	string	// GitHub username for the bot account
+	client   *github.Client
+	repo     string // e.g. "robertpelloni/marketing_agent"
+	username string // GitHub username for the bot account
 }
 
 // NewGitHubCommentSender creates a GitHubCommentSender.
@@ -29,9 +29,9 @@ func NewGitHubCommentSender(repo string) *GitHubCommentSender {
 	if token == "" {
 		slog.Info("GitHubCommentSender: Warning: GITHUB_TOKEN not set, will use unauthenticated client (rate limited)")
 		return &GitHubCommentSender{
-			client:		github.NewClient(nil),
-			repo:		repo,
-			username:	"hypernexus-bot",
+			client:   github.NewClient(nil),
+			repo:     repo,
+			username: "hypernexus-bot",
 		}
 	}
 
@@ -39,9 +39,9 @@ func NewGitHubCommentSender(repo string) *GitHubCommentSender {
 	tc := oauth2.NewClient(context.Background(), ts)
 
 	return &GitHubCommentSender{
-		client:		github.NewClient(tc),
-		repo:		repo,
-		username:	os.Getenv("GITHUB_BOT_USERNAME"),
+		client:   github.NewClient(tc),
+		repo:     repo,
+		username: os.Getenv("GITHUB_BOT_USERNAME"),
 	}
 }
 
@@ -98,8 +98,8 @@ func (g *GitHubCommentSender) SearchRelevantIssues(ctx context.Context, companyD
 	for _, term := range searchTerms {
 		query := fmt.Sprintf("%s org:%s is:issue is:open", term, companyDomain)
 		results, _, err := g.client.Search.Issues(ctx, query, &github.SearchOptions{
-			Sort:	"updated",
-			Order:	"desc",
+			Sort:  "updated",
+			Order: "desc",
 			ListOptions: github.ListOptions{
 				PerPage: 3,
 			},
@@ -120,12 +120,12 @@ func (g *GitHubCommentSender) SearchRelevantIssues(ctx context.Context, companyD
 			}
 
 			targets = append(targets, IssueTarget{
-				Owner:		repoOwner,
-				Repo:		repoName,
-				IssueNumber:	issue.GetNumber(),
-				Title:		issue.GetTitle(),
-				URL:		issue.GetHTMLURL(),
-				Relevance:	CalculateRelevance(term, issue.GetTitle(), issue.GetBody()),
+				Owner:       repoOwner,
+				Repo:        repoName,
+				IssueNumber: issue.GetNumber(),
+				Title:       issue.GetTitle(),
+				URL:         issue.GetHTMLURL(),
+				Relevance:   CalculateRelevance(term, issue.GetTitle(), issue.GetBody()),
 			})
 		}
 	}
@@ -145,12 +145,12 @@ func (g *GitHubCommentSender) SearchRelevantIssues(ctx context.Context, companyD
 
 // IssueTarget represents a GitHub issue or PR that is relevant for outreach.
 type IssueTarget struct {
-	Owner		string
-	Repo		string
-	IssueNumber	int
-	Title		string
-	URL		string
-	Relevance	int	// higher = more relevant
+	Owner       string
+	Repo        string
+	IssueNumber int
+	Title       string
+	URL         string
+	Relevance   int // higher = more relevant
 }
 
 // CalculateRelevance scores how relevant an issue is to TormentNexus.

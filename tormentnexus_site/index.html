@@ -139,7 +139,7 @@
           var(--eye),
           transparent
         );
-        animation: scanPulse 2s ease-in-out infinite;
+        animation: scanPulse 2s ease-in-out infinite !important;
         opacity: 0.5;
       }
       @keyframes scanPulse {
@@ -168,7 +168,7 @@
           var(--borg),
           transparent
         );
-        animation: vscanMove 4s linear infinite;
+        animation: vscanMove 4s linear infinite !important;
         opacity: 0.15;
       }
       @keyframes vscanMove {
@@ -315,7 +315,7 @@
       }
       .logo .skull {
         display: inline-block;
-        animation: skullPulse 2s ease-in-out infinite;
+        animation: skullPulse 2s ease-in-out infinite !important;
       }
       @keyframes skullPulse {
         0%,
@@ -378,7 +378,7 @@
         height: 5px;
         background: var(--eye);
         border-radius: 50%;
-        animation: bl 1.5s infinite;
+        animation: bl 1.5s infinite !important;
         box-shadow: 0 0 12px var(--eye-g);
       }
       @keyframes bl {
@@ -425,7 +425,7 @@
         font-family: "JetBrains Mono", monospace;
         letter-spacing: 3px;
         text-transform: uppercase;
-        animation: blinkBadge 1.5s ease-in-out infinite;
+        animation: blinkBadge 1.5s ease-in-out infinite !important;
         text-shadow: 0 0 15px var(--eye-g);
         box-shadow:
           0 0 20px rgba(255, 0, 68, 0.05),
@@ -519,7 +519,7 @@
           rgba(255, 255, 255, 0.03) 60%,
           transparent 100%
         );
-        animation: shimmerSweep 4s ease-in-out infinite;
+        animation: shimmerSweep 4s ease-in-out infinite !important;
         pointer-events: none;
         z-index: 2;
       }
@@ -537,7 +537,7 @@
       .hero .typing {
         display: inline-block;
         border-right: 2px solid var(--borg);
-        animation: cursorBlink 0.8s step-end infinite;
+        animation: cursorBlink 0.8s step-end infinite !important;
         padding-right: 4px;
       }
       @keyframes cursorBlink {
@@ -910,7 +910,7 @@
           rgba(255, 120, 0, 0.45),
           transparent
         );
-        animation: flameRotate 6s linear infinite;
+        animation: flameRotate 6s linear infinite !important;
         z-index: 0;
       }
       .flame-wrapper::after {
@@ -922,7 +922,7 @@
           rgba(255, 200, 0, 0.35),
           transparent
         );
-        animation: flameRotate 9s linear infinite reverse;
+        animation: flameRotate 9s linear infinite reverse !important;
       }
       .flame-content {
         position: relative;

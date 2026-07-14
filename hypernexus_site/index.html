@@ -583,7 +583,7 @@
       /* ══════ RAINBOW BORDER CARD ══════ */
       .price-card.rainbow {
         border: none !important;
-        padding: 4px !important;
+        padding: 0 !important;
         overflow: hidden;
         position: relative;
         border-radius: 12px;
@@ -592,13 +592,11 @@
         box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
         transition: transform 0.2s ease-out, box-shadow 0.3s ease !important;
       }
-      /* Rainbow rotating border — conic-gradient covers full area, rotation stays within bounds */
+      /* Rainbow rotating border — exact card size, clips cleanly */
       .price-card.rainbow::before {
         content: '';
         position: absolute;
-        inset: -20%;
-        width: 140%;
-        height: 140%;
+        inset: 0;
         background: conic-gradient(from 180deg,
           rgba(255, 59, 48, 0.9),
           rgba(255, 149, 0, 0.9),
@@ -610,7 +608,7 @@
           rgba(255, 59, 48, 0.9)
         );
         animation: rotateRainbowReverse 1.5s linear infinite;
-        z-index: -1;
+        z-index: 0;
         pointer-events: none;
       }
       .price-card.rainbow:hover {
@@ -647,6 +645,8 @@
         overflow: hidden;
         background: #fff;
         border-radius: 8px;
+        margin: 4px;
+        z-index: 1;
       }
       .rainbow-spinner::before {
         content: '';
@@ -5711,295 +5711,7 @@
 
 
 
-        // ========== 3D TILT WITH SHINE FOLLOW ==========
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        document.querySelectorAll('.feature, .stat, .price-card, .compliance-item').forEach(function(card) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            card.addEventListener('mousemove', function(e) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                var r = card.getBoundingClientRect();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                var x = e.clientX - r.left, y = e.clientY - r.top;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                var cx = r.width / 2, cy = r.height / 2;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                var rotX = (y - cy) / cy * -10, rotY = (x - cx) / cx * 10;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                var shinePos = (x / r.width) * 100 + '% ' + (y / r.height) * 100 + '%';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                card.style.transform = 'perspective(1200px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateY(-10px) scale(1.04)';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                card.style.transition = 'transform 0.05s';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                card.style.setProperty('--shine', shinePos);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                card.style.background = 'radial-gradient(circle at ' + shinePos + ', rgba(255,255,255,0.025), transparent 60%), var(--glass)';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            card.addEventListener('mouseleave', function() {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                card.style.transform = '';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                card.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                card.style.background = '';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        });
+        );
 
 
 
@@ -6599,7 +6311,7 @@ function togglePricing(){
 
 // 3D tilt on ALL cards with zoom
 document.querySelectorAll('.feature,.stat,.compliance-item,.price-card').forEach(function(card){
-  var lastX=0,lastY=0,stillTimer=null;
+  var lastX=0,lastY=0,stillTimer=null,isRainbow=card.classList.contains('rainbow');
   card.addEventListener('mousemove',function(e){
     var r=card.getBoundingClientRect();
     var x=(e.clientX-r.left)/r.width-0.5;

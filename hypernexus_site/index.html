@@ -133,7 +133,7 @@
       .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;font-size:15px;font-weight:600;text-decoration:none;border-radius:8px;transition:all 0.25s;cursor:pointer;border:none;position:relative;overflow:hidden}
 
       /* Glass Shine Sweep reflection effect on hover */
-      .btn::before, .price-btn::before, .price-card::before, .feature::before, .stat::before, .compliance-item::before {
+      .btn::before, .price-btn::before, .price-card:not(.rainbow)::before, .feature::before, .stat::before, .compliance-item::before {
         content: '';
         position: absolute;
         top: 0;
@@ -146,7 +146,7 @@
         z-index: 10;
       }
 
-      .btn:hover::before, .price-btn:hover::before, .price-card:hover::before, .feature:hover::before, .stat:hover::before, .compliance-item:hover::before {
+      .btn:hover::before, .price-btn:hover::before, .price-card:not(.rainbow):hover::before, .feature:hover::before, .stat:hover::before, .compliance-item:hover::before {
         left: 150%;
         transition: left 0.75s ease-in-out;
       }

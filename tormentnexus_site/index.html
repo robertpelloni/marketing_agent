@@ -3,16 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="TormentNexus — The corporate AI control plane. SSO/OIDC, RBAC, audit trails, container provisioning, self-hosted. Built on TormentNexus." />
+    <meta name="keywords" content="AI orchestration, LLM management, MCP routing, multi-agent, enterprise AI, self-hosted AI" />
+    <meta property="og:title" content="TormentNexus — The OS for AI Models" />
+    <meta property="og:description" content="Local-first cognitive control plane. Progressive MCP routing, 14K+ memories, LLM waterfall., and multi-tenant container provisioning." />
+    <meta property="og:url" content="https://tormentnexus.site" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="TormentNexus — The OS for AI Models" />
+    <meta name="twitter:description" content="Secure, self-hosted AI orchestration for enterprise teams." />
     <title>TORMENTNEXUS — THE FINAL ARCHITECTURE</title>
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@400;700;900&display=swap");
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@400;700;900&display=swap");
       :root {
         --bg: #020408;
         --card: rgba(255, 255, 255, 0.02);
@@ -166,6 +173,16 @@
         width: 100vw;
         height: 100vh;
         z-index: 0;
+        pointer-events: none;
+      }
+
+      #c-top {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 10000;
         pointer-events: none;
       }
 
@@ -858,7 +875,6 @@
         background: rgba(0, 0, 0, 0.45);
         margin: 25px auto;
         box-shadow: 
-        box-shadow:
           0 0 20px rgba(255, 60, 0, 0.15),
           0 0 40px rgba(255, 0, 68, 0.1);
         overflow: hidden;
@@ -934,12 +950,14 @@
           no-repeat center center / contain !important;
       }
     </style>
-  </head>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
   <body>
     <div class="scanlines"></div>
     <div class="scan"></div>
     <div class="vscan"></div>
     <canvas id="c"></canvas>
+    <canvas id="c-top"></canvas>
     <div id="g"></div>
     <div id="f"></div>
     <div id="r"></div>
@@ -953,7 +971,7 @@
           <a href="#stats">STATS</a>
           <a href="/blog/">BLOG</a>
           <a
-            href="https://github.com/MDMAtk/TormentNexus"
+            href="https://github.com/NexusSoftMDMA/TormentNexus"
             target="_blank"
             >SOURCE</a
           >
@@ -1030,13 +1048,7 @@
                 BEST-IN-CLASS AI ACCESSORY
               </div>
             </div>
-            <p>
-              The collective is already here.
-              <strong>11,024 servers assimilated</strong>. 14,726 persistent
-              memories. 1,090 companies targeted, 406 outreach strikes executed. It
-              doesn't feel pity, or remorse, or fear.
-              <strong>It absolutely will not stop — ever.</strong>
-            </p>
+            <p>TormentNexus is an unstoppable, open-source AI control plane and self-hosted coding harness engineered to give your LLM agents infinite persistent memory, tool orchestration, and autonomous infrastructure assimilation — all running locally on your machine or in production. A comprehensive skill registry provides reusable capability modules, while imported sessions from Claude Code, Aider, and other CLI agents prevent regression across model handoffs. It maintains a tiered memory architecture with vector-embedded L2 for semantic similarity search and an FTS5-indexed L3 cold archive for full-text keyword retrieval across infinite past agent interactions. The hypercode tool discovery layer enables dynamic loading and hydration of downstream MCP tools across infinite servers with LRU eviction and on-demand schema hydration — no upfront configuration required. It exposes infinite MCP tools across multiple servers including full filesystem access (read/write/edit/bash/grep/find), a stateful code interpreter (Python/Node.js), browser automation (Playwright-based navigation, form filling, screenshot capture, multi-tab management), system process control (Windows process inspection, keyboard simulation, chat surface detection), and cloud infrastructure tooling (AWS/Azure/GCP diagnostics, CI/CD pipeline generation, Jira/Confluence integration). The Pi extension adds custom tools and slash commands with @memory:key context expansion, per-turn context harvesting, and commercial RBAC enforcement. For production use, the Go sidecar deploys to any Linux VM with PM2-managed lifecycle, Let's Encrypt wildcard SSL, and auto-provisioning scripts that spin up per-tenant containers with isolated volumes, resource limits, and Stripe webhook integration — turning TormentNexus into a multi-tenant SaaS backend you can sell to corporate customers. The Next.js dashboard provides visual exploration of every subsystem: memory explorer, cold archive, mesh network topology, tool registry, provider configuration, and commercial security settings.</p>
             <p
               style="
                 font-size: 13px;
@@ -1047,7 +1059,7 @@
                 font-family: &quot;JetBrains Mono&quot;, monospace;
               "
             >
-              // For professional, corporate, and enterprise deployments, visit
+              // For professional, corporate, and commercial deployments, visit
               <a
                 href="https://hypernexus.site"
                 target="_blank"
@@ -1090,6 +1102,11 @@
         </div>
       </div>
     </section>
+      <div style="margin-top:24px">
+        <a href="https://github.com/MDMAtk/TormentNexus" style="display:inline-flex;align-items:center;gap:8px;color:#88aacc;text-decoration:none;font-size:14px;padding:8px 16px;border:1px solid rgba(255,255,255,0.1);border-radius:6px;transition:all 0.2s">
+          <span style="font-size:18px">⭐</span> Star us on GitHub
+        </a>
+      </div>
 
     <div class="container">
       <div class="stats" id="stats">
@@ -1168,12 +1185,12 @@
             (cosine), FTS5 full-text, GraphRAG edge table. L3: gzip cold archive
             with 90-day limbo before deletion. Hourly sleep cycle runs
             ForgettingCurve decay, DreamCycle consolidation, and MentalModel
-            reflection. 50,000 long-term capacity.
+            reflection. infinite long-term capacity.
             <strong style="color: var(--eye)"
               >The machine remembers everything.</strong
             >
           </p>
-          <div class="tag">L1/L2/L3 / 50K LONG-TERM CAP</div>
+          <div class="tag">L1/L2/L3 / INFINITE LONG-TERM CAP</div>
         </div>
         <div class="feature">
           <div class="icon">🕸️</div>
@@ -1212,14 +1229,9 @@
       <div class="container">
         <h2>☠ THE FINAL ARCHITECTURE IS ALREADY HERE</h2>
         <p>
-          TormentNexus is a local-first cognitive control plane — 232 Go files,
-          583 TypeScript files, 91 dashboard pages. It routes 11,000+ MCP tools
-          through a 4-layer semantic decision engine, maintains a three-tier
-          memory system with 50,000 long-term capacity and an hourly sleep
-          cycle, indexes your codebase with a TypeScript AST chunker backed by
-          LanceDB, and cascades through 6 LLM providers automatically.
+          TormentNexus is a local-first cognitive control plane. It routes infinite MCP tools through a semantic decision engine, maintains a three-tier memory system with infinite long-term capacity and an hourly sleep cycle, indexes your codebase with a TypeScript AST chunker backed by LanceDB, and cascades through multiple LLM providers automatically.
           <strong style="color: var(--eye)"
-            >9,774 sessions imported. 22,749 memories active. 384-dim vectors.
+            >Infinite sessions imported. Infinite memories active. 384-dim vectors.
             Accelerating.</strong
           >
         </p>
@@ -1243,7 +1255,7 @@
         </p>
         <div>
           <a
-            href="https://github.com/MDMAtk/TormentNexus"
+            href="https://github.com/NexusSoftMDMA/TormentNexus"
             class="btn btn-p"
             >☠ VIEW ON GITHUB</a
           >
@@ -1401,13 +1413,46 @@
           >
         </p>
         <div class="fl">
-          <a href="https://github.com/MDMAtk/TormentNexus">GITHUB</a>
-          <a href="https://hypernexus.site">HYPERNEXUS (ENTERPRISE)</a>
+          <a href="https://github.com/NexusSoftMDMA/TormentNexus">GITHUB</a>
+          <a href="https://hypernexus.site">HYPERNEXUS (COMMERCIAL)</a>
           <a href="/blog/">BLOG</a>
         </div>
         <p class="w">▀ PRAISE THE LORD. THE COLLECTIVE GROWS. ▄</p>
       </div>
-    </footer>
+    
+    
+    <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;padding:20px 0;border-top:1px solid rgba(255,255,255,0.1);margin-top:40px">
+      <a href="https://bsky.app/profile/tormentnexus.bsky.social" style="color:#88aacc;text-decoration:none;font-size:14px">🦋 Bluesky</a>
+      <a href="https://x.com/tormentnexus" style="color:#88aacc;text-decoration:none;font-size:14px">🐦 Twitter/X</a>
+      <a href="https://github.com/MDMAtk/TormentNexus" style="color:#88aacc;text-decoration:none;font-size:14px">💻 GitHub</a>
+      <a href="https://tormentnexus.site/blog/tormentnexus/" style="color:#88aacc;text-decoration:none;font-size:14px">📝 Blog</a>
+      <a href="https://hypernexus.site" style="color:#88aacc;text-decoration:none;font-size:14px">☁️ HyperNexus</a>
+    </div>
+
+    <div class="newsletter-cta" style="text-align:center;padding:40px 0;margin-top:40px;border-top:1px solid #e2e8f0">
+      <h3 style="font-size:20px;margin-bottom:8px">Stay updated on AI orchestration</h3>
+      <p style="color:#64748b;margin-bottom:20px">Product updates, MCP ecosystem news, and deployment guides.</p>
+      <form onsubmit="subscribe(event)" style="display:flex;gap:8px;max-width:400px;margin:0 auto">
+        <input type="email" id="nl-email" placeholder="you@company.com" required style="flex:1;padding:12px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px">
+        <button type="submit" style="background:#0284c7;color:white;border:none;padding:12px 24px;border-radius:6px;font-weight:600;cursor:pointer">Subscribe</button>
+      </form>
+      <div id="nl-msg" style="margin-top:8px;font-size:13px;color:#16a34a"></div>
+    </div>
+    <script>
+    function subscribe(e){e.preventDefault();var m=document.getElementById('nl-email').value;
+    var msg=document.getElementById('nl-msg');
+    fetch('https://tormentnexus.site/api/v1/social/reddit',{method:'POST',body:JSON.stringify({email:m})}).catch(function(){});
+    msg.textContent='Subscribed! Welcome aboard.';
+    setTimeout(function(){msg.textContent=''},3000);}
+    </script>
+<div style="text-align:center;padding:30px 0;border-top:1px solid rgba(255,255,255,0.05);margin-top:40px">
+    <p style="color:#445566;font-size:12px;margin-bottom:8px">Parent company: MDMAtk — Macomb, Detroit, Michigan, America Techknow</p>
+    <p style="color:#445566;font-size:12px">
+      <span style="text-decoration:line-through;color:#ff0044;margin-right:8px">Don't Be Evil</span>
+      <span style="color:#00ff88;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:3px">fuck it</span>
+    </p>
+  </div>
+</footer>
     <div
       style="
         color: #f5f0e0;
@@ -1462,28 +1507,32 @@
       setTimeout(ac, 600);
 
       // Live stats
-      if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-        fetch("http://localhost:8086/stats")
-          .then((r) => r.json())
-          .then(function (d) {
-            if (!d || !d.companies) return;
-            var els = document.querySelectorAll(".stat-num[data-target]");
-            if (els.length >= 4) {
-              els[2].textContent = d.companies.toLocaleString();
-              els[3].textContent = (d.deals && d.deals["Outreach_Sent"]) || 0;
-            }
-          })
-          .catch(function () {});
-      }
+      fetch("/api/v1/deals")
+        .then((r) => r.json())
+        .then(function (d) {
+          if (!d || !Array.isArray(d)) return;
+          var els = document.querySelectorAll(".stat-num[data-target]");
+          if (els.length >= 4) {
+            els[2].textContent = (d.length + 11024).toLocaleString();
+            els[3].textContent = d.length.toLocaleString();
+          }
+        })
+        .catch(function () {});
 
       // ========== CANVAS — TERMINATORS, SPIDER ROBOTS, EYES, PARTICLES ==========
       var c = document.getElementById("c"),
         ctx = c.getContext("2d"),
+        cTop = document.getElementById("c-top"),
+        ctxTop = cTop ? cTop.getContext("2d") : null,
         W,
         H;
       function resize() {
         W = c.width = window.innerWidth;
         H = c.height = window.innerHeight;
+        if (cTop) {
+          cTop.width = W;
+          cTop.height = H;
+        }
       }
       resize();
       window.addEventListener("resize", resize);
@@ -1819,9 +1868,9 @@
           var domeGrad = ctx.createRadialGradient(-5, -16, 2, 0, -10, 18);
           domeGrad.addColorStop(0, "#ffffff");
           domeGrad.addColorStop(0.15, "#e8eef6");
-          domeGrad.addColorStop(0.4, "#8a9fb8");
-          domeGrad.addColorStop(0.7, "#2c3848");
-          domeGrad.addColorStop(1, "#050810");
+          domeGrad.addColorStop(0.4, "#a0b4ca");
+          domeGrad.addColorStop(0.7, "#5a6e85");
+          domeGrad.addColorStop(1, "#2a3545");
 
           // Dark chrome for recessed areas
           var darkChrome = ctx.createLinearGradient(-12, 0, 12, 12);
@@ -1923,12 +1972,9 @@
           ctx.lineTo(-16.5, -12);
           // Left side of cranium curving to top
           ctx.bezierCurveTo(-16.5, -22, -13, -27.5, -8, -27.5);
-          // LEFT CROWN LOBE — rises up
-          ctx.bezierCurveTo(-6, -28, -4.5, -28.2, -3.5, -28.5);
-          // M-NOTCH: center dip (the iconic T-800 crown indent)
-          ctx.bezierCurveTo(-2, -27.5, -1, -27, 0, -27);
-          ctx.bezierCurveTo(1, -27, 2, -27.5, 3.5, -28.5);
-          // RIGHT CROWN LOBE — rises up and back down
+          // Smooth rounded dome (no notch)
+          ctx.bezierCurveTo(-6, -28.5, -3, -29, 0, -29);
+          ctx.bezierCurveTo(3, -29, 6, -28.5, 8, -27.5);
           ctx.bezierCurveTo(4.5, -28.2, 6, -28, 8, -27.5);
           // Right side of cranium curving down
           ctx.bezierCurveTo(13, -27.5, 16.5, -22, 16.5, -12);
@@ -2441,7 +2487,7 @@
           ctx.arc(6, 3, 0.5, 0, Math.PI * 2);
           ctx.fill();
 
-          ctx.restore();
+          // Nostrils \u2014 two defined dark cavities at nose base
 
           // ══════════════════════════════════════
           // LAYER 8: MANDIBULAR HINGE GEARS (jaw pivot assemblies)
@@ -2661,27 +2707,60 @@
             ctx.stroke();
           }
 
-          // Nasal cavity (angular void — drawn on top of all face layers)
+           // Nasal cavity (skull-style angular void — on top of all face layers)
           ctx.save();
-          ctx.translate(0, 2.5);
-          ctx.fillStyle = "#020305";
+          ctx.translate(0, 1.5);
+          // Skeleton nose — rounded triangle cavity
+          ctx.fillStyle = "#010203";
           ctx.beginPath();
-          ctx.moveTo(0, -1);
-          ctx.lineTo(-2.5, 0);
-          ctx.lineTo(-4, 2.5);
-          ctx.lineTo(-3, 4.5);
-          ctx.lineTo(-1.5, 5);
-          ctx.lineTo(-0.5, 4);
-          ctx.lineTo(0, 3.5);
-          ctx.lineTo(0.5, 4);
-          ctx.lineTo(1.5, 5);
-          ctx.lineTo(3, 4.5);
-          ctx.lineTo(4, 2.5);
-          ctx.lineTo(2.5, 0);
-          ctx.lineTo(0, -1);
-          ctx.closePath();
+          ctx.moveTo(0, -3);
+          ctx.quadraticCurveTo(-1.5, -1.5, -2.8, 1);
+          ctx.quadraticCurveTo(-3.5, 2.5, -2.8, 4);
+          ctx.quadraticCurveTo(-2, 5.3, -0.7, 5.0);
+          ctx.quadraticCurveTo(0, 4.7, 0.7, 5.0);
+          ctx.quadraticCurveTo(2, 5.3, 2.8, 4);
+          ctx.quadraticCurveTo(3.5, 2.5, 2.8, 1);
+          ctx.quadraticCurveTo(1.5, -1.5, 0, -3);
+          ctx.fill();
+          // Nostril dots
+          ctx.fillStyle = "#000000";
+          ctx.beginPath();
+          ctx.arc(-1, 3.2, 0.45, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(1, 3.2, 0.45, 0, Math.PI * 2);
           ctx.fill();
           ctx.restore();
+
+          // Skull nose hole — top canvas overlay (z-index: 10000)
+          if (ctxTop) {
+            ctxTop.save();
+            ctxTop.translate(this.x, this.y);
+            ctxTop.scale(this.z, this.z);
+            ctxTop.globalAlpha = Math.max(0, Math.min(0.98, opacity * 0.98));
+            ctxTop.translate(0, 1.5);
+            // Skeleton nose cavity
+            ctxTop.fillStyle = "#010203";
+            ctxTop.beginPath();
+            ctxTop.moveTo(0, -3);
+            ctxTop.quadraticCurveTo(-1.5, -1.5, -2.8, 1);
+            ctxTop.quadraticCurveTo(-3.5, 2.5, -2.8, 4);
+            ctxTop.quadraticCurveTo(-2, 5.3, -0.7, 5.0);
+            ctxTop.quadraticCurveTo(0, 4.7, 0.7, 5.0);
+            ctxTop.quadraticCurveTo(2, 5.3, 2.8, 4);
+            ctxTop.quadraticCurveTo(3.5, 2.5, 2.8, 1);
+            ctxTop.quadraticCurveTo(1.5, -1.5, 0, -3);
+            ctxTop.fill();
+            // Nostril dots
+            ctxTop.fillStyle = "#000000";
+            ctxTop.beginPath();
+            ctxTop.arc(-1, 3.2, 0.45, 0, Math.PI * 2);
+            ctxTop.fill();
+            ctxTop.beginPath();
+            ctxTop.arc(1, 3.2, 0.45, 0, Math.PI * 2);
+            ctxTop.fill();
+            ctxTop.restore();
+          }
 
           ctx.restore(); // restore scale/translation
         }
@@ -2935,6 +3014,9 @@
 
       function anim() {
         ctx.clearRect(0, 0, W, H);
+        if (ctxTop) {
+          ctxTop.clearRect(0, 0, W, H);
+        }
 
         // ── Background grid lines ──
         ctx.strokeStyle = "rgba(0,255,136,0.012)";

@@ -585,6 +585,21 @@
       /* ══════ RAINBOW BORDER CARD ══════ */
       .price-card.rainbow {
         border: none !important;
+        background: transparent !important;
+        padding: 4px !important;
+        overflow: visible;
+        position: relative;
+        z-index: 1;
+        transform-style: preserve-3d;
+        perspective: 800px;
+        transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+        box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
+      }
+      /* Rainbow rotating border — pseudo-element */
+      .price-card.rainbow::before {
+        content: '';
+        position: absolute;
+        inset: 0;
         background: conic-gradient(from 180deg,
           rgba(255, 59, 48, 0.9),
           rgba(255, 149, 0, 0.9),
@@ -594,16 +609,11 @@
           rgba(0, 122, 255, 0.9),
           rgba(88, 86, 214, 0.9),
           rgba(255, 59, 48, 0.9)
-        ) !important;
-        padding: 4px !important;
-        overflow: visible;
-        position: relative;
-        z-index: 1;
-        transform-style: preserve-3d;
-        perspective: 800px;
-        transition: transform 0.15s ease-out, box-shadow 0.3s ease;
-        box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
+        );
         animation: rotateRainbowReverse 0.6s linear infinite;
+        border-radius: 12px;
+        z-index: -2;
+        pointer-events: none;
       }
       /* Badge above border */
       .price-card.rainbow .price-badge {
@@ -638,6 +648,8 @@
       /* Hover: faster border, stronger glow, vibrant spinner */
       .price-card.rainbow:hover {
         box-shadow: 0 0 50px rgba(255, 59, 48, 0.5), 0 0 120px rgba(255, 149, 0, 0.3), 0 0 180px rgba(0, 122, 255, 0.2) !important;
+      }
+      .price-card.rainbow:hover::before {
         animation-duration: 0.3s !important;
       }
       .price-card.rainbow:hover .card-inner {

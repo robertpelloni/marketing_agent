@@ -3198,15 +3198,6 @@
       var _frame = 0;
       function anim() {
         _frame++;
-        if (_frame <= 5)
-          console.log(
-            "frame",
-            _frame,
-            "t0y",
-            terminators[0] ? terminators[0].y.toFixed(1) : "?",
-            "s0x",
-            spiders[0] ? spiders[0].x.toFixed(1) : "?",
-          );
         ctx.clearRect(0, 0, W, H);
         if (ctxTop) {
           ctxTop.clearRect(0, 0, W, H);

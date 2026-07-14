@@ -584,7 +584,7 @@
       .price-card.rainbow {
         border: none !important;
         padding: 4px !important;
-        overflow: hidden;
+        overflow: visible;
         position: relative;
         border-radius: 12px;
         background: transparent !important;
@@ -592,11 +592,14 @@
         box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
         transition: transform 0.2s ease-out, box-shadow 0.3s ease !important;
       }
-      /* Rainbow rotating border on pseudo-element */
+      /* Rainbow rotating border on pseudo-element — oversized so corners never clip */
       .price-card.rainbow::before {
         content: '';
         position: absolute;
-        inset: 0;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
         background: conic-gradient(from 180deg,
           rgba(255, 59, 48, 0.9),
           rgba(255, 149, 0, 0.9),
@@ -607,7 +610,7 @@
           rgba(88, 86, 214, 0.9),
           rgba(255, 59, 48, 0.9)
         );
-        animation: rotateRainbowReverse 0.3s linear infinite;
+        animation: rotateRainbowReverse 1.5s linear infinite;
         border-radius: 12px;
         z-index: -1;
         pointer-events: none;
@@ -616,7 +619,7 @@
         box-shadow: 0 0 60px rgba(255, 59, 48, 0.6), 0 0 140px rgba(255, 149, 0, 0.4), 0 0 200px rgba(0, 122, 255, 0.3) !important;
       }
       .price-card.rainbow:hover::before {
-        animation-duration: 0.08s !important;
+        animation-duration: 0.15s !important;
       }
       @keyframes rotateRainbowReverse {
         from { transform: rotate(360deg); }
@@ -654,14 +657,14 @@
         width: 200%;
         height: 200%;
         background: conic-gradient(from 0deg,
-          rgba(255, 59, 48, 0.08),
-          rgba(255, 149, 0, 0.08),
-          rgba(255, 204, 0, 0.08),
-          rgba(76, 217, 100, 0.08),
-          rgba(90, 200, 250, 0.08),
-          rgba(0, 122, 255, 0.08),
-          rgba(88, 86, 214, 0.08),
-          rgba(255, 59, 48, 0.08)
+          rgba(255, 59, 48, 0.15),
+          rgba(255, 149, 0, 0.15),
+          rgba(255, 204, 0, 0.15),
+          rgba(76, 217, 100, 0.15),
+          rgba(90, 200, 250, 0.15),
+          rgba(0, 122, 255, 0.15),
+          rgba(88, 86, 214, 0.15),
+          rgba(255, 59, 48, 0.15)
         );
         animation: rotateRainbow 2s linear infinite;
         pointer-events: none;
@@ -669,14 +672,14 @@
       .price-card.rainbow:hover .rainbow-spinner::before {
         animation-duration: 1s !important;
         background: conic-gradient(from 0deg,
-          rgba(255, 59, 48, 0.2),
-          rgba(255, 149, 0, 0.2),
-          rgba(255, 204, 0, 0.2),
-          rgba(76, 217, 100, 0.2),
-          rgba(90, 200, 250, 0.2),
-          rgba(0, 122, 255, 0.2),
-          rgba(88, 86, 214, 0.2),
-          rgba(255, 59, 48, 0.2)
+          rgba(255, 59, 48, 0.35),
+          rgba(255, 149, 0, 0.35),
+          rgba(255, 204, 0, 0.35),
+          rgba(76, 217, 100, 0.35),
+          rgba(90, 200, 250, 0.35),
+          rgba(0, 122, 255, 0.35),
+          rgba(88, 86, 214, 0.35),
+          rgba(255, 59, 48, 0.35)
         ) !important;
       }
       /* Shine sweep on text + buttons */

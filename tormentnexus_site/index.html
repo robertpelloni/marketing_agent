@@ -187,7 +187,7 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        z-index: 0;
+        z-index: 5;
         pointer-events: none;
       }
 
@@ -3202,6 +3202,10 @@
         if (ctxTop) {
           ctxTop.clearRect(0, 0, W, H);
         }
+
+        // DEBUG: bright test bar that moves
+        ctx.fillStyle = "rgba(255,0,0,0.8)";
+        ctx.fillRect(_frame % W, 0, 50, 10);
 
         // ── Background grid lines ──
         ctx.strokeStyle = "rgba(0,255,136,0.012)";

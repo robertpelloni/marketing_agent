@@ -589,6 +589,15 @@
         position: relative;
         z-index: 1;
         border-radius: 12px;
+        background: transparent !important;
+        box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
+        transition: transform 0.2s ease-out, box-shadow 0.3s ease !important;
+      }
+      /* Rainbow rotating border — pseudo-element */
+      .price-card.rainbow::before {
+        content: '';
+        position: absolute;
+        inset: -4px;
         background: conic-gradient(from 180deg,
           rgba(255, 59, 48, 0.9),
           rgba(255, 149, 0, 0.9),
@@ -598,9 +607,21 @@
           rgba(0, 122, 255, 0.9),
           rgba(88, 86, 214, 0.9),
           rgba(255, 59, 48, 0.9)
-        ) !important;
-        animation: rotateRainbowReverse 0.6s linear infinite;
-        box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
+        );
+        animation: rotateRainbowReverse 0.3s linear infinite;
+        border-radius: 16px;
+        z-index: -2;
+        pointer-events: none;
+      }
+      /* White center */
+      .price-card.rainbow::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: #fff;
+        border-radius: 12px;
+        z-index: -1;
+        pointer-events: none;
       }
       /* Badge above border */
       .price-card.rainbow .price-badge {
@@ -632,7 +653,7 @@
           rgba(88, 86, 214, 0.08),
           rgba(255, 59, 48, 0.08)
         );
-        animation: rotateRainbow 4s linear infinite;
+        animation: rotateRainbow 2s linear infinite;
         pointer-events: none;
       }
       .price-card.rainbow:hover .rainbow-spinner::before {
@@ -646,10 +667,49 @@
           rgba(88, 86, 214, 0.2),
           rgba(255, 59, 48, 0.2)
         );
-        animation-duration: 1.5s !important;
+        animation-duration: 1s !important;
       }
+      /* Hover: faster border, stronger glow, zoom */
       .price-card.rainbow:hover {
-        animation-duration: 0.3s !important;
+        box-shadow: 0 0 50px rgba(255, 59, 48, 0.5), 0 0 120px rgba(255, 149, 0, 0.3), 0 0 180px rgba(0, 122, 255, 0.2) !important;
+        transform: scale(1.05) !important;
+      }
+      .price-card.rainbow:hover::before {
+        animation-duration: 0.15s !important;
+      }
+      /* Shine sweep on text + buttons */
+      .price-card.rainbow .price-tier,
+      .price-card.rainbow .price-amount,
+      .price-card.rainbow .price-desc,
+      .price-card.rainbow .price-btn,
+      .price-card.rainbow .price-features li {
+        position: relative;
+        overflow: hidden;
+      }
+      .price-card.rainbow .price-tier::after,
+      .price-card.rainbow .price-amount::after,
+      .price-card.rainbow .price-desc::after,
+      .price-card.rainbow .price-btn::after,
+      .price-card.rainbow .price-features li::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+        pointer-events: none;
+      }
+      .price-card.rainbow.shine-active .price-tier::after,
+      .price-card.rainbow.shine-active .price-amount::after,
+      .price-card.rainbow.shine-active .price-desc::after,
+      .price-card.rainbow.shine-active .price-btn::after,
+      .price-card.rainbow.shine-active .price-features li::after {
+        animation: textShine 0.6s ease-out;
+      }
+      @keyframes textShine {
+        from { left: -100%; }
+        to { left: 200%; }
       }
       @keyframes rotateRainbowReverse {
         from { transform: rotate(360deg); }
@@ -673,12 +733,21 @@
       .price-card.rainbow {
         animation: rainbowPulseGlow 1.2s infinite alternate ease-in-out;
       }
-      /* Hover: faster border, stronger glow */
-      .price-card.rainbow:hover {
-        box-shadow: 0 0 50px rgba(255, 59, 48, 0.5), 0 0 120px rgba(255, 149, 0, 0.3), 0 0 180px rgba(0, 122, 255, 0.2) !important;
+      /* Sparkles! */
+      .sparkle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: #fff;
+        border-radius: 50%;
+        pointer-events: none;
+        animation: sparkleFade 0.8s ease-out forwards;
+        z-index: 20;
       }
-      .price-card.rainbow:hover::before {
-        animation-duration: 0.3s !important;
+      @keyframes sparkleFade {
+        0% { transform: scale(0); opacity: 1; }
+        50% { transform: scale(1.5); opacity: 1; }
+        100% { transform: scale(0); opacity: 0; }
       }
 
       /* ══════ TESTIMONIALS ══════ */
@@ -6545,16 +6614,41 @@ function togglePricing(){
   }
 }
 
-// 3D tilt on glass panels + rainbow card
+// 3D tilt on glass panels + rainbow card with zoom
 document.querySelectorAll('.feature,.stat,.compliance-item,.price-card.rainbow').forEach(function(card){
+  var lastX=0,lastY=0,stillTimer=null;
   card.addEventListener('mousemove',function(e){
     var r=card.getBoundingClientRect();
     var x=(e.clientX-r.left)/r.width-0.5;
     var y=(e.clientY-r.top)/r.height-0.5;
-    card.style.transform='rotateY('+x*20+'deg) rotateX('+-y*20+'deg) translateZ(16px)';
+    var isRainbow=card.classList.contains('rainbow');
+    var z=isRainbow?24:16;
+    var s=isRainbow?1.05:1;
+    card.style.transform='perspective(800px) rotateY('+x*20+'deg) rotateX('+-y*20+'deg) translateZ('+z+'px) scale('+s+')';
+    // Shine on stop-start
+    if(Math.abs(x-lastX)>0.05||Math.abs(y-lastY)>0.05){
+      card.classList.remove('shine-active');
+      clearTimeout(stillTimer);
+      stillTimer=setTimeout(function(){
+        card.classList.add('shine-active');
+        setTimeout(function(){card.classList.remove('shine-active')},700);
+      },150);
+      // Sparkles!
+      if(isRainbow&&Math.random()>0.7){
+        var sp=document.createElement('div');
+        sp.className='sparkle';
+        sp.style.left=(e.clientX-r.left)+'px';
+        sp.style.top=(e.clientY-r.top)+'px';
+        card.appendChild(sp);
+        setTimeout(function(){sp.remove()},800);
+      }
+    }
+    lastX=x;lastY=y;
   });
   card.addEventListener('mouseleave',function(){
-    card.style.transform='rotateY(0deg) rotateX(0deg) translateZ(0px)';
+    card.style.transform='perspective(800px) rotateY(0deg) rotateX(0deg) translateZ(0px) scale(1)';
+    card.classList.remove('shine-active');
+    clearTimeout(stillTimer);
   });
 });
 

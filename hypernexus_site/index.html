@@ -259,7 +259,7 @@
 
       .price-card{background:#ffffff;padding:44px 32px;border-radius:12px;border:1px solid #e2e8f0;position:relative;transition:all 0.3s;overflow:visible;box-shadow:var(--shadow-card)}
 
-      .price-card:hover{background:#ffffff;border-color:#0284c7;transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
+      .price-card:hover{background:#ffffff;border-color:#0284c7;box-shadow:var(--shadow-card-hover)}
 
       .price-card.featured{border-color:#0284c7;box-shadow:var(--shadow-card)}
 
@@ -6609,17 +6609,14 @@ function togglePricing(){
   }
 }
 
-// 3D tilt on glass panels + rainbow card with zoom
-document.querySelectorAll('.feature,.stat,.compliance-item,.price-card.rainbow').forEach(function(card){
+// 3D tilt on ALL cards with zoom
+document.querySelectorAll('.feature,.stat,.compliance-item,.price-card').forEach(function(card){
   var lastX=0,lastY=0,stillTimer=null;
   card.addEventListener('mousemove',function(e){
     var r=card.getBoundingClientRect();
     var x=(e.clientX-r.left)/r.width-0.5;
     var y=(e.clientY-r.top)/r.height-0.5;
-    var isRainbow=card.classList.contains('rainbow');
-    var z=isRainbow?24:16;
-    var s=isRainbow?1.05:1;
-    card.style.transform='perspective(800px) rotateY('+x*20+'deg) rotateX('+-y*20+'deg) translateZ('+z+'px) scale('+s+')';
+    card.style.transform='perspective(800px) rotateY('+x*20+'deg) rotateX('+-y*20+'deg) translateZ(16px) scale(1.05)';
     // Shine on stop-start
     if(Math.abs(x-lastX)>0.05||Math.abs(y-lastY)>0.05){
       card.classList.remove('shine-active');

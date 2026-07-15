@@ -16,12 +16,11 @@ In one sentence: **TormentNexus is the substrate where a single local system sea
 
 TormentNexus is not just an aggregator; it is a **decision system and universal bridge**.
 
-### Architecture: Go Modular Monolith + TypeScript Control Plane
+### Architecture: Go Modular Monolith
 
-TormentNexus runs as two cooperating processes:
+TormentNexus runs as a single Go process:
 
-- **Go Sidecar** (port 4300): The authoritative execution kernel — 232 Go files, 446 HTTP handler methods, 18K-line server. Handles orchestration, progressive MCP routing, L1/L2 memory management, and LLM waterfall routing.
-- **TypeScript Control Plane** (port 4100): The observation deck — 583 TS files, 4343-line MCPServer.ts core. tRPC middleware + Next.js dashboard.
+- **Go Kernel** (port 4300): The authoritative execution engine — 232 Go files, 446 HTTP handler methods, 18K-line server. Handles orchestration, progressive MCP routing, L1/L2 memory management, and LLM waterfall routing.
 - **Next.js Dashboard** (port 3000): 91 pages, 709 TS/TSX files. Real-time operator observability.
 - **SQLite Storage**: `tormentnexus.db` (35MB), 14,726 agent memories, 13,478 contexts, 11,024 populated MCP servers.
 
@@ -78,17 +77,16 @@ TormentNexus's dashboards reflect actual SQLite database rows and active Go goro
 |---|---|---|
 | Next.js Dashboard | 3000 | Web observation deck |
 | Socket.io | 3001 | Real-time swarm signals |
-| tRPC Bridge | 4100 | TypeScript Control Plane API |
-| TormentNexus Go Kernel | 4300 | Authoritative native sidecar |
+| TormentNexus Go Kernel | 4300 | Authoritative Go execution engine |
 
 #### Tech Stack
 
-- **Go 1.26+** for the kernel sidecar (state, memory, routing, MCP sync, orchestration)
+- **Go 1.26+** for the kernel (state, memory, routing, MCP sync, orchestration)
 - **TypeScript 5.x** / Node.js 24+ / pnpm v10 for the control plane
 - **Next.js 16 / React 19 / Tailwind CSS 4** for the dashboard
 - **SQLite + sqlite-vec** for dependency-free, hyper-fast local vector search
 - **tRPC** for type-safe internal API communication
-- **SSE (Server-Sent Events)** for real-time event streaming from Go sidecar
+- **SSE (Server-Sent Events)** for real-time event streaming from Go kernel
 - **JSON-RPC** for standard MCP server communication
 
 #### Repository Structure
@@ -108,7 +106,7 @@ tormentnexus/
 │  ├─ mcp-registry/         #   MCP metadata and registry
 │  ├─ mcp-client/           #   MCP client integration
 │  └─ tormentnexus-supervisor/ # Windows supervisor bridge
-├─ go/                      # Go sidecar (experimental → stabilizing)
+├─ go/                      # Go kernel (experimental → stabilizing)
 │  └─ internal/             #   35+ Go packages (ai, buffer, codeexec, config,
 │                           #   controlplane, ctxharvester, eventbus, git,
 │                           #   healer, httpapi, llm, memory, mcp, orchestration,
@@ -191,6 +189,7 @@ TormentNexus maintains byte-for-byte tool signature parity across all major AI c
 | Kiro | ✅ Ready for L3 lock | 2 |
 
 Tool equivalence examples:
+
 - `shell_execution`: `bash()` (Copilot/Codex/Gemini), `Bash()` (Claude), `Shell()` (Cursor)
 - `file_read`: `view()` (Copilot), `read` (Codex), `Read()` (Claude/Cursor), `file-read` (Gemini)
 - `file_write`: `edit()/create()` (Copilot), `write` (Codex), `Edit()/Write()` (Claude/Cursor)
@@ -240,6 +239,7 @@ When crafting outreach, always anchor to these differentiators:
 TormentNexus occupies a unique position: **no other system connects memory, tool routing, provider failover, multi-agent coordination, and cross-harness parity in a single local-first control plane.**
 
 The ecosystem data shows:
+
 - Protocol/MCP layers: 66% saturated (overbuilt) — TormentNexus ROUTES existing servers, doesn't compete
 - Agent Runtime: 52% saturated — TormentNexus's swarm/council is sufficient
 - **Verification**: 18% saturation (underbuilt) — TormentNexus's healer differentiates

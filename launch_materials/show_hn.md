@@ -18,7 +18,7 @@ I built TormentNexus because existing AI coding tools were missing a fundamental
 
 6. **11K+ MCP Server Catalog** — Indexed from Glama, Smithery, MCP.run, npm, and GitHub Topics. Semantic auto-discovery with 5 adapters.
 
-**Stack:** Go 1.26 sidecar (232 files, 446 HTTP handlers) + TypeScript 5.x control plane (583 files) + Next.js 16 dashboard (91 pages). SQLite with sqlite-vec for dependency-free vector search.
+**Stack:** Go 1.26 kernel (232 files, 446 HTTP handlers) + Next.js 16 dashboard (91 pages). SQLite with sqlite-vec for dependency-free vector search.
 
 **Open source:** github.com/MDMAtk/TormentNexus (AGPLv3)
 **Commercial:** hypernexus.site (SSO, RBAC, audit trails, container provisioning)

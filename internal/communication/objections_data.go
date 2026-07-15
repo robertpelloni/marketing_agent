@@ -441,7 +441,7 @@ const embeddedObjectionData = `{
     {
       "id": "resp_support_on_premise",
       "objection_id": "obj_support_on_premise",
-      "text": "HyperNexus runs entirely on your infrastructure — we're local-first by design. You deploy the Go sidecar and TypeScript control plane on your own servers with full air-gap support. Our Commercial edition includes on-prem deployment assistance and custom configuration.",
+      "text": "HyperNexus runs entirely on your infrastructure — we're local-first by design. You deploy the Go kernel on your own servers with full air-gap support. Our Commercial edition includes on-prem deployment assistance and custom configuration.",
       "approach": "technical",
       "use_cases": ["*"],
       "success_rate": 0.82,

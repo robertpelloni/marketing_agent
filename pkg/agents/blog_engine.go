@@ -315,8 +315,7 @@ var blogTopics = []BlogTopic{
 		SEOKeywords: []string{"Go TypeScript monolith", "polyglot architecture", "AI backend", "modular monolith"},
 		Category:    "architecture",
 		Angles: []string{
-			"Why Go for the kernel (446 HTTP handlers, goroutines) and TypeScript for the UI (tRPC + Next.js).",
-			"Interop deep-dive: how the Go sidecar communicates with the TS control plane via SSE and tRPC.",
+			"Why Go for the kernel (446 HTTP handlers, goroutines).",
 			"Modular monolith vs microservices: why TormentNexus chose one deployable with 35+ internal packages.",
 		},
 	},

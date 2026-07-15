@@ -68,7 +68,7 @@ def post_to_devto(post):
     """Post to Dev.to using their API."""
     api_key = os.environ.get("DEVTO_API_KEY")
     if not api_key:
-        print("⚠️  DEVTO_API_KEY not set, skipping Dev.to")
+        print("WARN:  DEVTO_API_KEY not set, skipping Dev.to")
         return False
 
     headers = {
@@ -90,21 +90,21 @@ def post_to_devto(post):
 
     if response.status_code == 201:
         url = response.json()["url"]
-        print(f"✅ Dev.to: {url}")
+        print(f"+ Dev.to: {url}")
         return url
     else:
-        print(f"❌ Dev.to error: {response.status_code} - {response.text[:200]}")
+        print(f"! Dev.to error: {response.status_code} - {response.text[:200]}")
         return False
 
 
 def post_to_hashnode(post):
     """Post to Hashnode using their GraphQL API."""
-    api_key = os.environ.get("HASHNODE_API_KEY")
+    api_key = os.environ.get("HASHNODE_API_TOKEN")
     publication_id = os.environ.get("HASHNODE_PUBLICATION_ID")
 
     if not api_key or not publication_id:
         print(
-            "⚠️  HASHNODE_API_KEY or HASHNODE_PUBLICATION_ID not set, skipping Hashnode"
+            "WARN:  HASHNODE_API_KEY or HASHNODE_PUBLICATION_ID not set, skipping Hashnode"
         )
         return False
 
@@ -132,29 +132,34 @@ def post_to_hashnode(post):
         "Content-Type": "application/json",
     }
 
-    response = requests.post(
-        "https://gql.hashnode.com",
-        headers=headers,
-        json={"query": query, "variables": variables},
-    )
+    try:
+        response = requests.post(
+            "https://gql.hashnode.com",
+            headers=headers,
+            json={"query": query, "variables": variables},
+            timeout=30,
+        )
 
-    if response.status_code == 200:
-        data = response.json()
-        if "errors" not in data:
-            url = data["data"]["createPost"]["post"]["url"]
-            print(f"✅ Hashnode: {url}")
-            return url
+        if response.status_code == 200:
+            data = response.json()
+            if "errors" not in data:
+                url = data["data"]["createPost"]["post"]["url"]
+                print(f"+ Hashnode: {url}")
+                return url
+            else:
+                print(f"! Hashnode error: {data['errors'][0]['message']}")
+                return False
         else:
-            print(f"❌ Hashnode error: {data['errors'][0]['message']}")
+            print(f"! Hashnode error: {response.status_code} - {response.text[:200]}")
             return False
-    else:
-        print(f"❌ Hashnode error: {response.status_code}")
+    except Exception as e:
+        print(f"! Hashnode error: {e}")
         return False
 
 
 def post_to_medium(post):
     """Post to Medium (manual - API is deprecated)."""
-    print("⚠️  Medium API is deprecated. Manual posting required:")
+    print("WARN:  Medium API is deprecated. Manual posting required:")
     print("   1. Go to https://medium.com/new-story")
     print("   2. Paste the markdown content")
     print("   3. Add tags:", ", ".join(post["tags"]))
@@ -167,7 +172,7 @@ def post_to_ghost(post):
     site_url = os.environ.get("GHOST_SITE_URL")
 
     if not admin_key or not site_url:
-        print("⚠️  GHOST_ADMIN_API_KEY or GHOST_SITE_URL not set, skipping Ghost")
+        print("WARN:  GHOST_ADMIN_API_KEY or GHOST_SITE_URL not set, skipping Ghost")
         return False
 
     # Ghost API key format: {id}:{secret}
@@ -176,7 +181,7 @@ def post_to_ghost(post):
     # Create JWT token (simplified - in production use proper JWT)
 
     # For now, just print instructions
-    print("⚠️  Ghost integration requires JWT setup. See Ghost docs.")
+    print("WARN:  Ghost integration requires JWT setup. See Ghost docs.")
     return False
 
 
@@ -191,8 +196,8 @@ def main():
         sys.exit(1)
 
     post = read_post(filepath)
-    print(f"📝 Post: {post['title']}")
-    print(f"🏷️  Tags: {', '.join(post['tags'])}")
+    print(f"Post: {post['title']}")
+    print(f"Tags: {', '.join(post['tags'])}")
     print()
 
     results = []
@@ -204,7 +209,7 @@ def main():
         ("Ghost", post_to_ghost),
         ("Medium", post_to_medium),
     ]:
-        print(f"📤 Posting to {platform}...")
+        print(f"> Posting to {platform}...")
         url = func(post)
         if url:
             results.append((platform, url))
@@ -213,12 +218,12 @@ def main():
     # Summary
     if results:
         print("=" * 50)
-        print("✅ Published to:")
+        print("+ Published to:")
         for platform, url in results:
             print(f"   {platform}: {url}")
     else:
         print("=" * 50)
-        print("⚠️  No API keys configured. Set these in .env:")
+        print("WARN:  No API keys configured. Set these in .env:")
         print("   DEVTO_API_KEY=your_devto_key")
         print("   HASHNODE_API_KEY=your_hashnode_key")
         print("   HASHNODE_PUBLICATION_ID=your_publication_id")

@@ -3204,7 +3204,8 @@
 
       function anim() {
         if (!ctx) return;
-        ctx.clearRect(0, 0, W, H);
+        c.width = W; // force clear entire bitmap
+        c.height = H;
         ctx.fillStyle = "#020408";
         ctx.fillRect(0, 0, W, H);
 

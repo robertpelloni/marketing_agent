@@ -996,7 +996,7 @@
           <a href="#stats">STATS</a>
           <a href="/blog/">BLOG</a>
           <a
-            href="https://github.com/NexusSoftMDMA/TormentNexus"
+            href="https://github.com/MDMAtk/TormentNexus"
             target="_blank"
             >SOURCE</a
           >
@@ -1332,7 +1332,7 @@
         </p>
         <div>
           <a
-            href="https://github.com/NexusSoftMDMA/TormentNexus"
+            href="https://github.com/MDMAtk/TormentNexus"
             class="btn btn-p"
             >☠ VIEW ON GITHUB</a
           >
@@ -1390,7 +1390,7 @@
           >
         </p>
         <div class="fl">
-          <a href="https://github.com/NexusSoftMDMA/TormentNexus">GITHUB</a>
+          <a href="https://github.com/MDMAtk/TormentNexus">GITHUB</a>
           <a href="https://hypernexus.site">HYPERNEXUS (COMMERCIAL)</a>
           <a href="/blog/">BLOG</a>
         </div>
@@ -1897,10 +1897,10 @@
         reset() {
           this.x = Math.random() * W;
           this.y = Math.random() * H;
-          this.z = 0.04 + Math.random() * 0.12; // Start deep
+          this.z = 0.2 + Math.random() * 0.4; // Start visible
           this.targetX = Math.random() * W;
           this.targetY = Math.random() * H;
-          this.speedZ = 0.003 + Math.random() * 0.007; // Slower approach
+          this.speedZ = 0.01 + Math.random() * 0.02; // Faster approach
           this.p = Math.random() * 100;
         }
         update() {

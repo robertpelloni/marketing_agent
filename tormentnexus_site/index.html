@@ -197,7 +197,9 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        z-index: 10000;
+        z-index: 4;
+        pointer-events: none;
+      }
         pointer-events: none;
       }
 
@@ -3203,6 +3205,8 @@
       function anim() {
         if (!ctx) return;
         ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "#020408";
+        ctx.fillRect(0, 0, W, H);
 
         // ── Background grid lines ──
         ctx.strokeStyle = "rgba(0,255,136,0.012)";

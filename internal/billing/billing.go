@@ -196,7 +196,7 @@ func (s *StripeBillingClient) CreateCheckoutSession(ctx context.Context, company
 				AdjustableQuantity: &stripe.CheckoutSessionLineItemAdjustableQuantityParams{
 					Enabled: stripe.Bool(true),
 					Minimum: stripe.Int64(1),
-					Maximum: stripe.Int64(10000),
+					Maximum: stripe.Int64(100000),
 				},
 			},
 		},

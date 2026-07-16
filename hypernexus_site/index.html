@@ -118,7 +118,7 @@
 
       @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 
-      .hero h1{font-size:clamp(44px,7vw,86px);font-weight:900;letter-spacing:-2.5px;line-height:1.03;margin-bottom:20px;animation:fadeInUp 0.8s ease-out 0.2s both;color:#0f172a;position:relative;overflow:hidden;display:inline-block;background:#ffffff}
+      .hero h1{font-size:clamp(44px,7vw,86px);font-weight:900;letter-spacing:-2.5px;line-height:1.03;margin-bottom:20px;animation:fadeInUp 0.8s ease-out 0.2s both;color:#0f172a;position:relative;overflow:hidden;display:inline-block}
 
       .hero h1 .gradient-title{background:var(--gradient-neon);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 2px 4px rgba(2, 132, 199, 0.1))}
 
@@ -484,62 +484,16 @@
         inherits: false;
       }
 
-      /* ══════ HERO TITLE SHINE EFFECT — WHOLE TITLE ══════ */
+      /* ══════ HERO TITLE SHINE EFFECT — DISABLED ══════ */
       .hero h1 {
         position: relative;
         overflow: hidden;
       }
-      /* Top half shine — left to right */
-      .hero h1::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 50%;
-        height: 50%;
-        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
-        animation: heroShineTop 3s ease-in-out infinite;
-        pointer-events: none;
-        z-index: -1;
-      }
-      /* Bottom half shine — right to left */
-      .hero h1::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        right: -100%;
-        width: 50%;
-        height: 50%;
-        background: linear-gradient(-90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
-        animation: heroShineBottom 3s ease-in-out infinite;
-        pointer-events: none;
-        z-index: -1;
-      }
-      @keyframes heroShineTop {
-        0%, 100% { left: -100%; }
-        50% { left: 150%; }
-      }
-      @keyframes heroShineBottom {
-        0%, 100% { right: -100%; }
-        50% { right: 150%; }
-      }
-      /* Stronger shine on the blue gradient text */
+      /* Stronger shine on the blue gradient text — DISABLED */
       .gradient-title {
         position: relative;
         display: inline-block;
         overflow: hidden;
-      }
-      .gradient-title::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 60%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 40%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.6) 60%, transparent 100%);
-        animation: gradientShine 2.5s ease-in-out infinite;
-        pointer-events: none;
-        z-index: -1;
       }
       @keyframes gradientShine {
         0%, 100% { left: -100%; }

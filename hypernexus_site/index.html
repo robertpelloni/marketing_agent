@@ -487,40 +487,17 @@
       /* ══════ HERO TITLE SHINE EFFECT ══════ */
       .hero h1 {
         position: relative;
-        overflow: hidden;
         display: inline-block;
+        background: linear-gradient(90deg, #0f172a 0%, #0f172a 35%, rgba(255,255,255,0.5) 50%, #0f172a 65%, #0f172a 100%);
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: heroShine 4s ease-in-out infinite;
       }
-      /* Top half shine — left to right */
-      .hero h1::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 50%;
-        height: 50%;
-        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
-        animation: heroShineTop 3s ease-in-out infinite;
-        pointer-events: none;
-      }
-      /* Bottom half shine — right to left */
-      .hero h1::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        right: -100%;
-        width: 50%;
-        height: 50%;
-        background: linear-gradient(-90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
-        animation: heroShineBottom 3s ease-in-out infinite;
-        pointer-events: none;
-      }
-      @keyframes heroShineTop {
-        0%, 100% { left: -100%; }
-        50% { left: 150%; }
-      }
-      @keyframes heroShineBottom {
-        0%, 100% { right: -100%; }
-        50% { right: 150%; }
+      @keyframes heroShine {
+        0%, 100% { background-position: 100% 0; }
+        50% { background-position: -100% 0; }
       }
       /* Gradient text with animated shine via background-position */
       .gradient-title {

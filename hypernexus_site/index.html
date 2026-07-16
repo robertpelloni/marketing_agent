@@ -501,6 +501,7 @@
         background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
         animation: heroShineTop 3s ease-in-out infinite;
         pointer-events: none;
+        mix-blend-mode: overlay;
       }
       /* Bottom half shine — right to left */
       .hero h1::after {
@@ -513,6 +514,7 @@
         background: linear-gradient(-90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
         animation: heroShineBottom 3s ease-in-out infinite;
         pointer-events: none;
+        mix-blend-mode: overlay;
       }
       @keyframes heroShineTop {
         0%, 100% { left: -100%; }
@@ -538,6 +540,7 @@
         background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 40%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.6) 60%, transparent 100%);
         animation: gradientShine 2.5s ease-in-out infinite;
         pointer-events: none;
+        mix-blend-mode: overlay;
       }
       @keyframes gradientShine {
         0%, 100% { left: -100%; }

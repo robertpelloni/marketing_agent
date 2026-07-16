@@ -484,20 +484,10 @@
         inherits: false;
       }
 
-      /* ══════ HERO TITLE SHINE EFFECT ══════ */
+      /* ══════ HERO TITLE SHINE EFFECT — GRADIENT TEXT ONLY ══════ */
       .hero h1 {
         position: relative;
         display: inline-block;
-        background: linear-gradient(90deg, #0f172a 0%, #0f172a 35%, rgba(255,255,255,0.5) 50%, #0f172a 65%, #0f172a 100%);
-        background-size: 200% 100%;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        animation: heroShine 3s linear infinite;
-      }
-      @keyframes heroShine {
-        0% { background-position: 250% 0; }
-        100% { background-position: -150% 0; }
       }
       /* Gradient text with animated shine via background-position */
       .gradient-title {
@@ -508,6 +498,7 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
         animation: gradientShine 3s linear infinite;
+        overflow: hidden;
       }
       @keyframes gradientShine {
         0% { background-position: -150% 0; }

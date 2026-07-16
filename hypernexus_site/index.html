@@ -484,63 +484,25 @@
         inherits: false;
       }
 
-      /* ══════ HERO TITLE SHINE EFFECT ══════ */
+      /* ══════ HERO TITLE GLOW EFFECT ══════ */
       .hero h1 {
         position: relative;
-        overflow: hidden;
         display: inline-block;
+        animation: fadeInUp 0.8s ease-out 0.2s both, textGlow 3s ease-in-out infinite;
       }
-      /* Top half shine — left to right */
-      .hero h1::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 50%;
-        height: 50%;
-        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
-        animation: heroShineTop 3s ease-in-out infinite;
-        pointer-events: none;
-        mix-blend-mode: overlay;
+      @keyframes textGlow {
+        0%, 100% { text-shadow: 0 0 20px rgba(2, 132, 199, 0.0); }
+        50% { text-shadow: 0 0 30px rgba(2, 132, 199, 0.3), 0 0 60px rgba(2, 132, 199, 0.1); }
       }
-      /* Bottom half shine — right to left */
-      .hero h1::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        right: -100%;
-        width: 50%;
-        height: 50%;
-        background: linear-gradient(-90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
-        animation: heroShineBottom 3s ease-in-out infinite;
-        pointer-events: none;
-        mix-blend-mode: overlay;
-      }
-      @keyframes heroShineTop {
-        0%, 100% { left: -100%; }
-        50% { left: 150%; }
-      }
-      @keyframes heroShineBottom {
-        0%, 100% { right: -100%; }
-        50% { right: 150%; }
-      }
-      /* Stronger shine on the blue gradient text */
+      /* Stronger glow on the blue gradient text */
       .gradient-title {
         position: relative;
         display: inline-block;
-        overflow: hidden;
+        animation: gradientGlow 2.5s ease-in-out infinite;
       }
-      .gradient-title::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 60%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 40%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.6) 60%, transparent 100%);
-        animation: gradientShine 2.5s ease-in-out infinite;
-        pointer-events: none;
-        mix-blend-mode: overlay;
+      @keyframes gradientGlow {
+        0%, 100% { filter: drop-shadow(0 2px 4px rgba(2, 132, 199, 0.1)); }
+        50% { filter: drop-shadow(0 2px 8px rgba(2, 132, 199, 0.4)) drop-shadow(0 0 20px rgba(2, 132, 199, 0.2)); }
       }
       @keyframes gradientShine {
         0%, 100% { left: -100%; }

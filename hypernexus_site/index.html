@@ -482,19 +482,28 @@
         0% { background-position: 250% 0; }
         100% { background-position: -150% 0; }
       }
-      /* Gradient text — bright white shine */
+      /* Gradient text — bright white shine, right to left */
       .gradient-title {
         display: inline-block;
-        background: linear-gradient(90deg, #0284c7 0%, #0284c7 20%, #ffffff 45%, #ffffff 55%, #0284c7 80%, #0284c7 100%);
+        background: linear-gradient(90deg, #0284c7 0%, #0284c7 15%, #ffffff 35%, #ffffff 65%, #0284c7 85%, #0284c7 100%);
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradientShine 3s linear infinite;
+      }
+      @keyframes gradientShine {
+        0% { background-position: -100% 0; }
+        100% { background-position: 300% 0; }
+      }
+      /* Paragraph text — same shine left to right */
+      .hero p {
+        background: linear-gradient(90deg, #334155 0%, #334155 30%, #ffffff 50%, #334155 70%, #334155 100%);
         background-size: 200% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
         animation: heroShine 3s linear infinite;
-      }
-      /* Paragraph text — clean, no shine */
-      .hero p {
-        color: #334155;
       }
 
       /* ══════ 3D GLASS PANELS — SPARKLY ══════ */

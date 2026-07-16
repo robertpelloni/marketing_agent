@@ -456,24 +456,7 @@
         box-shadow: 0 8px 32px rgba(2, 132, 199, 0.12), 0 0 80px rgba(14, 165, 233, 0.06), inset 0 2px 4px rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
-        overflow: visible;
-      }
-      /* Shine sweep on the panel */
-      .rotating-outline::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 60%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
-        animation: panelShine 4s ease-in-out infinite;
-        pointer-events: none;
-        z-index: 10;
-      }
-      @keyframes panelShine {
-        0%, 100% { left: -100%; }
-        50% { left: 150%; }
+        overflow: hidden;
       }
       @keyframes rotateOutline {
         to { --angle: 360deg; }

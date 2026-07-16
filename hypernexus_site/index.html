@@ -484,25 +484,57 @@
         inherits: false;
       }
 
-      /* ══════ HERO TITLE GLOW EFFECT ══════ */
+      /* ══════ HERO TITLE SHINE EFFECT ══════ */
       .hero h1 {
         position: relative;
+        overflow: hidden;
         display: inline-block;
-        animation: fadeInUp 0.8s ease-out 0.2s both, textGlow 3s ease-in-out infinite;
       }
-      @keyframes textGlow {
-        0%, 100% { text-shadow: 0 0 20px rgba(2, 132, 199, 0.0); }
-        50% { text-shadow: 0 0 30px rgba(2, 132, 199, 0.3), 0 0 60px rgba(2, 132, 199, 0.1); }
+      /* Top half shine — left to right */
+      .hero h1::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 50%;
+        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+        animation: heroShineTop 3s ease-in-out infinite;
+        pointer-events: none;
       }
-      /* Stronger glow on the blue gradient text */
+      /* Bottom half shine — right to left */
+      .hero h1::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: -100%;
+        width: 50%;
+        height: 50%;
+        background: linear-gradient(-90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+        animation: heroShineBottom 3s ease-in-out infinite;
+        pointer-events: none;
+      }
+      @keyframes heroShineTop {
+        0%, 100% { left: -100%; }
+        50% { left: 150%; }
+      }
+      @keyframes heroShineBottom {
+        0%, 100% { right: -100%; }
+        50% { right: 150%; }
+      }
+      /* Gradient text with animated shine via background-position */
       .gradient-title {
-        position: relative;
         display: inline-block;
-        animation: gradientGlow 2.5s ease-in-out infinite;
+        background: linear-gradient(90deg, #0284c7 0%, #0284c7 35%, #67e8f9 50%, #0284c7 65%, #0284c7 100%);
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradientShine 3s ease-in-out infinite;
       }
-      @keyframes gradientGlow {
-        0%, 100% { filter: drop-shadow(0 2px 4px rgba(2, 132, 199, 0.1)); }
-        50% { filter: drop-shadow(0 2px 8px rgba(2, 132, 199, 0.4)) drop-shadow(0 0 20px rgba(2, 132, 199, 0.2)); }
+      @keyframes gradientShine {
+        0%, 100% { background-position: 100% 0; }
+        50% { background-position: -100% 0; }
       }
       @keyframes gradientShine {
         0%, 100% { left: -100%; }

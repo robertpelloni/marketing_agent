@@ -493,26 +493,24 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 3s ease-in-out infinite;
+        animation: heroShine 3s linear infinite;
       }
       @keyframes heroShine {
         0% { background-position: 250% 0; }
-        50% { background-position: -150% 0; }
         100% { background-position: -150% 0; }
       }
       /* Gradient text with animated shine via background-position */
       .gradient-title {
         display: inline-block;
-        background: linear-gradient(90deg, #0284c7 0%, #0284c7 35%, #67e8f9 50%, #0284c7 65%, #0284c7 100%);
+        background: linear-gradient(90deg, #0284c7 0%, #0284c7 25%, #ffffff 50%, #0284c7 75%, #0284c7 100%);
         background-size: 200% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: gradientShine 3s ease-in-out infinite;
+        animation: gradientShine 3s linear infinite;
       }
       @keyframes gradientShine {
         0% { background-position: -150% 0; }
-        50% { background-position: 250% 0; }
         100% { background-position: 250% 0; }
       }
 

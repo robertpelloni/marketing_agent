@@ -476,41 +476,32 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine var(--shine-duration, 12s) linear infinite;
+        animation: heroShine var(--shine-duration, 5s) linear infinite;
         animation-delay: var(--shine-delay, 0s);
       }
       @keyframes heroShine {
-        0%, 90% { background-position: 250% 0; }
-        95% { background-position: -150% 0; }
+        0%, 80% { background-position: 250% 0; }
+        90% { background-position: -150% 0; }
         100% { background-position: -150% 0; }
       }
-      /* Gradient text — extra bright white shine, right to left */
+      /* Gradient text — bright white flash */
       .gradient-title {
         display: inline-block;
-        background: linear-gradient(90deg, #0284c7 0%, #ffffff 5%, #ffffff 95%, #0284c7 100%);
-        background-size: 200% 100%;
+        background: linear-gradient(90deg, #0284c7 0%, #0284c7 25%, #ffffff 50%, #0284c7 75%, #0284c7 100%);
+        background-size: 300% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: gradientShine var(--shine-duration, 10s) linear infinite;
+        animation: gradientShine var(--shine-duration, 5s) linear infinite;
         animation-delay: var(--shine-delay, 0s);
       }
       @keyframes gradientShine {
-        0%, 85% { background-position: -100% 0; }
-        92% { background-position: 400% 0; }
-        100% { background-position: 400% 0; }
+        0%, 80% { background-position: 300% 0; }
+        90% { background-position: -200% 0; }
+        100% { background-position: -200% 0; }
       }
-      /* Paragraph text — slow shine, less frequent */
-      .hero p {
-        background: linear-gradient(90deg, #334155 0%, #334155 30%, #ffffff 50%, #334155 70%, #334155 100%);
-        background-size: 200% 100%;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        animation: heroShine var(--shine-duration, 12s) linear infinite;
-        animation-delay: var(--shine-delay, 0s);
-      }
-      /* All list items in the panel — same slow shine */
+      /* Panel text — all animate together */
+      .hero p,
       .rotating-outline li,
       .rotating-outline strong {
         background: linear-gradient(90deg, #334155 0%, #334155 30%, #ffffff 50%, #334155 70%, #334155 100%);
@@ -518,8 +509,8 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine var(--shine-duration, 12s) linear infinite;
-        animation-delay: var(--shine-delay, 0s);
+        animation: heroShine var(--panel-duration, 5s) linear infinite;
+        animation-delay: var(--panel-delay, 0s);
       }
 
       /* ══════ 3D GLASS PANELS — SPARKLY ══════ */
@@ -5597,14 +5588,21 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script>
-// Set random shine durations and delays (10-20s each)
+// Set random shine durations and delays (2-5s between cycles)
 document.addEventListener('DOMContentLoaded', function() {
-  var allElements = document.querySelectorAll('.hero h1, .gradient-title, .hero p, .rotating-outline li, .rotating-outline strong');
-  allElements.forEach(function(el) {
-    var duration = (Math.random() * 10 + 10).toFixed(1); // 10-20s total cycle
-    var delay = (Math.random() * 10 + 10).toFixed(1); // 10-20s initial delay
+  // Title elements get individual random delays
+  document.querySelectorAll('.hero h1, .gradient-title').forEach(function(el) {
+    var duration = (Math.random() * 3 + 4).toFixed(1); // 4-7s total cycle
+    var delay = (Math.random() * 3 + 2).toFixed(1); // 2-5s initial delay
     el.style.setProperty('--shine-duration', duration + 's');
     el.style.setProperty('--shine-delay', delay + 's');
+  });
+  // All panel text shines at the same time
+  var panelDuration = (Math.random() * 3 + 4).toFixed(1);
+  var panelDelay = (Math.random() * 3 + 2).toFixed(1);
+  document.querySelectorAll('.hero p, .rotating-outline li, .rotating-outline strong').forEach(function(el) {
+    el.style.setProperty('--panel-duration', panelDuration + 's');
+    el.style.setProperty('--panel-delay', panelDelay + 's');
   });
 });
 </script>

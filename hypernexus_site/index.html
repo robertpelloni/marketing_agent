@@ -476,11 +476,12 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 0.75s linear infinite;
+        animation: heroShine var(--shine-duration, 12s) linear infinite;
         animation-delay: var(--shine-delay, 0s);
       }
       @keyframes heroShine {
-        0% { background-position: 250% 0; }
+        0%, 90% { background-position: 250% 0; }
+        95% { background-position: -150% 0; }
         100% { background-position: -150% 0; }
       }
       /* Gradient text — extra bright white shine, right to left */
@@ -491,12 +492,13 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: gradientShine 0.65s linear infinite;
+        animation: gradientShine var(--shine-duration, 10s) linear infinite;
         animation-delay: var(--shine-delay, 0s);
       }
       @keyframes gradientShine {
-        0% { background-position: -100% 0; }
-        100% { background-position: 300% 0; }
+        0%, 85% { background-position: -100% 0; }
+        92% { background-position: 400% 0; }
+        100% { background-position: 400% 0; }
       }
       /* Paragraph text — slow shine, less frequent */
       .hero p {
@@ -505,7 +507,7 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 1s linear infinite;
+        animation: heroShine var(--shine-duration, 12s) linear infinite;
         animation-delay: var(--shine-delay, 0s);
       }
       /* All list items in the panel — same slow shine */
@@ -516,7 +518,7 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 1s linear infinite;
+        animation: heroShine var(--shine-duration, 12s) linear infinite;
         animation-delay: var(--shine-delay, 0s);
       }
 
@@ -5595,19 +5597,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script>
-// Set random shine delays (10-20s for title, same delay for all panel text)
+// Set random shine durations and delays (10-20s each)
 document.addEventListener('DOMContentLoaded', function() {
-  // Title elements get individual random delays
-  var titleElements = document.querySelectorAll('.hero h1, .gradient-title');
-  titleElements.forEach(function(el) {
-    var delay = (Math.random() * 10 + 10).toFixed(1); // 10-20 seconds
+  var allElements = document.querySelectorAll('.hero h1, .gradient-title, .hero p, .rotating-outline li, .rotating-outline strong');
+  allElements.forEach(function(el) {
+    var duration = (Math.random() * 10 + 10).toFixed(1); // 10-20s total cycle
+    var delay = (Math.random() * 10 + 10).toFixed(1); // 10-20s initial delay
+    el.style.setProperty('--shine-duration', duration + 's');
     el.style.setProperty('--shine-delay', delay + 's');
-  });
-  // All panel text shines at the same time
-  var panelDelay = (Math.random() * 10 + 10).toFixed(1);
-  var panelElements = document.querySelectorAll('.hero p, .rotating-outline li, .rotating-outline strong');
-  panelElements.forEach(function(el) {
-    el.style.setProperty('--shine-delay', panelDelay + 's');
   });
 });
 </script>

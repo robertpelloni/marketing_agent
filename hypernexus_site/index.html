@@ -5595,12 +5595,19 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script>
-// Set random shine delays for each element
+// Set random shine delays (10-20s for title, same delay for all panel text)
 document.addEventListener('DOMContentLoaded', function() {
-  var shineElements = document.querySelectorAll('.hero h1, .gradient-title, .hero p, .rotating-outline li, .rotating-outline strong');
-  shineElements.forEach(function(el) {
-    var delay = (Math.random() * 3 + 2).toFixed(1); // 2-5 seconds
+  // Title elements get individual random delays
+  var titleElements = document.querySelectorAll('.hero h1, .gradient-title');
+  titleElements.forEach(function(el) {
+    var delay = (Math.random() * 10 + 10).toFixed(1); // 10-20 seconds
     el.style.setProperty('--shine-delay', delay + 's');
+  });
+  // All panel text shines at the same time
+  var panelDelay = (Math.random() * 10 + 10).toFixed(1);
+  var panelElements = document.querySelectorAll('.hero p, .rotating-outline li, .rotating-outline strong');
+  panelElements.forEach(function(el) {
+    el.style.setProperty('--shine-delay', panelDelay + 's');
   });
 });
 </script>

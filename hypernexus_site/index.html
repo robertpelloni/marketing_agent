@@ -78,7 +78,7 @@
 
       /* ── HEADER ── */
 
-      header{padding:14px 0;position:sticky;top:0;z-index:9999;background:rgba(255, 255, 255, 0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(226, 232, 240, 0.8);box-shadow:0 1px 2px 0 rgba(0, 0, 0, 0.02)}
+      header{padding:14px 0;position:sticky;top:0;z-index:9999;background:rgba(255, 255, 255, 0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(226, 232, 240, 0.8);box-shadow:0 1px 2px 0 rgba(0, 0, 0, 0.02)}
 
       header::after{display:none}
 
@@ -476,13 +476,13 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine var(--shine-duration, 0.6s) linear infinite;
+        animation: heroShine 8s linear infinite;
         animation-delay: var(--shine-delay, 0s);
       }
       @keyframes heroShine {
         0% { background-position: 150% 0; }
-        40% { background-position: -50% 0; }
-        40.01%, 100% { background-position: 150% 0; }
+        10% { background-position: -50% 0; }
+        10.01%, 100% { background-position: 150% 0; }
       }
       /* Gradient text — narrow pure white highlight */
       .gradient-title {

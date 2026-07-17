@@ -492,13 +492,13 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: gradientShine var(--shine-duration, 0.6s) linear infinite;
+        animation: gradientShine 8s linear infinite;
         animation-delay: var(--shine-delay, 0s);
       }
       @keyframes gradientShine {
         0% { background-position: 150% 0; }
-        40% { background-position: -50% 0; }
-        40.01%, 100% { background-position: 150% 0; }
+        10% { background-position: -50% 0; }
+        10.01%, 100% { background-position: 150% 0; }
       }
       /* Panel text — all animate together */
       .hero p,
@@ -509,7 +509,7 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine var(--panel-duration, 0.6s) linear infinite;
+        animation: heroShine 8s linear infinite;
         animation-delay: var(--panel-delay, 0s);
       }
 
@@ -5588,20 +5588,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script>
-// Set random shine durations and delays (5-10s between cycles)
+// Set random shine delays (5-10s initial delay)
 document.addEventListener('DOMContentLoaded', function() {
   // Title elements get individual random delays
   document.querySelectorAll('.hero h1, .gradient-title').forEach(function(el) {
-    var duration = (Math.random() * 5 + 5).toFixed(1); // 5-10s total cycle
     var delay = (Math.random() * 5 + 5).toFixed(1); // 5-10s initial delay
-    el.style.setProperty('--shine-duration', duration + 's');
     el.style.setProperty('--shine-delay', delay + 's');
   });
   // All panel text shines at the same time
-  var panelDuration = (Math.random() * 5 + 5).toFixed(1);
   var panelDelay = (Math.random() * 5 + 5).toFixed(1);
   document.querySelectorAll('.hero p, .rotating-outline li, .rotating-outline strong').forEach(function(el) {
-    el.style.setProperty('--panel-duration', panelDuration + 's');
     el.style.setProperty('--panel-delay', panelDelay + 's');
   });
 });

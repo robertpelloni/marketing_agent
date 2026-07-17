@@ -78,7 +78,7 @@
 
       /* ── HEADER ── */
 
-      header{padding:14px 0;position:sticky;top:0;z-index:9999;background:rgba(255, 255, 255, 0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(226, 232, 240, 0.8);box-shadow:0 1px 2px 0 rgba(0, 0, 0, 0.02)}
+      header{padding:14px 0;position:sticky;top:0;z-index:9999;background:rgba(0, 0, 0, 0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255, 255, 255, 0.1);box-shadow:0 1px 10px rgba(0,0,0,0.3)}
 
       header::after{display:none}
 
@@ -86,13 +86,22 @@
 
       .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 
-      .logo-icon{width:36px;height:36px;background:linear-gradient(135deg, #0284c7, #1e3a8a);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:18px;box-shadow:inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 10px rgba(2, 132, 199, 0.2);transition:all 0.25s;border:1px solid #0369a1}
+      .logo-icon{width:36px;height:36px;background:linear-gradient(135deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6);background-size:400% 400%;animation:rainbowLogo 1.5s ease-in-out infinite, logoGlow 1s ease-in-out infinite alternate;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:18px;text-shadow:0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.5);box-shadow:0 0 15px rgba(255, 59, 48, 0.5), 0 0 30px rgba(255, 149, 0, 0.3), 0 0 45px rgba(0, 122, 255, 0.2);transition:all 0.25s;border:1px solid rgba(255,255,255,0.2)}
+      @keyframes rainbowLogo {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      @keyframes logoGlow {
+        0% { box-shadow: 0 0 15px rgba(255, 59, 48, 0.5), 0 0 30px rgba(255, 149, 0, 0.3), 0 0 45px rgba(0, 122, 255, 0.2); }
+        50% { box-shadow: 0 0 20px rgba(76, 217, 100, 0.6), 0 0 40px rgba(90, 200, 250, 0.4), 0 0 60px rgba(88, 86, 214, 0.3); }
+        100% { box-shadow: 0 0 15px rgba(0, 122, 255, 0.5), 0 0 30px rgba(255, 59, 48, 0.3), 0 0 45px rgba(255, 204, 0, 0.2); }
+      }
+      .logo:hover .logo-icon{transform:scale(1.1) rotate(5deg);box-shadow:0 0 25px rgba(255, 59, 48, 0.7), 0 0 50px rgba(255, 149, 0, 0.5), 0 0 75px rgba(0, 122, 255, 0.4)}
 
-      .logo:hover .logo-icon{transform:scale(1.04);background:linear-gradient(135deg, #0369a1, #1e3a8a);box-shadow:inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 6px 12px rgba(2, 132, 199, 0.25)}
+      .logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);background-size:400% 100%;animation:rainbowLogo 1.5s linear infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:none;filter:drop-shadow(0 0 8px rgba(255, 59, 48, 0.4)) drop-shadow(0 0 16px rgba(0, 122, 255, 0.3));letter-spacing:-0.5px}
 
-      .logo-text{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.5px}
-
-      .logo-text span{background:none;-webkit-text-fill-color:initial;color:#0284c7;background-clip:initial}
+      .logo-text span{background:linear-gradient(90deg, #5ac8fa, #007aff, #5856d6, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa);background-size:400% 100%;animation:rainbowLogo 1.5s linear infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 6px rgba(90, 200, 250, 0.5))}
 
       nav{display:flex;align-items:center;gap:28px}
 
@@ -542,14 +551,16 @@
       .price-card.rainbow {
         border: none !important;
         padding: 0 !important;
-        overflow: hidden;
+        overflow: visible;
         position: relative;
-        border-radius: 12px;
+        border-radius: 16px;
         background: transparent !important;
         box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
         transition: transform 0.2s ease-out, box-shadow 0.3s ease !important;
+        transform: scale(1);
       }
       .price-card.rainbow:hover {
+        transform: scale(1.05) !important;
         box-shadow: 0 0 60px rgba(255, 59, 48, 0.6), 0 0 140px rgba(255, 149, 0, 0.4), 0 0 200px rgba(0, 122, 255, 0.3) !important;
       }
       @keyframes rotateRainbowReverse {
@@ -577,11 +588,12 @@
       /* Inner white card with spinner */
       .rainbow-spinner {
         position: relative;
-        overflow: hidden;
+        overflow: visible;
         background: #fff;
-        border-radius: 8px;
+        border-radius: 12px;
         margin: 4px;
         z-index: 1;
+        padding: 48px 40px !important;
       }
       .rainbow-spinner::before {
         content: '';
@@ -649,7 +661,76 @@
         from { left: -100%; }
         to { left: 200%; }
       }
-      /* Sparkles! */
+      /* ══════ MEGA BUY BUTTON ══════ */
+      .mega-buy-btn {
+        position: relative;
+        z-index: 100;
+        cursor: pointer;
+        background: linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);
+        background-size: 400% 100%;
+        animation: rainbowBtn 2s linear infinite, btnGlow 1.5s ease-in-out infinite alternate;
+        color: #ffffff;
+        font-weight: 900;
+        border: none;
+        padding: 20px 48px;
+        border-radius: 12px;
+        font-size: 20px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.3);
+        box-shadow: 0 0 20px rgba(255, 59, 48, 0.5), 0 0 40px rgba(255, 149, 0, 0.3), 0 0 60px rgba(0, 122, 255, 0.2);
+        transition: all 0.3s ease;
+        display: inline-block;
+      }
+      .mega-buy-btn:hover {
+        transform: scale(1.08);
+        box-shadow: 0 0 30px rgba(255, 59, 48, 0.7), 0 0 60px rgba(255, 149, 0, 0.5), 0 0 90px rgba(0, 122, 255, 0.4);
+        text-shadow: 0 0 15px rgba(255,255,255,1), 0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(255,255,255,0.5);
+      }
+      @keyframes btnGlow {
+        0% { box-shadow: 0 0 20px rgba(255, 59, 48, 0.5), 0 0 40px rgba(255, 149, 0, 0.3), 0 0 60px rgba(0, 122, 255, 0.2); }
+        50% { box-shadow: 0 0 30px rgba(255, 204, 0, 0.6), 0 0 50px rgba(76, 217, 100, 0.4), 0 0 70px rgba(88, 86, 214, 0.3); }
+        100% { box-shadow: 0 0 25px rgba(90, 200, 250, 0.5), 0 0 45px rgba(0, 122, 255, 0.4), 0 0 65px rgba(255, 59, 48, 0.3); }
+      }
+      @keyframes textGlow {
+        0% { text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.5); }
+        50% { text-shadow: 0 0 15px rgba(255,255,255,1), 0 0 30px rgba(255,255,255,0.7), 0 0 50px rgba(255,255,255,0.4); }
+        100% { text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.5); }
+      }
+      /* Badge zoom/rotate with card */
+      #pro-card {
+        position: relative;
+        transition: transform 0.3s ease;
+      }
+      #pro-card:hover {
+        transform: scale(1.05) rotate(1deg);
+      }
+      #pro-card:hover .price-badge {
+        animation: badgeZoomRotate 0.6s ease-in-out infinite alternate;
+      }
+      @keyframes badgeZoomRotate {
+        0% { transform: translateX(-50%) scale(1) rotate(-3deg); }
+        100% { transform: translateX(-50%) scale(1.15) rotate(3deg); }
+      }
+      .price-badge {
+        position: absolute;
+        top: -14px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        background: linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);
+        background-size: 200% 100%;
+        animation: badgeShimmer 2s linear infinite;
+        color: #fff;
+        font-weight: 800;
+        padding: 6px 20px;
+        border-radius: 20px;
+        font-size: 13px;
+        letter-spacing: 1px;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        box-shadow: 0 4px 15px rgba(255,59,48,0.4), 0 0 20px rgba(255,149,0,0.3);
+        transition: transform 0.3s ease;
+      }
       .sparkle {
         position: absolute;
         width: 4px;
@@ -919,7 +1000,7 @@
 
 
 
-                <a href="https://cloud.tormentnexus.com" class="nav-login" style="color:var(--text-secondary);text-decoration:none;font-size:14px;font-weight:500;transition:all 0.2s;padding:8px 16px;border:1px solid #e2e8f0;border-radius:6px">Login</a>
+                <a href="https://cloud.hypernexus.site" class="nav-login" style="color:var(--text-secondary);text-decoration:none;font-size:14px;font-weight:500;transition:all 0.2s;padding:8px 16px;border:1px solid #e2e8f0;border-radius:6px">Login</a>
                 <a href="#pricing" class="nav-cta">Buy Now →</a>
 
 
@@ -2201,8 +2282,8 @@
 
 
 
-                    <div style="display:flex;align-items:center;gap:8px;margin-top:16px">
-                      <div style="display:inline-block;padding:2px;border-radius:10px;background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#4cd964,#5ac8fa,#007aff,#5856d6,#ff3b30);background-size:200% 100%;animation:rainbowBtn 2s linear infinite"><button onclick="buyNow()" style="cursor:pointer;background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#4cd964,#5ac8fa,#007aff,#5856d6,#ff3b30);background-size:200% 100%;animation:rainbowBtn 2s linear infinite;color:#fff;font-weight:700;border:none;padding:14px 28px;border-radius:8px;font-size:15px;display:block">Buy Now!!!</button></div>
+                    <div style="display:flex;justify-content:center;align-items:center;margin-top:20px">
+                      <button onclick="buyNow()" class="mega-buy-btn">Buy Now!!!</button>
                     </div>
                     <script>
                     function buyNow(){

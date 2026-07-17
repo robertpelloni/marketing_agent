@@ -467,7 +467,7 @@
         inherits: false;
       }
 
-      /* ══════ HERO TITLE SHINE EFFECT — BOTH LINES ══════ */
+      /* ══════ HERO TITLE SHINE EFFECT ══════ */
       .hero h1 {
         position: relative;
         display: inline-block;
@@ -476,31 +476,20 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 8s linear infinite;
-        animation-delay: var(--shine-delay, 0s);
+        animation: heroShine 5s linear infinite;
       }
-      @keyframes heroShine {
-        0% { background-position: 150% 0; }
-        10% { background-position: -50% 0; }
-        10.01%, 100% { background-position: 150% 0; }
-      }
-      /* Gradient text — narrow pure white highlight */
+      /* Blue text — same shine effect */
       .gradient-title {
         display: inline-block;
-        background: linear-gradient(90deg, #0284c7 0%, #ffffff 50%, #0284c7 100%);
+        background: linear-gradient(90deg, #0284c7 0%, #0284c7 45%, #ffffff 50%, #0284c7 55%, #0284c7 100%);
         background-size: 200% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: gradientShine 8s linear infinite;
-        animation-delay: var(--shine-delay, 0s);
+        animation: heroShine 5s linear infinite;
+        animation-delay: 0.5s;
       }
-      @keyframes gradientShine {
-        0% { background-position: 150% 0; }
-        10% { background-position: -50% 0; }
-        10.01%, 100% { background-position: 150% 0; }
-      }
-      /* Panel text — all animate together */
+      /* Panel text — all same */
       .hero p,
       .rotating-outline li,
       .rotating-outline strong {
@@ -509,8 +498,13 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 8s linear infinite;
-        animation-delay: var(--panel-delay, 0s);
+        animation: heroShine 5s linear infinite;
+        animation-delay: 1s;
+      }
+      @keyframes heroShine {
+        0% { background-position: 150% 0; }
+        15% { background-position: -50% 0; }
+        15.01%, 100% { background-position: 150% 0; }
       }
 
       /* ══════ 3D GLASS PANELS — SPARKLY ══════ */
@@ -5587,21 +5581,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }, 600);
 });
 </script>
-<script>
-// Set random shine delays (5-10s initial delay)
-document.addEventListener('DOMContentLoaded', function() {
-  // Title elements get individual random delays
-  document.querySelectorAll('.hero h1, .gradient-title').forEach(function(el) {
-    var delay = (Math.random() * 5 + 5).toFixed(1); // 5-10s initial delay
-    el.style.setProperty('--shine-delay', delay + 's');
-  });
-  // All panel text shines at the same time
-  var panelDelay = (Math.random() * 5 + 5).toFixed(1);
-  document.querySelectorAll('.hero p, .rotating-outline li, .rotating-outline strong').forEach(function(el) {
-    el.style.setProperty('--panel-delay', panelDelay + 's');
-  });
-});
-</script>
+
 
 </body>
 

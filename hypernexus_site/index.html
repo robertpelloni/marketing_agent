@@ -476,7 +476,8 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 1.5s linear infinite;
+        animation: heroShine 0.75s linear infinite;
+        animation-delay: var(--shine-delay, 0s);
       }
       @keyframes heroShine {
         0% { background-position: 250% 0; }
@@ -490,7 +491,8 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: gradientShine 1.3s linear infinite;
+        animation: gradientShine 0.65s linear infinite;
+        animation-delay: var(--shine-delay, 0s);
       }
       @keyframes gradientShine {
         0% { background-position: -100% 0; }
@@ -503,7 +505,8 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 2s linear infinite;
+        animation: heroShine 1s linear infinite;
+        animation-delay: var(--shine-delay, 0s);
       }
       /* All list items in the panel — same slow shine */
       .rotating-outline li,
@@ -513,7 +516,8 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 2s linear infinite;
+        animation: heroShine 1s linear infinite;
+        animation-delay: var(--shine-delay, 0s);
       }
 
       /* ══════ 3D GLASS PANELS — SPARKLY ══════ */
@@ -5588,6 +5592,16 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 20);
     });
   }, 600);
+});
+</script>
+<script>
+// Set random shine delays for each element
+document.addEventListener('DOMContentLoaded', function() {
+  var shineElements = document.querySelectorAll('.hero h1, .gradient-title, .hero p, .rotating-outline li, .rotating-outline strong');
+  shineElements.forEach(function(el) {
+    var delay = (Math.random() * 3 + 2).toFixed(1); // 2-5 seconds
+    el.style.setProperty('--shine-delay', delay + 's');
+  });
 });
 </script>
 

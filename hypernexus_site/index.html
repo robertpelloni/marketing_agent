@@ -476,7 +476,7 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine var(--shine-duration, 1.25s) linear infinite;
+        animation: heroShine var(--shine-duration, 0.6s) linear infinite;
         animation-delay: var(--shine-delay, 0s);
       }
       @keyframes heroShine {
@@ -484,15 +484,15 @@
         40% { background-position: -50% 0; }
         40.01%, 100% { background-position: 150% 0; }
       }
-      /* Gradient text — narrow bright white highlight */
+      /* Gradient text — narrow pure white highlight */
       .gradient-title {
         display: inline-block;
-        background: linear-gradient(90deg, #0284c7 0%, #0284c7 48%, #ffffff 50%, #0284c7 52%, #0284c7 100%);
+        background: linear-gradient(90deg, #0284c7 0%, #ffffff 50%, #0284c7 100%);
         background-size: 200% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: gradientShine var(--shine-duration, 5s) linear infinite;
+        animation: gradientShine var(--shine-duration, 0.6s) linear infinite;
         animation-delay: var(--shine-delay, 0s);
       }
       @keyframes gradientShine {
@@ -504,12 +504,12 @@
       .hero p,
       .rotating-outline li,
       .rotating-outline strong {
-        background: linear-gradient(90deg, #334155 0%, #334155 30%, #ffffff 50%, #334155 70%, #334155 100%);
+        background: linear-gradient(90deg, #334155 0%, #334155 45%, #ffffff 50%, #334155 55%, #334155 100%);
         background-size: 200% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine var(--panel-duration, 1.25s) linear infinite;
+        animation: heroShine var(--panel-duration, 0.6s) linear infinite;
         animation-delay: var(--panel-delay, 0s);
       }
 

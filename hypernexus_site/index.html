@@ -471,7 +471,7 @@
       .hero h1 {
         position: relative;
         display: inline-block;
-        background: linear-gradient(90deg, #0f172a 0%, #0f172a 30%, #ffffff 50%, #0f172a 70%, #0f172a 100%);
+        background: linear-gradient(90deg, #0f172a 0%, #0f172a 40%, #ffffff 50%, #0f172a 60%, #0f172a 100%);
         background-size: 200% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -480,15 +480,15 @@
         animation-delay: var(--shine-delay, 0s);
       }
       @keyframes heroShine {
-        0%, 70% { background-position: 250% 0; }
-        85% { background-position: -250% 0; }
-        100% { background-position: -250% 0; }
+        0% { background-position: 200% 0; }
+        50% { background-position: -100% 0; }
+        50.01%, 100% { background-position: 200% 0; }
       }
       /* Gradient text — bright white flash */
       .gradient-title {
         display: inline-block;
-        background: linear-gradient(90deg, #0284c7 0%, #0284c7 25%, #ffffff 50%, #0284c7 75%, #0284c7 100%);
-        background-size: 300% 100%;
+        background: linear-gradient(90deg, #0284c7 0%, #0284c7 40%, #ffffff 50%, #0284c7 60%, #0284c7 100%);
+        background-size: 200% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -496,9 +496,9 @@
         animation-delay: var(--shine-delay, 0s);
       }
       @keyframes gradientShine {
-        0%, 70% { background-position: 300% 0; }
-        85% { background-position: -300% 0; }
-        100% { background-position: -300% 0; }
+        0% { background-position: 200% 0; }
+        50% { background-position: -100% 0; }
+        50.01%, 100% { background-position: 200% 0; }
       }
       /* Panel text — all animate together */
       .hero p,

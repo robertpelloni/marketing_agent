@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/robertpelloni/marketing_agent/internal/deploy"
-	"github.com/robertpelloni/marketing_agent/internal/gitcheck"
+	"gitlab.com/robertpelloni/marketing_agent/internal/deploy"
+	"gitlab.com/robertpelloni/marketing_agent/internal/gitcheck"
 )
 
 func TestOrchestrator_ExecuteStep_Mock(t *testing.T) {

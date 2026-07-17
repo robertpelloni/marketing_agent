@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // LeadSource defines an interface for discovering potential leads.

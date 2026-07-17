@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/robertpelloni/marketing_agent/internal/llm"
+	"gitlab.com/robertpelloni/marketing_agent/internal/llm"
 )
 
 // Sentiment represents the emotional tone of a message.

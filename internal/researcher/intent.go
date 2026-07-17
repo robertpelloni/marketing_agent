@@ -3,7 +3,7 @@ package researcher
 import (
 	"strings"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // IntentSignal describes a single point of interest for scoring lead intent.

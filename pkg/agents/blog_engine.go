@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/robertpelloni/marketing_agent/internal/llm"
+	"gitlab.com/robertpelloni/marketing_agent/internal/llm"
 )
 
 // BlogEngine generates SEO-optimized blog posts for tormentnexus.site

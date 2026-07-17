@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // RedditSource implements LeadSource by searching Reddit for companies

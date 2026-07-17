@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // HubSpotClient implements CRMClient using the HubSpot REST API.

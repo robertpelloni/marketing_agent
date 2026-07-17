@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/robertpelloni/marketing_agent/internal/gitcheck"
+	"gitlab.com/robertpelloni/marketing_agent/internal/gitcheck"
 )
 
 // ResolveConflict performs a 'git merge' of the source branch into the current branch.

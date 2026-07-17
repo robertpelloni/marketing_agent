@@ -4,12 +4,12 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/robertpelloni/marketing_agent/pkg/crypto"
+	"gitlab.com/robertpelloni/marketing_agent/pkg/crypto"
 	"strings"
 	"time"
 
 	"github.com/lib/pq"
-	"github.com/robertpelloni/marketing_agent/internal/gitcheck"
+	"gitlab.com/robertpelloni/marketing_agent/internal/gitcheck"
 )
 
 // CreateCompany inserts a new company into the database.

@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/robertpelloni/marketing_agent/internal/communication"
+	"gitlab.com/robertpelloni/marketing_agent/internal/communication"
 )
 
 // ContentType indicates the style/mood of a social post.

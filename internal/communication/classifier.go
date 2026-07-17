@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/robertpelloni/marketing_agent/internal/llm"
+	"gitlab.com/robertpelloni/marketing_agent/internal/llm"
 )
 
 // MockIntentClassifier simulates intent classification for inbound text.

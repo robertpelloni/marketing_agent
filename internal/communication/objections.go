@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 func cryptoRandInt() int64 {

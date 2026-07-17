@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/robertpelloni/marketing_agent/internal/llm"
+	"gitlab.com/robertpelloni/marketing_agent/internal/llm"
 )
 
 // LocalAgent is an agent that executes tasks and verifies them using local tools.

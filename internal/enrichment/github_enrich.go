@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // GitHubEnrichSource implements EnrichmentSource by extracting email addresses

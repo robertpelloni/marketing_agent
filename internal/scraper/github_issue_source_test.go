@@ -8,7 +8,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // Helper variable for env manipulation in tests

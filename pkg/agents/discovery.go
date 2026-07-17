@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/google/go-github/v60/github"
-	"github.com/robertpelloni/marketing_agent/internal/db"
-	"github.com/robertpelloni/marketing_agent/internal/llm"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/llm"
 )
 
 // TargetDiscoveryWorker scans for new opportunities (e.g., GitHub, MCP servers).

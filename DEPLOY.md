@@ -11,7 +11,7 @@
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/robertpelloni/marketing_agent.git
+   git clone https://gitlab.com/robertpelloni/marketing_agent.git
    cd marketing_agent
    ```
 

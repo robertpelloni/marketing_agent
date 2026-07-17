@@ -10,7 +10,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // GitHubIssueSource implements LeadSource by searching GitHub issues for companies with relevant technical challenges.

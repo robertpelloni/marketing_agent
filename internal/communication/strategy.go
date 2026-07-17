@@ -2,7 +2,7 @@ package communication
 
 import (
 	"context"
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // Action represents a decided path of action by the sales engine.

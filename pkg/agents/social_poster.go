@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
-	"github.com/robertpelloni/marketing_agent/internal/llm"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/llm"
 )
 
 // SocialPosterWorker handles scheduled posting to social media platforms.

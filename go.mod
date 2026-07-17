@@ -1,4 +1,4 @@
-module github.com/robertpelloni/marketing_agent
+module gitlab.com/robertpelloni/marketing_agent
 
 go 1.24.0
 

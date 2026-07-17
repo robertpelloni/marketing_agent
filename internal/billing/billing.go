@@ -19,7 +19,7 @@ import (
 	"github.com/stripe/stripe-go/v81/subscription"
 	"github.com/stripe/stripe-go/v81/webhook"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 const tnProvisionURL = "http://127.0.0.1:8090/api/account/provision"

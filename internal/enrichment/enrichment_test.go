@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 func TestMockSourceForTest_Enrich(t *testing.T) {

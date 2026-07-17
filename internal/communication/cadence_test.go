@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // --- DefaultCadence tests ---

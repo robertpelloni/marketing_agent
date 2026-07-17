@@ -3,7 +3,7 @@ package communication
 import (
     "context"
     "testing"
-    "github.com/robertpelloni/marketing_agent/internal/db"
+    "gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 func TestGenerateFromTemplate(t *testing.T) {

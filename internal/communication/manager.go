@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // Intent represents the classified purpose of an inbound message.

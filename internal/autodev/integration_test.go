@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
-	"github.com/robertpelloni/marketing_agent/internal/deploy"
-	"github.com/robertpelloni/marketing_agent/internal/gitcheck"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/deploy"
+	"gitlab.com/robertpelloni/marketing_agent/internal/gitcheck"
 )
 
 func TestAutonomousLoop_Integration(t *testing.T) {

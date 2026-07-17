@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/robertpelloni/marketing_agent/internal/crm"
+	"gitlab.com/robertpelloni/marketing_agent/internal/crm"
 )
 
 // Negative tests for enrichment/worker.go

@@ -6,16 +6,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/robertpelloni/marketing_agent/internal/autodev"
-	"github.com/robertpelloni/marketing_agent/internal/communication"
-	"github.com/robertpelloni/marketing_agent/internal/crm"
-	"github.com/robertpelloni/marketing_agent/internal/db"
-	"github.com/robertpelloni/marketing_agent/internal/llm"
-	"github.com/robertpelloni/marketing_agent/internal/deploy"
-	"github.com/robertpelloni/marketing_agent/internal/enrichment"
-	"github.com/robertpelloni/marketing_agent/internal/gitcheck"
-	"github.com/robertpelloni/marketing_agent/internal/researcher"
-	"github.com/robertpelloni/marketing_agent/internal/scraper"
+	"gitlab.com/robertpelloni/marketing_agent/internal/autodev"
+	"gitlab.com/robertpelloni/marketing_agent/internal/communication"
+	"gitlab.com/robertpelloni/marketing_agent/internal/crm"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/llm"
+	"gitlab.com/robertpelloni/marketing_agent/internal/deploy"
+	"gitlab.com/robertpelloni/marketing_agent/internal/enrichment"
+	"gitlab.com/robertpelloni/marketing_agent/internal/gitcheck"
+	"gitlab.com/robertpelloni/marketing_agent/internal/researcher"
+	"gitlab.com/robertpelloni/marketing_agent/internal/scraper"
 )
 
 func TestEndToEndSalesWorkflow(t *testing.T) {

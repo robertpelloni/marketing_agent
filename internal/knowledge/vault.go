@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // MemoryVault manages the GraphRAG knowledge base.

@@ -8,7 +8,7 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/robertpelloni/marketing_agent/internal/gitcheck"
+	"gitlab.com/robertpelloni/marketing_agent/internal/gitcheck"
 )
 
 // Deployer handles self-service deployment operations.

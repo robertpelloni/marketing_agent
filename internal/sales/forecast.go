@@ -5,7 +5,7 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/robertpelloni/marketing_agent/internal/communication"
+	"gitlab.com/robertpelloni/marketing_agent/internal/communication"
 )
 
 // DealForecast represents the predicted outcome for a deal.

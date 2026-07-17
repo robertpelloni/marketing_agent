@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/robertpelloni/marketing_agent/internal/crm"
-	"github.com/robertpelloni/marketing_agent/internal/db"
-	"github.com/robertpelloni/marketing_agent/internal/researcher"
+	"gitlab.com/robertpelloni/marketing_agent/internal/crm"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/researcher"
 )
 
 // mockCrawler implements researcher.Crawler for testing.

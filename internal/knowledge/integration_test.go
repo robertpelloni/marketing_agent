@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 func setupKnowledgeTestDB(t *testing.T) *db.DB {

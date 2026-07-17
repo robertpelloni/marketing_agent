@@ -3,8 +3,8 @@ package researcher
 import (
 	"context"
 
-	"github.com/robertpelloni/marketing_agent/internal/crm"
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/crm"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // Crawler defines an interface for extracting technical insights from web sources.

@@ -5,9 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/robertpelloni/marketing_agent/internal/billing"
-	"github.com/robertpelloni/marketing_agent/internal/crm"
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/billing"
+	"gitlab.com/robertpelloni/marketing_agent/internal/crm"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // Mock Billing Client for detailed testing

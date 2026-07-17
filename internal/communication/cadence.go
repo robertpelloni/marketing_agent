@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // CadenceStep defines a single touch point in an outreach sequence.

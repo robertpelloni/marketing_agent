@@ -3,7 +3,7 @@ package scraper
 import (
 	"testing"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 // Note: Testing Scraper.executeDiscovery would require a mock/test database.

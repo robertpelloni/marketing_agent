@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 
-	"github.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
 type CustomSource struct{}

@@ -5,7 +5,7 @@ import (
     "net/http"
     "net/http/httptest"
 
-	"github.com/robertpelloni/marketing_agent/internal/web"
+	"gitlab.com/robertpelloni/marketing_agent/internal/web"
 )
 
 func TestTelemetryWebSocketEndpoint_Exists(t *testing.T) {

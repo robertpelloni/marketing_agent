@@ -20,14 +20,14 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/robertpelloni/marketing_agent/internal/auth"
-	"github.com/robertpelloni/marketing_agent/internal/autodev"
-	"github.com/robertpelloni/marketing_agent/internal/billing"
-	"github.com/robertpelloni/marketing_agent/internal/communication"
-	"github.com/robertpelloni/marketing_agent/internal/db"
-	"github.com/robertpelloni/marketing_agent/internal/deploy"
-	"github.com/robertpelloni/marketing_agent/internal/llm"
-	"github.com/robertpelloni/marketing_agent/internal/logging"
+	"gitlab.com/robertpelloni/marketing_agent/internal/auth"
+	"gitlab.com/robertpelloni/marketing_agent/internal/autodev"
+	"gitlab.com/robertpelloni/marketing_agent/internal/billing"
+	"gitlab.com/robertpelloni/marketing_agent/internal/communication"
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
+	"gitlab.com/robertpelloni/marketing_agent/internal/deploy"
+	"gitlab.com/robertpelloni/marketing_agent/internal/llm"
+	"gitlab.com/robertpelloni/marketing_agent/internal/logging"
 )
 
 // HermesHealthChecker is an optional interface for checking LLM provider health.

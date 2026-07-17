@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"plugin"
 
-	"github.com/robertpelloni/marketing_agent/internal/communication"
-	"github.com/robertpelloni/marketing_agent/internal/enrichment"
-	"github.com/robertpelloni/marketing_agent/internal/scraper"
+	"gitlab.com/robertpelloni/marketing_agent/internal/communication"
+	"gitlab.com/robertpelloni/marketing_agent/internal/enrichment"
+	"gitlab.com/robertpelloni/marketing_agent/internal/scraper"
 )
 
 // Registry holds custom implementations of core interfaces.

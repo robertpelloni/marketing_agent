@@ -97,7 +97,7 @@ save_post(
 
 # POST 2: AI Markets AI
 c2 = deepseek(
-    "You are a technical writer. Write about the marketing_agent project (github.com/robertpelloni/marketing_agent) — a Go AI that autonomously markets AI tools: scrapes HN/GitHub/Reddit/LinkedIn for leads, enriches via Hunter/Apollo/GitHub commits, sends personalized DeepSeek emails, posts to Bluesky/Twitter/LinkedIn/Reddit, auto-generates 30+ SEO blog posts, Stripe billing, 7-state pipeline (2,698 deals). Meta-angle: AI marketing AI. End with 'Built with TormentNexus' linking to tormentnexus.site. Clean HTML format.",
+    "You are a technical writer. Write about the marketing_agent project (gitlab.com/robertpelloni/marketing_agent) — a Go AI that autonomously markets AI tools: scrapes HN/GitHub/Reddit/LinkedIn for leads, enriches via Hunter/Apollo/GitHub commits, sends personalized DeepSeek emails, posts to Bluesky/Twitter/LinkedIn/Reddit, auto-generates 30+ SEO blog posts, Stripe billing, 7-state pipeline (2,698 deals). Meta-angle: AI marketing AI. End with 'Built with TormentNexus' linking to tormentnexus.site. Clean HTML format.",
     "Write about the marketing_agent project. AI that markets AI. Technical, engaging.",
 )
 save_post(

@@ -138,7 +138,7 @@ func (g *GitHubDiscussionsEngager) searchDiscussions(ctx context.Context, query 
 func (g *GitHubDiscussionsEngager) buildComment(d discussionResult) string {
 	return fmt.Sprintf(`Hey! I noticed this discussion about %s — this is exactly the kind of problem **TormentNexus** solves.
 
-TormentNexus is a local-first cognitive control plane (open source: github.com/MDMAtk/TormentNexus) that handles:
+TormentNexus is a local-first cognitive control plane (open source: github.com/HyperNexusSoft/HyperNexus) that handles:
 - **Progressive MCP tool routing** — semantic vector search ranks and injects only the most relevant tools
 - **Cross-harness parity** — identical tool signatures across Claude Code, Cursor, Codex, Gemini CLI, Copilot, Windsurf
 - **L1/L2 memory** — 14K+ persisted memories with sqlite-vec semantic search

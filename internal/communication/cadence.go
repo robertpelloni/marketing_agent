@@ -222,7 +222,7 @@ type CadenceAwareManager struct {
 func NewCadenceAwareManager(mgr *Manager, database *db.DB) *CadenceAwareManager {
 	botRepo := os.Getenv("GITHUB_BOT_REPOSITORY")
 	if botRepo == "" {
-		botRepo = "MDMAtk/TormentNexus" // Default to main TormentNexus project repo
+		botRepo = "HyperNexusSoft/HyperNexus" // Default to HyperNexus project repo
 	}
 	return &CadenceAwareManager{
 		Manager:        mgr,

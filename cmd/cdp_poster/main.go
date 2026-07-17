@@ -66,7 +66,7 @@ func main() {
 		log.Printf("⚠ Failed to fetch content from VPS: %v — using fallback", err)
 		content = &ContentResponse{
 			Title:   "TormentNexus — The OS for AI Models",
-			Content: "Progressive MCP tool routing, cross-harness parity, LLM waterfall, 14K+ memories. Open source: github.com/MDMAtk/TormentNexus",
+			Content: "Progressive MCP tool routing, cross-harness parity, LLM waterfall, 14K+ memories. Open source: github.com/HyperNexusSoft/HyperNexus",
 			Brand:   "tormentnexus",
 		}
 	}

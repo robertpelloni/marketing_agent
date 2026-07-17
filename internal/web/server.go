@@ -1450,7 +1450,7 @@ func (s *Server) handleRedditContent(w http.ResponseWriter, r *http.Request) {
 	if s.db == nil {
 		_ = json.NewEncoder(w).Encode(map[string]string{
 			"title":   "TormentNexus — The OS for AI Models",
-			"content": "TormentNexus is a local-first cognitive control plane for multi-agent LLM workflows. Progressive MCP tool routing, cross-harness parity, LLM waterfall, and 14K+ persisted memories. Open source at github.com/MDMAtk/TormentNexus.",
+			"content": "TormentNexus is a local-first cognitive control plane for multi-agent LLM workflows. Progressive MCP tool routing, cross-harness parity, LLM waterfall, and 14K+ persisted memories. Open source at github.com/HyperNexusSoft/HyperNexus.",
 			"brand":   "tormentnexus",
 		})
 		return
@@ -1460,7 +1460,7 @@ func (s *Server) handleRedditContent(w http.ResponseWriter, r *http.Request) {
 	if err != nil || len(posts) == 0 {
 		_ = json.NewEncoder(w).Encode(map[string]string{
 			"title":   "TormentNexus — The OS for AI Models",
-			"content": "TormentNexus is a local-first cognitive control plane for multi-agent LLM workflows. Progressive MCP tool routing, cross-harness parity, LLM waterfall, and 14K+ persisted memories. Open source at github.com/MDMAtk/TormentNexus.",
+			"content": "TormentNexus is a local-first cognitive control plane for multi-agent LLM workflows. Progressive MCP tool routing, cross-harness parity, LLM waterfall, and 14K+ persisted memories. Open source at github.com/HyperNexusSoft/HyperNexus.",
 			"brand":   "tormentnexus",
 		})
 		return

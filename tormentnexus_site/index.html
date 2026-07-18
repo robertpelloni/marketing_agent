@@ -1908,7 +1908,7 @@
           this.z = 0.4 + Math.random() * 0.8; // Start visible
           this.targetX = Math.random() * W;
           this.targetY = Math.random() * H;
-          this.speedZ = 0.01 + Math.random() * 0.02; // Faster approach
+          this.speedZ = 0.003 + Math.random() * 0.008; // Slower approach
           this.p = Math.random() * 100;
         }
         update() {
@@ -3063,7 +3063,7 @@
           a: Math.random() * Math.PI * 2,
           c: Math.random() > 0.5,
         });
-      for (var i = 0; i < 48; i++) skulls.push(new SpookySkull());
+      for (var i = 0; i < 100; i++) skulls.push(new SpookySkull());
 
       // Terminator robots — marching from deep background
       for (var i = 0; i < 6; i++) {

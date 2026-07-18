@@ -542,13 +542,13 @@
         z-index: 2;
         background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 50%, rgba(255,255,255,0.95) 100%) padding-box,
                     conic-gradient(from var(--angle, 0deg),
-                      hsl(calc(var(--accent-hue) + 180), 70%, 85%) 0%,
-                      hsl(calc(var(--accent-hue) + 180), 70%, 50%) 25%,
-                      hsl(calc(var(--accent-hue) + 180), 70%, 85%) 50%,
-                      hsl(calc(var(--accent-hue) + 180), 70%, 50%) 75%,
-                      hsl(calc(var(--accent-hue) + 180), 70%, 85%) 100%) border-box;
+                      hsl(var(--accent-hue), 70%, 85%) 0%,
+                      hsl(var(--accent-hue), 70%, 50%) 25%,
+                      hsl(var(--accent-hue), 70%, 85%) 50%,
+                      hsl(var(--accent-hue), 70%, 50%) 75%,
+                      hsl(var(--accent-hue), 70%, 85%) 100%) border-box;
         animation: rotateOutline 3s linear infinite;
-        box-shadow: 0 8px 32px hsla(calc(var(--accent-hue) + 180), 70%, 40%, 0.1), inset 0 0 0 1px rgba(255,255,255,0.5), inset 0 0 0 2px rgba(0,0,0,0.05);
+        box-shadow: 0 8px 32px hsla(var(--accent-hue), 70%, 40%, 0.1), inset 0 0 0 1px rgba(255,255,255,0.5), inset 0 0 0 2px rgba(0,0,0,0.05);
         overflow: hidden;
         transition: transform 0.3s ease;
       }

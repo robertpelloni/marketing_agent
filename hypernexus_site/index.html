@@ -1236,8 +1236,7 @@
 
 
 
-             <div id="hero-panel-wrapper" style="max-width:920px;margin:0 auto;transform-style:preserve-3d;transition:transform 0.1s ease-out;position:relative">
-             <div id="hero-panel" style="max-width:100%;margin:0;text-align:left;background:linear-gradient(135deg, #ffffff 0%, #f0f7ff 50%, #ffffff 100%);padding:50px 58px;border-radius:16px;box-shadow:0 0 40px rgba(255,255,255,0.9), 0 0 80px var(--accent-glow), 0 20px 60px rgba(0,0,0,0.06);position:relative;overflow:hidden;transform-style:preserve-3d">
+             <div id="hero-panel" style="max-width:920px;margin:0 auto;text-align:left;background:linear-gradient(135deg, #ffffff 0%, #f0f7ff 50%, #ffffff 100%);padding:50px 58px;border-radius:16px;box-shadow:0 0 40px rgba(255,255,255,0.9), 0 0 80px var(--accent-glow), 0 20px 60px rgba(0,0,0,0.06);position:relative;overflow:hidden;transition:transform 0.3s ease, box-shadow 0.3s ease;cursor:default">
               <div style="position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);transform:skewX(-30deg);animation:autoShine 2.5s ease-in-out infinite;pointer-events:none;z-index:10"></div>
               <p style="font-size:16px;color:#1e293b;margin-bottom:16px;line-height:1.7;position:relative;z-index:1">
                 HyperNexus is the <strong style="color:#0f172a;font-weight:700">missing tool belt and memory system that all AI needs</strong> — a cloud-hosted cognitive control plane that gives your agents persistent memory, tool orchestration, and provider failover, so your team has complete visibility and governance over every LLM workflow.
@@ -5761,25 +5760,19 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script>
-// 3D Tilt Effect for Hero Panel Wrapper
+// Zoom Effect for Hero Panel
 (function() {
-  var panel = document.getElementById('hero-panel-wrapper');
+  var panel = document.getElementById('hero-panel');
   if (!panel) return;
   
-  panel.addEventListener('mousemove', function(e) {
-    var rect = panel.getBoundingClientRect();
-    var x = e.clientX - rect.left;
-    var y = e.clientY - rect.top;
-    var centerX = rect.width / 2;
-    var centerY = rect.height / 2;
-    var rotateX = (y - centerY) / centerY * -8;
-    var rotateY = (x - centerX) / centerX * 8;
-    
-    panel.style.transform = 'perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale3d(1.02, 1.02, 1.02)';
+  panel.addEventListener('mouseenter', function() {
+    panel.style.transform = 'scale(1.03)';
+    panel.style.boxShadow = '0 0 60px rgba(255,255,255,0.95), 0 0 120px var(--accent-glow), 0 30px 80px rgba(0,0,0,0.1)';
   });
   
   panel.addEventListener('mouseleave', function() {
-    panel.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    panel.style.transform = 'scale(1)';
+    panel.style.boxShadow = '0 0 40px rgba(255,255,255,0.9), 0 0 80px var(--accent-glow), 0 20px 60px rgba(0,0,0,0.06)';
   });
 })();
 </script>

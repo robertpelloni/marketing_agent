@@ -527,11 +527,11 @@
         border-radius: 28px;
         padding: 0;
         z-index: 2;
-        background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(248,250,252,0.2) 50%, rgba(255,255,255,0.2) 100%) padding-box,
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 50%, rgba(255,255,255,0.95) 100%) padding-box,
                     conic-gradient(from var(--angle, 0deg),
-                      hsl(var(--accent-hue), 80%, 40%) 0%, hsl(var(--accent-hue), 80%, 55%) 12%, hsl(var(--accent-hue), 80%, 70%) 25%, hsl(var(--accent-hue), 80%, 40%) 37%,
-                      hsl(var(--accent-hue), 80%, 25%) 50%, hsl(var(--accent-hue), 80%, 35%) 62%, hsl(var(--accent-hue), 80%, 55%) 75%, hsl(var(--accent-hue), 80%, 70%) 87%, hsl(var(--accent-hue), 80%, 40%) 100%) border-box;
-        animation: rotateOutline 0.8s linear infinite;
+                      hsl(var(--accent-hue), 90%, 75%) 0%, hsl(var(--accent-hue), 80%, 85%) 12%, hsl(var(--accent-hue), 70%, 90%) 25%, hsl(var(--accent-hue), 90%, 75%) 37%,
+                      hsl(var(--accent-hue), 85%, 80%) 50%, hsl(var(--accent-hue), 75%, 88%) 62%, hsl(var(--accent-hue), 90%, 75%) 75%, hsl(var(--accent-hue), 80%, 85%) 87%, hsl(var(--accent-hue), 90%, 75%) 100%) border-box;
+        animation: rotateOutline 0.4s linear infinite;
         box-shadow: 0 8px 32px hsla(var(--accent-hue), 80%, 40%, 0.12), 0 0 80px hsla(var(--accent-hue), 80%, 55%, 0.06), inset 0 0 0 1px rgba(255,255,255,0.5), inset 0 0 0 2px rgba(0,0,0,0.05);
         overflow: hidden;
         transition: transform 0.3s ease;
@@ -557,17 +557,7 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 3.5s linear infinite, rainbowGlow 0.5s linear infinite;
-      }
-      @keyframes rainbowGlow {
-        0% { filter: drop-shadow(0 0 8px hsl(0, 80%, 50%)) drop-shadow(0 0 16px hsl(0, 80%, 50%, 0.4)); }
-        14% { filter: drop-shadow(0 0 8px hsl(51, 80%, 50%)) drop-shadow(0 0 16px hsl(51, 80%, 50%, 0.4)); }
-        28% { filter: drop-shadow(0 0 8px hsl(102, 80%, 50%)) drop-shadow(0 0 16px hsl(102, 80%, 50%, 0.4)); }
-        42% { filter: drop-shadow(0 0 8px hsl(153, 80%, 50%)) drop-shadow(0 0 16px hsl(153, 80%, 50%, 0.4)); }
-        57% { filter: drop-shadow(0 0 8px hsl(204, 80%, 50%)) drop-shadow(0 0 16px hsl(204, 80%, 50%, 0.4)); }
-        71% { filter: drop-shadow(0 0 8px hsl(255, 80%, 50%)) drop-shadow(0 0 16px hsl(255, 80%, 50%, 0.4)); }
-        85% { filter: drop-shadow(0 0 8px hsl(306, 80%, 50%)) drop-shadow(0 0 16px hsl(306, 80%, 50%, 0.4)); }
-        100% { filter: drop-shadow(0 0 8px hsl(360, 80%, 50%)) drop-shadow(0 0 16px hsl(360, 80%, 50%, 0.4)); }
+        animation: heroShine 3.5s linear infinite;
       }
       /* Gradient title with animated accent color */
       .gradient-title {
@@ -1158,7 +1148,7 @@
                                                 <div id="pro-card" style="position:relative">
                     <div class="price-badge" style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);z-index:10;background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#4cd964,#5ac8fa,#007aff,#5856d6,#ff3b30);background-size:200% 100%;animation:badgeShimmer 2s linear infinite;color:#fff;font-weight:800;padding:4px 14px;border-radius:20px;font-size:11px;letter-spacing:1px;text-shadow:0 1px 2px rgba(0,0,0,0.3);box-shadow:0 4px 15px rgba(255,59,48,0.4),0 0 20px rgba(255,149,0,0.3)">Early Adopter Sale</div>
                     <div class="price-card rainbow featured">
-                    <div class="rainbow-border" style="position:absolute;inset:-5px;background:linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);background-size:800% 100%;animation:rainbowBtnSlow 3s linear infinite;border-radius:20px;pointer-events:none;z-index:0"></div>
+                    <div class="rainbow-border" style="position:absolute;inset:-7px;background:linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);background-size:800% 100%;animation:rainbowBtnSlow 1.5s linear infinite;border-radius:22px;pointer-events:none;z-index:0"></div>
                     <div class="rainbow-spinner" style="padding:32px 28px">
                     <div class="price-tier">Professional</div>
                     <div style="text-decoration:line-through;color:#94a3b8;font-size:20px;font-weight:500;letter-spacing:-0.5px;margin-bottom:2px">$100</div>
@@ -1169,7 +1159,7 @@
                     
 
                     <div style="display:flex;justify-content:center;align-items:center;margin-top:20px">
-                      <button onclick="buyNow()" class="mega-buy-btn" style="text-transform:none;font-size:18px;letter-spacing:1px;box-shadow:none">Buy Now!!!</button>
+                      <button onclick="buyNow()" class="mega-buy-btn" style="text-transform:none;font-size:18px;letter-spacing:1px;box-shadow:0 0 2px rgba(255, 59, 48, 0.04), 0 0 4px rgba(255, 149, 0, 0.03)">Buy Now!!!</button>
                     </div>
                     <script>
                     function buyNow(){

@@ -75,13 +75,14 @@
       }
 
       @keyframes hueShift {
-        0% { --accent-hue: 200; } /* Blue */
-        16% { --accent-hue: 260; } /* Purple */
-        33% { --accent-hue: 330; } /* Pink */
-        50% { --accent-hue: 20; } /* Orange */
-        66% { --accent-hue: 80; } /* Green */
-        83% { --accent-hue: 160; } /* Teal */
-        100% { --accent-hue: 200; } /* Blue */
+        0% { --accent-hue: 0; } /* Red */
+        14% { --accent-hue: 51; } /* Orange */
+        28% { --accent-hue: 102; } /* Yellow-Green */
+        42% { --accent-hue: 153; } /* Green */
+        57% { --accent-hue: 204; } /* Cyan */
+        71% { --accent-hue: 255; } /* Blue */
+        85% { --accent-hue: 306; } /* Purple */
+        100% { --accent-hue: 360; } /* Red */
       }
 
       /* Disable all neon wire animations and background gradient shifts */
@@ -240,23 +241,30 @@
 
       /* ── LOGOS ── */
 
-      .logos{padding:60px 0;border-top:1px solid rgba(77,124,255,0.06);border-bottom:1px solid rgba(77,124,255,0.06)}
+       .logos{padding:40px 0;overflow:hidden;border-top:none;border-bottom:none}
 
-      .logos-label{text-align:center;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:3px;color:var(--text-dim);margin-bottom:32px}
+       .logos-grid{display:flex;gap:48px;animation:scrollBanner 20s linear infinite;width:max-content}
 
-      .logos-grid{display:flex;justify-content:center;gap:56px;flex-wrap:wrap}
+       .logo-item{font-size:22px;font-weight:800;background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 6s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0.4;transition:all 0.4s;cursor:default;white-space:nowrap}
 
-      .logo-item{font-size:16px;font-weight:800;background:var(--gradient-neon);background-size:300% 300%;animation:gradientShift 6s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0.25;transition:all 0.4s;cursor:default}
+       .logo-item:hover{opacity:0.9;transform:scale(1.1);letter-spacing:2px}
 
-      .logo-item:hover{opacity:0.9;transform:scale(1.1);letter-spacing:2px}
+       .logo-item:nth-child(2){animation-delay:0.8s}
 
-      .logo-item:nth-child(2){animation-delay:0.8s}
+       .logo-item:nth-child(3){animation-delay:1.6s}
 
-      .logo-item:nth-child(3){animation-delay:1.6s}
+       .logo-item:nth-child(4){animation-delay:2.4s}
 
-      .logo-item:nth-child(4){animation-delay:2.4s}
+       .logo-item:nth-child(5){animation-delay:3.2s}
 
-      .logo-item:nth-child(5){animation-delay:3.2s}
+       .logo-item:nth-child(6){animation-delay:4s}
+
+       .logo-item:nth-child(7){animation-delay:4.8s}
+
+       @keyframes scrollBanner {
+         0% { transform: translateX(0); }
+         100% { transform: translateX(-50%); }
+       }
 
       /* ── STATS ── */
 
@@ -889,12 +897,12 @@
 </head>
 
 <body>
-    <canvas id="particles"></canvas>
+    
     <div class="blue-side-left"></div>
     <div class="blue-side-right"></div>
 
 
-    <canvas id="particle-canvas"></canvas>
+    
 
     <div class="ambient ambient-1"></div>
 
@@ -1604,34 +1612,7 @@ document.querySelectorAll('.feature,.stat,.compliance-item,.price-card').forEach
   });
 });
 
-// Floating particles
-(function(){
-  var c=document.getElementById('particles');
-  if(!c)return;
-  var ctx=c.getContext('2d');
-  var w,h,particles=[];
-  function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight}
-  resize();window.addEventListener('resize',resize);
-  for(var i=0;i<60;i++){
-    particles.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-0.5)*1.5,vy:(Math.random()-0.5)*1.5,r:Math.random()*3+1.5,a:Math.random()*0.4+0.15})
-  }
-  function draw(){
-    ctx.clearRect(0,0,w,h);
-    // Get current accent color
-    var accentHue = getComputedStyle(document.documentElement).getPropertyValue('--accent-hue').trim() || 200;
-    particles.forEach(function(p){
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle='hsla('+accentHue+', 80%, 40%, '+p.a+')';
-      ctx.fill();
-      p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0)p.x=w;if(p.x>w)p.x=0;
-      if(p.y<0)p.y=h;if(p.y>h)p.y=0;
-    });
-    requestAnimationFrame(draw)
-  }
-  draw();
-})();
+
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {

@@ -73,7 +73,7 @@
       /* Animated accent color that shifts through rainbow */
       @property --accent-hue {
         syntax: '<number>';
-        inherits: false;
+        inherits: true;
         initial-value: 200;
       }
 
@@ -1239,8 +1239,8 @@
 
 
 
-             <div id="hero-panel-wrapper" style="max-width:920px;margin:0 auto;transform-style:preserve-3d;transition:transform 0.1s ease-out;position:relative;border-radius:16px;border:2px solid hsla(var(--accent-hue), 80%, 40%, 0.3);box-shadow:0 0 40px rgba(255,255,255,0.9), 0 0 80px var(--accent-glow), 0 20px 60px rgba(0,0,0,0.06);overflow:hidden">>
-             <div id="hero-panel" style="max-width:100%;margin:0;text-align:left;background:linear-gradient(135deg, #ffffff 0%, #f0f7ff 50%, #ffffff 100%);padding:52px 60px;border-radius:14px;position:relative;transform-style:preserve-3d">>
+             <div id="hero-panel-wrapper" style="max-width:920px;margin:0 auto;transform-style:preserve-3d;transition:transform 0.1s ease-out;position:relative;border-radius:16px;border:2px solid hsla(var(--accent-hue), 80%, 40%, 0.3);box-shadow:0 0 40px rgba(255,255,255,0.9), 0 0 80px var(--accent-glow), 0 20px 60px rgba(0,0,0,0.06);overflow:hidden">
+             <div id="hero-panel" style="max-width:100%;margin:0;text-align:left;background:linear-gradient(135deg, #ffffff 0%, #f0f7ff 50%, #ffffff 100%);padding:52px 60px;border-radius:14px;position:relative;transform-style:preserve-3d">
               <div style="position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);transform:skewX(-30deg);animation:autoShine 2.5s ease-in-out infinite;pointer-events:none;z-index:10"></div>
               <p style="font-size:16px;color:#1e293b;margin-bottom:16px;line-height:1.7;position:relative;z-index:1">
                 HyperNexus is the <strong style="color:#0f172a;font-weight:700">missing tool belt and memory system that all AI needs</strong> — a cloud-hosted cognitive control plane that gives your agents persistent memory, tool orchestration, and provider failover, so your team has complete visibility and governance over every LLM workflow.

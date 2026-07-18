@@ -1743,29 +1743,37 @@
         ctx.translate(x, y);
         ctx.scale(s, s);
 
-        // Legs — 8 jointed creepy legs
+        // Legs — 8 jointed creepy legs with walking animation
         var legPhase = step * 2.5;
-        ctx.strokeStyle = "rgba(0,204,255,0.25)";
         ctx.lineWidth = 1.5;
         for (var i = 0; i < 8; i++) {
           var angle = (i / 8) * Math.PI * 2;
-          var legSwing = Math.sin(legPhase + angle) * 4;
-          var len = 25 + Math.sin(legPhase + i) * 4;
-          var startR = 6;
+          var legSwing = Math.sin(legPhase + angle * 2) * 6;
+          var len = 28 + Math.sin(legPhase + i * 0.8) * 5;
+          var startR = 7;
 
           // Joint 1: bend upwards and outwards
           var midX = Math.cos(angle) * (startR + len * 0.45) + legSwing * 1.5;
-          var midY = Math.sin(angle) * (startR + len * 0.45) - 8;
+          var midY = Math.sin(angle) * (startR + len * 0.45) - 10;
 
           // Joint 2: bend downwards and out
           var endX = Math.cos(angle) * (startR + len) + legSwing;
-          var endY = Math.sin(angle) * (startR + len) + 4;
+          var endY = Math.sin(angle) * (startR + len) + 5;
 
+          // Leg color based on position (front legs brighter)
+          var legBrightness = 0.2 + Math.abs(Math.cos(angle)) * 0.15;
+          ctx.strokeStyle = "rgba(0,204,255," + legBrightness + ")";
           ctx.beginPath();
           ctx.moveTo(Math.cos(angle) * startR, Math.sin(angle) * startR);
           ctx.lineTo(midX, midY);
           ctx.lineTo(endX, endY);
           ctx.stroke();
+
+          // Foot/tip glow
+          ctx.fillStyle = "rgba(0,204,255,0.3)";
+          ctx.beginPath();
+          ctx.arc(endX, endY, 1.5, 0, Math.PI * 2);
+          ctx.fill();
         }
 
         // Body — segmented
@@ -3160,23 +3168,32 @@
           ctx.fill();
         });
 
-        // ── Spider robots ──
+        // ── Spider robots — 3D walking toward camera ──
         spiders.forEach(function (s) {
-          s.x += Math.cos(s.angle) * s.speed;
-          s.y += Math.sin(s.angle) * s.speed;
-          s.step += 0.05;
-          // Random direction change
-          if (Math.random() < 0.005) s.angle += Math.random() - 0.5;
-          // Bounce off edges
-          if (s.x < 0 || s.x > W) {
-            s.x = s.x < 0 ? 0 : W;
-            s.angle = Math.PI - s.angle;
+          s.z += s.speedZ;
+          s.x += (s.targetX - s.x) * 0.005;
+          s.y += (s.targetY - s.y) * 0.005;
+          s.step += 0.08;
+          s.legPhase += 0.15;
+          // Retarget occasionally
+          if (Math.random() < 0.01) {
+            s.targetX = Math.random() * W;
+            s.targetY = Math.random() * H;
           }
-          if (s.y < 0 || s.y > H) {
-            s.y = s.y < 0 ? 0 : H;
-            s.angle = -s.angle;
+          // Reset when too close or off screen
+          if (s.z > 2.0 || s.x < -100 || s.x > W + 100 || s.y < -100 || s.y > H + 100) {
+            s.x = Math.random() * W;
+            s.y = Math.random() * H;
+            s.z = 0.3 + Math.random() * 0.5;
+            s.targetX = Math.random() * W;
+            s.targetY = Math.random() * H;
           }
-          drawSpider(s.x, s.y, s.s, s.step, s.o);
+          // Opacity based on depth
+          var opacity = s.z < 0.4 ? s.z * 2.5 : s.z > 1.6 ? (2.0 - s.z) * 2.5 : 1;
+          opacity = Math.max(0, Math.min(0.85, opacity * 0.85));
+          // Scale based on depth (bigger when closer)
+          var drawScale = s.z * 1.2;
+          drawSpider(s.x, s.y, drawScale, s.step, opacity);
         });
 
         // ── Box Robots — perspective shuffle ──

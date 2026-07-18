@@ -523,11 +523,11 @@
       }
       .blue-side-left {
         left: 0;
-        background: linear-gradient(90deg, rgba(2, 132, 199, 0.4) 0%, rgba(14, 165, 233, 0.15) 60%, transparent 100%);
+        background: linear-gradient(90deg, hsla(var(--accent-hue), 80%, 40%, 0.4) 0%, hsla(var(--accent-hue), 80%, 55%, 0.15) 60%, transparent 100%);
       }
       .blue-side-right {
         right: 0;
-        background: linear-gradient(-90deg, rgba(2, 132, 199, 0.4) 0%, rgba(14, 165, 233, 0.15) 60%, transparent 100%);
+        background: linear-gradient(-90deg, hsla(var(--accent-hue), 80%, 40%, 0.4) 0%, hsla(var(--accent-hue), 80%, 55%, 0.15) 60%, transparent 100%);
       }
 
       /* ══════ ROTATING BLUE OUTLINE AROUND MAIN CONTENT ══════ */
@@ -542,10 +542,10 @@
         z-index: 2;
         background: linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(248,250,252,0.90) 50%, rgba(255,255,255,0.88) 100%) padding-box,
                     conic-gradient(from var(--angle, 0deg),
-                      #0284c7 0%, #0ea5e9 12%, #38bdf8 25%, #0284c7 37%,
-                      #1e3a8a 50%, #0369a1 62%, #0ea5e9 75%, #38bdf8 87%, #0284c7 100%) border-box;
+                      hsl(var(--accent-hue), 80%, 40%) 0%, hsl(var(--accent-hue), 80%, 55%) 12%, hsl(var(--accent-hue), 80%, 70%) 25%, hsl(var(--accent-hue), 80%, 40%) 37%,
+                      hsl(var(--accent-hue), 80%, 25%) 50%, hsl(var(--accent-hue), 80%, 35%) 62%, hsl(var(--accent-hue), 80%, 55%) 75%, hsl(var(--accent-hue), 80%, 70%) 87%, hsl(var(--accent-hue), 80%, 40%) 100%) border-box;
         animation: rotateOutline 1.5s linear infinite;
-        box-shadow: 0 8px 32px rgba(2, 132, 199, 0.12), 0 0 80px rgba(14, 165, 233, 0.06), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+        box-shadow: 0 8px 32px hsla(var(--accent-hue), 80%, 40%, 0.12), 0 0 80px hsla(var(--accent-hue), 80%, 55%, 0.06), inset 0 2px 4px rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
         overflow: hidden;
@@ -1219,7 +1219,7 @@
 
 
 
-            <h1>More Secure · More Powerful<br><span class="gradient-title">Corporate AI</span></h1>
+            <h1>The Most Powerful<br><span class="gradient-title">AI For Business</span></h1>
 
     <div class="rotating-outline">
 

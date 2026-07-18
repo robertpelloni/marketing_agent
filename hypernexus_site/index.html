@@ -126,7 +126,7 @@
 
       @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 
-      .hero-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeInUp 0.8s ease-out 0.6s both}
+      .hero-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeInUp 0.8s ease-out 0.6s both;margin-top:24px;margin-bottom:24px}
 
       /* ── BUTTONS & GLOSSY SWEENS ── */
 
@@ -151,6 +151,17 @@
         0% { left: -150%; }
         50% { left: 150%; }
         100% { left: 150%; }
+      }
+
+      @keyframes rainbowBtn {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 400% 50%; }
+      }
+
+      @keyframes blueShimmer {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 200% 50%; }
+        100% { background-position: 400% 50%; }
       }
 
       .btn:hover::before, .price-btn:hover::before, .price-card:not(.rainbow):hover::before, .feature:hover::before, .stat:hover::before, .compliance-item:hover::before {
@@ -1194,6 +1205,55 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="hero-videos" style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+
             <div class="hero-buttons">
 
 
@@ -1244,53 +1304,6 @@
 
             </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <div class="hero-videos" style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            </div>
 
 
 
@@ -5490,7 +5503,7 @@
 
 
 
-                hero.style.opacity = Math.max(0.35, 1 - scrollY * 0.0012);
+                hero.style.opacity = Math.max(1, 1 - scrollY * 0.0012);
 
 
 

@@ -579,8 +579,8 @@
       }
       /* Panel text — with shine */
       .hero p,
-      .rotating-outline li,
-      .rotating-outline strong {
+      .rotating-outline li strong,
+      .rotating-outline li:not(:has(span)) {
         background: linear-gradient(90deg, #1e293b 0%, #1e293b 40%, #ffffff 50%, #1e293b 60%, #1e293b 100%);
         background-size: 200% 100%;
         -webkit-background-clip: text;
@@ -588,6 +588,12 @@
         background-clip: text;
         animation: heroShine 3.5s linear infinite;
         animation-delay: 0.5s;
+      }
+      .rotating-outline li span {
+        -webkit-text-fill-color: initial;
+        background-clip: initial;
+        -webkit-background-clip: initial;
+        background: none;
       }
       @keyframes heroShine {
         0% { background-position: 150% 0; }

@@ -536,16 +536,14 @@
         margin: 0 auto 40px;
         border: 4px solid transparent;
         border-radius: 28px;
-        padding: 40px 48px;
+        padding: 0;
         z-index: 2;
         background: linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(248,250,252,0.90) 50%, rgba(255,255,255,0.88) 100%) padding-box,
                     conic-gradient(from var(--angle, 0deg),
                       hsl(var(--accent-hue), 80%, 40%) 0%, hsl(var(--accent-hue), 80%, 55%) 12%, hsl(var(--accent-hue), 80%, 70%) 25%, hsl(var(--accent-hue), 80%, 40%) 37%,
                       hsl(var(--accent-hue), 80%, 25%) 50%, hsl(var(--accent-hue), 80%, 35%) 62%, hsl(var(--accent-hue), 80%, 55%) 75%, hsl(var(--accent-hue), 80%, 70%) 87%, hsl(var(--accent-hue), 80%, 40%) 100%) border-box;
         animation: rotateOutline 1.5s linear infinite;
-        box-shadow: 0 8px 32px hsla(var(--accent-hue), 80%, 40%, 0.12), 0 0 80px hsla(var(--accent-hue), 80%, 55%, 0.06), inset 0 2px 4px rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        box-shadow: 0 8px 32px hsla(var(--accent-hue), 80%, 40%, 0.12), 0 0 80px hsla(var(--accent-hue), 80%, 55%, 0.06);
         overflow: hidden;
       }
       @keyframes rotateOutline {
@@ -632,16 +630,16 @@
       .price-card.rainbow {
         border: none !important;
         padding: 0 !important;
-        overflow: visible;
+        overflow: hidden;
         position: relative;
         border-radius: 16px;
         background: transparent !important;
         box-shadow: 0 0 30px rgba(255, 59, 48, 0.3), 0 0 80px rgba(2, 132, 199, 0.2);
         transition: transform 0.2s ease-out, box-shadow 0.3s ease !important;
         transform: scale(1);
+        transform-style: preserve-3d;
       }
       .price-card.rainbow:hover {
-        transform: scale(1.05) !important;
         box-shadow: 0 0 60px rgba(255, 59, 48, 0.6), 0 0 140px rgba(255, 149, 0, 0.4), 0 0 200px rgba(0, 122, 255, 0.3) !important;
       }
       @keyframes rotateRainbowReverse {
@@ -965,8 +963,7 @@
 
 
 
-                <div class="logo-icon">Hyper</div>
-
+                
 
 
 
@@ -1237,7 +1234,7 @@
 
 
 
-             <div id="hero-panel" style="width:100%;margin:0;text-align:left;background:linear-gradient(135deg, #ffffff 0%, #f0f7ff 50%, #ffffff 100%);padding:50px 58px;border-radius:24px;box-shadow:none;position:relative;overflow:hidden;transition:transform 0.3s ease, box-shadow 0.3s ease;cursor:default">>
+             <div id="hero-panel" style="width:100%;margin:0;text-align:left;background:linear-gradient(135deg, #ffffff 0%, #f0f7ff 50%, #ffffff 100%);padding:50px 58px;border-radius:24px;box-shadow:none;position:relative;overflow:hidden;transition:transform 0.3s ease, box-shadow 0.3s ease;cursor:default">
               <div style="position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);transform:skewX(-30deg);animation:autoShine 2.5s ease-in-out infinite;pointer-events:none;z-index:10"></div>
               <p style="font-size:16px;color:#1e293b;margin-bottom:16px;line-height:1.7;position:relative;z-index:1">
                 HyperNexus is the <strong style="color:#0f172a;font-weight:700">missing tool belt and memory system that all AI needs</strong> — a cloud-hosted cognitive control plane that gives your agents persistent memory, tool orchestration, and provider failover, so your team has complete visibility and governance over every LLM workflow.
@@ -2340,7 +2337,7 @@
                                                 <div id="pro-card" style="position:relative">
                     <div class="price-badge" style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);z-index:10;background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#4cd964,#5ac8fa,#007aff,#5856d6,#ff3b30);background-size:200% 100%;animation:badgeShimmer 2s linear infinite;color:#fff;font-weight:800;padding:4px 14px;border-radius:20px;font-size:11px;letter-spacing:1px;text-shadow:0 1px 2px rgba(0,0,0,0.3);box-shadow:0 4px 15px rgba(255,59,48,0.4),0 0 20px rgba(255,149,0,0.3)">Early Adopter Sale</div>
                     <div class="price-card rainbow featured">
-                    <div class="rainbow-border" style="position:absolute;inset:-3px;background:linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);background-size:800% 100%;animation:rainbowBtnSlow 3s linear infinite;border-radius:18px;pointer-events:none;z-index:0"></div>
+                    <div class="rainbow-border" style="position:absolute;inset:-5px;background:linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);background-size:800% 100%;animation:rainbowBtnSlow 3s linear infinite;border-radius:20px;pointer-events:none;z-index:0"></div>
                     <div class="rainbow-spinner" style="padding:32px 28px">
                     <div class="price-tier">Professional</div>
                     <div style="text-decoration:line-through;color:#94a3b8;font-size:20px;font-weight:500;letter-spacing:-0.5px;margin-bottom:2px">$100</div>
@@ -2801,8 +2798,7 @@
 
 
 
-                        <div class="logo-icon" style="width:32px;height:32px;font-size:9px">Hyper</div>
-
+                        
 
 
 

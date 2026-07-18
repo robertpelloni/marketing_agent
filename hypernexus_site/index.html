@@ -78,7 +78,7 @@
 
       /* ── HEADER ── */
 
-      header{padding:14px 0;position:sticky;top:0;z-index:9999;background:rgba(0, 0, 0, 0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255, 255, 255, 0.1);box-shadow:0 1px 10px rgba(0,0,0,0.3)}
+      header{padding:14px 0;position:sticky;top:0;z-index:9999;background:rgba(255, 255, 255, 0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(226, 232, 240, 0.8);box-shadow:0 1px 2px 0 rgba(0, 0, 0, 0.02)}
 
       header::after{display:none}
 
@@ -87,61 +87,54 @@
       .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 
       .logo-icon{
-        width:36px;height:36px;
-        background: conic-gradient(from 0deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);
+        width:40px;height:40px;
+        background: conic-gradient(from 0deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);
         background-size: 100% 100%;
-        animation: lotusSpin 1s linear infinite, logoGlow 0.5s ease-in-out infinite alternate;
-        border-radius:8px;display:flex;align-items:center;justify-content:center;
-        color:white;font-weight:800;font-size:18px;
-        text-shadow:0 0 10px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.7), 0 0 30px rgba(255,255,255,0.5);
-        box-shadow:0 0 20px rgba(255, 59, 48, 0.6), 0 0 40px rgba(255, 149, 0, 0.4), 0 0 60px rgba(0, 122, 255, 0.3), inset 0 0 15px rgba(255,255,255,0.2);
+        animation: fractalSpin 0.8s linear infinite, logoPulse 0.6s ease-in-out infinite alternate;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        display:flex;align-items:center;justify-content:center;
+        color:white;font-weight:800;font-size:20px;
+        text-shadow:0 0 10px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.7);
+        box-shadow:0 0 20px rgba(255, 59, 48, 0.6), 0 0 40px rgba(255, 149, 0, 0.4), 0 0 60px rgba(0, 122, 255, 0.3);
         transition:all 0.25s;
-        border:1px solid rgba(255,255,255,0.3);
         position:relative;
         overflow:hidden;
       }
-      .logo-icon::before {
-        content:'';
-        position:absolute;
-        inset:-2px;
-        background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.4), transparent, rgba(255,255,255,0.4), transparent, rgba(255,255,255,0.4), transparent);
-        animation: lotusSpin 0.8s linear infinite;
-        border-radius:50%;
-        pointer-events:none;
+      @keyframes fractalSpin {
+        0% { transform: rotate(0deg) scale(1); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+        25% { transform: rotate(90deg) scale(1.05); border-radius: 50% 50% 30% 70% / 50% 70% 30% 50%; }
+        50% { transform: rotate(180deg) scale(1); border-radius: 70% 30% 50% 50% / 30% 50% 50% 70%; }
+        75% { transform: rotate(270deg) scale(1.05); border-radius: 40% 60% 60% 40% / 60% 40% 40% 60%; }
+        100% { transform: rotate(360deg) scale(1); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
       }
-      .logo-icon::after {
-        content:'H';
-        position:relative;
-        z-index:1;
-      }
-      @keyframes lotusSpin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-      @keyframes logoGlow {
+      @keyframes logoPulse {
         0% { box-shadow: 0 0 20px rgba(255, 59, 48, 0.6), 0 0 40px rgba(255, 149, 0, 0.4), 0 0 60px rgba(0, 122, 255, 0.3); }
-        50% { box-shadow: 0 0 25px rgba(76, 217, 100, 0.7), 0 0 50px rgba(90, 200, 250, 0.5), 0 0 75px rgba(88, 86, 214, 0.4); }
-        100% { box-shadow: 0 0 20px rgba(0, 122, 255, 0.6), 0 0 40px rgba(255, 59, 48, 0.4), 0 0 60px rgba(255, 204, 0, 0.3); }
+        100% { box-shadow: 0 0 30px rgba(255, 59, 48, 0.8), 0 0 50px rgba(76, 217, 100, 0.5), 0 0 80px rgba(88, 86, 214, 0.4); }
       }
-      .logo:hover .logo-icon{transform:scale(1.15);box-shadow:0 0 30px rgba(255, 59, 48, 0.8), 0 0 60px rgba(255, 149, 0, 0.6), 0 0 90px rgba(0, 122, 255, 0.5)}
+      .logo:hover .logo-icon{transform:scale(1.2);box-shadow:0 0 40px rgba(255, 59, 48, 0.9), 0 0 80px rgba(255, 149, 0, 0.7), 0 0 120px rgba(0, 122, 255, 0.5)}
 
-      .logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);background-size:400% 100%;animation:rainbowLogo 1.5s linear infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:none;filter:drop-shadow(0 0 8px rgba(255, 59, 48, 0.4)) drop-shadow(0 0 16px rgba(0, 122, 255, 0.3));letter-spacing:-0.5px}
+      .logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg, #0284c7, #5ac8fa, #007aff, #0284c7);background-size:300% 100%;animation:blueShimmer 3s linear infinite;letter-spacing:-0.5px;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
-      .logo-text span{background:linear-gradient(90deg, #5ac8fa, #007aff, #5856d6, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa);background-size:400% 100%;animation:rainbowLogo 1.5s linear infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 6px rgba(90, 200, 250, 0.5))}
+      .logo-text span{background:linear-gradient(90deg, #5ac8fa, #007aff, #5856d6, #5ac8fa);background-size:300% 100%;animation:blueShimmer 3s linear infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+      @keyframes blueShimmer {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 300% 50%; }
+      }
 
       nav{display:flex;align-items:center;gap:28px}
 
-      nav a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:14px;font-weight:500;transition:all 0.2s;position:relative;padding:4px 0}
+      nav a{color:var(--text-secondary);text-decoration:none;font-size:14px;font-weight:500;transition:all 0.2s;position:relative;padding:4px 0}
 
       nav a::after{display:none}
 
-      nav a:hover{color:#5ac8fa}
+      nav a:hover{color:#0284c7}
 
-      .nav-cta{background:linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6);background-size:400% 100%;animation:rainbowBtn 2s linear infinite;color:white !important;padding:10px 20px;border-radius:6px;font-weight:600;transition:all 0.2s !important;box-shadow:0 0 15px rgba(255, 59, 48, 0.4), 0 0 30px rgba(0, 122, 255, 0.3);border:none;position:relative;overflow:hidden;text-shadow:0 0 8px rgba(255,255,255,0.5)}
+      .nav-cta{background:linear-gradient(180deg, #0284c7 0%, #0369a1 100%);color:white !important;padding:10px 20px;border-radius:6px;font-weight:600;transition:all 0.2s !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 10px rgba(2,132,199,0.1);border:1px solid #0284c7;position:relative;overflow:hidden}
 
       .nav-cta::before{display:none}
 
-      .nav-cta:hover{background:linear-gradient(180deg, #0369a1 0%, #0284c7 100%);transform:translateY(-1px) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 12px rgba(2, 132, 199, 0.2)}
+      .nav-cta:hover{transform:translateY(-1px) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 12px rgba(2, 132, 199, 0.2)}
 
       /* ── HERO ── */
 
@@ -530,35 +523,35 @@
       .hero h1 {
         position: relative;
         display: inline-block;
-        background: linear-gradient(90deg, #0f172a 0%, #0f172a 45%, #ffffff 50%, #0f172a 55%, #0f172a 100%);
+        background: linear-gradient(90deg, #0f172a 0%, #0f172a 40%, #ffffff 50%, #0f172a 60%, #0f172a 100%);
         background-size: 200% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 5s linear infinite;
+        animation: heroShine 2s linear infinite;
       }
-      /* Blue text — same shine effect */
+      /* Rainbow gradient title — fast shine */
       .gradient-title {
         display: inline-block;
-        background: linear-gradient(90deg, #0284c7 0%, #0284c7 45%, #ffffff 50%, #0284c7 55%, #0284c7 100%);
-        background-size: 200% 100%;
+        background: linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);
+        background-size: 400% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 5s linear infinite;
-        animation-delay: 0.5s;
+        animation: rainbowBtn 2s linear infinite, heroShine 2s linear infinite;
+        filter: drop-shadow(0 0 10px rgba(255, 59, 48, 0.4)) drop-shadow(0 0 20px rgba(0, 122, 255, 0.3));
       }
-      /* Panel text — all same */
+      /* Panel text — fast shine */
       .hero p,
       .rotating-outline li,
       .rotating-outline strong {
-        background: linear-gradient(90deg, #334155 0%, #334155 45%, #ffffff 50%, #334155 55%, #334155 100%);
+        background: linear-gradient(90deg, #1e293b 0%, #1e293b 40%, #ffffff 50%, #1e293b 60%, #1e293b 100%);
         background-size: 200% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 5s linear infinite;
-        animation-delay: 1s;
+        animation: heroShine 2s linear infinite;
+        animation-delay: 0.3s;
       }
       @keyframes heroShine {
         0% { background-position: 150% 0; }
@@ -1194,8 +1187,9 @@
 
 
 
-            <div id="hero-panel" style="max-width:820px;margin:0 auto;text-align:left;background:linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #ffffff 100%);padding:40px 48px;border-radius:16px;box-shadow:0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(2, 132, 199, 0.1), 0 20px 60px rgba(0,0,0,0.08);border:1px solid rgba(255,255,255,0.9);position:relative;overflow:hidden;transform-style:preserve-3d;transition:transform 0.1s ease-out">
-              <div style="position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);transform:skewX(-30deg);animation:autoShine 3s ease-in-out infinite;pointer-events:none;z-index:10"></div>
+             <div id="hero-panel-wrapper" style="max-width:840px;margin:0 auto;padding:4px;border-radius:20px;background:linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);background-size:400% 100%;animation:rainbowBtn 2s linear infinite;transform-style:preserve-3d;transition:transform 0.1s ease-out;position:relative">
+             <div id="hero-panel" style="max-width:100%;margin:0;text-align:left;background:linear-gradient(135deg, #ffffff 0%, #f0f7ff 50%, #ffffff 100%);padding:40px 48px;border-radius:16px;box-shadow:0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(2, 132, 199, 0.15), 0 20px 60px rgba(0,0,0,0.06);position:relative;overflow:hidden;transform-style:preserve-3d">
+              <div style="position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);transform:skewX(-30deg);animation:autoShine 2.5s ease-in-out infinite;pointer-events:none;z-index:10"></div>
               <p style="font-size:16px;color:#1e293b;margin-bottom:16px;line-height:1.7;position:relative;z-index:1">
                 HyperNexus is the <strong style="background:linear-gradient(90deg, #0284c7, #0369a1);-webkit-background-clip:text;-webkit-text-fill-color:transparent">missing tool belt and memory system that all AI needs</strong> — a cloud-hosted cognitive control plane that gives your agents persistent memory, tool orchestration, and provider failover, so your team has complete visibility and governance over every LLM workflow.
               </p>
@@ -1211,6 +1205,7 @@
                 <li><span style="font-size:18px;filter:drop-shadow(0 0 4px rgba(0,255,200,0.5))">📊</span> <strong>Real-Time Dashboard</strong> — Memory explorer, tool registry, provider config, and live telemetry</li>
                 <li><span style="font-size:18px;filter:drop-shadow(0 0 4px rgba(255,0,255,0.5))">🚀</span> <strong>One-Command Deploy</strong> — PM2 lifecycle, Let's Encrypt SSL, per-tenant containers with Stripe billing</li>
               </ul>
+            </div>
             </div>
 
 
@@ -5714,9 +5709,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script>
-// 3D Tilt Effect for Hero Panel
+// 3D Tilt Effect for Hero Panel Wrapper
 (function() {
-  var panel = document.getElementById('hero-panel');
+  var panel = document.getElementById('hero-panel-wrapper');
   if (!panel) return;
   
   panel.addEventListener('mousemove', function(e) {

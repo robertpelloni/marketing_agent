@@ -113,9 +113,9 @@
       }
       .logo:hover .logo-icon{transform:scale(1.2);box-shadow:0 0 40px rgba(255, 59, 48, 0.9), 0 0 80px rgba(255, 149, 0, 0.7), 0 0 120px rgba(0, 122, 255, 0.5)}
 
-      .logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg, #0284c7, #5ac8fa, #007aff, #0284c7);background-size:300% 100%;animation:blueShimmer 3s linear infinite;letter-spacing:-0.5px;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+      .logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);background-size:400% 100%;animation:rainbowBtn 2s linear infinite;letter-spacing:-0.5px;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 8px rgba(255, 59, 48, 0.4)) drop-shadow(0 0 16px rgba(0, 122, 255, 0.3))}
 
-      .logo-text span{background:linear-gradient(90deg, #5ac8fa, #007aff, #5856d6, #5ac8fa);background-size:300% 100%;animation:blueShimmer 3s linear infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+      .logo-text span{background:linear-gradient(90deg, #5ac8fa, #007aff, #5856d6, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa);background-size:400% 100%;animation:rainbowBtn 2s linear infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 6px rgba(90, 200, 250, 0.5))}
 
       @keyframes blueShimmer {
         0% { background-position: 0% 50%; }
@@ -528,20 +528,20 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 2s linear infinite;
+        animation: heroShine 3s linear infinite;
       }
-      /* Rainbow gradient title — fast shine */
+      /* Blue gradient title with shine */
       .gradient-title {
         display: inline-block;
-        background: linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);
-        background-size: 400% 100%;
+        background: linear-gradient(90deg, #0284c7 0%, #0284c7 40%, #ffffff 50%, #0284c7 60%, #0284c7 100%);
+        background-size: 200% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: rainbowBtn 2s linear infinite, heroShine 2s linear infinite;
-        filter: drop-shadow(0 0 10px rgba(255, 59, 48, 0.4)) drop-shadow(0 0 20px rgba(0, 122, 255, 0.3));
+        animation: heroShine 3s linear infinite;
+        filter: drop-shadow(0 0 8px rgba(2, 132, 199, 0.5));
       }
-      /* Panel text — fast shine */
+      /* Panel text — with shine */
       .hero p,
       .rotating-outline li,
       .rotating-outline strong {
@@ -550,8 +550,8 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: heroShine 2s linear infinite;
-        animation-delay: 0.3s;
+        animation: heroShine 3s linear infinite;
+        animation-delay: 0.5s;
       }
       @keyframes heroShine {
         0% { background-position: 150% 0; }
@@ -1194,16 +1194,16 @@
                 HyperNexus is the <strong style="background:linear-gradient(90deg, #0284c7, #0369a1);-webkit-background-clip:text;-webkit-text-fill-color:transparent">missing tool belt and memory system that all AI needs</strong> — a cloud-hosted cognitive control plane that gives your agents persistent memory, tool orchestration, and provider failover, so your team has complete visibility and governance over every LLM workflow.
               </p>
               <ul style="font-size:15px;color:#1e293b;line-height:2.2;list-style:none;padding:0 0 0 80px;position:relative;z-index:1">
-                <li><span style="font-size:18px;filter:drop-shadow(0 0 4px rgba(128,0,255,0.5))">🧠</span> <strong>Persistent Memory</strong> — Vector-embedded semantic search across 14,000+ memories that survive restarts</li>
-                <li><span style="font-size:18px;filter:drop-shadow(0 0 4px rgba(255,165,0,0.5))">🔧</span> <strong>Progressive MCP and Skill Routing</strong> — Routes from internal registries, injecting only the most relevant tools per request</li>
-                <li><span style="font-size:18px;filter:drop-shadow(0 0 4px rgba(0,128,255,0.5))">💻</span> <strong>Full Code Execution</strong> — Filesystem access, code interpreter, browser automation, and system process control</li>
-                <li><span style="font-size:18px;filter:drop-shadow(0 0 4px rgba(0,200,100,0.5))">🔄</span> <strong>LLM Waterfall Failover</strong> — Cascades from NVIDIA NIM → OpenRouter → local Ollama on any 429/5xx error</li>
-                <li><span style="font-size:18px;filter:drop-shadow(0 0 4px rgba(100,100,255,0.5))">🤖</span> <strong>Multi-Agent Swarm</strong> — Planner, Implementer, Tester, and Critic roles with consensus-driven decisions</li>
-                <li><span style="font-size:18px;filter:drop-shadow(0 0 4px rgba(0,200,255,0.5))">🔗</span> <strong>Universal Tool Parity</strong> — Byte-for-byte identical signatures across Claude Code, Cursor, Codex, Gemini CLI, and Copilot</li>
-                <li><span style="font-size:18px;filter:drop-shadow(0 0 4px rgba(255,100,0,0.5))">🔄</span> <strong>Import Sessions</strong> — Import from all other AI tools without regression</li>
-                <li><span style="font-size:18px;filter:drop-shadow(0 0 4px rgba(255,0,0,0.5))">🔒</span> <strong>Enterprise Security</strong> — SSO/OIDC, RBAC, Ed25519 signed tokens, audit logging, and compliance enforcement</li>
-                <li><span style="font-size:18px;filter:drop-shadow(0 0 4px rgba(0,255,200,0.5))">📊</span> <strong>Real-Time Dashboard</strong> — Memory explorer, tool registry, provider config, and live telemetry</li>
-                <li><span style="font-size:18px;filter:drop-shadow(0 0 4px rgba(255,0,255,0.5))">🚀</span> <strong>One-Command Deploy</strong> — PM2 lifecycle, Let's Encrypt SSL, per-tenant containers with Stripe billing</li>
+                <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(128,0,255,0.8)) drop-shadow(0 0 16px rgba(128,0,255,0.4))">🧠</span> <strong>Persistent Memory</strong> — Vector-embedded semantic search across 14,000+ memories that survive restarts</li>
+                <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(255,165,0,0.8)) drop-shadow(0 0 16px rgba(255,165,0,0.4))">🔧</span> <strong>Progressive MCP and Skill Routing</strong> — Routes from internal registries, injecting only the most relevant tools per request</li>
+                <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(0,128,255,0.8)) drop-shadow(0 0 16px rgba(0,128,255,0.4))">💻</span> <strong>Full Code Execution</strong> — Filesystem access, code interpreter, browser automation, and system process control</li>
+                <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(0,200,100,0.8)) drop-shadow(0 0 16px rgba(0,200,100,0.4))">🔄</span> <strong>LLM Waterfall Failover</strong> — Cascades from NVIDIA NIM → OpenRouter → local Ollama on any 429/5xx error</li>
+                <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(100,100,255,0.8)) drop-shadow(0 0 16px rgba(100,100,255,0.4))">🤖</span> <strong>Multi-Agent Swarm</strong> — Planner, Implementer, Tester, and Critic roles with consensus-driven decisions</li>
+                <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(0,200,255,0.8)) drop-shadow(0 0 16px rgba(0,200,255,0.4))">🔗</span> <strong>Universal Tool Parity</strong> — Byte-for-byte identical signatures across Claude Code, Cursor, Codex, Gemini CLI, and Copilot</li>
+                <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(255,100,0,0.8)) drop-shadow(0 0 16px rgba(255,100,0,0.4))">🔄</span> <strong>Import Sessions</strong> — Import from all other AI tools without regression</li>
+                <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(255,0,0,0.8)) drop-shadow(0 0 16px rgba(255,0,0,0.4))">🔒</span> <strong>Enterprise Security</strong> — SSO/OIDC, RBAC, Ed25519 signed tokens, audit logging, and compliance enforcement</li>
+                <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(0,255,200,0.8)) drop-shadow(0 0 16px rgba(0,255,200,0.4))">📊</span> <strong>Real-Time Dashboard</strong> — Memory explorer, tool registry, provider config, and live telemetry</li>
+                <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(255,0,255,0.8)) drop-shadow(0 0 16px rgba(255,0,255,0.4))">🚀</span> <strong>One-Command Deploy</strong> — PM2 lifecycle, Let's Encrypt SSL, per-tenant containers with Stripe billing</li>
               </ul>
             </div>
             </div>

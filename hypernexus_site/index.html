@@ -586,12 +586,17 @@
         animation: heroShine 3.5s linear infinite;
         filter: drop-shadow(0 0 8px var(--accent-glow));
       }
-      /* Panel text — simple, no animation */
+      /* Panel text — with shine */
       .hero p,
       .rotating-outline li strong,
       .rotating-outline li:not(:has(span)) {
-        color: #1e293b;
-        -webkit-text-fill-color: #1e293b;
+        background: linear-gradient(90deg, #1e293b 0%, #1e293b 40%, #ffffff 50%, #1e293b 60%, #1e293b 100%);
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: heroShine 3.5s linear infinite;
+      }
       }
       .rotating-outline li span {
         -webkit-text-fill-color: initial;
@@ -975,10 +980,10 @@
 
              <div id="hero-panel" style="width:100%;margin:0 auto;text-align:left;background:rgba(255,255,255,0.3);padding:50px 58px;border-radius:24px;box-shadow:0 8px 32px hsla(var(--accent-hue), 80%, 40%, 0.12), 0 0 80px hsla(var(--accent-hue), 80%, 55%, 0.06);position:relative;overflow:hidden;transition:transform 0.3s ease, box-shadow 0.3s ease;cursor:default;backdrop-filter:blur(20px) saturate(200%);-webkit-backdrop-filter:blur(20px) saturate(200%);border:2px solid rgba(255,255,255,0.6)">
               <div style="position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);transform:skewX(-30deg);animation:autoShine 2.5s ease-in-out infinite;pointer-events:none;z-index:10"></div>
-              <p style="font-size:16px;color:#1e293b;margin-bottom:16px;line-height:1.7;position:relative;z-index:1;font-weight:500">
+              <p style="font-size:16px;color:#1e293b;margin-bottom:32px;line-height:1.7;position:relative;z-index:1;font-weight:500">
                 HyperNexus is the <strong style="color:#0f172a;font-weight:700">missing tool belt and memory system that all AI needs</strong> — a cloud-hosted cognitive control plane that gives your agents persistent memory, tool orchestration, and provider failover, so your team has complete visibility and governance over every LLM workflow.
               </p>
-              <ul style="font-size:15px;color:#1e293b;line-height:2.2;list-style:none;padding:0 40px 0 80px;position:relative;z-index:1;font-weight:500">
+              <ul style="font-size:15px;color:#1e293b;line-height:2.2;list-style:none;padding:0 60px;position:relative;z-index:1;font-weight:500;max-width:600px;margin:24px auto 0;text-align:left">
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(128,0,255,0.8)) drop-shadow(0 0 16px rgba(128,0,255,0.4))">🧠</span> <strong>Persistent Memory</strong> — Vector-embedded semantic search across infinite L1-L4 structured world-modeled memories that survive restarts</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(255,165,0,0.8)) drop-shadow(0 0 16px rgba(255,165,0,0.4))">🔧</span> <strong>Progressive MCP and Skill Routing</strong> — Routes from internal registries, injecting only the most relevant tools per request</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(0,128,255,0.8)) drop-shadow(0 0 16px rgba(0,128,255,0.4))">💻</span> <strong>Full Code Execution</strong> — Filesystem access, code interpreter, browser automation, and system process control</li>

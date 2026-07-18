@@ -54,7 +54,7 @@
         --accent: hsl(var(--accent-hue), 80%, 40%);
         --accent-light: hsl(var(--accent-hue), 80%, 95%);
         --accent-glow: hsla(var(--accent-hue), 80%, 40%, 0.3);
-        animation: hueShift 15s linear infinite;
+        animation: hueShift 7s linear infinite;
       }
 
       @keyframes hueShift {
@@ -515,8 +515,12 @@
                       hsl(var(--accent-hue), 80%, 40%) 0%, hsl(var(--accent-hue), 80%, 55%) 12%, hsl(var(--accent-hue), 80%, 70%) 25%, hsl(var(--accent-hue), 80%, 40%) 37%,
                       hsl(var(--accent-hue), 80%, 25%) 50%, hsl(var(--accent-hue), 80%, 35%) 62%, hsl(var(--accent-hue), 80%, 55%) 75%, hsl(var(--accent-hue), 80%, 70%) 87%, hsl(var(--accent-hue), 80%, 40%) 100%) border-box;
         animation: rotateOutline 0.8s linear infinite;
-        box-shadow: 0 8px 32px hsla(var(--accent-hue), 80%, 40%, 0.12), 0 0 80px hsla(var(--accent-hue), 80%, 55%, 0.06);
+        box-shadow: 0 8px 32px hsla(var(--accent-hue), 80%, 40%, 0.12), 0 0 80px hsla(var(--accent-hue), 80%, 55%, 0.06), inset 0 0 0 1px rgba(255,255,255,0.5), inset 0 0 0 2px rgba(0,0,0,0.05);
         overflow: hidden;
+        transition: transform 0.3s ease;
+      }
+      .rotating-outline:hover {
+        transform: scale(1.03);
       }
       @keyframes rotateOutline {
         to { --angle: 360deg; }

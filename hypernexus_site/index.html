@@ -529,9 +529,9 @@
         z-index: 2;
         background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 50%, rgba(255,255,255,0.95) 100%) padding-box,
                     conic-gradient(from var(--angle, 0deg),
-                      hsl(var(--accent-hue), 90%, 75%) 0%, hsl(var(--accent-hue), 80%, 85%) 12%, hsl(var(--accent-hue), 70%, 90%) 25%, hsl(var(--accent-hue), 90%, 75%) 37%,
-                      hsl(var(--accent-hue), 85%, 80%) 50%, hsl(var(--accent-hue), 75%, 88%) 62%, hsl(var(--accent-hue), 90%, 75%) 75%, hsl(var(--accent-hue), 80%, 85%) 87%, hsl(var(--accent-hue), 90%, 75%) 100%) border-box;
-        animation: rotateOutline 0.4s linear infinite;
+                      hsl(var(--accent-hue), 100%, 60%) 0%, hsl(var(--accent-hue), 90%, 70%) 12%, hsl(var(--accent-hue), 80%, 80%) 25%, hsl(var(--accent-hue), 100%, 60%) 37%,
+                      hsl(var(--accent-hue), 95%, 65%) 50%, hsl(var(--accent-hue), 85%, 75%) 62%, hsl(var(--accent-hue), 100%, 60%) 75%, hsl(var(--accent-hue), 90%, 70%) 87%, hsl(var(--accent-hue), 100%, 60%) 100%) border-box;
+        animation: rotateOutline 0.3s linear infinite;
         box-shadow: 0 8px 32px hsla(var(--accent-hue), 80%, 40%, 0.12), 0 0 80px hsla(var(--accent-hue), 80%, 55%, 0.06), inset 0 0 0 1px rgba(255,255,255,0.5), inset 0 0 0 2px rgba(0,0,0,0.05);
         overflow: hidden;
         transition: transform 0.3s ease;
@@ -945,10 +945,10 @@
 
              <div id="hero-panel" style="width:100%;margin:0 auto;text-align:left;background:rgba(255,255,255,0.3);padding:50px 58px;border-radius:24px;box-shadow:0 8px 32px hsla(var(--accent-hue), 80%, 40%, 0.12), 0 0 80px hsla(var(--accent-hue), 80%, 55%, 0.06);position:relative;overflow:hidden;transition:transform 0.3s ease, box-shadow 0.3s ease;cursor:default;backdrop-filter:blur(20px) saturate(200%);-webkit-backdrop-filter:blur(20px) saturate(200%);border:2px solid rgba(255,255,255,0.6)">
               <div style="position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);transform:skewX(-30deg);animation:autoShine 2.5s ease-in-out infinite;pointer-events:none;z-index:10"></div>
-              <p style="font-size:16px;color:#1e293b;margin-bottom:16px;line-height:1.7;position:relative;z-index:1;text-shadow:0 0 12px rgba(255,255,255,0.9), 0 0 24px rgba(255,255,255,0.6), 0 0 36px rgba(255,255,255,0.3)">
+              <p style="font-size:16px;color:#000000;margin-bottom:16px;line-height:1.7;position:relative;z-index:1;font-weight:500">
                 HyperNexus is the <strong style="color:#0f172a;font-weight:700">missing tool belt and memory system that all AI needs</strong> — a cloud-hosted cognitive control plane that gives your agents persistent memory, tool orchestration, and provider failover, so your team has complete visibility and governance over every LLM workflow.
               </p>
-              <ul style="font-size:15px;color:#1e293b;line-height:2.2;list-style:none;padding:0 0 0 80px;position:relative;z-index:1;text-shadow:0 0 12px rgba(255,255,255,0.9), 0 0 24px rgba(255,255,255,0.6)">
+              <ul style="font-size:15px;color:#000000;line-height:2.2;list-style:none;padding:0 0 0 80px;position:relative;z-index:1;font-weight:500">>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(128,0,255,0.8)) drop-shadow(0 0 16px rgba(128,0,255,0.4))">🧠</span> <strong>Persistent Memory</strong> — Vector-embedded semantic search across infinite L1-L4 structured world-modeled memories that survive restarts</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(255,165,0,0.8)) drop-shadow(0 0 16px rgba(255,165,0,0.4))">🔧</span> <strong>Progressive MCP and Skill Routing</strong> — Routes from internal registries, injecting only the most relevant tools per request</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(0,128,255,0.8)) drop-shadow(0 0 16px rgba(0,128,255,0.4))">💻</span> <strong>Full Code Execution</strong> — Filesystem access, code interpreter, browser automation, and system process control</li>
@@ -1148,7 +1148,7 @@
                                                 <div id="pro-card" style="position:relative">
                     <div class="price-badge" style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);z-index:10;background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#4cd964,#5ac8fa,#007aff,#5856d6,#ff3b30);background-size:200% 100%;animation:badgeShimmer 2s linear infinite;color:#fff;font-weight:800;padding:4px 14px;border-radius:20px;font-size:11px;letter-spacing:1px;text-shadow:0 1px 2px rgba(0,0,0,0.3);box-shadow:0 4px 15px rgba(255,59,48,0.4),0 0 20px rgba(255,149,0,0.3)">Early Adopter Sale</div>
                     <div class="price-card rainbow featured">
-                    <div class="rainbow-border" style="position:absolute;inset:-7px;background:linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);background-size:800% 100%;animation:rainbowBtnSlow 1.5s linear infinite;border-radius:22px;pointer-events:none;z-index:0"></div>
+                    <div class="rainbow-border" style="position:absolute;inset:-9px;background:linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);background-size:800% 100%;animation:rainbowBtnSlow 0.8s linear infinite;border-radius:24px;pointer-events:none;z-index:0"></div>
                     <div class="rainbow-spinner" style="padding:32px 28px">
                     <div class="price-tier">Professional</div>
                     <div style="text-decoration:line-through;color:#94a3b8;font-size:20px;font-weight:500;letter-spacing:-0.5px;margin-bottom:2px">$100</div>
@@ -1159,7 +1159,7 @@
                     
 
                     <div style="display:flex;justify-content:center;align-items:center;margin-top:20px">
-                      <button onclick="buyNow()" class="mega-buy-btn" style="text-transform:none;font-size:18px;letter-spacing:1px;box-shadow:0 0 2px rgba(255, 59, 48, 0.04), 0 0 4px rgba(255, 149, 0, 0.03)">Buy Now!!!</button>
+                      <button onclick="buyNow()" class="mega-buy-btn" style="text-transform:none;font-size:18px;letter-spacing:1px;box-shadow:0 0 1px rgba(255, 59, 48, 0.02), 0 0 2px rgba(255, 149, 0, 0.015)">Buy Now!!!</button>
                     </div>
                     <script>
                     function buyNow(){

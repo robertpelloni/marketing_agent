@@ -46,20 +46,20 @@
         --bg: #f8fafc;
         --card-bg: #ffffff;
         --glass-border: #e2e8f0;
-        --neon-blue: #0284c7;
-        --neon-purple: #1e3a8a; /* Deep Sapphire */
-        --neon-magenta: #0ea5e9;
-        --neon-cyan: #0369a1;
-        --neon-blue-glow: rgba(2, 132, 199, 0.05);
-        --neon-purple-glow: rgba(30, 58, 138, 0.03);
+        --neon-blue: var(--accent);
+        --neon-purple: hsl(var(--accent-hue), 80%, 25%);
+        --neon-magenta: hsl(var(--accent-hue), 80%, 55%);
+        --neon-cyan: hsl(var(--accent-hue), 80%, 35%);
+        --neon-blue-glow: hsla(var(--accent-hue), 80%, 40%, 0.05);
+        --neon-purple-glow: hsla(var(--accent-hue), 80%, 25%, 0.03);
         --text: #0f172a;
         --text-secondary: #475569;
         --text-dim: #64748b;
-        --primary: #0284c7;
-        --primary-glow: rgba(2, 132, 199, 0.08);
+        --primary: var(--accent);
+        --primary-glow: var(--accent-glow);
         --shadow-card: inset 0 1px 0 #ffffff, 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(2, 132, 199, 0.03);
         --shadow-card-hover: inset 0 1px 0 #ffffff, 0 10px 15px -3px rgba(2, 132, 199, 0.08), 0 4px 6px -4px rgba(2, 132, 199, 0.08), 0 0 0 1px rgba(2, 132, 199, 0.15);
-        --gradient-neon: linear-gradient(135deg, #0284c7 0%, #1e3a8a 50%, #0369a1 100%);
+        --gradient-neon: linear-gradient(135deg, var(--accent) 0%, hsl(var(--accent-hue), 80%, 20%) 50%, hsl(var(--accent-hue), 80%, 35%) 100%);
       }
 
       *{margin:0;padding:0;box-sizing:border-box}
@@ -68,7 +68,31 @@
 
       body{background:radial-gradient(circle at top, #ffffff 0%, #f1f5f9 100%), #f1f5f9;background-attachment:fixed;color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-y:auto;overflow-x:hidden}
 
-      ::selection{background:#0284c7;color:white}
+      ::selection{background:var(--accent);color:white}
+
+      /* Animated accent color that shifts through rainbow */
+      @property --accent-hue {
+        syntax: '<number>';
+        inherits: false;
+        initial-value: 200;
+      }
+
+      :root {
+        --accent: hsl(var(--accent-hue), 80%, 40%);
+        --accent-light: hsl(var(--accent-hue), 80%, 95%);
+        --accent-glow: hsla(var(--accent-hue), 80%, 40%, 0.3);
+        animation: hueShift 30s linear infinite;
+      }
+
+      @keyframes hueShift {
+        0% { --accent-hue: 200; } /* Blue */
+        16% { --accent-hue: 260; } /* Purple */
+        33% { --accent-hue: 330; } /* Pink */
+        50% { --accent-hue: 20; } /* Orange */
+        66% { --accent-hue: 80; } /* Green */
+        83% { --accent-hue: 160; } /* Teal */
+        100% { --accent-hue: 200; } /* Blue */
+      }
 
       /* Disable all neon wire animations and background gradient shifts */
       body::after { display: none !important; }
@@ -86,13 +110,13 @@
 
       .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 
-      .logo-icon{width:36px;height:36px;background:linear-gradient(135deg, #0284c7, #1e3a8a);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:18px;box-shadow:inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 10px rgba(2, 132, 199, 0.2);transition:all 0.25s;border:1px solid #0369a1}
+      .logo-icon{width:36px;height:36px;background:linear-gradient(135deg, var(--accent), hsl(var(--accent-hue), 80%, 20%));border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:18px;box-shadow:inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 10px var(--accent-glow);transition:all 0.25s;border:1px solid hsl(var(--accent-hue), 80%, 35%)}
 
-      .logo:hover .logo-icon{transform:scale(1.04);background:linear-gradient(135deg, #0369a1, #1e3a8a);box-shadow:inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 6px 12px rgba(2, 132, 199, 0.25)}
+      .logo:hover .logo-icon{transform:scale(1.04);box-shadow:inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 6px 12px var(--accent-glow)}
 
       .logo-text{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.5px}
 
-      .logo-text span{background:none;-webkit-text-fill-color:initial;color:#0284c7;background-clip:initial}
+      .logo-text span{background:none;-webkit-text-fill-color:initial;color:var(--accent);background-clip:initial}
 
       nav{display:flex;align-items:center;gap:28px}
 
@@ -100,9 +124,9 @@
 
       nav a::after{display:none}
 
-      nav a:hover{color:#0284c7}
+      nav a:hover{color:var(--accent)}
 
-      .nav-cta{background:linear-gradient(180deg, #0284c7 0%, #0369a1 100%);color:white !important;padding:10px 20px;border-radius:6px;font-weight:600;transition:all 0.2s !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 10px rgba(2,132,199,0.1);border:1px solid #0284c7;position:relative;overflow:hidden}
+      .nav-cta{background:linear-gradient(180deg, var(--accent), hsl(var(--accent-hue), 80%, 30%));color:white !important;padding:10px 20px;border-radius:6px;font-weight:600;transition:all 0.2s !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 10px var(--accent-glow);border:1px solid var(--accent);position:relative;overflow:hidden}
 
       .nav-cta::before{display:none}
 
@@ -112,9 +136,9 @@
 
       .hero{padding:20px 0 10px;text-align:center;position:relative}
 
-      .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 22px;background:rgba(255, 255, 255, 0.8);backdrop-filter:blur(10px);border:1px solid rgba(226, 232, 240, 0.8);border-radius:100px;font-size:13px;font-weight:600;color:#0284c7;margin-bottom:32px;animation:fadeInUp 0.8s ease-out;box-shadow:0 2px 8px rgba(0,0,0,0.02)}
+      .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 22px;background:rgba(255, 255, 255, 0.8);backdrop-filter:blur(10px);border:1px solid rgba(226, 232, 240, 0.8);border-radius:100px;font-size:13px;font-weight:600;color:var(--accent);margin-bottom:32px;animation:fadeInUp 0.8s ease-out;box-shadow:0 2px 8px rgba(0,0,0,0.02)}
 
-      .hero-badge .dot{width:6px;height:6px;background:#0284c7;border-radius:50%;animation:blink 1.5s infinite;box-shadow:0 0 10px rgba(2, 132, 199, 0.3)}
+      .hero-badge .dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:blink 1.5s infinite;box-shadow:0 0 10px var(--accent-glow)}
 
       @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 
@@ -226,9 +250,9 @@
 
       .stat:hover::after{display:none}
 
-      .stat:hover{background:#ffffff;border-color:#0284c7;transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
+      .stat:hover{background:#ffffff;border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
 
-      .stat-num{font-size:44px;font-weight:900;color:#0284c7;margin-bottom:6px;letter-spacing:-1px;position:relative;z-index:1}
+      .stat-num{font-size:44px;font-weight:900;color:var(--accent);margin-bottom:6px;letter-spacing:-1px;position:relative;z-index:1}
 
       .stat-label{font-size:14px;color:var(--text-secondary);font-weight:500;position:relative;z-index:1}
 
@@ -238,11 +262,11 @@
 
       .section-header{text-align:center;margin-bottom:64px}
 
-      .section-header .label{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:#0284c7;margin-bottom:12px}
+      .section-header .label{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--accent);margin-bottom:12px}
 
       .section-header h2{font-size:38px;font-weight:800;letter-spacing:-0.5px;margin-bottom:12px;display:inline-block;position:relative}
 
-      .section-header h2::after{content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:60px;height:3px;background:#0284c7;border-radius:3px}
+      .section-header h2::after{content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:60px;height:3px;background:var(--accent);border-radius:3px}
 
       .section-header p{font-size:16px;color:var(--text-secondary);max-width:500px;margin:0 auto}
 
@@ -254,7 +278,7 @@
 
       .feature:hover::after{display:none}
 
-      .feature:hover{background:#ffffff;border-color:#0284c7;transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
+      .feature:hover{background:#ffffff;border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
 
       .feature-icon{width:52px;height:52px;background:#f0f9ff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px;border:1px solid #e0f2fe;transition:all 0.2s;position:relative;z-index:1}
 
@@ -276,7 +300,7 @@
 
       .compliance-item:hover::before{display:none}
 
-      .compliance-item:hover{background:#ffffff;border-color:#0284c7;transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
+      .compliance-item:hover{background:#ffffff;border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow-card-hover)}
 
       .compliance-icon{font-size:34px;margin-bottom:12px;display:block;transition:all 0.2s;position:relative;z-index:1}
 
@@ -294,13 +318,13 @@
 
       .price-card{background:#ffffff;padding:44px 32px;border-radius:12px;border:1px solid #e2e8f0;position:relative;transition:all 0.3s;overflow:visible;box-shadow:var(--shadow-card)}
 
-      .price-card:hover{background:#ffffff;border-color:#0284c7;box-shadow:var(--shadow-card-hover)}
+      .price-card:hover{background:#ffffff;border-color:var(--accent);box-shadow:var(--shadow-card-hover)}
 
-      .price-card.featured{border-color:#0284c7;box-shadow:var(--shadow-card)}
+      .price-card.featured{border-color:var(--accent);box-shadow:var(--shadow-card)}
 
-      .price-card.featured .price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#0284c7;color:white;padding:4px 16px;border-radius:100px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;z-index:2}
+      .price-card.featured .price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:white;padding:4px 16px;border-radius:100px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;z-index:2}
 
-      .price-tier{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#0284c7;margin-bottom:16px;position:relative;z-index:1}
+      .price-tier{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:16px;position:relative;z-index:1}
 
       .price-amount{font-size:48px;font-weight:900;margin-bottom:6px;letter-spacing:-2px;position:relative;z-index:1;color:var(--text)}
 
@@ -314,13 +338,13 @@
 
       .price-features li:hover{color:var(--text)}
 
-      .price-features li::before{content:"\2713";color:#0284c7;font-weight:700}
+      .price-features li::before{content:"\2713";color:var(--accent);font-weight:700}
 
       .price-btn{display:block;width:100%;padding:14px;text-align:center;border-radius:8px;font-size:15px;font-weight:600;text-decoration:none;transition:all 0.2s;position:relative;overflow:hidden}
 
       .price-btn::before{display:none}
 
-      .price-btn-primary{background:#0284c7;color:white}
+      .price-btn-primary{background:var(--accent);color:white}
 
       .price-btn-primary:hover{background:#0369a1;transform:translateY(-1px)}
 
@@ -338,7 +362,7 @@
 
       .cta p{font-size:16px;color:var(--text-secondary);margin-bottom:32px;max-width:450px;margin-left:auto;margin-right:auto;position:relative}
 
-      .btn-white{background:#0284c7;color:white;padding:16px 44px;font-size:15px;font-weight:700;border-radius:8px;text-decoration:none;display:inline-block;transition:all 0.2s}
+      .btn-white{background:var(--accent);color:white;padding:16px 44px;font-size:15px;font-weight:700;border-radius:8px;text-decoration:none;display:inline-block;transition:all 0.2s}
 
       .btn-white::before{display:none}
 
@@ -431,11 +455,11 @@
 
       .footer-col h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text);margin-bottom:20px;position:relative;display:inline-block}
 
-      .footer-col h4::after{content:'';position:absolute;bottom:-4px;left:0;width:24px;height:2px;background:#0284c7;border-radius:2px}
+      .footer-col h4::after{content:'';position:absolute;bottom:-4px;left:0;width:24px;height:2px;background:var(--accent);border-radius:2px}
 
       .footer-col a{display:block;font-size:14px;color:var(--text-secondary);text-decoration:none;padding:5px 0;transition:all 0.2s}
 
-      .footer-col a:hover{color:#0284c7}
+      .footer-col a:hover{color:var(--accent)}
 
       .footer-bottom{padding-top:32px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center}
 
@@ -443,11 +467,11 @@
 
       .footer-bottom a{color:var(--text-secondary);text-decoration:none;transition:all 0.2s}
 
-      .footer-bottom a:hover{color:#0284c7}
+      .footer-bottom a:hover{color:var(--accent)}
 
       .self-host-note{text-align:center;margin-top:32px;padding:20px 24px;border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc;font-size:13px;color:var(--text-secondary);letter-spacing:0.3px;line-height:1.6}
 
-      .self-host-note a{color:#0284c7;text-decoration:none;font-weight:600;border-bottom:1px dashed #0284c7;padding-bottom:2px;transition:all 0.2s}
+      .self-host-note a{color:var(--accent);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--accent);padding-bottom:2px;transition:all 0.2s}
 
       .self-host-note a:hover{color:#0369a1}
 
@@ -513,16 +537,16 @@
         background-clip: text;
         animation: heroShine 3.5s linear infinite;
       }
-      /* Blue gradient title with shine */
+      /* Gradient title with animated accent color */
       .gradient-title {
         display: inline-block;
-        background: linear-gradient(90deg, #0284c7 0%, #0284c7 40%, #ffffff 50%, #0284c7 60%, #0284c7 100%);
+        background: linear-gradient(90deg, var(--accent), var(--accent) 40%, #ffffff 50%, var(--accent) 60%, var(--accent));
         background-size: 200% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
         animation: heroShine 3.5s linear infinite;
-        filter: drop-shadow(0 0 8px rgba(2, 132, 199, 0.5));
+        filter: drop-shadow(0 0 8px var(--accent-glow));
       }
       /* Panel text — with shine */
       .hero p,
@@ -801,7 +825,7 @@
       .switch input{opacity:0;width:0;height:0}
       .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#cbd5e1;transition:0.3s;border-radius:26px}
       .slider:before{position:absolute;content:"";height:20px;width:20px;left:3px;bottom:3px;background:white;transition:0.3s;border-radius:50%}
-      input:checked+.slider{background:#0284c7}
+      input:checked+.slider{background:var(--accent)}
       input:checked+.slider:before{transform:translateX(22px)}
 
       /* ══════ PARTICLE CANVAS ══════ */
@@ -1150,7 +1174,7 @@
 
 
 
-            <h1>Corporate AI Orchestration<br><span class="gradient-title">Built for Scale</span></h1>
+            <h1>The Enterprise AI Control Plane<br><span class="gradient-title">Govern Every Model · Secure Every Workflow</span></h1>
 
     <div class="rotating-outline">
 
@@ -1170,8 +1194,8 @@
 
 
 
-             <div id="hero-panel-wrapper" style="max-width:880px;margin:0 auto;transform-style:preserve-3d;transition:transform 0.1s ease-out;position:relative">
-             <div id="hero-panel" style="max-width:100%;margin:0;text-align:left;background:linear-gradient(135deg, #ffffff 0%, #f0f7ff 50%, #ffffff 100%);padding:48px 56px;border-radius:16px;box-shadow:0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(2, 132, 199, 0.15), 0 20px 60px rgba(0,0,0,0.06);border:2px solid rgba(2, 132, 199, 0.2);position:relative;overflow:hidden;transform-style:preserve-3d">
+             <div id="hero-panel-wrapper" style="max-width:920px;margin:0 auto;transform-style:preserve-3d;transition:transform 0.1s ease-out;position:relative">
+             <div id="hero-panel" style="max-width:100%;margin:0;text-align:left;background:linear-gradient(135deg, #ffffff 0%, #f0f7ff 50%, #ffffff 100%);padding:52px 60px;border-radius:16px;box-shadow:0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(2, 132, 199, 0.15), 0 20px 60px rgba(0,0,0,0.06);border:2px solid rgba(2, 132, 199, 0.2);position:relative;overflow:hidden;transform-style:preserve-3d">
               <div style="position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);transform:skewX(-30deg);animation:autoShine 2.5s ease-in-out infinite;pointer-events:none;z-index:10"></div>
               <p style="font-size:16px;color:#1e293b;margin-bottom:16px;line-height:1.7;position:relative;z-index:1">
                 HyperNexus is the <strong style="background:linear-gradient(90deg, #0284c7, #0369a1);-webkit-background-clip:text;-webkit-text-fill-color:transparent">missing tool belt and memory system that all AI needs</strong> — a cloud-hosted cognitive control plane that gives your agents persistent memory, tool orchestration, and provider failover, so your team has complete visibility and governance over every LLM workflow.

@@ -3181,7 +3181,13 @@
             s.targetY = Math.random() * H;
           }
           // Reset when too close or off screen
-          if (s.z > 2.0 || s.x < -100 || s.x > W + 100 || s.y < -100 || s.y > H + 100) {
+          if (
+            s.z > 2.0 ||
+            s.x < -100 ||
+            s.x > W + 100 ||
+            s.y < -100 ||
+            s.y > H + 100
+          ) {
             s.x = Math.random() * W;
             s.y = Math.random() * H;
             s.z = 0.3 + Math.random() * 0.5;
@@ -3189,7 +3195,8 @@
             s.targetY = Math.random() * H;
           }
           // Opacity based on depth
-          var opacity = s.z < 0.4 ? s.z * 2.5 : s.z > 1.6 ? (2.0 - s.z) * 2.5 : 1;
+          var opacity =
+            s.z < 0.4 ? s.z * 2.5 : s.z > 1.6 ? (2.0 - s.z) * 2.5 : 1;
           opacity = Math.max(0, Math.min(0.85, opacity * 0.85));
           // Scale based on depth (bigger when closer)
           var drawScale = s.z * 1.2;

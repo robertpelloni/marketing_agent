@@ -1387,14 +1387,14 @@
                     </div>
                     <script>
                     function buyNow(){
-                      fetch('/api/v1/billing/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier:'professional',seats:1,success_url:'https://hypernexus.site/success.html',cancel_url:'https://hypernexus.site/#pricing'})})
+                      fetch('/api/v1/billing/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier:'professional',seats:1})})
                       .then(function(r){
-                        if(!r.ok) return r.json().then(function(e){throw new Error(e.error||e.message||'Server error '+r.status)});
+                        if(!r.ok) throw new Error('Server error '+r.status);
                         return r.json();
                       })
                       .then(function(d){
                         if(d.url)window.location.href=d.url;
-                        else alert('Error: '+(d.error||'No checkout URL returned'));
+                        else alert('Error: No checkout URL returned');
                       })
                       .catch(function(e){
                         console.error('Checkout error:',e);

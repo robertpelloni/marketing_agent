@@ -1382,11 +1382,17 @@
                     
 
                     <div style="display:flex;justify-content:center;align-items:center;margin-top:20px">
+                      <div style="display:flex;justify-content:center;align-items:center;gap:8px;margin-top:16px">
+                      <label style="font-size:13px;color:rgba(255,255,255,0.7)">Seats:</label>
+                      <input type="number" id="seat-count" value="1" min="1" max="100000" style="width:70px;padding:4px 6px;border:1px solid rgba(255,255,255,0.2);border-radius:4px;text-align:center;font-size:13px;background:rgba(0,0,0,0.3);color:#fff">
+                    </div>
+                    <div style="display:flex;justify-content:center;align-items:center;margin-top:12px">
                       <button onclick="buyNow()" class="mega-buy-btn" style="text-transform:none;font-size:16px;letter-spacing:1px;box-shadow:0 0 4px rgba(255, 59, 48, 0.1), 0 0 8px rgba(255, 149, 0, 0.05);padding:14px 32px;animation:rainbowBtnSlow 3s linear infinite, flashText 1.5s ease-in-out infinite">Buy Now!!!</button>
                     </div>
                     <script>
                     function buyNow(){
-                      fetch('/api/v1/billing/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier:'professional',seats:1,success_url:'https://hypernexus.site/success.html',cancel_url:'https://hypernexus.site/#pricing'})})
+                      var seats=parseInt(document.getElementById('seat-count').value)||1;
+                      fetch('/api/v1/billing/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier:'professional',seats:seats,success_url:'https://hypernexus.site/success.html',cancel_url:'https://hypernexus.site/#pricing'})})
                       .then(function(r){
                         if(!r.ok) return r.json().then(function(e){throw new Error(e.error||e.message||'Server error '+r.status)});
                         return r.json();

@@ -63,6 +63,7 @@ type Config struct {
 	StripePriceCommunity    string
 	StripePriceProfessional string
 	StripePriceEnterprise   string
+	StripePriceHyperNexusPro string
 
 	// Webhooks
 	OutboundWebhookURL    string
@@ -187,6 +188,7 @@ func Load() *Config {
 		StripePriceCommunity:    os.Getenv("STRIPE_PRICE_COMMUNITY"),
 		StripePriceProfessional: os.Getenv("STRIPE_PRICE_PROFESSIONAL"),
 		StripePriceEnterprise:   os.Getenv("STRIPE_PRICE_ENTERPRISE"),
+		StripePriceHyperNexusPro: os.Getenv("STRIPE_PRICE_HYPERNEXUS_PRO"),
 
 		// Webhooks
 		OutboundWebhookURL:    os.Getenv("OUTBOUND_WEBHOOK_URL"),

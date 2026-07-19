@@ -289,6 +289,7 @@ func main() {
 			billing.TierCommunity:    cfg.StripePriceCommunity,
 			billing.TierProfessional: cfg.StripePriceProfessional,
 			billing.TierEnterprise:   cfg.StripePriceEnterprise,
+			billing.TierHyperNexusPro: cfg.StripePriceHyperNexusPro,
 		}
 		billingStore := &billing.DBAdapter{DB: database.Conn}
 		billingClient = billing.NewStripeBillingClient(cfg.StripeAPIKey, cfg.StripeWebhookSecret, priceIDs, billingStore)

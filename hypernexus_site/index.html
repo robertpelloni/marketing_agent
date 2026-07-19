@@ -508,7 +508,23 @@
 
       .self-host-note a:hover{color:#0369a1}
 
-      @media (max-width: 768px){nav{display:none}.stats-grid{grid-template-columns:repeat(2,1fr)}.features-grid{grid-template-columns:1fr}.compliance-grid{grid-template-columns:repeat(2,1fr)}.pricing-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.rotating-outline{max-width:100%;width:100%;padding:0}.rotating-outline ul{padding:0 20px;font-size:14px;line-height:2}.rotating-outline p{padding:0 20px}}
+      @media (max-width: 768px){
+        nav{display:none}
+        .stats-grid{grid-template-columns:repeat(2,1fr)}
+        .features-grid{grid-template-columns:1fr}
+        .compliance-grid{grid-template-columns:repeat(2,1fr)}
+        .pricing-grid{grid-template-columns:1fr}
+        .footer-grid{grid-template-columns:1fr 1fr}
+        .rotating-outline{max-width:100%;width:100%;padding:0;margin:0 auto}
+        .rotating-outline ul{padding:0 16px;font-size:15px;line-height:2.0;max-width:100%;margin:0}
+        .rotating-outline ul li{padding-left:0;text-indent:0}
+        .rotating-outline p{padding:0 16px;font-size:15px}
+        .hero h1{font-size:clamp(28px,8vw,48px);line-height:1.2}
+        .gradient-title{font-size:clamp(28px,8vw,48px)}
+        #hero-panel{padding:24px 16px !important}
+        video{width:100%;height:auto}
+        .hero-videos{padding:0 8px}
+      }
 
       #particle-canvas{display:none}
       /* ══════ BLUE SIDE GRADIENTS ══════ */
@@ -1387,7 +1403,7 @@
                     </div>
                     <script>
                     function buyNow(){
-                      fetch('/api/v1/billing/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier:'professional',seats:1,success_url:'https://hypernexus.site/success.html',cancel_url:'https://hypernexus.site/#pricing'})})
+                      fetch('/api/v1/billing/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier:'HYPERNEXUS_PROFESSIONAL_LICENSE',seats:1,success_url:'https://hypernexus.site/success.html',cancel_url:'https://hypernexus.site/#pricing'})})
                       .then(function(r){
                         if(!r.ok) throw new Error('Server error '+r.status);
                         return r.json();
@@ -1859,23 +1875,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }, 600);
 });
 </script>
-<script>
-// Zoom Effect for Hero Panel
-(function() {
-  var panel = document.getElementById('hero-panel');
-  if (!panel) return;
-  
-  panel.addEventListener('mouseenter', function() {
-    panel.style.transform = 'scale(1.03)';
-    panel.style.boxShadow = '0 0 60px rgba(255,255,255,0.95), 0 0 120px var(--accent-glow), 0 30px 80px rgba(0,0,0,0.1)';
-  });
-  
-  panel.addEventListener('mouseleave', function() {
-    panel.style.transform = 'scale(1)';
-    panel.style.boxShadow = '0 0 40px rgba(255,255,255,0.9), 0 0 80px var(--accent-glow), 0 20px 60px rgba(0,0,0,0.06)';
-  });
-})();
-</script>
+
 
 
 </body>

@@ -43,6 +43,7 @@ const (
 	TierCommunity    Tier = "community"
 	TierProfessional Tier = "professional"
 	TierEnterprise   Tier = "enterprise"
+	TierHyperNexusPro Tier = "HYPERNEXUS_PROFESSIONAL_LICENSE"
 )
 
 // SubscriptionInfo holds the state of a subscription.
@@ -80,6 +81,7 @@ type StripeBillingClient struct {
 	PriceIDCommunity    string
 	PriceIDProfessional string
 	PriceIDEnterprise   string
+	PriceIDHyperNexusPro string
 	db                  SubscriptionStore
 }
 
@@ -104,6 +106,7 @@ func NewStripeBillingClient(apiKey, webhookSecret string, priceIDs map[Tier]stri
 		PriceIDCommunity:    priceIDs[TierCommunity],
 		PriceIDProfessional: priceIDs[TierProfessional],
 		PriceIDEnterprise:   priceIDs[TierEnterprise],
+		PriceIDHyperNexusPro: priceIDs[TierHyperNexusPro],
 		db:                  store,
 	}
 }
@@ -155,6 +158,8 @@ func (s *StripeBillingClient) priceIDForTier(tier Tier) string {
 		return s.PriceIDProfessional
 	case TierEnterprise:
 		return s.PriceIDEnterprise
+	case TierHyperNexusPro:
+		return s.PriceIDHyperNexusPro
 	default:
 		return ""
 	}

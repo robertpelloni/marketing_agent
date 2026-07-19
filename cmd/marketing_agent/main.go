@@ -286,9 +286,9 @@ func main() {
 	if cfg.StripeAPIKey != "" {
 		slog.Info("Billing: Initializing Stripe Billing Client.")
 		priceIDs := map[billing.Tier]string{
-			billing.TierCommunity:    cfg.StripePriceCommunity,
-			billing.TierProfessional: cfg.StripePriceProfessional,
-			billing.TierEnterprise:   cfg.StripePriceEnterprise,
+			billing.TierCommunity:     cfg.StripePriceCommunity,
+			billing.TierProfessional:  cfg.StripePriceProfessional,
+			billing.TierEnterprise:    cfg.StripePriceEnterprise,
 			billing.TierHyperNexusPro: cfg.StripePriceHyperNexusPro,
 		}
 		billingStore := &billing.DBAdapter{DB: database.Conn}

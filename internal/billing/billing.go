@@ -40,9 +40,9 @@ const (
 type Tier string
 
 const (
-	TierCommunity    Tier = "community"
-	TierProfessional Tier = "professional"
-	TierEnterprise   Tier = "enterprise"
+	TierCommunity     Tier = "community"
+	TierProfessional  Tier = "professional"
+	TierEnterprise    Tier = "enterprise"
 	TierHyperNexusPro Tier = "HYPERNEXUS_PROFESSIONAL_LICENSE"
 )
 
@@ -76,13 +76,13 @@ type BillingClient interface {
 
 // StripeBillingClient implements BillingClient using the Stripe API.
 type StripeBillingClient struct {
-	APIKey              string
-	WebhookSecret       string
-	PriceIDCommunity    string
-	PriceIDProfessional string
-	PriceIDEnterprise   string
+	APIKey               string
+	WebhookSecret        string
+	PriceIDCommunity     string
+	PriceIDProfessional  string
+	PriceIDEnterprise    string
 	PriceIDHyperNexusPro string
-	db                  SubscriptionStore
+	db                   SubscriptionStore
 }
 
 // SubscriptionStore is the database interface for subscription storage.
@@ -101,13 +101,13 @@ type SubscriptionStore interface {
 // NewStripeBillingClient creates a new Stripe-based billing client.
 func NewStripeBillingClient(apiKey, webhookSecret string, priceIDs map[Tier]string, store SubscriptionStore) *StripeBillingClient {
 	return &StripeBillingClient{
-		APIKey:              apiKey,
-		WebhookSecret:       webhookSecret,
-		PriceIDCommunity:    priceIDs[TierCommunity],
-		PriceIDProfessional: priceIDs[TierProfessional],
-		PriceIDEnterprise:   priceIDs[TierEnterprise],
+		APIKey:               apiKey,
+		WebhookSecret:        webhookSecret,
+		PriceIDCommunity:     priceIDs[TierCommunity],
+		PriceIDProfessional:  priceIDs[TierProfessional],
+		PriceIDEnterprise:    priceIDs[TierEnterprise],
 		PriceIDHyperNexusPro: priceIDs[TierHyperNexusPro],
-		db:                  store,
+		db:                   store,
 	}
 }
 

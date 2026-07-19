@@ -58,11 +58,11 @@ type Config struct {
 	IMAPPollInterval time.Duration
 
 	// Billing
-	StripeAPIKey            string
-	StripeWebhookSecret     string
-	StripePriceCommunity    string
-	StripePriceProfessional string
-	StripePriceEnterprise   string
+	StripeAPIKey             string
+	StripeWebhookSecret      string
+	StripePriceCommunity     string
+	StripePriceProfessional  string
+	StripePriceEnterprise    string
 	StripePriceHyperNexusPro string
 
 	// Webhooks
@@ -183,11 +183,11 @@ func Load() *Config {
 		IMAPPollInterval: imapPollInterval,
 
 		// Billing
-		StripeAPIKey:            os.Getenv("STRIPE_API_KEY"),
-		StripeWebhookSecret:     os.Getenv("STRIPE_WEBHOOK_SECRET"),
-		StripePriceCommunity:    os.Getenv("STRIPE_PRICE_COMMUNITY"),
-		StripePriceProfessional: os.Getenv("STRIPE_PRICE_PROFESSIONAL"),
-		StripePriceEnterprise:   os.Getenv("STRIPE_PRICE_ENTERPRISE"),
+		StripeAPIKey:             os.Getenv("STRIPE_API_KEY"),
+		StripeWebhookSecret:      os.Getenv("STRIPE_WEBHOOK_SECRET"),
+		StripePriceCommunity:     os.Getenv("STRIPE_PRICE_COMMUNITY"),
+		StripePriceProfessional:  os.Getenv("STRIPE_PRICE_PROFESSIONAL"),
+		StripePriceEnterprise:    os.Getenv("STRIPE_PRICE_ENTERPRISE"),
 		StripePriceHyperNexusPro: os.Getenv("STRIPE_PRICE_HYPERNEXUS_PRO"),
 
 		// Webhooks

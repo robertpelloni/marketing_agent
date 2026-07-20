@@ -1116,6 +1116,16 @@
           ctx.arc(clawSize+5,0,5,0,Math.PI*2);
           ctx.fill();
           ctx.shadowBlur=0;
+          
+          // Add trailing particles when carrying
+          for(var p=0;p<3;p++){
+            var px=claw.x-Math.cos(claw.angle)*(10+p*8)+Math.sin(t*3+p)*5;
+            var py=claw.y-Math.sin(claw.angle)*(10+p*8)+Math.cos(t*2+p)*5;
+            ctx.fillStyle='rgba(0,255,136,'+(0.2-p*0.05)+')';
+            ctx.beginPath();
+            ctx.arc(px,py,3-p,0,Math.PI*2);
+            ctx.fill();
+          }
         }
         
         ctx.restore();
@@ -1141,6 +1151,40 @@
         ctx.beginPath();
         ctx.arc(baseX,baseY,20,0,Math.PI*2);
         ctx.stroke();
+        
+        // Draw abstract flowing energy curves
+        ctx.save();
+        ctx.globalAlpha=0.15;
+        for(var e=0;e<3;e++){
+          ctx.strokeStyle=['rgba(0,204,255','rgba(255,100,200','rgba(0,255,136'][e];
+          ctx.lineWidth=1.5;
+          ctx.beginPath();
+          var startX=baseX+Math.sin(t*0.5+e*2)*100;
+          var startY=baseY-50+Math.cos(t*0.3+e)*50;
+          ctx.moveTo(startX,startY);
+          for(var s=0;s<5;s++){
+            var cpx=startX+Math.sin(t*0.7+s+e)*150;
+            var cpy=startY+Math.cos(t*0.5+s*2+e)*100;
+            var endX=startX+Math.sin(t*0.3+s*1.5+e)*200;
+            var endY=startY+Math.cos(t*0.4+s+e)*150;
+            ctx.quadraticCurveTo(cpx,cpy,endX,endY);
+            startX=endX;startY=endY;
+          }
+          ctx.stroke();
+        }
+        ctx.globalAlpha=1;
+        ctx.restore();
+        
+        // Draw floating particles in background
+        for(var fp=0;fp<15;fp++){
+          var fpx=(Math.sin(t*0.2+fp*3)+1)/2*W;
+          var fpy=(Math.cos(t*0.15+fp*2)+1)/2*H;
+          var fpsize=2+Math.sin(t+fp)*1;
+          ctx.fillStyle='rgba(100,200,255,'+(0.1+Math.sin(t*2+fp)*0.05)+')';
+          ctx.beginPath();
+          ctx.arc(fpx,fpy,fpsize,0,Math.PI*2);
+          ctx.fill();
+        }
         
         requestAnimationFrame(draw);
       }

@@ -519,12 +519,14 @@
         .rotating-outline ul{padding:0 16px;font-size:15px;line-height:2.0;max-width:100%;margin:0}
         .rotating-outline ul li{padding-left:0;text-indent:0}
         .rotating-outline p{padding:0 16px;font-size:15px}
-        .hero h1{font-size:clamp(28px,8vw,48px);line-height:1.2}
+        .hero h1{font-size:clamp(28px,8vw,48px);line-height:1.4}
         .gradient-title{font-size:clamp(28px,8vw,48px)}
-        #hero-panel{width:100%;max-width:100%;padding:24px 20px !important;margin:0 auto}
+        #hero-panel{width:calc(100% + 40px);max-width:calc(100% + 40px);margin-left:-20px;margin-right:-20px;padding:24px 24px !important;border-radius:0}
+        #hero-panel *{transform:none !important}
         video{width:100%;height:auto}
         .hero-videos{padding:0 8px}
         .hero h1 br{display:none}
+        .hero{padding-top:60px}
       }
 
       #particle-canvas{display:none}

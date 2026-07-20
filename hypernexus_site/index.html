@@ -14,7 +14,7 @@
     (function(){
       var hue=0;
       function updateFavicon(){
-        hue=(hue+8)%360;
+        hue=(hue+20)%360;
         var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0%25" y1="0%25" x2="100%25" y2="100%25">';
         for(var i=0;i<=7;i++){
           svg+='<stop offset="'+(i*14)+'%25" stop-color="hsl('+(hue+i*45)+',80%25,50%25)"/>';
@@ -355,7 +355,7 @@
 
       .price-card.featured{border-color:var(--accent);box-shadow:var(--shadow-card);position:relative;overflow:hidden}
 
-      .price-card.featured::before{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);transform:skewX(-25deg);animation:cardShine 3s ease-in-out infinite;z-index:5;pointer-events:none}
+      .price-card.featured::before{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);transform:skewX(-25deg);animation:cardShine 1.5s ease-in-out infinite;z-index:5;pointer-events:none}
 
       @keyframes cardShine{0%{left:-100%}50%{left:150%}100%{left:150%}}
 

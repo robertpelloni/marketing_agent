@@ -1,125 +1,303 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>How We Built an AI Agent That Never Forgets — HyperNexus</title>
-    <meta name="description" content="Most AI agents lose context between sessions. Here's how we built a dual-tier memory architecture that persists 14,000+ memories across restarts.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>">
+    <meta
+      name="description"
+      content="Most AI agents lose context between sessions. Here's how we built a dual-tier memory architecture that persists 14,000+ memories across restarts."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>"
+    />
     <style>
-        :root{--bg:#0a0a0f;--text:#e0e0e0;--text-secondary:#888;--accent:#4dc9f6;--glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.08)}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,sans-serif;line-height:1.8}
-        .container{max-width:700px;margin:0 auto;padding:0 24px}
-        nav{padding:20px 0;border-bottom:1px solid var(--glass-border)}
-        nav .container{display:flex;align-items:center;justify-content:space-between}
-        .logo{font-size:18px;font-weight:700;color:#fff;text-decoration:none}
-        .logo span{color:var(--accent)}
-        nav a{color:var(--text-secondary);text-decoration:none;font-size:14px;margin-left:24px;transition:color 0.2s}
-        nav a:hover{color:#fff}
-        article{padding:60px 0 80px}
-        .back{color:var(--accent);text-decoration:none;font-size:14px;display:inline-block;margin-bottom:24px}
-        .back:hover{text-decoration:underline}
-        .date{font-size:14px;color:var(--text-secondary);margin-bottom:8px}
-        h1{font-size:32px;font-weight:700;color:#fff;margin-bottom:24px;line-height:1.3}
-        h2{font-size:22px;font-weight:600;color:#fff;margin:32px 0 16px}
-        p{margin-bottom:16px;color:var(--text)}
-        .highlight{background:rgba(77,201,246,0.1);border-left:3px solid var(--accent);padding:16px 20px;border-radius:0 8px 8px 0;margin:24px 0}
-        .highlight p{margin:0;color:var(--text)}
-        code{background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;font-size:14px}
-        .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0}
-        .stat{text-align:center;padding:20px;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px}
-        .stat .num{font-size:28px;font-weight:700;color:var(--accent)}
-        .stat .label{font-size:13px;color:var(--text-secondary);margin-top:4px}
-        footer{padding:40px 0;border-top:1px solid var(--glass-border);text-align:center;color:var(--text-secondary);font-size:13px}
-        footer a{color:var(--accent);text-decoration:none}
+      :root {
+        --bg: #0a0a0f;
+        --text: #e0e0e0;
+        --text-secondary: #888;
+        --accent: #4dc9f6;
+        --glass: rgba(255, 255, 255, 0.04);
+        --glass-border: rgba(255, 255, 255, 0.08);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        line-height: 1.8;
+      }
+      .container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      nav {
+        padding: 20px 0;
+        border-bottom: 1px solid var(--glass-border);
+      }
+      nav .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo {
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+      }
+      .logo span {
+        color: var(--accent);
+      }
+      nav a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 14px;
+        margin-left: 24px;
+        transition: color 0.2s;
+      }
+      nav a:hover {
+        color: #fff;
+      }
+      article {
+        padding: 60px 0 80px;
+      }
+      .back {
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 14px;
+        display: inline-block;
+        margin-bottom: 24px;
+      }
+      .back:hover {
+        text-decoration: underline;
+      }
+      .date {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 8px;
+      }
+      h1 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 24px;
+        line-height: 1.3;
+      }
+      h2 {
+        font-size: 22px;
+        font-weight: 600;
+        color: #fff;
+        margin: 32px 0 16px;
+      }
+      p {
+        margin-bottom: 16px;
+        color: var(--text);
+      }
+      .highlight {
+        background: rgba(77, 201, 246, 0.1);
+        border-left: 3px solid var(--accent);
+        padding: 16px 20px;
+        border-radius: 0 8px 8px 0;
+        margin: 24px 0;
+      }
+      .highlight p {
+        margin: 0;
+        color: var(--text);
+      }
+      code {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin: 24px 0;
+      }
+      .stat {
+        text-align: center;
+        padding: 20px;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+      }
+      .stat .num {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .stat .label {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-top: 4px;
+      }
+      footer {
+        padding: 40px 0;
+        border-top: 1px solid var(--glass-border);
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 13px;
+      }
+      footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <nav>
-        <div class="container">
-            <a href="/" class="logo">Hyper<span>Nexus</span></a>
-            <div>
-                <a href="/#features">Features</a>
-                <a href="/#pricing">Pricing</a>
-                <a href="/blog">Blog</a>
-            </div>
+      <div class="container">
+        <a href="/" class="logo">Hyper<span>Nexus</span></a>
+        <div>
+          <a href="/#features">Features</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/blog">Blog</a>
         </div>
+      </div>
     </nav>
 
     <article class="container">
-        <a href="/blog" class="back">&larr; Back to Blog</a>
-        <div class="date">July 21, 2026</div>
-        <h1>How We Built an AI Agent That Never Forgets</h1>
+      <a href="/blog" class="back">&larr; Back to Blog</a>
+      <div class="date">July 21, 2026</div>
+      <h1>How We Built an AI Agent That Never Forgets</h1>
 
-        <p>Every AI agent has the same fundamental problem: it forgets everything between sessions. Ask it to remember a decision from yesterday, and it stares at you blankly. Tell it your coding preferences, and you'll tell it again tomorrow.</p>
+      <p>
+        Every AI agent has the same fundamental problem: it forgets everything
+        between sessions. Ask it to remember a decision from yesterday, and it
+        stares at you blankly. Tell it your coding preferences, and you'll tell
+        it again tomorrow.
+      </p>
 
-        <p>We built HyperNexus to solve this. Here's how.</p>
+      <p>We built HyperNexus to solve this. Here's how.</p>
 
-        <div class="stats">
-            <div class="stat">
-                <div class="num">14,726</div>
-                <div class="label">Persisted Memories</div>
-            </div>
-            <div class="stat">
-                <div class="num">2</div>
-                <div class="label">Memory Tiers</div>
-            </div>
-            <div class="stat">
-                <div class="num">0ms</div>
-                <div class="label">Context Loss</div>
-            </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="num">14,726</div>
+          <div class="label">Persisted Memories</div>
         </div>
-
-        <h2>The Problem with Stateless AI</h2>
-
-        <p>Most AI coding assistants treat every conversation as a blank slate. You spend 30 minutes explaining your project architecture, make some progress, close the laptop, and start over. It's like working with an amnesiac genius — brilliant in the moment, useless the next day.</p>
-
-        <p>Some tools add "memory" as an afterthought: a file you manually curate, or a summary that loses nuance. That's not memory. That's a notebook.</p>
-
-        <h2>Two Tiers, Zero Forgetting</h2>
-
-        <p>HyperNexus has two memory tiers:</p>
-
-        <div class="highlight">
-            <p><strong>L1 — Session Scratchpad:</strong> Ephemeral, lightning-fast memory tied to the active session. Think of it as working memory — the stuff you're actively thinking about right now.</p>
+        <div class="stat">
+          <div class="num">2</div>
+          <div class="label">Memory Tiers</div>
         </div>
-
-        <div class="highlight">
-            <p><strong>L2 — The Vault:</strong> Permanent semantic storage in SQLite with vector search. Saves exact transcripts and LLM-compressed heuristics. Every session autonomously queries the Vault to pull in relevant historical context.</p>
+        <div class="stat">
+          <div class="num">0ms</div>
+          <div class="label">Context Loss</div>
         </div>
+      </div>
 
-        <p>When you start a new session, HyperNexus doesn't ask you to re-explain anything. It harvests context from the Vault — pulling in memories that are semantically relevant to what you're working on right now.</p>
+      <h2>The Problem with Stateless AI</h2>
 
-        <h2>How Context Harvesting Works</h2>
+      <p>
+        Most AI coding assistants treat every conversation as a blank slate. You
+        spend 30 minutes explaining your project architecture, make some
+        progress, close the laptop, and start over. It's like working with an
+        amnesiac genius — brilliant in the moment, useless the next day.
+      </p>
 
-        <p>The magic is in the harvesting. Every session begins by:</p>
+      <p>
+        Some tools add "memory" as an afterthought: a file you manually curate,
+        or a summary that loses nuance. That's not memory. That's a notebook.
+      </p>
 
-        <p>1. <strong>Querying the Vault</strong> with your current prompt</p>
-        <p>2. <strong>Finding relevant memories</strong> using vector similarity search</p>
-        <p>3. <strong>Injecting context</strong> into the LLM's working memory</p>
+      <h2>Two Tiers, Zero Forgetting</h2>
 
-        <p>The result: your AI agent remembers that you prefer TypeScript over JavaScript, that your API uses a specific auth pattern, that you decided against using Redis last week because of a memory constraint. All without you saying a word.</p>
+      <p>HyperNexus has two memory tiers:</p>
 
-        <h2>Built on SQLite, Not Cloud</h2>
+      <div class="highlight">
+        <p>
+          <strong>L1 — Session Scratchpad:</strong> Ephemeral, lightning-fast
+          memory tied to the active session. Think of it as working memory — the
+          stuff you're actively thinking about right now.
+        </p>
+      </div>
 
-        <p>We chose SQLite for memory storage. No cloud dependency. No API calls to external services. Your team's knowledge stays on your machines — 14,726 memories that survive restarts, power outages, and network failures.</p>
+      <div class="highlight">
+        <p>
+          <strong>L2 — The Vault:</strong> Permanent semantic storage in SQLite
+          with vector search. Saves exact transcripts and LLM-compressed
+          heuristics. Every session autonomously queries the Vault to pull in
+          relevant historical context.
+        </p>
+      </div>
 
-        <p>Every memory is vectorized using <code>sqlite-vec</code> for semantic search. When you ask about "authentication patterns," it finds memories about JWT tokens, session management, and OAuth flows — even if you never used the word "authentication."</p>
+      <p>
+        When you start a new session, HyperNexus doesn't ask you to re-explain
+        anything. It harvests context from the Vault — pulling in memories that
+        are semantically relevant to what you're working on right now.
+      </p>
 
-        <h2>What This Means for Your Team</h2>
+      <h2>How Context Harvesting Works</h2>
 
-        <p>Stop re-explaining your codebase. Stop losing decisions between sessions. Stop working with an AI that forgets your name.</p>
+      <p>The magic is in the harvesting. Every session begins by:</p>
 
-        <p>HyperNexus remembers. Every session, every decision, every preference. Persisted, searchable, and instantly available.</p>
+      <p>1. <strong>Querying the Vault</strong> with your current prompt</p>
+      <p>
+        2. <strong>Finding relevant memories</strong> using vector similarity
+        search
+      </p>
+      <p>3. <strong>Injecting context</strong> into the LLM's working memory</p>
 
-        <p><a href="https://hypernexus.site/#pricing" style="color:var(--accent)">Get started with HyperNexus &rarr;</a></p>
+      <p>
+        The result: your AI agent remembers that you prefer TypeScript over
+        JavaScript, that your API uses a specific auth pattern, that you decided
+        against using Redis last week because of a memory constraint. All
+        without you saying a word.
+      </p>
+
+      <h2>Built on SQLite, Not Cloud</h2>
+
+      <p>
+        We chose SQLite for memory storage. No cloud dependency. No API calls to
+        external services. Your team's knowledge stays on your machines — 14,726
+        memories that survive restarts, power outages, and network failures.
+      </p>
+
+      <p>
+        Every memory is vectorized using <code>sqlite-vec</code> for semantic
+        search. When you ask about "authentication patterns," it finds memories
+        about JWT tokens, session management, and OAuth flows — even if you
+        never used the word "authentication."
+      </p>
+
+      <h2>What This Means for Your Team</h2>
+
+      <p>
+        Stop re-explaining your codebase. Stop losing decisions between
+        sessions. Stop working with an AI that forgets your name.
+      </p>
+
+      <p>
+        HyperNexus remembers. Every session, every decision, every preference.
+        Persisted, searchable, and instantly available.
+      </p>
+
+      <p>
+        <a href="https://hypernexus.site/#pricing" style="color: var(--accent)"
+          >Get started with HyperNexus &rarr;</a
+        >
+      </p>
     </article>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2026 HyperNexus LLC. <a href="/">Home</a> &middot; <a href="/blog">Blog</a></p>
-        </div>
+      <div class="container">
+        <p>
+          &copy; 2026 HyperNexus LLC. <a href="/">Home</a> &middot;
+          <a href="/blog">Blog</a>
+        </p>
+      </div>
     </footer>
-</body>
+  </body>
 </html>

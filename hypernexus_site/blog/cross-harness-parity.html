@@ -1,159 +1,325 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>One Config, Six AI Harnesses: Universal Tool Parity — HyperNexus</title>
-    <meta name="description" content="Claude Code, Cursor, Codex, Gemini CLI, Copilot, Windsurf — byte-for-byte identical tool signatures. No vendor lock-in.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      One Config, Six AI Harnesses: Universal Tool Parity — HyperNexus
+    </title>
+    <meta
+      name="description"
+      content="Claude Code, Cursor, Codex, Gemini CLI, Copilot, Windsurf — byte-for-byte identical tool signatures. No vendor lock-in."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>"
+    />
     <style>
-        :root{--bg:#0a0a0f;--text:#e0e0e0;--text-secondary:#888;--accent:#4dc9f6;--glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.08)}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,sans-serif;line-height:1.8}
-        .container{max-width:700px;margin:0 auto;padding:0 24px}
-        nav{padding:20px 0;border-bottom:1px solid var(--glass-border)}
-        nav .container{display:flex;align-items:center;justify-content:space-between}
-        .logo{font-size:18px;font-weight:700;color:#fff;text-decoration:none}
-        .logo span{color:var(--accent)}
-        nav a{color:var(--text-secondary);text-decoration:none;font-size:14px;margin-left:24px;transition:color 0.2s}
-        nav a:hover{color:#fff}
-        article{padding:60px 0 80px}
-        .back{color:var(--accent);text-decoration:none;font-size:14px;display:inline-block;margin-bottom:24px}
-        .back:hover{text-decoration:underline}
-        .date{font-size:14px;color:var(--text-secondary);margin-bottom:8px}
-        h1{font-size:32px;font-weight:700;color:#fff;margin-bottom:24px;line-height:1.3}
-        h2{font-size:22px;font-weight:600;color:#fff;margin:32px 0 16px}
-        p{margin-bottom:16px;color:var(--text)}
-        .highlight{background:rgba(77,201,246,0.1);border-left:3px solid var(--accent);padding:16px 20px;border-radius:0 8px 8px 0;margin:24px 0}
-        .highlight p{margin:0;color:var(--text)}
-        code{background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;font-size:14px}
-        .parity-table{width:100%;border-collapse:collapse;margin:24px 0}
-        .parity-table th,.parity-table td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--glass-border);font-size:14px}
-        .parity-table th{color:var(--text-secondary);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.5px}
-        .parity-table td:first-child{font-weight:600;color:#fff}
-        .parity-table .check{color:#4cd964}
-        footer{padding:40px 0;border-top:1px solid var(--glass-border);text-align:center;color:var(--text-secondary);font-size:13px}
-        footer a{color:var(--accent);text-decoration:none}
+      :root {
+        --bg: #0a0a0f;
+        --text: #e0e0e0;
+        --text-secondary: #888;
+        --accent: #4dc9f6;
+        --glass: rgba(255, 255, 255, 0.04);
+        --glass-border: rgba(255, 255, 255, 0.08);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        line-height: 1.8;
+      }
+      .container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      nav {
+        padding: 20px 0;
+        border-bottom: 1px solid var(--glass-border);
+      }
+      nav .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo {
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+      }
+      .logo span {
+        color: var(--accent);
+      }
+      nav a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 14px;
+        margin-left: 24px;
+        transition: color 0.2s;
+      }
+      nav a:hover {
+        color: #fff;
+      }
+      article {
+        padding: 60px 0 80px;
+      }
+      .back {
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 14px;
+        display: inline-block;
+        margin-bottom: 24px;
+      }
+      .back:hover {
+        text-decoration: underline;
+      }
+      .date {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 8px;
+      }
+      h1 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 24px;
+        line-height: 1.3;
+      }
+      h2 {
+        font-size: 22px;
+        font-weight: 600;
+        color: #fff;
+        margin: 32px 0 16px;
+      }
+      p {
+        margin-bottom: 16px;
+        color: var(--text);
+      }
+      .highlight {
+        background: rgba(77, 201, 246, 0.1);
+        border-left: 3px solid var(--accent);
+        padding: 16px 20px;
+        border-radius: 0 8px 8px 0;
+        margin: 24px 0;
+      }
+      .highlight p {
+        margin: 0;
+        color: var(--text);
+      }
+      code {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      .parity-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 24px 0;
+      }
+      .parity-table th,
+      .parity-table td {
+        text-align: left;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--glass-border);
+        font-size: 14px;
+      }
+      .parity-table th {
+        color: var(--text-secondary);
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .parity-table td:first-child {
+        font-weight: 600;
+        color: #fff;
+      }
+      .parity-table .check {
+        color: #4cd964;
+      }
+      footer {
+        padding: 40px 0;
+        border-top: 1px solid var(--glass-border);
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 13px;
+      }
+      footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <nav>
-        <div class="container">
-            <a href="/" class="logo">Hyper<span>Nexus</span></a>
-            <div>
-                <a href="/#features">Features</a>
-                <a href="/#pricing">Pricing</a>
-                <a href="/blog">Blog</a>
-            </div>
+      <div class="container">
+        <a href="/" class="logo">Hyper<span>Nexus</span></a>
+        <div>
+          <a href="/#features">Features</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/blog">Blog</a>
         </div>
+      </div>
     </nav>
 
     <article class="container">
-        <a href="/blog" class="back">&larr; Back to Blog</a>
-        <div class="date">July 15, 2026</div>
-        <h1>One Config, Six AI Harnesses: Universal Tool Parity</h1>
+      <a href="/blog" class="back">&larr; Back to Blog</a>
+      <div class="date">July 15, 2026</div>
+      <h1>One Config, Six AI Harnesses: Universal Tool Parity</h1>
 
-        <p>Your team uses Claude Code. Your contractor uses Cursor. Your CTO swears by Copilot. You just switched to Gemini CLI. Every tool has different names, different signatures, different quirks. Your MCP server needs six different configs. Your muscle memory is useless. Your workflow is fragmented.</p>
+      <p>
+        Your team uses Claude Code. Your contractor uses Cursor. Your CTO swears
+        by Copilot. You just switched to Gemini CLI. Every tool has different
+        names, different signatures, different quirks. Your MCP server needs six
+        different configs. Your muscle memory is useless. Your workflow is
+        fragmented.
+      </p>
 
-        <p>HyperNexus fixes this.</p>
+      <p>HyperNexus fixes this.</p>
 
-        <h2>Byte-for-Byte Identical Signatures</h2>
+      <h2>Byte-for-Byte Identical Signatures</h2>
 
-        <p>We maintain 27 golden fixtures across 6 AI harnesses. Every tool has the same name, the same parameters, the same behavior — regardless of which harness you're using:</p>
+      <p>
+        We maintain 27 golden fixtures across 6 AI harnesses. Every tool has the
+        same name, the same parameters, the same behavior — regardless of which
+        harness you're using:
+      </p>
 
-        <table class="parity-table">
-            <thead>
-                <tr>
-                    <th>Tool</th>
-                    <th>Claude</th>
-                    <th>Cursor</th>
-                    <th>Codex</th>
-                    <th>Copilot</th>
-                    <th>Gemini</th>
-                    <th>Kiro</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>shell_execution</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                </tr>
-                <tr>
-                    <td>file_read</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                </tr>
-                <tr>
-                    <td>file_write</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                </tr>
-                <tr>
-                    <td>code_search</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                </tr>
-                <tr>
-                    <td>memory_store</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                    <td class="check">✓</td>
-                </tr>
-            </tbody>
-        </table>
+      <table class="parity-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Claude</th>
+            <th>Cursor</th>
+            <th>Codex</th>
+            <th>Copilot</th>
+            <th>Gemini</th>
+            <th>Kiro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>shell_execution</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>file_read</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>file_write</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>code_search</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>memory_store</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+        </tbody>
+      </table>
 
-        <h2>How It Works</h2>
+      <h2>How It Works</h2>
 
-        <div class="highlight">
-            <p><strong>One MCP config:</strong> Configure your tools once in HyperNexus. The same config works across all harnesses. No per-harness customization needed.</p>
-        </div>
+      <div class="highlight">
+        <p>
+          <strong>One MCP config:</strong> Configure your tools once in
+          HyperNexus. The same config works across all harnesses. No per-harness
+          customization needed.
+        </p>
+      </div>
 
-        <div class="highlight">
-            <p><strong>Automatic translation:</strong> Each harness has its own tool naming conventions. HyperNexus translates <code>bash()</code> to <code>Bash()</code> to <code>Shell()</code> automatically. You never see the difference.</p>
-        </div>
+      <div class="highlight">
+        <p>
+          <strong>Automatic translation:</strong> Each harness has its own tool
+          naming conventions. HyperNexus translates <code>bash()</code> to
+          <code>Bash()</code> to <code>Shell()</code> automatically. You never
+          see the difference.
+        </p>
+      </div>
 
-        <div class="highlight">
-            <p><strong>27 golden fixtures:</strong> Every tool signature is tested against all 6 harnesses. If a harness breaks parity, we know immediately.</p>
-        </div>
+      <div class="highlight">
+        <p>
+          <strong>27 golden fixtures:</strong> Every tool signature is tested
+          against all 6 harnesses. If a harness breaks parity, we know
+          immediately.
+        </p>
+      </div>
 
-        <h2>Why This Matters</h2>
+      <h2>Why This Matters</h2>
 
-        <p>Vendor lock-in is real. When your tools only work with one harness, you're trapped. Universal parity means:</p>
+      <p>
+        Vendor lock-in is real. When your tools only work with one harness,
+        you're trapped. Universal parity means:
+      </p>
 
-        <p>• <strong>Switch harnesses freely</strong> — your tools work everywhere</p>
-        <p>• <strong>Team flexibility</strong> — everyone uses their preferred tool</p>
-        <p>• <strong>One config to maintain</strong> — not six</p>
-        <p>• <strong>Consistent muscle memory</strong> — same commands, same behavior</p>
+      <p>
+        • <strong>Switch harnesses freely</strong> — your tools work everywhere
+      </p>
+      <p>
+        • <strong>Team flexibility</strong> — everyone uses their preferred tool
+      </p>
+      <p>• <strong>One config to maintain</strong> — not six</p>
+      <p>
+        • <strong>Consistent muscle memory</strong> — same commands, same
+        behavior
+      </p>
 
-        <p>Stop configuring per-harness. Start using universal parity.</p>
+      <p>Stop configuring per-harness. Start using universal parity.</p>
 
-        <p><a href="https://hypernexus.site/#pricing" style="color:var(--accent)">Get started with HyperNexus &rarr;</a></p>
+      <p>
+        <a href="https://hypernexus.site/#pricing" style="color: var(--accent)"
+          >Get started with HyperNexus &rarr;</a
+        >
+      </p>
     </article>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2026 HyperNexus LLC. <a href="/">Home</a> &middot; <a href="/blog">Blog</a></p>
-        </div>
+      <div class="container">
+        <p>
+          &copy; 2026 HyperNexus LLC. <a href="/">Home</a> &middot;
+          <a href="/blog">Blog</a>
+        </p>
+      </div>
     </footer>
-</body>
+  </body>
 </html>

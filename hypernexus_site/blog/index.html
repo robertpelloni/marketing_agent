@@ -1,98 +1,232 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blog — HyperNexus</title>
-    <meta name="description" content="Insights on AI orchestration, multi-agent workflows, and the future of developer tooling from the HyperNexus team.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>">
+    <meta
+      name="description"
+      content="Insights on AI orchestration, multi-agent workflows, and the future of developer tooling from the HyperNexus team."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>"
+    />
     <style>
-        :root{--bg:#0a0a0f;--text:#e0e0e0;--text-secondary:#888;--accent:#4dc9f6;--glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.08)}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,sans-serif;line-height:1.6}
-        .container{max-width:800px;margin:0 auto;padding:0 24px}
-        nav{padding:20px 0;border-bottom:1px solid var(--glass-border)}
-        nav .container{display:flex;align-items:center;justify-content:space-between}
-        .logo{font-size:18px;font-weight:700;color:#fff;text-decoration:none}
-        .logo span{color:var(--accent)}
-        nav a{color:var(--text-secondary);text-decoration:none;font-size:14px;margin-left:24px;transition:color 0.2s}
-        nav a:hover{color:#fff}
-        header{padding:60px 0 40px;text-align:center}
-        header h1{font-size:36px;font-weight:700;color:#fff;margin-bottom:12px}
-        header p{color:var(--text-secondary);font-size:16px;max-width:500px;margin:0 auto}
-        .posts{padding:0 0 80px}
-        .post-card{display:block;padding:24px;border:1px solid var(--glass-border);border-radius:12px;background:var(--glass);margin-bottom:16px;text-decoration:none;color:inherit;transition:border-color 0.2s,transform 0.2s}
-        .post-card:hover{border-color:var(--accent);transform:translateY(-2px)}
-        .post-card .date{font-size:13px;color:var(--text-secondary);margin-bottom:8px}
-        .post-card h2{font-size:20px;font-weight:600;color:#fff;margin-bottom:8px}
-        .post-card p{color:var(--text-secondary);font-size:14px;line-height:1.5}
-        .post-card .tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;background:rgba(77,201,246,0.1);color:var(--accent);margin-top:12px}
-        footer{padding:40px 0;border-top:1px solid var(--glass-border);text-align:center;color:var(--text-secondary);font-size:13px}
-        footer a{color:var(--accent);text-decoration:none}
+      :root {
+        --bg: #0a0a0f;
+        --text: #e0e0e0;
+        --text-secondary: #888;
+        --accent: #4dc9f6;
+        --glass: rgba(255, 255, 255, 0.04);
+        --glass-border: rgba(255, 255, 255, 0.08);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      nav {
+        padding: 20px 0;
+        border-bottom: 1px solid var(--glass-border);
+      }
+      nav .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo {
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+      }
+      .logo span {
+        color: var(--accent);
+      }
+      nav a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 14px;
+        margin-left: 24px;
+        transition: color 0.2s;
+      }
+      nav a:hover {
+        color: #fff;
+      }
+      header {
+        padding: 60px 0 40px;
+        text-align: center;
+      }
+      header h1 {
+        font-size: 36px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 12px;
+      }
+      header p {
+        color: var(--text-secondary);
+        font-size: 16px;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      .posts {
+        padding: 0 0 80px;
+      }
+      .post-card {
+        display: block;
+        padding: 24px;
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        background: var(--glass);
+        margin-bottom: 16px;
+        text-decoration: none;
+        color: inherit;
+        transition:
+          border-color 0.2s,
+          transform 0.2s;
+      }
+      .post-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+      }
+      .post-card .date {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 8px;
+      }
+      .post-card h2 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 8px;
+      }
+      .post-card p {
+        color: var(--text-secondary);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .post-card .tag {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        background: rgba(77, 201, 246, 0.1);
+        color: var(--accent);
+        margin-top: 12px;
+      }
+      footer {
+        padding: 40px 0;
+        border-top: 1px solid var(--glass-border);
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 13px;
+      }
+      footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <nav>
-        <div class="container">
-            <a href="/" class="logo">Hyper<span>Nexus</span></a>
-            <div>
-                <a href="/#features">Features</a>
-                <a href="/#pricing">Pricing</a>
-                <a href="https://demo.hypernexus.site" target="_blank">Demo</a>
-            </div>
+      <div class="container">
+        <a href="/" class="logo">Hyper<span>Nexus</span></a>
+        <div>
+          <a href="/#features">Features</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="https://demo.hypernexus.site" target="_blank">Demo</a>
         </div>
+      </div>
     </nav>
 
     <header>
-        <div class="container">
-            <h1>Blog</h1>
-            <p>Insights on AI orchestration, multi-agent workflows, and the future of developer tooling.</p>
-        </div>
+      <div class="container">
+        <h1>Blog</h1>
+        <p>
+          Insights on AI orchestration, multi-agent workflows, and the future of
+          developer tooling.
+        </p>
+      </div>
     </header>
 
     <div class="container">
-        <div class="posts">
-            <a href="/blog/ai-agent-memory.html" class="post-card">
-                <div class="date">July 21, 2026</div>
-                <h2>How We Built an AI Agent That Never Forgets</h2>
-                <p>Most AI agents lose context between sessions. Ours doesn't. Here's how we built a dual-tier memory architecture that persists 14,000+ memories across restarts.</p>
-                <span class="tag">Architecture</span>
-            </a>
+      <div class="posts">
+        <a href="/blog/ai-agent-memory.html" class="post-card">
+          <div class="date">July 21, 2026</div>
+          <h2>How We Built an AI Agent That Never Forgets</h2>
+          <p>
+            Most AI agents lose context between sessions. Ours doesn't. Here's
+            how we built a dual-tier memory architecture that persists 14,000+
+            memories across restarts.
+          </p>
+          <span class="tag">Architecture</span>
+        </a>
 
-            <a href="/blog/progressive-tool-routing.html" class="post-card">
-                <div class="date">July 19, 2026</div>
-                <h2>Why Your AI Agent Drowns in 50,000 Tokens of Tool Definitions</h2>
-                <p>Progressive MCP tool routing: how we inject only the 3 most relevant tools per request instead of dumping the entire catalog into context.</p>
-                <span class="tag">Technical</span>
-            </a>
+        <a href="/blog/progressive-tool-routing.html" class="post-card">
+          <div class="date">July 19, 2026</div>
+          <h2>Why Your AI Agent Drowns in 50,000 Tokens of Tool Definitions</h2>
+          <p>
+            Progressive MCP tool routing: how we inject only the 3 most relevant
+            tools per request instead of dumping the entire catalog into
+            context.
+          </p>
+          <span class="tag">Technical</span>
+        </a>
 
-            <a href="/blog/llm-waterfall.html" class="post-card">
-                <div class="date">July 17, 2026</div>
-                <h2>Zero Downtime LLM Inference: The Waterfall Approach</h2>
-                <p>When OpenAI rate-limits you, we cascade to OpenRouter, then to local Ollama. Here's how the 3-tier fallback chain works.</p>
-                <span class="tag">Infrastructure</span>
-            </a>
+        <a href="/blog/llm-waterfall.html" class="post-card">
+          <div class="date">July 17, 2026</div>
+          <h2>Zero Downtime LLM Inference: The Waterfall Approach</h2>
+          <p>
+            When OpenAI rate-limits you, we cascade to OpenRouter, then to local
+            Ollama. Here's how the 3-tier fallback chain works.
+          </p>
+          <span class="tag">Infrastructure</span>
+        </a>
 
-            <a href="/blog/cross-harness-parity.html" class="post-card">
-                <div class="date">July 15, 2026</div>
-                <h2>One Config, Six AI Harnesses: Universal Tool Parity</h2>
-                <p>Claude Code, Cursor, Codex, Gemini CLI, Copilot, Windsurf — byte-for-byte identical tool signatures. No vendor lock-in.</p>
-                <span class="tag">Integration</span>
-            </a>
+        <a href="/blog/cross-harness-parity.html" class="post-card">
+          <div class="date">July 15, 2026</div>
+          <h2>One Config, Six AI Harnesses: Universal Tool Parity</h2>
+          <p>
+            Claude Code, Cursor, Codex, Gemini CLI, Copilot, Windsurf —
+            byte-for-byte identical tool signatures. No vendor lock-in.
+          </p>
+          <span class="tag">Integration</span>
+        </a>
 
-            <a href="/blog/local-first.html" class="post-card">
-                <div class="date">July 13, 2026</div>
-                <h2>Why We Bet on Local-First AI Infrastructure</h2>
-                <p>Your team's knowledge stays on your machines. No cloud dependency. Here's why local-first matters for enterprise AI adoption.</p>
-                <span class="tag">Philosophy</span>
-            </a>
-        </div>
+        <a href="/blog/local-first.html" class="post-card">
+          <div class="date">July 13, 2026</div>
+          <h2>Why We Bet on Local-First AI Infrastructure</h2>
+          <p>
+            Your team's knowledge stays on your machines. No cloud dependency.
+            Here's why local-first matters for enterprise AI adoption.
+          </p>
+          <span class="tag">Philosophy</span>
+        </a>
+      </div>
     </div>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2026 HyperNexus LLC. <a href="https://hypernexus.site">Home</a></p>
-        </div>
+      <div class="container">
+        <p>
+          &copy; 2026 HyperNexus LLC. <a href="https://hypernexus.site">Home</a>
+        </p>
+      </div>
     </footer>
-</body>
+  </body>
 </html>

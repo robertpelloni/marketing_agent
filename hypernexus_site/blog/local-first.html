@@ -1,121 +1,295 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Why We Bet on Local-First AI Infrastructure — HyperNexus</title>
-    <meta name="description" content="Your team's knowledge stays on your machines. No cloud dependency. Here's why local-first matters for enterprise AI adoption.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>">
+    <meta
+      name="description"
+      content="Your team's knowledge stays on your machines. No cloud dependency. Here's why local-first matters for enterprise AI adoption."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>"
+    />
     <style>
-        :root{--bg:#0a0a0f;--text:#e0e0e0;--text-secondary:#888;--accent:#4dc9f6;--glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.08)}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,sans-serif;line-height:1.8}
-        .container{max-width:700px;margin:0 auto;padding:0 24px}
-        nav{padding:20px 0;border-bottom:1px solid var(--glass-border)}
-        nav .container{display:flex;align-items:center;justify-content:space-between}
-        .logo{font-size:18px;font-weight:700;color:#fff;text-decoration:none}
-        .logo span{color:var(--accent)}
-        nav a{color:var(--text-secondary);text-decoration:none;font-size:14px;margin-left:24px;transition:color 0.2s}
-        nav a:hover{color:#fff}
-        article{padding:60px 0 80px}
-        .back{color:var(--accent);text-decoration:none;font-size:14px;display:inline-block;margin-bottom:24px}
-        .back:hover{text-decoration:underline}
-        .date{font-size:14px;color:var(--text-secondary);margin-bottom:8px}
-        h1{font-size:32px;font-weight:700;color:#fff;margin-bottom:24px;line-height:1.3}
-        h2{font-size:22px;font-weight:600;color:#fff;margin:32px 0 16px}
-        p{margin-bottom:16px;color:var(--text)}
-        .highlight{background:rgba(77,201,246,0.1);border-left:3px solid var(--accent);padding:16px 20px;border-radius:0 8px 8px 0;margin:24px 0}
-        .highlight p{margin:0;color:var(--text)}
-        code{background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;font-size:14px}
-        .benefits{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}
-        .benefit{padding:20px;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px}
-        .benefit h3{font-size:15px;font-weight:600;color:#fff;margin-bottom:8px}
-        .benefit p{font-size:14px;color:var(--text-secondary);margin:0}
-        footer{padding:40px 0;border-top:1px solid var(--glass-border);text-align:center;color:var(--text-secondary);font-size:13px}
-        footer a{color:var(--accent);text-decoration:none}
+      :root {
+        --bg: #0a0a0f;
+        --text: #e0e0e0;
+        --text-secondary: #888;
+        --accent: #4dc9f6;
+        --glass: rgba(255, 255, 255, 0.04);
+        --glass-border: rgba(255, 255, 255, 0.08);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        line-height: 1.8;
+      }
+      .container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      nav {
+        padding: 20px 0;
+        border-bottom: 1px solid var(--glass-border);
+      }
+      nav .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo {
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+      }
+      .logo span {
+        color: var(--accent);
+      }
+      nav a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 14px;
+        margin-left: 24px;
+        transition: color 0.2s;
+      }
+      nav a:hover {
+        color: #fff;
+      }
+      article {
+        padding: 60px 0 80px;
+      }
+      .back {
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 14px;
+        display: inline-block;
+        margin-bottom: 24px;
+      }
+      .back:hover {
+        text-decoration: underline;
+      }
+      .date {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 8px;
+      }
+      h1 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 24px;
+        line-height: 1.3;
+      }
+      h2 {
+        font-size: 22px;
+        font-weight: 600;
+        color: #fff;
+        margin: 32px 0 16px;
+      }
+      p {
+        margin-bottom: 16px;
+        color: var(--text);
+      }
+      .highlight {
+        background: rgba(77, 201, 246, 0.1);
+        border-left: 3px solid var(--accent);
+        padding: 16px 20px;
+        border-radius: 0 8px 8px 0;
+        margin: 24px 0;
+      }
+      .highlight p {
+        margin: 0;
+        color: var(--text);
+      }
+      code {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      .benefits {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin: 24px 0;
+      }
+      .benefit {
+        padding: 20px;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+      }
+      .benefit h3 {
+        font-size: 15px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 8px;
+      }
+      .benefit p {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin: 0;
+      }
+      footer {
+        padding: 40px 0;
+        border-top: 1px solid var(--glass-border);
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 13px;
+      }
+      footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <nav>
-        <div class="container">
-            <a href="/" class="logo">Hyper<span>Nexus</span></a>
-            <div>
-                <a href="/#features">Features</a>
-                <a href="/#pricing">Pricing</a>
-                <a href="/blog">Blog</a>
-            </div>
+      <div class="container">
+        <a href="/" class="logo">Hyper<span>Nexus</span></a>
+        <div>
+          <a href="/#features">Features</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/blog">Blog</a>
         </div>
+      </div>
     </nav>
 
     <article class="container">
-        <a href="/blog" class="back">&larr; Back to Blog</a>
-        <div class="date">July 13, 2026</div>
-        <h1>Why We Bet on Local-First AI Infrastructure</h1>
+      <a href="/blog" class="back">&larr; Back to Blog</a>
+      <div class="date">July 13, 2026</div>
+      <h1>Why We Bet on Local-First AI Infrastructure</h1>
 
-        <p>Every AI tool today sends your code, your prompts, your decisions to the cloud. Your architectural choices are someone else's training data. Your debugging sessions are someone else's telemetry. Your team's hard-won knowledge lives on someone else's servers.</p>
+      <p>
+        Every AI tool today sends your code, your prompts, your decisions to the
+        cloud. Your architectural choices are someone else's training data. Your
+        debugging sessions are someone else's telemetry. Your team's hard-won
+        knowledge lives on someone else's servers.
+      </p>
 
-        <p>We think that's wrong. HyperNexus is local-first.</p>
+      <p>We think that's wrong. HyperNexus is local-first.</p>
 
-        <h2>What Local-First Means</h2>
+      <h2>What Local-First Means</h2>
 
-        <p>Local-first doesn't mean "no cloud." It means your data is local by default, cloud by choice:</p>
+      <p>
+        Local-first doesn't mean "no cloud." It means your data is local by
+        default, cloud by choice:
+      </p>
 
-        <div class="highlight">
-            <p><strong>Your memory stays local:</strong> 14,726 memories stored in SQLite on your machine. No cloud sync. No external API calls. Your team's knowledge stays on your machines.</p>
+      <div class="highlight">
+        <p>
+          <strong>Your memory stays local:</strong> 14,726 memories stored in
+          SQLite on your machine. No cloud sync. No external API calls. Your
+          team's knowledge stays on your machines.
+        </p>
+      </div>
+
+      <div class="highlight">
+        <p>
+          <strong>LLMs are optional:</strong> HyperNexus works with local models
+          via Ollama or LM Studio. Cloud APIs are a convenience, not a
+          requirement.
+        </p>
+      </div>
+
+      <div class="highlight">
+        <p>
+          <strong>No telemetry:</strong> We don't track what you do. We don't
+          know what code you write. We don't know what decisions you make. Your
+          business is your business.
+        </p>
+      </div>
+
+      <h2>The Benefits</h2>
+
+      <div class="benefits">
+        <div class="benefit">
+          <h3>Security</h3>
+          <p>
+            Your code never leaves your machine unless you choose to send it.
+            Air-gapped deployments work perfectly.
+          </p>
         </div>
-
-        <div class="highlight">
-            <p><strong>LLMs are optional:</strong> HyperNexus works with local models via Ollama or LM Studio. Cloud APIs are a convenience, not a requirement.</p>
+        <div class="benefit">
+          <h3>Speed</h3>
+          <p>
+            Local vector search is fast. No network latency. No API rate limits.
+            Instant context retrieval.
+          </p>
         </div>
-
-        <div class="highlight">
-            <p><strong>No telemetry:</strong> We don't track what you do. We don't know what code you write. We don't know what decisions you make. Your business is your business.</p>
+        <div class="benefit">
+          <h3>Reliability</h3>
+          <p>
+            No cloud outage can stop you. No API downtime blocks your workflow.
+            Works offline.
+          </p>
         </div>
-
-        <h2>The Benefits</h2>
-
-        <div class="benefits">
-            <div class="benefit">
-                <h3>Security</h3>
-                <p>Your code never leaves your machine unless you choose to send it. Air-gapped deployments work perfectly.</p>
-            </div>
-            <div class="benefit">
-                <h3>Speed</h3>
-                <p>Local vector search is fast. No network latency. No API rate limits. Instant context retrieval.</p>
-            </div>
-            <div class="benefit">
-                <h3>Reliability</h3>
-                <p>No cloud outage can stop you. No API downtime blocks your workflow. Works offline.</p>
-            </div>
-            <div class="benefit">
-                <h3>Control</h3>
-                <p>You own your data. You control your infrastructure. No vendor lock-in. No surprise price increases.</p>
-            </div>
+        <div class="benefit">
+          <h3>Control</h3>
+          <p>
+            You own your data. You control your infrastructure. No vendor
+            lock-in. No surprise price increases.
+          </p>
         </div>
+      </div>
 
-        <h2>Why This Matters for Enterprise</h2>
+      <h2>Why This Matters for Enterprise</h2>
 
-        <p>Enterprise adoption of AI tools is blocked by three concerns:</p>
+      <p>Enterprise adoption of AI tools is blocked by three concerns:</p>
 
-        <p>1. <strong>Data sovereignty:</strong> "Where does our code go?" With local-first, the answer is: nowhere you don't send it.</p>
+      <p>
+        1. <strong>Data sovereignty:</strong> "Where does our code go?" With
+        local-first, the answer is: nowhere you don't send it.
+      </p>
 
-        <p>2. <strong>Compliance:</strong> SOC 2, HIPAA, GDPR — all easier when data doesn't leave your network.</p>
+      <p>
+        2. <strong>Compliance:</strong> SOC 2, HIPAA, GDPR — all easier when
+        data doesn't leave your network.
+      </p>
 
-        <p>3. <strong>Vendor risk:</strong> What happens when the cloud provider changes their terms? With local-first, you're in control.</p>
+      <p>
+        3. <strong>Vendor risk:</strong> What happens when the cloud provider
+        changes their terms? With local-first, you're in control.
+      </p>
 
-        <h2>The Future is Local</h2>
+      <h2>The Future is Local</h2>
 
-        <p>The AI industry is racing to centralize everything. We're racing to decentralize it. Your code, your memory, your decisions — they belong to you, not to us.</p>
+      <p>
+        The AI industry is racing to centralize everything. We're racing to
+        decentralize it. Your code, your memory, your decisions — they belong to
+        you, not to us.
+      </p>
 
-        <p>Local-first isn't a limitation. It's a feature.</p>
+      <p>Local-first isn't a limitation. It's a feature.</p>
 
-        <p><a href="https://hypernexus.site/#pricing" style="color:var(--accent)">Get started with HyperNexus &rarr;</a></p>
+      <p>
+        <a href="https://hypernexus.site/#pricing" style="color: var(--accent)"
+          >Get started with HyperNexus &rarr;</a
+        >
+      </p>
     </article>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2026 HyperNexus LLC. <a href="/">Home</a> &middot; <a href="/blog">Blog</a></p>
-        </div>
+      <div class="container">
+        <p>
+          &copy; 2026 HyperNexus LLC. <a href="/">Home</a> &middot;
+          <a href="/blog">Blog</a>
+        </p>
+      </div>
     </footer>
-</body>
+  </body>
 </html>

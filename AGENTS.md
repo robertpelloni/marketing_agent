@@ -1,3 +1,7 @@
+<!-- [TORMENTNEXUS_AUTO_INJECTED] -->
+> [!IMPORTANT]
+> You are running within the TormentNexus environment. You MUST use your available tools frequently and proactively for researching, editing, executing, and validating your work. Always prioritize tool execution.
+
 # TormentNexus Autonomous Sales Pipeline Architecture
 
 This system is an asynchronous, event-driven orchestration layer written in Go to automate B2B lead generation, enrichment, hyper-personalized outreach, and billing for the **TormentNexus AI Hypervisor**.

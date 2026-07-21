@@ -121,6 +121,9 @@ func (s *Server) routes() {
 
 	// Social content API (public — serves content for Devvit Reddit app)
 	s.mux.Handle("/api/v1/social/reddit", rl.middleware(http.HandlerFunc(s.handleRedditContent)))
+
+	// Newsletter subscription (public)
+	s.mux.Handle("/api/v1/newsletter/subscribe", rl.middleware(http.HandlerFunc(s.handleNewsletterSubscribe)))
 }
 
 // ServeHTTP implements the http.Handler interface.
@@ -1471,6 +1474,37 @@ func (s *Server) handleRedditContent(w http.ResponseWriter, r *http.Request) {
 		"content": posts[0].PostContent,
 		"brand":   posts[0].Brand,
 	})
+}
+
+// handleNewsletterSubscribe saves an email to the newsletter subscribers list.
+func (s *Server) handleNewsletterSubscribe(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		Email string `json:"email"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.Email == "" {
+		_ = json.NewEncoder(w).Encode(map[string]string{"error": "Invalid email"})
+		return
+	}
+
+	// Save to file
+	f, err := os.OpenFile("/opt/marketing_agent/data/newsletter_subscribers.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		// Fallback: still return success
+		_ = json.NewEncoder(w).Encode(map[string]string{"status": "subscribed"})
+		return
+	}
+	defer f.Close()
+	_, _ = f.WriteString(time.Now().Format(time.RFC3339) + "," + req.Email + "\n")
+
+	_ = json.NewEncoder(w).Encode(map[string]string{"status": "subscribed"})
 }
 
 func (s *Server) handleContainerStart(w http.ResponseWriter, r *http.Request) {

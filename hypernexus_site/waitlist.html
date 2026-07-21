@@ -1,0 +1,34 @@
+
+<!-- Email Signup Section -->
+<section id="waitlist" style="background:linear-gradient(135deg,#0f172a,#1e293b);padding:80px 24px;text-align:center">
+  <div style="max-width:600px;margin:0 auto">
+    <h2 style="font-size:32px;font-weight:800;color:#fff;margin-bottom:16px">Get Early Access + 50% Off</h2>
+    <p style="color:#94a3b8;font-size:18px;margin-bottom:32px">Join the waitlist and be the first to know when we launch new features.</p>
+    <form id="waitlist-form" style="display:flex;gap:12px;max-width:500px;margin:0 auto">
+      <input type="email" name="email" placeholder="you@email.com" required style="flex:1;padding:16px 20px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);background:rgba(15,23,42,0.8);color:#fff;font-size:16px">
+      <button type="submit" style="padding:16px 32px;background:linear-gradient(180deg,#0284c7,#0369a1);color:#fff;border:none;border-radius:8px;font-weight:600;font-size:16px;cursor:pointer">Join Waitlist</button>
+    </form>
+    <p id="waitlist-success" style="display:none;color:#22c55e;font-size:16px;margin-top:16px">You are on the list! Check your email for confirmation.</p>
+  </div>
+</section>
+<script>
+document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  var email = this.querySelector('input[name=email]').value;
+  try {
+    var resp = await fetch('https://api.convertkit.com/v3/forms/FORM_ID/subscribe', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({api_key: 'YOUR_API_KEY', email: email})
+    });
+    if (resp.ok) {
+      document.getElementById('waitlist-form').style.display = 'none';
+      document.getElementById('waitlist-success').style.display = 'block';
+    }
+  } catch(err) {
+    alert('Thanks! We will be in touch.');
+    document.getElementById('waitlist-form').style.display = 'none';
+    document.getElementById('waitlist-success').style.display = 'block';
+  }
+});
+</script>

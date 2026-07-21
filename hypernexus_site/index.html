@@ -546,7 +546,7 @@
       }
 
       #particle-canvas{display:none}
-      /* ══════ BLUE SIDE GRADIENTS ══════ */
+      /* ══════ RAINBOW SIDE GRADIENTS ══════ */
       .blue-side-left, .blue-side-right {
         position: fixed;
         top: 0;
@@ -555,14 +555,31 @@
         pointer-events: none;
         z-index: -1;
         opacity: 0.85;
+        background: linear-gradient(180deg, 
+          hsl(0, 80%, 60%), 
+          hsl(30, 80%, 60%), 
+          hsl(60, 80%, 60%), 
+          hsl(120, 80%, 60%), 
+          hsl(180, 80%, 60%), 
+          hsl(240, 80%, 60%), 
+          hsl(300, 80%, 60%), 
+          hsl(360, 80%, 60%));
+        background-size: 100% 400%;
+        animation: rainbowShift 3s linear infinite;
+      }
+      @keyframes rainbowShift {
+        0% { background-position: 0% 0%; }
+        100% { background-position: 0% 400%; }
       }
        .blue-side-left {
         left: 0;
-        background: linear-gradient(90deg, hsla(var(--accent-hue), 60%, 70%, 0.2) 0%, hsla(var(--accent-hue), 60%, 80%, 0.08) 60%, transparent 100%);
+        mask-image: linear-gradient(90deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+        -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
       }
       .blue-side-right {
         right: 0;
-        background: linear-gradient(-90deg, hsla(var(--accent-hue), 60%, 70%, 0.2) 0%, hsla(var(--accent-hue), 60%, 80%, 0.08) 60%, transparent 100%);
+        mask-image: linear-gradient(-90deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+        -webkit-mask-image: linear-gradient(-90deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
       }
 
       /* ══════ ROTATING BLUE OUTLINE AROUND MAIN CONTENT ══════ */

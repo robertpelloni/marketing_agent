@@ -972,69 +972,94 @@
           no-repeat center center / contain !important;
       }
     </style>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23111'/></svg>">
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23111'/></svg>"
+    />
     <script>
-    (function(){
-      var t=0;
-      function updateFavicon(){
-        t+=0.08;
-        var mouthOpen=Math.abs(Math.sin(t*3))*15;
-        var eyeGlow=Math.sin(t*2)*30+70;
-        
-        var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">';
-        
-        // Dark background
-        svg+='<circle cx="50" cy="50" r="48" fill="%230a0a0a"/>';
-        
-        // Skull shape - metallic chrome
-        svg+='<ellipse cx="50" cy="45" rx="32" ry="35" fill="%23333" stroke="%23555" stroke-width="2"/>';
-        
-        // Jaw
-        svg+='<ellipse cx="50" cy="65" rx="25" ry="12" fill="%23222" stroke="%23444" stroke-width="1"/>';
-        
-        // Left eye socket - glowing red
-        svg+='<ellipse cx="38" cy="40" rx="10" ry="8" fill="%23000"/>';
-        svg+='<ellipse cx="38" cy="40" rx="7" ry="5" fill="hsla(0,100%,'+eyeGlow+'%,0.9)">';
-        svg+='<animate attributeName="ry" values="5;3;5" dur="0.5s" repeatCount="indefinite"/>';
-        svg+='</ellipse>';
-        
-        // Right eye socket - glowing red
-        svg+='<ellipse cx="62" cy="40" rx="10" ry="8" fill="%23000"/>';
-        svg+='<ellipse cx="62" cy="40" rx="7" ry="5" fill="hsla(0,100%,'+eyeGlow+'%,0.9)">';
-        svg+='<animate attributeName="ry" values="5;3;5" dur="0.5s" repeatCount="indefinite"/>';
-        svg+='</ellipse>';
-        
-        // Nose
-        svg+='<polygon points="50,48 46,55 54,55" fill="%23222" stroke="%23444" stroke-width="1"/>';
-        
-        // Mouth - opens and closes
-        svg+='<rect x="38" y="60" width="24" height="'+mouthOpen+'" rx="3" fill="%23000" stroke="%23444" stroke-width="1"/>';
-        
-        // Teeth
-        if(mouthOpen>5){
-          for(var i=0;i<4;i++){
-            var tx=41+i*6;
-            svg+='<rect x="'+tx+'" y="60" width="3" height="5" fill="%23666"/>';
+      (function () {
+        var t = 0;
+        function updateFavicon() {
+          t += 0.08;
+          var mouthOpen = Math.abs(Math.sin(t * 3)) * 15;
+          var eyeGlow = Math.sin(t * 2) * 30 + 70;
+
+          var svg =
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">';
+
+          // Dark background
+          svg += '<circle cx="50" cy="50" r="48" fill="%230a0a0a"/>';
+
+          // Skull shape - metallic chrome
+          svg +=
+            '<ellipse cx="50" cy="45" rx="32" ry="35" fill="%23333" stroke="%23555" stroke-width="2"/>';
+
+          // Jaw
+          svg +=
+            '<ellipse cx="50" cy="65" rx="25" ry="12" fill="%23222" stroke="%23444" stroke-width="1"/>';
+
+          // Left eye socket - glowing red
+          svg += '<ellipse cx="38" cy="40" rx="10" ry="8" fill="%23000"/>';
+          svg +=
+            '<ellipse cx="38" cy="40" rx="7" ry="5" fill="hsla(0,100%,' +
+            eyeGlow +
+            '%,0.9)">';
+          svg +=
+            '<animate attributeName="ry" values="5;3;5" dur="0.5s" repeatCount="indefinite"/>';
+          svg += "</ellipse>";
+
+          // Right eye socket - glowing red
+          svg += '<ellipse cx="62" cy="40" rx="10" ry="8" fill="%23000"/>';
+          svg +=
+            '<ellipse cx="62" cy="40" rx="7" ry="5" fill="hsla(0,100%,' +
+            eyeGlow +
+            '%,0.9)">';
+          svg +=
+            '<animate attributeName="ry" values="5;3;5" dur="0.5s" repeatCount="indefinite"/>';
+          svg += "</ellipse>";
+
+          // Nose
+          svg +=
+            '<polygon points="50,48 46,55 54,55" fill="%23222" stroke="%23444" stroke-width="1"/>';
+
+          // Mouth - opens and closes
+          svg +=
+            '<rect x="38" y="60" width="24" height="' +
+            mouthOpen +
+            '" rx="3" fill="%23000" stroke="%23444" stroke-width="1"/>';
+
+          // Teeth
+          if (mouthOpen > 5) {
+            for (var i = 0; i < 4; i++) {
+              var tx = 41 + i * 6;
+              svg +=
+                '<rect x="' +
+                tx +
+                '" y="60" width="3" height="5" fill="%23666"/>';
+            }
           }
+
+          // Metallic shine
+          svg +=
+            '<ellipse cx="45" cy="35" rx="8" ry="12" fill="rgba(255,255,255,0.1)" transform="rotate(-20 45 35)"/>';
+
+          // Outer ring glow
+          svg +=
+            '<circle cx="50" cy="50" r="46" fill="none" stroke="hsla(0,80%,50%,0.4)" stroke-width="2">';
+          svg +=
+            '<animate attributeName="r" values="46;48;46" dur="1s" repeatCount="indefinite"/>';
+          svg +=
+            '<animate attributeName="stroke-opacity" values="0.4;0.8;0.4" dur="1s" repeatCount="indefinite"/>';
+          svg += "</circle>";
+
+          svg += "</svg>";
+
+          var link = document.querySelector('link[rel="icon"]');
+          if (link) link.href = "data:image/svg+xml," + encodeURIComponent(svg);
+          requestAnimationFrame(updateFavicon);
         }
-        
-        // Metallic shine
-        svg+='<ellipse cx="45" cy="35" rx="8" ry="12" fill="rgba(255,255,255,0.1)" transform="rotate(-20 45 35)"/>';
-        
-        // Outer ring glow
-        svg+='<circle cx="50" cy="50" r="46" fill="none" stroke="hsla(0,80%,50%,0.4)" stroke-width="2">';
-        svg+='<animate attributeName="r" values="46;48;46" dur="1s" repeatCount="indefinite"/>';
-        svg+='<animate attributeName="stroke-opacity" values="0.4;0.8;0.4" dur="1s" repeatCount="indefinite"/>';
-        svg+='</circle>';
-        
-        svg+='</svg>';
-        
-        var link=document.querySelector('link[rel="icon"]');
-        if(link)link.href='data:image/svg+xml,'+encodeURIComponent(svg);
-        requestAnimationFrame(updateFavicon);
-      }
-      updateFavicon();
-    })();
+        updateFavicon();
+      })();
     </script>
     <script
       defer
@@ -1205,7 +1230,13 @@
               <a href="#tormentnexus-hero-vid" class="btn btn-p vid-btn"
                 >▶ WATCH: TORMENTNEXUS AI CONTROL PLANE</a
               >
-              <a href="/download.html" class="btn btn-p" style="margin-left:12px;background:linear-gradient(180deg,#7c3aed,#6d28d9)"
+              <a
+                href="/download.html"
+                class="btn btn-p"
+                style="
+                  margin-left: 12px;
+                  background: linear-gradient(180deg, #7c3aed, #6d28d9);
+                "
                 >⬇ DOWNLOAD NOW</a
               >
             </div>

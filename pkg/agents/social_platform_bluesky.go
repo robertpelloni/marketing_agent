@@ -197,8 +197,15 @@ func (p *RedditProvider) Post(ctx context.Context, req PostRequest) (err error) 
 		}
 	}()
 
-	// Launch headless Chromium with no-sandbox for Linux VPS compatibility
-	u := launcher.New().NoSandbox(true).MustLaunch()
+	// Launch headless Chromium with all required flags for Linux VPS (root/no sandbox)
+	u := launcher.New().
+		NoSandbox(true).
+		Headless(true).
+		Set("disable-gpu").
+		Set("disable-dev-shm-usage").
+		Set("disable-extensions").
+		Set("disable-setuid-sandbox").
+		MustLaunch()
 	browser := rod.New().ControlURL(u).MustConnect()
 	defer func() { _ = browser.Close() }()
 

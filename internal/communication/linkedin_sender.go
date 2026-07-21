@@ -63,8 +63,15 @@ func (l *LinkedInSender) sendViaRod(ctx context.Context, msg LinkedInMessage) (e
 		}
 	}()
 
-	// Configure rod launcher with --no-sandbox to run cleanly inside Docker and Linux VPS root systemd environments
-	u := launcher.New().NoSandbox(true).MustLaunch()
+	// Configure rod launcher with all required flags for Linux VPS (root/no sandbox)
+	u := launcher.New().
+		NoSandbox(true).
+		Headless(true).
+		Set("disable-gpu").
+		Set("disable-dev-shm-usage").
+		Set("disable-extensions").
+		Set("disable-setuid-sandbox").
+		MustLaunch()
 	browser := rod.New().ControlURL(u).MustConnect()
 	defer func() { _ = browser.Close() }()
 

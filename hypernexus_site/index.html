@@ -23,14 +23,49 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>">
     <script>
     (function(){
-      var hue=0;
+      var t=0;
       function updateFavicon(){
-        hue=(hue+20)%360;
-        var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0%25" y1="0%25" x2="100%25" y2="100%25">';
-        for(var i=0;i<=7;i++){
-          svg+='<stop offset="'+(i*14)+'%25" stop-color="hsl('+(hue+i*45)+',80%25,50%25)"/>';
+        t+=0.05;
+        var hue=(t*50)%360;
+        var scale=0.8+Math.sin(t*2)*0.2;
+        var rot=t*30;
+        
+        // Create geometric shape with folding effect
+        var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">';
+        
+        // Background circle
+        svg+='<circle cx="50" cy="50" r="48" fill="hsl('+hue+',60%,15%)"/>';
+        
+        // Rotating geometric shapes
+        for(var i=0;i<6;i++){
+          var angle=rot+i*60;
+          var r=30+Math.sin(t*3+i)*10;
+          var x=50+Math.cos(angle*Math.PI/180)*r*0.3;
+          var y=50+Math.sin(angle*Math.PI/180)*r*0.3;
+          var size=15+Math.sin(t*2+i*0.5)*8;
+          var h=(hue+i*60)%360;
+          
+          svg+='<polygon points="';
+          for(var j=0;j<6;j++){
+            var a=(angle+j*60)*Math.PI/180;
+            var px=x+Math.cos(a)*size*scale;
+            var py=y+Math.sin(a)*size*scale;
+            svg+=px.toFixed(1)+','+py.toFixed(1)+' ';
+          }
+          svg+='" fill="hsla('+h+',80%,60%,0.7)" stroke="hsla('+h+',90%,70%,0.9)" stroke-width="1.5"/>';
         }
-        svg+='</linearGradient></defs><circle cx="50" cy="50" r="45" fill="url(%23g)"/></svg>';
+        
+        // Center pulsing circle
+        var centerSize=12+Math.sin(t*4)*5;
+        svg+='<circle cx="50" cy="50" r="'+centerSize+'" fill="hsla('+(hue+180)+',90%,70%,0.9)" stroke="white" stroke-width="2"/>';
+        
+        // Outer ring
+        svg+='<circle cx="50" cy="50" r="45" fill="none" stroke="hsla('+hue+',80%,60%,0.5)" stroke-width="2" stroke-dasharray="5,5">';
+        svg+='<animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="3s" repeatCount="indefinite"/>';
+        svg+='</circle>';
+        
+        svg+='</svg>';
+        
         var link=document.querySelector('link[rel="icon"]');
         if(link)link.href='data:image/svg+xml,'+encodeURIComponent(svg);
         requestAnimationFrame(updateFavicon);

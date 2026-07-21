@@ -20,136 +20,20 @@
     <meta name="twitter:description" content="Local-first cognitive control plane for AI agents.">
     <meta name="twitter:image" content="https://hypernexus.site/hypernexus_poster.jpg">
     <script defer data-domain="hypernexus.site" src="https://plausible.io/js/script.js"></script>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23000'/></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>">
     <script>
     (function(){
-      var t=0;
-      var canvas=document.createElement('canvas');
-      canvas.width=64;
-      canvas.height=64;
-      var ctx=canvas.getContext('2d');
-      
+      var hue=0;
       function updateFavicon(){
-        t+=0.015;
-        ctx.clearRect(0,0,64,64);
-        
-        // Black background with subtle gradient
-        var bg=ctx.createRadialGradient(32,32,0,32,32,32);
-        bg.addColorStop(0,'hsl('+((t*40)%360)+',20%,8%)');
-        bg.addColorStop(1,'#000');
-        ctx.fillStyle=bg;
-        ctx.fillRect(0,0,64,64);
-        
-        var cx=32, cy=32;
-        
-        // Outer glow ring
-        ctx.save();
-        ctx.strokeStyle='hsla('+((t*60)%360)+',100%,60%,0.4)';
-        ctx.lineWidth=2;
-        ctx.shadowColor='hsla('+((t*60)%360)+',100%,50%,0.6)';
-        ctx.shadowBlur=10;
-        ctx.beginPath();
-        ctx.arc(cx,cy,30,0,Math.PI*2);
-        ctx.stroke();
-        ctx.restore();
-        
-        // Rotating geometric layers with folding effect
-        for(var layer=0;layer<5;layer++){
-          var hue=(t*70+layer*72)%360;
-          var rot=t*(0.8+layer*0.15);
-          var breathe=0.85+Math.sin(t*1.5+layer*0.8)*0.15;
-          var sides=6;
-          var radius=(22-layer*3)*breathe;
-          
-          ctx.save();
-          ctx.translate(cx,cy);
-          ctx.rotate(rot);
-          
-          // Shape with glow
-          ctx.shadowColor='hsla('+hue+',100%,60%,0.7)';
-          ctx.shadowBlur=6;
-          ctx.strokeStyle='hsla('+hue+',100%,70%,0.85)';
-          ctx.lineWidth=1.2;
-          ctx.fillStyle='hsla('+hue+',70%,25%,0.25)';
-          
-          ctx.beginPath();
-          for(var i=0;i<=sides;i++){
-            var a=(i/sides)*Math.PI*2-Math.PI/2;
-            var wobble=Math.sin(t*2+i*1.2+layer)*2;
-            var r=radius+wobble;
-            var x=Math.cos(a)*r;
-            var y=Math.sin(a)*r;
-            if(i===0)ctx.moveTo(x,y);
-            else ctx.lineTo(x,y);
-          }
-          ctx.closePath();
-          ctx.fill();
-          ctx.stroke();
-          
-          // Inner lines connecting vertices
-          ctx.strokeStyle='hsla('+hue+',100%,80%,0.15)';
-          ctx.lineWidth=0.5;
-          for(var i=0;i<sides;i++){
-            var a1=(i/sides)*Math.PI*2-Math.PI/2;
-            var a2=((i+2)%sides/sides)*Math.PI*2-Math.PI/2;
-            ctx.beginPath();
-            ctx.moveTo(Math.cos(a1)*radius, Math.sin(a1)*radius);
-            ctx.lineTo(Math.cos(a2)*radius, Math.sin(a2)*radius);
-            ctx.stroke();
-          }
-          
-          ctx.restore();
-        }
-        
-        // Central pulsing core with layers
-        var corePulse=0.6+Math.sin(t*3)*0.4;
-        var coreHue=(t*100)%360;
-        
-        // Outer core glow
-        ctx.save();
-        ctx.shadowColor='hsla('+coreHue+',100%,60%,0.8)';
-        ctx.shadowBlur=12;
-        ctx.fillStyle='hsla('+coreHue+',90%,50%,0.6)';
-        ctx.beginPath();
-        ctx.arc(cx,cy,8*corePulse,0,Math.PI*2);
-        ctx.fill();
-        ctx.restore();
-        
-        // Inner core
-        ctx.fillStyle='hsla('+coreHue+',100%,80%,0.95)';
-        ctx.beginPath();
-        ctx.arc(cx,cy,4*corePulse,0,Math.PI*2);
-        ctx.fill();
-        
-        // Core highlight
-        ctx.fillStyle='rgba(255,255,255,0.9)';
-        ctx.beginPath();
-        ctx.arc(cx-1,cy-1,2*corePulse,0,Math.PI*2);
-        ctx.fill();
-        
-        // Orbiting particles with trails
-        for(var p=0;p<8;p++){
-          var angle=t*(1.5+p*0.1)+p*(Math.PI*2/8);
-          var dist=22+Math.sin(t*2+p*0.7)*6;
-          var px=cx+Math.cos(angle)*dist;
-          var py=cy+Math.sin(angle)*dist;
-          var pHue=(t*80+p*45)%360;
-          var pSize=1.5+Math.sin(t*3+p)*0.8;
-          
-          ctx.save();
-          ctx.shadowColor='hsla('+pHue+',100%,60%,0.8)';
-          ctx.shadowBlur=4;
-          ctx.fillStyle='hsla('+pHue+',100%,75%,0.9)';
-          ctx.beginPath();
-          ctx.arc(px,py,pSize,0,Math.PI*2);
-          ctx.fill();
-          ctx.restore();
-        }
-        
-        // Update favicon
-        var link=document.querySelector('link[rel="icon"]');
-        if(link)link.href=canvas.toDataURL('image/png');
-        
+        hue=(hue+15)%360;
+        var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">';
+        svg+='<circle cx="50" cy="50" r="48" fill="hsl('+hue+',40%,10%)"/>';
+        svg+='<polygon points="50,15 85,35 85,65 50,85 15,65 15,35" fill="none" stroke="hsl('+hue+',100%,60%)" stroke-width="4"/>';
+        svg+='<polygon points="50,25 75,40 75,60 50,75 25,60 25,40" fill="none" stroke="hsl('+(hue+60)+',100%,60%)" stroke-width="3"/>';
+        svg+='<polygon points="50,35 65,45 65,55 50,65 35,55 35,45" fill="none" stroke="hsl('+(hue+120)+',100%,60%)" stroke-width="2"/>';
+        svg+='<circle cx="50" cy="50" r="10" fill="hsl('+(hue+180)+',100%,70%)"/>';
+        svg+='</svg>';
+        document.querySelector('link[rel="icon"]').href='data:image/svg+xml,'+encodeURIComponent(svg);
         requestAnimationFrame(updateFavicon);
       }
       updateFavicon();

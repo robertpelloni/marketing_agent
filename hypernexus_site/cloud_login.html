@@ -100,6 +100,18 @@
         color: #0f172a;
         -webkit-text-fill-color: #0f172a;
         background: none;
+        -webkit-background-clip: initial;
+        background-clip: initial;
+        animation: heroShine 3.5s linear infinite;
+        background: linear-gradient(90deg, #0f172a 0%, #0f172a 40%, #ffffff 50%, #0f172a 60%, #0f172a 100%);
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      @keyframes heroShine {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
       }
       @keyframes rainbowBtnSlow {
         0% {

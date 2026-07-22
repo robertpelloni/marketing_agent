@@ -47,6 +47,21 @@
       .comparison th{color:hsl(var(--accent-hue),80%,60%);font-weight:600}
       .check{color:#4cd964}
       .x{color:#ff3b30}
+      .logo-text {
+        font-size: 20px; font-weight: 700;
+        background: linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);
+        background-size: 800% 100%; animation: rainbowBtnSlow 1.5s linear infinite;
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      }
+      .logo-text span {
+        color: #fff; -webkit-text-fill-color: #fff; background: none;
+        -webkit-background-clip: initial; background-clip: initial;
+        animation: heroShine 3.5s linear infinite;
+        background: linear-gradient(90deg, #fff 0%, #fff 40%, rgba(255,255,255,0.3) 50%, #fff 60%, #fff 100%);
+        background-size: 200% 100%;
+        -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      }
+      @keyframes heroShine { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
       .nav{text-align:center;margin-bottom:40px}
       .nav a{color:#888;text-decoration:none;margin:0 16px;font-size:14px}
       .nav a:hover{color:#fff}
@@ -56,6 +71,7 @@
 </head>
 <body>
     <div class="nav">
+        <a href="/" class="logo-text" style="text-decoration:none;font-size:18px">Hyper<span>Nexus</span></a>
         <a href="/">Home</a>
         <a href="/#features">Features</a>
         <a href="/download">Download</a>

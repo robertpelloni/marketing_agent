@@ -90,18 +90,27 @@
         overflow: hidden;
       }
       .logo-bar::after {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: -100%;
         width: 60%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.6),
+          transparent
+        );
         animation: logoShine 3s linear infinite;
       }
       @keyframes logoShine {
-        0% { left: -100%; }
-        100% { left: 200%; }
+        0% {
+          left: -100%;
+        }
+        100% {
+          left: 200%;
+        }
       }
       .logo-text {
         position: relative;
@@ -565,7 +574,7 @@
         return false;
       }
       function handleOAuthLogin(p) {
-        window.location.href = 'https://hypernexus.site/auth/' + p;
+        window.location.href = "https://hypernexus.site/auth/" + p;
       }
 
       // Get Started button - direct Stripe checkout

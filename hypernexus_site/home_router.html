@@ -1,37 +1,53 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HyperNexus — Corporate AI Control Plane</title>
-    <meta name="description" content="Local-first cognitive control plane for AI agents. Progressive MCP tool routing, persistent memory, LLM waterfall failover, and multi-agent orchestration.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>">
+    <meta
+      name="description"
+      content="Local-first cognitive control plane for AI agents. Progressive MCP tool routing, persistent memory, LLM waterfall failover, and multi-agent orchestration."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>"
+    />
     <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RX66REH6LV"></script>
-    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RX66REH6LV');</script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-RX66REH6LV"
+    ></script>
     <script>
-        // A/B Test: 50%/50% split for homepage
-        (function() {
-            var variant = localStorage.getItem('hn_home_ab');
-            if (!variant) {
-                variant = Math.random() < 0.5 ? 'a' : 'b';
-                localStorage.setItem('hn_home_ab', variant);
-            }
-            // Track variant
-            if (typeof gtag === 'function') {
-                gtag('event', 'home_ab_variant', {'variant': variant});
-            }
-            // Redirect to variant
-            if (variant === 'b') {
-                window.location.replace('/index_b.html');
-            }
-            // If variant 'a', stay on this page (default)
-        })();
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-RX66REH6LV");
     </script>
-</head>
-<body>
+    <script>
+      // A/B Test: 50%/50% split for homepage
+      (function () {
+        var variant = localStorage.getItem("hn_home_ab");
+        if (!variant) {
+          variant = Math.random() < 0.5 ? "a" : "b";
+          localStorage.setItem("hn_home_ab", variant);
+        }
+        // Track variant
+        if (typeof gtag === "function") {
+          gtag("event", "home_ab_variant", { variant: variant });
+        }
+        // Redirect to variant
+        if (variant === "b") {
+          window.location.replace("/index_b.html");
+        }
+        // If variant 'a', stay on this page (default)
+      })();
+    </script>
+  </head>
+  <body>
     <noscript>
-        <meta http-equiv="refresh" content="0;url=/index_a.html">
+      <meta http-equiv="refresh" content="0;url=/index_a.html" />
     </noscript>
-</body>
+  </body>
 </html>

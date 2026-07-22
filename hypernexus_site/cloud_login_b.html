@@ -26,22 +26,51 @@
       gtag("config", "G-RX66REH6LV");
     </script>
     <style>
-      :root {
-        --bg: #f0f7ff;
-        --accent: #0284c7;
-        --accent2: #0369a1;
-        --text: #0f172a;
-        --text-secondary: #475569;
-        --input-bg: rgba(2, 132, 199, 0.05);
-        --input-border: rgba(2, 132, 199, 0.15);
+      @property --accent-hue {
+        syntax: "<number>";
+        inherits: true;
+        initial-value: 200;
       }
+
+      :root {
+        --bg: hsl(var(--accent-hue), 20%, 8%);
+        --card: rgba(255, 255, 255, 0.05);
+        --border: rgba(255, 255, 255, 0.1);
+        --accent: hsl(var(--accent-hue), 80%, 60%);
+        --accent2: hsl(var(--accent-hue), 80%, 50%);
+        --text: #e2e8f0;
+        --text-secondary: #94a3b8;
+        --input-bg: rgba(255, 255, 255, 0.05);
+        --input-border: rgba(255, 255, 255, 0.1);
+        animation: hueShift 12s linear infinite;
+      }
+
+      @keyframes hueShift {
+        0% {
+          --accent-hue: 0;
+        }
+        100% {
+          --accent-hue: 360;
+        }
+      }
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
+
       body {
-        background: var(--bg);
+        background: linear-gradient(
+          90deg,
+          hsl(var(--accent-hue), 30%, 10%) 0%,
+          hsl(var(--accent-hue), 20%, 7%) 15%,
+          hsl(var(--accent-hue), 10%, 5%) 30%,
+          hsl(var(--accent-hue), 10%, 5%) 70%,
+          hsl(var(--accent-hue), 20%, 7%) 85%,
+          hsl(var(--accent-hue), 30%, 10%) 100%
+        );
+        background-attachment: fixed;
         color: var(--text);
         font-family:
           "Inter",
@@ -52,42 +81,28 @@
         display: flex;
         flex-direction: column;
       }
-      .bg-pattern {
+      .bg-grid {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background-image: radial-gradient(
-          circle at 1px 1px,
-          rgba(2, 132, 199, 0.05) 1px,
-          transparent 0
-        );
-        background-size: 40px 40px;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 60px 60px;
         pointer-events: none;
       }
       .bg-glow {
         position: fixed;
-        top: -100px;
-        right: -100px;
-        width: 400px;
-        height: 400px;
+        top: -200px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 600px;
         background: radial-gradient(
           circle,
-          rgba(2, 132, 199, 0.08) 0%,
-          transparent 70%
-        );
-        pointer-events: none;
-      }
-      .bg-glow2 {
-        position: fixed;
-        bottom: -100px;
-        left: -100px;
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(
-          circle,
-          rgba(3, 105, 161, 0.06) 0%,
+          hsla(var(--accent-hue), 60%, 60%, 0.1) 0%,
           transparent 70%
         );
         pointer-events: none;
@@ -206,8 +221,8 @@
         background-clip: text;
       }
       .logo-text span {
-        color: #0f172a;
-        -webkit-text-fill-color: #0f172a;
+        color: #fff;
+        -webkit-text-fill-color: #fff;
         background: none;
       }
       .header-links a {
@@ -218,7 +233,7 @@
         transition: color 0.2s;
       }
       .header-links a:hover {
-        color: var(--accent);
+        color: #fff;
       }
       .main {
         flex: 1;
@@ -229,29 +244,35 @@
         position: relative;
         z-index: 10;
       }
-      .login-container {
+      .login-card {
         width: 100%;
-        max-width: 400px;
+        max-width: 440px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 40px;
+        backdrop-filter: blur(20px);
       }
-      .login-container h1 {
-        font-size: 28px;
-        font-weight: 800;
-        color: var(--text);
-        margin-bottom: 6px;
+      .login-card h1 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 8px;
+        text-align: center;
       }
-      .login-container .subtitle {
-        font-size: 15px;
+      .login-card .subtitle {
+        font-size: 14px;
         color: var(--text-secondary);
+        text-align: center;
         margin-bottom: 32px;
       }
       .tabs {
         display: flex;
         gap: 4px;
-        background: rgba(2, 132, 199, 0.06);
-        border-radius: 10px;
+        background: var(--input-bg);
+        border-radius: 8px;
         padding: 4px;
-        margin-bottom: 28px;
-        border: 1px solid var(--input-border);
+        margin-bottom: 24px;
       }
       .tab {
         flex: 1;
@@ -262,45 +283,43 @@
         font-size: 14px;
         font-weight: 500;
         cursor: pointer;
-        border-radius: 7px;
+        border-radius: 6px;
         transition: all 0.2s;
       }
       .tab.active {
-        background: #fff;
-        color: var(--accent);
+        background: var(--accent);
+        color: #fff;
         font-weight: 600;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
       }
       .tab:hover:not(.active) {
-        color: var(--text);
+        color: #fff;
       }
       .form-group {
-        margin-bottom: 18px;
+        margin-bottom: 16px;
       }
       .form-group label {
         display: block;
         font-size: 13px;
-        font-weight: 600;
-        color: var(--text);
+        font-weight: 500;
+        color: var(--text-secondary);
         margin-bottom: 6px;
       }
       .form-group input {
         width: 100%;
         padding: 12px 14px;
-        background: #fff;
+        background: var(--input-bg);
         border: 1px solid var(--input-border);
-        border-radius: 10px;
-        color: var(--text);
+        border-radius: 8px;
+        color: #fff;
         font-size: 14px;
         outline: none;
-        transition: all 0.2s;
+        transition: border-color 0.2s;
       }
       .form-group input:focus {
         border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
       }
       .form-group input::placeholder {
-        color: rgba(0, 0, 0, 0.25);
+        color: rgba(255, 255, 255, 0.3);
       }
       .divider {
         display: flex;
@@ -313,18 +332,17 @@
         content: "";
         flex: 1;
         height: 1px;
-        background: var(--input-border);
+        background: var(--border);
       }
       .divider span {
         font-size: 12px;
         color: var(--text-secondary);
-        font-weight: 500;
       }
       .btn {
         width: 100%;
         padding: 12px;
         border: none;
-        border-radius: 10px;
+        border-radius: 8px;
         font-size: 14px;
         font-weight: 600;
         cursor: pointer;
@@ -338,20 +356,19 @@
       .btn-primary {
         background: linear-gradient(135deg, var(--accent), var(--accent2));
         color: #fff;
-        box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
       }
       .btn-primary:hover {
+        opacity: 0.9;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
       }
       .btn-secondary {
-        background: #fff;
+        background: var(--input-bg);
         color: var(--text);
         border: 1px solid var(--input-border);
       }
       .btn-secondary:hover {
         border-color: var(--accent);
-        color: var(--accent);
+        color: #fff;
       }
       .btn-icon {
         width: 20px;
@@ -366,7 +383,6 @@
       .footer-text a {
         color: var(--accent);
         text-decoration: none;
-        font-weight: 500;
       }
       .footer-text a:hover {
         text-decoration: underline;
@@ -378,22 +394,16 @@
         display: block;
       }
       .error {
-        color: #dc2626;
+        color: #ff3b30;
         font-size: 13px;
         margin-top: 4px;
         display: none;
-        background: rgba(220, 38, 38, 0.05);
-        padding: 8px 12px;
-        border-radius: 8px;
       }
       .success {
-        color: #16a34a;
+        color: #4cd964;
         font-size: 13px;
         margin-top: 4px;
         display: none;
-        background: rgba(22, 163, 74, 0.05);
-        padding: 8px 12px;
-        border-radius: 8px;
       }
       footer {
         padding: 24px;
@@ -410,9 +420,8 @@
     </style>
   </head>
   <body>
-    <div class="bg-pattern"></div>
+    <div class="bg-grid"></div>
     <div class="bg-glow"></div>
-    <div class="bg-glow2"></div>
 
     <div class="header">
       <a href="/" class="logo">
@@ -426,7 +435,7 @@
     </div>
 
     <div class="main">
-      <div class="login-container">
+      <div class="login-card">
         <h1>Welcome back</h1>
         <p class="subtitle">Sign in to your HyperNexus control plane</p>
 
@@ -550,7 +559,7 @@
             >
               Don't have HyperNexus running locally?
             </p>
-            <a href="https://hypernexus.site/download" class="btn btn-secondary"
+            <a href="/download" class="btn btn-secondary"
               >Download HyperNexus</a
             >
           </div>
@@ -571,12 +580,7 @@
         >
           <a
             href="https://hypernexus.site/pricing.html"
-            style="
-              color: var(--accent);
-              font-size: 13px;
-              text-decoration: none;
-              font-weight: 500;
-            "
+            style="color: var(--accent); font-size: 13px; text-decoration: none"
             >View Pricing</a
           >
           <a
@@ -657,10 +661,12 @@
         errorEl.style.display = "none";
         successEl.style.display = "none";
 
+        // Simulate login (replace with actual API call)
         successEl.textContent = "Connecting to cloud...";
         successEl.style.display = "block";
 
         setTimeout(() => {
+          // Redirect to cloud dashboard
           window.location.href = "https://cloud.hypernexus.site/dashboard";
         }, 1000);
 
@@ -677,6 +683,7 @@
         errorEl.style.display = "none";
         successEl.style.display = "none";
 
+        // Test connection
         successEl.textContent = "Testing connection...";
         successEl.style.display = "block";
 
@@ -686,6 +693,7 @@
           .then((r) => {
             if (r.ok) {
               successEl.textContent = "Connected! Redirecting...";
+              // Store connection details
               localStorage.setItem("hypernexus_local_url", url);
               if (token) localStorage.setItem("hypernexus_local_token", token);
               setTimeout(() => {
@@ -706,9 +714,11 @@
       }
 
       function handleOAuthLogin(provider) {
+        // Redirect to OAuth flow
         window.location.href = "/auth/" + provider;
       }
 
+      // Check for saved local connection
       const savedUrl = localStorage.getItem("hypernexus_local_url");
       if (savedUrl) {
         document.getElementById("local-url").value = savedUrl;

@@ -69,22 +69,15 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-      }
-      .logo {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
         position: relative;
       }
       .logo-bar {
         position: absolute;
-        top: 50%;
+        top: 0;
         left: 0;
         right: 0;
-        height: 4px;
+        bottom: 0;
         background: #fff;
-        transform: translateY(-50%);
         z-index: 0;
       }
       .logo-text {
@@ -334,8 +327,8 @@
   </head>
   <body>
     <div class="header">
+      <div class="logo-bar"></div>
       <a href="/" class="logo">
-        <div class="logo-bar"></div>
         <div class="logo-text">Hyper<span>Nexus</span></div>
       </a>
       <div class="header-links">

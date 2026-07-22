@@ -25,9 +25,15 @@ logger = logging.getLogger(__name__)
 
 # Twitter API credentials
 CONSUMER_KEY = os.getenv("TWITTER_API_KEY", "3cxJy4XTdlzhL0BWdPOkRzX7G")
-CONSUMER_SECRET = os.getenv("TWITTER_API_SECRET", "ntRC30S1l07FiSZN6elkicl5OVjAu3AR60LlvFxexoLsiQs9l0")
-ACCESS_TOKEN = os.getenv("TWITTER_ACCESS_TOKEN", "2079245743085223936-5DUc3zZOrRFBtUSVuk7tmv3cpHChVB")
-ACCESS_SECRET = os.getenv("TWITTER_ACCESS_SECRET", "U69aKhP8QqVadE00ioeXfnN5Rv6vPT2yLghFHoDdcIEck")
+CONSUMER_SECRET = os.getenv(
+    "TWITTER_API_SECRET", "ntRC30S1l07FiSZN6elkicl5OVjAu3AR60LlvFxexoLsiQs9l0"
+)
+ACCESS_TOKEN = os.getenv(
+    "TWITTER_ACCESS_TOKEN", "2079245743085223936-5DUc3zZOrRFBtUSVuk7tmv3cpHChVB"
+)
+ACCESS_SECRET = os.getenv(
+    "TWITTER_ACCESS_SECRET", "U69aKhP8QqVadE00ioeXfnN5Rv6vPT2yLghFHoDdcIEck"
+)
 
 # Data files
 POSTED_FILE = Path("/opt/marketing_agent/data/twitter_posted.json")
@@ -36,23 +42,14 @@ POSTED_FILE.parent.mkdir(parents=True, exist_ok=True)
 # Tweet templates
 TWEET_TEMPLATES = [
     "Building AI agents that actually remember? HyperNexus's dual-tier memory architecture persists 14K+ memories across sessions. No more re-explaining your codebase. #AI #LLM #DevTools https://hypernexus.site",
-    
     "Your AI agent is drowning in 50K tokens of tool definitions. HyperNexus's progressive MCP routing injects only the 3 most relevant tools per request. 95% context reduction. #AI #MCP https://hypernexus.site",
-    
     "OpenAI rate-limited? No problem. HyperNexus cascades from cloud APIs to OpenRouter to local Ollama automatically. Zero downtime inference. #AI #DevOps https://hypernexus.site",
-    
     "One config, six AI harnesses. Claude Code, Cursor, Codex, Gemini CLI, Copilot, Windsurf — byte-for-byte identical tool signatures. No vendor lock-in. #AI #DevTools https://hypernexus.site",
-    
     "Local-first AI infrastructure: your team's knowledge stays on your machines. No cloud dependency. 14K+ persisted memories. Works offline. #AI #Privacy https://hypernexus.site",
-    
     "Multi-agent orchestration done right. Planner, Implementer, Tester, Critic — all in one chatroom with shared transcript and consensus-driven decisions. #AI #Agents https://hypernexus.site",
-    
     "Stop re-explaining your codebase every session. HyperNexus remembers decisions, preferences, and architectural choices. Persistent AI memory. #AI #Productivity https://hypernexus.site",
-    
     "The waterfall approach: when your primary LLM fails, HyperNexus cascades to the next provider automatically. NVIDIA → OpenRouter → Ollama. #AI #Reliability https://hypernexus.site",
-    
     "Cross-harness tool parity means your team can use their preferred AI tool. One config works everywhere. No vendor lock-in. #AI #Flexibility https://hypernexus.site",
-    
     "14,726 memories that survive restarts. Your AI agent's knowledge is permanent, searchable, and instantly available. #AI #Memory https://hypernexus.site",
 ]
 
@@ -98,29 +95,29 @@ def post_tweet(client, tweet_text: str) -> bool:
 def main():
     """Main bot function."""
     logger.info("=== HyperNexus Twitter Bot ===")
-    
+
     client = get_twitter_client()
     posted = load_posted()
-    
+
     # Choose a tweet that hasn't been posted recently
     available = [t for t in TWEET_TEMPLATES if hash(t) not in posted]
-    
+
     if not available:
         # Reset if all have been posted
         posted.clear()
         available = TWEET_TEMPLATES.copy()
-    
+
     tweet_text = random.choice(available)
-    
+
     logger.info(f"Posting tweet: {tweet_text[:80]}...")
-    
+
     if post_tweet(client, tweet_text):
         posted.add(hash(tweet_text))
         save_posted(posted)
         logger.info("Tweet posted successfully!")
     else:
         logger.error("Failed to post tweet")
-    
+
     logger.info(f"Done! Total posted: {len(posted)}")
 
 

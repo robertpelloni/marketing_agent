@@ -69,11 +69,19 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        padding-bottom: 8px;
         border-bottom: 4px solid #000;
         position: relative;
         overflow: hidden;
       }
-      .header::after {
+      .logo::after {
         content: '';
         position: absolute;
         bottom: 0;
@@ -81,17 +89,11 @@
         width: 60%;
         height: 4px;
         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-        animation: barShine 3s linear infinite;
+        animation: logoShine 3s linear infinite;
       }
-      @keyframes barShine {
+      @keyframes logoShine {
         0% { left: -100%; }
         100% { left: 200%; }
-      }
-      .logo {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        text-decoration: none;
       }
       .logo-text {
         font-size: 20px;
@@ -333,7 +335,6 @@
       .local-section {
         display: none;
       }
-
     </style>
   </head>
   <body>

@@ -276,34 +276,26 @@
           <li>No lock-in, no vendor hostage</li>
         </ul>
 
-        <a
-          href="#"
-          onclick="
-            event.preventDefault();
-            fetch('https://hypernexus.site/api/v1/billing/checkout', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                tier: 'HYPERNEXUS_PROFESSIONAL_LICENSE',
-                seats: 1,
-                success_url: 'https://hypernexus.site/success.html',
-                cancel_url: 'https://hypernexus.site/pricing.html',
-              }),
-            })
-              .then(function (r) {
-                return r.json();
-              })
-              .then(function (d) {
-                if (d.url) window.location.href = d.url;
-              })
-              .catch(function (e) {
-                alert('Error: ' + e.message);
-              });
-          "
-          class="btn btn-primary"
-        >
+        <button onclick="buyNow()" class="btn btn-primary" style="cursor:pointer;border:none;width:100%">
           Get Started →
-        </a>
+        </button>
+        <script>
+        function buyNow(){
+          fetch('/api/v1/billing/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier:'HYPERNEXUS_PROFESSIONAL_LICENSE',seats:1,success_url:'https://hypernexus.site/success.html',cancel_url:'https://hypernexus.site/pricing.html'})})
+          .then(function(r){
+            if(!r.ok) throw new Error('Server error '+r.status);
+            return r.json();
+          })
+          .then(function(d){
+            if(d.url)window.location.href=d.url;
+            else alert('Error: No checkout URL returned');
+          })
+          .catch(function(e){
+            console.error('Checkout error:',e);
+            alert('Checkout error: '+e.message);
+          })
+        }
+        </script>
 
         <p class="guarantee">
           <strong>30-day money-back guarantee.</strong> No questions asked.

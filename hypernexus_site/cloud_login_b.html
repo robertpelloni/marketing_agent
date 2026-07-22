@@ -76,18 +76,26 @@
         align-items: center;
         gap: 10px;
         text-decoration: none;
-        padding-bottom: 8px;
-        border-bottom: 4px solid #000;
         position: relative;
+      }
+      .logo-bar {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: #000;
+        transform: translateY(-50%);
+        z-index: 0;
         overflow: hidden;
       }
-      .logo::after {
+      .logo-bar::after {
         content: '';
         position: absolute;
-        bottom: 0;
+        top: 0;
         left: -100%;
         width: 60%;
-        height: 4px;
+        height: 100%;
         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
         animation: logoShine 3s linear infinite;
       }
@@ -96,6 +104,9 @@
         100% { left: 200%; }
       }
       .logo-text {
+        position: relative;
+        z-index: 1;
+        padding: 0 8px;
         font-size: 20px;
         font-weight: 700;
         background: linear-gradient(
@@ -339,9 +350,10 @@
   </head>
   <body>
     <div class="header">
-      <a href="/" class="logo"
-        ><div class="logo-text">Hyper<span>Nexus</span></div></a
-      >
+      <a href="/" class="logo">
+        <div class="logo-bar"></div>
+        <div class="logo-text">Hyper<span>Nexus</span></div>
+      </a>
       <div class="header-links">
         <a href="https://hypernexus.site/#features">Features</a>
         <a href="https://hypernexus.site/pricing.html">Pricing</a>
@@ -553,7 +565,7 @@
         return false;
       }
       function handleOAuthLogin(p) {
-        window.location.href = "/auth/" + p;
+        window.location.href = 'https://hypernexus.site/auth/' + p;
       }
 
       // Get Started button - direct Stripe checkout

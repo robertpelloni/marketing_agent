@@ -276,7 +276,32 @@
           <li>No lock-in, no vendor hostage</li>
         </ul>
 
-        <a href="#" onclick="event.preventDefault();fetch('https://hypernexus.site/api/v1/billing/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier:'HYPERNEXUS_PROFESSIONAL_LICENSE',seats:1,success_url:'https://hypernexus.site/success.html',cancel_url:'https://hypernexus.site/pricing.html'})}).then(function(r){return r.json()}).then(function(d){if(d.url)window.location.href=d.url}).catch(function(e){alert('Error: '+e.message)})" class="btn btn-primary">
+        <a
+          href="#"
+          onclick="
+            event.preventDefault();
+            fetch('https://hypernexus.site/api/v1/billing/checkout', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                tier: 'HYPERNEXUS_PROFESSIONAL_LICENSE',
+                seats: 1,
+                success_url: 'https://hypernexus.site/success.html',
+                cancel_url: 'https://hypernexus.site/pricing.html',
+              }),
+            })
+              .then(function (r) {
+                return r.json();
+              })
+              .then(function (d) {
+                if (d.url) window.location.href = d.url;
+              })
+              .catch(function (e) {
+                alert('Error: ' + e.message);
+              });
+          "
+          class="btn btn-primary"
+        >
           Get Started →
         </a>
 

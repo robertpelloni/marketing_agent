@@ -71,7 +71,7 @@
 
       html{scroll-behavior:smooth}
 
-      body{background:linear-gradient(90deg, hsl(var(--accent-hue), 60%, 88%) 0%, hsl(var(--accent-hue), 40%, 95%) 15%, #ffffff 30%, #ffffff 70%, hsl(var(--accent-hue), 40%, 95%) 85%, hsl(var(--accent-hue), 60%, 88%) 100%);background-attachment:fixed;color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-y:auto;overflow-x:hidden}
+      body{background:linear-gradient(90deg, hsl(var(--accent-hue), 80%, 75%) 0%, hsl(var(--accent-hue), 60%, 88%) 10%, #ffffff 25%, #ffffff 75%, hsl(var(--accent-hue), 60%, 88%) 90%, hsl(var(--accent-hue), 80%, 75%) 100%);background-attachment:fixed;color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-y:auto;overflow-x:hidden}
 
       ::selection{background:var(--accent);color:white}
 
@@ -1646,8 +1646,7 @@
         // ========== SLEEK MINIMAL PARTICLE SYSTEM ==========
 
         const canvas = document.getElementById('particle-canvas');
-        if (!canvas) { /* no canvas, skip particles */ }
-        else {
+
         const ctx = canvas.getContext('2d');
 
         let W, H;

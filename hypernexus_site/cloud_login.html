@@ -27,41 +27,41 @@
     </script>
     <style>
       @property --accent-hue {
-        syntax: '<number>';
+        syntax: "<number>";
         inherits: true;
         initial-value: 200;
       }
 
       :root {
-        --bg: hsl(var(--accent-hue), 40%, 96%);
-        --card: rgba(255,255,255,0.8);
-        --border: rgba(0,0,0,0.08);
+        --bg: hsl(var(--accent-hue), 30%, 93%);
+        --card: rgba(255, 255, 255, 0.85);
+        --border: rgba(0, 0, 0, 0.08);
         --accent: hsl(var(--accent-hue), 80%, 50%);
         --accent2: hsl(var(--accent-hue), 80%, 40%);
         --text: #0f172a;
         --text-secondary: #475569;
-        --input-bg: rgba(0,0,0,0.03);
-        --input-border: rgba(0,0,0,0.1);
-        animation: hueShift 7s linear infinite;
+        --input-bg: rgba(0, 0, 0, 0.04);
+        --input-border: rgba(0, 0, 0, 0.12);
+        animation: hueShift 12s linear infinite;
       }
 
       @keyframes hueShift {
         0% { --accent-hue: 0; }
-        14% { --accent-hue: 60; }
-        28% { --accent-hue: 120; }
-        42% { --accent-hue: 180; }
-        57% { --accent-hue: 240; }
-        71% { --accent-hue: 300; }
-        85% { --accent-hue: 360; }
-        100% { --accent-hue: 0; }
+        100% { --accent-hue: 360; }
       }
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
       body {
-        background: linear-gradient(90deg, hsl(var(--accent-hue), 50%, 93%) 0%, hsl(var(--accent-hue), 35%, 97%) 15%, #ffffff 30%, #ffffff 70%, hsl(var(--accent-hue), 35%, 97%) 85%, hsl(var(--accent-hue), 50%, 93%) 100%);
+        background: linear-gradient(
+          90deg,
+          hsl(var(--accent-hue), 40%, 90%) 0%,
+          hsl(var(--accent-hue), 30%, 95%) 15%,
+          hsl(var(--accent-hue), 15%, 97%) 30%,
+          hsl(var(--accent-hue), 15%, 97%) 70%,
+          hsl(var(--accent-hue), 30%, 95%) 85%,
+          hsl(var(--accent-hue), 40%, 90%) 100%
+        );
         background-attachment: fixed;
         color: var(--text);
         font-family:
@@ -92,7 +92,11 @@
         transform: translateX(-50%);
         width: 600px;
         height: 600px;
-        background: radial-gradient(circle, hsla(var(--accent-hue), 60%, 60%, 0.1) 0%, transparent 70%);
+        background: radial-gradient(
+          circle,
+          hsla(var(--accent-hue), 60%, 60%, 0.1) 0%,
+          transparent 70%
+        );
         pointer-events: none;
       }
       .header {
@@ -276,7 +280,7 @@
       }
       .tab.active {
         background: var(--accent);
-        color: #000;
+        color: #fff;
         font-weight: 600;
       }
       .tab:hover:not(.active) {

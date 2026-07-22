@@ -97,22 +97,60 @@
       .logo-icon {
         width: 36px;
         height: 36px;
-        background: linear-gradient(135deg, var(--accent), var(--accent2));
-        border-radius: 8px;
+        background: linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);
+        background-size: 800% 100%;
+        animation: rainbowBtnSlow 1.5s linear infinite, logoSpin 2s linear infinite;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #fff;
         font-weight: 800;
-        font-size: 18px;
+        font-size: 11px;
+        color: white;
+        letter-spacing: 0.5px;
+        text-shadow: 0 0 6px rgba(255,255,255,0.8);
+        box-shadow: 0 0 10px rgba(255, 59, 48, 0.4), 0 0 20px rgba(255, 149, 0, 0.3);
+        position: relative;
+      }
+      .logo-icon::after {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        background: linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);
+        background-size: 800% 100%;
+        animation: rainbowBtnReverse 1.5s linear infinite;
+        border-radius: 50%;
+        z-index: -1;
+        filter: blur(6px);
+        opacity: 0.8;
+      }
+      @keyframes rainbowBtnSlow {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 800% 50%; }
+      }
+      @keyframes rainbowBtnReverse {
+        0% { background-position: 800% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      @keyframes logoSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
       .logo-text {
         font-size: 20px;
         font-weight: 700;
-        color: #fff;
+        letter-spacing: -0.5px;
+        background: linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);
+        background-size: 800% 100%;
+        animation: rainbowBtnSlow 1.5s linear infinite;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
       .logo-text span {
-        color: var(--accent);
+        color: #fff;
+        -webkit-text-fill-color: #fff;
+        background: none;
       }
       .header-links a {
         color: var(--text-secondary);

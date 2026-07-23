@@ -130,7 +130,7 @@
 
       html{scroll-behavior:smooth}
 
-      body{background:linear-gradient(90deg, hsl(var(--accent-hue), 80%, 75%) 0%, hsl(var(--accent-hue), 60%, 85%) 8%, hsl(var(--accent-hue), 40%, 93%) 16%, #ffffff 25%, #ffffff 75%, hsl(var(--accent-hue), 40%, 93%) 84%, hsl(var(--accent-hue), 60%, 85%) 92%, hsl(var(--accent-hue), 80%, 75%) 100%);background-attachment:fixed;color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-y:auto;overflow-x:hidden}
+      body{background:linear-gradient(90deg, hsl(var(--accent-hue), 50%, 95%) 0%, #ffffff 25%, #ffffff 75%, hsl(var(--accent-hue), 50%, 95%) 100%);background-attachment:fixed;color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-y:auto;overflow-x:hidden}
 
       ::selection{background:var(--accent);color:white}
 
@@ -1603,44 +1603,6 @@
 
             <div style="text-align:center;margin:24px 0"><span class="hero-badge"><span class="dot"></span> SOC 2 Type II Certified · HIPAA Ready · GDPR Compliant</span></div>
 
-    <section class="faq" style="padding:60px 0;background:#fff">
-        <div class="container">
-            <div class="section-header">
-                <div class="label">FAQ</div>
-                <h2>Frequently Asked Questions</h2>
-            </div>
-            <div style="max-width:720px;margin:40px auto 0;display:flex;flex-direction:column;gap:16px">
-                <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px 20px">
-                    <summary style="font-weight:600;font-size:15px;color:#0f172a;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">
-                        What is HyperNexus?
-                        <span style="font-size:18px;color:#94a3b8;transition:transform 0.2s">+</span>
-                    </summary>
-                    <p style="margin-top:12px;font-size:14px;color:#475569;line-height:1.7">HyperNexus is a local-first cognitive control plane that coordinates multi-agent LLM workflows, MCP tool routing, provider failover, memory persistence, and operator observability in a single Go+TypeScript modular monolith.</p>
-                </details>
-                <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px 20px">
-                    <summary style="font-weight:600;font-size:15px;color:#0f172a;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">
-                        How does the LLM Waterfall work?
-                        <span style="font-size:18px;color:#94a3b8;transition:transform 0.2s">+</span>
-                    </summary>
-                    <p style="margin-top:12px;font-size:14px;color:#475569;line-height:1.7">When your primary LLM provider (e.g., OpenAI) returns a 429 rate-limit or 5xx error, HyperNexus automatically cascades the request to your configured fallback chain: NVIDIA NIM → OpenRouter → local Ollama/LM Studio. Zero downtime inference.</p>
-                </details>
-                <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px 20px">
-                    <summary style="font-weight:600;font-size:15px;color:#0f172a;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">
-                        Is my data secure?
-                        <span style="font-size:18px;color:#94a3b8;transition:transform 0.2s">+</span>
-                    </summary>
-                    <p style="margin-top:12px;font-size:14px;color:#475569;line-height:1.7">Yes. HyperNexus is local-first — all 14,726+ memories, sessions, and tool configurations stay on your machine in SQLite. No cloud dependency. Enterprise plans add SSO/OIDC, RBAC, and Ed25519 signed tokens.</p>
-                </details>
-                <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px 20px">
-                    <summary style="font-weight:600;font-size:15px;color:#0f172a;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">
-                        Which AI tools work with HyperNexus?
-                        <span style="font-size:18px;color:#94a3b8;transition:transform 0.2s">+</span>
-                    </summary>
-                    <p style="margin-top:12px;font-size:14px;color:#475569;line-height:1.7">HyperNexus provides byte-for-byte identical tool signatures across Claude Code, Cursor, Codex, Gemini CLI, GitHub Copilot CLI, Windsurf, and Kiro. One config, universal parity.</p>
-                </details>
-            </div>
-        </div>
-    </section>
 
     <section id="pricing" class="pricing">
 
@@ -1754,6 +1716,45 @@
     </section>
 
     </div> <!-- /rotating-outline -->
+
+    <section class="faq" style="padding:60px 0;background:#fff">
+        <div class="container">
+            <div class="section-header">
+                <div class="label">FAQ</div>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div style="max-width:720px;margin:40px auto 0;display:flex;flex-direction:column;gap:16px">
+                <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px 20px">
+                    <summary style="font-weight:600;font-size:15px;color:#0f172a;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">
+                        What is HyperNexus?
+                        <span style="font-size:18px;color:#94a3b8;transition:transform 0.2s">+</span>
+                    </summary>
+                    <p style="margin-top:12px;font-size:14px;color:#475569;line-height:1.7">HyperNexus is a local-first cognitive control plane that coordinates multi-agent LLM workflows, MCP tool routing, provider failover, memory persistence, and operator observability in a single Go+TypeScript modular monolith.</p>
+                </details>
+                <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px 20px">
+                    <summary style="font-weight:600;font-size:15px;color:#0f172a;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">
+                        How does the LLM Waterfall work?
+                        <span style="font-size:18px;color:#94a3b8;transition:transform 0.2s">+</span>
+                    </summary>
+                    <p style="margin-top:12px;font-size:14px;color:#475569;line-height:1.7">When your primary LLM provider (e.g., OpenAI) returns a 429 rate-limit or 5xx error, HyperNexus automatically cascades the request to your configured fallback chain: NVIDIA NIM → OpenRouter → local Ollama/LM Studio. Zero downtime inference.</p>
+                </details>
+                <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px 20px">
+                    <summary style="font-weight:600;font-size:15px;color:#0f172a;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">
+                        Is my data secure?
+                        <span style="font-size:18px;color:#94a3b8;transition:transform 0.2s">+</span>
+                    </summary>
+                    <p style="margin-top:12px;font-size:14px;color:#475569;line-height:1.7">Yes. HyperNexus is local-first — all 14,726+ memories, sessions, and tool configurations stay on your machine in SQLite. No cloud dependency. Enterprise plans add SSO/OIDC, RBAC, and Ed25519 signed tokens.</p>
+                </details>
+                <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px 20px">
+                    <summary style="font-weight:600;font-size:15px;color:#0f172a;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">
+                        Which AI tools work with HyperNexus?
+                        <span style="font-size:18px;color:#94a3b8;transition:transform 0.2s">+</span>
+                    </summary>
+                    <p style="margin-top:12px;font-size:14px;color:#475569;line-height:1.7">HyperNexus provides byte-for-byte identical tool signatures across Claude Code, Cursor, Codex, Gemini CLI, GitHub Copilot CLI, Windsurf, and Kiro. One config, universal parity.</p>
+                </details>
+            </div>
+        </div>
+    </section>
 
     <footer>
 

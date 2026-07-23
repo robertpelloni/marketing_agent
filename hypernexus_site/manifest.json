@@ -1,0 +1,24 @@
+{
+  "name": "HyperNexus — The Most Powerful AI Tool For Everything",
+  "short_name": "HyperNexus",
+  "description": "Enterprise-grade control plane for autonomous multi-agent AI systems. Air-gapped security, L2 memory vaults, and resilient LLM waterfalls.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0284c7",
+  "orientation": "any",
+  "categories": ["developer", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='128' fill='%230284c7'/><text x='256' y='340' font-size='280' fill='white' text-anchor='middle' font-family='system-ui' font-weight='800'>H</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr"
+}

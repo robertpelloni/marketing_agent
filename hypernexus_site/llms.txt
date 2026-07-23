@@ -1,0 +1,32 @@
+# HyperNexus
+
+> HyperNexus is the enterprise-grade control plane and deployment architecture for TormentNexus, designed for secure, air-gapped, and high-concurrency multi-agent AI operations.
+
+## Features & Architecture
+- **Enterprise Security:** Air-gapped deployment capability, strict RBAC, and OIDC/SSO authentication.
+- **The Go Kernel:** High-performance modular monolith optimized for zero-overhead tRPC bridging.
+- **Resilient LLM Waterfall:** Automatic cascading failover across enterprise APIs and local models.
+- **Dual-Tier Memory Vault:** L1/L2 SQLite architecture with semantic vector search (`sqlite-vec`) and autonomous context harvesting.
+- **Autonomous Swarm Coordination:** Type-safe A2A protocol managing 38+ specialized subagents with consensus-driven role rotation.
+- **Progressive MCP Tool Routing:** Semantic search engine ranks and injects only the most relevant tools per request.
+- **Cross-Harness Parity:** Byte-for-byte identical tool signatures across Claude Code, Cursor, Codex, Gemini CLI, Copilot, and Windsurf.
+
+## Products & Pricing
+- **HyperNexus Community:** Free personal use under BSL 1.1 / AGPLv3 (self-hosted).
+- **HyperNexus Professional:** $50/year per seat with priority support and advanced features.
+- **HyperNexus Enterprise:** Custom pricing with SSO/OIDC, RBAC, audit trails, and dedicated support.
+
+## Contact & Enterprise Demos
+- **Website:** [https://hypernexus.site](https://hypernexus.site/)
+- **Cloud Dashboard:** [https://cloud.hypernexus.site](https://cloud.hypernexus.site/)
+- **Open Source Core:** [GitHub Repository](https://github.com/MDMAtk/TormentNexus)
+- **Technical Support / Discord:** [Community Server](https://discord.gg/yJJ3hrSsK3)
+- **Direct Enterprise Inquiries:** Available via scheduled private demonstrations on the HyperNexus portal.
+
+## Technical Specifications
+- **Runtime:** Go 1.26+ kernel, TypeScript 5.x control plane, Next.js 16 dashboard
+- **Database:** SQLite + sqlite-vec for dependency-free, hyper-fast local vector search
+- **Ports:** Dashboard (3000), Socket.io (3001), Go Kernel (4300)
+- **Memory:** 14,726+ persisted memories with L1/L2 tiered architecture
+- **MCP Catalog:** 11,024+ indexed MCP servers with semantic search
+- **Tool Parity:** 27 golden fixtures across 6 L2 platforms

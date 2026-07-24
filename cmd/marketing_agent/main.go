@@ -209,7 +209,7 @@ func main() {
 
 	// 2d. Setup Target Discovery
 	outreachWorker := agents.NewTargetDiscoveryWorker(database, llmProvider)
-	go outreachWorker.Run(ctx, 2*time.Hour)
+	go outreachWorker.Run(ctx, 30*time.Minute)
 
 	// 2e. Setup Deployer
 	var ciTracker deploy.CITracker
@@ -239,7 +239,7 @@ func main() {
 
 	// 2l. Setup Auto-Blog Engine (SEO content for tormentnexus.site & hypernexus.site)
 	blogEngine := agents.NewBlogEngine(llmProvider, "/opt/marketing_agent/blog_output")
-	go blogEngine.Run(ctx, 12*time.Hour)
+	go blogEngine.Run(ctx, 4*time.Hour)
 
 	// 2m. Setup GitHub Discussions Engager (reply to MCP/AI discussions)
 	githubDiscussions := agents.NewGitHubDiscussionsEngager(cfg.GitHubToken)
@@ -310,7 +310,7 @@ func main() {
 
 	// 2j. Setup Cadence-aware outreach scheduling
 	cadenceManager := communication.NewCadenceAwareManager(commManager, database)
-	go cadenceManager.RunCadence(ctx, 12*time.Hour) // checks every 12 h for next touch
+	go cadenceManager.RunCadence(ctx, 1*time.Hour) // checks every 1h for next touch
 
 	// 2i. Setup IMAP Email Receiver
 	if cfg.IMAPHost != "" && cfg.IMAPUsername != "" && cfg.IMAPPassword != "" {

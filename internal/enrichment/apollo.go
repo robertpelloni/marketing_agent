@@ -129,7 +129,7 @@ func (a *ApolloSource) peopleSearch(ctx context.Context, domain string) ([]db.Co
 	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
-		"https://api.apollo.io/api/v1/people/search",
+		"https://api.apollo.io/v1/mixed_people/search",
 		bytes.NewReader(body))
 	if err != nil {
 		return nil, err
@@ -213,7 +213,7 @@ func (a *ApolloSource) HealthCheck(ctx context.Context) error {
 	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
-		"https://api.apollo.io/api/v1/people/search",
+		"https://api.apollo.io/v1/mixed_people/search",
 		bytes.NewReader(body))
 	if err != nil {
 		return err

@@ -32,7 +32,7 @@ func DefaultCadence() CadenceSchedule {
 	return CadenceSchedule{
 		Name:        "Standard B2B Tech Outreach",
 		Description: "Default 5-touch sequence across email, GitHub, and LinkedIn",
-		MaxAttempts: 5,
+		MaxAttempts: 10,
 		Steps: []CadenceStep{
 			{
 				StepNumber:     1,
@@ -44,28 +44,28 @@ func DefaultCadence() CadenceSchedule {
 			{
 				StepNumber:     2,
 				Channel:        db.ChannelGitHub,
-				DelayAfterPrev: 48 * time.Hour, // 2 days after email
+				DelayAfterPrev: 24 * time.Hour, // 1 day after email
 				TemplateID:     "github-hook",
 				Subject:        "",
 			},
 			{
 				StepNumber:     3,
 				Channel:        db.ChannelEmail,
-				DelayAfterPrev: 72 * time.Hour, // 3 days after GitHub
+				DelayAfterPrev: 24 * time.Hour, // 1 day after GitHub
 				TemplateID:     "followup-email",
 				Subject:        "Re: HyperNexus for %s — Thoughts?",
 			},
 			{
 				StepNumber:     4,
 				Channel:        db.ChannelLinkedIn,
-				DelayAfterPrev: 96 * time.Hour, // 4 days after email
+				DelayAfterPrev: 24 * time.Hour, // 1 day after email
 				TemplateID:     "linkedin-connect",
 				Subject:        "HyperNexus — AI Infrastructure",
 			},
 			{
 				StepNumber:     5,
 				Channel:        db.ChannelEmail,
-				DelayAfterPrev: 168 * time.Hour, // 7 days after LinkedIn
+				DelayAfterPrev: 48 * time.Hour, // 2 days after LinkedIn
 				TemplateID:     "breakup-email",
 				Subject:        "Should I close your file?",
 			},

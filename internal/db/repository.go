@@ -178,6 +178,7 @@ func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, er
 		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at
 		FROM deals
 		WHERE current_state = $1
+		ORDER BY updated_at DESC
 	`
 	rows, err := db.Conn.QueryContext(ctx, query, state)
 	if err != nil {

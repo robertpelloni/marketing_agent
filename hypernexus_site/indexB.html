@@ -9,15 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
      <title>HyperNexus — Corporate AI Control Plane</title>
-    <meta name="description" content="Local-first cognitive control plane for AI agents. Progressive MCP tool routing, persistent memory, LLM waterfall failover, and multi-agent orchestration.">
+    <meta name="description" content="Cognitive control plane for AI agents. Progressive MCP tool routing, persistent memory, and multi-agent orchestration.">
     <meta property="og:title" content="HyperNexus — Corporate AI Control Plane">
-    <meta property="og:description" content="Local-first cognitive control plane for AI agents. Progressive MCP tool routing, persistent memory, LLM waterfall failover.">
+    <meta property="og:description" content="Cognitive control plane for AI agents. Progressive MCP tool routing, persistent memory.">
     <meta property="og:image" content="https://hypernexus.site/hypernexus_poster.jpg">
     <meta property="og:url" content="https://hypernexus.site">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="HyperNexus — Corporate AI Control Plane">
-    <meta name="twitter:description" content="Local-first cognitive control plane for AI agents.">
+    <meta name="twitter:description" content="Cognitive control plane for AI agents.">
     <meta name="twitter:image" content="https://hypernexus.site/hypernexus_poster.jpg">
     <script defer data-domain="hypernexus.site" src="https://plausible.io/js/script.js"></script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>">
@@ -1291,7 +1291,6 @@
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(128,0,255,0.8)) drop-shadow(0 0 16px rgba(128,0,255,0.4))">🧠</span> <strong>Persistent Memory</strong> — Vector-embedded semantic search across infinite L1-L4 structured world-modeled memories that survive restarts</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(255,165,0,0.8)) drop-shadow(0 0 16px rgba(255,165,0,0.4))">🔧</span> <strong>Progressive MCP and Skill Routing</strong> — Routes from internal registries, injecting only the most relevant tools per request</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(0,128,255,0.8)) drop-shadow(0 0 16px rgba(0,128,255,0.4))">💻</span> <strong>Full Code Execution</strong> — Filesystem access, code interpreter, browser automation, and system process control</li>
-                <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(0,200,100,0.8)) drop-shadow(0 0 16px rgba(0,200,100,0.4))">🔄</span> <strong>LLM Waterfall Failover</strong> — Optionally cascade from OpenAI → OpenRouter → local Ollama on any 429/5xx error, observe and track the flow</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(100,100,255,0.8)) drop-shadow(0 0 16px rgba(100,100,255,0.4))">🤖</span> <strong>Multi-Agent Swarms</strong> — Planner, Implementer, Tester, Critic, Council patterns with consensus-driven decisions</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(0,200,255,0.8)) drop-shadow(0 0 16px rgba(0,200,255,0.4))">🔗</span> <strong>Universal Tool Parity</strong> — Byte-for-byte identical signatures across Claude Code, Cursor, Codex, Gemini CLI, and Copilot</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(255,100,0,0.8)) drop-shadow(0 0 16px rgba(255,100,0,0.4))">🔄</span> <strong>Import Sessions</strong> — Import from all other AI tools without regression</li>
@@ -1378,8 +1377,6 @@
             <div class="features-grid" style="margin-bottom:60px">
 
                 <div class="feature"><div class="feature-icon">⚡</div><h3>Progressive Tool Routing</h3><p>Optimise context windows with semantic tool selection, injecting only the top 3 relevant schemas per prompt to prevent token bloat.</p></div>
-
-                <div class="feature"><div class="feature-icon">🌊</div><h3>Resilient Model Cascading</h3><p>Ensure uninterrupted coding by automatically routing around rate limits (429s/5xx) down a waterfall chain to local Ollama backups.</p></div>
 
                 <div class="feature"><div class="feature-icon">🩹</div><h3>Autonomous Self-Healing</h3><p>Fixes runtime and syntax errors automatically using an isolated Diagnose-Fix-Verify feedback loop inside secure test execution runners.</p></div>
 

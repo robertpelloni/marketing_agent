@@ -14,13 +14,13 @@
      <title>HyperNexus — Progressive MCP &amp; Skill Routing for AI Agents</title>
     <meta name="description" content="The MCP router your AI stack is missing. HyperNexus reads each prompt and injects only the few tools it actually needs — across 14,250+ MCP servers and 5,700+ skills — so your agents stop carrying every schema into every request.">
     <meta property="og:title" content="Progressive MCP &amp; Skill Routing for AI Agents">
-    <meta property="og:description" content="Route each prompt to the right MCP tools and skills instead of shipping every schema. 14,250+ servers, 38+ clients, local-first.">
+    <meta property="og:description" content="Route each prompt to the right MCP tools and skills instead of shipping every schema. 14,250+ servers, 38+ clients.">
     <meta property="og:image" content="https://hypernexus.site/hypernexus_poster.jpg">
     <meta property="og:url" content="https://hypernexus.site">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Most Powerful AI Upgrade!">
-    <meta name="twitter:description" content="Local-first cognitive control plane for AI agents.">
+    <meta name="twitter:description" content="Cognitive control plane for AI agents.">
     <meta name="twitter:image" content="https://hypernexus.site/hypernexus_poster.jpg">
     <script defer data-domain="hypernexus.site" src="https://plausible.io/js/script.js"></script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>">
@@ -1292,7 +1292,7 @@
     </div>
 
               <p style="font-size:16px;color:#1e293b;margin-bottom:32px;line-height:1.7;font-weight:500;max-width:800px;margin-left:auto;margin-right:auto;padding:0 20px">
-                <span class="logo-text" style="font-size:inherit">Hyper<span>Nexus</span></span> is the <strong style="color:#0f172a;font-weight:700">MCP router your AI stack is missing</strong> — a local-first control plane that reads each prompt, decides which of your MCP tools and skills it actually needs, and injects only those. Your agents stop carrying every tool schema into every request and start calling the right one.
+                <span class="logo-text" style="font-size:inherit">Hyper<span>Nexus</span></span> is the <strong style="color:#0f172a;font-weight:700">MCP router your AI stack is missing</strong> — a control plane that reads each prompt, decides which of your MCP tools and skills it actually needs, and injects only those. Your agents stop carrying every tool schema into every request and start calling the right one.
               </p>
               <ul style="font-size:15px;color:#1e293b;line-height:2.2;list-style:none;padding:0 20px;position:relative;font-weight:500;max-width:600px;margin:24px auto 0;text-align:left">
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(255,165,0,0.8)) drop-shadow(0 0 16px rgba(255,165,0,0.4))">🔧</span> <strong>Progressive MCP &amp; Skill Routing</strong> — Semantic match picks the handful of tools a prompt actually needs out of <strong>14,250+ MCP servers</strong> and <strong>5,700+ skills</strong>. The rest never enter your context window</li>
@@ -1300,7 +1300,6 @@
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(0,255,180,0.8)) drop-shadow(0 0 16px rgba(0,255,180,0.4))">🌐</span> <strong>MCP Server Discovery</strong> — Search, install and wire up new MCP servers from inside the agent loop, without hand-editing config files</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(160,120,255,0.8)) drop-shadow(0 0 16px rgba(160,120,255,0.4))">🔌</span> <strong>38+ Clients, One Sync</strong> — Auto-configures MCP for Claude Desktop, Cursor, Codex, Gemini CLI, Windsurf, Copilot and 30+ more</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(0,128,255,0.8)) drop-shadow(0 0 16px rgba(0,128,255,0.4))">💻</span> <strong>Full Code Execution</strong> — Filesystem access, code interpreter, browser automation, and system process control</li>
-                <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(0,200,100,0.8)) drop-shadow(0 0 16px rgba(0,200,100,0.4))">🔄</span> <strong>LLM Waterfall Failover</strong> — Optionally cascade from OpenAI → OpenRouter → local Ollama on any 429/5xx error, observe and track the flow</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(0,200,255,0.8)) drop-shadow(0 0 16px rgba(0,200,255,0.4))">🔗</span> <strong>Universal Tool Parity</strong> — Byte-for-byte identical signatures across Claude Code, Cursor, Codex, Gemini CLI, and Copilot</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(255,100,0,0.8)) drop-shadow(0 0 16px rgba(255,100,0,0.4))">📥</span> <strong>Import Sessions</strong> — Import from all other AI tools without regression</li>
                 <li><span style="font-size:22px;filter:drop-shadow(0 0 8px rgba(100,100,255,0.8)) drop-shadow(0 0 16px rgba(100,100,255,0.4))">🤖</span> <strong>Multi-Agent Swarms</strong> — Planner, Implementer, Tester, Critic, Council patterns with consensus-driven decisions</li>
@@ -1392,8 +1391,6 @@
 
                 <div class="feature"><div class="feature-icon">🔌</div><h3>Universal Client Sync</h3><p>One command wires MCP into Claude Desktop, Cursor, Codex, Gemini CLI, Windsurf, Copilot and 30+ more. Same tools, every harness, no per-editor setup.</p></div>
 
-                <div class="feature"><div class="feature-icon">🌊</div><h3>Resilient Model Cascading</h3><p>Ensure uninterrupted coding by automatically routing around rate limits (429s/5xx) down a waterfall chain to local Ollama backups.</p></div>
-
                 <div class="feature"><div class="feature-icon">🔗</div><h3>Universal Harness Parity</h3><p>Avoid vendor lock-in. Maintain byte-for-byte identical tool signatures across Claude Code, Cursor, Aider, Windsurf, and Copilot environments.</p></div>
 
             </div>
@@ -1471,17 +1468,7 @@
               </div>
             </div>
           </div>
-          <div style="padding:24px;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px">
-            <p style="color:var(--text);font-size:15px;margin-bottom:16px;font-style:italic">"The waterfall failover saved us during an OpenAI outage. Our agents kept working on local Ollama while everyone else was down."</p>
-            <div style="display:flex;align-items:center;gap:12px">
-              <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#4cd964,#4dc9f6)"></div>
-              <div>
-                <div style="font-size:14px;font-weight:600;color:#fff">DevOps Lead</div>
-                <div style="font-size:13px;color:var(--text-secondary)">Enterprise SaaS</div>
-              </div>
-            </div>
-          </div>
-        </div>
+                  </div>
       </div>
     </section>
 

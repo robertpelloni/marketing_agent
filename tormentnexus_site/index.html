@@ -18,32 +18,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="TormentNexus is the open-source, local-first AI control plane. Progressive MCP tool routing cuts token usage 60%. Persistent memory survives restarts. LLM waterfall ensures zero downtime. Works with Claude Code, Cursor, Copilot, Gemini CLI."
+      content="TormentNexus is the open-source, local-first MCP router for AI agents. A 4-layer router matches every prompt against your tool registry and injects only the schemas it needs — cutting context bloat ~60%. 14,250+ MCP servers, 5,700+ skills, LLM waterfall failover. Works with Claude Code, Cursor, Copilot, Gemini CLI."
     />
     <meta
       name="keywords"
-      content="AI orchestration, MCP routing, tool routing, persistent memory, LLM waterfall, multi-agent, local-first AI, open source AI, Claude Code, Cursor, Copilot, Gemini CLI"
+      content="MCP routing, tool routing, skill routing, skill suggestions, MCP server discovery, tool discovery, context efficiency, AI orchestration, LLM waterfall, local-first AI, open source AI, Claude Code, Cursor, Copilot, Gemini CLI"
     />
-    <meta property="og:title" content="At Long Last! THE MACHINES AWAKEN!" />
+    <meta property="og:title" content="At Long Last! EVERY TOOL, ROUTED." />
     <meta
       property="og:description"
-      content="Progressive MCP tool routing (60% token savings), persistent memory (14K+ memories), LLM waterfall failover (zero downtime). Works with Claude Code, Cursor, Copilot, Gemini CLI."
+      content="Route every prompt to the right MCP tools and skills instead of shipping every schema. 4-layer router, ~60% smaller context, local-first, open source."
     />
     <meta property="og:url" content="https://tormentnexus.site" />
     <meta property="og:type" content="website" />
-    <meta
-      property="og:image"
-      content="https://tormentnexus.site/og-image.png"
-    />
+    <meta property="og:image" content="https://tormentnexus.site/og-image-extreme.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="At Long Last! THE MACHINES AWAKEN!" />
-    <meta
-      name="twitter:image"
-      content="https://tormentnexus.site/og-image.png"
-    />
+    <meta name="twitter:title" content="At Long Last! EVERY TOOL, ROUTED." />
+    <meta name="twitter:image" content="https://tormentnexus.site/og-image-extreme.png" />
     <meta
       name="twitter:description"
-      content="Progressive MCP tool routing (60% token savings), persistent memory (14K+ memories), LLM waterfall failover (zero downtime). Local-first. Open source."
+      content="Route every prompt to the right MCP tools and skills instead of shipping every schema. 4-layer router, ~60% smaller context. Local-first. Open source."
     />
     <title>TormentNexus — AT LONG LAST</title>
     <link
@@ -219,8 +213,6 @@
         width: 100vw;
         height: 100vh;
         z-index: 4;
-        pointer-events: none;
-      }
         pointer-events: none;
       }
 
@@ -1108,7 +1100,7 @@
           <a href="/blog/">BLOG</a>
           <a href="/download.html">DOWNLOAD</a>
           <a href="https://discord.gg/w7zpZ7qBt" target="_blank">DISCORD</a>
-          <a href="https://github.com/HyperNexusSoft/HyperNexus" target="_blank"
+          <a href="https://github.com/MDMAtk/TormentNexus" target="_blank"
             >SOURCE</a
           >
         </div>
@@ -1119,14 +1111,14 @@
       <div class="container">
         <div
           class="extinction-badge"
-          style="font-family: &quot;Orbitron&quot;, monospace"
+          style="font-family: 'Orbitron', monospace"
         >
           ⚠ THE EXTINCTION EVENT DRAWS NEAR ⚠
         </div>
         <div
           class="personal-badge"
           style="
-            font-family: &quot;Orbitron&quot;, monospace;
+            font-family: 'Orbitron', monospace;
             font-size: 11px;
             color: #00ff88;
             letter-spacing: 2px;
@@ -1160,7 +1152,7 @@
                   border-radius: 8px;
                   max-width: 750px;
                   margin: 0;
-                  font-family: &quot;JetBrains Mono&quot;, monospace;
+                  font-family: 'JetBrains Mono', monospace;
                   font-size: 13px;
                   color: var(--text);
                   text-align: center;
@@ -1175,10 +1167,10 @@
                   "
                   >ULTIMATE MCP SERVER & CODING HARNESS UPGRADE</span
                 ><br />
-                🏅 BEST-IN-CLASS MEMORY // 🏅 BEST-IN-CLASS MCP ROUTING // 🏅
-                BEST-IN-CLASS SKILL ROUTING // 🏅 BEST-IN-CLASS CONTEXT
-                HARVESTING // 🏅 BEST-IN-CLASS MEMORY FORMATION // 🏅
-                BEST-IN-CLASS CODE INDEXING // 🏅 BEST-IN-CLASS AI ACCESSORY
+                🏅 BEST-IN-CLASS MCP ROUTING // 🏅 BEST-IN-CLASS SKILL ROUTING // 🏅
+                BEST-IN-CLASS TOOL DISCOVERY // 🏅 BEST-IN-CLASS CONTEXT
+                EFFICIENCY // 🏅 BEST-IN-CLASS CODE INDEXING // 🏅
+                BEST-IN-CLASS MEMORY // 🏅 BEST-IN-CLASS AI ACCESSORY
               </div>
             </div>
             <div style="max-width: 750px; margin: 0 auto; text-align: left">
@@ -1190,9 +1182,11 @@
                   line-height: 1.6;
                 "
               >
-                TormentNexus is an open-source AI control plane that gives your
-                LLM agents infinite memory, tool orchestration, and autonomous
-                code execution — all running locally on your machine.
+                TormentNexus is an open-source MCP router for AI agents. It reads
+                every prompt, works out which of your tools and skills it
+                actually needs, and injects only those — so your agent calls
+                the right tool instead of carrying thousands of schemas it will
+                never use. All of it running locally on your machine.
               </p>
               <ul
                 style="
@@ -1204,23 +1198,34 @@
                 "
               >
                 <li>
-                  🧠 Infinite persistent memory with vector-embedded semantic
-                  search
+                  🔧 4-layer MCP tool router — semantic plus BM25 ranking over
+                  11K+ tools, loading only the schemas a prompt needs
                 </li>
                 <li>
-                  🔧 Progressive MCP and Skill routing from internal registries
+                  🎯 Skill routing and suggestions from a 5,700-module registry
                 </li>
                 <li>
-                  🤖 Multi-agent swarm with Planner/Implementer/Tester/Critic
-                  rotation
+                  🌐 MCP gateway aggregating downstream servers behind one
+                  namespaced endpoint
+                </li>
+                <li>
+                  🔗 One-command client sync — Claude Code, Cursor, Copilot,
+                  Gemini CLI and 30+ more
                 </li>
                 <li>
                   💻 Full filesystem access, code interpreter, browser
                   automation
                 </li>
+                <li>
+                  🔍 AST-aware code indexer with find_references and
+                  find_dependents
+                </li>
+                <li>
+                  🧠 Persistent memory with vector-embedded semantic search
+                </li>
                 <li>🔄 Import sessions from all other AI tools</li>
                 <li>
-                  📊 Real-time dashboard with memory explorer and tool registry
+                  📊 Real-time dashboard with tool registry and memory explorer
                 </li>
                 <li>🚀 One-command deploy to any Linux VM with PM2 and SSL</li>
               </ul>
@@ -1232,7 +1237,7 @@
                 margin-top: 12px;
                 margin-bottom: 16px;
                 letter-spacing: 1px;
-                font-family: &quot;JetBrains Mono&quot;, monospace;
+                font-family: 'JetBrains Mono', monospace;
               "
             >
               // For professional, corporate, and commercial deployments, visit
@@ -1298,7 +1303,7 @@
     </section>
     <div style="margin-top: 24px">
       <a
-        href="https://github.com/HyperNexusSoft/HyperNexus"
+        href="https://github.com/MDMAtk/TormentNexus"
         style="
           display: inline-flex;
           align-items: center;
@@ -1468,7 +1473,7 @@
         </p>
         <div>
           <a
-            href="https://github.com/HyperNexusSoft/HyperNexus"
+            href="https://github.com/MDMAtk/TormentNexus"
             class="btn btn-p"
             >☠ VIEW ON GITHUB</a
           >
@@ -1535,7 +1540,7 @@
           >
         </p>
         <div class="fl">
-          <a href="https://github.com/HyperNexusSoft/HyperNexus">GITHUB</a>
+          <a href="https://github.com/MDMAtk/TormentNexus">GITHUB</a>
           <a href="https://hypernexus.site">HYPERNEXUS (COMMERCIAL)</a>
           <a href="/download.html">DOWNLOAD</a>
           <a href="/blog/">BLOG</a>
@@ -1570,7 +1575,7 @@
           >💬 Discord</a
         >
         <a
-          href="https://github.com/HyperNexusSoft/HyperNexus"
+          href="https://github.com/MDMAtk/TormentNexus"
           style="color: #88aacc; text-decoration: none; font-size: 14px"
           >💻 GitHub</a
         >

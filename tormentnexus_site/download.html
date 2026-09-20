@@ -199,7 +199,7 @@
           <div class="icon">🪟</div>
           <h3>Windows</h3>
           <p>Windows 10/11 (64-bit)</p>
-          <a href="https://releases.hypernexus.site/latest/hypernexus.exe" class="download-btn" id="win-exe" download>
+          <a href="https://github.com/MDMAtk/TormentNexus/releases/latest/download/hypernexus-setup.exe" class="download-btn">
             ⬇️ Download .exe
           </a>
         </div>
@@ -209,7 +209,7 @@
           <div class="icon">🍎</div>
           <h3>macOS</h3>
           <p>Intel & Apple Silicon</p>
-          <a href="#" class="download-btn" id="mac-install">
+          <a href="https://github.com/MDMAtk/TormentNexus/releases/latest/download/hypernexus-macos-installer.sh" class="download-btn">
             ⬇️ Install Script
           </a>
         </div>
@@ -219,7 +219,7 @@
           <div class="icon">🐧</div>
           <h3>Linux</h3>
           <p>x64 & ARM64</p>
-          <a href="#" class="download-btn" id="linux-install">
+          <a href="https://github.com/MDMAtk/TormentNexus/releases/latest/download/install.sh" class="download-btn">
             ⬇️ Install Script
           </a>
         </div>
@@ -229,18 +229,18 @@
       <h2 style="font-size:20px;margin-bottom:16px;color:#e2e8f0">Quick Install</h2>
       
       <div class="install-cmd">
-        <span>npx @tormentnexus/install@latest</span>
-        <button class="copy-btn" onclick="copyCmd(this, 'npx @tormentnexus/install@latest')">Copy</button>
+        <span>npx @hypernexus/install@latest</span>
+        <button class="copy-btn" onclick="copyCmd(this, 'npx @hypernexus/install@latest')">Copy</button>
       </div>
 
       <div class="install-cmd">
-        <span>curl -fsSL https://tormentnexus.site/install.sh | bash</span>
-        <button class="copy-btn" onclick="copyCmd(this, 'curl -fsSL https://tormentnexus.site/install.sh | bash')">Copy</button>
+        <span>curl -fsSL https://hypernexus.site/install.sh | bash</span>
+        <button class="copy-btn" onclick="copyCmd(this, 'curl -fsSL https://hypernexus.site/install.sh | bash')">Copy</button>
       </div>
 
       <div class="install-cmd">
-        <span>irm https://tormentnexus.site/install.ps1 | iex</span>
-        <button class="copy-btn" onclick="copyCmd(this, 'irm https://tormentnexus.site/install.ps1 | iex')">Copy</button>
+        <span>irm https://hypernexus.site/install.ps1 | iex</span>
+        <button class="copy-btn" onclick="copyCmd(this, 'irm https://hypernexus.site/install.ps1 | iex')">Copy</button>
       </div>
 
       <!-- Features -->
@@ -260,7 +260,7 @@
           Upgrade to HyperNexus Professional for managed cloud infrastructure.
         </p>
         <a href="https://cloud.hypernexus.site" class="download-btn" style="background:linear-gradient(180deg,#0284c7,#0369a1)">
-          ☁️ Get HyperNexus Pro — $50/yr
+          ☁️ Get HyperNexus Pro — $19.99/yr
         </a>
       </div>
     </div>
@@ -268,8 +268,8 @@
     <div class="footer">
       <p>
         <a href="https://tormentnexus.site">Home</a> · 
-        <a href="https://github.com/robertpelloni/TormentNexus">GitHub</a> · 
-        <a href="https://gitlab.com/robertpelloni/TormentNexus">GitLab</a> · 
+        <a href="https://github.com/MDMAtk/TormentNexus" target="_blank">GitHub</a> · 
+        <a href="https://gitlab.com/HyperNexusLLC/HyperNexus" target="_blank">GitLab</a> · 
         <a href="https://tormentnexus.site/blog/">Blog</a>
       </p>
       <p style="margin-top:8px">© 2026 TormentNexus. Open source under MIT License.</p>
@@ -277,13 +277,10 @@
 
     <script>
       // Fetch latest version info
-      fetch('https://releases.hypernexus.site/latest/version.json')
+      fetch('https://api.github.com/repos/HyperNexusSoft/HyperNexus/releases/latest')
         .then(r => r.json())
         .then(data => {
-          document.getElementById('version-badge').textContent = 'Latest: v' + data.version;
-          if (data.downloads) {
-            document.getElementById('win-exe').href = data.downloads.windows_exe || data.downloads.windows_exe;
-          }
+          document.getElementById('version-badge').textContent = 'Latest: ' + data.tag_name;
         })
         .catch(() => {
           document.getElementById('version-badge').textContent = 'Latest: v1.0.0';

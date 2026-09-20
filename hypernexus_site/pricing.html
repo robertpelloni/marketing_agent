@@ -6,7 +6,7 @@
     <title>Pricing — HyperNexus</title>
     <meta
       name="description"
-      content="HyperNexus pricing: $50/seat for local license + cloud hosting. One price, everything included."
+      content="HyperNexus pricing: Start your 7-day free trial. $1.99/seat/month for local license + cloud hosting."
     />
     <link
       rel="icon"
@@ -386,39 +386,14 @@
 
     <div class="header">
       <h1>Simple, Transparent Pricing</h1>
-      <p>One price. Everything included. No surprises.</p>
+      <p>Free for 7 days. Cancel anytime. No charge until trial ends.</p>
     </div>
 
     <div class="pricing-container">
       <div class="card">
         <!-- Introductory Offer Badge -->
-        <div style="text-align: center; margin-bottom: 20px">
-          <span
-            style="
-              display: inline-block;
-              background: linear-gradient(
-                90deg,
-                #ff3b30,
-                #ff9500,
-                #ffcc00,
-                #4cd964,
-                #5ac8fa,
-                #007aff,
-                #5856d6,
-                #ff3b30
-              );
-              background-size: 800% 100%;
-              animation: rainbowBtnSlow 3s linear infinite;
-              color: white;
-              font-size: 11px;
-              font-weight: 700;
-              padding: 4px 12px;
-              border-radius: 20px;
-              text-transform: uppercase;
-              letter-spacing: 1px;
-            "
-            >Introductory Offer — 50% Off</span
-          >
+        <div style="text-align:center;margin-bottom:20px">
+          <span style="display:inline-block;background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#4cd964,#5ac8fa,#007aff,#5856d6,#ff3b30);background-size:800% 100%;animation:rainbowBtnSlow 3s linear infinite;color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px">7-Day Free Trial</span>
         </div>
         <div class="price">
           <!-- Monthly/Yearly Tabs -->
@@ -464,11 +439,11 @@
                 transition: all 0.3s;
               "
             >
-              Yearly <span style="font-size: 11px; opacity: 0.8">Save 17%</span>
+              Yearly <span style="font-size: 11px; opacity: 0.8">Save 16%</span>
             </button>
           </div>
           <div class="price-amount" id="price-display">
-            <span class="dollar">$</span><span id="price-value">5</span>
+            <span class="dollar">$</span><span id="price-value">1.99</span>
           </div>
           <div class="price-period" id="price-period">per seat / month</div>
           <div class="price-note" id="price-note">
@@ -591,7 +566,7 @@
         </tr>
         <tr>
           <td>Price</td>
-          <td class="check"><span id="comparison-price">$5/mo</span></td>
+          <td class="check"><span id="comparison-price">$1.99/mo</span></td>
           <td>$240/year</td>
           <td>$120/year</td>
         </tr>
@@ -612,31 +587,31 @@
       // Monthly/Yearly pricing toggle
       var __pricing_plan = localStorage.getItem("pricing_plan") || "monthly";
       window.__pricing_plan = __pricing_plan;
-      window.__price_amount = __pricing_plan === "yearly" ? 5000 : 500;
+      window.__price_amount = __pricing_plan === "yearly" ? 1999 : 199;
 
       function switchPlan(plan) {
         var isYearly = plan === "yearly";
         window.__pricing_plan = plan;
-        window.__price_amount = isYearly ? 5000 : 500;
+        window.__price_amount = isYearly ? 1999 : 199;
         localStorage.setItem("pricing_plan", plan);
 
         var priceValue = document.getElementById("price-value");
         var pricePeriod = document.getElementById("price-period");
         var priceNote = document.getElementById("price-note");
 
-        if (priceValue) priceValue.textContent = isYearly ? "50" : "5";
+        if (priceValue) priceValue.textContent = isYearly ? "19.99" : "1.99";
         if (pricePeriod)
           pricePeriod.textContent = isYearly
             ? "per seat / year"
             : "per seat / month";
         if (priceNote)
           priceNote.textContent = isYearly
-            ? "That's $4.17/month. Save 17% vs monthly."
+            ? "That's $1.67/month. Save 16% vs monthly."
             : "Less than a coffee per month. Cancel anytime.";
 
         // Update comparison price
         var compPrice = document.getElementById("comparison-price");
-        if (compPrice) compPrice.textContent = isYearly ? "$50/yr" : "$5/mo";
+        if (compPrice) compPrice.textContent = isYearly ? "$19.99/yr" : "$1.99/mo";
 
         // Update tab styles
         var tabM = document.getElementById("tab-monthly");

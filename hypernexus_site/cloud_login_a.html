@@ -466,28 +466,8 @@
           >
           <span style="margin: 0 8px; color: #cbd5e1">·</span>
           <!-- Introductory Offer Badge -->
-          <div style="text-align: center; margin-bottom: 10px">
-            <span
-              style="
-                display: inline-block;
-                background: linear-gradient(
-                  90deg,
-                  hsl(calc(var(--accent-hue) + 180), 80%, 50%),
-                  hsl(calc(var(--accent-hue) + 240), 80%, 50%),
-                  hsl(calc(var(--accent-hue) + 300), 80%, 50%)
-                );
-                background-size: 200% 100%;
-                animation: rainbowBtnSlow 3s linear infinite;
-                color: white;
-                font-size: 10px;
-                font-weight: 700;
-                padding: 3px 10px;
-                border-radius: 20px;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-              "
-              >Introductory Offer — 50% Off</span
-            >
+          <div style="text-align:center;margin-bottom:10px">
+            <span style="display:inline-block;background:linear-gradient(90deg,hsl(calc(var(--accent-hue) + 180), 80%, 50%),hsl(calc(var(--accent-hue) + 240), 80%, 50%),hsl(calc(var(--accent-hue) + 300), 80%, 50%));background-size:200% 100%;animation:rainbowBtnSlow 3s linear infinite;color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px">Introductory Offer — 50% Off</span>
           </div>
           <!-- Monthly/Yearly Tabs -->
           <div
@@ -547,7 +527,7 @@
               text-decoration: none;
               border-radius: 6px;
             "
-            >Get Started — <span id="price-label">$5/mo</span> →</a
+            >Get Started — <span id="price-label">$1.99/mo</span> →</a
           >
         </div>
       </div>
@@ -652,17 +632,17 @@
       // Monthly/Yearly pricing toggle
       var __pricing_plan = localStorage.getItem("pricing_plan") || "monthly";
       window.__pricing_plan = __pricing_plan;
-      window.__price_amount = __pricing_plan === "yearly" ? 5000 : 500;
+      window.__price_amount = __pricing_plan === "yearly" ? 1999 : 199;
 
       function switchPlan(plan) {
         var isYearly = plan === "yearly";
 
         window.__pricing_plan = plan;
-        window.__price_amount = isYearly ? 5000 : 500;
+        window.__price_amount = isYearly ? 1999 : 199;
         localStorage.setItem("pricing_plan", plan);
 
         var priceLabel = document.getElementById("price-label");
-        if (priceLabel) priceLabel.textContent = isYearly ? "$50/yr" : "$5/mo";
+        if (priceLabel) priceLabel.textContent = isYearly ? "$19.99/yr" : "$1.99/mo";
 
         // Complementary color (180 degrees offset from accent)
         var compColor = "hsl(calc(var(--accent-hue) + 180), 80%, 50%)";

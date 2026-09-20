@@ -1668,7 +1668,7 @@
                       <button id="tab-yearly" onclick="switchPlan('yearly')" style="padding:6px 16px;border:1px solid hsl(var(--tab-hue),80%,40%);border-left:none;border-radius:0 6px 6px 0;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:hsl(var(--tab-hue),80%,40%);transition:all 0.3s">Yearly</button>
                     </div>
                     <div style="text-decoration:line-through;color:#94a3b8;font-size:20px;font-weight:500;letter-spacing:-0.5px;margin-bottom:2px" id="price-crossed">$10/seat/mo</div>
-                    <div class="price-amount" id="price-display">$5 <span class="period" id="price-period">/ seat / mo</span></div>
+                    <div class="price-amount" id="price-display">$1.99 <span class="period" id="price-period">/ seat / mo</span></div>
                     <div id="price-note" style="font-size:13px;color:#475569;margin-top:8px;line-height:1.5">Free for 7 days. Cancel anytime. No charge until trial ends.</div>
                     
 
@@ -1681,7 +1681,7 @@
                     <script>
                     function buyNow(){
                       if(typeof plausible==='function')plausible('Buy Now Click');
-                      fetch('/api/v1/billing/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier:'HYPERNEXUS_PROFESSIONAL_LICENSE',seats:1,price_amount:window.__price_amount||500,interval:window.__pricing_plan==='yearly'?'year':'month',success_url:'https://hypernexus.site/success.html',cancel_url:'https://hypernexus.site/#pricing'})})
+                      fetch('/api/v1/billing/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier:'HYPERNEXUS_PROFESSIONAL_LICENSE',seats:1,price_amount:window.__price_amount||199,interval:window.__pricing_plan==='yearly'?'year':'month',success_url:'https://hypernexus.site/success.html',cancel_url:'https://hypernexus.site/#pricing'})})
                       .then(function(r){
                         if(!r.ok) throw new Error('Server error '+r.status);
                         return r.json();
@@ -1889,7 +1889,7 @@
 function switchPlan(plan){
   var isYearly = plan === 'yearly';
   window.__pricing_plan = plan;
-  window.__price_amount = isYearly ? 5000 : 500;
+  window.__price_amount = isYearly ? 1999 : 199;
   localStorage.setItem('pricing_plan', plan);
   
   // Update tab styles using CSS variables (not computed values)
@@ -1913,7 +1913,7 @@ function switchPlan(plan){
   var priceNote = document.getElementById('price-note');
   
   if(priceDisplay){
-    priceDisplay.textContent = isYearly ? '$50 ' : '$5 ';
+    priceDisplay.textContent = isYearly ? '$19.99 ' : '$1.99 ';
     var pp = document.createElement('span');
     pp.className = 'period';
     pp.id = 'price-period';
@@ -1921,7 +1921,7 @@ function switchPlan(plan){
     priceDisplay.appendChild(pp);
   }
   if(priceCrossed) priceCrossed.textContent = isYearly ? '$100/seat/yr' : '$10/seat/mo';
-  if(priceNote) priceNote.textContent = isYearly ? "That's $4.17/month. Save 17% vs monthly." : 'Free for 7 days. Cancel anytime. No charge until trial ends.';
+  if(priceNote) priceNote.textContent = isYearly ? "That's $1.67/month. Save 16% vs monthly." : 'Free for 7 days. Cancel anytime. No charge until trial ends.';
   
   // Track in Plausible
   if(typeof plausible !== 'undefined') plausible('Pricing Toggle', {props: {plan: plan}});

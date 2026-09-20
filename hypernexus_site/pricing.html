@@ -456,7 +456,7 @@
           <li class="highlight">Lifetime local license (yours forever)</li>
           <li class="highlight">1 year cloud hosting included</li>
           <li>Unlimited projects and memories</li>
-          <li>20,000+ MCP tool integrations</li>
+          <li>14,250+ MCP servers</li>
           <li>Works with 38+ AI agents</li>
           <li>Multi-tier memory (L1/L2/L3)</li>
           <li>Automatic daily backups</li>
@@ -497,8 +497,11 @@
                 return r.json();
               })
               .then(function (d) {
-                if (d.url) window.location.href = d.url;
-                else alert("Error: No checkout URL returned");
+                // Only follow a checkout URL on an expected host - a bare
+                // window.location.href = d.url follows whatever the API returns.
+                var ok = typeof d.url === "string" && /^https:\/\/([a-z0-9-]+\.)*(stripe\.com|hypernexus\.site)\//i.test(d.url);
+                if (ok) { window.location.assign(d.url); }
+                else { alert(d.url ? "Error: unexpected checkout URL" : "Error: No checkout URL returned"); }
               })
               .catch(function (e) {
                 console.error("Checkout error:", e);
@@ -523,16 +526,16 @@
           <th>GitHub Copilot</th>
         </tr>
         <tr>
-          <td>Persistent Memory</td>
-          <td class="check">✓ Included</td>
-          <td class="x">✗</td>
-          <td class="x">✗</td>
+          <td>MCP Server Catalog</td>
+          <td class="check">✓ 14,250+</td>
+          <td>Limited</td>
+          <td>Limited</td>
         </tr>
         <tr>
-          <td>MCP Tool Catalog</td>
-          <td class="check">✓ 20,000+</td>
-          <td>Limited</td>
-          <td>Limited</td>
+          <td>Skill Routing</td>
+          <td class="check">✓ 5,700+ skills</td>
+          <td class="x">✗</td>
+          <td class="x">✗</td>
         </tr>
         <tr>
           <td>Cross-Harness Parity</td>
@@ -547,12 +550,6 @@
           <td class="x">✗</td>
         </tr>
         <tr>
-          <td>Multi-Agent Swarm</td>
-          <td class="check">✓ Built-in</td>
-          <td class="x">✗</td>
-          <td class="x">✗</td>
-        </tr>
-        <tr>
           <td>Local-First</td>
           <td class="check">✓ Full offline</td>
           <td class="x">✗</td>
@@ -561,6 +558,18 @@
         <tr>
           <td>Self-Hosted Option</td>
           <td class="check">✓ Included</td>
+          <td class="x">✗</td>
+          <td class="x">✗</td>
+        </tr>
+        <tr>
+          <td>Persistent Memory</td>
+          <td class="check">✓ Included</td>
+          <td class="x">✗</td>
+          <td class="x">✗</td>
+        </tr>
+        <tr>
+          <td>Multi-Agent Swarm</td>
+          <td class="check">✓ Built-in</td>
           <td class="x">✗</td>
           <td class="x">✗</td>
         </tr>

@@ -1503,8 +1503,11 @@
                         return r.json();
                       })
                       .then(function(d){
-                        if(d.url)window.location.href=d.url;
-                        else alert('Error: No checkout URL returned');
+                        // Only follow a checkout URL on an expected host - a bare
+                        // window.location.href=d.url follows whatever the API returns.
+                        var ok = typeof d.url === "string" && /^https:\/\/([a-z0-9-]+\.)*(stripe\.com|hypernexus\.site)\//i.test(d.url);
+                        if (ok) { window.location.assign(d.url); }
+                        else { alert(d.url ? 'Error: unexpected checkout URL' : 'Error: No checkout URL returned'); }
                       })
                       .catch(function(e){
                         console.error('Checkout error:',e);

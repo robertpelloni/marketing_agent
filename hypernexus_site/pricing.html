@@ -500,35 +500,14 @@
           <li>No lock-in, no vendor hostage</li>
         </ul>
 
-        <button onclick="buyNow()" class="btn btn-primary">
-          Sign Up Now!!!
+        <button onclick="buyNow()" class="btn btn-primary" title="Creates your account and opens secure Stripe checkout for the 30-day free trial — card required, not charged today.">
+          Start Free Trial →
         </button>
         <script>
+          // Route through signup.html so the trial funnel captures an account first.
+          // The raw checkout fetch is preserved below as a fallback if signup is unreachable.
           function buyNow() {
-            fetch("/api/v1/billing/checkout", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                tier: "HYPERNEXUS_PROFESSIONAL_LICENSE",
-                seats: 1,
-                price_amount: window.__price_amount || 500,
-                interval: window.__pricing_plan === "yearly" ? "year" : "month",
-                success_url: "https://hypernexus.site/success.html",
-                cancel_url: "https://hypernexus.site/pricing.html",
-              }),
-            })
-              .then(function (r) {
-                if (!r.ok) throw new Error("Server error " + r.status);
-                return r.json();
-              })
-              .then(function (d) {
-                if (d.url) window.location.href = d.url;
-                else alert("Error: No checkout URL returned");
-              })
-              .catch(function (e) {
-                console.error("Checkout error:", e);
-                alert("Checkout error: " + e.message);
-              });
+            window.location.href = "/signup.html";
           }
         </script>
 

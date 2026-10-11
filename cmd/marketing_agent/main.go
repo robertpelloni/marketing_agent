@@ -304,7 +304,7 @@ func main() {
 			billing.TierHyperNexusPro: cfg.StripePriceHyperNexusPro,
 		}
 		billingStore := &billing.DBAdapter{DB: database.Conn}
-		billingClient = billing.NewStripeBillingClient(cfg.StripeAPIKey, cfg.StripeWebhookSecret, priceIDs, billingStore)
+		billingClient = billing.NewStripeBillingClient(cfg.StripeAPIKey, cfg.StripeWebhookSecret, priceIDs, cfg.StripePriceHyperNexusProMonthly, cfg.StripePriceHyperNexusProYearly, billingStore)
 	} else {
 		slog.Info("Billing: No STRIPE_API_KEY set. Initializing Mock Billing Client.")
 		billingStore := &billing.DBAdapter{DB: database.Conn}

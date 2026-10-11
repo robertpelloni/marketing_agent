@@ -22,7 +22,7 @@ import (
 	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
-const tnProvisionURL = "http://127.0.0.1:8090/api/account/provision"
+const tnProvisionURL = "http://127.0.0.1:7778/api/account/provision"
 
 var subdomainRe = regexp.MustCompile(`[^a-z0-9-]+`)
 

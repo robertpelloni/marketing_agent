@@ -1323,7 +1323,7 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, r *http.Request) {
 func (s *Server) notifyTormentNexusProvision(ctx context.Context, checkoutMsg string) {
 	provisionURL := os.Getenv("TN_PROVISION_URL")
 	if provisionURL == "" {
-		provisionURL = "http://127.0.0.1:8090/api/account/provision"
+		provisionURL = "http://127.0.0.1:7778/api/account/provision"
 	}
 
 	payload := map[string]string{

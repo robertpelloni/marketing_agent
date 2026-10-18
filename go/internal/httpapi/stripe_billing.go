@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -166,13 +167,21 @@ func (s *Server) handleStripeCreateCheckout(w http.ResponseWriter, r *http.Reque
 		custID = customerID.(string)
 	}
 
-	body := fmt.Sprintf(
-		"mode=subscription&success_url=%s&cancel_url=%s&line_items[0][price]=%s&line_items[0][quantity]=1&line_items[0][adjustable_quantity][enabled]=true&line_items[0][adjustable_quantity][minimum]=1&line_items[0][adjustable_quantity][maximum]=999",
-		successURL, cancelURL, priceID,
-	)
+	// Build the form body with proper URL-encoding. Raw interpolation of
+	// success_url/cancel_url/priceID/customer would let &, = or % in a URL break
+	// the form body or inject extra fields. metadata[plan] lets the webhook detect
+	// the purchased plan reliably (checkout line_items are not expanded in webhooks).
+	form := url.Values{}
+	form.Set("mode", "subscription")
+	form.Set("success_url", successURL)
+	form.Set("cancel_url", cancelURL)
+	form.Set("line_items[0][price]", priceID)
+	form.Set("line_items[0][quantity]", "1")
+	form.Set("metadata[plan]", payload.Plan)
 	if custID != "" {
-		body += "&customer=" + custID
+		form.Set("customer", custID)
 	}
+	body := form.Encode()
 
 	req, _ := http.NewRequestWithContext(r.Context(), "POST", "https://api.stripe.com/v1/checkout/sessions", bytes.NewBufferString(body))
 	req.Header.Set("Authorization", "Bearer "+stripeSecretKey())
@@ -344,12 +353,13 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, r *http.Request) {
 		Type string `json:"type"`
 		Data struct {
 			Object struct {
-				ID            string `json:"id"`
-				Customer      string `json:"customer"`
-				Status        string `json:"status"`
-				Subscription  string `json:"subscription"`
-				PaymentIntent string `json:"payment_intent"`
-				BillingReason string `json:"billing_reason"`
+				ID            string            `json:"id"`
+				Customer      string            `json:"customer"`
+				Status        string            `json:"status"`
+				Subscription  string            `json:"subscription"`
+				PaymentIntent string            `json:"payment_intent"`
+				BillingReason string            `json:"billing_reason"`
+				Metadata      map[string]string `json:"metadata"`
 				Items         struct {
 					Data []struct {
 						Price struct {
@@ -358,7 +368,7 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, r *http.Request) {
 							UnitAmount float64 `json:"unit_amount"`
 						} `json:"price"`
 					} `json:"data"`
-				} `json:"lines"`
+				} `json:"line_items"`
 			} `json:"object"`
 		} `json:"data"`
 	}
@@ -370,8 +380,17 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, r *http.Request) {
 	switch event.Type {
 	case "checkout.session.completed":
 		obj := event.Data.Object
+		// Prefer metadata[plan] set at session creation — checkout line_items are
+		// not expanded in webhook payloads, so price matching below is a fallback.
 		planName := "Pro"
-		if len(obj.Items.Data) > 0 {
+		if p := strings.TrimSpace(obj.Metadata["plan"]); p != "" {
+			for _, pl := range availablePlans() {
+				if strings.EqualFold(pl.ID, p) {
+					planName = pl.Name
+					break
+				}
+			}
+		} else if len(obj.Items.Data) > 0 {
 			for _, p := range availablePlans() {
 				if p.PriceID == obj.Items.Data[0].Price.ID {
 					planName = p.Name
@@ -492,6 +511,17 @@ func verifyStripeSignature(secret, payload, signatureHeader string) bool {
 		}
 	}
 	if timestamp == "" || expectedSig == "" {
+		return false
+	}
+
+	// Reject stale timestamps (Stripe recommends a 5-minute tolerance) so a
+	// captured signed payload cannot be replayed indefinitely.
+	ts, err := strconv.ParseInt(timestamp, 10, 64)
+	if err != nil {
+		return false
+	}
+	now := time.Now().Unix()
+	if diff := now - ts; diff > 300 || diff < -300 {
 		return false
 	}
 

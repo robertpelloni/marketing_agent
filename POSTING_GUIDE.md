@@ -1,5 +1,9 @@
 # Manual Posting Guide - All Articles
 
+> [!WARNING] 2026-11-03: Articles 1-6 below link to /blog/*.html files that DO NOT EXIST yet (blog/ only has 5 posts: ai-agent-memory, progressive-tool-routing, llm-waterfall, cross-harness-parity, local-first). Do NOT post these URLs until the posts are published. Use marketing/outreach_queue_2026-11-03.md (live URLs only) instead. Blog index hidden accordingly.
+
+# Generated: July 27, 2026
+
 # Generated: July 27, 2026
 
 ## ARTICLES TO POST
@@ -271,3 +275,4 @@ Full checklist:
 - [ ] Twitter (manual - 6 tweets above)
 - [ ] Hashnode (manual - 6 posts above)
 - [ ] Medium (manual - 6 posts above)
+

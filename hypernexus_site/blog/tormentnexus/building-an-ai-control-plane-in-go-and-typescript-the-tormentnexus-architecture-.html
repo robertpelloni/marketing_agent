@@ -1,0 +1,110 @@
+<article class="blog-post" data-slug="building-an-ai-control-plane-in-go-and-typescript-the-tormentnexus-architecture-" data-brand="tormentnexus" data-category="case-study">
+  <header>
+    <h1>Building an AI Control Plane in Go and TypeScript: The TormentNexus Architecture Deep-Dive</h1>
+    <div class="meta">
+      <span class="date">July 13, 2026</span>
+      <span class="brand"><a href="https://tormentnexus.site">TormentNexus</a></span>
+      <span class="category">case-study</span>
+    </div>
+  </header>
+  <div class="content">
+<h1>TormentNexus: The Local-First AI Control Plane</h1>
+
+<p>I built TormentNexus because I was tired of AI tools that break the moment you leave their curated IDE environment. The result is a local-first control plane composed of 446 Go HTTP handlers spread across 35+ packages, designed to bind any LLM to any tool—without the cloud hairball.</p>
+
+<h2>Core Architecture: Handlers, Packages, and the MCP Mesh</h2>
+
+<p>Every request hits one of 446 Go HTTP handlers. These are not thin wrappers. Each handler performs typed argument extraction, context injection, and deterministic routing into a package layer that spans 35+ isolated modules. Packages cover everything from filesystem ops and code execution to network probing and database queries—each one a self-contained capability.</p>
+
+<p>The killer feature is <strong>progressive MCP (Model Context Protocol) routing</strong>. TormentNexus maintains a registry of 11,000+ MCP servers, each exposing a set of tools. When an agent requests a tool, the system doesn't check all 11K—it uses a trie-based prefix matcher and a priority vector to find the matching server in O(log n) time. The routing is progressive: if a tool request fails on the primary server, it cascades to fallbacks automatically. This gives you a mesh of tooling, not a single point of failure.</p>
+
+<h2>Memory: Dual-Tier L1/L2 with sqlite-vec</h2>
+
+<p>Agents forget. TormentNexus doesn't. I implemented a dual-tier memory system:</p>
+
+<ul>
+  <li><strong>L1 (Episodic)</strong>: In-memory ring buffer of recent interactions (256 entries by default). Fast, volatile, for immediate context.</li>
+  <li><strong>L2 (Semantic)</strong>: Persistent vector store backed by sqlite-vec. Every agent interaction—tool call, response, error—gets embedded and stored. Current count: 14,000+ memories, each with a 384-dimensional vector and metadata.</li>
+</ul>
+
+<p>When an agent needs context, the system performs a weighted vector search across L2, blending with L1's recency bias. Results are injected into the agent's prompt as a <code>memory_block</code>. No RAG server. No cloud. Just a local SQLite file with vector indexes.</p>
+
+<h2>LLM Waterfall: NVIDIA → OpenRouter → Ollama</h2>
+
+<p>Single-model dependency is a trap. TormentNexus implements a waterfall strategy:</p>
+
+<ol>
+  <li><strong>Tier 1</strong>: NVIDIA NIM (local or cloud, self-hostable). Preferred for speed and determinism.</li>
+  <li><strong>Tier 2</strong>: OpenRouter (fallback). Caches routing to avoid rate limits.</li>
+  <li><strong>Tier 3</strong>: Ollama (local only). Runs when both cloud tiers are unreachable or for private data.</li>
+</ol>
+
+<p>Each tier is wrapped in a retry-with-backoff handler that measures latency and token usage. The system learns which tier is fastest for which task and biases future requests. If all tiers fail, the agent receives a structured error and can decide to wait, retry, or degrade gracefully.</p>
+
+<h2>Cross-Harness Tool Parity: 6 AI IDEs</h2>
+
+<p>AI IDEs each have their own tool system—Claude Code's filesystem, Cursor's shell, Copilot's editor actions, Aider's git integration, Continue's context, and Windsurf's agentic loops. TormentNexus normalizes them all.</p>
+
+<p>Each tool in the system (filesystem R/W, shell execution, HTTP fetch, database query, etc.) is implemented once as a Go package. Then, for each of the 6 supported IDEs, a thin shim adapter maps the IDE's native tool interface to TormentNexus's handler. This means the same <code>read_file</code> tool works identically whether invoked from Claude Code, Cursor, or a raw HTTP request. Parity is verified by a test suite that runs the same tool call across all 6 adapters and asserts identical output.</p>
+
+<h2>Multi-Agent Swarm: Planner/Implementer/Tester/Critic</h2>
+
+<p>Single-agent loops are brittle. TormentNexus runs a four-role swarm:</p>
+
+<ul>
+  <li><strong>Planner</strong>: Breaks user goals into discrete tasks. Outputs a structured plan with dependencies and estimated complexity.</li>
+  <li><strong>Implementer</strong>: Executes tasks using tools. Each tool call is logged with input/output/hash for audit trails.</li>
+  <li><strong>Tester</strong>: After implementation, runs validation checks (unit, integration, property-based).</li>
+  <li><strong>Critic</strong>: Reviews the full trace—plan, implementation, test results—and decides: pass, rollback, or loop.</li>
+</ul>
+
+<p>The critic drives a <strong>self-healing loop</strong>. If tests fail or the critic detects a logic error, the entire chain is re-run from the Planner step, but with the error context injected as a constraint. This loop has a configurable max depth (default: 3). After that, the system escalates to a human with a structured failure report.</p>
+
+<h2>Self-Healing Loop Mechanics</h2>
+
+<p>When the critic flags an issue, it doesn't just restart. It appends a <code>failure_context</code> to the agent's prompt containing:</p>
+
+<ul>
+  <li>The original plan fragment that led to the error</li>
+  <li>The tool call inputs/outputs at the point of failure</li>
+  <li>The test output or critic reasoning</li>
+</ul>
+
+<p>The Planner then generates a revised plan that explicitly avoids the failure mode. This is not retry—it's adaptive planning. In practice, 70% of self-healing loops resolve in one iteration for simple tasks (file manipulation, code generation) and 90% by the second iteration.</p>
+
+<h2>Numbers that Matter</h2>
+
+<ul>
+  <li><strong>446</strong> Go HTTP handlers, each typed and tested</li>
+  <li><strong>35+</strong> packages covering all tool domains</li>
+  <li><strong>11,000+</strong> MCP servers registered in the routing mesh</li>
+  <li><strong>14,000+</strong> persistent memories in sqlite-vec</li>
+  <li><strong>6</strong> AI IDEs with full cross-harness tool parity</li>
+  <li><strong>4</strong> agent roles in the swarm</li>
+</ul>
+
+<p>Latency from handler entry to first response: <code>~3-8ms</code> for local tools, <code>~200-800ms</code> for LLM calls (tier 1). Zero external dependencies for the control plane itself—only Go stdlib and sqlite-vec.</p>
+
+<h2>Why Local-First Matters</h2>
+
+<p>Every AI tool that depends on a cloud API is a chain of single points of failure. TormentNexus stores memory locally, routes MCP locally, and falls back to local LLMs. The only cloud dependencies are the LLM tiers, and those are swappable. If NVIDIA goes down, OpenRouter takes over. If OpenRouter fails, Ollama runs on your machine. The control plane itself never relies on an external service to route a tool call or retrieve a memory.</p>
+
+<p>This means you can run the entire system on a laptop with 16GB RAM and a GPU from 2020. It's not a demo. It's a production agent that doesn't care if you're offline.</p>
+
+<h2>Built with TormentNexus</h2>
+
+<p>This entire architecture is open-source and self-deployable. No telemetry, no accounts, no subscriptions. Clone the repo, run <code>go build</code>, and you have a control plane that rivals anything from the cloud AI labs.</p>
+
+<pre><code>git clone https://github.com/MDMAtk/TormentNexus
+cd TormentNexus
+go build -o torment
+./torment --port 8080</code></pre>
+
+<p>Then connect Claude Code, Cursor, or any HTTP client to <code>localhost:8080</code> and start building.</p>
+
+<p>Learn more at <a href="https://tormentnexus.site">tormentnexus.site</a> — including the full MCP server registry, handler documentation, and a live demo connecting to all 6 IDEs simultaneously.</p>
+  </div>
+  <footer>
+    <p>Published by TormentNexus — the OS for AI models.</p>
+  </footer>
+</article>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero-Trust AI Architecture: Authenticating Every Tool Call, Memory Access, and Model Request — TormentNexus Blog</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a0f;color:#e0e0e0;font-family:system-ui,sans-serif;line-height:1.8}.c{max-width:740px;margin:0 auto;padding:60px 20px}h1{font-size:2.2rem;background:linear-gradient(135deg,#7c3aed,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.m{color:#6868a0;font-size:.85rem;margin-bottom:2rem}h2{font-size:1.4rem;margin:2rem 0 .8rem;color:#c4b5fd}p{margin-bottom:1.2rem;color:#b8b8c8}a{color:#a78bfa}.b{display:inline-block;margin-bottom:2rem;color:#6868a0;text-decoration:none}</style>
+</head><body><div class="c">
+<a href="/" class="b">← TormentNexus</a>
+<h1>Zero-Trust AI Architecture: Authenticating Every Tool Call, Memory Access, and Model Request</h1>
+<p class="m">July 13, 2026 · TormentNexus Team</p>
+<p>When you give an AI agent access to your filesystem, database, and API keys, you are trusting it with everything. Zero-trust architecture means every single operation is authenticated, authorized, and audited.</p>
+<h2>The Threat Model</h2>
+<p>AI agents can execute arbitrary code, access sensitive data, and make network requests. A compromised or misbehaving agent could exfiltrate data, delete files, or escalate privileges.</p>
+<h2>Three Pillars of Zero-Trust AI</h2>
+<ul style="margin:1rem 0 1.5rem 1.5rem;color:#b8b8c8">
+<li><strong>Authentication:</strong> Every agent, tool call, and API request carries cryptographic identity (Ed25519 signatures)</li>
+<li><strong>Authorization:</strong> RBAC policies determine what each role can do. Tool calls are checked against policies before execution</li>
+<li><strong>Audit:</strong> Every action is logged to an immutable audit trail with timestamps, agent IDs, and full argument payloads</li>
+</ul>
+<h2>RBAC Enforcement in Practice</h2>
+<p>TormentNexus intercepts every tool call before execution. Destructive shell operations are blocked by default unless explicitly authorized. The check runs on shell tools, not on file content — preventing false positives while maintaining security.</p>
+<h2>The Result</h2>
+<p>Security that scales with autonomy. As agents gain more capabilities, the zero-trust framework ensures they cannot exceed their authorized scope. Every action is visible, every permission is explicit, and every violation is caught in real-time.</p>
+<p style="margin-top:3rem;border-top:1px solid #1a1a2e;padding-top:2rem;color:#6868a0;font-size:.85rem">
+<a href="https://github.com/MDMAtk/TormentNexus">GitHub</a> · <a href="https://hypernexus.site/docs">Docs</a></p>
+</div></body></html>

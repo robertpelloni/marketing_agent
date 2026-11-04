@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dual-Tier Memory Architecture for AI Agents: L1 Scratchpad + L2 Vault — TormentNexus Blog</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a0f;color:#e0e0e0;font-family:system-ui,sans-serif;line-height:1.8}.c{max-width:740px;margin:0 auto;padding:60px 20px}h1{font-size:2.2rem;background:linear-gradient(135deg,#7c3aed,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.m{color:#6868a0;font-size:.85rem;margin-bottom:2rem}h2{font-size:1.4rem;margin:2rem 0 .8rem;color:#c4b5fd}p{margin-bottom:1.2rem;color:#b8b8c8}a{color:#a78bfa}.b{display:inline-block;margin-bottom:2rem;color:#6868a0;text-decoration:none}</style>
+</head><body><div class="c">
+<a href="/" class="b">← TormentNexus</a>
+<h1>Dual-Tier Memory Architecture for AI Agents: L1 Scratchpad + L2 Vault</h1>
+<p class="m">July 13, 2026 · TormentNexus Team</p>
+<p>Human brains have working memory and long-term memory. AI agents need the same split. TormentNexus implements this as L1 (fast, volatile scratchpad) and L2 (persistent, searchable vault).</p>
+<h2>L1: The Scratchpad</h2>
+<p>L1 is the agent working memory — fast, in-process, and ephemeral. It holds the current conversation context, intermediate reasoning steps, and scratch calculations. When the session ends, L1 clears.</p>
+<h2>L2: The Vault</h2>
+<p>L2 is where permanence lives. Every memory entry has content, tags, category, importance score, and a heat score that decays over time. The vault uses SQLite with FTS5 for full-text search and vector embeddings for semantic similarity.</p>
+<h2>The Bridge: Harvesting L1 into L2</h2>
+<p>The Memory Harvester agent periodically scans L1 contents and extracts high-value memories for L2 storage. It identifies patterns worth keeping: architecture decisions, bug fixes, user preferences.</p>
+<h2>Why Two Tiers Matter</h2>
+<p>Without L1, agents are slow — every piece of context requires a database query. Without L2, agents are forgetful — everything vanishes at session end. Together, they give agents the speed of working memory with the durability of long-term storage.</p>
+<p style="margin-top:3rem;border-top:1px solid #1a1a2e;padding-top:2rem;color:#6868a0;font-size:.85rem">
+<a href="https://github.com/MDMAtk/TormentNexus">GitHub</a> · <a href="https://hypernexus.site/docs">Docs</a></p>
+</div></body></html>

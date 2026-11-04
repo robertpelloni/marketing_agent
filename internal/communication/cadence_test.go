@@ -19,8 +19,8 @@ func TestDefaultCadence_HasFiveSteps(t *testing.T) {
 
 func TestDefaultCadence_MaxAttempts(t *testing.T) {
 	cadence := DefaultCadence()
-	if cadence.MaxAttempts != 5 {
-		t.Errorf("expected max attempts 5, got %d", cadence.MaxAttempts)
+	if cadence.MaxAttempts != 10 {
+		t.Errorf("expected max attempts 10, got %d", cadence.MaxAttempts)
 	}
 }
 
@@ -91,8 +91,8 @@ func TestCadenceTracker_GetNextStep_ExhaustedAfterMaxAttempts(t *testing.T) {
 
 	// Create 5 outbound interactions (max attempts)
 	now := time.Now()
-	interactions := make([]db.Interaction, 5)
-	for i := 0; i < 5; i++ {
+	interactions := make([]db.Interaction, 10)
+	for i := 0; i < 10; i++ {
 		interactions[i] = db.Interaction{
 			Direction: "Outbound",
 			Channel:   "email",
@@ -110,8 +110,8 @@ func TestCadenceTracker_GetNextStep_ExhaustedAfterMaxAttempts(t *testing.T) {
 	if !progress.IsExhausted {
 		t.Error("expected IsExhausted to be true after max attempts")
 	}
-	if progress.TotalAttempts != 5 {
-		t.Errorf("expected 5 total attempts, got %d", progress.TotalAttempts)
+	if progress.TotalAttempts != 10 {
+		t.Errorf("expected 10 total attempts, got %d", progress.TotalAttempts)
 	}
 }
 

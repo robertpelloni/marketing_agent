@@ -1,0 +1,16 @@
+# Granular Short-Term Tasks & Implementation TODOs
+
+## Immediate Completed Items (v0.7.1)
+- [x] Fix `internal/communication/cadence_test.go` failures (`MaxAttempts: 10`).
+- [x] Consolidate `/dashboard/outreach` metrics and logs directly into `/` dashboard in `internal/web/server.go`.
+- [x] Integrate tooltips (`?` markers with hover guidance) for deals, metrics, controls, and channels.
+- [x] Upgrade `cmd/marketing_agent/systray.go` and `systray_unix.go` for TormentNexus & HyperNexus support.
+- [x] Archive obsolete scripts (`scripts/*_old.py`) non-destructively into `scripts/archive/`.
+- [x] Improve `build.sh` with executable permissions and version stamping.
+
+## Upcoming Short-Term Tasks
+- [ ] Connect WebSocket telemetry auto-reconnect backoff in dashboard frontend script.
+- [ ] Implement export action for cold outreach metrics to CSV directly from main dashboard.
+- [ ] Add LinkedIn connection request limit warning threshold indicator on deal cards.
+- [ ] Enhance Devvit Reddit app integration endpoint with cached post preview thumbnails.
+- [ ] Implement automated staging health check verification script in CI/CD pipeline.

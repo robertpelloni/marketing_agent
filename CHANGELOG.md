@@ -1,4 +1,20 @@
 
+## [0.7.1] - 2026-11-04
+
+### Added
+- **Consolidated Unified Operations Dashboard**: Integrated cold outreach analytics and live delivery logs directly into the primary dashboard (`internal/web/server.go`), removing subpage fragmentation.
+- **Rich Contextual Tooltips**: Added intuitive `?` marker popovers with CSS hover details across all pipeline stages, MEDDPICC funnel metrics, manual deal actions, and contact channels.
+- **Enhanced Systray Control**: Added direct launch options for HyperNexus and TormentNexus sites, unified dashboard, and outreach monitoring in `cmd/marketing_agent/systray.go`.
+- **Streamlined Unix Build Script**: Added executable flags, version stamping from `VERSION.md`, and clean compilation output in `build.sh`.
+
+### Fixed
+- **Cadence Unit Test Failure**: Corrected `TestDefaultCadence_MaxAttempts` and `TestCadenceTracker_GetNextStep_ExhaustedAfterMaxAttempts` to reflect the configured `MaxAttempts: 10` sequence.
+- **Headless Unix Graceful Exit**: Improved `cmd/marketing_agent/systray_unix.go` signal handling and context cancellation.
+
+### Changed
+- **Script Housekeeping**: Nondestructively moved redundant legacy scripts (`*_old.py`) into `scripts/archive/`.
+- **Governance Updates**: Synchronized `ROADMAP.md`, `TODO.md`, `VISION.md`, `MEMORY.md`, `DEPLOY.md`, `IDEAS.md`, `HANDOFF.md`, and bumped version to `0.7.1`.
+
 ## [0.7.2] - 2026-08-20
 
 ### Repository Sync

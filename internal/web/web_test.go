@@ -96,6 +96,6 @@ func TestHandleDashboard(t *testing.T) {
 	server.ServeHTTP(rr, req)
 
 	// Since we passed nil for dependencies, it might panic or return an error, but let's test just for basic routing
-    // Actually, testing the dashboard route with a nil DB will probably cause a panic or internal server error
-    // Let's create a minimal test just ensuring it doesn't crash if we provide an ephemeral DB
+	// Actually, testing the dashboard route with a nil DB will probably cause a panic or internal server error
+	// Let's create a minimal test just ensuring it doesn't crash if we provide an ephemeral DB
 }

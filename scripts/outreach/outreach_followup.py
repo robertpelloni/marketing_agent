@@ -127,9 +127,7 @@ def main():
             "SELECT attempt, count(*) FROM outreach_log GROUP BY attempt ORDER BY attempt"
         )
         rows = cur.fetchall()
-        cur.execute(
-            "SELECT count(*) FROM outreach_log WHERE replied_at IS NOT NULL"
-        )
+        cur.execute("SELECT count(*) FROM outreach_log WHERE replied_at IS NOT NULL")
         replies_row = cur.fetchone()
         replies = replies_row[0] if replies_row else 0
         cur.close()

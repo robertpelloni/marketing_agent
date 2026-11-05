@@ -42,8 +42,7 @@ def get_cto_contacts(limit=None):
     cur.close()
     conn.close()
     return [
-        {"name": r[0], "email": r[1], "role": r[2], "company": r[3] or ""}
-        for r in rows
+        {"name": r[0], "email": r[1], "role": r[2], "company": r[3] or ""} for r in rows
     ]
 
 

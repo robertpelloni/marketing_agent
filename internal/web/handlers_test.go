@@ -31,7 +31,7 @@ func TestWebHandlers_NoDB(t *testing.T) {
 		}
 	})
 
-    t.Run("Webhook endpoint routing", func(t *testing.T) {
+	t.Run("Webhook endpoint routing", func(t *testing.T) {
 		req, _ := http.NewRequest("GET", "/api/v1/webhook/github", nil)
 		rr := httptest.NewRecorder()
 		server.ServeHTTP(rr, req)
@@ -42,7 +42,7 @@ func TestWebHandlers_NoDB(t *testing.T) {
 		}
 	})
 
-    t.Run("Leads API POST nil DB", func(t *testing.T) {
+	t.Run("Leads API POST nil DB", func(t *testing.T) {
 		req, _ := http.NewRequest("POST", "/api/v1/leads", bytes.NewBuffer([]byte(`{"name":"test"}`)))
 		req.Header.Set("Content-Type", "application/json")
 		rr := httptest.NewRecorder()

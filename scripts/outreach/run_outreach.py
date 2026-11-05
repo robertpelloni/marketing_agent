@@ -27,7 +27,7 @@ def run(script, extra=None):
     cmd = [sys.executable, os.path.join(HERE, script)]
     if extra:
         cmd.extend(extra)
-    print(f"\n{'='*60}\n▶ Running: {' '.join(cmd)}\n{'='*60}")
+    print(f"\n{'=' * 60}\n▶ Running: {' '.join(cmd)}\n{'=' * 60}")
     result = subprocess.run(cmd)
     return result.returncode
 
@@ -53,7 +53,9 @@ def main():
 
     if only is None and not dry_run:
         print("\n✅ Full outreach cycle complete.")
-        print("Next cycle: run this again tomorrow (follow-ups will handle Day 5/10/15).")
+        print(
+            "Next cycle: run this again tomorrow (follow-ups will handle Day 5/10/15)."
+        )
     return rc
 
 

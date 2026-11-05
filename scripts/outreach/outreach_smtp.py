@@ -30,6 +30,7 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 
+
 # ─── Config (overridable via env) ────────────────────────────────────────────
 def _safe_int(value, default):
     """Parse an int from env, falling back to default on error."""
@@ -78,11 +79,22 @@ def _rate_limited():
 def get_db():
     """Return a fresh DB connection."""
     if psycopg2 is None:
-        raise RuntimeError("psycopg2 is not installed — install with: pip install psycopg2-binary")
+        raise RuntimeError(
+            "psycopg2 is not installed — install with: pip install psycopg2-binary"
+        )
     return psycopg2.connect(DB_DSN)
 
 
-def log_outreach(contact_email, company_name, category, subject, body, status="sent", attempt=1, error=None):
+def log_outreach(
+    contact_email,
+    company_name,
+    category,
+    subject,
+    body,
+    status="sent",
+    attempt=1,
+    error=None,
+):
     """Record an outreach email in the outreach_log table."""
     try:
         conn = get_db()
@@ -91,7 +103,17 @@ def log_outreach(contact_email, company_name, category, subject, body, status="s
             """INSERT INTO outreach_log
                (contact_email, company_name, category, subject, body, status, attempt, sent_at, error)
                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-            (contact_email, company_name, category, subject, body, status, attempt, datetime.now(timezone.utc), error),
+            (
+                contact_email,
+                company_name,
+                category,
+                subject,
+                body,
+                status,
+                attempt,
+                datetime.now(timezone.utc),
+                error,
+            ),
         )
         conn.commit()
         cur.close()
@@ -100,7 +122,15 @@ def log_outreach(contact_email, company_name, category, subject, body, status="s
         logger.warning("Failed to log outreach to DB: %s", e)
 
 
-def send_email(to_email, subject, body_plain, body_html=None, reply_to=None, company_name=None, category=None):
+def send_email(
+    to_email,
+    subject,
+    body_plain,
+    body_html=None,
+    reply_to=None,
+    company_name=None,
+    category=None,
+):
     """
     Send a single email via SMTP and log it.
 
@@ -132,7 +162,15 @@ def send_email(to_email, subject, body_plain, body_html=None, reply_to=None, com
             server.login(SMTP_USER, SMTP_PASS)
             server.send_message(msg)
             server.quit()
-            log_outreach(to_email, company_name, category, subject, body_plain, status="sent", attempt=attempt)
+            log_outreach(
+                to_email,
+                company_name,
+                category,
+                subject,
+                body_plain,
+                status="sent",
+                attempt=attempt,
+            )
             _send_times.append(time.time())
             logger.info("Sent: %s", to_email)
             time.sleep(DELAY_BETWEEN)
@@ -143,7 +181,15 @@ def send_email(to_email, subject, body_plain, body_html=None, reply_to=None, com
             if attempt < 3:
                 time.sleep(30 * attempt)
 
-    log_outreach(to_email, company_name, category, subject, body_plain, status="failed", error=str(last_err))
+    log_outreach(
+        to_email,
+        company_name,
+        category,
+        subject,
+        body_plain,
+        status="failed",
+        error=str(last_err),
+    )
     logger.error("Failed to send after 3 attempts: %s — %s", to_email, last_err)
     return False
 
@@ -181,7 +227,9 @@ def send_bulk(contacts, subject_fn, body_fn, category="general", max_sends=None)
             failed += 1
 
         if (i + 1) % 10 == 0:
-            logger.info("Progress: %d/%d (sent=%d failed=%d)", i + 1, total, sent, failed)
+            logger.info(
+                "Progress: %d/%d (sent=%d failed=%d)", i + 1, total, sent, failed
+            )
 
     logger.info("Bulk send complete: sent=%d failed=%d total=%d", sent, failed, total)
     return {"sent": sent, "failed": failed, "total": total}
@@ -205,7 +253,12 @@ def get_stats():
         opens = opens_row[0] if opens_row else 0
         cur.close()
         conn.close()
-        return {"status_counts": dict(rows), "unique_contacts": unique, "replies": replies, "opens": opens}
+        return {
+            "status_counts": dict(rows),
+            "unique_contacts": unique,
+            "replies": replies,
+            "opens": opens,
+        }
     except Exception as e:  # noqa: BLE001
         logger.error("Failed to get stats: %s", e)
         return {}

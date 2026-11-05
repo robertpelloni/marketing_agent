@@ -15,6 +15,7 @@
 
 ### Changed
 - **Script Housekeeping**: Nondestructively moved redundant legacy scripts (`*_old.py`) into `scripts/archive/`.
+- **LinkedIn Outbound Safety Indicators**: Added `CheckDailyConnectionLimit` threshold validation in `internal/communication/linkedin_sender.go` with unit tests and dynamic safety badge popovers on dashboard deal cards.
 - **Governance Updates**: Synchronized `ROADMAP.md`, `TODO.md`, `VISION.md`, `MEMORY.md`, `DEPLOY.md`, `IDEAS.md`, `HANDOFF.md`, and bumped version to `0.7.1`.
 
 ## [0.7.2] - 2026-08-20

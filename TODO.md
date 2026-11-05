@@ -11,7 +11,8 @@
 - [x] Connect WebSocket telemetry auto-reconnect backoff in dashboard frontend script.
 - [x] Implement export action for cold outreach metrics to CSV directly from main dashboard.
 
+- [x] Add LinkedIn connection request limit warning threshold indicator on deal cards.
+
 ## Upcoming Short-Term Tasks
-- [ ] Add LinkedIn connection request limit warning threshold indicator on deal cards.
 - [ ] Enhance Devvit Reddit app integration endpoint with cached post preview thumbnails.
 - [ ] Implement automated staging health check verification script in CI/CD pipeline.

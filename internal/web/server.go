@@ -909,12 +909,17 @@ tr:hover { background-color: #f8fafc; }
 				if channel == "" {
 					channel = "email"
 				}
+				linkedInBadge := ""
+				if channel == "linkedin" || c.LinkedInURL != "" {
+					linkedInBadge = `<span class="tooltip" style="margin-left: 6px; font-size: 0.72rem; padding: 2px 6px; border-radius: 10px; background: #dcfce7; color: #166534; font-weight: 600; cursor: help;">⚡ LinkedIn Safe<span class="tooltiptext">LinkedIn cadence threshold: max 20 req/day (warning at 15 req/day)</span></span>`
+				}
+
 				contactHTML += fmt.Sprintf(`
 				<div style="margin: 4px 0;">
 					<span class="tooltip"><strong>%s</strong> (%s)
 						<span class="tooltiptext">Set preferred outreach channel for this contact</span>
 					</span> —
-					<span style="color: %s; font-weight: 600;">%s</span>
+					<span style="color: %s; font-weight: 600;">%s</span>%s
 					<form method="POST" style="display:inline; margin-left: 8px;">
 						<input type="hidden" name="csrf_token" value="%s">
 						<input type="hidden" name="action" value="update_channel">
@@ -930,6 +935,7 @@ tr:hover { background-color: #f8fafc; }
 					html.EscapeString(c.Role),
 					map[string]string{"email": "var(--info)", "linkedin": "var(--success)", "github": "var(--warning)"}[channel],
 					channel,
+					linkedInBadge,
 					csrfToken,
 					c.ID,
 					map[bool]string{true: " selected", false: ""}[channel == "email"],

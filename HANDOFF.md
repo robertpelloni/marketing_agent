@@ -12,6 +12,7 @@ This session successfully executed a complete system audit, resolved test suite 
 2. **Dashboard UI Redesign & Consolidation**:
    - `internal/web/server.go`: Consolidated cold outreach analytics and live delivery logs from `/dashboard/outreach` directly into `/`, grouping features by value (Subscription & Revenue, Conversion KPIs & Funnel, Cold Outreach Delivery, Active Deals CRM, Social DevRel Logs, and System Telemetry).
    - Added CSV export functionality (`/api/v1/outreach/export`) with a direct "Export CSV ↓" dashboard action.
+   - Added LinkedIn connection limit safety validation and dynamic `⚡ LinkedIn Safe` status badges on deal cards.
    - Enhanced WebSocket client with automatic reconnection and exponential backoff.
    - Added `?` tooltip markers and CSS hover popovers across all metrics, deal stages, and controls.
    - All tests in `internal/web` verified passing.

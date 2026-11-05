@@ -49,3 +49,9 @@ jobs:
       run: |
         test -x scripts/staging_health_check.sh
         bash -n scripts/staging_health_check.sh
+
+    - name: Docker Compose Smoke Test
+      run: |
+        test -x scripts/docker_smoke_test.sh
+        bash -n scripts/docker_smoke_test.sh
+        ./scripts/docker_smoke_test.sh

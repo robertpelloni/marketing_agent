@@ -21,7 +21,10 @@ This session successfully executed a complete system audit, resolved test suite 
 3. **Proactive Lead Discovery (24-Hour Recency Prioritization)**:
    - `pkg/agents/discovery.go`: Added `BuildDiscoveryQuery` with dynamic `pushed:>YYYY-MM-DD` 24-hour lookback filter to prioritize active repositories and recent developer interest.
    - `pkg/agents/discovery_test.go`: Added comprehensive test coverage for LLM-suggested queries, invalid query fallbacks, and recency qualifiers.
-3. **Systray & Headless Unix Enhancements**:
+4. **Automated Docker Compose Smoke Testing**:
+   - `scripts/docker_smoke_test.sh`: Created automated validation script for `docker-compose.staging.yml`, `docker-compose.yml`, and `deploy/docker-compose.yml`.
+   - Wired script execution directly into `.github/workflows/ci.yml`.
+5. **Systray & Headless Unix Enhancements**:
    - `cmd/marketing_agent/systray.go`: Added HyperNexus and TormentNexus site links, cold outreach navigation, and verified context cancellation on exit.
    - `cmd/marketing_agent/systray_unix.go`: Enhanced headless Unix execution with structured signal logging.
 4. **Script & Build Modernization**:

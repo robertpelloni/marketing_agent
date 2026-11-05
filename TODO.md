@@ -16,6 +16,8 @@
 - [x] Implement automated staging health check verification script in CI/CD pipeline.
 - [x] Add 24-hour recency qualification (`pushed:>YYYY-MM-DD`) to Target Discovery lead generation queries.
 
+- [x] Add automated smoke testing for Docker Compose staging configurations.
+
 ## Upcoming Short-Term Tasks
-- [ ] Add automated smoke testing for Docker Compose staging configurations.
 - [ ] Integrate OpenTelemetry trace instrumentation for multi-agent LLM waterfall calls.
+- [ ] Add PostgreSQL connection pool health metrics to Prometheus endpoint.

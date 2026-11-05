@@ -3,6 +3,8 @@
 
 ### Added
 - **Consolidated Unified Operations Dashboard**: Integrated cold outreach analytics and live delivery logs directly into the primary dashboard (`internal/web/server.go`), removing subpage fragmentation.
+- **CSV Data Export**: Added direct `/api/v1/outreach/export` CSV streaming endpoint and one-click "Export CSV ↓" action on the main dashboard for offline CRM ingestion and audits.
+- **Resilient Telemetry Stream**: Implemented exponential backoff auto-reconnect logic for dashboard WebSocket client to maintain live event streaming across network interruptions.
 - **Rich Contextual Tooltips**: Added intuitive `?` marker popovers with CSS hover details across all pipeline stages, MEDDPICC funnel metrics, manual deal actions, and contact channels.
 - **Enhanced Systray Control**: Added direct launch options for HyperNexus and TormentNexus sites, unified dashboard, and outreach monitoring in `cmd/marketing_agent/systray.go`.
 - **Streamlined Unix Build Script**: Added executable flags, version stamping from `VERSION.md`, and clean compilation output in `build.sh`.

@@ -8,9 +8,10 @@
 - [x] Archive obsolete scripts (`scripts/*_old.py`) non-destructively into `scripts/archive/`.
 - [x] Improve `build.sh` with executable permissions and version stamping.
 
+- [x] Connect WebSocket telemetry auto-reconnect backoff in dashboard frontend script.
+- [x] Implement export action for cold outreach metrics to CSV directly from main dashboard.
+
 ## Upcoming Short-Term Tasks
-- [ ] Connect WebSocket telemetry auto-reconnect backoff in dashboard frontend script.
-- [ ] Implement export action for cold outreach metrics to CSV directly from main dashboard.
 - [ ] Add LinkedIn connection request limit warning threshold indicator on deal cards.
 - [ ] Enhance Devvit Reddit app integration endpoint with cached post preview thumbnails.
 - [ ] Implement automated staging health check verification script in CI/CD pipeline.

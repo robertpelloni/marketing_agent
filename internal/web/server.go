@@ -129,6 +129,7 @@ func (s *Server) routes() {
 	// Outreach dashboard (public — read-only stats for hypernexus.site)
 	s.mux.Handle("/api/v1/outreach/stats", rl.middleware(http.HandlerFunc(s.handleOutreachStats)))
 	s.mux.Handle("/dashboard/outreach", rl.middleware(http.HandlerFunc(s.handleOutreachDashboard)))
+	s.mux.Handle("/api/v1/outreach/export", rl.middleware(http.HandlerFunc(s.handleOutreachExport)))
 }
 
 // allowedOrigins returns true if the given Origin header is from a trusted site.
@@ -753,6 +754,9 @@ tr:hover { background-color: #f8fafc; }
 				<a href="/api/v1/outreach/stats" target="_blank" class="action-btn tooltip" style="background: #475569; font-size: 0.72rem; padding: 4px 8px;">JSON API ↗
 					<span class="tooltiptext">Raw stats endpoint consumed by external automation</span>
 				</a>
+				<a href="/api/v1/outreach/export" class="action-btn tooltip" style="background: #0284c7; font-size: 0.72rem; padding: 4px 8px;">Export CSV ↓
+					<span class="tooltiptext">Download recent outreach logs in CSV format for analysis</span>
+				</a>
 				<span class="tooltip" style="font-size:0.8rem; color:#64748b;">Live Outreach Engine [?]
 					<span class="tooltiptext">Direct stats queried from the outreach_log table.</span>
 				</span>
@@ -1159,49 +1163,67 @@ tr:hover { background-color: #f8fafc; }
 </div>
 
 <script>
-	const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-	const ws = new WebSocket(proto + '//' + window.location.host + '/ws/telemetry');
-
 	const auditLogStream = document.getElementById('auditLogStream');
 	const latencyGauge = document.getElementById('latencyGauge');
-
 	let bars = [];
+	let reconnectDelay = 1000;
 
-	ws.onmessage = function(event) {
-		const data = JSON.parse(event.data);
+	function connectTelemetry() {
+		const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		const ws = new WebSocket(proto + '//' + window.location.host + '/ws/telemetry');
 
-		if (data.audit_logs && data.audit_logs.length > 0) {
-			auditLogStream.innerHTML = '';
-			data.audit_logs.forEach(log => {
-				const div = document.createElement('div');
-				div.style.borderBottom = '1px solid #eee';
-				div.style.padding = '4px 0';
-				div.style.fontSize = '11px';
-				div.textContent = "[" + (log.actor || 'system') + "] " + log.action;
-				auditLogStream.appendChild(div);
-			});
-		}
+		ws.onopen = function() {
+			reconnectDelay = 1000;
+		};
 
-		if (data.metrics && data.metrics.hermes_latency_ms) {
-			if (bars.length === 0) latencyGauge.innerHTML = '';
+		ws.onmessage = function(event) {
+			try {
+				const data = JSON.parse(event.data);
+				if (data.audit_logs && data.audit_logs.length > 0) {
+					auditLogStream.innerHTML = '';
+					data.audit_logs.forEach(log => {
+						const div = document.createElement('div');
+						div.style.borderBottom = '1px solid #eee';
+						div.style.padding = '4px 0';
+						div.style.fontSize = '11px';
+						div.textContent = "[" + (log.actor || 'system') + "] " + log.action;
+						auditLogStream.appendChild(div);
+					});
+				}
 
-			const val = data.metrics.hermes_latency_ms;
-			const bar = document.createElement('div');
-			bar.style.width = '8px';
-			bar.style.marginRight = '2px';
-			bar.style.background = val > 600 ? 'var(--danger)' : (val > 400 ? 'var(--warning)' : 'var(--success)');
-			const h = Math.min(100, (val / 1000) * 100);
-			bar.style.height = Math.round(h) + "%%";
-			bar.title = Math.round(val) + "ms";
+				if (data.metrics && data.metrics.hermes_latency_ms) {
+					if (bars.length === 0) latencyGauge.innerHTML = '';
 
-			latencyGauge.appendChild(bar);
-			bars.push(bar);
-			if (bars.length > 40) {
-				const oldBar = bars.shift();
-				latencyGauge.removeChild(oldBar);
-			}
-		}
-	};
+					const val = data.metrics.hermes_latency_ms;
+					const bar = document.createElement('div');
+					bar.style.width = '8px';
+					bar.style.marginRight = '2px';
+					bar.style.background = val > 600 ? 'var(--danger)' : (val > 400 ? 'var(--warning)' : 'var(--success)');
+					const h = Math.min(100, (val / 1000) * 100);
+					bar.style.height = Math.round(h) + "%%";
+					bar.title = Math.round(val) + "ms";
+
+					latencyGauge.appendChild(bar);
+					bars.push(bar);
+					if (bars.length > 40) {
+						const oldBar = bars.shift();
+						latencyGauge.removeChild(oldBar);
+					}
+				}
+			} catch(e) {}
+		};
+
+		ws.onclose = function() {
+			setTimeout(connectTelemetry, reconnectDelay);
+			reconnectDelay = Math.min(reconnectDelay * 1.5, 10000);
+		};
+
+		ws.onerror = function() {
+			ws.close();
+		};
+	}
+
+	connectTelemetry();
 </script>
 </body>
 </html>`)
@@ -1931,6 +1953,49 @@ func (s *Server) handleOutreachStats(w http.ResponseWriter, r *http.Request) {
 
 // handleOutreachDashboard serves the outreach tracking dashboard HTML.
 // GET /dashboard/outreach — public, read-only.
+
+// handleOutreachExport exports recent outreach log entries as CSV.
+// GET /api/v1/outreach/export — public, read-only.
+func (s *Server) handleOutreachExport(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	w.Header().Set("Content-Type", "text/csv")
+	w.Header().Set("Content-Disposition", "attachment; filename=outreach_log.csv")
+
+	if s.db == nil || s.db.Conn == nil {
+		_, _ = fmt.Fprintln(w, "error,database_unavailable")
+		return
+	}
+
+	rows, err := s.db.Conn.QueryContext(r.Context(), `
+		SELECT company_name, contact_email, category, status, sent_at
+		FROM outreach_log
+		ORDER BY sent_at DESC
+		LIMIT 1000`)
+	if err != nil {
+		_, _ = fmt.Fprintf(w, "error,%v\n", err)
+		return
+	}
+	defer rows.Close()
+
+	_, _ = fmt.Fprintln(w, "company_name,contact_email,category,status,sent_at")
+	for rows.Next() {
+		var comp, cat sql.NullString
+		var email, status string
+		var sentAt sql.NullTime
+		if err := rows.Scan(&comp, &email, &cat, &status, &sentAt); err != nil {
+			continue
+		}
+		sentStr := ""
+		if sentAt.Valid {
+			sentStr = sentAt.Time.Format(time.RFC3339)
+		}
+		_, _ = fmt.Fprintf(w, "%q,%q,%q,%q,%q\n", comp.String, email, cat.String, status, sentStr)
+	}
+}
+
 func (s *Server) handleOutreachDashboard(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	setCORSHeaders(w, r)

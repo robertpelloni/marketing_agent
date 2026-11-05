@@ -131,6 +131,10 @@ func (s *Server) routes() {
 	s.mux.Handle("/api/v1/outreach/stats", rl.middleware(http.HandlerFunc(s.handleOutreachStats)))
 	s.mux.Handle("/dashboard/outreach", rl.middleware(http.HandlerFunc(s.handleOutreachDashboard)))
 	s.mux.Handle("/api/v1/outreach/export", rl.middleware(http.HandlerFunc(s.handleOutreachExport)))
+
+	// Metrics endpoints (Prometheus and JSON format)
+	s.mux.Handle("/metrics", rl.middleware(http.HandlerFunc(s.handlePrometheusMetrics)))
+	s.mux.Handle("/api/v1/metrics", rl.middleware(http.HandlerFunc(s.handleJSONMetrics)))
 }
 
 // allowedOrigins returns true if the given Origin header is from a trusted site.
@@ -1872,6 +1876,61 @@ func (s *Server) handleRedditContent(w http.ResponseWriter, r *http.Request) {
 		"preview_url":   preview,
 		"author":        "TormentNexusDev",
 		"timestamp":     posts[0].CreatedAt.UTC().Format(time.RFC3339),
+	})
+}
+
+// handlePrometheusMetrics exports application and DB connection pool metrics in Prometheus text format.
+func (s *Server) handlePrometheusMetrics(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; version=0.0.4; charset=utf-8")
+	setCORSHeaders(w, r)
+
+	var stats sql.DBStats
+	if s.db != nil {
+		stats = s.db.Stats()
+	}
+
+	fmt.Fprintf(w, "# HELP marketing_agent_db_max_open_connections Maximum number of open connections to the database.\n")
+	fmt.Fprintf(w, "# TYPE marketing_agent_db_max_open_connections gauge\n")
+	fmt.Fprintf(w, "marketing_agent_db_max_open_connections %d\n\n", stats.MaxOpenConnections)
+
+	fmt.Fprintf(w, "# HELP marketing_agent_db_open_connections The number of established connections both in use and idle.\n")
+	fmt.Fprintf(w, "# TYPE marketing_agent_db_open_connections gauge\n")
+	fmt.Fprintf(w, "marketing_agent_db_open_connections %d\n\n", stats.OpenConnections)
+
+	fmt.Fprintf(w, "# HELP marketing_agent_db_in_use_connections The number of connections currently in use.\n")
+	fmt.Fprintf(w, "# TYPE marketing_agent_db_in_use_connections gauge\n")
+	fmt.Fprintf(w, "marketing_agent_db_in_use_connections %d\n\n", stats.InUse)
+
+	fmt.Fprintf(w, "# HELP marketing_agent_db_idle_connections The number of idle connections.\n")
+	fmt.Fprintf(w, "# TYPE marketing_agent_db_idle_connections gauge\n")
+	fmt.Fprintf(w, "marketing_agent_db_idle_connections %d\n\n", stats.Idle)
+
+	fmt.Fprintf(w, "# HELP marketing_agent_db_wait_count The total number of connections waited for.\n")
+	fmt.Fprintf(w, "# TYPE marketing_agent_db_wait_count counter\n")
+	fmt.Fprintf(w, "marketing_agent_db_wait_count %d\n\n", stats.WaitCount)
+
+	fmt.Fprintf(w, "# HELP marketing_agent_db_wait_duration_seconds The total time blocked waiting for a new connection.\n")
+	fmt.Fprintf(w, "# TYPE marketing_agent_db_wait_duration_seconds counter\n")
+	fmt.Fprintf(w, "marketing_agent_db_wait_duration_seconds %f\n", stats.WaitDuration.Seconds())
+}
+
+// handleJSONMetrics exports application and DB connection pool metrics as JSON.
+func (s *Server) handleJSONMetrics(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	setCORSHeaders(w, r)
+
+	var stats sql.DBStats
+	if s.db != nil {
+		stats = s.db.Stats()
+	}
+
+	_ = json.NewEncoder(w).Encode(map[string]interface{}{
+		"db_max_open_connections": stats.MaxOpenConnections,
+		"db_open_connections":     stats.OpenConnections,
+		"db_in_use":               stats.InUse,
+		"db_idle":                 stats.Idle,
+		"db_wait_count":           stats.WaitCount,
+		"db_wait_duration_ms":     stats.WaitDuration.Milliseconds(),
 	})
 }
 

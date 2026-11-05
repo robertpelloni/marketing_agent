@@ -17,7 +17,8 @@
 - [x] Add 24-hour recency qualification (`pushed:>YYYY-MM-DD`) to Target Discovery lead generation queries.
 
 - [x] Add automated smoke testing for Docker Compose staging configurations.
+- [x] Add PostgreSQL connection pool health metrics to Prometheus endpoint.
 
 ## Upcoming Short-Term Tasks
 - [ ] Integrate OpenTelemetry trace instrumentation for multi-agent LLM waterfall calls.
-- [ ] Add PostgreSQL connection pool health metrics to Prometheus endpoint.
+- [ ] Add Prometheus alert rule templates for DB pool exhaustion and high error rates.

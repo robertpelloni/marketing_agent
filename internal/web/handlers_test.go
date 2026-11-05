@@ -72,4 +72,30 @@ func TestWebHandlers_NoDB(t *testing.T) {
 			}
 		}
 	})
+
+	t.Run("Metrics Endpoints", func(t *testing.T) {
+		// Prometheus text format
+		req, _ := http.NewRequest("GET", "/metrics", nil)
+		rr := httptest.NewRecorder()
+		server.ServeHTTP(rr, req)
+
+		if rr.Code != http.StatusOK {
+			t.Fatalf("Expected 200 OK from /metrics, got %d", rr.Code)
+		}
+		if !bytes.Contains(rr.Body.Bytes(), []byte("marketing_agent_db_open_connections")) {
+			t.Errorf("Expected Prometheus metrics in body, got: %s", rr.Body.String())
+		}
+
+		// JSON format
+		reqJSON, _ := http.NewRequest("GET", "/api/v1/metrics", nil)
+		rrJSON := httptest.NewRecorder()
+		server.ServeHTTP(rrJSON, reqJSON)
+
+		if rrJSON.Code != http.StatusOK {
+			t.Fatalf("Expected 200 OK from /api/v1/metrics, got %d", rrJSON.Code)
+		}
+		if !bytes.Contains(rrJSON.Body.Bytes(), []byte("db_open_connections")) {
+			t.Errorf("Expected JSON metrics in body, got: %s", rrJSON.Body.String())
+		}
+	})
 }

@@ -24,7 +24,11 @@ This session successfully executed a complete system audit, resolved test suite 
 4. **Automated Docker Compose Smoke Testing**:
    - `scripts/docker_smoke_test.sh`: Created automated validation script for `docker-compose.staging.yml`, `docker-compose.yml`, and `deploy/docker-compose.yml`.
    - Wired script execution directly into `.github/workflows/ci.yml`.
-5. **Systray & Headless Unix Enhancements**:
+5. **Database Connection Pool Metrics**:
+   - `internal/db/db.go`: Added `Stats() sql.DBStats` method to expose underlying connection pool telemetry.
+   - `internal/web/server.go`: Added `/metrics` (Prometheus exposition format) and `/api/v1/metrics` (JSON) endpoints.
+   - `internal/web/handlers_test.go`: Added unit tests verifying metric endpoints under nil and active DB scenarios.
+6. **Systray & Headless Unix Enhancements**:
    - `cmd/marketing_agent/systray.go`: Added HyperNexus and TormentNexus site links, cold outreach navigation, and verified context cancellation on exit.
    - `cmd/marketing_agent/systray_unix.go`: Enhanced headless Unix execution with structured signal logging.
 4. **Script & Build Modernization**:

@@ -18,6 +18,7 @@
 - **LinkedIn Outbound Safety Indicators**: Added `CheckDailyConnectionLimit` threshold validation in `internal/communication/linkedin_sender.go` with unit tests and dynamic safety badge popovers on dashboard deal cards.
 - **Devvit Reddit Integration & Preview Thumbnails**: Added `/api/social/reddit` alias endpoint and enriched JSON responses with cached post preview thumbnails (`thumbnail_url`, `preview_url`), brand routing, author, and timestamp metadata.
 - **Automated Staging Health Checks**: Added `scripts/staging_health_check.sh` and wired syntax/executable verification into `.github/workflows/ci.yml`.
+- **24-Hour Recency Target Discovery**: Added `BuildDiscoveryQuery` in `pkg/agents/discovery.go` with dynamic 24-hour lookback filter (`pushed:>YYYY-MM-DD`) and unit tests in `pkg/agents/discovery_test.go`.
 - **Governance Updates**: Synchronized `ROADMAP.md`, `TODO.md`, `VISION.md`, `MEMORY.md`, `DEPLOY.md`, `IDEAS.md`, `HANDOFF.md`, and bumped version to `0.7.1`.
 
 ## [0.7.2] - 2026-08-20

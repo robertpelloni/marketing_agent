@@ -14,6 +14,7 @@
 - [x] Add LinkedIn connection request limit warning threshold indicator on deal cards.
 - [x] Enhance Devvit Reddit app integration endpoint with cached post preview thumbnails.
 - [x] Implement automated staging health check verification script in CI/CD pipeline.
+- [x] Add 24-hour recency qualification (`pushed:>YYYY-MM-DD`) to Target Discovery lead generation queries.
 
 ## Upcoming Short-Term Tasks
 - [ ] Add automated smoke testing for Docker Compose staging configurations.

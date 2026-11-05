@@ -18,6 +18,9 @@ This session successfully executed a complete system audit, resolved test suite 
    - Created `scripts/staging_health_check.sh` and wired verification into `.github/workflows/ci.yml`.
    - Added `?` tooltip markers and CSS hover popovers across all metrics, deal stages, and controls.
    - All tests in `internal/web` verified passing.
+3. **Proactive Lead Discovery (24-Hour Recency Prioritization)**:
+   - `pkg/agents/discovery.go`: Added `BuildDiscoveryQuery` with dynamic `pushed:>YYYY-MM-DD` 24-hour lookback filter to prioritize active repositories and recent developer interest.
+   - `pkg/agents/discovery_test.go`: Added comprehensive test coverage for LLM-suggested queries, invalid query fallbacks, and recency qualifiers.
 3. **Systray & Headless Unix Enhancements**:
    - `cmd/marketing_agent/systray.go`: Added HyperNexus and TormentNexus site links, cold outreach navigation, and verified context cancellation on exit.
    - `cmd/marketing_agent/systray_unix.go`: Enhanced headless Unix execution with structured signal logging.

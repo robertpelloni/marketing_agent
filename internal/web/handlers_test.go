@@ -53,4 +53,23 @@ func TestWebHandlers_NoDB(t *testing.T) {
 			t.Errorf("Expected failure with nil DB")
 		}
 	})
+
+	t.Run("Reddit Devvit Content Endpoints", func(t *testing.T) {
+		for _, endpoint := range []string{"/api/v1/social/reddit", "/api/social/reddit"} {
+			req, _ := http.NewRequest("GET", endpoint, nil)
+			rr := httptest.NewRecorder()
+			server.ServeHTTP(rr, req)
+
+			if rr.Code != http.StatusOK {
+				t.Fatalf("Expected 200 OK from %s, got %d", endpoint, rr.Code)
+			}
+			body := rr.Body.String()
+			if !bytes.Contains(rr.Body.Bytes(), []byte("thumbnail_url")) {
+				t.Errorf("Expected thumbnail_url in response from %s, got: %s", endpoint, body)
+			}
+			if !bytes.Contains(rr.Body.Bytes(), []byte("preview_url")) {
+				t.Errorf("Expected preview_url in response from %s, got: %s", endpoint, body)
+			}
+		}
+	})
 }

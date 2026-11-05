@@ -14,6 +14,8 @@ This session successfully executed a complete system audit, resolved test suite 
    - Added CSV export functionality (`/api/v1/outreach/export`) with a direct "Export CSV ↓" dashboard action.
    - Added LinkedIn connection limit safety validation and dynamic `⚡ LinkedIn Safe` status badges on deal cards.
    - Enhanced WebSocket client with automatic reconnection and exponential backoff.
+   - Added `/api/social/reddit` alias endpoint and enriched Devvit Reddit API responses with cached thumbnails (`thumbnail_url`, `preview_url`) and brand metadata.
+   - Created `scripts/staging_health_check.sh` and wired verification into `.github/workflows/ci.yml`.
    - Added `?` tooltip markers and CSS hover popovers across all metrics, deal stages, and controls.
    - All tests in `internal/web` verified passing.
 3. **Systray & Headless Unix Enhancements**:

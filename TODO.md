@@ -12,7 +12,9 @@
 - [x] Implement export action for cold outreach metrics to CSV directly from main dashboard.
 
 - [x] Add LinkedIn connection request limit warning threshold indicator on deal cards.
+- [x] Enhance Devvit Reddit app integration endpoint with cached post preview thumbnails.
+- [x] Implement automated staging health check verification script in CI/CD pipeline.
 
 ## Upcoming Short-Term Tasks
-- [ ] Enhance Devvit Reddit app integration endpoint with cached post preview thumbnails.
-- [ ] Implement automated staging health check verification script in CI/CD pipeline.
+- [ ] Add automated smoke testing for Docker Compose staging configurations.
+- [ ] Integrate OpenTelemetry trace instrumentation for multi-agent LLM waterfall calls.

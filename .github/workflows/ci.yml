@@ -44,3 +44,8 @@ jobs:
 
     - name: Build
       run: go build -v ./cmd/marketing_agent
+
+    - name: Verify Staging Health Check Script
+      run: |
+        test -x scripts/staging_health_check.sh
+        bash -n scripts/staging_health_check.sh

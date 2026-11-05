@@ -122,6 +122,7 @@ func (s *Server) routes() {
 
 	// Social content API (public — serves content for Devvit Reddit app)
 	s.mux.Handle("/api/v1/social/reddit", rl.middleware(http.HandlerFunc(s.handleRedditContent)))
+	s.mux.Handle("/api/social/reddit", rl.middleware(http.HandlerFunc(s.handleRedditContent)))
 
 	// Newsletter subscription (public)
 	s.mux.Handle("/api/v1/newsletter/subscribe", rl.middleware(http.HandlerFunc(s.handleNewsletterSubscribe)))
@@ -1825,34 +1826,52 @@ func (s *Server) handleBlogGenerate(w http.ResponseWriter, r *http.Request) {
 }
 
 // handleRedditContent returns the latest generated Reddit post content as JSON.
-// Used by the Devvit Reddit app to fetch fresh content for scheduled posts.
+// Used by the Devvit Reddit app to fetch fresh content for scheduled posts,
+// complete with cached thumbnail previews, brand tags, and author metadata.
 func (s *Server) handleRedditContent(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	setCORSHeaders(w, r)
 
+	defaultResp := map[string]interface{}{
+		"title":         "TormentNexus — The OS for AI Models",
+		"content":       "TormentNexus is a local-first cognitive control plane for multi-agent LLM workflows. Progressive MCP tool routing, cross-harness parity, LLM waterfall, and 14K+ persisted memories. Open source at github.com/HyperNexusSoft/HyperNexus.",
+		"brand":         "tormentnexus",
+		"thumbnail_url": "https://tormentnexus.site/static/images/preview_card.png",
+		"preview_url":   "https://tormentnexus.site",
+		"author":        "TormentNexusDev",
+		"timestamp":     time.Now().UTC().Format(time.RFC3339),
+	}
+
 	if s.db == nil {
-		_ = json.NewEncoder(w).Encode(map[string]string{
-			"title":   "TormentNexus — The OS for AI Models",
-			"content": "TormentNexus is a local-first cognitive control plane for multi-agent LLM workflows. Progressive MCP tool routing, cross-harness parity, LLM waterfall, and 14K+ persisted memories. Open source at github.com/HyperNexusSoft/HyperNexus.",
-			"brand":   "tormentnexus",
-		})
+		_ = json.NewEncoder(w).Encode(defaultResp)
 		return
 	}
 
 	posts, err := s.db.ListRecentSocialPosts(r.Context(), 5)
 	if err != nil || len(posts) == 0 {
-		_ = json.NewEncoder(w).Encode(map[string]string{
-			"title":   "TormentNexus — The OS for AI Models",
-			"content": "TormentNexus is a local-first cognitive control plane for multi-agent LLM workflows. Progressive MCP tool routing, cross-harness parity, LLM waterfall, and 14K+ persisted memories. Open source at github.com/HyperNexusSoft/HyperNexus.",
-			"brand":   "tormentnexus",
-		})
+		_ = json.NewEncoder(w).Encode(defaultResp)
 		return
 	}
 
-	_ = json.NewEncoder(w).Encode(map[string]string{
-		"title":   "TormentNexus & HyperNexus — AI Infrastructure Update",
-		"content": posts[0].PostContent,
-		"brand":   posts[0].Brand,
+	brand := posts[0].Brand
+	if brand == "" {
+		brand = "tormentnexus"
+	}
+	thumb := "https://tormentnexus.site/static/images/preview_card.png"
+	preview := "https://tormentnexus.site"
+	if brand == "hypernexus" {
+		thumb = "https://hypernexus.site/static/images/preview_card.png"
+		preview = "https://hypernexus.site"
+	}
+
+	_ = json.NewEncoder(w).Encode(map[string]interface{}{
+		"title":         "TormentNexus & HyperNexus — AI Infrastructure Update",
+		"content":       posts[0].PostContent,
+		"brand":         brand,
+		"thumbnail_url": thumb,
+		"preview_url":   preview,
+		"author":        "TormentNexusDev",
+		"timestamp":     posts[0].CreatedAt.UTC().Format(time.RFC3339),
 	})
 }
 

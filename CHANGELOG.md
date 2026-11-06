@@ -23,6 +23,7 @@
 - **Database Connection Pool Metrics**: Added `Stats()` on `*db.DB` and implemented Prometheus (`/metrics`) and JSON (`/api/v1/metrics`) telemetry endpoints for active, idle, and wait duration connection pool monitoring.
 - **MCP & Skill-Based Response Optimization**: Enriched `RAGResponseGenerator.Generate` in `internal/communication/responder.go` with Model Context Protocol (MCP) and modular skill-based targeting heuristics, progressive tool routing guidance, and unit tests in `internal/communication/llm_responder_test.go`.
 - **Targeted Outreach Prioritization**: Updated `scripts/outreach/outreach_targeted.py` and `scripts/outreach/run_outreach.py` to prioritize contacts by latest update timestamp (`c.updated_at DESC`) with `--recent` and `--hours` flags to target newly enriched prospects first.
+- **Prometheus Alert Rules**: Added `deploy/prometheus-rules.yml` defining alert rules for connection pool exhaustion (`DatabasePoolExhausted`), wait queue contention, and health check probe failures, validated in CI.
 - **Governance Updates**: Synchronized `ROADMAP.md`, `TODO.md`, `VISION.md`, `MEMORY.md`, `DEPLOY.md`, `IDEAS.md`, `HANDOFF.md`, and bumped version to `0.7.1`.
 
 ## [0.7.2] - 2026-08-20

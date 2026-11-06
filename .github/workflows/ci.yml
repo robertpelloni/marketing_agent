@@ -55,3 +55,14 @@ jobs:
         test -x scripts/docker_smoke_test.sh
         bash -n scripts/docker_smoke_test.sh
         ./scripts/docker_smoke_test.sh
+
+    - name: Validate Prometheus Alert Rules
+      run: |
+        python3 -c "
+        with open('deploy/prometheus-rules.yml') as f:
+            content = f.read()
+        assert 'groups:' in content
+        assert 'marketing_agent_alerts' in content
+        assert 'DatabasePoolExhausted' in content
+        print('Prometheus rules validated successfully')
+        "

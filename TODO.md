@@ -21,6 +21,8 @@
 - [x] Optimize LLM-powered replies for newly routed leads utilizing MCP and skill-based targeting.
 - [x] Prioritize recently enriched contacts in targeted outreach automation (`--recent` / `--hours`).
 
+- [x] Add Prometheus alert rule templates for DB pool exhaustion and high error rates.
+
 ## Upcoming Short-Term Tasks
 - [ ] Integrate OpenTelemetry trace instrumentation for multi-agent LLM waterfall calls.
-- [ ] Add Prometheus alert rule templates for DB pool exhaustion and high error rates.
+- [ ] Implement Redis-backed rate limiting for external platform webhooks.

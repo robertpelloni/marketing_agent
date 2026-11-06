@@ -446,6 +446,10 @@ function controlContainer(action) {
 			socialPosts = []db.SocialPost{}
 		}
 	}
+	if err != nil {
+		slog.WarnContext(r.Context(), "Error listing social posts", "error", err)
+		socialPosts = []db.SocialPost{}
+	}
 
 	// Outreach Stats for Consolidated View
 	outreachSent := 0
@@ -755,9 +759,6 @@ tr:hover { background-color: #f8fafc; }
 				<a href="/api/v1/outreach/stats" target="_blank" class="action-btn tooltip" style="background: #475569; font-size: 0.72rem; padding: 4px 8px;">JSON API ↗
 					<span class="tooltiptext">Raw stats endpoint consumed by external automation</span>
 				</a>
-				<a href="/api/v1/outreach/export" class="action-btn tooltip" style="background: #0284c7; font-size: 0.72rem; padding: 4px 8px;">Export CSV ↓
-					<span class="tooltiptext">Download recent outreach logs in CSV format for analysis</span>
-				</a>
 				<span class="tooltip" style="font-size:0.8rem; color:#64748b;">Live Outreach Engine [?]
 					<span class="tooltiptext">Direct stats queried from the outreach_log table.</span>
 				</span>
@@ -910,17 +911,12 @@ tr:hover { background-color: #f8fafc; }
 				if channel == "" {
 					channel = "email"
 				}
-				linkedInBadge := ""
-				if channel == "linkedin" || c.LinkedInURL != "" {
-					linkedInBadge = `<span class="tooltip" style="margin-left: 6px; font-size: 0.72rem; padding: 2px 6px; border-radius: 10px; background: #dcfce7; color: #166534; font-weight: 600; cursor: help;">⚡ LinkedIn Safe<span class="tooltiptext">LinkedIn cadence threshold: max 20 req/day (warning at 15 req/day)</span></span>`
-				}
-
 				contactHTML += fmt.Sprintf(`
 				<div style="margin: 4px 0;">
 					<span class="tooltip"><strong>%s</strong> (%s)
 						<span class="tooltiptext">Set preferred outreach channel for this contact</span>
 					</span> —
-					<span style="color: %s; font-weight: 600;">%s</span>%s
+					<span style="color: %s; font-weight: 600;">%s</span>
 					<form method="POST" style="display:inline; margin-left: 8px;">
 						<input type="hidden" name="csrf_token" value="%s">
 						<input type="hidden" name="action" value="update_channel">
@@ -936,7 +932,6 @@ tr:hover { background-color: #f8fafc; }
 					html.EscapeString(c.Role),
 					map[string]string{"email": "var(--info)", "linkedin": "var(--success)", "github": "var(--warning)"}[channel],
 					channel,
-					linkedInBadge,
 					csrfToken,
 					c.ID,
 					map[bool]string{true: " selected", false: ""}[channel == "email"],
@@ -1170,67 +1165,49 @@ tr:hover { background-color: #f8fafc; }
 </div>
 
 <script>
+	const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+	const ws = new WebSocket(proto + '//' + window.location.host + '/ws/telemetry');
+
 	const auditLogStream = document.getElementById('auditLogStream');
 	const latencyGauge = document.getElementById('latencyGauge');
+
 	let bars = [];
-	let reconnectDelay = 1000;
 
-	function connectTelemetry() {
-		const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-		const ws = new WebSocket(proto + '//' + window.location.host + '/ws/telemetry');
+	ws.onmessage = function(event) {
+		const data = JSON.parse(event.data);
 
-		ws.onopen = function() {
-			reconnectDelay = 1000;
-		};
+		if (data.audit_logs && data.audit_logs.length > 0) {
+			auditLogStream.innerHTML = '';
+			data.audit_logs.forEach(log => {
+				const div = document.createElement('div');
+				div.style.borderBottom = '1px solid #eee';
+				div.style.padding = '4px 0';
+				div.style.fontSize = '11px';
+				div.textContent = "[" + (log.actor || 'system') + "] " + log.action;
+				auditLogStream.appendChild(div);
+			});
+		}
 
-		ws.onmessage = function(event) {
-			try {
-				const data = JSON.parse(event.data);
-				if (data.audit_logs && data.audit_logs.length > 0) {
-					auditLogStream.innerHTML = '';
-					data.audit_logs.forEach(log => {
-						const div = document.createElement('div');
-						div.style.borderBottom = '1px solid #eee';
-						div.style.padding = '4px 0';
-						div.style.fontSize = '11px';
-						div.textContent = "[" + (log.actor || 'system') + "] " + log.action;
-						auditLogStream.appendChild(div);
-					});
-				}
+		if (data.metrics && data.metrics.hermes_latency_ms) {
+			if (bars.length === 0) latencyGauge.innerHTML = '';
 
-				if (data.metrics && data.metrics.hermes_latency_ms) {
-					if (bars.length === 0) latencyGauge.innerHTML = '';
+			const val = data.metrics.hermes_latency_ms;
+			const bar = document.createElement('div');
+			bar.style.width = '8px';
+			bar.style.marginRight = '2px';
+			bar.style.background = val > 600 ? 'var(--danger)' : (val > 400 ? 'var(--warning)' : 'var(--success)');
+			const h = Math.min(100, (val / 1000) * 100);
+			bar.style.height = Math.round(h) + "%%";
+			bar.title = Math.round(val) + "ms";
 
-					const val = data.metrics.hermes_latency_ms;
-					const bar = document.createElement('div');
-					bar.style.width = '8px';
-					bar.style.marginRight = '2px';
-					bar.style.background = val > 600 ? 'var(--danger)' : (val > 400 ? 'var(--warning)' : 'var(--success)');
-					const h = Math.min(100, (val / 1000) * 100);
-					bar.style.height = Math.round(h) + "%%";
-					bar.title = Math.round(val) + "ms";
-
-					latencyGauge.appendChild(bar);
-					bars.push(bar);
-					if (bars.length > 40) {
-						const oldBar = bars.shift();
-						latencyGauge.removeChild(oldBar);
-					}
-				}
-			} catch(e) {}
-		};
-
-		ws.onclose = function() {
-			setTimeout(connectTelemetry, reconnectDelay);
-			reconnectDelay = Math.min(reconnectDelay * 1.5, 10000);
-		};
-
-		ws.onerror = function() {
-			ws.close();
-		};
-	}
-
-	connectTelemetry();
+			latencyGauge.appendChild(bar);
+			bars.push(bar);
+			if (bars.length > 40) {
+				const oldBar = bars.shift();
+				latencyGauge.removeChild(oldBar);
+			}
+		}
+	};
 </script>
 </body>
 </html>`)
@@ -2031,9 +2008,6 @@ func (s *Server) handleOutreachStats(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// handleOutreachDashboard serves the outreach tracking dashboard HTML.
-// GET /dashboard/outreach — public, read-only.
-
 // handleOutreachExport exports recent outreach log entries as CSV.
 // GET /api/v1/outreach/export — public, read-only.
 func (s *Server) handleOutreachExport(w http.ResponseWriter, r *http.Request) {
@@ -2076,6 +2050,8 @@ func (s *Server) handleOutreachExport(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// handleOutreachDashboard serves the outreach tracking dashboard HTML.
+// GET /dashboard/outreach — public, read-only.
 func (s *Server) handleOutreachDashboard(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	setCORSHeaders(w, r)

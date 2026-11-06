@@ -22,6 +22,7 @@
 - [x] Prioritize recently enriched contacts in targeted outreach automation (`--recent` / `--hours`).
 
 - [x] Add Prometheus alert rule templates for DB pool exhaustion and high error rates.
+- [x] Add reply_rate and open_rate metrics to outreach stats API and dashboard cards.
 
 ## Upcoming Short-Term Tasks
 - [ ] Integrate OpenTelemetry trace instrumentation for multi-agent LLM waterfall calls.

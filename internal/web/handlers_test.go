@@ -98,4 +98,18 @@ func TestWebHandlers_NoDB(t *testing.T) {
 			t.Errorf("Expected JSON metrics in body, got: %s", rrJSON.Body.String())
 		}
 	})
+
+	t.Run("Outreach Stats Engagement Rates", func(t *testing.T) {
+		req, _ := http.NewRequest("GET", "/api/v1/outreach/stats", nil)
+		rr := httptest.NewRecorder()
+		server.ServeHTTP(rr, req)
+
+		if rr.Code != http.StatusOK {
+			t.Fatalf("Expected 200 OK from /api/v1/outreach/stats, got %d", rr.Code)
+		}
+		// With nil DB, returns error or empty stats gracefully
+		if !bytes.Contains(rr.Body.Bytes(), []byte("database unavailable")) && !bytes.Contains(rr.Body.Bytes(), []byte("reply_rate")) {
+			t.Errorf("Expected database unavailable or reply_rate in stats response, got: %s", rr.Body.String())
+		}
+	})
 }

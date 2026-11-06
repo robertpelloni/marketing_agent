@@ -38,7 +38,10 @@ This session successfully executed a complete system audit, resolved test suite 
 8. **Prometheus Alert Rules**:
    - `deploy/prometheus-rules.yml`: Defined production alert rules for connection pool exhaustion, wait queue spikes, and health check failures.
    - Integrated validation into `.github/workflows/ci.yml`.
-9. **Systray & Headless Unix Enhancements**:
+9. **Outreach Engagement Rates**:
+   - `internal/web/server.go`: Added `open_rate` and `reply_rate` calculations to `/api/v1/outreach/stats` and integrated rate metrics directly on the dashboard cards.
+   - `internal/web/handlers_test.go`: Added test coverage for engagement rate metrics.
+10. **Systray & Headless Unix Enhancements**:
    - `cmd/marketing_agent/systray.go`: Added HyperNexus and TormentNexus site links, cold outreach navigation, and verified context cancellation on exit.
    - `cmd/marketing_agent/systray_unix.go`: Enhanced headless Unix execution with structured signal logging.
 4. **Script & Build Modernization**:

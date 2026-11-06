@@ -19,6 +19,7 @@
 - [x] Add automated smoke testing for Docker Compose staging configurations.
 - [x] Add PostgreSQL connection pool health metrics to Prometheus endpoint.
 - [x] Optimize LLM-powered replies for newly routed leads utilizing MCP and skill-based targeting.
+- [x] Prioritize recently enriched contacts in targeted outreach automation (`--recent` / `--hours`).
 
 ## Upcoming Short-Term Tasks
 - [ ] Integrate OpenTelemetry trace instrumentation for multi-agent LLM waterfall calls.

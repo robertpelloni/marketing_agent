@@ -446,10 +446,6 @@ function controlContainer(action) {
 			socialPosts = []db.SocialPost{}
 		}
 	}
-	if err != nil {
-		slog.WarnContext(r.Context(), "Error listing social posts", "error", err)
-		socialPosts = []db.SocialPost{}
-	}
 
 	// Outreach Stats for Consolidated View
 	outreachSent := 0

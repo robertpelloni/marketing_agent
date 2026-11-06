@@ -16,12 +16,12 @@ import sys
 from outreach_smtp import logger, send_email, get_db
 
 
-def get_cto_contacts(limit=None):
-    """Fetch CTO/technical decision-maker contacts from the DB."""
+def get_cto_contacts(limit=None, recent_hours=None):
+    """Fetch CTO/technical decision-maker contacts from the DB, prioritizing latest enriched."""
     conn = get_db()
     cur = conn.cursor()
-    cur.execute(
-        """SELECT c.name, c.email, c.role, co.name AS company
+
+    query = """SELECT c.name, c.email, c.role, co.name AS company
            FROM contacts c
            LEFT JOIN companies co ON c.company_id = co.id
            WHERE c.email IS NOT NULL
@@ -33,11 +33,16 @@ def get_cto_contacts(limit=None):
                OR LOWER(c.role) LIKE '%%head of engineering%%'
                OR LOWER(c.role) LIKE '%%vp engineering%%'
                OR LOWER(c.role) LIKE '%%architect%%'
-             )
-           ORDER BY c.id
-           LIMIT %s""",
-        (limit if limit else 1000,),
-    )
+             )"""
+    params = []
+    if recent_hours:
+        query += " AND c.updated_at >= NOW() - (%s * INTERVAL '1 hour')"
+        params.append(int(recent_hours))
+
+    query += " ORDER BY c.updated_at DESC, c.id DESC LIMIT %s"
+    params.append(limit if limit else 1000)
+
+    cur.execute(query, tuple(params))
     rows = cur.fetchall()
     cur.close()
     conn.close()
@@ -78,6 +83,7 @@ def body_for(contact):
 def main():
     dry_run = "--dry-run" in sys.argv
     limit = None
+    recent_hours = 24 if "--recent" in sys.argv else None
     if "--limit" in sys.argv:
         try:
             idx = sys.argv.index("--limit")
@@ -85,7 +91,14 @@ def main():
         except (ValueError, IndexError):
             logger.warning("Invalid --limit value, ignoring")
 
-    contacts = get_cto_contacts(limit)
+    if "--hours" in sys.argv:
+        try:
+            idx = sys.argv.index("--hours")
+            recent_hours = int(sys.argv[idx + 1])
+        except (ValueError, IndexError):
+            logger.warning("Invalid --hours value, ignoring")
+
+    contacts = get_cto_contacts(limit, recent_hours=recent_hours)
     print(f"Found {len(contacts)} CTO/technical contacts")
 
     if dry_run:

@@ -21,6 +21,7 @@
 - **24-Hour Recency Target Discovery**: Added `BuildDiscoveryQuery` in `pkg/agents/discovery.go` with dynamic 24-hour lookback filter (`pushed:>YYYY-MM-DD`) and unit tests in `pkg/agents/discovery_test.go`.
 - **Docker Compose Smoke Testing**: Added `scripts/docker_smoke_test.sh` to validate `docker-compose.staging.yml`, `docker-compose.yml`, and `deploy/docker-compose.yml`, integrated into `.github/workflows/ci.yml`.
 - **Database Connection Pool Metrics**: Added `Stats()` on `*db.DB` and implemented Prometheus (`/metrics`) and JSON (`/api/v1/metrics`) telemetry endpoints for active, idle, and wait duration connection pool monitoring.
+- **MCP & Skill-Based Response Optimization**: Enriched `RAGResponseGenerator.Generate` in `internal/communication/responder.go` with Model Context Protocol (MCP) and modular skill-based targeting heuristics, progressive tool routing guidance, and unit tests in `internal/communication/llm_responder_test.go`.
 - **Governance Updates**: Synchronized `ROADMAP.md`, `TODO.md`, `VISION.md`, `MEMORY.md`, `DEPLOY.md`, `IDEAS.md`, `HANDOFF.md`, and bumped version to `0.7.1`.
 
 ## [0.7.2] - 2026-08-20

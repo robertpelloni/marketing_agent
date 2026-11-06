@@ -28,7 +28,11 @@ This session successfully executed a complete system audit, resolved test suite 
    - `internal/db/db.go`: Added `Stats() sql.DBStats` method to expose underlying connection pool telemetry.
    - `internal/web/server.go`: Added `/metrics` (Prometheus exposition format) and `/api/v1/metrics` (JSON) endpoints.
    - `internal/web/handlers_test.go`: Added unit tests verifying metric endpoints under nil and active DB scenarios.
-6. **Systray & Headless Unix Enhancements**:
+6. **MCP & Modular Skill-Based Outreach Optimization**:
+   - `internal/communication/responder.go`: Enriched `RAGResponseGenerator.Generate` to detect Model Context Protocol (MCP) servers, tool routers, and agent skills in technical dossiers and company tech stacks.
+   - Tailored system prompt guidance to highlight progressive tool routing, cross-harness parity, and verifiable metrics links.
+   - `internal/communication/llm_responder_test.go`: Added `TestLLMResponseGenerator_MCPSkillTargeting` verifying prompt assembly behavior.
+7. **Systray & Headless Unix Enhancements**:
    - `cmd/marketing_agent/systray.go`: Added HyperNexus and TormentNexus site links, cold outreach navigation, and verified context cancellation on exit.
    - `cmd/marketing_agent/systray_unix.go`: Enhanced headless Unix execution with structured signal logging.
 4. **Script & Build Modernization**:

@@ -44,6 +44,7 @@ This session successfully executed a complete system audit, resolved test suite 
 10. **Adaptive Cadence Follow-Up Optimization**:
    - `internal/communication/cadence.go`: Implemented `CalculateAdaptiveDelay` to dynamically backoff repeated email outreach (24h -> 48h -> 72h) avoiding contact fatigue and improving conversion.
    - `internal/communication/cadence_test.go`: Verified via unit test `TestCalculateAdaptiveDelay`.
+   - `internal/communication/responder.go`: Added `{{research_insight}}` and `{{technical_dossier}}` dynamic template placeholders to personalize multi-touch follow-up outreach with real prospect research findings.
 11. **Systray & Headless Unix Enhancements**:
    - `cmd/marketing_agent/systray.go`: Added HyperNexus and TormentNexus site links, cold outreach navigation, and verified context cancellation on exit.
    - `cmd/marketing_agent/systray_unix.go`: Enhanced headless Unix execution with structured signal logging.

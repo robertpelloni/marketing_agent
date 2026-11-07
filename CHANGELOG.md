@@ -26,6 +26,7 @@
 - **Prometheus Alert Rules**: Added `deploy/prometheus-rules.yml` defining alert rules for connection pool exhaustion (`DatabasePoolExhausted`), wait queue contention, and health check probe failures, validated in CI.
 - **Outreach Engagement Rates**: Added computed `open_rate` and `reply_rate` percentages to `/api/v1/outreach/stats` and displayed real-time rates on dashboard KPI cards with tooltip markers.
 - **Channel-Adaptive Cadence Delays**: Implemented `CalculateAdaptiveDelay` in `internal/communication/cadence.go` with progressive spacing (24h -> 48h -> 72h) for repeated email follow-up touches to optimize response rates and reduce spam flags.
+- **Cadence Follow-Up Personalization**: Added support for `{{research_insight}}` and `{{technical_dossier}}` placeholders in `GenerateFromTemplate` (`internal/communication/responder.go`) to incorporate prospect-specific research in multi-touch sequences.
 - **Governance Updates**: Synchronized `ROADMAP.md`, `TODO.md`, `VISION.md`, `MEMORY.md`, `DEPLOY.md`, `IDEAS.md`, `HANDOFF.md`, and bumped version to `0.7.1`.
 
 ## [0.7.2] - 2026-08-20

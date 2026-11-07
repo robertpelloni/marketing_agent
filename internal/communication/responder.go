@@ -198,6 +198,13 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 		}(),
 		"{{repo}}":            getValue(salesCtx.Company.Name, "AI-Platform"),
 		"{{market_cap_tier}}": getValue(salesCtx.Company.MarketCapTier, "Corporate"),
+		"{{technical_dossier}}": getValue(salesCtx.Deal.TechnicalDossier),
+		"{{research_insight}}": func() string {
+			if strings.TrimSpace(salesCtx.Deal.TechnicalDossier) != "" {
+				return salesCtx.Deal.TechnicalDossier
+			}
+			return "multi-agent coordination and persistent memory"
+		}(),
 	}
 
 	// Replace placeholders in body

@@ -163,13 +163,13 @@
         </div>
 
         <div class="card" id="checkoutCard">
-            <h2>Complete Your Purchase</h2>
+            <h2>Start Your $1.99 Trial</h2>
 
             <div class="plan-summary">
-                <h3>Professional License</h3>
+                <h3>Professional License -- $1.99 Trial</h3>
                 <div>
-                    <span class="price">$19.99</span>
-                    <span class="period">/year</span>
+                    <span class="price">$1.99</span>
+                    <span class="period">trial</span>
                 </div>
                 <div class="features">
                     <div class="feature">
@@ -206,7 +206,7 @@
                 </div>
                 <div class="error" id="errorMsg"></div>
                 <button type="submit" class="btn btn-primary" id="submitBtn">
-                    Pay $19.99/year
+                    Start $1.99 Trial
                 </button>
             </form>
 
@@ -222,7 +222,7 @@
         </div>
 
         <div class="footer">
-            <p>30-day money-back guarantee. Cancel anytime.</p>
+            <p>One-time $1.99 charge today. 30-day money-back guarantee.</p>
             <p style="margin-top: 0.5rem;">
                 <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a>
             </p>
@@ -248,7 +248,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         tier: 'HYPERNEXUS_PROFESSIONAL_LICENSE',
-                        seats: 1,
+                        seats: 1, price_amount: 199,
                         success_url: 'https://hypernexus.site/success.html',
                         cancel_url: 'https://hypernexus.site/checkout.html'
                     })
@@ -268,7 +268,7 @@
             }
 
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Pay $19.99/year';
+            submitBtn.textContent = 'Start $1.99 Trial';
         });
 
         // Check for success parameter

@@ -1,6 +1,6 @@
 # Manual Posting Guide - All Articles
 
-> [!WARNING] 2026-11-03: Articles 1-6 below link to /blog/*.html files that DO NOT EXIST yet (blog/ only has 5 posts: ai-agent-memory, progressive-tool-routing, llm-waterfall, cross-harness-parity, local-first). Do NOT post these URLs until the posts are published. Use marketing/outreach_queue_2026-11-03.md (live URLs only) instead. Blog index hidden accordingly.
+> [!NOTE] 2026-11-04: All 11 articles below are LIVE at https://hypernexus.site/blog/ (5 originals + 6 security posts published 2026-11-03). Blog index lists all 11, sitemap.xml covers all 11. Safe to post any URL. See marketing/outreach_queue_2026-11-03.md for per-post copy.
 
 # Generated: July 27, 2026
 

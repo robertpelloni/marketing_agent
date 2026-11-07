@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://hypernexus.site/</loc>
-        <lastmod>2026-07-23</lastmod>
+        <lastmod>2026-11-05</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
         <loc>https://hypernexus.site/pricing</loc>
-        <lastmod>2026-07-23</lastmod>
+        <lastmod>2026-11-05</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
@@ -38,7 +38,7 @@
     </url>
     <url>
         <loc>https://hypernexus.site/blog/</loc>
-        <lastmod>2026-07-21</lastmod>
+        <lastmod>2026-11-04</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -92,31 +92,31 @@
     </url>
     <url>
         <loc>https://hypernexus.site/blog/securing-self-hosted-ai-localhost-isolation-with-tls-and-nginx.html</loc>
-        <lastmod>2026-07-27</lastmod>
+        <lastmod>2026-11-03</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>https://hypernexus.site/blog/hardening-self-hosted-ai-the-4-point-tls-amp-zero-trust-checklist.html</loc>
-        <lastmod>2026-07-27</lastmod>
+        <lastmod>2026-11-03</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>https://hypernexus.site/blog/the-cisos-uncompromising-checklist-for-agentic-ai-governance-sso-rbac-and-immutable-audits.html</loc>
-        <lastmod>2026-07-27</lastmod>
+        <lastmod>2026-11-03</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>https://hypernexus.site/blog/what-your-ciso-should-demand-before-deploying-agentic-ai-a-practical-governance-checklist.html</loc>
-        <lastmod>2026-07-27</lastmod>
+        <lastmod>2026-11-03</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>https://hypernexus.site/blog/zero-trust-ai-architecture-authenticating-every-tool-call-memory-access-and-model-request.html</loc>
-        <lastmod>2026-07-27</lastmod>
+        <lastmod>2026-11-03</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>

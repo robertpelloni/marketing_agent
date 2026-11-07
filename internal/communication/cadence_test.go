@@ -250,6 +250,38 @@ func TestCadenceStep_Fields(t *testing.T) {
 	}
 }
 
+func TestCalculateAdaptiveDelay(t *testing.T) {
+	step := CadenceStep{
+		StepNumber:     3,
+		Channel:        db.ChannelEmail,
+		DelayAfterPrev: 24 * time.Hour,
+	}
+
+	// First/second touches should use base delay
+	d0 := CalculateAdaptiveDelay(step, 1)
+	if d0 != 24*time.Hour {
+		t.Errorf("expected 24h for attempt 1, got %v", d0)
+	}
+
+	// Repeated follow-up (prior attempt 2) should scale
+	d1 := CalculateAdaptiveDelay(step, 2)
+	if d1 != 24*time.Hour {
+		t.Errorf("expected 24h for attempt 2, got %v", d1)
+	}
+
+	// Third attempt follow-up should scale 2x
+	d2 := CalculateAdaptiveDelay(step, 3)
+	if d2 != 48*time.Hour {
+		t.Errorf("expected 48h for attempt 3, got %v", d2)
+	}
+
+	// Fourth attempt follow-up should scale 3x (max multiplier cap)
+	d3 := CalculateAdaptiveDelay(step, 5)
+	if d3 != 72*time.Hour {
+		t.Errorf("expected 72h capped for attempt 5, got %v", d3)
+	}
+}
+
 // --- CadenceAwareManager construction tests ---
 
 func TestNewCadenceAwareManager_NilDB(t *testing.T) {

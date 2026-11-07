@@ -41,7 +41,10 @@ This session successfully executed a complete system audit, resolved test suite 
 9. **Outreach Engagement Rates**:
    - `internal/web/server.go`: Added `open_rate` and `reply_rate` calculations to `/api/v1/outreach/stats` and integrated rate metrics directly on the dashboard cards.
    - `internal/web/handlers_test.go`: Added test coverage for engagement rate metrics.
-10. **Systray & Headless Unix Enhancements**:
+10. **Adaptive Cadence Follow-Up Optimization**:
+   - `internal/communication/cadence.go`: Implemented `CalculateAdaptiveDelay` to dynamically backoff repeated email outreach (24h -> 48h -> 72h) avoiding contact fatigue and improving conversion.
+   - `internal/communication/cadence_test.go`: Verified via unit test `TestCalculateAdaptiveDelay`.
+11. **Systray & Headless Unix Enhancements**:
    - `cmd/marketing_agent/systray.go`: Added HyperNexus and TormentNexus site links, cold outreach navigation, and verified context cancellation on exit.
    - `cmd/marketing_agent/systray_unix.go`: Enhanced headless Unix execution with structured signal logging.
 4. **Script & Build Modernization**:

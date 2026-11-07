@@ -44,6 +44,12 @@ def main():
             extra.extend(["--hours", args[idx + 1]])
         except (ValueError, IndexError):
             pass
+    if "--skills" in args:
+        try:
+            idx = args.index("--skills")
+            extra.extend(["--skills", args[idx + 1]])
+        except (ValueError, IndexError):
+            pass
 
     only = None
     for flag in ("--initial", "--targeted", "--followups"):

@@ -68,6 +68,31 @@ func TestLinkedInSender_HealthCheck_PassesWithCredentials(t *testing.T) {
 	}
 }
 
+func TestCheckDailyConnectionLimit(t *testing.T) {
+	// Case 1: Safe count
+	canProceed, level, _ := CheckDailyConnectionLimit(5)
+	if !canProceed || level != "safe" {
+		t.Errorf("expected count 5 to be safe, got canProceed=%v, level=%s", canProceed, level)
+	}
+
+	// Case 2: Warning threshold
+	canProceed, level, _ = CheckDailyConnectionLimit(15)
+	if !canProceed || level != "warning" {
+		t.Errorf("expected count 15 to be warning, got canProceed=%v, level=%s", canProceed, level)
+	}
+
+	// Case 3: Limit reached / exceeded
+	canProceed, level, _ = CheckDailyConnectionLimit(20)
+	if canProceed || level != "exceeded" {
+		t.Errorf("expected count 20 to be exceeded, got canProceed=%v, level=%s", canProceed, level)
+	}
+
+	canProceed, level, _ = CheckDailyConnectionLimit(25)
+	if canProceed || level != "exceeded" {
+		t.Errorf("expected count 25 to be exceeded, got canProceed=%v, level=%s", canProceed, level)
+	}
+}
+
 // --- Simulation fallback tests ---
 
 func TestLinkedInSender_Send_SimulationMode(t *testing.T) {

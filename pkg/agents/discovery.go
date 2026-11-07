@@ -24,6 +24,35 @@ func NewTargetDiscoveryWorker(database *db.DB, llmProvider llm.LLMProvider) *Tar
 	return &TargetDiscoveryWorker{db: database, llm: llmProvider}
 }
 
+// BuildDiscoveryQuery constructs a GitHub search query targeting prospects active
+// within the specified lookback duration (e.g. 24 hours), with fallback to default terms.
+func BuildDiscoveryQuery(llmProvider llm.LLMProvider, ctx context.Context, lookback time.Duration) string {
+	baseQuery := "model-context-protocol OR mcp-server language:Go language:TypeScript"
+	if llmProvider != nil {
+		suggested, err := llmProvider.Generate(ctx, llm.Prompt{
+			System: "You are a lead generation strategist for an AI tool router. Suggest a GitHub code/repository search query (maximum 8 words, using OR/AND, tags, or languages) to find developer projects using model context protocol, agent frameworks, or LLM routing. Output ONLY the query string, no other text or quotes. Do not include prefix tags or explanations. IMPORTANT: The query must contain at least one text search term (not just qualifiers like topic: or language:).",
+			User:   "Provide a single query string.",
+		})
+		if err == nil && strings.TrimSpace(suggested) != "" {
+			cleanQuery := strings.TrimSpace(suggested)
+			cleanQuery = strings.Trim(cleanQuery, "\"`'")
+			// Validate that query has at least one text search term (not just qualifiers)
+			if cleanQuery != "" && !strings.HasPrefix(cleanQuery, "topic:") && !strings.HasPrefix(cleanQuery, "language:") {
+				baseQuery = cleanQuery
+				slog.Info(fmt.Sprintf("TargetDiscoveryWorker: LLM suggested dynamic search query: %q", baseQuery))
+			} else {
+				slog.Info(fmt.Sprintf("TargetDiscoveryWorker: LLM query rejected (only qualifiers): %q, using default", cleanQuery))
+			}
+		}
+	}
+
+	if lookback > 0 {
+		cutoff := time.Now().Add(-lookback).Format("2006-01-02")
+		return fmt.Sprintf("%s pushed:>%s", baseQuery, cutoff)
+	}
+	return baseQuery
+}
+
 // Run starts the target discovery background loop.
 func (w *TargetDiscoveryWorker) Run(ctx context.Context, interval time.Duration) {
 	ticker := time.NewTicker(interval)
@@ -54,24 +83,7 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 		client = github.NewClient(nil).WithAuthToken(token)
 	}
 
-	query := "model-context-protocol OR mcp-server language:Go language:TypeScript"
-	if w.llm != nil {
-		suggested, err := w.llm.Generate(ctx, llm.Prompt{
-			System: "You are a lead generation strategist for an AI tool router. Suggest a GitHub code/repository search query (maximum 8 words, using OR/AND, tags, or languages) to find developer projects using model context protocol, agent frameworks, or LLM routing. Output ONLY the query string, no other text or quotes. Do not include prefix tags or explanations. IMPORTANT: The query must contain at least one text search term (not just qualifiers like topic: or language:).",
-			User:   "Provide a single query string.",
-		})
-		if err == nil && strings.TrimSpace(suggested) != "" {
-			cleanQuery := strings.TrimSpace(suggested)
-			cleanQuery = strings.Trim(cleanQuery, "\"`'")
-			// Validate that query has at least one text search term (not just qualifiers)
-			if cleanQuery != "" && !strings.HasPrefix(cleanQuery, "topic:") && !strings.HasPrefix(cleanQuery, "language:") {
-				query = cleanQuery
-				slog.Info(fmt.Sprintf("TargetDiscoveryWorker: LLM suggested dynamic search query: %q", query))
-			} else {
-				slog.Info(fmt.Sprintf("TargetDiscoveryWorker: LLM query rejected (only qualifiers): %q, using default", cleanQuery))
-			}
-		}
-	}
+	query := BuildDiscoveryQuery(w.llm, ctx, 24*time.Hour)
 
 	opts := &github.SearchOptions{
 		Sort:  "updated",

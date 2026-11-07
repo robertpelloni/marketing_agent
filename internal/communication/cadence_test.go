@@ -19,8 +19,8 @@ func TestDefaultCadence_HasFiveSteps(t *testing.T) {
 
 func TestDefaultCadence_MaxAttempts(t *testing.T) {
 	cadence := DefaultCadence()
-	if cadence.MaxAttempts != 5 {
-		t.Errorf("expected max attempts 5, got %d", cadence.MaxAttempts)
+	if cadence.MaxAttempts != 10 {
+		t.Errorf("expected max attempts 10, got %d", cadence.MaxAttempts)
 	}
 }
 
@@ -91,8 +91,8 @@ func TestCadenceTracker_GetNextStep_ExhaustedAfterMaxAttempts(t *testing.T) {
 
 	// Create 5 outbound interactions (max attempts)
 	now := time.Now()
-	interactions := make([]db.Interaction, 5)
-	for i := 0; i < 5; i++ {
+	interactions := make([]db.Interaction, 10)
+	for i := 0; i < 10; i++ {
 		interactions[i] = db.Interaction{
 			Direction: "Outbound",
 			Channel:   "email",
@@ -110,8 +110,8 @@ func TestCadenceTracker_GetNextStep_ExhaustedAfterMaxAttempts(t *testing.T) {
 	if !progress.IsExhausted {
 		t.Error("expected IsExhausted to be true after max attempts")
 	}
-	if progress.TotalAttempts != 5 {
-		t.Errorf("expected 5 total attempts, got %d", progress.TotalAttempts)
+	if progress.TotalAttempts != 10 {
+		t.Errorf("expected 10 total attempts, got %d", progress.TotalAttempts)
 	}
 }
 
@@ -247,6 +247,38 @@ func TestCadenceStep_Fields(t *testing.T) {
 	}
 	if step.TemplateID != "intro-email" {
 		t.Errorf("unexpected TemplateID: %s", step.TemplateID)
+	}
+}
+
+func TestCalculateAdaptiveDelay(t *testing.T) {
+	step := CadenceStep{
+		StepNumber:     3,
+		Channel:        db.ChannelEmail,
+		DelayAfterPrev: 24 * time.Hour,
+	}
+
+	// First/second touches should use base delay
+	d0 := CalculateAdaptiveDelay(step, 1)
+	if d0 != 24*time.Hour {
+		t.Errorf("expected 24h for attempt 1, got %v", d0)
+	}
+
+	// Repeated follow-up (prior attempt 2) should scale
+	d1 := CalculateAdaptiveDelay(step, 2)
+	if d1 != 24*time.Hour {
+		t.Errorf("expected 24h for attempt 2, got %v", d1)
+	}
+
+	// Third attempt follow-up should scale 2x
+	d2 := CalculateAdaptiveDelay(step, 3)
+	if d2 != 48*time.Hour {
+		t.Errorf("expected 48h for attempt 3, got %v", d2)
+	}
+
+	// Fourth attempt follow-up should scale 3x (max multiplier cap)
+	d3 := CalculateAdaptiveDelay(step, 5)
+	if d3 != 72*time.Hour {
+		t.Errorf("expected 72h capped for attempt 5, got %v", d3)
 	}
 }
 

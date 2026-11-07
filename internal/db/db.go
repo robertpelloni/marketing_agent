@@ -50,6 +50,14 @@ func (db *DB) Close() error {
 	return db.Conn.Close()
 }
 
+// Stats returns database connection pool statistics.
+func (db *DB) Stats() sql.DBStats {
+	if db == nil || db.Conn == nil {
+		return sql.DBStats{}
+	}
+	return db.Conn.Stats()
+}
+
 // RunMigrations applies all database schema migrations.
 func (db *DB) RunMigrations(ctx context.Context) error {
 	// Obtain advisory lock on a single connection to serialize concurrent migrations across packages

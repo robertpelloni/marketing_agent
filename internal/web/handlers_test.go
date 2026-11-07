@@ -53,4 +53,63 @@ func TestWebHandlers_NoDB(t *testing.T) {
 			t.Errorf("Expected failure with nil DB")
 		}
 	})
+
+	t.Run("Reddit Devvit Content Endpoints", func(t *testing.T) {
+		for _, endpoint := range []string{"/api/v1/social/reddit", "/api/social/reddit"} {
+			req, _ := http.NewRequest("GET", endpoint, nil)
+			rr := httptest.NewRecorder()
+			server.ServeHTTP(rr, req)
+
+			if rr.Code != http.StatusOK {
+				t.Fatalf("Expected 200 OK from %s, got %d", endpoint, rr.Code)
+			}
+			body := rr.Body.String()
+			if !bytes.Contains(rr.Body.Bytes(), []byte("thumbnail_url")) {
+				t.Errorf("Expected thumbnail_url in response from %s, got: %s", endpoint, body)
+			}
+			if !bytes.Contains(rr.Body.Bytes(), []byte("preview_url")) {
+				t.Errorf("Expected preview_url in response from %s, got: %s", endpoint, body)
+			}
+		}
+	})
+
+	t.Run("Metrics Endpoints", func(t *testing.T) {
+		// Prometheus text format
+		req, _ := http.NewRequest("GET", "/metrics", nil)
+		rr := httptest.NewRecorder()
+		server.ServeHTTP(rr, req)
+
+		if rr.Code != http.StatusOK {
+			t.Fatalf("Expected 200 OK from /metrics, got %d", rr.Code)
+		}
+		if !bytes.Contains(rr.Body.Bytes(), []byte("marketing_agent_db_open_connections")) {
+			t.Errorf("Expected Prometheus metrics in body, got: %s", rr.Body.String())
+		}
+
+		// JSON format
+		reqJSON, _ := http.NewRequest("GET", "/api/v1/metrics", nil)
+		rrJSON := httptest.NewRecorder()
+		server.ServeHTTP(rrJSON, reqJSON)
+
+		if rrJSON.Code != http.StatusOK {
+			t.Fatalf("Expected 200 OK from /api/v1/metrics, got %d", rrJSON.Code)
+		}
+		if !bytes.Contains(rrJSON.Body.Bytes(), []byte("db_open_connections")) {
+			t.Errorf("Expected JSON metrics in body, got: %s", rrJSON.Body.String())
+		}
+	})
+
+	t.Run("Outreach Stats Engagement Rates", func(t *testing.T) {
+		req, _ := http.NewRequest("GET", "/api/v1/outreach/stats", nil)
+		rr := httptest.NewRecorder()
+		server.ServeHTTP(rr, req)
+
+		if rr.Code != http.StatusOK {
+			t.Fatalf("Expected 200 OK from /api/v1/outreach/stats, got %d", rr.Code)
+		}
+		// With nil DB, returns error or empty stats gracefully
+		if !bytes.Contains(rr.Body.Bytes(), []byte("database unavailable")) && !bytes.Contains(rr.Body.Bytes(), []byte("reply_rate")) {
+			t.Errorf("Expected database unavailable or reply_rate in stats response, got: %s", rr.Body.String())
+		}
+	})
 }

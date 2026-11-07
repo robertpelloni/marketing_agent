@@ -21,6 +21,26 @@ type LinkedInSender struct {
 	Password string
 }
 
+// LinkedIn safety and rate limit thresholds (industry standard safety ceilings to avoid account restrictions).
+const (
+	// LinkedInMaxDailyRequests represents the recommended maximum connection requests per 24 hours.
+	LinkedInMaxDailyRequests = 20
+	// LinkedInWarningThreshold triggers safety warnings when daily requests approach quota.
+	LinkedInWarningThreshold = 15
+)
+
+// CheckDailyConnectionLimit inspects the current 24-hour connection volume and evaluates safety state.
+// Returns canProceed (bool), warning level ("safe", "warning", "exceeded"), and an explanatory guidance note.
+func CheckDailyConnectionLimit(count int) (bool, string, string) {
+	if count >= LinkedInMaxDailyRequests {
+		return false, "exceeded", fmt.Sprintf("Daily LinkedIn limit reached (%d/%d requests). Outreach paused to prevent account throttling.", count, LinkedInMaxDailyRequests)
+	}
+	if count >= LinkedInWarningThreshold {
+		return true, "warning", fmt.Sprintf("High volume warning (%d/%d requests). Approaching daily safety threshold.", count, LinkedInMaxDailyRequests)
+	}
+	return true, "safe", fmt.Sprintf("Outreach within safe operational limits (%d/%d daily requests).", count, LinkedInMaxDailyRequests)
+}
+
 // LinkedInMessage represents a message to send via LinkedIn.
 type LinkedInMessage struct {
 	ProfileURL string // LinkedIn profile URL of the recipient

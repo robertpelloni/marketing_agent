@@ -36,6 +36,14 @@ def main():
     args = sys.argv[1:]
     dry_run = "--dry-run" in args
     extra = ["--dry-run"] if dry_run else []
+    if "--recent" in args:
+        extra.append("--recent")
+    if "--hours" in args:
+        try:
+            idx = args.index("--hours")
+            extra.extend(["--hours", args[idx + 1]])
+        except (ValueError, IndexError):
+            pass
 
     only = None
     for flag in ("--initial", "--targeted", "--followups"):

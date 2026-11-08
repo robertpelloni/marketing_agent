@@ -1,3 +1,26 @@
+## [Unreleased]
+
+### Changed
+
+- **$1.99 trial funnel**: all buy buttons (index nav/hero/pricing card, pricing page) go straight
+  to the card on hypernexus.site (`/checkout.html`); signup page bypassed. Checkout card shows
+  `$1.99 Trial`, sends `price_amount: 199` (one-time payment via ad-hoc Stripe price_data, no new
+  Price ID needed). Pricing copy notes the trial; monthly/yearly toggle untouched.
+- **Sitemap**: corrected 8 `lastmod` dates (/ and /pricing 2026-11-05, /blog/ 2026-11-04,
+  5 security posts 2026-11-03). All 11 posts + blog index covered.
+- **Media canonical**: `hypernexus_extreme.jpg` drives og:image, twitter:image, both live.html
+  video posters; no dangling refs. Deleted byte-identical dupes (chunky_poster_v1, mega_poster_final).
+
+### Added
+
+- **ROADMAP.md / TODO.md**: verified milestones + granular task list (replaces ad-hoc tracking).
+- **Outreach**: LinkedIn/X/Reddit copy for all 11 posts in marketing/outreach_queue_2026-11-03.md;
+  dev.to TLS + CISO checklists (canonical URL + tags).
+
+### Ops
+
+- **WIP preserved**: backup/wip-leader-sync-20261107 merged to main 2026-11-07, pushed (main == origin/main).
+- Production verified: marketing-agent, nginx, postgresql active; no error-log entries in 24h.
 
 ## [0.7.2] - 2026-08-20
 

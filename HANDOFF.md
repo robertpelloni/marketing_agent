@@ -125,3 +125,30 @@ All download buttons on `hypernexus.site/download` now point to:
 1. Resolve the dependabot branch by cherry-picking only the dependency updates (not file deletions)
 2. Monitor Docker container for stability
 3. Consider rebuilding the Docker image to permanently fix the TORMENTNEXUS brand name issue
+
+---
+
+# HANDOFF — 2026-11-07 (autonomous session)
+
+## What happened
+- Repo was at 9e23d97 (11/03) with our 11/04–05 trial/sitemap/outreach work uncommitted; leader-sync
+  preserved it to backup/wip-leader-sync-20261107 ("preserve WIP before leader sync FF").
+- This session: FF-merged backup -> main, verified main == origin/main, pushed.
+- Added ROADMAP.md + TODO.md; CHANGELOG [Unreleased] entry. Pushed as b7db414.
+- Production (5.161.250.43) already served the new files; repo now matches prod.
+
+## Verified live state
+- marketing-agent, nginx, postgresql: active (running since 11/06). Zero error-log entries in 24h.
+  17 service starts in 7 days (deploy churn, not crashes — no errors logged).
+- /var/www/hypernexus.site serves trial funnel (checkout.html refs, price_amount:199) + corrected sitemap.
+
+## Key facts for successor
+- Trial = one-time $1.99 via ad-hoc Stripe price_data (CheckoutSessionWithPrice). No new Price ID.
+  Open question: one-time vs $1.99/mo recurring. signup.html bypassed but still served.
+- Dashboard = 3 pages (/, /dashboard/outreach, /demo); consolidation already satisfied. No tray icon (headless).
+- Integration suite RED since 2026-07-11. Marketing bot blocked on secrets.
+- Do NOT blind-merge while leader sync active; backup branch pattern works — keep using it.
+
+## Next (see TODO.md)
+- Leader-sync FF watch, live Stripe click-test, manual outreach posts (LinkedIn/X/Hashnode/Medium),
+  legacy scripts/ archive pass, Search Console sitemap resubmit.

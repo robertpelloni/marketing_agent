@@ -75,18 +75,28 @@ func (db *DB) RunMigrations(ctx context.Context) error {
 	}
 
 	var m *migrate.Migrate
-	if _, err := os.Stat("migrations"); err == nil {
-		m, err = migrate.NewWithDatabaseInstance("file://migrations", "postgres", driver)
-		if err != nil {
-			return fmt.Errorf("failed to initialize migrations from file://migrations: %w", err)
+	candidates := []string{
+		"migrations",
+		"../migrations",
+		"../../migrations",
+		"../../../migrations",
+		"../../../../migrations",
+	}
+
+	migrationsFound := false
+	for _, candidate := range candidates {
+		if _, err := os.Stat(candidate); err == nil {
+			m, err = migrate.NewWithDatabaseInstance("file://"+candidate, "postgres", driver)
+			if err != nil {
+				return fmt.Errorf("failed to initialize migrations from file://%s: %w", candidate, err)
+			}
+			migrationsFound = true
+			break
 		}
-	} else if _, err := os.Stat("../../migrations"); err == nil {
-		m, err = migrate.NewWithDatabaseInstance("file://../../migrations", "postgres", driver)
-		if err != nil {
-			return fmt.Errorf("failed to initialize migrations from file://../../migrations: %w", err)
-		}
-	} else {
-		slog.Warn("Migrations directory not found in relative paths. Skipping golang-migrate schema runner.")
+	}
+
+	if !migrationsFound {
+		slog.Warn("Migrations directory not found in candidate paths. Skipping golang-migrate schema runner.")
 		return nil
 	}
 

@@ -35,7 +35,7 @@ def main():
     )
     parser.add_argument(
         "--platform",
-        choices=["reddit", "twitter", "linkedin", "bluesky", "hackernews", "all"],
+        choices=["reddit", "twitter", "linkedin", "bluesky", "hackernews", "devto", "all"],
         default="all",
         help="Run specific platform or all",
     )
@@ -44,7 +44,8 @@ def main():
 
     orchestrator = MarketingOrchestrator(mode=args.mode)
 
-    if not orchestrator.connect_browser():
+    # Browser connection is only required for CDP-based platforms
+    if args.platform not in ("bluesky", "devto") and not orchestrator.connect_browser():
         print("ERROR: Could not connect to browser.")
         print("Make sure Edge is running with --remote-debugging-port=9222")
         sys.exit(1)
@@ -68,6 +69,8 @@ def main():
         orchestrator.run_bluesky_agent()
     elif args.platform == "hackernews":
         orchestrator.run_hackernews_agent()
+    elif args.platform == "devto":
+        orchestrator.run_devto_agent()
 
 
 if __name__ == "__main__":

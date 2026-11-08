@@ -10,7 +10,10 @@ import random
 import time
 from typing import List, Optional
 
-import websocket
+try:
+    import websocket
+except ImportError:
+    websocket = None
 
 from .. import config
 from ..cdp_utils import (

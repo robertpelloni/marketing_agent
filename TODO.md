@@ -5,8 +5,8 @@ Immediate, granular tasks. Long-term direction lives in ROADMAP.md.
 ## Now
 - [x] Merge backup/wip-leader-sync-20261107 -> main, push (2026-11-07; main == origin/main)
 - [ ] Confirm leader-sync FF finished before next merge (another agent active today)
-- [ ] Live click-test $1.99 trial -> Stripe shows $1.99 one-time
-- [ ] Decide one-time $1.99 vs $1.99/mo recurring
+- [ ] Live real-charge test: 1.99 first month then 5-mo recurring (user running the charge).
+- [x] Decide one-time $1.99 vs recurring (recurring chosen 2026-11-08: 1.99 first month, 5-mo after).
 - [ ] Manual posts: LinkedIn (6) / X (tweets in POSTING_GUIDE) / Hashnode / Medium; tick sync checklist
 
 ## Next

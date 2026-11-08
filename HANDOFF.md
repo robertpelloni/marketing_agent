@@ -152,3 +152,11 @@ All download buttons on `hypernexus.site/download` now point to:
 ## Next (see TODO.md)
 - Leader-sync FF watch, live Stripe click-test, manual outreach posts (LinkedIn/X/Hashnode/Medium),
   legacy scripts/ archive pass, Search Console sitemap resubmit.
+---
+
+## HANDOFF 2026-11-08 (1.99-first-month recurring)
+
+Shipped: checkout now posts price_amount 500, interval month, first_month_amount 199. Billing creates 5-mo ad-hoc price plus once-coupon (301 off), trial skipped so first charge is immediate. Copy updated on checkout, index, pricing.
+Deployed: linux binary cross-compiled (21 MB) to /opt/marketing_agent/bin, statics to /var/www/hypernexus.site, service restarted active with zero errors. Live page verified serving new copy.
+Committed 93f09a8, pushed (main == origin/main). CDP tabs opened: checkout, LinkedIn, X compose, Medium, Hashnode. AI pings: ChatGPT sent, Gemini draft present, Muse tab unreachable (retry).
+Next: user runs real charge, confirms 1.99 today plus 5-mo after. Then outreach posts, sitemap resubmit, CI annotations.

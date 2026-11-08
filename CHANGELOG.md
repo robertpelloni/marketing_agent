@@ -2,6 +2,8 @@
 
 ### Changed
 
+- **1.99 first month then 5-mo recurring**: checkout posts price_amount 500 plus interval month plus first_month_amount 199. Backend creates the 5-mo price with a once-coupon for 301 off and skips the 7-day trial so the first charge fires immediately. Deployed to prod, service restarted with zero errors, live page verified.
+
 - **$1.99 trial funnel**: all buy buttons (index nav/hero/pricing card, pricing page) go straight
   to the card on hypernexus.site (`/checkout.html`); signup page bypassed. Checkout card shows
   `$1.99 Trial`, sends `price_amount: 199` (one-time payment via ad-hoc Stripe price_data, no new

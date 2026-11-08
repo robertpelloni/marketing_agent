@@ -472,7 +472,7 @@
           </div>
           <div class="price-period" id="price-period">per seat / month</div>
           <div class="price-note" id="price-note">
-            Start with a $1.99 trial on hypernexus.site. Less than a coffee per month. Cancel anytime.
+            Start with $1.99 first month, then $5/mo on hypernexus.site. Cancel anytime.
           </div>
         </div>
 
@@ -500,11 +500,11 @@
           <li>No lock-in, no vendor hostage</li>
         </ul>
 
-        <button onclick="buyNow()" class="btn btn-primary" title="Goes straight to the card on hypernexus.site for the $1.99 trial.">
-          Start $1.99 Trial →
+        <button onclick="buyNow()" class="btn btn-primary" title="Goes straight to the card on hypernexus.site for the $1.99 first month.">
+          Start $1.99 First Month →
         </button>
         <script>
-          // Go straight to the card on hypernexus.site (checkout.html) for the $1.99 trial -- no signup page first.
+          // Go straight to the card on hypernexus.site (checkout.html) for the $1.99 first month -- no signup page first.
           // The card step collects email + name, then hands off to Stripe Checkout.
           function buyNow() {
             window.location.href = "/checkout.html";
@@ -611,7 +611,7 @@
         if (priceNote)
           priceNote.textContent = isYearly
             ? "That's $4.17/month. Save 17% vs monthly."
-            : "Start with a $1.99 trial on hypernexus.site. Less than a coffee per month. Cancel anytime.";
+            : "Start with $1.99 first month, then $5/mo on hypernexus.site. Cancel anytime.";
 
         // Update comparison price
         var compPrice = document.getElementById("comparison-price");

@@ -163,13 +163,13 @@
         </div>
 
         <div class="card" id="checkoutCard">
-            <h2>Start Your $1.99 Trial</h2>
+            <h2>Start Your $1.99 First Month</h2>
 
             <div class="plan-summary">
-                <h3>Professional License -- $1.99 Trial</h3>
+                <h3>Professional License -- $1.99 First Month</h3>
                 <div>
                     <span class="price">$1.99</span>
-                    <span class="period">trial</span>
+                    <span class="period">first month, then $5/mo</span>
                 </div>
                 <div class="features">
                     <div class="feature">
@@ -206,7 +206,7 @@
                 </div>
                 <div class="error" id="errorMsg"></div>
                 <button type="submit" class="btn btn-primary" id="submitBtn">
-                    Start $1.99 Trial
+                    Start $1.99 First Month
                 </button>
             </form>
 
@@ -222,7 +222,7 @@
         </div>
 
         <div class="footer">
-            <p>One-time $1.99 charge today. 30-day money-back guarantee.</p>
+            <p>$1.99 first month, then $5/mo. Cancel anytime. 30-day money-back guarantee.</p>
             <p style="margin-top: 0.5rem;">
                 <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a>
             </p>
@@ -248,7 +248,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         tier: 'HYPERNEXUS_PROFESSIONAL_LICENSE',
-                        seats: 1, price_amount: 199,
+                        seats: 1, price_amount: 500, interval: 'month', first_month_amount: 199,
                         success_url: 'https://hypernexus.site/success.html',
                         cancel_url: 'https://hypernexus.site/checkout.html'
                     })
@@ -268,7 +268,7 @@
             }
 
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Start $1.99 Trial';
+            submitBtn.textContent = 'Start $1.99 First Month';
         });
 
         // Check for success parameter

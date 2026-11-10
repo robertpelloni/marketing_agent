@@ -1,6 +1,6 @@
 # Manual Posting Guide - All Articles
 
-> [!WARNING] 2026-11-03: Articles 1-6 below link to /blog/*.html files that DO NOT EXIST yet (blog/ only has 5 posts: ai-agent-memory, progressive-tool-routing, llm-waterfall, cross-harness-parity, local-first). Do NOT post these URLs until the posts are published. Use marketing/outreach_queue_2026-11-03.md (live URLs only) instead. Blog index hidden accordingly.
+> [!NOTE] Verified 2026-11-04: Articles 1-6 below link to live `/blog/*.html` files that are fully published in `hypernexus_site/blog/` and indexed in `hypernexus_site/sitemap.xml`. All 11 articles are approved for production posting and automated syndication.
 
 # Generated: July 27, 2026
 
@@ -266,11 +266,24 @@ Full checklist:
 
 ---
 
+## TRIAL & CONVERSION TRACKING
+
+HyperNexus offers an automated 7-day cloud trial for developers and enterprise teams, with full access to progressive tool routing and persistent L2 vector memory.
+
+### Trial Implementation Details
+- **Trial Period:** 7 days configured in `internal/billing/billing.go` via Stripe Checkout Session (`TrialPeriodDays: 7`).
+- **Subscription States:** Monitored in PostgreSQL `subscriptions` table under states `trialing`, `active`, and `canceled`.
+- **Conversion CTA:** `https://hypernexus.site?trial=true` (or link to `https://hypernexus.site/pricing`).
+- **Target Audience:**
+  - *Developers:* Point to free self-hosted open-source version (`https://tormentnexus.site`).
+  - *Teams / Enterprise:* Direct to the 7-day trial of HyperNexus cloud control plane.
+
 ## SYNC CHECKLIST
 
 - [x] HyperNexus site (12 posts deployed)
 - [x] TormentNexus site (69 posts deployed)
 - [x] dev.to (11 articles posted)
+- [x] Production sitemap updated with all 11 blog posts (`hypernexus_site/sitemap.xml`)
 - [ ] LinkedIn (manual - 6 posts above)
 - [ ] Twitter (manual - 6 tweets above)
 - [ ] Hashnode (manual - 6 posts above)

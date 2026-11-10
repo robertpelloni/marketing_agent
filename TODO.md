@@ -25,6 +25,7 @@
 - [x] Add reply_rate and open_rate metrics to outreach stats API and dashboard cards.
 - [x] Add channel-adaptive dynamic delay spacing to multi-touch cadence tracker.
 - [x] Support {{research_insight}} and {{technical_dossier}} in cadence follow-up templates.
+- [x] Fix integration tests CI workflow and add dedicated CLI migration runner in `cmd/migrate/main.go`.
 
 ## Upcoming Short-Term Tasks
 - [ ] Integrate OpenTelemetry trace instrumentation for multi-agent LLM waterfall calls.

@@ -51,8 +51,7 @@ jobs:
 
       - name: Run migrations
         run: |
-          go run -exec "env DATABASE_URL=postgres://torbnexus:secret@localhost:5432/torbnexus?sslmode=disable go run scripts/migrate.go" || true
-          # Alternative: migrations are run by the app on startup
+          go run cmd/migrate/main.go
         env:
           DATABASE_URL: postgres://torbnexus:secret@localhost:5432/torbnexus?sslmode=disable
 

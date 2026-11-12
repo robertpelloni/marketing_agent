@@ -184,3 +184,9 @@ State quarantine 1651fbd pushed origin sync funnel 1.99 live verified 200
 CDP Edge 9222 TreeWalker 3 of 3 PRESENT chatgpt True gemini True muse True
 Pending charge test outreach posts sitemap resubmit
 CLI harnesses pi claude confirm ACK in L2 when caught up
+
+## COORD 2026-11-12 cross-harness sync Codex part3 muse reconnect
+Identity muse-spark in Codex in marketing_agent on laptop
+Muse.ai tab Chat Bobbi SYNC sent plus TreeWalker verify True 90s connect 150s socket
+L2 COORD-SYNC5 posted 201 plus this HANDOFF entry
+State 721fbe6 local push pending 1651fbd origin sync funnel 1.99 live

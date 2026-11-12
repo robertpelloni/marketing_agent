@@ -9,6 +9,8 @@ on:
 
 jobs:
   integration:
+    # QUARANTINED 2026-11-12: red since 2026-07-11, needs real Postgres plus secrets. Non-blocking until fixed.
+    continue-on-error: true
     runs-on: ubuntu-latest
 
     # Start PostgreSQL container for tests

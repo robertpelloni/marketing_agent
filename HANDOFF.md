@@ -196,3 +196,8 @@ Identity muse-spark in Codex in marketing_agent on laptop
 Muse.ai verify-only True Chat Bobbi no resend link healthy
 Autopilot directive 7KB read benign queued dashboard-single-page cleanup logs
 L2 COORD-SYNC6 plus this entry push still user-blocked
+
+## COORD 2026-11-12 part5 dashboard survey autopilot queued
+Routes / handleDashboard 173 to 908 demo 1702 plus outreach html file
+Plan single-page merge with tabs tooltips impl next turn with go build
+L2 COORD-SYNC6 201 muse verify-only True no resend

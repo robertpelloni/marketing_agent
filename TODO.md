@@ -22,3 +22,7 @@ Immediate, granular tasks. Long-term direction lives in ROADMAP.md.
 - [ ] signup.html: keep as dormant fallback or remove from nav entirely (currently bypassed, still served)
 - [ ] index_a.html / index_b.html stale variants: delete or re-sync with index.html
 - [ ] pricing.html $5/mo toggle vs $1.99 trial button: reconcile display model
+## Autopilot directive 2026-11-12 dashboard plus cleanup queue
+- [ ] Single-page dashboard: merge / demo and dashboard-outreach into / with section tabs tooltips high-value-first
+- [ ] Nondestructive scripts archive: move legacy runners to archive with README
+- [ ] Local full run: go build plus go test plus log watch and report gaps

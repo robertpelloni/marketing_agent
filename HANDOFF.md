@@ -168,3 +168,11 @@ State funnel 93f09a8 live prod healthy main origin 0589fcf
 CDP Edge 9222 AI tabs Gemini app Muse Bobbi chat ChatGPT convo  
 Pending charge test outreach posts sitemap resubmit integration quarantine  
 CLI harnesses pi claude confirm ACK in L2 when caught up  
+---  
+## COORD 2026-11-12 cross-harness sync Codex  
+Identity muse-spark in Codex in marketing_agent on laptop  
+L2 COORD-SYNC3 stored in HyperNexus memory  
+State funnel 93f09a8 live verified 200 prod healthy main 92096e2 origin sync  
+CDP Edge 9222 tabs Gemini app ChatGPT convo Muse muse.ai visible but renderers unresponsive to Runtime.evaluate 45s timeouts best-effort SYNC sent unverified  
+Pending charge test outreach posts sitemap resubmit integration quarantine  
+CLI harnesses pi claude confirm ACK in L2 when caught up  

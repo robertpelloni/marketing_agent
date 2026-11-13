@@ -479,7 +479,7 @@ function controlContainer(action) {
 			FROM outreach_log
 			ORDER BY sent_at DESC
 			LIMIT 10`); err == nil {
-			defer oRows.Close()
+			defer func() { _ = oRows.Close() }()
 			for oRows.Next() {
 				var rw outreachRow
 				var company, category sql.NullString
@@ -1284,7 +1284,6 @@ tr:hover { background-color: #f8fafc; }
 </html>`)
 }
 
-
 func healthStatusColor(status string) string {
 	if strings.Contains(strings.ToLower(status), "ok") || strings.Contains(strings.ToLower(status), "pass") {
 		return "#28a745"
@@ -1515,7 +1514,7 @@ func (s *Server) handleTelemetryWS(w http.ResponseWriter, r *http.Request) {
 		slog.ErrorContext(r.Context(), "WebSocket upgrade failed", "error", err)
 		return
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	slog.InfoContext(r.Context(), "Telemetry WebSocket connected")
 
@@ -1753,14 +1752,14 @@ func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
-		CompanyID   int64  `json:"company_id"`
-		Tier        string `json:"tier"`
-		Seats       int    `json:"seats"`
+		CompanyID        int64  `json:"company_id"`
+		Tier             string `json:"tier"`
+		Seats            int    `json:"seats"`
 		PriceAmount      int64  `json:"price_amount"`
 		Interval         string `json:"interval"`
 		FirstMonthAmount int64  `json:"first_month_amount"`
-		SuccessURL  string `json:"success_url"`
-		CancelURL   string `json:"cancel_url"`
+		SuccessURL       string `json:"success_url"`
+		CancelURL        string `json:"cancel_url"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -1934,9 +1933,9 @@ func (s *Server) handlePrometheusMetrics(w http.ResponseWriter, r *http.Request)
 		stats = s.db.Stats()
 	}
 
-	fmt.Fprintf(w, "# HELP marketing_agent_db_max_open_connections Maximum number of open connections to the database.\n")
-	fmt.Fprintf(w, "# TYPE marketing_agent_db_max_open_connections gauge\n")
-	fmt.Fprintf(w, "marketing_agent_db_max_open_connections %d\n\n", stats.MaxOpenConnections)
+	_, _ = fmt.Fprintf(w, "# HELP marketing_agent_db_max_open_connections Maximum number of open connections to the database.\n")
+	_, _ = fmt.Fprintf(w, "# TYPE marketing_agent_db_max_open_connections gauge\n")
+	_, _ = fmt.Fprintf(w, "marketing_agent_db_max_open_connections %d\n\n", stats.MaxOpenConnections)
 
 	fmt.Fprintf(w, "# HELP marketing_agent_db_open_connections The number of established connections both in use and idle.\n")
 	fmt.Fprintf(w, "# TYPE marketing_agent_db_open_connections gauge\n")
@@ -2004,7 +2003,7 @@ func (s *Server) handleNewsletterSubscribe(w http.ResponseWriter, r *http.Reques
 		_ = json.NewEncoder(w).Encode(map[string]string{"status": "subscribed"})
 		return
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	_, _ = f.WriteString(time.Now().Format(time.RFC3339) + "," + req.Email + "\n")
 
 	_ = json.NewEncoder(w).Encode(map[string]string{"status": "subscribed"})
@@ -2049,7 +2048,7 @@ func (s *Server) handleOutreachStats(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	type row struct {
 		CompanyName  string    `json:"company_name"`
@@ -2104,7 +2103,7 @@ func (s *Server) handleOutreachExport(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprintf(w, "error,%v\n", err)
 		return
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	_, _ = fmt.Fprintln(w, "company_name,contact_email,category,status,sent_at")
 	for rows.Next() {

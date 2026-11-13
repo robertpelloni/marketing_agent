@@ -190,7 +190,7 @@ func (h *HNWhoIsHiringSource) findLatestWhoIsHiringThread(ctx context.Context) (
 		title := strings.ToLower(r.title)
 		if strings.Contains(title, "who is hiring") &&
 			!strings.Contains(title, "freelancer") &&
-			!strings.Contains(title, "ask hn") == false {
+			strings.Contains(title, "ask hn") {
 			// Check it's an "Ask HN" post (which "Who is Hiring" always is)
 			// We accept any match on "who is hiring" in title since that's
 			// the canonical whoishiring format

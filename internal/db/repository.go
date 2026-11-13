@@ -869,7 +869,7 @@ func (db *DB) ListRecentSocialPosts(ctx context.Context, limit int) ([]SocialPos
 		}
 		return nil, fmt.Errorf("failed to list social posts: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var posts []SocialPost
 	for rows.Next() {
@@ -948,7 +948,7 @@ func (db *DB) ListRecentAuditLogs(ctx context.Context, limit int) ([]AuditLog, e
 		}
 		return nil, fmt.Errorf("failed to list audit logs: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var logs []AuditLog
 	for rows.Next() {
@@ -1025,11 +1025,9 @@ func (db *DB) GetSecret(ctx context.Context, keyName string) (string, error) {
 		return "", fmt.Errorf("database connection is nil")
 	}
 
-	var storedValue string
-	var err error
-
 	// Try reading from encrypted_secrets first
-	err = db.Conn.QueryRowContext(ctx, `SELECT encrypted_value FROM encrypted_secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
+	var storedValue string
+	err := db.Conn.QueryRowContext(ctx, `SELECT encrypted_value FROM encrypted_secrets WHERE key_name = $1`, keyName).Scan(&storedValue)
 	if err != nil {
 		// If relation doesn't exist or key not found, try reading from secrets table
 		if strings.Contains(err.Error(), "relation") || err == sql.ErrNoRows {

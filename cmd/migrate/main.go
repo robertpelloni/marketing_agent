@@ -22,7 +22,7 @@ func main() {
 		slog.Error(fmt.Sprintf("Failed to initialize database and run migrations: %v", err))
 		os.Exit(1)
 	}
-	defer database.Close()
+	defer func() { _ = database.Close() }()
 
 	if err := database.RunMigrations(context.Background()); err != nil {
 		slog.Error(fmt.Sprintf("Migration execution failed: %v", err))

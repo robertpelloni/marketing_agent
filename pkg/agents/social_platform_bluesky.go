@@ -162,7 +162,6 @@ type RedditProvider struct {
 	Username     string
 	Password     string
 	client       *http.Client
-	accessToken  string
 	dryRun       bool
 }
 
@@ -233,45 +232,6 @@ func (p *RedditProvider) Post(ctx context.Context, req PostRequest) (err error) 
 
 	slog.Info("Reddit: Headless post successful to r/TormentNexusDev ✓")
 	return nil
-}
-
-func (p *RedditProvider) getToken(ctx context.Context) (string, error) {
-	if p.accessToken != "" {
-		return p.accessToken, nil
-	}
-
-	data := strings.NewReader(fmt.Sprintf(
-		"grant_type=password&username=%s&password=%s",
-		p.Username, p.Password,
-	))
-
-	req, _ := http.NewRequestWithContext(ctx, "POST",
-		"https://www.reddit.com/api/v1/access_token", data)
-	req.Header.Set("Authorization", basicAuth(p.ClientID, p.ClientSecret))
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("User-Agent", "web:tormentnexus-bot:v1 (by /u/"+p.Username+")")
-
-	resp, err := p.client.Do(req)
-	if err != nil {
-		return "", fmt.Errorf("token request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	var result struct {
-		AccessToken string `json:"access_token"`
-		Error       string `json:"error"`
-	}
-	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		return "", fmt.Errorf("token decode: %w", err)
-	}
-	if result.Error != "" {
-		return "", fmt.Errorf("reddit oauth error: %s", result.Error)
-	}
-	if result.AccessToken == "" {
-		return "", fmt.Errorf("empty access token")
-	}
-	p.accessToken = result.AccessToken
-	return result.AccessToken, nil
 }
 
 // ─── Twitter / X API v2 Client ──────────────────────────────────────────
@@ -394,12 +354,3 @@ func randomNonce(length int) string {
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────
-
-func basicAuth(username, password string) string {
-	auth := username + ":" + password
-	return "Basic " + base64.StdEncoding.EncodeToString([]byte(auth))
-}
-
-func stripNewlines(s string) string {
-	return strings.ReplaceAll(strings.ReplaceAll(s, "\n", " "), "\r", "")
-}

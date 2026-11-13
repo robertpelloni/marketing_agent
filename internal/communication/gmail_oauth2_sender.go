@@ -83,13 +83,13 @@ func (s *GmailOAuth2Sender) sendViaSMTP(to string, msg []byte) error {
 	if err != nil {
 		return fmt.Errorf("failed to connect: %w", err)
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	client, err := smtp.NewClient(conn, "smtp.gmail.com")
 	if err != nil {
 		return fmt.Errorf("failed to create client: %w", err)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }()
 
 	// STARTTLS
 	tlsConfig := &tls.Config{ServerName: "smtp.gmail.com"}
@@ -152,7 +152,7 @@ func (a xoauth2Auth) Next(fromServer []byte, more bool) ([]byte, error) {
 // HealthCheck verifies Gmail OAuth2 credentials are configured.
 func (s *GmailOAuth2Sender) HealthCheck(ctx context.Context) error {
 	if s.clientID == "" || s.clientSecret == "" || s.refreshToken == "" {
-		return fmt.Errorf("Gmail OAuth2 not configured: set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REFRESH_TOKEN")
+		return fmt.Errorf("gmail OAuth2 not configured: set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REFRESH_TOKEN")
 	}
 	slog.Info("GmailOAuth2: Health check passed (credentials configured)")
 	return nil

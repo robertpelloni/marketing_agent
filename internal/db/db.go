@@ -4,9 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log/slog"
 	"os"
 	"time"
-	"log/slog"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
@@ -16,9 +16,10 @@ import (
 
 // DB handles database interactions.
 type DB struct {
-	Conn *sql.DB
+	Conn      *sql.DB
 	SecretKey string
 }
+
 func NewDB(dataSourceName string) (*DB, error) {
 	conn, err := sql.Open("postgres", dataSourceName)
 	if err != nil {
@@ -62,7 +63,7 @@ func (db *DB) Stats() sql.DBStats {
 func (db *DB) RunMigrations(ctx context.Context) error {
 	// Obtain advisory lock on a single connection to serialize concurrent migrations across packages
 	if conn, err := db.Conn.Conn(ctx); err == nil {
-		defer conn.Close()
+		defer func() { _ = conn.Close() }()
 		_, _ = conn.ExecContext(ctx, "SELECT pg_advisory_lock(837492)")
 		defer func() {
 			_, _ = conn.ExecContext(ctx, "SELECT pg_advisory_unlock(837492)")
@@ -138,7 +139,7 @@ HyperNexus Team`,
 			Name:    "GitHub Comment Hook",
 			Channel: "github",
 			Subject: "",
-			Body: `Hey @{{github_handle}}, I saw your work on {{repo}} — really impressive stuff! We've been tackling similar coordination challenges with HyperNexus (hypernexus.site), the enterprise-grade cloud version of TormentNexus. We maintain our stable fork at github.com/HyperNexusSoft/HyperNexus.`,
+			Body:    `Hey @{{github_handle}}, I saw your work on {{repo}} — really impressive stuff! We've been tackling similar coordination challenges with HyperNexus (hypernexus.site), the enterprise-grade cloud version of TormentNexus. We maintain our stable fork at github.com/HyperNexusSoft/HyperNexus.`,
 		},
 		{
 			ID:      "followup-email",
@@ -159,7 +160,7 @@ HyperNexus Team`,
 			Name:    "LinkedIn Connection Request",
 			Channel: "linkedin",
 			Subject: "",
-			Body: `Hi {{contact}}, I came across your profile while researching teams working on {{tech_stack}} at {{company}}. Your background in {{role}} is impressive. I'd love to connect.`,
+			Body:    `Hi {{contact}}, I came across your profile while researching teams working on {{tech_stack}} at {{company}}. Your background in {{role}} is impressive. I'd love to connect.`,
 		},
 		{
 			ID:      "breakup-email",
@@ -207,5 +208,5 @@ HyperNexus Team`,
 
 // SetSecretKey sets the encryption key for encrypting secrets at rest.
 func (db *DB) SetSecretKey(key string) {
-    db.SecretKey = key
+	db.SecretKey = key
 }

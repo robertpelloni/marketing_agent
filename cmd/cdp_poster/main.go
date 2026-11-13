@@ -84,7 +84,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("❌ Cannot connect to Chrome: %v\n   Start Chrome with: chrome --remote-debugging-port=%d", err, *chromePort)
 	}
-	defer browser.Close()
+	defer func() { _ = browser.Close() }()
 	log.Println("✅ Connected to Chrome")
 
 	ctx := context.Background()
@@ -139,7 +139,7 @@ func fetchContent(url string) (*ContentResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -166,7 +166,7 @@ func connectToChrome(port int) (*rod.Browser, error) {
 			MustLaunch()
 		return rod.New().ControlURL(u).MustConnect(), nil
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	return rod.New().ControlURL(launcher.MustResolveURL(url)).MustConnect(), nil
 }

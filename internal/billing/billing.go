@@ -13,8 +13,8 @@ import (
 
 	"github.com/stripe/stripe-go/v81"
 	"github.com/stripe/stripe-go/v81/checkout/session"
-	"github.com/stripe/stripe-go/v81/customer"
 	"github.com/stripe/stripe-go/v81/coupon"
+	"github.com/stripe/stripe-go/v81/customer"
 	"github.com/stripe/stripe-go/v81/invoice"
 	"github.com/stripe/stripe-go/v81/price"
 	"github.com/stripe/stripe-go/v81/subscription"
@@ -295,11 +295,12 @@ func (s *StripeBillingClient) CreateCheckoutSessionWithPrice(ctx context.Context
 		},
 	}
 
-	if interval == "year" {
+	switch interval {
+	case "year":
 		priceParams.Recurring = &stripe.PriceRecurringParams{
 			Interval: stripe.String(string(stripe.PriceRecurringIntervalYear)),
 		}
-	} else if interval == "month" {
+	case "month":
 		priceParams.Recurring = &stripe.PriceRecurringParams{
 			Interval: stripe.String(string(stripe.PriceRecurringIntervalMonth)),
 		}
@@ -503,7 +504,7 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 	companyIDStr, ok := sess.Metadata["company_id"]
 	var companyID int64
 	if ok {
-		fmt.Sscanf(companyIDStr, "%d", &companyID)
+		_, _ = fmt.Sscanf(companyIDStr, "%d", &companyID)
 	}
 
 	if companyID == 0 {

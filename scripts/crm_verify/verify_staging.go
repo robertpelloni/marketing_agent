@@ -23,7 +23,7 @@ func main() {
 
 	// Step 1: Simulate Checkout Session Completed event
 	checkoutPayload := map[string]interface{}{
-		"id": "evt_test_checkout_completed",
+		"id":   "evt_test_checkout_completed",
 		"type": "checkout.session.completed",
 		"data": map[string]interface{}{
 			"object": map[string]interface{}{
@@ -62,7 +62,7 @@ func main() {
 		fmt.Printf("Webhook call failed: %v\n", err)
 		os.Exit(1)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		fmt.Printf("Warning: webhook returned non-200 status: %d\n", resp.StatusCode)
@@ -72,14 +72,14 @@ func main() {
 
 	// Step 2: Trigger Invoice Paid event to simulate successful conversion
 	invoicePayload := map[string]interface{}{
-		"id": "evt_test_invoice_paid",
+		"id":   "evt_test_invoice_paid",
 		"type": "invoice.paid",
 		"data": map[string]interface{}{
 			"object": map[string]interface{}{
-				"id": "in_test_invoice_123",
+				"id":           "in_test_invoice_123",
 				"subscription": "sub_test_active_123",
 				"period_start": time.Now().Unix(),
-				"period_end": time.Now().Add(30 * 24 * time.Hour).Unix(),
+				"period_end":   time.Now().Add(30 * 24 * time.Hour).Unix(),
 			},
 		},
 	}
@@ -104,7 +104,7 @@ func main() {
 		fmt.Printf("Invoice webhook call failed: %v\n", err)
 		os.Exit(1)
 	}
-	defer resp2.Body.Close()
+	defer func() { _ = resp2.Body.Close() }()
 
 	if resp2.StatusCode != http.StatusOK {
 		fmt.Printf("Warning: invoice webhook returned non-200 status: %d\n", resp2.StatusCode)

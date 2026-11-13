@@ -6,6 +6,9 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 // DBAdapter wraps a sql.DB connection to implement SubscriptionStore.
@@ -183,7 +186,7 @@ func (a *DBAdapter) ResolveCompanyID(ctx context.Context, email, name string) (i
 			// e.g. "microsoft.com" -> "Microsoft"
 			domainParts := strings.Split(domain, ".")
 			if len(domainParts) > 0 {
-				companyName = strings.Title(domainParts[0])
+				companyName = cases.Title(language.English).String(domainParts[0])
 			} else {
 				companyName = domain
 			}

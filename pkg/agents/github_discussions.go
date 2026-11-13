@@ -17,7 +17,6 @@ type GitHubDiscussionsEngager struct {
 	Token      string
 	HTTPClient *http.Client
 	dryRun     bool
-	lastRun    time.Time
 }
 
 // NewGitHubDiscussionsEngager creates a GitHub Discussions engagement bot.

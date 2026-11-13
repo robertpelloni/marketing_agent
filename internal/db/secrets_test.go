@@ -2,8 +2,8 @@ package db
 
 import (
 	"context"
-	"testing"
 	"os"
+	"testing"
 )
 
 func TestSecretsEncryption(t *testing.T) {
@@ -16,7 +16,7 @@ func TestSecretsEncryption(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %v", err)
 	}
-	defer database.Close()
+	defer func() { _ = database.Close() }()
 
 	ctx := context.Background()
 

@@ -14,3 +14,9 @@
 
 ## 4. Voice-Agent Outbound Qualification Integration
 - Integrate an ultra-low latency open-source voice model (like Whisper + Kokoro) to conduct automated qualification calls for enterprise leads that submit quote requests.
+
+## 2026-11-13 Additions (from production findings)
+- **Schema-drift sentinel**: two production bugs (deals.cadence_step, interactions.template_id/response_id) were columns the code used but no migration created. Add a CI job that boots Postgres, runs migrations, and asserts every column referenced in internal/db queries exists in information_schema.
+- **Fallback-source telemetry**: GitHub search PROTOCOL_ERROR bursts were only visible in journal spam. Emit per-source success/failure counters to /api/v1/metrics so the dashboard shows source health instead of log-diving.
+- **Credential health panel**: DeepSeek/Apollo/Bluesky/X failures are all account issues discovered via logs. A dashboard card probing each provider's health endpoint (already have /health/detailed llm_provider) would surface 'fund this account' states to the operator immediately.
+- **Backoff-aware enrichment scheduling**: with retry/backoff now in GitHubEnrichSource, extend the same policy wrapper to Hunter/Apollo sources and jitter cycle start times to avoid thundering herds after restarts.

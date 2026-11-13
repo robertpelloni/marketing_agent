@@ -1073,12 +1073,34 @@ tr:hover { background-color: #f8fafc; }
 					<h4 style="margin: 0 0 10px 0; font-size: 0.95rem;">Infrastructure Health</h4>
 					<ul style="padding-left: 20px; font-size: 0.85rem; margin: 0; line-height: 1.8;">`)
 
+	// Provider credential presence (names only, never values). Credential
+	// gaps (invalid DeepSeek key, missing Apollo key, etc.) otherwise only
+	// surface as log spam; this panel makes the operator-visible state
+	// explicit on the one dashboard page.
+	providerConfigured := func(names ...string) string {
+		for _, n := range names {
+			if os.Getenv(n) != "" {
+				return `<span style="color: #23A55A; font-weight: bold;">configured</span>`
+			}
+		}
+		return `<span style="color: var(--danger); font-weight: bold;">not configured</span>`
+	}
+	providerList := fmt.Sprintf(`
+						<li><strong>DeepSeek (blog/LLM):</strong> %s</li>
+						<li><strong>Apollo (enrichment):</strong> %s</li>
+						<li><strong>Hunter (enrichment):</strong> %s</li>
+						<li><strong>GitHub (enrichment/outreach):</strong> %s</li>
+						<li><strong>Hermes/MiMo:</strong> %s</li>`,
+		providerConfigured("DEEPSEEK_API_KEY"),
+		providerConfigured("APOLLO_API_KEY"),
+		providerConfigured("HUNTER_API_KEY"),
+		providerConfigured("GITHUB_TOKEN"),
+		providerConfigured("HERMES_API_KEY", "HERMES_API_URL"))
+
 	_, _ = fmt.Fprintf(w, `
 						<li><strong>Deployment Engine:</strong> <span style="color: #23A55A; font-weight: bold;">%s %s</span></li>
-						<li><strong>LLM Inference Gateway:</strong> <span style="color: %s; font-weight: bold;">%s</span></li>
-						<li><strong>Local Server Port:</strong> <code>8087</code></li>
-						<li><strong>Staging Dashboard:</strong> <code>http://localhost:8087</code></li>`,
-		health, map[bool]string{true: "🥇", false: "🚨"}[health == "Healthy"], llmColor, llmStatus)
+						<li><strong>LLM Inference Gateway:</strong> <span style="color: %s; font-weight: bold;">%s</span></li>%s`,
+		health, map[bool]string{true: "🥇", false: "🚨"}[health == "Healthy"], llmColor, llmStatus, providerList)
 
 	_, _ = fmt.Fprint(w, `
 					</ul>

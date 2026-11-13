@@ -269,3 +269,8 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - Circuit breaker v2 (sliding window) deployed 77b12ed7; prod verified circuit open, transient retries 59/min -> 0. Prod repo pulled to HEAD; service active, /health OK.
 - system_health fluctuates Pending while new CI runs execute after pushes; settles to Success.
 - CDP check-in sent to muse.ai (Gemini/ChatGPT tabs present, HyperNexus lanes, no marketing_agent replies pending action).
+
+## LOOP 2026-11-13 (GitHub lane root cause) Muse Code
+- Root cause: Go HTTP/2 client resets (PROTOCOL_ERROR) on GitHub search under load from Hetzner. Token valid (ghp_ 40 chars, rate_limit remaining 4915, search 200 via curl). Duplicate GITHUB_TOKEN lines exist in prod .env; loader takes the first - harmless but tidy someday.
+- Fix: GitHubEnrichSource transport forces HTTP/1.1 via empty non-nil TLSNextProto map (ForceAttemptHTTP2=false alone insufficient on a default Transport). Transient failures 264 -> 8 per 6 min in prod. Breaker (sliding window) covers residual bursts.
+- Deployed 69d864d5; prod repo == main; /health OK.

@@ -257,3 +257,10 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - Untracked runtime data left untouched on prod: borg/, blog_output/, data/*.csv, __tmp_sync/, build, scripts/outreach_automation.py (prod-only script, not upstream).
 - Redeployed HEAD binary (backup marketing_agent.bak-20261113b), restart OK: /health OK, system_health Success, DB OK, workers active.
 - Log watch: GitHub repo-search fallback hits stream PROTOCOL_ERROR repeatedly (transient GitHub HTTP/2 resets; cycle continues, Apollo 401 skip as known). Candidate improvement: exponential backoff / lower concurrency in GitHubEnrichSource search.
+
+## SESSION 2026-11-13 (backoff + docs) Muse Code
+- GitHubEnrichSource now retries transient failures (transport PROTOCOL_ERROR, 429, 5xx) with bounded exponential backoff (3 attempts, 500ms base, Retry-After honored, ctx-aware). Tests: internal/enrichment/github_enrich_test.go (retry success, give-up, no-retry-on-404) all pass. Deployed; prod journal shows 'transient failure (attempt 1/3), backing off 500ms' live.
+- Note: GitHub repo-search from Hetzner still fails persistently (PROTOCOL_ERROR on every search), so that fallback lane yields no contacts from prod right now despite retries; commits/Apollo/Hunter lanes unaffected in code. If it persists, investigate GITHUB_TOKEN rate limiting / HTTP2 via api.github.com from that IP.
+- Section-4 docs refreshed: VISION status addendum, DEPLOY always-deploy procedure, IDEAS (schema-drift sentinel, source telemetry, credential panel), MEMORY (constraints + lessons, Go 1.25).
+- CDP: all three tabs messaged (muse.ai/Gemini/ChatGPT). Bobbi logged/confirmed the marketing check-ins; Gemini/ChatGPT tabs are on HyperNexus lanes, no marketing_agent action items returned.
+- All workflows green; prod health OK. External credential blockers unchanged: DeepSeek, Apollo, Bluesky invalid; X credits depleted.

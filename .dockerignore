@@ -24,6 +24,17 @@
 !packages/tormentnexus/**
 !go/
 !go/**
+!go.mod
+!go.sum
+!VERSION
+!cmd/
+!cmd/**
+!internal/
+!internal/**
+!pkg/
+!pkg/**
+!migrations/
+!migrations/**
 !packages/mcp-registry/
 !packages/mcp-registry/**
 !packages/memory/

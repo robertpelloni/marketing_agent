@@ -32,6 +32,11 @@ import (
 	_ "github.com/lib/pq" // PostgreSQL driver
 )
 
+// version is the single source of truth for the running build, stamped at
+// build time from the repo VERSION file via -ldflags "-X main.version=...".
+// See build.sh. It stays "dev" for plain `go build` runs.
+var version = "dev"
+
 func main() {
 	reconcile := flag.Bool("reconcile", false, "Run branch reconciliation and exit")
 	inventory := flag.Bool("inventory", false, "Generate submodule inventory and exit")
@@ -58,7 +63,7 @@ func main() {
 		return
 	}
 
-	slog.Info("Starting TormentNexus Autonomous Sales Bot")
+	slog.Info("Starting TormentNexus Autonomous Sales Bot", "version", version)
 
 	// 0. Load Configuration
 	cfg := config.Load()

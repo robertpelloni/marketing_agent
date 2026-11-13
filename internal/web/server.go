@@ -636,6 +636,7 @@ tr:hover { background-color: #f8fafc; }
 			<a href="#deals" title="Active deals and pipeline CRM">Deals</a>
 			<a href="#social" title="Multi-platform social and DevRel hub">Social</a>
 			<a href="#ops" title="Infrastructure, tasks, and pipeline telemetry controls">Pipeline Ops</a>
+			<a href="#tools" title="Quote generator, tenant containers, outreach export, and GDPR requests">Tools</a>
 			<a href="/demo" title="TormentNexus Cloud Console demo (separate subproject view)">Demo Console</a>
 			<a href="/health" title="Service and database health (JSON)">Health</a>
 			<a href="/api/v1/metrics" title="Database pool and service metrics (JSON)">Metrics</a>
@@ -1166,9 +1167,75 @@ tr:hover { background-color: #f8fafc; }
 			</div>
 		</div>
 	</div>
+
+	<!-- SECTION 6D: Operator Tools (quote, containers, outreach export, GDPR) -->
+	<div class="card" id="tools" style="border-top: 4px solid var(--info);">
+		<div class="card-header">
+			<div>
+				<span class="section-badge" style="background: #e0f2fe; color: var(--info);">6D</span>
+				Operator Tools
+				<span class="tooltip" style="font-size: 0.75rem; color: #64748b; margin-left: 6px;">[?]
+					<span class="tooltiptext">Direct controls for backend features that previously had no dashboard UI: quote generator, tenant containers, outreach CSV export, and GDPR requests.</span>
+				</span>
+			</div>
+		</div>
+		<div class="deploy-grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+			<div>
+				<h4 style="margin: 0 0 8px 0; font-size: 0.9rem;">Quote Generator</h4>
+				<label style="font-size: 0.82rem; display: block; margin-bottom: 6px;">Company size / tier
+					<span class="tooltip">[?] <span class="tooltiptext">Passed as company_size to /api/v1/quote; pricing tiers are calculated server-side.</span></span>
+				</label>
+				<div style="display: flex; gap: 8px;">
+					<input id="quoteTier" type="text" placeholder="e.g. 11-50" style="flex: 1; padding: 7px; border: 1px solid var(--border-color); border-radius: 6px;">
+					<button class="action-btn" onclick="genQuote()">Get Quote</button>
+				</div>
+				<h4 style="margin: 16px 0 8px 0; font-size: 0.9rem;">Tenant Containers</h4>
+				<p style="font-size: 0.8rem; color: #64748b; margin: 0 0 8px 0;">Requires a company session. <span class="tooltip">[?] <span class="tooltiptext">Calls /api/v1/container/start, stop, and restart for the signed-in tenant container.</span></span></p>
+				<div style="display: flex; gap: 8px;">
+					<button class="action-btn" onclick="containerAction('start')">Start</button>
+					<button class="action-btn" onclick="containerAction('stop')">Stop</button>
+					<button class="action-btn" onclick="containerAction('restart')">Restart</button>
+				</div>
+			</div>
+			<div>
+				<h4 style="margin: 0 0 8px 0; font-size: 0.9rem;">Outreach Export</h4>
+				<p style="font-size: 0.8rem; color: #64748b; margin: 0 0 8px 0;">Full outreach log as CSV. <span class="tooltip">[?] <span class="tooltiptext">Downloads /api/v1/outreach/export: company, email, category, status, and sent time for every logged send.</span></span></p>
+				<a href="/api/v1/outreach/export" class="action-btn" style="text-decoration: none;">Download Outreach CSV</a>
+				<h4 style="margin: 16px 0 8px 0; font-size: 0.9rem;">GDPR Requests</h4>
+				<label style="font-size: 0.82rem; display: block; margin-bottom: 6px;">Contact email
+					<span class="tooltip">[?] <span class="tooltiptext">Export returns all stored data for this email as JSON. Delete permanently removes it (soft-delete plus GDPR erasure). Delete cannot be undone.</span></span>
+				</label>
+				<div style="display: flex; gap: 8px; flex-wrap: wrap;">
+					<input id="gdprEmail" type="email" placeholder="person@company.com" style="flex: 1; min-width: 180px; padding: 7px; border: 1px solid var(--border-color); border-radius: 6px;">
+					<button class="action-btn" onclick="gdprExport()">Export Data</button>
+					<button class="action-btn" style="background: var(--danger);" onclick="gdprDelete()">Delete Data</button>
+				</div>
+			</div>
+		</div>
+		<div id="toolsResult" style="margin-top: 14px; font-family: monospace; font-size: 11px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; white-space: pre-wrap;">Tool results appear here.</div>
+	</div>
 </div>
 
 <script>
+	function toolsOut(text) { document.getElementById('toolsResult').textContent = text; }
+	function genQuote() {
+		var tier = document.getElementById('quoteTier').value.trim();
+		fetch('/api/v1/quote?company_size=' + encodeURIComponent(tier)).then(function(r){ return r.text(); }).then(toolsOut).catch(function(e){ toolsOut('Quote failed: ' + e); });
+	}
+	function containerAction(action) {
+		fetch('/api/v1/container/' + action, { method: 'POST' }).then(function(r){ return r.text().then(function(t){ toolsOut('Container ' + action + ' -> HTTP ' + r.status + ': ' + t); }); }).catch(function(e){ toolsOut('Container ' + action + ' failed: ' + e); });
+	}
+	function gdprExport() {
+		var email = document.getElementById('gdprEmail').value.trim();
+		if (!email) { toolsOut('Enter a contact email first.'); return; }
+		fetch('/api/v1/gdpr/export?email=' + encodeURIComponent(email)).then(function(r){ return r.text(); }).then(toolsOut).catch(function(e){ toolsOut('GDPR export failed: ' + e); });
+	}
+	function gdprDelete() {
+		var email = document.getElementById('gdprEmail').value.trim();
+		if (!email) { toolsOut('Enter a contact email first.'); return; }
+		if (!confirm('Permanently delete all data for ' + email + '? This cannot be undone.')) return;
+		fetch('/api/v1/gdpr/delete?email=' + encodeURIComponent(email), { method: 'DELETE' }).then(function(r){ return r.text().then(function(t){ toolsOut('GDPR delete -> HTTP ' + r.status + ': ' + t); }); }).catch(function(e){ toolsOut('GDPR delete failed: ' + e); });
+	}
 	const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 	const ws = new WebSocket(proto + '//' + window.location.host + '/ws/telemetry');
 

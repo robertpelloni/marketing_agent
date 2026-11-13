@@ -20,47 +20,47 @@ import (
 // API docs: https://docs.apollo.io/reference/people-search
 // Free tier: 5,000 credits/month (1 credit = 1 person returned)
 type ApolloSource struct {
-	APIKey		string
-	HTTPClient	*http.Client
+	APIKey     string
+	HTTPClient *http.Client
 }
 
 // apolloSearchRequest is the JSON body for the Apollo.io people search API.
 type apolloSearchRequest struct {
-	QOrganizationDomains	[]string	`json:"q_organization_domains"`
-	PersonTitles		[]string	`json:"person_titles,omitempty"`
-	Page			int		`json:"page"`
-	PerPage			int		`json:"per_page"`
-	RevealPhone		bool		`json:"reveal_phone"`
-	RevealPersonalEmails	bool		`json:"reveal_personal_emails"`
-	RequireEmail		bool		`json:"require_email"`
+	QOrganizationDomains []string `json:"q_organization_domains"`
+	PersonTitles         []string `json:"person_titles,omitempty"`
+	Page                 int      `json:"page"`
+	PerPage              int      `json:"per_page"`
+	RevealPhone          bool     `json:"reveal_phone"`
+	RevealPersonalEmails bool     `json:"reveal_personal_emails"`
+	RequireEmail         bool     `json:"require_email"`
 }
 
 // apolloSearchResponse is the JSON response from the Apollo.io people search API.
 type apolloSearchResponse struct {
-	People		[]apolloPerson	`json:"people"`
-	TotalEntries	int		`json:"total_entries"`
-	Paginated	bool		`json:"paginated"`
+	People       []apolloPerson `json:"people"`
+	TotalEntries int            `json:"total_entries"`
+	Paginated    bool           `json:"paginated"`
 }
 
 // apolloPerson represents a single person record from the Apollo.io API.
 type apolloPerson struct {
-	ID		string	`json:"id"`
-	FirstName	string	`json:"first_name"`
-	LastName	string	`json:"last_name"`
-	Name		string	`json:"name"`
-	Title		string	`json:"title"`
-	Email		string	`json:"email"`
-	LinkedInURL	string	`json:"linkedin_url"`
-	Organization	struct {
+	ID           string `json:"id"`
+	FirstName    string `json:"first_name"`
+	LastName     string `json:"last_name"`
+	Name         string `json:"name"`
+	Title        string `json:"title"`
+	Email        string `json:"email"`
+	LinkedInURL  string `json:"linkedin_url"`
+	Organization struct {
 		Name string `json:"name"`
-	}	`json:"organization"`
-	Seniority	string	`json:"seniority"`
+	} `json:"organization"`
+	Seniority string `json:"seniority"`
 }
 
 // NewApolloSource creates a new Apollo.io enrichment source.
 func NewApolloSource(apiKey string) *ApolloSource {
 	return &ApolloSource{
-		APIKey:	apiKey,
+		APIKey: apiKey,
 		HTTPClient: &http.Client{
 			Timeout: 30 * time.Second,
 		},
@@ -112,15 +112,15 @@ func (a *ApolloSource) Enrich(ctx context.Context, company db.Company) ([]db.Con
 // peopleSearch calls the Apollo.io people search API with filters for decision-maker titles.
 func (a *ApolloSource) peopleSearch(ctx context.Context, domain string) ([]db.Contact, error) {
 	reqBody := apolloSearchRequest{
-		QOrganizationDomains:	[]string{domain},
+		QOrganizationDomains: []string{domain},
 		PersonTitles: []string{
 			"CTO", "VP", "Vice President", "Director", "Chief",
 			"Head of", "Principal", "Staff", "Lead", "Architect",
 			"Engineering Manager", "Founder", "Co-Founder", "CEO",
 		},
-		Page:		1,
-		PerPage:	25,
-		RequireEmail:	true,
+		Page:         1,
+		PerPage:      25,
+		RequireEmail: true,
 	}
 
 	body, err := json.Marshal(reqBody)
@@ -150,8 +150,12 @@ func (a *ApolloSource) peopleSearch(ctx context.Context, domain string) ([]db.Co
 	}
 
 	if resp.StatusCode == 401 || resp.StatusCode == 403 {
-		slog.Info(fmt.Sprintf("ApolloSource: API key invalid or expired (HTTP %d). Skipping Apollo enrichment.", resp.StatusCode))
-		return nil, nil // return empty slice so fallback chain proceeds to other active sources
+		// Return an error, not an empty result: the fallback chain proceeds
+		// to the next source either way, but an empty result was counted as
+		// a benign "no contacts" in source telemetry, hiding a dead
+		// credential lane (prod showed Apollo at 100 "empty" while its key
+		// was invalid). A failure classification keeps metrics honest.
+		return nil, fmt.Errorf("apollo: API key invalid or expired (HTTP %d)", resp.StatusCode)
 	}
 	if resp.StatusCode == 429 {
 		return nil, fmt.Errorf("apollo: rate limited")
@@ -185,10 +189,10 @@ func (a *ApolloSource) peopleSearch(ctx context.Context, domain string) ([]db.Co
 		}
 
 		contacts = append(contacts, db.Contact{
-			Name:		name,
-			Role:		role,
-			Email:		p.Email,
-			LinkedInURL:	p.LinkedInURL,
+			Name:        name,
+			Role:        role,
+			Email:       p.Email,
+			LinkedInURL: p.LinkedInURL,
 		})
 	}
 
@@ -202,9 +206,9 @@ func (a *ApolloSource) HealthCheck(ctx context.Context) error {
 	}
 
 	reqBody := apolloSearchRequest{
-		QOrganizationDomains:	[]string{"openai.com"},
-		Page:			1,
-		PerPage:		1,
+		QOrganizationDomains: []string{"openai.com"},
+		Page:                 1,
+		PerPage:              1,
 	}
 
 	body, err := json.Marshal(reqBody)

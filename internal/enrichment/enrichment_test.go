@@ -49,6 +49,9 @@ func TestApolloSource_Enrich(t *testing.T) {
 		if strings.Contains(err.Error(), "403") || strings.Contains(err.Error(), "API_INACCESSIBLE") {
 			t.Skip("Apollo free plan blocks People Search: " + err.Error())
 		}
+		if strings.Contains(err.Error(), "401") {
+			t.Skip("APOLLO_API_KEY invalid or expired, skipping live enrich test: " + err.Error())
+		}
 		t.Fatalf("Expected no error, got %v", err)
 	}
 

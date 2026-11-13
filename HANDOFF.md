@@ -224,3 +224,6 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - Pricing reconciled to decided model $1.99 first month, then $5/mo: pricing.html + index.html trial copy removed, buyNow posts price_amount 500 + first_month_amount 199 (34303c35).
 - Apollo health test: 401 invalid/expired key now skips, suite green without valid credentials (6af87c90). Valid APOLLO_API_KEY still needed for real enrichment.
 - muse.ai via CDP 9222 reconnected successfully; Bobbi still working on RealEstateCRM lane, no marketing_agent reply yet.
+
+## CONSTRAINT 2026-11-13 (user): Hetzner only
+- Do NOT run any local servers (no local marketing_agent, no local app Postgres/dashboard). Build and unit tests locally are fine; all runtime runs and log watching happen on the Hetzner production server (5.161.250.43) only. Local throwaway Postgres + server started earlier this session were stopped and ports 8084/5434 verified closed.

@@ -2,6 +2,7 @@ package enrichment
 
 import (
 	"context"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -195,8 +196,13 @@ func NewGitHubEnrichSource(token string) *GitHubEnrichSource {
 			// but the Go client's HTTP/2 search calls reset persistently
 			// (PROTOCOL_ERROR) under load. Force HTTP/1.1 for this client;
 			// the retry/backoff/circuit breaker above remains as the safety
-			// net if GitHub throttles anyway.
-			Transport: &http.Transport{ForceAttemptHTTP2: false},
+			// net if GitHub throttles anyway. Note: ForceAttemptHTTP2=false
+			// alone does NOT disable HTTP/2 on a default Transport — an
+			// empty, non-nil TLSNextProto map is the documented kill switch.
+			Transport: &http.Transport{
+				ForceAttemptHTTP2: false,
+				TLSNextProto:      map[string]func(string, *tls.Conn) http.RoundTripper{},
+			},
 		},
 	}
 }

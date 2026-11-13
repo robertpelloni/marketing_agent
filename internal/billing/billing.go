@@ -768,7 +768,7 @@ func provisionTN(ctx context.Context, email, name, tier string, seats int) {
 		slog.Warn("tn-provision: TormentNexus unreachable", "err", err, "subdomain", subdomain)
 		return
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 300 {
 		slog.Warn("tn-provision: TN returned error", "status", resp.StatusCode, "subdomain", subdomain)

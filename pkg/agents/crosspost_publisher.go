@@ -81,7 +81,7 @@ func (d *DevToPublisher) PublishToDevTo(ctx context.Context, title, bodyMarkdown
 	if err != nil {
 		return fmt.Errorf("dev.to post: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 300 {
 		respBody, _ := io.ReadAll(resp.Body)
@@ -140,7 +140,7 @@ func (h *HashnodePublisher) PublishToHashnode(ctx context.Context, title, conten
 	if err != nil {
 		return fmt.Errorf("hashnode post: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 300 {
 		respBody, _ := io.ReadAll(resp.Body)

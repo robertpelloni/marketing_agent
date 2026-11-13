@@ -60,7 +60,7 @@ func (v *MemoryVault) RetrieveContext(ctx context.Context, query string, limit i
 		}
 		return nil, fmt.Errorf("failed to retrieve memory nodes: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
 	var nodes []db.MemoryNode
 	for rows.Next() {

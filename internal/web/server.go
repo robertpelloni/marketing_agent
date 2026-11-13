@@ -1726,7 +1726,7 @@ func (s *Server) notifyTormentNexusProvision(ctx context.Context, checkoutMsg st
 		slog.WarnContext(ctx, "Failed to notify TormentNexus for provisioning", "url", provisionURL, "error", err)
 		return
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 300 {
 		respBody, _ := io.ReadAll(resp.Body)
@@ -1937,9 +1937,9 @@ func (s *Server) handlePrometheusMetrics(w http.ResponseWriter, r *http.Request)
 	_, _ = fmt.Fprintf(w, "# TYPE marketing_agent_db_max_open_connections gauge\n")
 	_, _ = fmt.Fprintf(w, "marketing_agent_db_max_open_connections %d\n\n", stats.MaxOpenConnections)
 
-	fmt.Fprintf(w, "# HELP marketing_agent_db_open_connections The number of established connections both in use and idle.\n")
-	fmt.Fprintf(w, "# TYPE marketing_agent_db_open_connections gauge\n")
-	fmt.Fprintf(w, "marketing_agent_db_open_connections %d\n\n", stats.OpenConnections)
+	_, _ = fmt.Fprintf(w, "# HELP marketing_agent_db_open_connections The number of established connections both in use and idle.\n")
+	_, _ = fmt.Fprintf(w, "# TYPE marketing_agent_db_open_connections gauge\n")
+	_, _ = fmt.Fprintf(w, "marketing_agent_db_open_connections %d\n\n", stats.OpenConnections)
 
 	fmt.Fprintf(w, "# HELP marketing_agent_db_in_use_connections The number of connections currently in use.\n")
 	fmt.Fprintf(w, "# TYPE marketing_agent_db_in_use_connections gauge\n")

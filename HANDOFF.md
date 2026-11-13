@@ -279,3 +279,8 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - Prod .env deduped: duplicate GITHUB_TOKEN lines 2 -> 1 (first kept; backup /root/prod-backup-20261113/env.bak-*). Service restarted, startup log shows version=0.7.3 (VERSION stamping works).
 - Schema-drift sentinel added: internal/db/schema_test.go asserts every code-queried column exists in the migrated schema (companies/contacts/deals/interactions/social_posts). Skips without DATABASE_URL; Deploy test job (real Postgres) green with it active.
 - Prod: system_health Success, only ERROR lane is BlogEngine DeepSeek invalid key (credential). GitHub lane stable post HTTP/1.1 fix.
+
+## LOOP 2026-11-13 (CDP all-tabs + provider panel) Muse Code
+- CDP check-ins sent this loop to muse.ai and Gemini as [muse-wonder-1.0 in Muse Code in C:\Users\hyper\workspace\marketing_agent on laptop]. ChatGPT composer holds another lane's unsent HyperNexus draft - NOT overwritten; message recorded here instead. Bobbi forwards/logs check-ins; Gemini juggling lanes; no marketing_agent replies pending.
+- Provider credential status panel added to dashboard Section 6A (DeepSeek/Apollo/Hunter/GitHub/Hermes configured-or-not, env names only). Removed stale 'Local Server Port 8087 / localhost staging' lines. Deployed 19bf9a59.
+- Browser control-level verification of the authenticated dashboard remains impossible without dashboard login credentials (auth gate) - public endpoints and redirects verified via HTTP on prod. Systray cannot be exercised headlessly (Windows desktop tray; prod is headless Linux).

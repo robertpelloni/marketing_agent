@@ -284,3 +284,8 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - CDP check-ins sent this loop to muse.ai and Gemini as [muse-wonder-1.0 in Muse Code in C:\Users\hyper\workspace\marketing_agent on laptop]. ChatGPT composer holds another lane's unsent HyperNexus draft - NOT overwritten; message recorded here instead. Bobbi forwards/logs check-ins; Gemini juggling lanes; no marketing_agent replies pending.
 - Provider credential status panel added to dashboard Section 6A (DeepSeek/Apollo/Hunter/GitHub/Hermes configured-or-not, env names only). Removed stale 'Local Server Port 8087 / localhost staging' lines. Deployed 19bf9a59.
 - Browser control-level verification of the authenticated dashboard remains impossible without dashboard login credentials (auth gate) - public endpoints and redirects verified via HTTP on prod. Systray cannot be exercised headlessly (Windows desktop tray; prod is headless Linux).
+
+## LOOP 2026-11-13 (source telemetry) Muse Code
+- /api/v1/metrics now includes enrichment_sources counters (a56a959e, deployed, verified live).
+- First prod cycle (100 deals): Hunter.io 100/100 failures = 'hunter: invalid API key' (NEW credential item: HUNTER_API_KEY invalid). Apollo 100 empty (401 masked as no contacts - consider classifying 401 as failure in ApolloSource for honest counters). GitHub 97 failures/3 empty (circuit-open errors count as failures).
+- CDP: muse.ai check-in sent; Gemini messaged previous loop; ChatGPT composer still holds another lane's unsent draft (not overwritten).

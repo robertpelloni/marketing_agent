@@ -41,8 +41,10 @@ func (e *Enricher) executeEnrichment(ctx context.Context) {
 		slog.Info("Enricher: DB unavailable, skipping enrichment cycle")
 		return
 	}
-	// 1. Find deals in Discovered state
-	deals, err := e.db.ListDealsByState(ctx, db.StateDiscovered)
+	// 1. Find deals in Discovered state. This must use the enrichment query,
+	// not ListDealsByState: that one inner-joins contacts for outreach, and a
+	// deal with no contacts yet is exactly what enrichment exists to fix.
+	deals, err := e.db.ListDealsForEnrichment(ctx, 100)
 	if err != nil {
 		slog.Info(fmt.Sprintf("Enricher: Error listing discovered deals: %v", err))
 		return
@@ -107,4 +109,3 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 	}
 	return nil
 }
-

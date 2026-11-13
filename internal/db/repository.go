@@ -173,6 +173,47 @@ func (db *DB) ListAllCompanies(ctx context.Context) ([]Company, error) {
 	return companies, nil
 }
 
+// ListDealsForEnrichment returns Discovered deals that still need contacts.
+// It deliberately does NOT join contacts: enrichment is what creates the
+// first contact, so requiring one (as ListDealsByState does for outreach)
+// would make undiscovered deals permanently unenrichable.
+func (db *DB) ListDealsForEnrichment(ctx context.Context, limit int) ([]Deal, error) {
+	if limit <= 0 {
+		limit = 100
+	}
+	rows, err := db.Conn.QueryContext(ctx, `
+		SELECT id, company_id, current_state, quoted_pricing, custom_requirements, technical_dossier, created_at, updated_at, cadence_step
+		FROM deals
+		WHERE current_state = $1
+		ORDER BY updated_at ASC
+		LIMIT $2`, StateDiscovered, limit)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list deals for enrichment: %w", err)
+	}
+	defer func() { _ = rows.Close() }()
+
+	var deals []Deal
+	for rows.Next() {
+		var deal Deal
+		var pricing sql.NullFloat64
+		var requirements, dossier sql.NullString
+		if err := rows.Scan(&deal.ID, &deal.CompanyID, &deal.CurrentState, &pricing, &requirements, &dossier, &deal.CreatedAt, &deal.UpdatedAt, &deal.CadenceStep); err != nil {
+			return nil, err
+		}
+		if pricing.Valid {
+			deal.QuotedPricing = pricing.Float64
+		}
+		if requirements.Valid {
+			deal.CustomRequirements = requirements.String
+		}
+		if dossier.Valid {
+			deal.TechnicalDossier = dossier.String
+		}
+		deals = append(deals, deal)
+	}
+	return deals, rows.Err()
+}
+
 func (db *DB) ListDealsByState(ctx context.Context, state LeadState) ([]Deal, error) {
 	query := `
 		SELECT DISTINCT d.id, d.company_id, d.current_state, d.quoted_pricing, d.custom_requirements, d.technical_dossier, d.created_at, d.updated_at, d.cadence_step

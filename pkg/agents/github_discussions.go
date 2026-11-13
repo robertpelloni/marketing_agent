@@ -125,7 +125,7 @@ func (g *GitHubDiscussionsEngager) searchDiscussions(ctx context.Context, query 
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	// Simple regex parsing of GraphQL response (TODO: use proper JSON unmarshal)
 	var results []discussionResult

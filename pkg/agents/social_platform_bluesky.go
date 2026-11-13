@@ -110,7 +110,7 @@ func (p *BlueskyProvider) Post(ctx context.Context, req PostRequest) error {
 	if err != nil {
 		return fmt.Errorf("bluesky createRecord: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != 200 {
 		respBody, _ := io.ReadAll(resp.Body)
@@ -137,7 +137,7 @@ func (p *BlueskyProvider) createSession(ctx context.Context) (*atprotoSession, e
 	if err != nil {
 		return nil, fmt.Errorf("connection: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != 200 {
 		respBody, _ := io.ReadAll(resp.Body)
@@ -286,7 +286,7 @@ func (p *TwitterProvider) Post(ctx context.Context, req PostRequest) error {
 	if err != nil {
 		return fmt.Errorf("twitter post: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != 200 && resp.StatusCode != 201 {
 		respBody, _ := io.ReadAll(resp.Body)

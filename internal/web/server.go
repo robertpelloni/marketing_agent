@@ -1941,21 +1941,21 @@ func (s *Server) handlePrometheusMetrics(w http.ResponseWriter, r *http.Request)
 	_, _ = fmt.Fprintf(w, "# TYPE marketing_agent_db_open_connections gauge\n")
 	_, _ = fmt.Fprintf(w, "marketing_agent_db_open_connections %d\n\n", stats.OpenConnections)
 
-	fmt.Fprintf(w, "# HELP marketing_agent_db_in_use_connections The number of connections currently in use.\n")
-	fmt.Fprintf(w, "# TYPE marketing_agent_db_in_use_connections gauge\n")
-	fmt.Fprintf(w, "marketing_agent_db_in_use_connections %d\n\n", stats.InUse)
+	_, _ = fmt.Fprintf(w, "# HELP marketing_agent_db_in_use_connections The number of connections currently in use.\n")
+	_, _ = fmt.Fprintf(w, "# TYPE marketing_agent_db_in_use_connections gauge\n")
+	_, _ = fmt.Fprintf(w, "marketing_agent_db_in_use_connections %d\n\n", stats.InUse)
 
-	fmt.Fprintf(w, "# HELP marketing_agent_db_idle_connections The number of idle connections.\n")
-	fmt.Fprintf(w, "# TYPE marketing_agent_db_idle_connections gauge\n")
-	fmt.Fprintf(w, "marketing_agent_db_idle_connections %d\n\n", stats.Idle)
+	_, _ = fmt.Fprintf(w, "# HELP marketing_agent_db_idle_connections The number of idle connections.\n")
+	_, _ = fmt.Fprintf(w, "# TYPE marketing_agent_db_idle_connections gauge\n")
+	_, _ = fmt.Fprintf(w, "marketing_agent_db_idle_connections %d\n\n", stats.Idle)
 
-	fmt.Fprintf(w, "# HELP marketing_agent_db_wait_count The total number of connections waited for.\n")
-	fmt.Fprintf(w, "# TYPE marketing_agent_db_wait_count counter\n")
-	fmt.Fprintf(w, "marketing_agent_db_wait_count %d\n\n", stats.WaitCount)
+	_, _ = fmt.Fprintf(w, "# HELP marketing_agent_db_wait_count The total number of connections waited for.\n")
+	_, _ = fmt.Fprintf(w, "# TYPE marketing_agent_db_wait_count counter\n")
+	_, _ = fmt.Fprintf(w, "marketing_agent_db_wait_count %d\n\n", stats.WaitCount)
 
-	fmt.Fprintf(w, "# HELP marketing_agent_db_wait_duration_seconds The total time blocked waiting for a new connection.\n")
-	fmt.Fprintf(w, "# TYPE marketing_agent_db_wait_duration_seconds counter\n")
-	fmt.Fprintf(w, "marketing_agent_db_wait_duration_seconds %f\n", stats.WaitDuration.Seconds())
+	_, _ = fmt.Fprintf(w, "# HELP marketing_agent_db_wait_duration_seconds The total time blocked waiting for a new connection.\n")
+	_, _ = fmt.Fprintf(w, "# TYPE marketing_agent_db_wait_duration_seconds counter\n")
+	_, _ = fmt.Fprintf(w, "marketing_agent_db_wait_duration_seconds %f\n", stats.WaitDuration.Seconds())
 }
 
 // handleJSONMetrics exports application and DB connection pool metrics as JSON.

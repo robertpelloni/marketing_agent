@@ -15,12 +15,12 @@ Immediate, granular tasks. Long-term direction lives in ROADMAP.md.
 - [ ] Archive legacy scripts/ runners superseded by scripts/marketing_bot/ (verify unreferenced first):
   auto_marketing_bot.py, auto_marketing_bot_v2.py, autonomous_marketing.py,
   auto_post.py, auto-post-all-platforms.py, apollo_bulk_export.js/.py dupes
-- [ ] Decide fate of unreferenced media variants (hypernexus_v3/v4, psychedelic dupe, poster.jpg)
+- [x] Decide fate of unreferenced media variants (2026-11-13: v3/v4/psychedelic/poster_optimized archived to hypernexus_site/archive/media/; poster.jpg kept, it is referenced)
 - [ ] Resubmit sitemap in Search Console after lastmod corrections
 
 ## Later
-- [ ] signup.html: keep as dormant fallback or remove from nav entirely (currently bypassed, still served)
-- [ ] index_a.html / index_b.html stale variants: delete or re-sync with index.html
+- [x] signup.html: archived to hypernexus_site/archive/pages/ as dormant fallback (2026-11-13; was bypassed and unlinked)
+- [x] index_a.html / index_b.html stale variants: archived with indexB.html and orphan home_router.html (2026-11-13)
 - [ ] pricing.html $5/mo toggle vs $1.99 trial button: reconcile display model
 ## Autopilot directive 2026-11-12 dashboard plus cleanup queue
 - [x] Single-page dashboard: outreach merged into / (#outreach, 301 from legacy route); /demo kept as major subproject view and linked from nav; tooltips + high-value-first sections (v0.7.3, 2026-11-13)

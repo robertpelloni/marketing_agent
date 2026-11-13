@@ -16,9 +16,9 @@ Verified against repo + production (5.161.250.43) on 2026-11-07.
 - Copy drafted for all 11 posts. Remaining is manual: LinkedIn, X, Hashnode, Medium (account auth required).
 - Track in POSTING_GUIDE.md sync checklist + marketing/outreach_queue_2026-11-03.md.
 
-## M4 — Integration suite green
-- GitHub "Integration Tests" red since 2026-07-11 (needs real Postgres). Unit tests + build pass; service runs in prod.
-- Quarantine or fix the integration workflow so the gate means something again.
+## M4 - Integration suite green (DONE 2026-11-13, v0.7.3)
+- All workflows green on main: CI, Docker Build, Integration Tests, Deploy (lint/test/build/staging/production), CodeQL.
+- Root causes fixed: .dockerignore excluded the Go module; golangci action too old for Go 1.25; 43 lint issues; missing migrations 000013 (deals.cadence_step) and 000014 (interactions.template_id/response_id); enricher used the contact-joined outreach query so contactless deals could never enrich; staging smoke targeted the wrong port.
 
 ## M5 — Marketing bot autonomy
 - scripts/marketing_bot is the canonical runner (per AGENTS.md). Legacy auto_*/apollo_* one-offs in scripts/ to be archived (see TODO).

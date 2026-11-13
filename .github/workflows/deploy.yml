@@ -82,7 +82,12 @@ jobs:
     - name: Build and Run Staging
       run: docker compose -f docker-compose.staging.yml up -d --build
     - name: Run Staging Validation
-      run: sleep 10 && go run scripts/smoke.go
+      run: |
+        for i in $(seq 1 30); do
+          if curl -sf http://localhost:8081/health >/dev/null; then break; fi
+          sleep 2
+        done
+        go run scripts/smoke.go
       env:
         TARGET_URL: http://localhost:8081
     - name: Cleanup Staging

@@ -13,6 +13,7 @@ require (
 	github.com/stripe/stripe-go/v81 v81.4.0
 	github.com/wailsapp/wails/v2 v2.13.0
 	golang.org/x/oauth2 v0.30.0
+	golang.org/x/text v0.37.0
 	golang.org/x/time v0.12.0
 )
 
@@ -63,5 +64,4 @@ require (
 	golang.org/x/crypto v0.52.0 // indirect
 	golang.org/x/net v0.55.0 // indirect
 	golang.org/x/sys v0.45.0 // indirect
-	golang.org/x/text v0.37.0 // indirect
 )

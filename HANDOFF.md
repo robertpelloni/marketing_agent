@@ -227,3 +227,10 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 
 ## CONSTRAINT 2026-11-13 (user): Hetzner only
 - Do NOT run any local servers (no local marketing_agent, no local app Postgres/dashboard). Build and unit tests locally are fine; all runtime runs and log watching happen on the Hetzner production server (5.161.250.43) only. Local throwaway Postgres + server started earlier this session were stopped and ports 8084/5434 verified closed.
+
+## SESSION 2026-11-13 (autopilot, continued) Muse Code
+- Operator Tools section 6D added to dashboard: quote generator, tenant container start/stop/restart, outreach CSV export, GDPR export/delete with confirm + tooltips; Tools nav link added (42233b92).
+- build.sh now builds the whole package (no file list, no gitcheck test that resets the tree) and stamps main.version from VERSION; startup log prints version.
+- DEPLOYED to Hetzner 5.161.250.43: backup bin/marketing_agent.bak-20261113, new binary + migration 000013 + VERSION, systemctl restart marketing-agent. Verified on prod: /health OK, /dashboard/outreach 301->/#outreach, pricing.html live 200, DB OK, workers active, discovery/outreach running.
+- Prod issues seen in journal: llm_provider deepseek health 404; system_health 'Main branch status: Failure' (investigate gitcheck on prod); external 402/401 accounts unchanged.
+- CDP: muse.ai/Gemini/ChatGPT tabs were reachable earlier and messages delivered to muse.ai; the debug Edge (9222) later closed and the muse.ai tab was replaced/logged out. Coordination blocked until Edge is relaunched with --remote-debugging-port=9222. Do not kill the user's Edge to restore it.

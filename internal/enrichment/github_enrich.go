@@ -25,6 +25,75 @@ import (
 type GitHubEnrichSource struct {
 	Token      string
 	HTTPClient *http.Client
+	// MaxAttempts bounds retries for transient GitHub failures (transport
+	// resets such as HTTP/2 PROTOCOL_ERROR, 429, and 5xx). Zero means 3.
+	// Prod logs showed bursts of PROTOCOL_ERRORs where every company in a
+	// cycle retried immediately at full rate; bounded backoff spreads them.
+	MaxAttempts int
+	// BaseDelay is the first retry wait, doubled per attempt. Zero means 500ms.
+	BaseDelay time.Duration
+}
+
+func (g *GitHubEnrichSource) maxAttempts() int {
+	if g.MaxAttempts > 0 {
+		return g.MaxAttempts
+	}
+	return 3
+}
+
+func (g *GitHubEnrichSource) baseDelay() time.Duration {
+	if g.BaseDelay > 0 {
+		return g.BaseDelay
+	}
+	return 500 * time.Millisecond
+}
+
+// isRetryableGitHubStatus reports whether a response status is worth
+// retrying: rate limiting and server-side failures are transient, other
+// 4xx answers will not change on a retry.
+func isRetryableGitHubStatus(code int) bool {
+	return code == http.StatusTooManyRequests || code >= 500
+}
+
+// doWithRetry executes req with bounded exponential backoff. The request is
+// cloned per attempt. Retry-After (seconds) is honored when GitHub sends it.
+// Context cancellation aborts the wait between attempts.
+func (g *GitHubEnrichSource) doWithRetry(req *http.Request) (*http.Response, error) {
+	attempts := g.maxAttempts()
+	var lastErr error
+	for attempt := 0; attempt < attempts; attempt++ {
+		resp, err := g.HTTPClient.Do(req.Clone(req.Context()))
+		if err == nil && !isRetryableGitHubStatus(resp.StatusCode) {
+			return resp, nil
+		}
+		if err != nil {
+			lastErr = err
+		} else {
+			lastErr = fmt.Errorf("GitHub API returned %d", resp.StatusCode)
+		}
+		if attempt == attempts-1 {
+			if err != nil {
+				return nil, lastErr
+			}
+			return resp, nil
+		}
+		delay := g.baseDelay() << attempt
+		if err == nil && resp != nil {
+			if ra := resp.Header.Get("Retry-After"); ra != "" {
+				if secs, perr := time.ParseDuration(ra + "s"); perr == nil && secs > delay {
+					delay = secs
+				}
+			}
+			_ = resp.Body.Close()
+		}
+		slog.Info(fmt.Sprintf("GitHubEnrichSource: transient failure (attempt %d/%d), backing off %v: %v", attempt+1, attempts, delay, lastErr))
+		select {
+		case <-req.Context().Done():
+			return nil, req.Context().Err()
+		case <-time.After(delay):
+		}
+	}
+	return nil, lastErr
 }
 
 // githubCommit represents a single commit from the GitHub API.
@@ -190,7 +259,7 @@ func (g *GitHubEnrichSource) searchRepos(ctx context.Context, query string) ([]s
 		req.Header.Set("Authorization", "token "+g.Token)
 	}
 
-	resp, err := g.HTTPClient.Do(req)
+	resp, err := g.doWithRetry(req)
 	if err != nil {
 		return nil, err
 	}
@@ -234,7 +303,7 @@ func (g *GitHubEnrichSource) fetchRecentCommits(ctx context.Context, fullName st
 		req.Header.Set("Authorization", "token "+g.Token)
 	}
 
-	resp, err := g.HTTPClient.Do(req)
+	resp, err := g.doWithRetry(req)
 	if err != nil {
 		return nil, err
 	}

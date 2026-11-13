@@ -246,3 +246,8 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - Deploy workflow production job passes (DEPLOY_HOST-gated steps skip; real deploys done manually per always-deploy directive to 5.161.250.43).
 - Remaining blockers are external accounts only: DeepSeek invalid key, Apollo 401, Bluesky 401, X 402. CDP 9222 still down (Edge debug instance closed; needs relaunch with --remote-debugging-port=9222 + muse.ai sign-in).
 - Next: monitor prod journal; when keys are funded/valid, blog/social/enrichment recover automatically. Stale index_a/index_b site variants and signup.html fate still open in TODO.
+
+## SESSION 2026-11-13 (site cleanup) Muse Code
+- Archived stale A/B variants (index_a/index_b/indexB), orphan home_router, dormant signup, and 4 unreferenced media files to hypernexus_site/archive/ (48c0826a); mirrored on Hetzner /var/www/hypernexus.site (archived URLs now styled-404; /, pricing, checkout 200). TODO Later section cleared.
+- Coordinated via CDP: muse.ai messaged; Gemini/ChatGPT tabs absent in this Edge instance.
+- Next: manual posts in POSTING_GUIDE (needs account auth), marketing bot secrets, prod repo /opt/marketing_agent git state is old+dirty (373c772c) - service runs the deployed binary, repo sync on prod still pending a careful pass (prod has untracked runtime data; do not reset blindly).

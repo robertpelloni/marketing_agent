@@ -240,3 +240,9 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - Deployed c6ddca56 (enrichment fix) + migration 000014 to Hetzner: backup marketing_agent.bak-20261113b, restart OK. Prod /health OK; /health/detailed: database OK, workers active, system_health now 'Main branch status: Success'.
 - CI status at deploy: CI/CodeQL/Integration/Docker green on recent commits; Deploy workflow lint+modules fixed, test job exposed schema drift fixed by migrations 000013/000014 + enrichment query fix.
 - Prod log notes: DeepSeek invalid API key (blog), Apollo 401 (skipped gracefully), GitHub search stream PROTOCOL_ERROR retries in fallback source.
+
+## FINAL 2026-11-13 Muse Code
+- ALL GitHub workflows green on main (43479380*): CI, Docker, Integration, Deploy, CodeQL. Prod system_health = Success.
+- Deploy workflow production job passes (DEPLOY_HOST-gated steps skip; real deploys done manually per always-deploy directive to 5.161.250.43).
+- Remaining blockers are external accounts only: DeepSeek invalid key, Apollo 401, Bluesky 401, X 402. CDP 9222 still down (Edge debug instance closed; needs relaunch with --remote-debugging-port=9222 + muse.ai sign-in).
+- Next: monitor prod journal; when keys are funded/valid, blog/social/enrichment recover automatically. Stale index_a/index_b site variants and signup.html fate still open in TODO.

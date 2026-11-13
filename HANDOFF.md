@@ -289,3 +289,8 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - /api/v1/metrics now includes enrichment_sources counters (a56a959e, deployed, verified live).
 - First prod cycle (100 deals): Hunter.io 100/100 failures = 'hunter: invalid API key' (NEW credential item: HUNTER_API_KEY invalid). Apollo 100 empty (401 masked as no contacts - consider classifying 401 as failure in ApolloSource for honest counters). GitHub 97 failures/3 empty (circuit-open errors count as failures).
 - CDP: muse.ai check-in sent; Gemini messaged previous loop; ChatGPT composer still holds another lane's unsent draft (not overwritten).
+
+## LOOP 2026-11-13 (Apollo classification) Muse Code
+- Apollo 401/403 now returns an error (was empty result): fallback chain behavior unchanged, telemetry honest. Prod metrics after deploy: Apollo.io failures=100 (was empty=100). Test: TestApolloEnrich_Classifies401AsFailure incl. fallback counter assertion.
+- CDP this loop: muse.ai tab replaced again (now RealEstateCRM site tab; reopening lands logged-out, no credentials handled). Gemini composer not locatable this pass (tab in a modal state); ChatGPT composer still holds another lane's unsent draft - not overwritten. Check-in recorded here; retry tabs next loop.
+- Remaining credential needs (unchanged): DeepSeek, Apollo, Hunter, Bluesky, X + manual post logins.

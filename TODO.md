@@ -28,3 +28,5 @@ Immediate, granular tasks. Long-term direction lives in ROADMAP.md.
 - [x] Local full run: go build plus go test plus log watch and report gaps (2026-11-13; only live-Apollo health check fails, needs valid API key)
 - [ ] Align checkout.html copy with the decided $1.99-first-month-then-$5/mo model (merge took the GitHub-side $1.99 first-month page; pricing.html kept the trial copy — reconcile both surfaces)
 - [x] Fix or skip-guard TestApolloSource_HealthCheck so the suite is green without live credentials (2026-11-13: 401 now skips like 403)
+
+- [x] Classify Apollo 401/403 as failure (not empty) for honest source telemetry (2026-11-13, 7c914640, verified in prod metrics: Apollo failures=100)

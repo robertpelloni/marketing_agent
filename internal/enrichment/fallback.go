@@ -19,6 +19,51 @@ type FallbackSource struct {
 	names   []string // human-readable names for each source (for logging/status)
 }
 
+// SourceCounters aggregates outcomes per enrichment source since process
+// start. The fallback chain previously reported source health only through
+// log lines; these counters let /api/v1/metrics (and therefore the
+// dashboard) show which lanes are failing without log-diving.
+type SourceCounters struct {
+	Attempts  int64 `json:"attempts"`
+	Successes int64 `json:"successes"`
+	Empty     int64 `json:"empty"`
+	Failures  int64 `json:"failures"`
+}
+
+var sourceStatsMu sync.Mutex
+var sourceStats = map[string]*SourceCounters{}
+
+func recordSourceOutcome(name string, success bool, count int, failed bool) {
+	sourceStatsMu.Lock()
+	defer sourceStatsMu.Unlock()
+	c, ok := sourceStats[name]
+	if !ok {
+		c = &SourceCounters{}
+		sourceStats[name] = c
+	}
+	c.Attempts++
+	switch {
+	case failed:
+		c.Failures++
+	case success:
+		c.Successes++
+	default:
+		_ = count
+		c.Empty++
+	}
+}
+
+// SourceStats returns a copy of per-source outcome counters.
+func SourceStats() map[string]SourceCounters {
+	sourceStatsMu.Lock()
+	defer sourceStatsMu.Unlock()
+	out := make(map[string]SourceCounters, len(sourceStats))
+	for k, v := range sourceStats {
+		out[k] = *v
+	}
+	return out
+}
+
 // sourceResult captures the outcome of a single enrichment source attempt.
 type sourceResult struct {
 	Name    string
@@ -93,16 +138,19 @@ func (f *FallbackSource) Enrich(ctx context.Context, company db.Company) ([]db.C
 		result := sourceResult{Name: name}
 		if err != nil {
 			result.Error = err.Error()
+			recordSourceOutcome(name, false, 0, true)
 			slog.Info(fmt.Sprintf("FallbackSource: ✗ %s failed: %v", name, err))
 			report.SourceResults = append(report.SourceResults, result)
 			continue
 		}
 
 		if len(contacts) == 0 {
+			recordSourceOutcome(name, false, 0, false)
 			slog.Info(fmt.Sprintf("FallbackSource: ✗ %s returned no contacts for %s", name, company.Domain))
 			report.SourceResults = append(report.SourceResults, result)
 			continue
 		}
+		recordSourceOutcome(name, true, len(contacts), false)
 
 		// Success!
 		result.Success = true

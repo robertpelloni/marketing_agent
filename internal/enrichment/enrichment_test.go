@@ -97,6 +97,7 @@ func TestEnricher_Initialization(t *testing.T) {
 		t.Errorf("Expected 1 source, got %d", len(e.sources))
 	}
 }
+
 // mockSourceForTest is a mock EnrichmentSource for unit testing.
 type mockSourceForTest struct {
 	name           string
@@ -120,6 +121,32 @@ func (m *mockSourceForTest) Enrich(ctx context.Context, company db.Company) ([]d
 		}
 	}
 	return contacts, nil
+}
+
+func TestSourceStats_CountsOutcomes(t *testing.T) {
+	fail := &mockSourceForTest{name: "StatsFail", shouldFail: true}
+	empty := &mockSourceForTest{name: "StatsEmpty", returnContacts: 0}
+	good := &mockSourceForTest{name: "StatsGood", returnContacts: 2}
+	fb := NewFallbackSource(
+		[]EnrichmentSource{fail, empty, good},
+		[]string{"StatsFail", "StatsEmpty", "StatsGood"},
+	)
+
+	company := db.Company{Name: "Acme", Domain: "acme.com"}
+	if _, err := fb.Enrich(context.Background(), company); err != nil {
+		t.Fatalf("expected fallback success, got %v", err)
+	}
+
+	stats := SourceStats()
+	if stats["StatsFail"].Failures != 1 || stats["StatsFail"].Attempts != 1 {
+		t.Errorf("StatsFail counters wrong: %+v", stats["StatsFail"])
+	}
+	if stats["StatsEmpty"].Empty != 1 {
+		t.Errorf("StatsEmpty counters wrong: %+v", stats["StatsEmpty"])
+	}
+	if stats["StatsGood"].Successes != 1 {
+		t.Errorf("StatsGood counters wrong: %+v", stats["StatsGood"])
+	}
 }
 
 func TestFallbackSource_CustomSources(t *testing.T) {

@@ -26,6 +26,7 @@ import (
 	"gitlab.com/robertpelloni/marketing_agent/internal/communication"
 	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 	"gitlab.com/robertpelloni/marketing_agent/internal/deploy"
+	"gitlab.com/robertpelloni/marketing_agent/internal/enrichment"
 	"gitlab.com/robertpelloni/marketing_agent/internal/gitcheck"
 	"gitlab.com/robertpelloni/marketing_agent/internal/llm"
 	"gitlab.com/robertpelloni/marketing_agent/internal/logging"
@@ -1997,6 +1998,9 @@ func (s *Server) handleJSONMetrics(w http.ResponseWriter, r *http.Request) {
 		"db_idle":                 stats.Idle,
 		"db_wait_count":           stats.WaitCount,
 		"db_wait_duration_ms":     stats.WaitDuration.Milliseconds(),
+		// Per-source enrichment outcomes (attempts/successes/empty/failures)
+		// so failing lanes are visible without reading service logs.
+		"enrichment_sources": enrichment.SourceStats(),
 	})
 }
 

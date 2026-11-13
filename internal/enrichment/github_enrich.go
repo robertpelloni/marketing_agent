@@ -190,6 +190,13 @@ func NewGitHubEnrichSource(token string) *GitHubEnrichSource {
 		Token: token,
 		HTTPClient: &http.Client{
 			Timeout: 30 * time.Second,
+			// Prod diagnosis (2026-11-13): authenticated GitHub search works
+			// from the Hetzner host over HTTP/1.1 and unauthenticated HTTP/2,
+			// but the Go client's HTTP/2 search calls reset persistently
+			// (PROTOCOL_ERROR) under load. Force HTTP/1.1 for this client;
+			// the retry/backoff/circuit breaker above remains as the safety
+			// net if GitHub throttles anyway.
+			Transport: &http.Transport{ForceAttemptHTTP2: false},
 		},
 	}
 }

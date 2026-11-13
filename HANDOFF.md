@@ -234,3 +234,9 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - DEPLOYED to Hetzner 5.161.250.43: backup bin/marketing_agent.bak-20261113, new binary + migration 000013 + VERSION, systemctl restart marketing-agent. Verified on prod: /health OK, /dashboard/outreach 301->/#outreach, pricing.html live 200, DB OK, workers active, discovery/outreach running.
 - Prod issues seen in journal: llm_provider deepseek health 404; system_health 'Main branch status: Failure' (investigate gitcheck on prod); external 402/401 accounts unchanged.
 - CDP: muse.ai/Gemini/ChatGPT tabs were reachable earlier and messages delivered to muse.ai; the debug Edge (9222) later closed and the muse.ai tab was replaced/logged out. Coordination blocked until Edge is relaunched with --remote-debugging-port=9222. Do not kill the user's Edge to restore it.
+
+## DEPLOY 2026-11-13 (always-deploy directive) Muse Code
+- User directive: ALWAYS deploy after every push. Saved to project memory.
+- Deployed c6ddca56 (enrichment fix) + migration 000014 to Hetzner: backup marketing_agent.bak-20261113b, restart OK. Prod /health OK; /health/detailed: database OK, workers active, system_health now 'Main branch status: Success'.
+- CI status at deploy: CI/CodeQL/Integration/Docker green on recent commits; Deploy workflow lint+modules fixed, test job exposed schema drift fixed by migrations 000013/000014 + enrichment query fix.
+- Prod log notes: DeepSeek invalid API key (blog), Apollo 401 (skipped gracefully), GitHub search stream PROTOCOL_ERROR retries in fallback source.

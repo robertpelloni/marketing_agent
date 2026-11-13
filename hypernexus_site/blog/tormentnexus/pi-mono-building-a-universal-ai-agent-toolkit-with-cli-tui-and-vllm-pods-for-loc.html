@@ -1,0 +1,167 @@
+<article class="blog-post" data-slug="pi-mono-building-a-universal-ai-agent-toolkit-with-cli-tui-and-vllm-pods-for-loc" data-brand="tormentnexus" data-category="developer-tools">
+  <header>
+    <h1>pi-mono: Building a Universal AI Agent Toolkit with CLI, TUI, and vLLM Pods for Local Development</h1>
+    <div class="meta">
+      <span class="date">July 13, 2026</span>
+      <span class="brand"><a href="https://tormentnexus.site">TormentNexus</a></span>
+      <span class="category">developer-tools</span>
+    </div>
+  </header>
+  <div class="content">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pi-mono: AI Agent Toolkit for Developers</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.7;
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      color: #1a1a2e;
+      background: #faf9f6;
+    }
+    h1 { font-size: 2.2rem; border-bottom: 3px solid #3a86ff; padding-bottom: 0.5rem; }
+    h2 { font-size: 1.5rem; color: #1a1a2e; margin-top: 2rem; border-left: 4px solid #3a86ff; padding-left: 0.75rem; }
+    code, .code-inline { background: #eef1f5; padding: 0.2rem 0.5rem; border-radius: 4px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.9em; }
+    pre { background: #1a1a2e; color: #e0e0e0; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.85rem; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; margin: 2rem 0; }
+    .feature-card { background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 3px solid #3a86ff; }
+    .feature-card h3 { margin-top: 0; }
+    .note { background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; border-radius: 6px; font-size: 0.95rem; }
+    footer { margin-top: 3rem; text-align: center; font-size: 0.85rem; color: #666; border-top: 1px solid #ddd; padding-top: 1.5rem; }
+  </style>
+</head>
+<body>
+
+<h1>🤖 pi-mono</h1>
+<p><em>A unified AI agent toolkit for building, deploying, and interacting with LLM-powered agents in production.</em></p>
+
+<p><strong>pi-mono</strong> (github.com/robertpelloni/pi-mono) is an open-source agent toolkit that consolidates the full agent development lifecycle into a single, coherent system. Designed for developers building AI tools, it provides a <strong>coding agent CLI</strong>, a <strong>unified LLM API</strong>, a <strong>TUI library</strong>, a <strong>web UI library</strong>, a <strong>Slack bot</strong>, and <strong>vLLM pod orchestration</strong> — all working together out of the box.</p>
+
+<h2>Architecture Overview</h2>
+<p>pi-mono is organized around a central <code>Agent</code> runtime that can be driven by multiple interfaces. The core components are:</p>
+
+<div class="feature-grid">
+  <div class="feature-card">
+    <h3>🧠 Coding Agent CLI</h3>
+    <p>Terminal-based agent with multi-turn reasoning, tool execution, code generation, and file system access. Supports streaming output and interactive debugging.</p>
+    <pre><code>pi-mono run "refactor this module to use async"</code></pre>
+  </div>
+  <div class="feature-card">
+    <h3>🔌 Unified LLM API</h3>
+    <p>Abstraction layer over OpenAI, Anthropic, vLLM, and local models. Automatic fallback, cost tracking, and structured output parsing.</p>
+    <pre><code># Single API for any provider
+response = await llm.chat(messages, model="auto")</code></pre>
+  </div>
+  <div class="feature-card">
+    <h3>🖥️ TUI Library</h3>
+    <p>Python-native terminal UI components for building agent dashboards, logs viewers, and interactive REPLs. Keyboard-driven, with rich text and real-time updates.</p>
+  </div>
+  <div class="feature-card">
+    <h3>🌐 Web UI Library</h3>
+    <p>FastAPI-based web interface components: chat views, agent state panels, tool call inspectors, and deployment dashboards. Ships with pre-built templates.</p>
+  </div>
+  <div class="feature-card">
+    <h3>💬 Slack Bot</h3>
+    <p>Configurable Slack app that routes messages to agents, supports threaded conversations, slash commands, and file uploads for context sharing.</p>
+  </div>
+  <div class="feature-card">
+    <h3>⚡ vLLM Pods</h3>
+    <p>Built-in orchestrator for spinning up vLLM inference servers. Auto-scaling pool management, model loading, and health checks for self-hosted models.</p>
+  </div>
+</div>
+
+<h2>Key Technical Features</h2>
+
+<h3>1. Multi-Interface Agent Runtime</h3>
+<p>All interfaces (CLI, TUI, web, Slack) share the same <code>Agent</code> core. Add custom tools via a simple decorator API:</p>
+<pre><code>from pi_mono import tool
+
+@tool(description="Query a PostgreSQL database")
+def run_sql(query: str) -> list[dict]:
+    # ... execute query
+    return results</code></pre>
+
+<h3>2. Unified LLM Adapter</h3>
+<p>The <code>llm</code> module normalizes streaming, token counting, and error handling across providers. Key capabilities:</p>
+<ul>
+  <li><strong>Provider auto-detection</strong> from model string (e.g., <code>claude-3</code> → Anthropic, <code>gpt-4</code> → OpenAI)</li>
+  <li><strong>Structured output</strong> via Pydantic model extraction</li>
+  <li><strong>Tool-use abstraction</strong> — same tool definitions work across all backends</li>
+  <li><strong>Cost accounting</strong> per-request and per-session</li>
+</ul>
+
+<h3>3. vLLM Pod Management</h3>
+<pre><code># Start a vLLM pod with auto-scaling
+pi-mono vllm deploy --model meta-llama/Llama-3.1-8B --gpus 2 --port 8000
+
+# List running pods
+pi-mono vllm ls</code></pre>
+<p>The orchestrator handles GPU allocation, model downloading, and integrates with the unified LLM API — so your agents can seamlessly switch between local vLLM pods and cloud APIs.</p>
+
+<h3>4. TUI Framework</h3>
+<p>Built on <code>urwid</code> with a reactive component model. Supports:</p>
+<ul>
+  <li>Markdown rendering for agent responses</li>
+  <li>Interactive JSON inspectors for tool calls</li>
+  <li>Split-pane views for code + conversation</li>
+  <li>Vim-like keybindings (configurable)</li>
+</ul>
+
+<h2>Getting Started</h2>
+<pre><code>pip install pi-mono
+
+# CLI mode
+pi-mono run
+
+# Web UI (FastAPI server)
+pi-mono serve
+
+# Slack bot (requires app config)
+pi-mono slack start
+
+# Deploy local vLLM
+pi-mono vllm deploy --model path/to/model</code></pre>
+
+<div class="note">
+  <strong>💡 Developer Note:</strong> pi-mono's <code>unified_llm</code> module is importable separately — you can use it to build custom agent frameworks without the full toolkit. All interfaces are optional; plug in only what you need.
+</div>
+
+<h2>Use Cases</h2>
+<ul>
+  <li><strong>Codebase agents</strong>: Attach file system, git, and linting tools for autonomous code review and refactoring</li>
+  <li><strong>Internal dev ops</strong>: Slack agent that deploys services, runs queries, and monitors logs</li>
+  <li><strong>Rapid prototyping</strong>: Use the REPL-like CLI to test agent behaviors before building a web interface</li>
+  <li><strong>Self-hosted inference</strong>: Deploy vLLM pods for sensitive data workflows, then route agents through the unified API</li>
+</ul>
+
+<h2>Repository Structure</h2>
+<pre><code>pi-mono/
+├── pi_mono/
+│   ├── core/          # Agent runtime, tool system, memory
+│   ├── llm/           # Unified LLM API + adapters
+│   ├── tui/           # Terminal UI components
+│   ├── web/           # FastAPI routes, chat templates
+│   ├── slack/         # Slack bot handler
+│   └── vllm/          # vLLM pod manager & API proxy
+├── cli.py
+└── pyproject.toml</code></pre>
+
+<h2>Why pi-mono?</h2>
+<p>Most agent tools focus on a single interface (CLI-only or web-only) or lock you into one LLM provider. pi-mono was built by developers who needed a <strong>homogeneous toolkit</strong> where the same agent code works in the terminal, a web dashboard, and a Slack channel — with the ability to swap between local and cloud models without changing a single line of agent logic.</p>
+
+<footer>
+  Built with TormentNexus.
+</footer>
+
+</body>
+</html>
+  </div>
+  <footer>
+    <p>Published by TormentNexus — the OS for AI models.</p>
+  </footer>
+</article>

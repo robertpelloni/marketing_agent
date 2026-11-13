@@ -1,5 +1,9 @@
 # Manual Posting Guide - All Articles
 
+> [!NOTE] 2026-11-04: All 11 articles below are LIVE at https://hypernexus.site/blog/ (5 originals + 6 security posts published 2026-11-03). Blog index lists all 11, sitemap.xml covers all 11. Safe to post any URL. See marketing/outreach_queue_2026-11-03.md for per-post copy.
+
+# Generated: July 27, 2026
+
 # Generated: July 27, 2026
 
 ## ARTICLES TO POST
@@ -271,3 +275,4 @@ Full checklist:
 - [ ] Twitter (manual - 6 tweets above)
 - [ ] Hashnode (manual - 6 posts above)
 - [ ] Medium (manual - 6 posts above)
+

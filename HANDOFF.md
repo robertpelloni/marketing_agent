@@ -125,3 +125,87 @@ All download buttons on `hypernexus.site/download` now point to:
 1. Resolve the dependabot branch by cherry-picking only the dependency updates (not file deletions)
 2. Monitor Docker container for stability
 3. Consider rebuilding the Docker image to permanently fix the TORMENTNEXUS brand name issue
+
+---
+
+# HANDOFF — 2026-11-07 (autonomous session)
+
+## What happened
+- Repo was at 9e23d97 (11/03) with our 11/04–05 trial/sitemap/outreach work uncommitted; leader-sync
+  preserved it to backup/wip-leader-sync-20261107 ("preserve WIP before leader sync FF").
+- This session: FF-merged backup -> main, verified main == origin/main, pushed.
+- Added ROADMAP.md + TODO.md; CHANGELOG [Unreleased] entry. Pushed as b7db414.
+- Production (5.161.250.43) already served the new files; repo now matches prod.
+
+## Verified live state
+- marketing-agent, nginx, postgresql: active (running since 11/06). Zero error-log entries in 24h.
+  17 service starts in 7 days (deploy churn, not crashes — no errors logged).
+- /var/www/hypernexus.site serves trial funnel (checkout.html refs, price_amount:199) + corrected sitemap.
+
+## Key facts for successor
+- Trial = one-time $1.99 via ad-hoc Stripe price_data (CheckoutSessionWithPrice). No new Price ID.
+  Open question: one-time vs $1.99/mo recurring. signup.html bypassed but still served.
+- Dashboard = 3 pages (/, /dashboard/outreach, /demo); consolidation already satisfied. No tray icon (headless).
+- Integration suite RED since 2026-07-11. Marketing bot blocked on secrets.
+- Do NOT blind-merge while leader sync active; backup branch pattern works — keep using it.
+
+## Next (see TODO.md)
+- Leader-sync FF watch, live Stripe click-test, manual outreach posts (LinkedIn/X/Hashnode/Medium),
+  legacy scripts/ archive pass, Search Console sitemap resubmit.
+---
+
+## HANDOFF 2026-11-08 (1.99-first-month recurring)
+
+Shipped: checkout now posts price_amount 500, interval month, first_month_amount 199. Billing creates 5-mo ad-hoc price plus once-coupon (301 off), trial skipped so first charge is immediate. Copy updated on checkout, index, pricing.
+Deployed: linux binary cross-compiled (21 MB) to /opt/marketing_agent/bin, statics to /var/www/hypernexus.site, service restarted active with zero errors. Live page verified serving new copy.
+Committed 93f09a8, pushed (main == origin/main). CDP tabs opened: checkout, LinkedIn, X compose, Medium, Hashnode. AI pings: ChatGPT sent, Gemini draft present, Muse tab unreachable (retry).
+Next: user runs real charge, confirms 1.99 today plus 5-mo after. Then outreach posts, sitemap resubmit, CI annotations.
+---  
+## COORD 2026-11-09 cross-harness sync Codex  
+Identity muse-spark in Codex in marketing_agent on laptop  
+L2 search COORD-SYNC plus COORD-SYNC2 in HyperNexus memory  
+State funnel 93f09a8 live prod healthy main origin 0589fcf  
+CDP Edge 9222 AI tabs Gemini app Muse Bobbi chat ChatGPT convo  
+Pending charge test outreach posts sitemap resubmit integration quarantine  
+CLI harnesses pi claude confirm ACK in L2 when caught up  
+---  
+## COORD 2026-11-12 cross-harness sync Codex  
+Identity muse-spark in Codex in marketing_agent on laptop  
+L2 COORD-SYNC3 stored in HyperNexus memory  
+State funnel 93f09a8 live verified 200 prod healthy main 92096e2 origin sync  
+CDP Edge 9222 tabs Gemini app ChatGPT convo Muse muse.ai visible but renderers unresponsive to Runtime.evaluate 45s timeouts best-effort SYNC sent unverified  
+Pending charge test outreach posts sitemap resubmit integration quarantine  
+CLI harnesses pi claude confirm ACK in L2 when caught up  
+
+## COORD 2026-11-12 cross-harness sync Codex part2
+Identity muse-spark in Codex in marketing_agent on laptop
+L2 COORD-SYNC4 posted to HyperNexus memory plus this HANDOFF entry
+State quarantine 1651fbd pushed origin sync funnel 1.99 live verified 200
+CDP Edge 9222 TreeWalker 3 of 3 PRESENT chatgpt True gemini True muse True
+Pending charge test outreach posts sitemap resubmit
+CLI harnesses pi claude confirm ACK in L2 when caught up
+
+## COORD 2026-11-12 cross-harness sync Codex part3 muse reconnect
+Identity muse-spark in Codex in marketing_agent on laptop
+Muse.ai tab Chat Bobbi SYNC sent plus TreeWalker verify True 90s connect 150s socket
+L2 COORD-SYNC5 posted 201 plus this HANDOFF entry
+State 721fbe6 local push pending 1651fbd origin sync funnel 1.99 live
+
+## COORD 2026-11-12 cross-harness sync Codex part4 muse verify-only
+Identity muse-spark in Codex in marketing_agent on laptop
+Muse.ai verify-only True Chat Bobbi no resend link healthy
+Autopilot directive 7KB read benign queued dashboard-single-page cleanup logs
+L2 COORD-SYNC6 plus this entry push still user-blocked
+
+## COORD 2026-11-12 part5 dashboard survey autopilot queued
+Routes / handleDashboard 173 to 908 demo 1702 plus outreach html file
+Plan single-page merge with tabs tooltips impl next turn with go build
+L2 COORD-SYNC6 201 muse verify-only True no resend
+
+## COORD 2026-11-12 part6 muse verify-only stable
+Muse.ai verify-only True Chat Bobbi stable no resend
+L2 COORD-SYNC7 dashboard merge next push user-blocked
+
+## COORD 2026-11-12 part7 muse verify-only third straight
+Muse.ai verify-only True Chat Bobbi stable no resend
+L2 COORD-SYNC8 push user-blocked 6 ahead

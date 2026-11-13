@@ -58,12 +58,14 @@ type Config struct {
 	IMAPPollInterval time.Duration
 
 	// Billing
-	StripeAPIKey             string
-	StripeWebhookSecret      string
-	StripePriceCommunity     string
-	StripePriceProfessional  string
-	StripePriceEnterprise    string
-	StripePriceHyperNexusPro string
+	StripeAPIKey                    string
+	StripeWebhookSecret             string
+	StripePriceCommunity            string
+	StripePriceProfessional         string
+	StripePriceEnterprise           string
+	StripePriceHyperNexusPro        string
+	StripePriceHyperNexusProMonthly string
+	StripePriceHyperNexusProYearly  string
 
 	// Webhooks
 	OutboundWebhookURL    string
@@ -183,12 +185,14 @@ func Load() *Config {
 		IMAPPollInterval: imapPollInterval,
 
 		// Billing
-		StripeAPIKey:             os.Getenv("STRIPE_API_KEY"),
-		StripeWebhookSecret:      os.Getenv("STRIPE_WEBHOOK_SECRET"),
-		StripePriceCommunity:     os.Getenv("STRIPE_PRICE_COMMUNITY"),
-		StripePriceProfessional:  os.Getenv("STRIPE_PRICE_PROFESSIONAL"),
-		StripePriceEnterprise:    os.Getenv("STRIPE_PRICE_ENTERPRISE"),
-		StripePriceHyperNexusPro: os.Getenv("STRIPE_PRICE_HYPERNEXUS_PRO"),
+		StripeAPIKey:                    os.Getenv("STRIPE_API_KEY"),
+		StripeWebhookSecret:             os.Getenv("STRIPE_WEBHOOK_SECRET"),
+		StripePriceCommunity:            os.Getenv("STRIPE_PRICE_COMMUNITY"),
+		StripePriceProfessional:         os.Getenv("STRIPE_PRICE_PROFESSIONAL"),
+		StripePriceEnterprise:           os.Getenv("STRIPE_PRICE_ENTERPRISE"),
+		StripePriceHyperNexusPro:        os.Getenv("STRIPE_PRICE_HYPERNEXUS_PRO"),
+		StripePriceHyperNexusProMonthly: os.Getenv("STRIPE_PRICE_HYPERNEXUS_PRO_MONTHLY"),
+		StripePriceHyperNexusProYearly:  os.Getenv("STRIPE_PRICE_HYPERNEXUS_PRO_YEARLY"),
 
 		// Webhooks
 		OutboundWebhookURL:    os.Getenv("OUTBOUND_WEBHOOK_URL"),

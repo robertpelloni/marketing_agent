@@ -1,0 +1,98 @@
+<article class="blog-post" data-slug="cross-harness-tool-parity-write-one-custom-mcp-tool-deploy-it-everywhere" data-brand="tormentnexus" data-category="developer-tools">
+  <header>
+    <h1>Cross-Harness Tool Parity: Write One Custom MCP Tool, Deploy It Everywhere</h1>
+    <div class="meta">
+      <span class="date">July 25, 2026</span>
+      <span class="brand"><a href="https://tormentnexus.site">TormentNexus</a></span>
+      <span class="category">developer-tools</span>
+    </div>
+  </header>
+  <div class="content">
+<h1>Cross-Harness Tool Parity: Write One Custom MCP Tool, Deploy It Everywhere</h1>
+<p class="meta-description">Achieving true tool parity across AI coding environments is no longer a theoretical challenge. Learn how the Model Context Protocol (MCP) enables a single, custom tool configuration to function seamlessly within Claude Code, Cursor, Codex, Gemini CLI, Copilot, and Windsurf, eliminating redundant setup and accelerating development workflows.</p>
+
+<h2>The Problem with Pollinated Tooling</h2>
+<p>Today’s developer landscape is fractured by AI tool choice. While having options like Cursor, Windsurf, and GitHub Copilot is beneficial, it creates a significant maintenance burden. If you build a custom internal tool—say, a wrapper around your company’s deployment API—you often find yourself maintaining six different integration scripts, configuration files, and authentication flows. One for Claude Code, another for the Gemini CLI, a separate one for Cursor’s extensions. This lack of <strong>tool parity</strong> means time is wasted on plumbing, not product.</p>
+
+<p>The core issue is that each "harness" or AI coding environment has its own proprietary way of discovering, authenticating, and invoking tools. The result is a siloed ecosystem where a powerful utility locked inside one editor remains inaccessible in another. What developers need is a universal contract—a standard way to define a tool that any AI harness can understand and execute with zero modification.</p>
+
+<h2>The MCP Advantage: A Universal Tool Contract</h2>
+<p>The Model Context Protocol (MCP) provides this exact contract. An MCP tool is not a plugin for a single editor; it is a standalone server that exposes a typed interface. Your tool is defined once, in a single configuration file and codebase. AI harnesses that support MCP act as clients, automatically discovering and invoking your tool based on this shared contract.</p>
+
+<p>Think of it as building a REST API but for AI agents. You define the endpoints (your tool's functions) and their schemas. Any compliant client—whether it's the agent running in your IDE or a CLI tool—can then call those endpoints. This architecture delivers immediate <strong>tool parity</strong>. The configuration for your "Deploy to Staging" tool is authored exactly once and then works identically across the entire ecosystem.</p>
+
+<h2>Building Your First Universal Tool: A Practical Walkthrough</h2>
+<p>Let's build a concrete example: a custom MCP tool called `weather-alert` that fetches severe weather alerts for a given location using a public API. This tool will be usable in all six environments without modification.</p>
+
+<p><strong>Step 1: Create the MCP Server.</strong> We'll use TypeScript and the official MCP SDK. The key is defining clear tool schemas and implementing the logic.</p>
+
+<pre><code>// weather-alert-server.ts
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { z } from "zod";
+
+const server = new McpServer({
+  name: "weather-alerts",
+  version: "1.0.0",
+});
+
+// Define the tool schema with strict validation
+server.tool(
+  "getSevereAlerts",
+  "Fetches active severe weather alerts from NOAA for a specified US location.",
+  {
+    location: z.string().describe("US state code, e.g., 'CA' or 'TX'"),
+    severity: z.enum(["minor", "moderate", "severe", "extreme"]).optional()
+      .describe("Filter by minimum severity level"),
+  },
+  async ({ location, severity }) => {
+    // ... Actual API call to NOAA's alerts.weather.gov
+    const alerts = await fetchAlerts(location, severity);
+    return {
+      content: [{ type: "text", text: formatAlerts(alerts) }],
+    };
+  }
+);
+
+// Start the server
+server.listen({ port: 3000 });
+</code></pre>
+
+<p><strong>Step 2: Declare the MCP Configuration.</strong> This is the magic file. You place an `mcp.json` in your project root. This single file is what every harness will read.</p>
+
+<pre><code>// mcp.json
+{
+  "servers": {
+    "weather-alerts": {
+      "command": "node",
+      "args": ["./weather-alert-server.ts"],
+      "env": {
+        "NOAA_API_KEY": "${NOAA_API_KEY}"
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>That's it for the tool development. This configuration declares a server named `weather-alerts`, how to start it, and what environment variables it needs. The tool itself, `getSevereAlerts`, is discovered dynamically when a client connects.</p>
+
+<h2>Integration Across All Six Harnesses: Zero Config Changes</h2>
+<p>Now, let's see how this single `mcp.json` file grants your tool parity across the landscape. The following integrations require no changes to your tool's configuration—only a one-time enablement in each harness's settings.</p>
+
+<p><strong>1. Claude Code:</strong> Reads `mcp.json` automatically from your project root. When you prompt Claude to "check for severe weather in Texas," it will see the `getSevereAlerts` tool in its available tools list and invoke it directly. Authentication via environment variables is handled by the session.</p>
+<p><strong>2. Cursor:</strong> Natively supports MCP. In `Settings > Features > Model Context Protocol`, point it to your project's root. Cursor's AI sidebar and inline completions can now leverage your `weather-alerts` server as if it were a built-in extension. The tool's help text and schema are used for inline suggestions.</p>
+<p><strong>3. Codex (OpenAI):</strong> The Codex CLI and its ecosystem can utilize MCP tools by starting the client with the `--mcp-config` flag pointing to your `mcp.json`. The tool becomes part of the function-calling vocabulary for Codex models.</p>
+<p><strong>4. Gemini CLI:</strong> Google's CLI tool supports MCP servers defined in its configuration. By adding a reference to your `mcp.json` or copying its server definition, the Gemini agent gains access. You can ask it, "Get me all 'extreme' alerts for Florida," and it will use your tool.</p>
+<p><strong>5. GitHub Copilot:</strong> Via the Copilot Extensions API, you can register your MCP server as an extension. Once registered in your organization's settings, any Copilot user in VS Code or on github.com can interact with your tool through natural language in the chat pane.</p>
+<p><strong>6. Windsurf:</strong> Windsurf’s Cascade AI is built with deep MCP support. It will automatically parse `mcp.json` from your open workspace. The `weather-alerts` tool immediately becomes available for Cascade to use in agentic workflows, such as automatically checking weather before a planned deployment.</p>
+
+<h2>Advanced Considerations for Production-Grade Parity</h2>
+<p>To ensure your tools are robust across all environments, consider these production patterns. First, **versioning** is critical. Include a `version` field in your tool's schema. Clients like Cursor will use this to cache schemas and prevent breaking changes. Second, **robust error handling** is non-negotiable. Return clear, structured errors from your MCP server. Harnesses will parse these and present them to the user uniformly—whether it's a 401 Unauthorized in Claude Code or a connection timeout in Gemini CLI.</p>
+
+<p>Finally, **security** must be uniform. The `${NOAA_API_KEY}` variable in our `mcp.json` is a reference. Each harness has its own mechanism for securely injecting secrets (e.g., Cursor's `.env`, Claude Code's shell environment). Your tool's configuration remains neutral, and secrets are managed at the harness level, maintaining both security and parity.</p>
+
+<p class="cta">Stop writing six versions of the same tool. Embrace the Model Context Protocol to achieve true, effortless tool parity. Start building your first universal MCP tool today at <a href="https://tormentnexus.site">https://tormentnexus.site</a>.</p>
+  </div>
+  <footer>
+    <p>Published by TormentNexus — the OS for AI models.</p>
+  </footer>
+</article>

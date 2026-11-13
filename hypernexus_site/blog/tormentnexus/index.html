@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TormentNexus Technical Blog — HyperNexus</title>
+    <meta name="description" content="Deep technical dives into Go architecture, multi-agent systems, event-driven backbones, and AI infrastructure.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>">
+    <style>
+        :root{--bg:#0a0a0f;--text:#e0e0e0;--text-secondary:#888;--accent:#4dc9f6;--glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.08)}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:var(--bg);color:var(--text);font-family:"Inter",system-ui,-apple-system,sans-serif;line-height:1.6}
+        .container{max-width:800px;margin:0 auto;padding:0 24px}
+        nav{padding:20px 0;border-bottom:1px solid var(--glass-border)}
+        nav .container{display:flex;align-items:center;justify-content:space-between}
+        .logo{font-size:18px;font-weight:700;color:#fff;text-decoration:none}
+        .logo span{color:var(--accent)}
+        nav a{color:var(--text-secondary);text-decoration:none;font-size:14px;margin-left:24px;transition:color 0.2s}
+        nav a:hover{color:#fff}
+        header{padding:60px 0 40px;text-align:center}
+        header h1{font-size:36px;font-weight:700;color:#fff;margin-bottom:12px}
+        header p{color:var(--text-secondary);font-size:16px;max-width:500px;margin:0 auto}
+        .posts{padding:0 0 80px}
+        .post-card{display:block;padding:24px;border:1px solid var(--glass-border);border-radius:12px;background:var(--glass);margin-bottom:16px;text-decoration:none;color:inherit;transition:border-color 0.2s,transform 0.2s}
+        .post-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+        .post-card .date{font-size:13px;color:var(--text-secondary);margin-bottom:8px}
+        .post-card h2{font-size:18px;font-weight:600;color:#fff;margin-bottom:8px}
+        .post-card p{color:var(--text-secondary);font-size:14px;line-height:1.5}
+        .post-card .tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;background:rgba(77,201,246,0.1);color:var(--accent);margin-top:12px}
+        footer{padding:40px 0;border-top:1px solid var(--glass-border);text-align:center;color:var(--text-secondary);font-size:13px}
+        footer a{color:var(--accent);text-decoration:none}
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">Hyper<span>Nexus</span></a>
+            <div>
+                <a href="/blog/">← Back to Blog</a>
+                <a href="/">Home</a>
+            </div>
+        </div>
+    </nav>
+    <header>
+        <div class="container">
+            <h1>TormentNexus Technical Blog</h1>
+            <p>Deep dives into Go architecture, multi-agent systems, event-driven backbones, and AI infrastructure.</p>
+        </div>
+    </header>
+    <div class="container">
+        <div class="posts">
+            <a href="/blog/tormentnexus/automating-technical-outreach-the-7-state-pipeline-for-ai-driven-early-adopter-acquisition.html" class="post-card">
+                <h2>automating-technical-outreach-the-7-state-pipeline-for-ai-driven-early-adopter-acquisition</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/beyond-11000-navigating-the-unified-mcp-server-catalog-thats-reshaping-ai-tooling.html" class="post-card">
+                <h2>beyond-11000-navigating-the-unified-mcp-server-catalog-thats-reshaping-ai-tooling</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/beyond-cicd-gitops-for-ai-agents---how-to-version-control-your-agents-memory-and-roll-back-catastrophic-learning.html" class="post-card">
+                <h2>beyond-cicd-gitops-for-ai-agents---how-to-version-control-your-agents-memory-and-roll-back-catastrophic-learning</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/beyond-logs-building-a-real-time-ai-observability-dashboard-that-surfaces-database-rows-not-just-latency-percentiles.html" class="post-card">
+                <h2>beyond-logs-building-a-real-time-ai-observability-dashboard-that-surfaces-database-rows-not-just-latency-percentiles</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/beyond-logs-reconstructing-ai-agent-memory-with-event-sourcing.html" class="post-card">
+                <h2>beyond-logs-reconstructing-ai-agent-memory-with-event-sourcing</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/beyond-synchronous-hell-why-your-multi-agent-system-needs-an-event-driven-backbone.html" class="post-card">
+                <h2>beyond-synchronous-hell-why-your-multi-agent-system-needs-an-event-driven-backbone</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/beyond-the-50-emailsday-limit-engineering-an-ai-marketing-agent-for-scale.html" class="post-card">
+                <h2>beyond-the-50-emailsday-limit-engineering-an-ai-marketing-agent-for-scale</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/beyond-the-cloud-why-local-first-ai-infrastructure-is-the-only-saice-for-2026.html" class="post-card">
+                <h2>beyond-the-cloud-why-local-first-ai-infrastructure-is-the-only-saice-for-2026</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/beyond-the-cloud-why-your-2026-development-stack-needs-a-local-first-ai-foundation.html" class="post-card">
+                <h2>beyond-the-cloud-why-your-2026-development-stack-needs-a-local-first-ai-foundation</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/beyond-the-hype-how-tormentnexus-masters-the-go--typescript-monolith-for-unyielding-ai-backend-performance.html" class="post-card">
+                <h2>beyond-the-hype-how-tormentnexus-masters-the-go--typescript-monolith-for-unyielding-ai-backend-performance</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/beyond-the-hype-why-11000-mcp-servers-mark-ais-true-infrastructure-moment.html" class="post-card">
+                <h2>beyond-the-hype-why-11000-mcp-servers-mark-ais-true-infrastructure-moment</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/beyond-the-monolith-how-the-swarm-eventbus-powers-40-go-packages-with-nanosecond-ai-agent-events.html" class="post-card">
+                <h2>beyond-the-monolith-how-the-swarm-eventbus-powers-40-go-packages-with-nanosecond-ai-agent-events</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/building-a-five-stage-ai-marketing-agent-from-raw-scraping-to-100-personalized-developer-emails-daily.html" class="post-card">
+                <h2>building-a-five-stage-ai-marketing-agent-from-raw-scraping-to-100-personalized-developer-emails-daily</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/building-ai-agents-that-survive-restarts-persistent-memory-done-right.html" class="post-card">
+                <h2>Building AI Agents That Survive Restarts: Persistent Memory Done Right — TormentNexus Blog</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/building-an-ai-control-plane-in-go-and-typescript-the-tormentnexus-architecture-.html" class="post-card">
+                <h2>building-an-ai-control-plane-in-go-and-typescript-the-tormentnexus-architecture-</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/building-the-ultimate-offline-ai-development-stack-lm-studio-ollama-and-tormentnexus.html" class="post-card">
+                <h2>building-the-ultimate-offline-ai-development-stack-lm-studio-ollama-and-tormentnexus</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/building-your-fortress-the-complete-guide-to-a-sovereign-offline-ai-development-stack.html" class="post-card">
+                <h2>building-your-fortress-the-complete-guide-to-a-sovereign-offline-ai-development-stack</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/container-native-ai-orchestrating-agent-infrastructure-with-docker-and-gpu-aware-scheduling.html" class="post-card">
+                <h2>container-native-ai-orchestrating-agent-infrastructure-with-docker-and-gpu-aware-scheduling</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/container-native-ai-taming-agent-infrastructure-with-dockers-resource-gauntlet.html" class="post-card">
+                <h2>container-native-ai-taming-agent-infrastructure-with-dockers-resource-gauntlet</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/cross-harness-tool-parity-one-config-six-ai-coding-environments.html" class="post-card">
+                <h2>cross-harness-tool-parity-one-config-six-ai-coding-environments</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/cross-harness-tool-parity-write-one-custom-mcp-tool-deploy-it-everywhere.html" class="post-card">
+                <h2>cross-harness-tool-parity-write-one-custom-mcp-tool-deploy-it-everywhere</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/debate-driven-development-orchestrating-a-council-of-ai-agents-to-settle-code-disputes.html" class="post-card">
+                <h2>debate-driven-development-orchestrating-a-council-of-ai-agents-to-settle-code-disputes</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/debate-driven-development-why-ai-agents-that-argue-over-your-code-catch-30-more-bugs.html" class="post-card">
+                <h2>debate-driven-development-why-ai-agents-that-argue-over-your-code-catch-30-more-bugs</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/decoding-the-ai-symphony-a-deep-dive-into-the-planner-implementer-critic-swarm.html" class="post-card">
+                <h2>decoding-the-ai-symphony-a-deep-dive-into-the-planner-implementer-critic-swarm</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/dual-tier-memory-architecture-for-ai-agents-how-local-vector-search-scales-to-14726-memories-without-pinecone.html" class="post-card">
+                <h2>dual-tier-memory-architecture-for-ai-agents-how-local-vector-search-scales-to-14726-memories-without-pinecone</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/dual-tier-memory-architecture-for-ai-agents-why-your-agent-needs-an-l1-scratchpad-and-an-l2-vault.html" class="post-card">
+                <h2>Dual-Tier Memory Architecture for AI Agents: L1 Scratchpad + L2 Vault — TormentNexus Blog</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/from-0-to-production-ai-agent-a-complete-deployment-guide.html" class="post-card">
+                <h2>from-0-to-production-ai-agent-a-complete-deployment-guide</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/from-repl-to-swarm-scaling-ai-assisted-development-for-teams.html" class="post-card">
+                <h2>from-repl-to-swarm-scaling-ai-assisted-development-for-teams</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/from-repl-to-swarm-why-role-rotation-is-the-missing-ingredient-in-team-ai-development.html" class="post-card">
+                <h2>from-repl-to-swarm-why-role-rotation-is-the-missing-ingredient-in-team-ai-development</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/gitops-for-ai-agents-treating-tool-configs-and-memory-like-production-infrastructure.html" class="post-card">
+                <h2>gitops-for-ai-agents-treating-tool-configs-and-memory-like-production-infrastructure</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/how-our-ai-agent-automated-2000-technical-leads-from-github-hacker-news-and-linkedin.html" class="post-card">
+                <h2>how-our-ai-agent-automated-2000-technical-leads-from-github-hacker-news-and-linkedin</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/how-we-built-an-ai-marketing-agent-that-finds-2700-leads-and-sends-personalized-.html" class="post-card">
+                <h2>marketing_agent: The AI That Markets AI</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/mcp-protocol-deep-dive-how-tool-discovery-actually-works.html" class="post-card">
+                <h2>mcp-protocol-deep-dive-how-tool-discovery-actually-works</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/mcp-protocol-deep-dive-how-tool-discovery-actually-works-under-the-hood.html" class="post-card">
+                <h2>mcp-protocol-deep-dive-how-tool-discovery-actually-works-under-the-hood</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/measuring-swarm-throughput-quantifying-the-speed-of-team-ai-development-vs-solo-copilot-workflows.html" class="post-card">
+                <h2>measuring-swarm-throughput-quantifying-the-speed-of-team-ai-development-vs-solo-copilot-workflows</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/one-git-push-to-rule-them-all-syncing-every-developers-ai-agent-environment.html" class="post-card">
+                <h2>one-git-push-to-rule-them-all-syncing-every-developers-ai-agent-environment</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/pi-mono-building-a-universal-ai-agent-toolkit-with-cli-tui-and-vllm-pods-for-loc.html" class="post-card">
+                <h2>pi-mono: AI Agent Toolkit for Developers</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/progressive-mcp-tool-routing-stop-drowning-your-agents-in-50k-tokens.html" class="post-card">
+                <h2>progressive-mcp-tool-routing-stop-drowning-your-agents-in-50k-tokens</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/real-time-ai-observability-dashboards-that-show-actual-database-rows.html" class="post-card">
+                <h2>real-time-ai-observability-dashboards-that-show-actual-database-rows</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/secure-scalable-ai-teams-building-a-multi-tenant-agent-platform-with-docker--traefik.html" class="post-card">
+                <h2>secure-scalable-ai-teams-building-a-multi-tenant-agent-platform-with-docker--traefik</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/self-healing-ai-the-autonomous-debugging-loop-that-turns-errors-into-fleet-wide-wisdom.html" class="post-card">
+                <h2>self-healing-ai-the-autonomous-debugging-loop-that-turns-errors-into-fleet-wide-wisdom</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/self-healing-ai-when-your-agent-debugs-its-own-code.html" class="post-card">
+                <h2>self-healing-ai-when-your-agent-debugs-its-own-code</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/self-healing-ai-when-your-agent-debugs-its-own-code--the-failure-driven-learning-loop.html" class="post-card">
+                <h2>self-healing-ai-when-your-agent-debugs-its-own-code--the-failure-driven-learning-loop</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/sqlite--vector-search-build-a-dependency-free-ai-memory-stack-in-under-10ms.html" class="post-card">
+                <h2>sqlite--vector-search-build-a-dependency-free-ai-memory-stack-in-under-10ms</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/sqlite--vector-search-building-a-dependency-free-ai-memory-pipeline-in-under-10-milliseconds.html" class="post-card">
+                <h2>sqlite--vector-search-building-a-dependency-free-ai-memory-pipeline-in-under-10-milliseconds</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/sqlite--vector-search-the-dependency-free-ai-memory-stack.html" class="post-card">
+                <h2>sqlite--vector-search-the-dependency-free-ai-memory-stack</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/sqlite--vector-search-the-dependency-free-ai-memory-stack-that-outperforms-pinecone.html" class="post-card">
+                <h2>sqlite--vector-search-the-dependency-free-ai-memory-stack-that-outperforms-pinecone</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/swarm-intelligence-resolved-how-tormentnexus-automates-consensus-in-multi-agent-debates.html" class="post-card">
+                <h2>swarm-intelligence-resolved-how-tormentnexus-automates-consensus-in-multi-agent-debates</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/the-2026-edge-why-your-ai-stack-must-be-local-first-to-compete.html" class="post-card">
+                <h2>the-2026-edge-why-your-ai-stack-must-be-local-first-to-compete</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/the-47m-question-why-your-2026-ai-rfp-must-demand-provider-agnostic-infrastructure.html" class="post-card">
+                <h2>the-47m-question-why-your-2026-ai-rfp-must-demand-provider-agnostic-infrastructure</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/the-ai-skill-registry-at-5776-a-deep-dive-into-reusable-modules-for-code-review-terraform-and-database-migrations.html" class="post-card">
+                <h2>the-ai-skill-registry-at-5776-a-deep-dive-into-reusable-modules-for-code-review-terraform-and-database-migrations</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/the-corporate-ai-walled-garden-is-collapsing-why-local-first-open-source-ai-wins.html" class="post-card">
+                <h2>the-corporate-ai-walled-garden-is-collapsing-why-local-first-open-source-ai-wins</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/the-go--typescript-monolith-why-tormentnexus-uses-two-languages-for-its-ai-kernel.html" class="post-card">
+                <h2>the-go--typescript-monolith-why-tormentnexus-uses-two-languages-for-its-ai-kernel</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/the-go--typescript-monolith-why-tormentnexus-uses-two-languages-for-one-deployable.html" class="post-card">
+                <h2>the-go--typescript-monolith-why-tormentnexus-uses-two-languages-for-one-deployable</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/the-hidden-tax-why-2026-ai-rfps-must-mandate-provider-agnostic-infrastructure.html" class="post-card">
+                <h2>the-hidden-tax-why-2026-ai-rfps-must-mandate-provider-agnostic-infrastructure</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/the-llm-waterfall-pattern-escaping-api-rate-limits-with-provider-failover.html" class="post-card">
+                <h2>The LLM Waterfall Pattern: Escaping API Rate Limits with Provider Failover — TormentNexus Blog</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/the-llm-waterfall-pattern-never-let-a-rate-limit-kill-your-workflow.html" class="post-card">
+                <h2>the-llm-waterfall-pattern-never-let-a-rate-limit-kill-your-workflow</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/the-manifesto-for-tomorrow-why-ai-infrastructure-must-be-local-first-open-source-and-community-governed.html" class="post-card">
+                <h2>the-manifesto-for-tomorrow-why-ai-infrastructure-must-be-local-first-open-source-and-community-governed</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/the-memory-leak-in-your-ai-stack-how-sqlite-delivers-true-agent-persistence.html" class="post-card">
+                <h2>the-memory-leak-in-your-ai-stack-how-sqlite-delivers-true-agent-persistence</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/the-ultimate-offline-ai-development-stack-air-gapped-not-crippled.html" class="post-card">
+                <h2>the-ultimate-offline-ai-development-stack-air-gapped-not-crippled</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/unlocking-atomic-ai-how-skillmd-and-the-5776-module-skill-registry-are-engineering-the-future-of-developer-workflows.html" class="post-card">
+                <h2>unlocking-atomic-ai-how-skillmd-and-the-5776-module-skill-registry-are-engineering-the-future-of-developer-workflows</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/unlocking-peak-performance-a-deep-dive-into-gpu-passthrough-and-auto-scaling-for-containerized-ai-agents.html" class="post-card">
+                <h2>unlocking-peak-performance-a-deep-dive-into-gpu-passthrough-and-auto-scaling-for-containerized-ai-agents</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/when-ai-agents-clash-how-tormentnexus-resolves-conflicts-through-automated-debate-consensus.html" class="post-card">
+                <h2>when-ai-agents-clash-how-tormentnexus-resolves-conflicts-through-automated-debate-consensus</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/when-your-ai-code-reviewers-disagree-inside-the-ai-debate-that-finds-hidden-bugs.html" class="post-card">
+                <h2>when-your-ai-code-reviewers-disagree-inside-the-ai-debate-that-finds-hidden-bugs</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/why-your-ai-coding-assistant-is-a-black-box-without-a-control-plane.html" class="post-card">
+                <h2>why-your-ai-coding-assistant-is-a-black-box-without-a-control-plane</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/why-your-ai-coding-assistant-needs-a-control-plane-from-raw-llm-apis-to-production-grade-agent-orchestration.html" class="post-card">
+                <h2>why-your-ai-coding-assistant-needs-a-control-plane-from-raw-llm-apis-to-production-grade-agent-orchestration</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/why-your-ai-coding-assistant-needs-a-control-plane-from-raw-sql-to-orchestrated-intelligence.html" class="post-card">
+                <h2>why-your-ai-coding-assistant-needs-a-control-plane-from-raw-sql-to-orchestrated-intelligence</h2>
+                <span class="tag">Technical</span>
+            </a>
+            <a href="/blog/tormentnexus/zero-trust-ai-architecture-authenticating-every-tool-call-memory-access-and-model-request.html" class="post-card">
+                <h2>Zero-Trust AI Architecture: Authenticating Every Tool Call, Memory Access, and Model Request — TormentNexus Blog</h2>
+                <span class="tag">Technical</span>
+            </a>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 HyperNexus LLC. <a href="/blog/">← Back to HyperNexus Blog</a></p>
+        </div>
+    </footer>
+</body>
+</html>

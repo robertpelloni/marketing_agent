@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Harden Your Self-Hosted AI: A Practical Checklist for TLS, Auth, and Network Isolation — HyperNexus</title>
+    <meta
+      name="description"
+      content="TLS everywhere, auth on every endpoint, isolated networks, immutable audit logs. A practical 4-point checklist for self-hosted AI."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/></svg>"
+    />
+    <style>
+      :root {
+        --bg: #0a0a0f;
+        --text: #e0e0e0;
+        --text-secondary: #888;
+        --accent: #4dc9f6;
+        --glass: rgba(255, 255, 255, 0.04);
+        --glass-border: rgba(255, 255, 255, 0.08);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        line-height: 1.8;
+      }
+      .container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      nav {
+        padding: 20px 0;
+        border-bottom: 1px solid var(--glass-border);
+      }
+      nav .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo {
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+      }
+      .logo span {
+        color: var(--accent);
+      }
+      nav a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 14px;
+        margin-left: 24px;
+        transition: color 0.2s;
+      }
+      nav a:hover {
+        color: #fff;
+      }
+      article {
+        padding: 60px 0 80px;
+      }
+      .back {
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 14px;
+        display: inline-block;
+        margin-bottom: 24px;
+      }
+      .back:hover {
+        text-decoration: underline;
+      }
+      .date {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 8px;
+      }
+      h1 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 24px;
+        line-height: 1.3;
+      }
+      h2 {
+        font-size: 22px;
+        font-weight: 600;
+        color: #fff;
+        margin: 32px 0 16px;
+      }
+      p {
+        margin-bottom: 16px;
+        color: var(--text);
+      }
+      .highlight {
+        background: rgba(77, 201, 246, 0.1);
+        border-left: 3px solid var(--accent);
+        padding: 16px 20px;
+        border-radius: 0 8px 8px 0;
+        margin: 24px 0;
+      }
+      .highlight p {
+        margin: 0;
+        color: var(--text);
+      }
+      code {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin: 24px 0;
+      }
+      .stat {
+        text-align: center;
+        padding: 20px;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+      }
+      .stat .num {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .stat .label {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-top: 4px;
+      }
+      footer {
+        padding: 40px 0;
+        border-top: 1px solid var(--glass-border);
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 13px;
+      }
+      footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <a href="/" class="logo">Hyper<span>Nexus</span></a>
+        <div>
+          <a href="/#features">Features</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/blog">Blog</a>
+        </div>
+      </div>
+    </nav>
+
+    <article class="container">
+      <a href="/blog" class="back">&larr; Back to Blog</a>
+      <div class="date">November 3, 2026</div>
+      <h1>Harden Your Self-Hosted AI: A Practical Checklist for TLS, Auth, and Network Isolation</h1>
+
+      <p>Your self-hosted AI is probably not as secure as you think. Open ports, plaintext HTTP on localhost, no auth on tool endpoints — we see it in almost every audit.</p>
+
+      <p>Here is the 4-point checklist we run at HyperNexus for every deployment.</p>
+
+      <div class="stats">
+        <div class="stat"><div class="num">4</div><div class="label">Controls</div></div>
+        <div class="stat"><div class="num">TLS</div><div class="label">Everywhere</div></div>
+        <div class="stat"><div class="num">0</div><div class="label">Anonymous Endpoints</div></div>
+      </div>
+
+      <h2>1. TLS Everywhere — Even on Localhost</h2>
+      <p>Terminate TLS at Nginx with <code>TLSv1.2+</code>, HSTS, and redirect all port 80 to 443. Even internal Ollama / API traffic gets TLS or isolated loopback with firewall rules. No <code>http://</code> in production.</p>
+      <div class="highlight"><p><strong>Check:</strong> <code>curl -v http://your-host/</code> must 301 to <code>https://</code>. Certs from Let&apos;s Encrypt, auto-renewed.</p></div>
+
+      <h2>2. Network Isolation</h2>
+      <p>Separate VLANs / Docker networks for AI services, DB, and web. Only Nginx exposes 80/443. Model servers (Ollama 11434), Postgres 5432, and internal APIs bind to <code>127.0.0.1</code> or private net — never <code>0.0.0.0</code>.</p>
+      <div class="highlight"><p><strong>Check:</strong> <code>ss -tlnp</code> shows no AI backend on public interface.</p></div>
+
+      <h2>3. Auth on Every Endpoint</h2>
+      <p>No anonymous tool calls, memory reads, or model requests. Bearer tokens per tenant, RBAC with least privilege, SSO (no local passwords) for team access. Log every auth failure.</p>
+      <div class="highlight"><p><strong>Check:</strong> unauthenticated <code>/api/v1/</code> request returns <code>401</code>, not data.</p></div>
+
+      <h2>4. Audit Logging</h2>
+      <p>Append-only logs for every tool call, memory access, and model request. Ship to isolated storage. HyperNexus does this by default — who called what, when, with which prompt hash.</p>
+
+      <h2>How HyperNexus Ships This</h2>
+      <p>Nginx hardened headers (<code>HSTS, X-Frame-Options, nosniff</code>), per-tenant tokens, isolated data dirs under <code>/var/lib/hypernexus/tenants</code>, and waterfall LLM failover so you never expose keys by falling back to insecure endpoints.</p>
+
+      <p><a href="https://hypernexus.site/#pricing" style="color: var(--accent)">Get started with HyperNexus &rarr;</a></p>
+    </article>
+
+    <footer>
+      <div class="container">
+        <p>
+          &copy; 2026 HyperNexus LLC. <a href="/">Home</a> &middot;
+          <a href="/blog">Blog</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

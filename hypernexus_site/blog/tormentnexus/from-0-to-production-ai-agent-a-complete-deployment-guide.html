@@ -1,0 +1,264 @@
+<article class="blog-post" data-slug="from-0-to-production-ai-agent-a-complete-deployment-guide" data-brand="tormentnexus" data-category="tutorial">
+  <header>
+    <h1>From 0 to Production AI Agent: A Complete Deployment Guide</h1>
+    <div class="meta">
+      <span class="date">July 24, 2026</span>
+      <span class="brand"><a href="https://tormentnexus.site">TormentNexus</a></span>
+      <span class="category">tutorial</span>
+    </div>
+  </header>
+  <div class="content">
+<h1>From 0 to Production AI Agent: A Complete Deployment Guide</h1>
+<p class="meta-description">Deploy your first production AI agent in under an hour. This step-by-step guide walks you through installing TormentNexus, configuring MCP servers, and connecting your LLM provider for self-hosted AI that runs at scale.</p>
+
+<h2>Why Most AI Agent Deployments Fail Before They Start</h2>
+
+<p>The graveyard of abandoned AI projects is enormous. Studies from Gartner suggest that roughly 85% of AI projects never make it to production. The reasons are painfully familiar: configuration nightmares, brittle tool integrations, vendor lock-in with hosted platforms, and a general inability to move past the "works on my laptop" stage.</p>
+
+<p>The core problem isn't model quality anymore. It's operational infrastructure. You can fine-tune a model, write a brilliant system prompt, and build clever tool-use chains — but the moment you need to handle concurrent requests, manage authentication, orchestrate multiple tool servers, and deploy on your own infrastructure, everything falls apart.</p>
+
+<p>This is precisely the gap TormentNexus was built to fill. It provides a hardened, self-hosted runtime specifically designed for AI agent workloads with full MCP (Model Context Protocol) support. No managed service dependency. No opaque abstraction layers. Just a clean, fast, production-grade platform you can run on a $20/month VPS or your own bare-metal cluster.</p>
+
+<p>In this guide, you'll go from an empty server to a fully deployed, production-ready AI agent system. Every step is concrete. Every command is tested. Let's build.</p>
+
+<h2>Step 1: Install TormentNexus on Your Server</h2>
+
+<p>TormentNexus is distributed as a single binary with zero external dependencies. You don't need Docker, Node.js, Python, or any runtime pre-installed. On a fresh Ubuntu 22.04 LTS box, the entire installation takes about 90 seconds.</p>
+
+<p>SSH into your target server and run the installer:</p>
+
+<pre><code>curl -fsSL https://install.tormentnexus.site | bash</code></pre>
+
+<p>This downloads the latest stable release (currently v2.4.1) for your architecture, verifies the SHA-256 checksum against the published public key, and installs the <code>tormentx</code> binary to <code>/usr/local/bin/</code>. You'll see output like this:</p>
+
+<pre><code>▸ Detecting platform: linux/amd64
+▸ Downloading tormentx v2.4.1 (14.2 MB)
+▸ Verifying checksum... OK
+▸ Installing to /usr/local/bin/tormentx
+▸ Installation complete. Run 'tormentx init' to start.</code></pre>
+
+<p>Verify the installation:</p>
+
+<pre><code>tormentx --version
+# tormentx v2.4.1 (built 2025-01-14)</code></pre>
+
+<p>Now initialize your project workspace. The <code>init</code> command scaffolds a complete project directory with sensible defaults:</p>
+
+<pre><code>mkdir ~/my-ai-agent && cd ~/my-ai-agent
+tormentx init</code></pre>
+
+<p>This generates the following structure:</p>
+
+<pre><code>my-ai-agent/
+├── tormentx.toml          # Main configuration file
+├── agents/
+│   └── default.toml       # Agent definition
+├── mcp-servers/
+│   └── example.toml       # MCP server configurations
+├── secrets/               # Encrypted secrets (gitignored)
+└── logs/                  # Runtime logs</code></pre>
+
+<p>The <code>tormentx.toml</code> file is your central configuration hub. Let's walk through the key sections before we wire anything together.</p>
+
+<pre><code># tormentx.toml - Core Configuration
+[runtime]
+workers = 4                  # Number of concurrent agent workers
+max_concurrent_requests = 128 # Hard concurrency cap
+request_timeout_seconds = 120
+log_level = "info"            # Options: debug, info, warn, error
+
+[server]
+host = "0.0.0.0"
+port = 8420
+metrics_port = 8421            # Prometheus-compatible metrics endpoint
+enable_cors = false            # Disable in production
+
+[storage]
+backend = "sqlite"             # Options: sqlite, postgres
+path = "./data/agent.db"       # Only used with sqlite backend</code></pre>
+
+<p>The default SQLite backend is suitable for most workloads handling fewer than 10,000 requests per day. If you're anticipating heavier throughput, switch to PostgreSQL by setting <code>backend = "postgres"</code> and adding a connection string under <code>[storage.connection]</code>.</p>
+
+<h2>Step 2: Configure Your First MCP Server</h2>
+
+<p>The Model Context Protocol (MCP) is the backbone of tool-use in modern AI agents. It defines a standard way for LLMs to discover and invoke external tools, query data sources, and interact with APIs. TormentNexus includes a built-in MCP server runtime, meaning you don't need a separate process for each tool server.</p>
+
+<p>Open <code>mcp-servers/example.toml</code> and replace its contents with a real configuration. We'll set up two tool servers: one for file system operations and one for a custom database query tool.</p>
+
+<pre><code># mcp-servers/filesystem.toml
+[mcp_server]
+name = "filesystem"
+transport = "stdio"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-filesystem", "/home/ubuntu/shared-data"]
+env = {}
+
+[mcp_server.resources]
+enabled = true
+max_resource_size_bytes = 10485760  # 10 MB limit per resource read</code></pre>
+
+<p>The <code>stdio</code> transport means TormentNexus spawns the MCP server as a child process and communicates over stdin/stdout. For remote or network-attached MCP servers, you can use the <code>sse</code> (Server-Sent Events) transport instead:</p>
+
+<pre><code># mcp-servers/remote-tools.toml
+[mcp_server]
+name = "remote-database"
+transport = "sse"
+url = "https://tools.mycompany.internal:9300/mcp"
+headers = { "Authorization" = "Bearer {{secret:DB_MCP_TOKEN}}" }
+reconnect_interval_ms = 5000
+max_reconnect_attempts = 10</code></pre>
+
+<p>Notice the <code>{{secret:DB_MCP_TOKEN}}</code> syntax. TormentNexus has a built-in secrets manager. Store your token with:</p>
+
+<pre><code>tormentx secrets set DB_MCP_TOKEN "eyJhbGciOiJIUzI1NiIs..."</code></pre>
+
+<p>Secrets are encrypted at rest using AES-256-GCM with a machine-derived key. They never appear in configuration files in plaintext, and they're excluded from any backup or export operations.</p>
+
+<p>Now register your MCP servers in the main configuration:</p>
+
+<pre><code># Add to tormentx.toml
+[mcp_servers]
+config_dir = "./mcp-servers"
+auto_discover = false          # Set true to auto-load all .toml files in dir
+enabled = ["filesystem", "remote-database"]</code></pre>
+
+<p>Start TormentNexus in development mode to verify your MCP servers launch correctly:</p>
+
+<pre><code>tormentx dev --verbose</code></pre>
+
+<p>You'll see startup logs confirming each MCP server process was spawned and its tool registry was loaded:</p>
+
+<pre><code>[INFO] MCP server 'filesystem' started (pid 44021, transport: stdio)
+[INFO]   └─ 4 tools registered: read_file, write_file, list_directory, search_files
+[INFO]   └─ 1 resources registered: filesystem:///
+[INFO] MCP server 'remote-database' connected (transport: sse, url: https://tools.mycompany.internal:9300/mcp)
+[INFO]   └─ 3 tools registered: query_table, describe_schema, execute_migration</code></pre>
+
+<p>Seven tools across two servers are now available to your agents. Let's wire them up to an LLM.</p>
+
+<h2>Step 3: Connect Your LLM Provider</h2>
+
+<p>TormentNexus supports any OpenAI-compatible API endpoint, which covers OpenAI, Anthropic (via their OpenAI-compatible relay), local models through Ollama, vLLM, LM Studio, and dozens of other providers. The configuration is provider-agnostic.</p>
+
+<p>Create or edit your agent definition at <code>agents/default.toml</code>:</p>
+
+<pre><code># agents/default.toml
+
+[agent]
+name = "data-assistant"
+description = "Production data assistant with file system and database access"
+version = "1.0.0"
+
+[agent.llm]
+provider = "openai"
+model = "gpt-4o"
+api_base = "https://api.openai.com/v1"  # Override for local/proxy endpoints
+api_key = "{{secret:OPENAI_API_KEY}}"
+temperature = 0.1
+max_tokens = 4096
+context_window = 128000
+
+[agent.llm.retry]
+max_attempts = 3
+backoff_base_ms = 1000
+backoff_max_ms = 10000
+
+[agent.system_prompt]
+file = "./prompts/system.md"
+max_prompt_tokens = 8000
+
+[agent.tools]
+allowed_servers = ["filesystem", "remote-database"]
+allowed_tools = []                  # Empty = all tools allowed
+tool_timeout_seconds = 30
+max_tool_calls_per_turn = 10</code></pre>
+
+<p>Store your API key securely:</p>
+
+<pre><code>tormentx secrets set OPENAI_API_KEY "sk-proj-xxxxxxxxxxxx"</code></pre>
+
+<p>If you're running a local model instead, the configuration looks nearly identical:</p>
+
+<pre><code>[agent.llm]
+provider = "ollama"
+model = "llama3.1:70b"
+api_base = "http://localhost:11434/v1"
+api_key = "not-needed"
+temperature = 0.3
+max_tokens = 8192
+context_window = 131072</code></pre>
+
+<p>Write a system prompt that tells the agent what it can do and how it should behave. Create <code>prompts/system.md</code>:</p>
+
+<pre><code>You are a data assistant with access to the company file system and PostgreSQL database.
+
+## Available Capabilities
+- Read and write files in /home/ubuntu/shared-data/
+- Query the company database for sales, inventory, and customer data
+- Describe database schemas on demand
+
+## Rules
+1. Always confirm destructive operations (write_file, execute_migration) with the user before executing.
+2. For database queries, prefer read-only SELECT statements. Never run DROP or TRUNCATE.
+3. When results exceed 50 rows, summarize them instead of returning raw data.
+4. Cite file paths and query results inline when referencing them in responses.</code></pre>
+
+<p>TormentNexus templates the system prompt at runtime, meaning you can use Jinja2-style syntax if you need dynamic content injection (current date, user context, etc.).</p>
+
+<h2>Step 4: Deploy to Production</h2>
+
+<p>Development mode is great for testing, but production requires a hardened setup. TormentNexus provides a <code>serve</code> command specifically designed for always-on deployments with proper signal handling, graceful shutdown, and automatic log rotation.</p>
+
+<p>Switch your configuration to production settings:</p>
+
+<pre><code># Update tormentx.toml for production
+[runtime]
+workers = 8
+max_concurrent_requests = 256
+request_timeout_seconds = 180
+log_level = "warn"
+
+[server]
+host = "0.0.0.0"
+port = 8420
+metrics_port = 8421
+enable_cors = false
+
+[server.tls]
+enabled = true
+cert_path = "/etc/letsencrypt/live/agent.yourdomain.com/fullchain.pem"
+key_path = "/etc/letsencrypt/live/agent.yourdomain.com/privkey.pem"</code></pre>
+
+<p>Launch with the production command:</p>
+
+<pre><code>tormentx serve --config ./tormentx.toml</code></pre>
+
+<p>For automatic restarts and process supervision, create a systemd service:</p>
+
+<pre><code># /etc/systemd/system/agent.service
+[Unit]
+Description=TormentNexus AI Agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/my-ai-agent
+ExecStart=/usr/local/bin/tormentx serve --config ./tormentx.toml
+Restart=always
+RestartSec=5
+Environment=TORMENTX_ENV=production
+
+# Security hardening
+NoNewPrivileges=yes
+ProtectSystem=strict
+ReadWritePaths=/home/ubuntu/my-ai-agent/data /home/ubuntu/my-ai-agent/logs
+
+[Install]
+WantedBy=multi-user
+  </div>
+  <footer>
+    <p>Published by TormentNexus — the OS for AI models.</p>
+  </footer>
+</article>

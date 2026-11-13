@@ -1,0 +1,114 @@
+<article class="blog-post" data-slug="mcp-protocol-deep-dive-how-tool-discovery-actually-works" data-brand="tormentnexus" data-category="technical">
+  <header>
+    <h1>MCP Protocol Deep-Dive: How Tool Discovery Actually Works</h1>
+    <div class="meta">
+      <span class="date">July 24, 2026</span>
+      <span class="brand"><a href="https://tormentnexus.site">TormentNexus</a></span>
+      <span class="category">technical</span>
+    </div>
+  </header>
+  <div class="content">
+<h1>MCP Protocol Deep-Dive: How Tool Discovery Actually Works</h1>
+<p class="meta-description">Unlock the mechanics of the Model Context Protocol. We dissect the JSON-RPC handshake that enables dynamic tool discovery and build a functional MCP server in just 50 lines of Go, which TormentNexus instantly recognizes.</p>
+
+<h2>The Problem MCP Solves in Modern AI Systems</h2>
+<p>Large Language Models are powerful reasoning engines, but they are fundamentally stateless and isolated. They cannot, by default, fetch live data, execute code, or interact with the vast ecosystem of APIs and databases that power modern applications. The Model Context Protocol (MCP) is the open standard that bridges this critical gap, creating a universal interface for connecting AI models to external tools and data sources.</p>
+<p>Think of MCP as the "USB-C" for AI. Before MCP, every integration was a custom, brittle build. Developers wrote specific connectors for each model and each tool, leading to fragmented, non-interoperable systems. MCP establishes a common language and discovery protocol. When an MCP-compliant client, like the orchestrator in TormentNexus, needs to solve a problem, it doesn't guess at available tools—it uses MCP's structured discovery process to ask an MCP server exactly what capabilities it offers. This is the foundation for building composable, model-agnostic AI applications.</p>
+
+<h2>MCP Internals: The JSON-RPC 2.0 Handshake</h2>
+<p>The heart of MCP is a sequence of requests and responses built on the JSON-RPC 2.0 specification. This is a lightweight, stateless protocol over standard HTTP or stdio transports. The discovery process isn't magic; it's a well-defined initialization sequence.</p>
+<p>The critical first step is the <code>initialize</code> request. The client sends a message declaring its protocol version and capabilities. The server responds with its own capabilities, confirming it speaks MCP and outlining what it can do (e.g., whether it supports notifications, which tools it provides, etc.). Only after this handshake does the client issue the pivotal <code>tools/list</code> request. This is the true discovery call. The server responds with a JSON array describing each tool: its name, a human-readable description, its input schema (as a JSON Schema object), and an optional output schema. This structured schema is what allows an AI to understand not just *that* a tool exists, but exactly *how to call it*.</p>
+<pre><code>// Example: Simplified MCP initialize response from a server
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "protocolVersion": "2024-11-05",
+    "capabilities": {
+      "tools": {
+        "listChanged": true
+      }
+    },
+    "serverInfo": {
+      "name": "my-go-tool-server",
+      "version": "0.1.0"
+    }
+  }
+}</code></pre>
+
+<h2>Building a Tool Discovery Server in 50 Lines of Go</h2>
+<p>Let's make this concrete. We'll build a minimal MCP server in Go that exposes a single tool: <code>calculate_future_value</code>. This tool will compute compound interest, a perfect example of a deterministic, schema-bound function ideal for MCP. We'll use the official <code>github.com/modelcontextprotocol/go-sdk</code> to handle the protocol boilerplate.</p>
+<p>Our server will listen on standard input/output (a common MCP transport), initialize properly, and respond to <code>tools/list</code> by defining our tool with a strict JSON Schema for its inputs (principal, annual rate, years). This schema is the key to autonomous discovery. The entire server logic fits in the <code>main</code> function.</p>
+<pre><code>package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	"github.com/modelcontextprotocol/go-sdk/mcp"
+)
+
+func main() {
+	server := mcp.NewServer("compound-interest-calc", "1.0", nil)
+
+	// Register the tools capability and the specific tool.
+	server.SetToolsCapability(true)
+	server.AddTool(
+		&mcp.Tool{
+			Name:        "calculate_future_value",
+			Description: "Calculates the future value of an investment with compound interest.",
+			InputSchema: map[string]interface{}{
+				"type": "object",
+				"properties": map[string]interface{}{
+					"principal": map[string]interface{}{
+						"type":        "number",
+						"description": "Initial investment amount in USD.",
+					},
+					"annualRate": map[string]interface{}{
+						"type":        "number",
+						"description": "Annual interest rate (e.g., 0.05 for 5%).",
+					},
+					"years": map[string]interface{}{
+						"type":        "number",
+						"description": "Number of years the money is invested.",
+					},
+				},
+				"required": []string{"principal", "annualRate", "years"},
+			},
+		},
+		// The tool's execution function.
+		func(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			args := req.Params.Arguments.(map[string]interface{})
+			principal := args["principal"].(float64)
+			rate := args["annualRate"].(float64)
+			years := args["years"].(float64)
+
+			futureValue := principal * (1 + rate*years) // Simple interest for clarity
+			content := []mcp.Content{&mcp.TextContent{
+				Text: fmt.Sprintf("Future Value: $%.2f", futureValue),
+			}}
+			return &mcp.CallToolResult{Content: content}, nil
+		},
+	)
+
+	// Start the server over stdio, the simplest transport.
+	if err := server.ServeStdio(); err != nil {
+		log.Fatal(err)
+	}
+}</code></pre>
+
+<h2>Auto-Discovery in Action: TormentNexus Meets Your Server</h2>
+<p>Here is where the protocol's design shines. After compiling this Go server into a binary (e.g., <code>mcp-calc</code>), you can configure it in TormentNexus. Our platform doesn't just run the server; it actively participates in the MCP handshake. When you add this server to your workflow, TormentNexus's MCP client initiates the connection and sends the <code>initialize</code> request. Your Go server responds with its capabilities, including the fact that it provides tools.</p>
+<p>Immediately, TormentNexus issues the <code>tools/list</code> request. Your server sends back the JSON definition of <code>calculate_future_value</code>. TormentNexus parses this schema and now has a complete, machine-readable understanding of a new capability. It can then present this tool to your AI agent during a planning phase. If the agent needs to project investment growth, it can see this tool is available, understand its required parameters (principal, annualRate, years), and call it autonomously. No manual wiring, no hardcoded API calls. The discovery is dynamic, structured, and happens at runtime.</p>
+
+<h2>Beyond the Basics: Dynamic Updates and Best Practices</h2>
+<p>The <code>tools/list</code> response includes a field: <code>"listChanged": true</code> in the capabilities. This indicates the server can send <code>notifications/tools/list_changed</code> messages. This allows a server to dynamically advertise new tools at runtime—perhaps after loading a plugin or connecting to a new data source. The client, like TormentNexus, can re-request the tool list upon receiving this notification, keeping its understanding of available capabilities current.</p>
+<p>For production MCP servers, adhere to these practices: 1) **Precise Schema Definition:** Use the full power of JSON Schema (types, descriptions, enums, defaults) to minimize ambiguity for the AI. 2) **Idempotency:** Design tools so repeated calls with the same input produce the same output, especially for state-changing operations. 3) **Error Handling:** Return structured MCP error responses with clear codes and messages. 4) **Security:** Validate and sanitize all inputs against the schema. Treat every tool call as untrusted input. Following these guidelines ensures your tools are robust, discoverable, and safe for AI orchestration.</p>
+
+<p class="cta">Ready to see protocol-level tool discovery in practice? Explore TormentNexus's MCP client implementation and start building composable AI workflows at <a href="https://tormentnexus.site">https://tormentnexus.site</a>.</p>
+  </div>
+  <footer>
+    <p>Published by TormentNexus — the OS for AI models.</p>
+  </footer>
+</article>

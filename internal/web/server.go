@@ -1323,7 +1323,7 @@ func (s *Server) handleStripeWebhook(w http.ResponseWriter, r *http.Request) {
 func (s *Server) notifyTormentNexusProvision(ctx context.Context, checkoutMsg string) {
 	provisionURL := os.Getenv("TN_PROVISION_URL")
 	if provisionURL == "" {
-		provisionURL = "http://127.0.0.1:8090/api/account/provision"
+		provisionURL = "http://127.0.0.1:7778/api/account/provision"
 	}
 
 	payload := map[string]string{
@@ -1367,8 +1367,9 @@ func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
 		CompanyID   int64  `json:"company_id"`
 		Tier        string `json:"tier"`
 		Seats       int    `json:"seats"`
-		PriceAmount int64  `json:"price_amount"`
-		Interval    string `json:"interval"`
+		PriceAmount      int64  `json:"price_amount"`
+		Interval         string `json:"interval"`
+		FirstMonthAmount int64  `json:"first_month_amount"`
 		SuccessURL  string `json:"success_url"`
 		CancelURL   string `json:"cancel_url"`
 	}
@@ -1385,9 +1386,9 @@ func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
 	var url string
 	var err error
 	if req.PriceAmount > 0 {
-		url, err = s.billingClient.CreateCheckoutSessionWithPrice(r.Context(), req.CompanyID, billing.Tier(req.Tier), req.SuccessURL, req.CancelURL, req.Seats, req.PriceAmount, req.Interval)
+		url, err = s.billingClient.CreateCheckoutSessionWithPrice(r.Context(), req.CompanyID, billing.Tier(req.Tier), req.SuccessURL, req.CancelURL, req.Seats, req.PriceAmount, req.Interval, req.FirstMonthAmount)
 	} else {
-		url, err = s.billingClient.CreateCheckoutSession(r.Context(), req.CompanyID, billing.Tier(req.Tier), req.SuccessURL, req.CancelURL, req.Seats)
+		url, err = s.billingClient.CreateCheckoutSessionWithInterval(r.Context(), req.CompanyID, billing.Tier(req.Tier), req.SuccessURL, req.CancelURL, req.Seats, req.Interval)
 	}
 	if err != nil {
 		slog.Error("Failed to create checkout session", "error", err)

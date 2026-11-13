@@ -14,6 +14,7 @@ import (
 	"github.com/stripe/stripe-go/v81"
 	"github.com/stripe/stripe-go/v81/checkout/session"
 	"github.com/stripe/stripe-go/v81/customer"
+	"github.com/stripe/stripe-go/v81/coupon"
 	"github.com/stripe/stripe-go/v81/invoice"
 	"github.com/stripe/stripe-go/v81/price"
 	"github.com/stripe/stripe-go/v81/subscription"
@@ -22,7 +23,7 @@ import (
 	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
-const tnProvisionURL = "http://127.0.0.1:8090/api/account/provision"
+const tnProvisionURL = "http://127.0.0.1:7778/api/account/provision"
 
 var subdomainRe = regexp.MustCompile(`[^a-z0-9-]+`)
 
@@ -68,7 +69,8 @@ type BillingClient interface {
 	CreateInvoice(ctx context.Context, deal db.Deal, company db.Company) (string, error)
 	GetInvoiceStatus(ctx context.Context, invoiceID string) (InvoiceStatus, error)
 	CreateCheckoutSession(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int) (string, error)
-	CreateCheckoutSessionWithPrice(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int, priceAmount int64, interval string) (string, error)
+	CreateCheckoutSessionWithInterval(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int, interval string) (string, error)
+	CreateCheckoutSessionWithPrice(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int, priceAmount int64, interval string, firstMonthAmount int64) (string, error)
 	GetSubscription(ctx context.Context, subID string) (*SubscriptionInfo, error)
 	CancelSubscription(ctx context.Context, subID string, atPeriodEnd bool) error
 	UpdateSubscriptionSeats(ctx context.Context, subID string, seats int) error
@@ -77,13 +79,15 @@ type BillingClient interface {
 
 // StripeBillingClient implements BillingClient using the Stripe API.
 type StripeBillingClient struct {
-	APIKey               string
-	WebhookSecret        string
-	PriceIDCommunity     string
-	PriceIDProfessional  string
-	PriceIDEnterprise    string
-	PriceIDHyperNexusPro string
-	db                   SubscriptionStore
+	APIKey                      string
+	WebhookSecret               string
+	PriceIDCommunity            string
+	PriceIDProfessional         string
+	PriceIDEnterprise           string
+	PriceIDHyperNexusPro        string
+	PriceIDHyperNexusProMonthly string
+	PriceIDHyperNexusProYearly  string
+	db                          SubscriptionStore
 }
 
 // SubscriptionStore is the database interface for subscription storage.
@@ -100,15 +104,17 @@ type SubscriptionStore interface {
 }
 
 // NewStripeBillingClient creates a new Stripe-based billing client.
-func NewStripeBillingClient(apiKey, webhookSecret string, priceIDs map[Tier]string, store SubscriptionStore) *StripeBillingClient {
+func NewStripeBillingClient(apiKey, webhookSecret string, priceIDs map[Tier]string, hypernexusProMonthly, hypernexusProYearly string, store SubscriptionStore) *StripeBillingClient {
 	return &StripeBillingClient{
-		APIKey:               apiKey,
-		WebhookSecret:        webhookSecret,
-		PriceIDCommunity:     priceIDs[TierCommunity],
-		PriceIDProfessional:  priceIDs[TierProfessional],
-		PriceIDEnterprise:    priceIDs[TierEnterprise],
-		PriceIDHyperNexusPro: priceIDs[TierHyperNexusPro],
-		db:                   store,
+		APIKey:                      apiKey,
+		WebhookSecret:               webhookSecret,
+		PriceIDCommunity:            priceIDs[TierCommunity],
+		PriceIDProfessional:         priceIDs[TierProfessional],
+		PriceIDEnterprise:           priceIDs[TierEnterprise],
+		PriceIDHyperNexusPro:        priceIDs[TierHyperNexusPro],
+		PriceIDHyperNexusProMonthly: hypernexusProMonthly,
+		PriceIDHyperNexusProYearly:  hypernexusProYearly,
+		db:                          store,
 	}
 }
 
@@ -168,17 +174,44 @@ func (s *StripeBillingClient) priceIDForTier(tier Tier) string {
 
 func (s *StripeBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int) (string, error) {
 	s.stripe()
+	priceID := s.priceIDForTier(tier)
+	if priceID == "" {
+		return "", fmt.Errorf("unknown tier: %s", tier)
+	}
+	return s.createSession(ctx, companyID, tier, priceID, successURL, cancelURL, seats)
+}
 
+// CreateCheckoutSessionWithInterval creates a checkout session using a fixed,
+// pre-configured price for the given tier and billing interval. Unlike
+// CreateCheckoutSessionWithPrice it never creates new Products/Prices on the
+// fly, so the Stripe account stays clean (one price per tier + interval).
+func (s *StripeBillingClient) CreateCheckoutSessionWithInterval(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int, interval string) (string, error) {
+	s.stripe()
+	priceID := s.priceIDForTierAndInterval(tier, interval)
+	if priceID == "" {
+		return "", fmt.Errorf("unknown tier: %s", tier)
+	}
+	return s.createSession(ctx, companyID, tier, priceID, successURL, cancelURL, seats)
+}
+
+func (s *StripeBillingClient) priceIDForTierAndInterval(tier Tier, interval string) string {
+	if tier == TierHyperNexusPro {
+		if interval == "year" && s.PriceIDHyperNexusProYearly != "" {
+			return s.PriceIDHyperNexusProYearly
+		}
+		if s.PriceIDHyperNexusProMonthly != "" {
+			return s.PriceIDHyperNexusProMonthly
+		}
+	}
+	return s.priceIDForTier(tier)
+}
+
+func (s *StripeBillingClient) createSession(ctx context.Context, companyID int64, tier Tier, priceID, successURL, cancelURL string, seats int) (string, error) {
 	if seats <= 0 {
 		seats = 5
 	}
 	if seats > 100000 {
 		seats = 100000
-	}
-
-	priceID := s.priceIDForTier(tier)
-	if priceID == "" {
-		return "", fmt.Errorf("unknown tier: %s", tier)
 	}
 
 	price, err := getPrice(ctx, priceID)
@@ -240,7 +273,7 @@ func getPrice(_ context.Context, priceID string) (*stripe.Price, error) {
 }
 
 // CreateCheckoutSessionWithPrice creates a checkout session with a custom price amount.
-func (s *StripeBillingClient) CreateCheckoutSessionWithPrice(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int, priceAmount int64, interval string) (string, error) {
+func (s *StripeBillingClient) CreateCheckoutSessionWithPrice(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int, priceAmount int64, interval string, firstMonthAmount int64) (string, error) {
 	s.stripe()
 
 	if seats <= 0 {
@@ -298,16 +331,38 @@ func (s *StripeBillingClient) CreateCheckoutSessionWithPrice(ctx context.Context
 			},
 		},
 		Metadata: map[string]string{
-			"company_id": fmt.Sprintf("%d", companyID),
-			"tier":       string(tier),
-			"seats":      fmt.Sprintf("%d", seats),
-			"price":      fmt.Sprintf("%d", priceAmount),
-			"interval":   interval,
+			"company_id":  fmt.Sprintf("%d", companyID),
+			"tier":        string(tier),
+			"seats":       fmt.Sprintf("%d", seats),
+			"price":       fmt.Sprintf("%d", priceAmount),
+			"interval":    interval,
+			"first_month": fmt.Sprintf("%d", firstMonthAmount),
 		},
 	}
 
-	// Add 7-day trial period for subscription mode
-	if mode == stripe.CheckoutSessionModeSubscription {
+	// First-month discount: e.g. $1.99 first month, then full price.
+	// Once-duration coupon keeps one recurring price, no trial delay.
+	firstMonthDiscount := firstMonthAmount > 0 && firstMonthAmount < priceAmount &&
+		mode == stripe.CheckoutSessionModeSubscription
+	if firstMonthDiscount {
+		off := priceAmount - firstMonthAmount
+		c, err := coupon.New(&stripe.CouponParams{
+			AmountOff: stripe.Int64(off),
+			Currency:  stripe.String(string(stripe.CurrencyUSD)),
+			Duration:  stripe.String("once"),
+			Name:      stripe.String(fmt.Sprintf("%s first month $%0.2f", string(tier), float64(firstMonthAmount)/100)),
+		})
+		if err != nil {
+			return "", fmt.Errorf("failed to create first-month coupon: %w", err)
+		}
+		params.Discounts = []*stripe.CheckoutSessionDiscountParams{
+			{Coupon: stripe.String(c.ID)},
+		}
+	}
+
+	// 7-day trial for subscriptions without a first-month discount,
+	// so a discounted first month charges immediately.
+	if mode == stripe.CheckoutSessionModeSubscription && !firstMonthDiscount {
 		trialPeriodDays := int64(7)
 		// Require payment method during trial
 		params.SubscriptionData = &stripe.CheckoutSessionSubscriptionDataParams{
@@ -651,7 +706,11 @@ func (m *MockBillingClient) CreateCheckoutSession(ctx context.Context, companyID
 	return "http://localhost:8087/checkout/success", nil
 }
 
-func (m *MockBillingClient) CreateCheckoutSessionWithPrice(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int, priceAmount int64, interval string) (string, error) {
+func (m *MockBillingClient) CreateCheckoutSessionWithInterval(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int, interval string) (string, error) {
+	return "http://localhost:8087/checkout/success", nil
+}
+
+func (m *MockBillingClient) CreateCheckoutSessionWithPrice(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int, priceAmount int64, interval string, firstMonthAmount int64) (string, error) {
 	return "http://localhost:8087/checkout/success", nil
 }
 

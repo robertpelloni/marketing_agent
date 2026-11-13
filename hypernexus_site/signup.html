@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HyperNexus — Start Free Trial</title>
+  <meta name="description" content="Start your HyperNexus free trial. Persistent AI memory, 20,000+ MCP tools, works with 38+ AI agents." />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Inter", -apple-system, sans-serif;
+      background: #0a0e1a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-size: 20px; font-weight: 800; color: #38bdf8; text-decoration: none; }
+    .nav a { color: #94a3b8; text-decoration: none; margin-left: 24px; font-size: 14px; }
+    .nav a:hover { color: #38bdf8; }
+    .wrap {
+      max-width: 520px;
+      width: 100%;
+      margin: 48px auto;
+      padding: 0 24px;
+      flex: 1;
+    }
+    h1 { font-size: 30px; font-weight: 800; margin-bottom: 8px; line-height: 1.2; }
+    .sub { color: #94a3b8; font-size: 15px; line-height: 1.7; margin-bottom: 28px; }
+    .card {
+      background: rgba(30, 41, 59, 0.65);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: 14px;
+      padding: 28px;
+    }
+    label { display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px; }
+    input {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      background: rgba(15, 23, 42, 0.85);
+      color: #fff;
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+    input:focus { outline: 2px solid #38bdf8; outline-offset: 1px; border-color: transparent; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+    .cta {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #0284c7, #0369a1);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(2, 132, 199, 0.35); }
+    .cta:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+    .note { font-size: 12px; color: #64748b; margin-top: 14px; line-height: 1.6; text-align: center; }
+    .steps { margin: 18px 0 28px; padding: 0; list-style: none; }
+    .steps li {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: 13.5px; color: #cbd5e1; margin-bottom: 10px; line-height: 1.55;
+    }
+    .steps .n {
+      flex: 0 0 22px; height: 22px; border-radius: 50%;
+      background: rgba(56, 189, 248, 0.18); color: #38bdf8;
+      font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+    .price-tag {
+      display: flex; align-items: baseline; gap: 8px;
+      margin-bottom: 20px; padding-bottom: 18px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+    }
+    .price-tag .amt { font-size: 28px; font-weight: 800; color: #fff; }
+    .price-tag .per { font-size: 13px; color: #94a3b8; }
+    .err {
+      display: none;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      line-height: 1.55;
+    }
+    .alt {
+      text-align: center; margin-top: 22px; font-size: 13px; color: #94a3b8;
+    }
+    .alt a { color: #38bdf8; text-decoration: none; }
+    .alt a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a class="logo" href="/">HyperNexus</a>
+    <div class="nav">
+      <a href="/pricing.html">Pricing</a>
+      <a href="https://demo.hypernexus.site" target="_blank" rel="noopener">Demo</a>
+      <a href="/account.html">Sign in</a>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h1>Start your free trial</h1>
+    <p class="sub">
+      30-day trial of HyperNexus Professional — persistent AI memory, 20,000+ MCP tools,
+      and one-click setup for 38+ AI agents. No charge today.
+    </p>
+
+    <ul class="steps">
+      <li><span class="n">1</span><span>Create your account below — takes under a minute.</span></li>
+      <li><span class="n">2</span><span>Continue to secure Stripe checkout to activate the trial (card required, not charged today).</span></li>
+      <li><span class="n">3</span><span>Download HyperNexus and your AI agents get persistent memory.</span></li>
+    </ul>
+
+    <div class="card">
+      <div class="price-tag">
+        <span class="amt">$0</span>
+        <span class="per">today · then <strong style="color:#e2e8f0">$50 / seat / year</strong> (50% off launch price)</span>
+      </div>
+
+      <div class="err" id="err"></div>
+
+      <form id="signup-form" novalidate>
+        <div class="field-row">
+          <div>
+            <label for="first">First name</label>
+            <input id="first" name="first" type="text" autocomplete="given-name" required />
+          </div>
+          <div>
+            <label for="last">Last name</label>
+            <input id="last" name="last" type="text" autocomplete="family-name" required />
+          </div>
+        </div>
+
+        <label for="email">Work email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@company.com" />
+
+        <label for="company">Company <span style="font-weight:400;color:#64748b">(optional)</span></label>
+        <input id="company" name="company" type="text" autocomplete="organization" />
+
+        <button class="cta" id="submit-btn" type="submit">Continue to Secure Checkout →</button>
+      </form>
+
+      <p class="note">
+        By continuing you agree to our <a href="/terms.html" style="color:#38bdf8">Terms</a>.
+        Card is collected by Stripe on the next step to activate your trial.
+        We never see or store your card number.
+      </p>
+    </div>
+
+    <p class="alt">
+      Prefer to talk first? <a href="/contact.html">Request a demo</a>
+      · Questions? <a href="/pricing.html">See full pricing</a>
+    </p>
+  </div>
+
+  <script>
+  // Signup → Stripe checkout funnel.
+  // Collects account details client-side, then hands off to the billing API which
+  // creates the Stripe Checkout Session. Card is only collected on Stripe's page —
+  // this page never touches payment credentials (PCI scope stays on Stripe).
+  (function () {
+    var form = document.getElementById('signup-form');
+    var errBox = document.getElementById('err');
+    var btn = document.getElementById('submit-btn');
+
+    function showError(msg) {
+      errBox.textContent = msg;
+      errBox.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Continue to Secure Checkout →';
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      errBox.style.display = 'none';
+
+      var email = (document.getElementById('email').value || '').trim();
+      var first = (document.getElementById('first').value || '').trim();
+      var last = (document.getElementById('last').value || '').trim();
+      var company = (document.getElementById('company').value || '').trim();
+
+      if (!first || !last) {
+        showError('Please enter your first and last name.');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError('Please enter a valid work email address.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Redirecting to Stripe…';
+
+      // HYPERNEXUS_PROFESSIONAL_LICENSE is the SKU the billing service resolves to
+      // the Stripe Price ID. success/cancel return the visitor to this site.
+      fetch('/api/v1/billing/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tier: 'HYPERNEXUS_PROFESSIONAL_LICENSE',
+          seats: 1,
+          email: email,
+          first_name: first,
+          last_name: last,
+          company: company,
+          trial: true,
+          success_url: 'https://hypernexus.site/success.html',
+          cancel_url: 'https://hypernexus.site/signup.html'
+        })
+      })
+        .then(function (r) {
+          return r.json().catch(function () { return {}; }).then(function (d) {
+            return { ok: r.ok, status: r.status, data: d };
+          });
+        })
+        .then(function (res) {
+          if (!res.ok) {
+            throw new Error(res.data && res.data.error
+              ? res.data.error
+              : 'Checkout service returned ' + res.status + '. Please try again.');
+          }
+          var url = res.data && (res.data.url || res.data.checkout_url);
+          if (url && url.indexOf('https://checkout.stripe.com') === 0) {
+            window.location.href = url;
+          } else {
+            showError('Checkout service did not return a valid Stripe URL. Please try again in a moment.');
+          }
+        })
+        .catch(function (e) {
+          console.error('Signup checkout error:', e);
+          showError(e.message || 'Something went wrong. Please try again.');
+        });
+    });
+  })();
+  </script>
+</body>
+</html>

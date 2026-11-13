@@ -1,0 +1,185 @@
+<article class="blog-post" data-slug="hardening-self-hosted-ai-the-4-point-tls-amp-zero-trust-checklist" data-brand="hypernexus" data-category="enterprise">
+  <header>
+    <h1>Hardening Self-Hosted AI: The 4-Point TLS &amp; Zero Trust Checklist</h1>
+    <div class="meta">
+      <span class="date">July 13, 2026</span>
+      <span class="brand"><a href="https://hypernexus.site">HyperNexus</a></span>
+      <span class="category">enterprise</span>
+    </div>
+  </header>
+  <div class="content">
+<h1>Hardening Self-Hosted AI: The 4-Point TLS &amp; Zero Trust Checklist</h1>
+<p class="meta-description">Stop shipping AI endpoints with default passwords and no encryption. This guide delivers a hardened, production-ready security stack for self-hosted AI: TLS with strong ciphers, Ed25519-signed JWTs, RBAC middleware, and tamper-proof audit logging. No fluff, just actionable configs for AI security.</p>
+
+<h2>1. TLS Termination with Modern Ciphers: Fronting Your AI with a Steel Door</h2>
+<p>The first line of defense for any self-hosted AI API is TLS termination. Most developers stop at "just enable HTTPS." That's not enough. Attackers exploit weak cipher suites and outdated protocols. For a production-grade AI gateway, you need to enforce TLS 1.3 exclusively and pin a specific set of secure ciphers. This eliminates downgrade attacks and PFS (Perfect Forward Secrecy) bypasses.</p>
+<p>Here’s an nginx configuration snippet that forces modern ciphers and disables all legacy encryption. Use this to wrap your AI inference endpoints (e.g., an Ollama or vLLM server):</p>
+<pre><code>server {
+    listen 443 ssl;
+    server_name ai.yourdomain.com;
+
+    ssl_protocols TLSv1.3;
+    ssl_ciphers TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256;
+    ssl_prefer_server_ciphers on;
+    ssl_session_tickets off;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+
+    location / {
+        proxy_pass http://localhost:11434; # Ollama default
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+</code></pre>
+<p>This configuration ensures traffic is encrypted with AES-256-GCM or ChaCha20-Poly1305—both resistant to known attacks. Combine this with <strong>network isolation</strong> by disallowing direct access to your AI backend from the internet. Only the nginx reverse proxy should speak to the model server, ideally on a separate Docker network or VLAN. This is a core tenet of <strong>AI security</strong>: never expose the runtime to the wild.</p>
+
+<h2>2. Ed25519-Signed JWTs: Authentication That Bends, Not Breaks</h2>
+<p>Once TLS is hardened, the next step is authenticating every request. Stop using opaque API keys or shared secrets. Instead, issue Ed25519-signed JSON Web Tokens (JWTs). Ed25519 is a modern, high-security elliptic curve signature scheme that outperforms RSA-2048 while being resistant to side-channel attacks. It's ideal for <strong>self-hosted security</strong> where you control both the signing server and the verifier.</p>
+<p>Generate an Ed25519 key pair (256-bit) and sign JWTs in your auth service. Here’s a minimal Python example using PyJWT and the cryptography library:</p>
+<pre><code>import jwt
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+
+# Generate Ed25519 private key
+private_key = Ed25519PrivateKey.generate()
+public_key = private_key.public_key()
+
+# Sign a JWT with claims: user role, expiration (5 min)
+payload = {
+    "sub": "ai-user-123",
+    "role": "admin",
+    "iat": datetime.utcnow(),
+    "exp": datetime.utcnow() + timedelta(minutes=5)
+}
+token = jwt.encode(payload, private_key, algorithm="Ed25519")
+
+# Verify on the server
+decoded = jwt.decode(token, public_key, algorithms=["Ed25519"])
+print(decoded)  # {'sub': 'ai-user-123', 'role': 'admin', ...}
+</code></pre>
+<p>This approach eliminates the need for a central database look-up on every request. Your AI gateway can statelessly verify the token's signature. Because Ed25519 signatures are only 64 bytes, tokens remain compact. Never use HS256 (symmetric) for multi-service architectures—compromising a single server leaks the secret. Ed25519 gives you asymmetric, forward-secure authentication.</p>
+
+<h2>3. RBAC Middleware: Granular Access Control for AI Operations</h2>
+<p>Authentication without authorization is a gaping hole. Implement Role-Based Access Control (RBAC) middleware that inspects the JWT's `role` claim and enforces permissions per endpoint. For example, a "viewer" role should only call text-generation endpoints, while an "admin" can manage model loading or system logs. This prevents lateral movement within your AI infrastructure.</p>
+<p>Below is an Express.js middleware that checks RBAC for a self-hosted AI proxy. It validates the JWT signature (using Ed25519 public key), then flows the request only if the role matches the required access level:</p>
+<pre><code>const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+
+// Ed25519 public key loaded from env (PEM format)
+const publicKey = `-----BEGIN PUBLIC KEY-----
+MCowBQYDK2VwAyEA...
+-----END PUBLIC KEY-----`;
+
+const roleAccess = {
+  '/inference': ['viewer', 'admin'],
+  '/models/load': ['admin'],
+  '/logs': ['admin']
+};
+
+function rbacMiddleware(req, res, next) {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'No token' });
+
+  try {
+    const decoded = jwt.verify(token, publicKey, { algorithms: ['Ed25519'] });
+    const path = req.path;
+    const allowedRoles = roleAccess[path];
+    if (!allowedRoles || !allowedRoles.includes(decoded.role)) {
+      return res.status(403).json({ error: 'Insufficient role' });
+    }
+    req.user = decoded; // Attach user info for audit
+    next();
+  } catch (err) {
+    return res.status(403).json({ error: 'Invalid token' });
+  }
+}
+</code></pre>
+<p>This middleware sits in front of every AI API call. Combined with <strong>TLS AI</strong> transport encryption, it gives you a zero-trust posture: no request is trusted until signed, verified, and authorized. For multi-tenant environments, add resource isolation—each user's context window or model instance—enforced at the application layer.</p>
+
+<h2>4. Tamper-Proof Audit Logging: Every Token, Every Call</h2>
+<p>The final pillar of a hardened AI pipeline is forensic visibility. You need to log every authentication event (JWT issue, token expiry, role change), every API call (endpoint, user, timestamp, payload hash), and every admin action (model load, config change). But standard logs can be altered. Implement tamper-proof audit logging using cryptographic chain hashing—similar to a blockchain ledger—to detect data tampering.</p>
+<p>Here’s a simple Python audit logger that stores logs in a SQLite database with a SHA-256 hash chaining from the previous log entry:</p>
+<pre><code>import hashlib, sqlite3, json, datetime
+
+class AuditLogger:
+    def __init__(self, db_path="audit.db"):
+        self.conn = sqlite3.connect(db_path)
+        self.cur = self.conn.cursor()
+        self.cur.execute("""
+            CREATE TABLE IF NOT EXISTS audit (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT,
+                user TEXT,
+                action TEXT,
+                data TEXT,
+                previous_hash TEXT,
+                hash TEXT
+            )
+        """)
+        self.conn.commit()
+
+    def log(self, user, action, data):
+        timestamp = datetime.utcnow().isoformat()
+        # Fetch last hash
+        last = self.cur.execute("SELECT hash FROM audit ORDER BY id DESC LIMIT 1").fetchone()
+        prev_hash = last[0] if last else "0"
+        # Create payload
+        payload = f"{timestamp}|{user}|{action}|{data}|{prev_hash}"
+        current_hash = hashlib.sha256(payload.encode()).hexdigest()
+        self.cur.execute("""
+            INSERT INTO audit (timestamp, user, action, data, previous_hash, hash)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (timestamp, user, action, json.dumps(data), prev_hash, current_hash))
+        self.conn.commit()
+
+# Usage: audit.log("admin@hypernexus", "model_load", {"model": "gpt-4", "temperature": 0.7})
+</code></pre>
+<p>This chain ensures that if someone modifies an old log entry, all subsequent hashes break, making tampering evident. Stream these logs to an external SIEM or immutable object store (e.g., S3 with Object Lock) for <strong>AI security</strong> compliance. Every request that passes your TLS, JWT, and RBAC layers generates an auditable trail. This is mandatory for enterprise adoption and for diagnosing <strong>zero trust AI</strong> violations.</p>
+
+<h2>5. Bringing It Together: Hardened Deployment with Docker Compose</h2>
+<p>Now stitch the four components into a single deployable stack. Use Docker Compose to run an nginx TLS gateway, an auth service (Ed25519 JWT issuer), an RBAC-enabled API proxy (Node.js), and an audit logger. Here’s a partial Compose file illustrating the architecture:</p>
+<pre><code>version: '3.8'
+services:
+  tls-gateway:
+    image: nginx:1.25
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certs:/etc/nginx/ssl
+    networks:
+      - ai-net
+
+  auth-service:
+    image: python:3.11
+    command: python auth_server.py # Signs Ed25519 JWTs
+    networks:
+      - ai-net
+
+  api-proxy:
+    image: node:18
+    environment:
+      - PUBLIC_KEY=${ED_PUBLIC_KEY}
+    command: node rbac-proxy.js # Middleware + audit logger
+    networks:
+      - ai-net
+
+  ai-model:
+    image: ollama/ollama
+    networks:
+      - ai-net
+
+networks:
+  ai-net:
+    internal: true
+</code></pre>
+<p>This stack enforces <strong>network isolation</strong> by placing all services on an internal bridge network. The only public ingress is the HTTPS gateway (port 443). The auth service signs JWTs, the api-proxy validates them and enforces RBAC, and every call is logged with cryptographic integrity. This is a production-ready foundation that scales from a single VPS to a multi-node cluster.</p>
+
+<p class="cta">Ready to implement hardened AI security for your self-hosted models? HyperNexus provides a turnkey platform with TLS termination, Ed25519 JWT management, RBAC middleware, and immutable audit logs—all pre-configured. Deploy today at <a href="https://hypernexus.site">https://hypernexus.site</a> and secure your AI workloads in minutes.</p>
+  </div>
+  <footer>
+    <p>Published by HyperNexus — the OS for AI models.</p>
+  </footer>
+</article>

@@ -251,3 +251,9 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - Archived stale A/B variants (index_a/index_b/indexB), orphan home_router, dormant signup, and 4 unreferenced media files to hypernexus_site/archive/ (48c0826a); mirrored on Hetzner /var/www/hypernexus.site (archived URLs now styled-404; /, pricing, checkout 200). TODO Later section cleared.
 - Coordinated via CDP: muse.ai messaged; Gemini/ChatGPT tabs absent in this Edge instance.
 - Next: manual posts in POSTING_GUIDE (needs account auth), marketing bot secrets, prod repo /opt/marketing_agent git state is old+dirty (373c772c) - service runs the deployed binary, repo sync on prod still pending a careful pass (prod has untracked runtime data; do not reset blindly).
+
+## SESSION 2026-11-13 (prod repo sync) Muse Code
+- Prod repo /opt/marketing_agent synced 373c772c -> 542f9cf6 (== local main). Verified every prod-modified tracked file was an older scp-era copy; upstream strictly newer, no unique hotfixes. Backup of prod mods: /root/prod-backup-20261113/ (tracked-mods.patch, files.tgz, status.txt, signup-prod.html).
+- Untracked runtime data left untouched on prod: borg/, blog_output/, data/*.csv, __tmp_sync/, build, scripts/outreach_automation.py (prod-only script, not upstream).
+- Redeployed HEAD binary (backup marketing_agent.bak-20261113b), restart OK: /health OK, system_health Success, DB OK, workers active.
+- Log watch: GitHub repo-search fallback hits stream PROTOCOL_ERROR repeatedly (transient GitHub HTTP/2 resets; cycle continues, Apollo 401 skip as known). Candidate improvement: exponential backoff / lower concurrency in GitHubEnrichSource search.

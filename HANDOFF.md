@@ -209,3 +209,13 @@ L2 COORD-SYNC7 dashboard merge next push user-blocked
 ## COORD 2026-11-12 part7 muse verify-only third straight
 Muse.ai verify-only True Chat Bobbi stable no resend
 L2 COORD-SYNC8 push user-blocked 6 ahead
+
+## SESSION 2026-11-13 Muse Code (muse-wonder-1.0, laptop, marketing_agent)
+- Caught up: no Codex/Antigravity session is scoped exactly to marketing_agent. Latest Codex: 01a1d0bc (2026-11-12, cwd workspace root). Latest Antigravity for the parent workspace: ea958c79 'Syncing and Merging Submodules'; enterprise_sales_bot (former name) parent fac645a2.
+- Coordinated via Edge CDP 9222 (agent-browser connect 9222): muse.ai 'Chat - Bobbi' tab messaged with identity [muse-wonder-1.0 in Muse Code in C:\Users\hyper\workspace\marketing_agent on laptop]; Bobbi was still working at last check. Gemini and ChatGPT tabs also present on 9222.
+- Merged github/main (538eafbd) and feature/v0.7.1-consolidated-dashboard (b2d2a05a) into main; pushed to GitHub and GitLab. Fixed internal/sales billing mocks (f9f458ce).
+- v0.7.3 (e4fea859): /dashboard/outreach 301->/#outreach, legacy page archived, nav tooltips + Demo/Health/Metrics links, systray Blog link fixed. Systray exists: cmd/marketing_agent/systray.go (Windows only).
+- WARNING: go test ./... in repo root runs git reset against the checkout (gitcheck/gitres tests) and bumps internal/autodev/VERSION*. Commit first or test in a worktree. It wiped an uncommitted merge once this session.
+- Local run blocked: server exits 'Could not connect to database'. Local PostgreSQL 18 service runs on port 5433 (not 5432 in .env) and the .env sales_bot credentials do not authenticate locally; superuser password unknown. Docker daemon not running. Needs: local DB user/db matching .env on 5433, or start Docker and use docker-compose.
+- Tests: all pass except TestApolloSource_HealthCheck (live Apollo API, HTTP 401 without valid APOLLO_API_KEY).
+- Next: reconcile checkout.html vs pricing.html pricing copy; archive done for legacy runners; marketing bot secrets still missing (DEVTO_API_KEY, BLUESKY_*, HERMES_API_KEY/APOLLO_API_KEY).

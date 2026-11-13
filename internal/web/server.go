@@ -630,11 +630,15 @@ tr:hover { background-color: #f8fafc; }
 	</h1>
 	<div class="header-links">
 		<div class="quick-nav">
-			<a href="#kpi">KPIs</a>
-			<a href="#outreach">Cold Outreach</a>
-			<a href="#deals">Deals</a>
-			<a href="#social">Social</a>
-			<a href="#ops">Pipeline Ops</a>
+			<a href="#subscription" title="Current plan, seats, and billing lifecycle">Subscription</a>
+			<a href="#kpi" title="Pipeline funnel and core conversion metrics">KPIs</a>
+			<a href="#outreach" title="Cold outreach delivery and engagement tracking">Cold Outreach</a>
+			<a href="#deals" title="Active deals and pipeline CRM">Deals</a>
+			<a href="#social" title="Multi-platform social and DevRel hub">Social</a>
+			<a href="#ops" title="Infrastructure, tasks, and pipeline telemetry controls">Pipeline Ops</a>
+			<a href="/demo" title="TormentNexus Cloud Console demo (separate subproject view)">Demo Console</a>
+			<a href="/health" title="Service and database health (JSON)">Health</a>
+			<a href="/api/v1/metrics" title="Database pool and service metrics (JSON)">Metrics</a>
 		</div>
 		<span class="status-pill tooltip">System Health: <strong style="color: %s; margin-left: 4px;">%s</strong>
 			<span class="tooltiptext">CI/CD deployment status and database connectivity</span>
@@ -2051,22 +2055,14 @@ func (s *Server) handleOutreachExport(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// handleOutreachDashboard serves the outreach tracking dashboard HTML.
+// handleOutreachDashboard permanently redirects the legacy standalone
+// outreach page to the consolidated single-page dashboard. Outreach stats
+// and delivery tracking now live in the #outreach section of "/" (Section 3),
+// so this route exists only to keep old bookmarks and links working.
 // GET /dashboard/outreach — public, read-only.
 func (s *Server) handleOutreachDashboard(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	setCORSHeaders(w, r)
-
-	page, err := os.ReadFile("web/dashboard/outreach.html")
-	if err != nil {
-		// Try absolute path on the production server
-		page, err = os.ReadFile("/opt/marketing_agent/web/dashboard/outreach.html")
-	}
-	if err != nil {
-		http.Error(w, "dashboard not found", http.StatusNotFound)
-		return
-	}
-	_, _ = w.Write(page)
+	http.Redirect(w, r, "/#outreach", http.StatusMovedPermanently)
 }
 
 func (s *Server) handleContainerStart(w http.ResponseWriter, r *http.Request) {

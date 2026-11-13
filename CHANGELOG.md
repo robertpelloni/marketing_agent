@@ -1,3 +1,32 @@
+## [0.7.3] - 2026-11-13
+
+### Changed
+
+- **Dashboard consolidation completed**: merged `github/feature/v0.7.1-consolidated-dashboard`
+  (24 commits: outreach export, Prometheus/JSON metrics, telemetry reconnect, cadence and
+  discovery improvements) into `main`. `/` is now the single operations page with six
+  high-value-first sections (Subscription, KPIs, Outreach, Deals, Social, Pipeline Ops),
+  quick-nav anchors, and tooltips. `/dashboard/outreach` now 301-redirects to `/#outreach`;
+  the legacy page is archived at `web/dashboard/archive/outreach-legacy.html`.
+  `/demo` remains as the separate TormentNexus Cloud Console subproject view, linked from
+  the dashboard nav along with `/health` and `/api/v1/metrics`.
+- **Systray**: Windows tray (`cmd/marketing_agent/systray.go`) Blog item now opens
+  `https://hypernexus.site/blog/` instead of a nonexistent local `/blog` route.
+  Tray menu: Open Dashboard, View Cold Outreach Tracking, HyperNexus/TormentNexus sites,
+  Blog, Restart Service, Quit Servers & Exit.
+- **Tests**: fixed `internal/sales` billing mocks for the seats/interval/price checkout
+  interface (pre-existing failure). Full suite passes except
+  `TestApolloSource_HealthCheck`, which calls the live Apollo API and fails with HTTP 401
+  without a valid `APOLLO_API_KEY`.
+- **Version**: `VERSION` and `VERSION.md` aligned as the single version source (0.7.3).
+
+### Notes
+
+- Warning: running `go test ./...` in the repo root resets the working tree
+  (`internal/gitcheck`/`gitres` tests run `git reset` against the checkout) and bumps
+  `internal/autodev/VERSION*`. Commit before running the full suite, or run it in a
+  separate worktree/clone.
+
 ## [Unreleased]
 
 ### Changed

@@ -23,6 +23,8 @@ Immediate, granular tasks. Long-term direction lives in ROADMAP.md.
 - [ ] index_a.html / index_b.html stale variants: delete or re-sync with index.html
 - [ ] pricing.html $5/mo toggle vs $1.99 trial button: reconcile display model
 ## Autopilot directive 2026-11-12 dashboard plus cleanup queue
-- [ ] Single-page dashboard: merge / demo and dashboard-outreach into / with section tabs tooltips high-value-first
+- [x] Single-page dashboard: outreach merged into / (#outreach, 301 from legacy route); /demo kept as major subproject view and linked from nav; tooltips + high-value-first sections (v0.7.3, 2026-11-13)
 - [ ] Nondestructive scripts archive: move legacy runners to archive with README
-- [ ] Local full run: go build plus go test plus log watch and report gaps
+- [x] Local full run: go build plus go test plus log watch and report gaps (2026-11-13; only live-Apollo health check fails, needs valid API key)
+- [ ] Align checkout.html copy with the decided $1.99-first-month-then-$5/mo model (merge took the GitHub-side $1.99 first-month page; pricing.html kept the trial copy — reconcile both surfaces)
+- [ ] Fix or skip-guard TestApolloSource_HealthCheck so the suite is green without live credentials

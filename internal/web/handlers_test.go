@@ -99,6 +99,19 @@ func TestWebHandlers_NoDB(t *testing.T) {
 		}
 	})
 
+	t.Run("Outreach Dashboard Redirects To Consolidated Page", func(t *testing.T) {
+		req, _ := http.NewRequest("GET", "/dashboard/outreach", nil)
+		rr := httptest.NewRecorder()
+		server.ServeHTTP(rr, req)
+
+		if rr.Code != http.StatusMovedPermanently {
+			t.Fatalf("Expected 301 from /dashboard/outreach, got %d", rr.Code)
+		}
+		if loc := rr.Header().Get("Location"); loc != "/#outreach" {
+			t.Errorf("Expected Location /#outreach, got %q", loc)
+		}
+	})
+
 	t.Run("Outreach Stats Engagement Rates", func(t *testing.T) {
 		req, _ := http.NewRequest("GET", "/api/v1/outreach/stats", nil)
 		rr := httptest.NewRecorder()

@@ -44,7 +44,8 @@ func onReady(cancel context.CancelFunc, port string) {
 			case <-mTormentSite.ClickedCh:
 				openBrowser("https://tormentnexus.site")
 			case <-mBlog.ClickedCh:
-				openBrowser(fmt.Sprintf("http://localhost:%s/blog", port))
+				// There is no local /blog route; the blog is published on the site.
+				openBrowser("https://hypernexus.site/blog/")
 			case <-mRestart.ClickedCh:
 				// Cancel current context, quit tray, and re-launch self
 				cancel()

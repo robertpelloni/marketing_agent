@@ -24,9 +24,9 @@ Verified against repo + production (5.161.250.43) on 2026-11-07.
 - scripts/marketing_bot is the canonical runner (per AGENTS.md). Legacy auto_*/apollo_* one-offs in scripts/ to be archived (see TODO).
 - Missing secrets (DEVTO_API_KEY, BLUESKY_*, etc.) block any automated posting. No auto-post until keys exist.
 
-## M6 — Dashboard (no action)
-- internal/web serves 3 pages: / dashboard, /dashboard/outreach, /demo + /health. Already consolidated; the "merge into one page" ask is satisfied by current shape. Do not rewrite server.go without tests.
+## M6 - Dashboard (DONE 2026-11-13, v0.7.3)
+- Merged feature/v0.7.1-consolidated-dashboard into main. / is the single operations page: six high-value-first sections (Subscription, KPIs, Outreach, Deals, Social, Pipeline Ops) with quick-nav anchors and tooltips. /dashboard/outreach 301-redirects to /#outreach (legacy page archived under web/dashboard/archive/). /demo stays as the separate TormentNexus Cloud Console subproject view; /health, /health/detailed, /metrics, and /api/v1/metrics are linked from the nav.
+- System tray (Windows desktop runs): cmd/marketing_agent/systray.go provides Open Dashboard, Outreach, both sites, Blog, Restart Service, and Quit Servers & Exit. On Linux the service is headless under systemd (systray_unix.go blocks without a tray).
 
 ## Non-goals
-- System tray icon: N/A (headless Linux systemd service + static sites, no desktop component).
 - checkout.html in sitemap: deliberately excluded (transactional page).

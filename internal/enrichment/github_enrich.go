@@ -34,14 +34,16 @@ type GitHubEnrichSource struct {
 	// BaseDelay is the first retry wait, doubled per attempt. Zero means 500ms.
 	BaseDelay time.Duration
 
-	// Circuit breaker: after circuitThreshold consecutive transient failures
-	// the source stops calling GitHub until Cooldown elapses. Prod showed
-	// ~160 failed retries in 30 minutes when GitHub search broke persistently
-	// from the Hetzner IP; without this, every enrichment cycle re-hammers a
-	// dead lane for every company.
+	// Circuit breaker: after circuitThreshold failed calls inside the
+	// cooldown window the source stops calling GitHub until the window
+	// slides past. Prod showed ~160 failed retries in 30 minutes when
+	// GitHub search broke persistently from the Hetzner IP. A sliding
+	// window (not a consecutive counter) is required: successful empty
+	// org searches interleave the failures and would reset a consecutive
+	// counter forever, which is exactly what prod logs showed.
 	circuitThreshold int
 	cooldown         time.Duration
-	consecutiveFails int
+	failureTimes     []time.Time
 	openUntil        time.Time
 	mu               sync.Mutex
 }
@@ -67,31 +69,37 @@ func (g *GitHubEnrichSource) circuitOpen() bool {
 	return time.Now().Before(g.openUntil)
 }
 
-// recordSuccess resets the breaker after a successful GitHub call.
-func (g *GitHubEnrichSource) recordSuccess() {
-	g.mu.Lock()
-	defer g.mu.Unlock()
-	g.consecutiveFails = 0
-	g.openUntil = time.Time{}
-}
+// recordSuccess notes a successful GitHub call. It intentionally does not
+// clear the failure window: interleaved empty successes are part of the
+// failure pattern this breaker exists to catch.
+func (g *GitHubEnrichSource) recordSuccess() {}
 
-// recordFailure counts a transient failure and opens the breaker at the
-// threshold (default 5 failures, default 5 minute cooldown).
+// recordFailure records a transient failure in the sliding window and opens
+// the breaker at the threshold (default 10 failures, default 5 minute
+// window/cooldown).
 func (g *GitHubEnrichSource) recordFailure() {
 	g.mu.Lock()
 	defer g.mu.Unlock()
-	g.consecutiveFails++
+	cd := g.cooldown
+	if cd <= 0 {
+		cd = 5 * time.Minute
+	}
+	now := time.Now()
+	cutoff := now.Add(-cd)
+	kept := g.failureTimes[:0]
+	for _, t := range g.failureTimes {
+		if t.After(cutoff) {
+			kept = append(kept, t)
+		}
+	}
+	g.failureTimes = append(kept, now)
 	threshold := g.circuitThreshold
 	if threshold <= 0 {
-		threshold = 5
+		threshold = 10
 	}
-	if g.consecutiveFails >= threshold && time.Now().After(g.openUntil) {
-		cd := g.cooldown
-		if cd <= 0 {
-			cd = 5 * time.Minute
-		}
-		g.openUntil = time.Now().Add(cd)
-		slog.Info(fmt.Sprintf("GitHubEnrichSource: circuit open after %d consecutive failures, cooling down %v", g.consecutiveFails, cd))
+	if len(g.failureTimes) >= threshold && now.After(g.openUntil) {
+		g.openUntil = now.Add(cd)
+		slog.Info(fmt.Sprintf("GitHubEnrichSource: circuit open after %d failures in %v, cooling down %v", len(g.failureTimes), cd, cd))
 	}
 }
 

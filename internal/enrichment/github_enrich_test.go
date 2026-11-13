@@ -105,6 +105,19 @@ func TestGitHubCircuitOpensAfterRepeatedFailures(t *testing.T) {
 	}
 }
 
+func TestGitHubCircuitIgnoresInterleavedSuccesses(t *testing.T) {
+	// Prod pattern: a successful empty org search lands between every
+	// burst of name-search failures. The window must still trip.
+	src := &GitHubEnrichSource{circuitThreshold: 3, cooldown: time.Minute}
+	for i := 0; i < 3; i++ {
+		src.recordFailure()
+		src.recordSuccess()
+	}
+	if !src.circuitOpen() {
+		t.Fatal("expected circuit to open despite interleaved successes")
+	}
+}
+
 func TestGitHubSearchDoesNotRetryClientErrors(t *testing.T) {
 	rt := &flakyTransport{failTimes: 0, status: 404, body: `{"message":"Not Found"}`}
 	src := &GitHubEnrichSource{

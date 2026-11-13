@@ -6,7 +6,7 @@
     <title>Pricing — HyperNexus</title>
     <meta
       name="description"
-      content="HyperNexus pricing: Start your 7-day free trial. $1.99/seat/month for local license + cloud hosting."
+      content="HyperNexus pricing: $1.99 first month, then $5/seat/month for local license + cloud hosting. Yearly $19.99/seat."
     />
     <link
       rel="icon"
@@ -386,14 +386,14 @@
 
     <div class="header">
       <h1>Simple, Transparent Pricing</h1>
-      <p>Free for 7 days. Cancel anytime. No charge until trial ends.</p>
+      <p>$1.99 for your first month, then $5/mo. Cancel anytime.</p>
     </div>
 
     <div class="pricing-container">
       <div class="card">
         <!-- Introductory Offer Badge -->
         <div style="text-align:center;margin-bottom:20px">
-          <span style="display:inline-block;background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#4cd964,#5ac8fa,#007aff,#5856d6,#ff3b30);background-size:800% 100%;animation:rainbowBtnSlow 3s linear infinite;color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px">7-Day Free Trial</span>
+          <span style="display:inline-block;background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#4cd964,#5ac8fa,#007aff,#5856d6,#ff3b30);background-size:800% 100%;animation:rainbowBtnSlow 3s linear infinite;color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px">$1.99 First Month</span>
         </div>
         <div class="price">
           <!-- Monthly/Yearly Tabs -->
@@ -447,7 +447,7 @@
           </div>
           <div class="price-period" id="price-period">per seat / month</div>
           <div class="price-note" id="price-note">
-            Less than a coffee per month. Cancel anytime.
+            $1.99 first month, then $5/mo. Cancel anytime.
           </div>
         </div>
 
@@ -486,8 +486,9 @@
               body: JSON.stringify({
                 tier: "HYPERNEXUS_PROFESSIONAL_LICENSE",
                 seats: 1,
-                price_amount: window.__price_amount || 500,
+                price_amount: window.__pricing_plan === "yearly" ? 1999 : 500,
                 interval: window.__pricing_plan === "yearly" ? "year" : "month",
+                first_month_amount: window.__pricing_plan === "yearly" ? 0 : 199,
                 success_url: "https://hypernexus.site/success.html",
                 cancel_url: "https://hypernexus.site/pricing.html",
               }),
@@ -563,7 +564,7 @@
         </tr>
         <tr>
           <td>Price</td>
-          <td class="check"><span id="comparison-price">$1.99/mo</span></td>
+          <td class="check"><span id="comparison-price">$1.99 first mo, then $5/mo</span></td>
           <td>$240/year</td>
           <td>$120/year</td>
         </tr>
@@ -604,11 +605,11 @@
         if (priceNote)
           priceNote.textContent = isYearly
             ? "That's $1.67/month. Save 16% vs monthly."
-            : "Less than a coffee per month. Cancel anytime.";
+            : "$1.99 first month, then $5/mo. Cancel anytime.";
 
         // Update comparison price
         var compPrice = document.getElementById("comparison-price");
-        if (compPrice) compPrice.textContent = isYearly ? "$19.99/yr" : "$1.99/mo";
+        if (compPrice) compPrice.textContent = isYearly ? "$19.99/yr" : "$1.99 first mo, then $5/mo";
 
         // Update tab styles
         var tabM = document.getElementById("tab-monthly");

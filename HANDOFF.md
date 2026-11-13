@@ -274,3 +274,8 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - Root cause: Go HTTP/2 client resets (PROTOCOL_ERROR) on GitHub search under load from Hetzner. Token valid (ghp_ 40 chars, rate_limit remaining 4915, search 200 via curl). Duplicate GITHUB_TOKEN lines exist in prod .env; loader takes the first - harmless but tidy someday.
 - Fix: GitHubEnrichSource transport forces HTTP/1.1 via empty non-nil TLSNextProto map (ForceAttemptHTTP2=false alone insufficient on a default Transport). Transient failures 264 -> 8 per 6 min in prod. Breaker (sliding window) covers residual bursts.
 - Deployed 69d864d5; prod repo == main; /health OK.
+
+## LOOP 2026-11-13 (env tidy + schema sentinel) Muse Code
+- Prod .env deduped: duplicate GITHUB_TOKEN lines 2 -> 1 (first kept; backup /root/prod-backup-20261113/env.bak-*). Service restarted, startup log shows version=0.7.3 (VERSION stamping works).
+- Schema-drift sentinel added: internal/db/schema_test.go asserts every code-queried column exists in the migrated schema (companies/contacts/deals/interactions/social_posts). Skips without DATABASE_URL; Deploy test job (real Postgres) green with it active.
+- Prod: system_health Success, only ERROR lane is BlogEngine DeepSeek invalid key (credential). GitHub lane stable post HTTP/1.1 fix.

@@ -219,3 +219,8 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - Local run blocked: server exits 'Could not connect to database'. Local PostgreSQL 18 service runs on port 5433 (not 5432 in .env) and the .env sales_bot credentials do not authenticate locally; superuser password unknown. Docker daemon not running. Needs: local DB user/db matching .env on 5433, or start Docker and use docker-compose.
 - Tests: all pass except TestApolloSource_HealthCheck (live Apollo API, HTTP 401 without valid APOLLO_API_KEY).
 - Next: reconcile checkout.html vs pricing.html pricing copy; archive done for legacy runners; marketing bot secrets still missing (DEVTO_API_KEY, BLUESKY_*, HERMES_API_KEY/APOLLO_API_KEY).
+
+## SESSION 2026-11-13 (continued) Muse Code
+- Pricing reconciled to decided model $1.99 first month, then $5/mo: pricing.html + index.html trial copy removed, buyNow posts price_amount 500 + first_month_amount 199 (34303c35).
+- Apollo health test: 401 invalid/expired key now skips, suite green without valid credentials (6af87c90). Valid APOLLO_API_KEY still needed for real enrichment.
+- muse.ai via CDP 9222 reconnected successfully; Bobbi still working on RealEstateCRM lane, no marketing_agent reply yet.

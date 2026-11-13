@@ -16,6 +16,7 @@ from . import config
 from .cdp_utils import get_browser_ws
 from .content.generator import ContentGenerator
 from .platforms.bluesky import BlueskyPlatform
+from .platforms.devto import DevToPlatform
 from .platforms.hackernews import HackerNewsPlatform
 from .platforms.linkedin import LinkedInPlatform
 from .platforms.reddit import RedditPlatform
@@ -161,6 +162,41 @@ class MarketingOrchestrator:
         platform = HackerNewsPlatform(self.browser_ws)
         self._run_platform_loop(platform, "HackerNews", platform.connect)
 
+    def run_devto_agent(self):
+        """Run DEV.to automated publishing agent."""
+        platform = DevToPlatform()
+        self.log("DevTo", "Agent started")
+
+        if not platform.is_configured():
+            self.log("DevTo", "DEVTO_API_KEY not configured — skipping DEV.to operations")
+            return
+
+        published_count = 0
+        while not self.stop_event.is_set():
+            try:
+                article = self.content_generator.get_article(
+                    "Building Local AI Infrastructure with MCP and Vector Memory"
+                ) if hasattr(self.content_generator, "get_article") else None
+
+                if article:
+                    result = platform.run_cycle(article)
+                    if result:
+                        self.record_result(result)
+                        self.log("DevTo", f"Published #{published_count + 1}: {result.get('title')}")
+                        published_count += 1
+
+                # Articles are published infrequently (e.g., daily or 12h)
+                delay = random.randint(43200, 86400)
+                self.log("DevTo", f"Waiting {delay // 3600} hours before next cycle...")
+                if self.stop_event.wait(timeout=delay):
+                    break
+            except Exception as e:
+                self.log("DevTo", f"Error: {e}")
+                if self.stop_event.wait(timeout=300):
+                    break
+
+        self.log("DevTo", f"Agent stopped. Total published: {published_count}")
+
     def run_bluesky_agent(self):
         """Run Bluesky posting agent."""
         platform = BlueskyPlatform()
@@ -227,6 +263,8 @@ class MarketingOrchestrator:
                 agents.append(("HackerNews", self.run_hackernews_agent))
         else:
             agents = [("Bluesky", self.run_bluesky_agent)]
+            if getattr(config, "DEVTO_ENABLED", True):
+                agents.append(("DevTo", self.run_devto_agent))
 
         for name, target in agents:
             t = threading.Thread(target=target, name=name, daemon=True)

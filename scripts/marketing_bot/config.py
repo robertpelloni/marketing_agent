@@ -57,6 +57,7 @@ TWITTER_ENABLED: bool = True
 LINKEDIN_ENABLED: bool = True
 BLUESKY_ENABLED: bool = True
 HACKERNEWS_ENABLED: bool = True
+DEVTO_ENABLED: bool = True
 
 # ═══════════════════════════════════════════════════════════════
 # REDDIT CONFIGURATION

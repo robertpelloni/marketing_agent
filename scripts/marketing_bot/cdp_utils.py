@@ -9,7 +9,10 @@ import time
 import urllib.request
 from typing import Optional
 
-import websocket
+try:
+    import websocket
+except ImportError:
+    websocket = None
 
 from . import config
 
@@ -67,7 +70,7 @@ def create_tab(browser_ws: str, url: str = "about:blank") -> Optional[str]:
 
 
 def send_and_recv(
-    ws: websocket.WebSocket,
+    ws,
     msg_id: int,
     method: str,
     params: Optional[dict] = None,
@@ -85,14 +88,14 @@ def send_and_recv(
             if data.get("id") == msg_id:
                 result = data.get("result", {}).get("result", {}).get("value")
                 break
-        except websocket.WebSocketTimeoutException:
+        except Exception:
             break
         except Exception:
             break
     return result
 
 
-def navigate(ws: websocket.WebSocket, url: str, wait: int = 6) -> bool:
+def navigate(ws, url: str, wait: int = 6) -> bool:
     """Navigate to URL, auto-accepting any beforeunload dialogs.
 
     Strategy: Remove beforeunload handlers BEFORE navigation so the
@@ -134,7 +137,7 @@ def navigate(ws: websocket.WebSocket, url: str, wait: int = 6) -> bool:
 
 
 def wait_for_element(
-    ws: websocket.WebSocket,
+    ws,
     selector: str,
     timeout: int = 10,
     msg_id: int = 100,
@@ -157,7 +160,7 @@ def wait_for_element(
     return False
 
 
-def type_text(ws: websocket.WebSocket, text: str, msg_id: int = 200) -> bool:
+def type_text(ws, text: str, msg_id: int = 200) -> bool:
     """Type text character by character using Input.insertText."""
     try:
         ws.send(
@@ -173,7 +176,7 @@ def type_text(ws: websocket.WebSocket, text: str, msg_id: int = 200) -> bool:
 
 
 def click_element(
-    ws: websocket.WebSocket,
+    ws,
     selector: str,
     msg_id: int = 300,
 ) -> bool:
@@ -200,7 +203,7 @@ def click_element(
 
 
 def fill_input(
-    ws: websocket.WebSocket,
+    ws,
     selector: str,
     value: str,
     msg_id: int = 400,
@@ -230,7 +233,7 @@ def fill_input(
 
 
 def get_page_text(
-    ws: websocket.WebSocket,
+    ws,
     max_length: int = 1000,
     msg_id: int = 500,
 ) -> str:
@@ -248,7 +251,7 @@ def get_page_text(
 
 
 def handle_dialog(
-    ws: websocket.WebSocket, accept: bool = True, msg_id: int = 600
+    ws, accept: bool = True, msg_id: int = 600
 ) -> bool:
     """Handle a JavaScript dialog (alert, confirm, prompt, beforeunload)."""
     try:
@@ -267,7 +270,7 @@ def handle_dialog(
         return False
 
 
-def disable_beforeunload(ws: websocket.WebSocket, msg_id: int = 700) -> bool:
+def disable_beforeunload(ws, msg_id: int = 700) -> bool:
     """Disable beforeunload event to prevent 'Leave site?' dialogs."""
     result = send_and_recv(
         ws,

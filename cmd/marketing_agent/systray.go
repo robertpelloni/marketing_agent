@@ -22,23 +22,29 @@ func onReady(cancel context.CancelFunc, port string) {
 	systray.SetTitle("Marketing Agent")
 	systray.SetTooltip("TormentNexus / HyperNexus Marketing Agent")
 
-	mOpen := systray.AddMenuItem("Open Dashboard", "Open the web dashboard")
+	mOpen := systray.AddMenuItem("Open Dashboard", "Open the unified web dashboard")
+	mOutreach := systray.AddMenuItem("View Cold Outreach Tracking", "Open cold outreach delivery monitor")
 	systray.AddSeparator()
-	mBlog := systray.AddMenuItem("Open Blog", "View generated blog posts")
-	mSite := systray.AddMenuItem("Open TormentNexus Site", "Visit tormentnexus.site")
+	mHyperSite := systray.AddMenuItem("Open HyperNexus Site", "Visit corporate hypernexus.site")
+	mTormentSite := systray.AddMenuItem("Open TormentNexus Site", "Visit developer tormentnexus.site")
+	mBlog := systray.AddMenuItem("Open Technical Blog", "View generated blog posts")
 	systray.AddSeparator()
-	mRestart := systray.AddMenuItem("Restart Service", "Restart the marketing agent")
-	mQuit := systray.AddMenuItem("Quit", "Quit the servers and exit")
+	mRestart := systray.AddMenuItem("Restart Service", "Restart the marketing agent server")
+	mQuit := systray.AddMenuItem("Quit Servers & Exit", "Gracefully terminate servers and exit")
 
 	go func() {
 		for {
 			select {
 			case <-mOpen.ClickedCh:
 				openBrowser(fmt.Sprintf("http://localhost:%s", port))
+			case <-mOutreach.ClickedCh:
+				openBrowser(fmt.Sprintf("http://localhost:%s/#outreach", port))
+			case <-mHyperSite.ClickedCh:
+				openBrowser("https://hypernexus.site")
+			case <-mTormentSite.ClickedCh:
+				openBrowser("https://tormentnexus.site")
 			case <-mBlog.ClickedCh:
 				openBrowser(fmt.Sprintf("http://localhost:%s/blog", port))
-			case <-mSite.ClickedCh:
-				openBrowser("https://tormentnexus.site")
 			case <-mRestart.ClickedCh:
 				// Cancel current context, quit tray, and re-launch self
 				cancel()

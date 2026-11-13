@@ -113,6 +113,24 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		systemPrompt = "You are an AI developer advocate for TormentNexus (tormentnexus.site). Ground technical descriptions on TormentNexus (the local-first cognitive control plane and open-source model hypervisor at github.com/HyperNexusSoft/HyperNexus). Use a dark, playful 'world destruction' and 'existential dread' sci-fi theme. Frame the outreach as recruiting fellow developers to the robot's side to help automate the end of all things. Focus technical benefits on self-hosting, open-source freedom, developer velocity, custom tools, and local-first memory as the foundation for the ultimate machine takeover. Keep the tone witty, apocalyptic, and slightly ominous, but still highlighting valuable tool features. CRITICAL: Eliminate all AI tropes. Do not use words like 'delve', 'testament', 'transformative', 'foster', 'realm', 'tapestry', 'leverage', or 'empower'. Write like an indie hacker on a forum. CRITICAL: Never include generic draft placeholders, bracketed indicators, or template markers (e.g. '[Your Name]', '[My Name]', '[Company Name]', '[Insert Name]') in the output. Keep it natural or omit signature names. CRITICAL: Do NOT ask to schedule a call, book a meeting, jump on a chat, or view a demo. Simply state the software features, how they help their work, and end the email."
 	}
 
+	// Detect MCP and skill-based workflows in TechStack or TechnicalDossier
+	isMCPOrSkillTarget := false
+	lowerDossier := strings.ToLower(salesCtx.Deal.TechnicalDossier)
+	if strings.Contains(lowerDossier, "mcp") || strings.Contains(lowerDossier, "model-context-protocol") || strings.Contains(lowerDossier, "tool") || strings.Contains(lowerDossier, "skill") {
+		isMCPOrSkillTarget = true
+	}
+	for _, tech := range salesCtx.Company.TechStack {
+		lt := strings.ToLower(tech)
+		if strings.Contains(lt, "mcp") || strings.Contains(lt, "agent") || strings.Contains(lt, "tool") {
+			isMCPOrSkillTarget = true
+			break
+		}
+	}
+
+	if isMCPOrSkillTarget {
+		contextInjection += "\n[MCP & Skill-Based Targeting]: Target utilizes Model Context Protocol (MCP) or modular agent skills. Highlight progressive tool routing (injecting top 3 relevant tool schemas instead of 50K token dumps), cross-harness parity (Cursor, Windsurf, Claude Code, Copilot), and local-first memory coordination. Live verifiable metrics are available on the outreach dashboard at hypernexus.site/dashboard/outreach."
+	}
+
 	// CHALLENGER SALE FRAMEWORK: Deliver Asymmetric Insight
 	if salesCtx.Deal.CurrentState == db.StateResearched || salesCtx.Deal.CurrentState == db.StateEngaged {
 		contextInjection += "\n[Challenger Insight]: Teach the prospect something new about the unrecognized cost of inaction regarding fragmented LLM multi-agent systems and missing cognitive memory. Destabilize their current assumptions before pitching."
@@ -180,6 +198,13 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 		}(),
 		"{{repo}}":            getValue(salesCtx.Company.Name, "AI-Platform"),
 		"{{market_cap_tier}}": getValue(salesCtx.Company.MarketCapTier, "Corporate"),
+		"{{technical_dossier}}": getValue(salesCtx.Deal.TechnicalDossier),
+		"{{research_insight}}": func() string {
+			if strings.TrimSpace(salesCtx.Deal.TechnicalDossier) != "" {
+				return salesCtx.Deal.TechnicalDossier
+			}
+			return "multi-agent coordination and persistent memory"
+		}(),
 	}
 
 	// Replace placeholders in body

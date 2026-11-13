@@ -27,6 +27,25 @@ type CadenceSchedule struct {
 	MaxAttempts int           // Maximum total touches before marking as exhausted
 }
 
+// CalculateAdaptiveDelay calculates a dynamic delay for a cadence step.
+// For repeated touches on the same channel (e.g. Email follow-ups), it progressively
+// increases delay (24h -> 48h -> 72h) to avoid fatigue and improve reply rates.
+func CalculateAdaptiveDelay(step CadenceStep, priorAttempts int) time.Duration {
+	baseDelay := step.DelayAfterPrev
+	if baseDelay <= 0 {
+		return 0
+	}
+	// If it's a follow-up touch (priorAttempts >= 2), add progressive spacing
+	if step.Channel == db.ChannelEmail && priorAttempts >= 2 {
+		multiplier := priorAttempts - 1
+		if multiplier > 3 {
+			multiplier = 3
+		}
+		return baseDelay * time.Duration(multiplier)
+	}
+	return baseDelay
+}
+
 // DefaultCadence returns the default outreach cadence for new leads.
 func DefaultCadence() CadenceSchedule {
 	return CadenceSchedule{
@@ -162,8 +181,9 @@ func (ct *CadenceTracker) GetNextStep(ctx context.Context, dealID int64, schedul
 		}, nil
 	}
 
-	// Calculate next scheduled time
-	nextScheduled := lastOutboundTime.Add(nextStep.DelayAfterPrev)
+	// Calculate adaptive delay based on channel and attempts
+	delay := CalculateAdaptiveDelay(*nextStep, totalAttempts)
+	nextScheduled := lastOutboundTime.Add(delay)
 	if lastOutboundTime.IsZero() {
 		nextScheduled = time.Now() // First step is immediate
 	}

@@ -44,3 +44,25 @@ jobs:
 
     - name: Build
       run: go build -v ./cmd/marketing_agent
+
+    - name: Verify Staging Health Check Script
+      run: |
+        test -x scripts/staging_health_check.sh
+        bash -n scripts/staging_health_check.sh
+
+    - name: Docker Compose Smoke Test
+      run: |
+        test -x scripts/docker_smoke_test.sh
+        bash -n scripts/docker_smoke_test.sh
+        ./scripts/docker_smoke_test.sh
+
+    - name: Validate Prometheus Alert Rules
+      run: |
+        python3 -c "
+        with open('deploy/prometheus-rules.yml') as f:
+            content = f.read()
+        assert 'groups:' in content
+        assert 'marketing_agent_alerts' in content
+        assert 'DatabasePoolExhausted' in content
+        print('Prometheus rules validated successfully')
+        "

@@ -1,0 +1,29 @@
+groups:
+  - name: marketing_agent_alerts
+    rules:
+      - alert: DatabasePoolExhausted
+        expr: marketing_agent_db_in_use_connections >= (marketing_agent_db_max_open_connections * 0.9) and marketing_agent_db_max_open_connections > 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "PostgreSQL connection pool near exhaustion"
+          description: "Over 90% of maximum database connections are in use for over 2 minutes."
+
+      - alert: DatabaseWaitQueueSpike
+        expr: rate(marketing_agent_db_wait_count[5m]) > 5
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Database connection wait queue spiking"
+          description: "Database queries are waiting for available connections at a rate of >5/sec."
+
+      - alert: StagingHealthCheckFailing
+        expr: probe_success == 0
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Marketing Agent health check probe failing"
+          description: "Endpoint /health or /api/v1/outreach/stats is returning non-200 responses."

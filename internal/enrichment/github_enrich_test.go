@@ -9,7 +9,13 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
+
+	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
+
+func dbCompanyForCircuit() db.Company {
+	return db.Company{Name: "acme", Domain: "acme.com"}
+}
 
 // flakyTransport fails the first failTimes requests with a transport error
 // (simulating the HTTP/2 PROTOCOL_ERROR resets seen in prod logs), then
@@ -68,6 +74,34 @@ func TestGitHubSearchGivesUpAfterMaxAttempts(t *testing.T) {
 	}
 	if got := rt.calls.Load(); got != 3 {
 		t.Fatalf("expected exactly 3 attempts, got %d", got)
+	}
+}
+
+func TestGitHubCircuitOpensAfterRepeatedFailures(t *testing.T) {
+	rt := &flakyTransport{failTimes: 100, status: 200, body: `{}`}
+	src := &GitHubEnrichSource{
+		HTTPClient:       &http.Client{Transport: rt},
+		MaxAttempts:      1,
+		BaseDelay:        time.Millisecond,
+		circuitThreshold: 3,
+		cooldown:         time.Minute,
+	}
+
+	// Three failing Enrich calls trip the breaker (each does 2 searches).
+	for i := 0; i < 3; i++ {
+		_, _ = src.searchRepos(context.Background(), "acme in:name")
+	}
+	if !src.circuitOpen() {
+		t.Fatal("expected circuit to open after threshold failures")
+	}
+
+	callsBefore := rt.calls.Load()
+	_, err := src.Enrich(context.Background(), dbCompanyForCircuit())
+	if err == nil || !strings.Contains(err.Error(), "circuit open") {
+		t.Fatalf("expected circuit-open error, got %v", err)
+	}
+	if rt.calls.Load() != callsBefore {
+		t.Fatal("circuit-open Enrich must not call GitHub")
 	}
 }
 

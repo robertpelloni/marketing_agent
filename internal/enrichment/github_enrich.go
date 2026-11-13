@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"sync"
 	"time"
 
 	"gitlab.com/robertpelloni/marketing_agent/internal/db"
@@ -32,6 +33,17 @@ type GitHubEnrichSource struct {
 	MaxAttempts int
 	// BaseDelay is the first retry wait, doubled per attempt. Zero means 500ms.
 	BaseDelay time.Duration
+
+	// Circuit breaker: after circuitThreshold consecutive transient failures
+	// the source stops calling GitHub until Cooldown elapses. Prod showed
+	// ~160 failed retries in 30 minutes when GitHub search broke persistently
+	// from the Hetzner IP; without this, every enrichment cycle re-hammers a
+	// dead lane for every company.
+	circuitThreshold int
+	cooldown         time.Duration
+	consecutiveFails int
+	openUntil        time.Time
+	mu               sync.Mutex
 }
 
 func (g *GitHubEnrichSource) maxAttempts() int {
@@ -46,6 +58,41 @@ func (g *GitHubEnrichSource) baseDelay() time.Duration {
 		return g.BaseDelay
 	}
 	return 500 * time.Millisecond
+}
+
+// circuitOpen reports whether the breaker is currently cooling down.
+func (g *GitHubEnrichSource) circuitOpen() bool {
+	g.mu.Lock()
+	defer g.mu.Unlock()
+	return time.Now().Before(g.openUntil)
+}
+
+// recordSuccess resets the breaker after a successful GitHub call.
+func (g *GitHubEnrichSource) recordSuccess() {
+	g.mu.Lock()
+	defer g.mu.Unlock()
+	g.consecutiveFails = 0
+	g.openUntil = time.Time{}
+}
+
+// recordFailure counts a transient failure and opens the breaker at the
+// threshold (default 5 failures, default 5 minute cooldown).
+func (g *GitHubEnrichSource) recordFailure() {
+	g.mu.Lock()
+	defer g.mu.Unlock()
+	g.consecutiveFails++
+	threshold := g.circuitThreshold
+	if threshold <= 0 {
+		threshold = 5
+	}
+	if g.consecutiveFails >= threshold && time.Now().After(g.openUntil) {
+		cd := g.cooldown
+		if cd <= 0 {
+			cd = 5 * time.Minute
+		}
+		g.openUntil = time.Now().Add(cd)
+		slog.Info(fmt.Sprintf("GitHubEnrichSource: circuit open after %d consecutive failures, cooling down %v", g.consecutiveFails, cd))
+	}
 }
 
 // isRetryableGitHubStatus reports whether a response status is worth
@@ -64,8 +111,10 @@ func (g *GitHubEnrichSource) doWithRetry(req *http.Request) (*http.Response, err
 	for attempt := 0; attempt < attempts; attempt++ {
 		resp, err := g.HTTPClient.Do(req.Clone(req.Context()))
 		if err == nil && !isRetryableGitHubStatus(resp.StatusCode) {
+			g.recordSuccess()
 			return resp, nil
 		}
+		g.recordFailure()
 		if err != nil {
 			lastErr = err
 		} else {
@@ -140,6 +189,9 @@ func NewGitHubEnrichSource(token string) *GitHubEnrichSource {
 // Enrich implements EnrichmentSource by searching GitHub for the company's
 // repos and extracting committer emails from recent commits.
 func (g *GitHubEnrichSource) Enrich(ctx context.Context, company db.Company) ([]db.Contact, error) {
+	if g.circuitOpen() {
+		return nil, fmt.Errorf("github: circuit open (cooling down after repeated failures)")
+	}
 	// Derive GitHub org name from the company
 	orgName := g.companyToOrgName(company)
 	if orgName == "" {

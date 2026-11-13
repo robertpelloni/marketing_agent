@@ -11,7 +11,7 @@ import (
 )
 
 // Mock Billing Client for detailed testing
-type errorBillingClient struct {}
+type errorBillingClient struct{}
 
 func (e *errorBillingClient) CreateInvoice(ctx context.Context, deal db.Deal, company db.Company) (string, error) {
 	return "", errors.New("billing service down")
@@ -21,7 +21,15 @@ func (e *errorBillingClient) GetInvoiceStatus(ctx context.Context, invoiceID str
 	return billing.InvoicePending, nil
 }
 
-func (e *errorBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier billing.Tier, successURL, cancelURL string) (string, error) {
+func (e *errorBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier billing.Tier, successURL, cancelURL string, seats int) (string, error) {
+	return "", errors.New("billing service down")
+}
+
+func (e *errorBillingClient) CreateCheckoutSessionWithInterval(ctx context.Context, companyID int64, tier billing.Tier, successURL, cancelURL string, seats int, interval string) (string, error) {
+	return "", errors.New("billing service down")
+}
+
+func (e *errorBillingClient) CreateCheckoutSessionWithPrice(ctx context.Context, companyID int64, tier billing.Tier, successURL, cancelURL string, seats int, priceAmount int64, interval string, firstMonthAmount int64) (string, error) {
 	return "", errors.New("billing service down")
 }
 
@@ -41,7 +49,7 @@ func (e *errorBillingClient) HandleWebhook(ctx context.Context, payload []byte, 
 	return "", errors.New("billing service down")
 }
 
-type successBillingClient struct {}
+type successBillingClient struct{}
 
 func (s *successBillingClient) CreateInvoice(ctx context.Context, deal db.Deal, company db.Company) (string, error) {
 	return "INV-TEST", nil
@@ -51,7 +59,15 @@ func (s *successBillingClient) GetInvoiceStatus(ctx context.Context, invoiceID s
 	return billing.InvoicePending, nil
 }
 
-func (s *successBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier billing.Tier, successURL, cancelURL string) (string, error) {
+func (s *successBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier billing.Tier, successURL, cancelURL string, seats int) (string, error) {
+	return "https://checkout.stripe.com/test", nil
+}
+
+func (s *successBillingClient) CreateCheckoutSessionWithInterval(ctx context.Context, companyID int64, tier billing.Tier, successURL, cancelURL string, seats int, interval string) (string, error) {
+	return "https://checkout.stripe.com/test", nil
+}
+
+func (s *successBillingClient) CreateCheckoutSessionWithPrice(ctx context.Context, companyID int64, tier billing.Tier, successURL, cancelURL string, seats int, priceAmount int64, interval string, firstMonthAmount int64) (string, error) {
 	return "https://checkout.stripe.com/test", nil
 }
 

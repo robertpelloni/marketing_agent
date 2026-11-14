@@ -300,3 +300,7 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - Pattern: DeepSeek, MiMo/Hermes, Apollo, Hunter, and the laptop shell GITHUB_TOKEN are ALL invalid - looks like a batch key rotation/revocation. Robert: refresh keys in prod /opt/marketing_agent/.env (and laptop env) and every lane recovers.
 - Local git push to GitHub fails while shell GITHUB_TOKEN (invalid) overrides keyring; push with $env:GITHUB_TOKEN=$null. Fixed for 2dd63b11; prod pulled to 2dd63b11.
 - system_health intermittently 'Health check failed' = GitHub Actions API tracker erroring (likely secondary rate limits after search hammering); recovers on its own.
+
+## LOOP 2026-11-14 (GitHub token revoked) Muse Code
+- Prod GITHUB_TOKEN now Bad credentials (worked 19:1x same day). system_health='Health check failed' is the CI tracker failing auth, NOT a CI failure (Actions all green via laptop gh).
+- Regenerate: GitHub PAT (prod .env + laptop env), DeepSeek, MiMo/Hermes, Apollo, Hunter keys. Laptop keyring git credential remains valid.

@@ -191,6 +191,24 @@ func main() {
 
 		if err := llmProvider.(*llm.DeepSeekLLMProvider).HealthCheck(ctx); err != nil {
 			slog.Info(fmt.Sprintf("LLM: WARNING — DeepSeek health check failed: %v", err))
+			// Health-gated fallthrough: a configured-but-dead key must not
+			// silently win over a healthy Hermes/MiMo provider (prod ran
+			// for weeks on an invalid DeepSeek key while Hermes was
+			// configured). If Hermes is healthy, use it; otherwise keep
+			// DeepSeek so the failure surface stays explicit.
+			if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
+				hermes := llm.NewHermesLLMProvider(llm.HermesConfig{
+					BaseURL: cfg.HermesAPIURL,
+					APIKey:  cfg.HermesAPIKey,
+					Model:   cfg.HermesModel,
+				})
+				if herr := hermes.HealthCheck(ctx); herr == nil {
+					slog.Info("LLM: Falling back to Hermes provider (DeepSeek unhealthy, Hermes healthy)")
+					llmProvider = hermes
+				} else {
+					slog.Info(fmt.Sprintf("LLM: Hermes fallback also unhealthy: %v (keeping DeepSeek)", herr))
+				}
+			}
 		} else {
 			slog.Info("LLM: DeepSeek health check passed ✓")
 		}

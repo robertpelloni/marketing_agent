@@ -304,3 +304,8 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 ## LOOP 2026-11-14 (GitHub token revoked) Muse Code
 - Prod GITHUB_TOKEN now Bad credentials (worked 19:1x same day). system_health='Health check failed' is the CI tracker failing auth, NOT a CI failure (Actions all green via laptop gh).
 - Regenerate: GitHub PAT (prod .env + laptop env), DeepSeek, MiMo/Hermes, Apollo, Hunter keys. Laptop keyring git credential remains valid.
+
+## NOTE 2026-11-14 (Deploy run 43387036244 claim) Muse Code
+- Run 43387036244 was Deploy at 36c45d93 (2026-11-13T07:37Z), lint failing with golangci-lint-action v6 code 3 (Go version) - the pre-fix state. Fixed in bd4faf5e; Deploy (incl. lint + production) has been SUCCESS on every main run since (e.g. 43538098395, 43542630254).
+- Deploy's production job does NOT publish hypernexus.site (DEPLOY_HOST-gated Docker deploy to /app). The site is published by scp to /var/www/hypernexus.site (nginx root confirmed, plus a legacy /srv/www root in one server block).
+- Refreshed live index/pricing/checkout/live from main (md5 verified for index; live pricing serves '1.99 first month, then /mo'; robot-claw canvas present live; all 200). Earlier hash-drift flags were CRLF false positives from git hash-object vs Windows-scp files.

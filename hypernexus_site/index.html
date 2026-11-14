@@ -1258,7 +1258,7 @@
                 <a href="https://github.com/HyperNexusSoft/HyperNexus" target="_blank">Docs</a>
 
                 <a href="https://cloud.hypernexus.site" class="nav-login" style="color:var(--text-secondary);text-decoration:none;font-size:14px;font-weight:500;transition:all 0.2s;padding:8px 16px;border:1px solid #e2e8f0;border-radius:6px">Login</a>
-                <a href="#" class="nav-cta" onclick="event.preventDefault();document.getElementById('pro-card').scrollIntoView({behavior:'smooth',block:'center'})">Start $1.99 First Month →</a>
+                <a href="#" class="nav-cta" onclick="event.preventDefault();document.getElementById('pro-card').scrollIntoView({behavior:'smooth',block:'center'})">Start 14-Day Trial — $1.99 →</a>
 
             </nav>
 
@@ -1316,7 +1316,7 @@
             <div class="hero-buttons">
 
                 <a href="https://demo.hypernexus.site" target="_blank" class="btn btn-primary" style="background:transparent;border:1px solid var(--accent);color:var(--accent)">See Demo →</a>
-                <a href="#" class="btn btn-primary" onclick="event.preventDefault();document.getElementById('pro-card').scrollIntoView({behavior:'smooth',block:'center'})">Start $1.99 First Month →</a>
+                <a href="#" class="btn btn-primary" onclick="event.preventDefault();document.getElementById('pro-card').scrollIntoView({behavior:'smooth',block:'center'})">Start 14-Day Trial — $1.99 →</a>
 
             </div>
 
@@ -1514,13 +1514,13 @@
             <div class="pricing-grid">
 
                                                 <div id="pro-card" style="position:relative">
-                    <div class="price-badge" style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);z-index:10;background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#4cd964,#5ac8fa,#007aff,#5856d6,#ff3b30);background-size:200% 100%;animation:badgeShimmer 2s linear infinite;color:#fff;font-weight:800;padding:4px 14px;border-radius:20px;font-size:11px;letter-spacing:1px;text-shadow:0 1px 2px rgba(0,0,0,0.3);box-shadow:0 4px 15px rgba(255,59,48,0.4),0 0 20px rgba(255,149,0,0.3)">$1.99 First Month</div>
+                    <div class="price-badge" style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);z-index:10;background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#4cd964,#5ac8fa,#007aff,#5856d6,#ff3b30);background-size:200% 100%;animation:badgeShimmer 2s linear infinite;color:#fff;font-weight:800;padding:4px 14px;border-radius:20px;font-size:11px;letter-spacing:1px;text-shadow:0 1px 2px rgba(0,0,0,0.3);box-shadow:0 4px 15px rgba(255,59,48,0.4),0 0 20px rgba(255,149,0,0.3)">14-Day Trial — $1.99 per team</div>
                     <div class="price-card rainbow featured">
                     <div class="rainbow-border" style="position:absolute;inset:-12px;background:linear-gradient(90deg, #ff3b30, #ff9500, #ffcc00, #4cd964, #5ac8fa, #007aff, #5856d6, #ff3b30);background-size:800% 100%;animation:rainbowBtnSlow 3s linear infinite;border-radius:24px;pointer-events:none;z-index:0"></div>
                     <div class="rainbow-spinner" style="padding:56px 18px">
                     <div class="price-tier">Professional License</div>
-                    <div style="text-decoration:line-through;color:#94a3b8;font-size:20px;font-weight:500;letter-spacing:-0.5px;margin-bottom:2px">$100/seat/year</div>
-                    <div class="price-amount">$19.99 <span class="period">/ seat / year</span></div>
+                    <div class="price-amount">$1.99 <span class="period">per team / 14 days</span></div>
+                    <div style="font-size:15px;color:#0f172a;font-weight:600;margin-top:4px">then $5/seat/month from day 15</div>
                     <div style="font-size:13px;color:#475569;margin-top:8px;line-height:1.5">Local license + cloud hosting included. Self-host or use our managed infrastructure.</div>
                     
 
@@ -1528,7 +1528,7 @@
 
                     <div style="display:flex;justify-content:center;align-items:center;margin-top:20px">
                       <div style="display:flex;justify-content:center;align-items:center;margin-top:12px">
-                      <button onclick="buyNow()" class="mega-buy-btn" style="text-transform:none;font-size:16px;letter-spacing:1px;box-shadow:0 0 4px rgba(255, 59, 48, 0.1), 0 0 8px rgba(255, 149, 0, 0.05);padding:14px 32px;animation:rainbowBtnSlow 3s linear infinite, flashText 1.5s ease-in-out infinite">Start $1.99 First Month</button>
+                      <button onclick="buyNow()" class="mega-buy-btn" style="text-transform:none;font-size:16px;letter-spacing:1px;box-shadow:0 0 4px rgba(255, 59, 48, 0.1), 0 0 8px rgba(255, 149, 0, 0.05);padding:14px 32px;animation:rainbowBtnSlow 3s linear infinite, flashText 1.5s ease-in-out infinite">Start 14-Day Trial</button>
                     </div>
                     <script>
                     function buyNow(){
@@ -1915,61 +1915,8 @@
 
     
 
-    <script>
-      
-
-      // Dynamically fetch quote pricing for Professional tier
-      fetch('/api/v1/quote?company_size=Mid-Market')
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.quote) {
-            const priceCards = document.querySelectorAll('.price-tier');
-            priceCards.forEach(tier => {
-              if (tier.textContent === 'Professional') {
-                const amountEl = tier.nextElementSibling; // div.price-amount
-                if (amountEl && amountEl.classList.contains('price-amount')) {
-                  amountEl.textContent = '$' + Math.round(data.quote / 12) + ' ';
-                  const period = document.createElement('span');
-                  period.className = 'period';
-                  period.textContent = '/ mo';
-                  amountEl.appendChild(period);
-                }
-              }
-            });
-          }
-        })
-        .catch(err => console.error('Failed to load real-time pricing:', err));
-
-    </script>
 
 <script>
-// Toggle pricing monthly/annual
-function togglePricing(){
-  var c=document.getElementById("pricing-toggle").checked;
-  var m=document.getElementById("monthly-label");
-  var a=document.getElementById("annual-label");
-  if(c){
-    m.style.color="#64748b";a.style.color="#0284c7";
-  }else{
-    m.style.color="#0284c7";a.style.color="#64748b";
-  }
-  // Rewrite the amount inside the existing text node and the sibling .period
-  // span. Doing this with innerHTML string replaces used to mangle prices
-  // ($500 -> $5000) as well as being an injection surface.
-  document.querySelectorAll(".price-amount").forEach(function(p){
-    Array.prototype.forEach.call(p.childNodes, function(n){
-      if(n.nodeType === 3){
-        n.nodeValue = c ? n.nodeValue.replace(/\$[\d,]+/, "$19.99")
-                        : n.nodeValue.replace(/\$[\d,]+/, "$1.99");
-      }
-    });
-    var period = p.querySelector(".period");
-    if(period){
-      period.textContent = c ? " / seat / yr" : " / seat / mo";
-    }
-  });
-}
-
 // 3D tilt on ALL cards with zoom
 document.querySelectorAll('.feature,.stat,.compliance-item,.price-card').forEach(function(card){
   var lastX=0,lastY=0,stillTimer=null,isRainbow=card.classList.contains('rainbow');

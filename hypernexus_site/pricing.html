@@ -6,7 +6,7 @@
     <title>Pricing — HyperNexus</title>
     <meta
       name="description"
-      content="HyperNexus pricing: $1.99 first month, then $5/seat/month for local license + cloud hosting. Yearly $19.99/seat."
+      content="HyperNexus pricing: $1.99 for a 14-day team trial (up to 5 seats), then $5/seat/month. Founding teams: $200 one-time locks $5/seat for 12 months."
     />
     <link
       rel="icon"
@@ -386,68 +386,25 @@
 
     <div class="header">
       <h1>Simple, Transparent Pricing</h1>
-      <p>$1.99 for your first month, then $5/mo. Cancel anytime.</p>
+      <p>$1.99 for a 14-day trial — your whole team, up to 5 seats. Then $5/seat/month. Cancel anytime.</p>
     </div>
 
     <div class="pricing-container">
       <div class="card">
         <!-- Introductory Offer Badge -->
         <div style="text-align:center;margin-bottom:20px">
-          <span style="display:inline-block;background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#4cd964,#5ac8fa,#007aff,#5856d6,#ff3b30);background-size:800% 100%;animation:rainbowBtnSlow 3s linear infinite;color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px">$1.99 First Month</span>
+          <span style="display:inline-block;background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#4cd964,#5ac8fa,#007aff,#5856d6,#ff3b30);background-size:800% 100%;animation:rainbowBtnSlow 3s linear infinite;color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px">14-Day Trial — $1.99 per team</span>
         </div>
         <div class="price">
-          <!-- Monthly/Yearly Tabs -->
-          <div
-            style="
-              display: flex;
-              justify-content: center;
-              gap: 0;
-              margin: 0 auto 20px;
-            "
-          >
-            <button
-              id="tab-monthly"
-              onclick="switchPlan('monthly')"
-              style="
-                padding: 8px 20px;
-                border: 1px solid hsl(var(--accent-hue), 80%, 60%);
-                border-right: none;
-                border-radius: 6px 0 0 6px;
-                font-size: 13px;
-                font-weight: 600;
-                cursor: pointer;
-                background: hsl(var(--accent-hue), 80%, 60%);
-                color: white;
-                transition: all 0.3s;
-              "
-            >
-              Monthly
-            </button>
-            <button
-              id="tab-yearly"
-              onclick="switchPlan('yearly')"
-              style="
-                padding: 8px 20px;
-                border: 1px solid hsl(var(--accent-hue), 80%, 60%);
-                border-left: none;
-                border-radius: 0 6px 6px 0;
-                font-size: 13px;
-                font-weight: 600;
-                cursor: pointer;
-                background: transparent;
-                color: hsl(var(--accent-hue), 80%, 60%);
-                transition: all 0.3s;
-              "
-            >
-              Yearly <span style="font-size: 11px; opacity: 0.8">Save 16%</span>
-            </button>
-          </div>
           <div class="price-amount" id="price-display">
             <span class="dollar">$</span><span id="price-value">1.99</span>
           </div>
-          <div class="price-period" id="price-period">per seat / month</div>
+          <div class="price-period" id="price-period">per team / 14 days</div>
           <div class="price-note" id="price-note">
-            $1.99 first month, then $5/mo. Cancel anytime.
+            $1.99 charged today. One trial per team. Then $5/seat/month from day 15.
+          </div>
+          <div class="price-note" style="margin-top:10px">
+            Founding teams: $200 one-time, non-refundable — locks $5/seat/month for 12 months.
           </div>
         </div>
 
@@ -467,12 +424,11 @@
           <li>All future 1.x updates</li>
         </ul>
 
-        <div class="section-title">After Year 1</div>
+        <div class="section-title">After You Cancel</div>
         <ul class="features">
           <li>Local license continues working forever</li>
-          <li>Cloud renewal: $25/year (optional)</li>
-          <li>Keep your data — export anytime</li>
-          <li>No lock-in, no vendor hostage</li>
+          <li>Cancel anytime</li>
+          <li>Full data export for 30 days after cancellation, then deleted</li>
         </ul>
 
         <button onclick="buyNow()" class="btn btn-primary">
@@ -511,9 +467,6 @@
           }
         </script>
 
-        <p class="guarantee">
-          <strong>30-day money-back guarantee.</strong> No questions asked.
-        </p>
       </div>
     </div>
 
@@ -564,7 +517,7 @@
         </tr>
         <tr>
           <td>Price</td>
-          <td class="check"><span id="comparison-price">$1.99 first mo, then $5/mo</span></td>
+          <td class="check"><span id="comparison-price">$1.99 for 14 days, then $5/seat/mo</span></td>
           <td>$240/year</td>
           <td>$120/year</td>
         </tr>
@@ -581,62 +534,5 @@
       </p>
     </footer>
 
-    <script>
-      // Monthly/Yearly pricing toggle
-      var __pricing_plan = localStorage.getItem("pricing_plan") || "monthly";
-      window.__pricing_plan = __pricing_plan;
-      window.__price_amount = __pricing_plan === "yearly" ? 1999 : 199;
-
-      function switchPlan(plan) {
-        var isYearly = plan === "yearly";
-        window.__pricing_plan = plan;
-        window.__price_amount = isYearly ? 1999 : 199;
-        localStorage.setItem("pricing_plan", plan);
-
-        var priceValue = document.getElementById("price-value");
-        var pricePeriod = document.getElementById("price-period");
-        var priceNote = document.getElementById("price-note");
-
-        if (priceValue) priceValue.textContent = isYearly ? "19.99" : "1.99";
-        if (pricePeriod)
-          pricePeriod.textContent = isYearly
-            ? "per seat / year"
-            : "per seat / month";
-        if (priceNote)
-          priceNote.textContent = isYearly
-            ? "That's $1.67/month. Save 16% vs monthly."
-            : "$1.99 first month, then $5/mo. Cancel anytime.";
-
-        // Update comparison price
-        var compPrice = document.getElementById("comparison-price");
-        if (compPrice) compPrice.textContent = isYearly ? "$19.99/yr" : "$1.99 first mo, then $5/mo";
-
-        // Update tab styles
-        var tabM = document.getElementById("tab-monthly");
-        var tabY = document.getElementById("tab-yearly");
-        if (tabM) {
-          tabM.style.background = isYearly
-            ? "transparent"
-            : "hsl(var(--accent-hue), 80%, 60%)";
-          tabM.style.color = isYearly
-            ? "hsl(var(--accent-hue), 80%, 60%)"
-            : "white";
-        }
-        if (tabY) {
-          tabY.style.background = isYearly
-            ? "hsl(var(--accent-hue), 80%, 60%)"
-            : "transparent";
-          tabY.style.color = isYearly
-            ? "white"
-            : "hsl(var(--accent-hue), 80%, 60%)";
-        }
-      }
-
-      // Set initial state on load
-      document.addEventListener("DOMContentLoaded", function () {
-        var savedPlan = localStorage.getItem("pricing_plan") || "monthly";
-        switchPlan(savedPlan);
-      });
-    </script>
   </body>
 </html>

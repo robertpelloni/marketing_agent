@@ -13,15 +13,31 @@ type GitHubCITracker struct {
 	owner string
 	repo  string
 	token string
+	// apiBase is overridable for tests; production uses api.github.com.
+	apiBase string
 }
 
 // NewGitHubCITracker creates a new tracker instance.
 func NewGitHubCITracker(owner, repo string) *GitHubCITracker {
 	return &GitHubCITracker{
-		owner: owner,
-		repo:  repo,
-		token: os.Getenv("GITHUB_TOKEN"),
+		owner:   owner,
+		repo:    repo,
+		token:   os.Getenv("GITHUB_TOKEN"),
+		apiBase: "https://api.github.com",
 	}
+}
+
+// doStatusRequest performs one Actions API request, optionally with auth.
+func (g *GitHubCITracker) doStatusRequest(ctx context.Context, url string, withAuth bool) (*http.Response, error) {
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	if withAuth && g.token != "" {
+		req.Header.Set("Authorization", "token "+g.token)
+	}
+	req.Header.Set("Accept", "application/vnd.github.v3+json")
+	return http.DefaultClient.Do(req)
 }
 
 type workflowRunsResponse struct {
@@ -32,21 +48,27 @@ type workflowRunsResponse struct {
 }
 
 func (g *GitHubCITracker) GetLatestStatus(ctx context.Context, branch string) (CIStatus, error) {
-	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/actions/runs?branch=%s&per_page=1", g.owner, g.repo, branch)
+	base := g.apiBase
+	if base == "" {
+		base = "https://api.github.com"
+	}
+	url := fmt.Sprintf("%s/repos/%s/%s/actions/runs?branch=%s&per_page=1", base, g.owner, g.repo, branch)
 
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	resp, err := g.doStatusRequest(ctx, url, true)
 	if err != nil {
 		return CIStatusUnknown, err
 	}
 
-	if g.token != "" {
-		req.Header.Set("Authorization", "token "+g.token)
-	}
-	req.Header.Set("Accept", "application/vnd.github.v3+json")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return CIStatusUnknown, err
+	// A revoked/expired token must not blind health reporting for a public
+	// repo: workflow runs are public data, so retry once without auth.
+	// (Prod lost system_health this way when its GITHUB_TOKEN was revoked
+	// while CI itself was green.)
+	if (resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden) && g.token != "" {
+		_ = resp.Body.Close()
+		resp, err = g.doStatusRequest(ctx, url, false)
+		if err != nil {
+			return CIStatusUnknown, err
+		}
 	}
 	defer func() { _ = resp.Body.Close() }()
 

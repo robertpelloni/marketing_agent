@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"sync/atomic"
 )
 
 // GitHubCITracker implements the CITracker interface using the GitHub Actions API.
@@ -14,7 +15,8 @@ type GitHubCITracker struct {
 	repo  string
 	token string
 	// apiBase is overridable for tests; production uses api.github.com.
-	apiBase string
+	apiBase      string
+	tokenInvalid atomic.Bool
 }
 
 // NewGitHubCITracker creates a new tracker instance.
@@ -33,7 +35,7 @@ func (g *GitHubCITracker) doStatusRequest(ctx context.Context, url string, withA
 	if err != nil {
 		return nil, err
 	}
-	if withAuth && g.token != "" {
+	if withAuth && g.token != "" && !g.tokenInvalid.Load() {
 		req.Header.Set("Authorization", "token "+g.token)
 	}
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
@@ -54,16 +56,19 @@ func (g *GitHubCITracker) GetLatestStatus(ctx context.Context, branch string) (C
 	}
 	url := fmt.Sprintf("%s/repos/%s/%s/actions/runs?branch=%s&per_page=1", base, g.owner, g.repo, branch)
 
-	resp, err := g.doStatusRequest(ctx, url, true)
+	useAuth := g.token != "" && !g.tokenInvalid.Load()
+	resp, err := g.doStatusRequest(ctx, url, useAuth)
 	if err != nil {
 		return CIStatusUnknown, err
 	}
 
 	// A revoked/expired token must not blind health reporting for a public
-	// repo: workflow runs are public data, so retry once without auth.
-	// (Prod lost system_health this way when its GITHUB_TOKEN was revoked
-	// while CI itself was green.)
-	if (resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden) && g.token != "" {
+	// repo: workflow runs are public data, so retry once without auth and
+	// remember 401 so future polls do not repeatedly send bad credentials.
+	if (resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden) && useAuth {
+		if resp.StatusCode == http.StatusUnauthorized {
+			g.tokenInvalid.Store(true)
+		}
 		_ = resp.Body.Close()
 		resp, err = g.doStatusRequest(ctx, url, false)
 		if err != nil {

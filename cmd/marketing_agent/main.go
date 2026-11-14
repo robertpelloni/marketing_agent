@@ -135,14 +135,15 @@ func main() {
 		slog.Info("Enrichment: No APOLLO_API_KEY set - skipping Apollo.io.")
 	}
 
-	// GitHub commit email fallback — works even when Hunter/Apollo fail
+	// GitHub commit email fallback — always enabled because public repository
+	// commit history works unauthenticated (60 req/hr) as well as authenticated.
 	if cfg.GitHubToken != "" {
-		slog.Info("Enrichment: Initializing GitHub commit email source (last-resort fallback).")
-		enrichmentSources = append(enrichmentSources, enrichment.NewGitHubEnrichSource(cfg.GitHubToken))
-		sourceNames = append(sourceNames, "GitHub Commits")
+		slog.Info("Enrichment: Initializing GitHub commit email source (authenticated with unauthenticated 401 fallback).")
 	} else {
-		slog.Info("Enrichment: No GITHUB_TOKEN set - skipping GitHub commit email fallback.")
+		slog.Info("Enrichment: Initializing GitHub commit email source (unauthenticated public API mode).")
 	}
+	enrichmentSources = append(enrichmentSources, enrichment.NewGitHubEnrichSource(cfg.GitHubToken))
+	sourceNames = append(sourceNames, "GitHub Commits")
 
 	if len(enrichmentSources) == 0 {
 		slog.Info("Enrichment: No real sources configured.")
@@ -384,6 +385,7 @@ func main() {
 
 	// 4. Start Web Server
 	webServer := web.NewServer(database, deployer, ciTracker, taskManager, llmProvider, billingClient, blogEngine)
+	webServer.SetVersion(version)
 
 	srv := &http.Server{
 		Addr:    ":" + cfg.Port,

@@ -37,3 +37,15 @@ func TestProcessInbound_Mock(t *testing.T) {
 		t.Fatal("Failed to create Manager")
 	}
 }
+
+func TestIsUnsubscribe_DoesNotTriggerOnSpamFolderMention(t *testing.T) {
+	if isUnsubscribe("Hey, your note landed in my spam folder, tell me more about HyperNexus!") {
+		t.Fatal("benign mention of spam folder must not auto-unsubscribe prospect")
+	}
+	if !isUnsubscribe("Please unsubscribe me from this list") {
+		t.Fatal("explicit unsubscribe must return true")
+	}
+	if !isUnsubscribe("Stop emailing or I will mark as spam") {
+		t.Fatal("explicit spam/opt-out threat must return true")
+	}
+}

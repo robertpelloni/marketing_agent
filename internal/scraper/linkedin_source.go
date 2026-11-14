@@ -8,11 +8,18 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
 	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
+
+// linkedInBrowserSem serializes headless Chromium launches so discovery never
+// stacks multiple browser instances on the shared 2-vCPU / 8 GB VPS.
+var linkedInBrowserSem = make(chan struct{}, 1)
+
+const linkedInRodTimeout = 45 * time.Second
 
 // LinkedInSource implements LeadSource by searching for companies and contacts via LinkedIn.
 // Note: LinkedIn Sales Navigator does not have a public REST API. This source uses:
@@ -65,20 +72,47 @@ func (l *LinkedInSource) Discover(ctx context.Context, keywords []string) ([]db.
 }
 
 // scrapeLinkedIn performs a headless browser scrape of LinkedIn Sales Navigator.
-// Uses rod's Must* chain and recovers panics into errors.
+// Enforces single-instance concurrency, a strict 45s timeout (so login challenges
+// never leave hung Chromium renderers running forever), and mandatory /tmp/rod cleanup.
 func (l *LinkedInSource) scrapeLinkedIn(ctx context.Context, keywords []string) (companies []db.Company, err error) {
+	select {
+	case linkedInBrowserSem <- struct{}{}:
+		defer func() { <-linkedInBrowserSem }()
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	}
+
+	rodCtx, cancel := context.WithTimeout(ctx, linkedInRodTimeout)
+	defer cancel()
+
 	defer func() {
 		if r := recover(); r != nil {
-			err = fmt.Errorf("headless scrape panicked: %v", r)
+			err = fmt.Errorf("headless scrape panicked or timed out: %v", r)
 		}
 	}()
 
-	// Connect to browser (auto-launch with no-sandbox flag)
-	u := launcher.New().NoSandbox(true).MustLaunch()
-	browser := rod.New().ControlURL(u).MustConnect()
+	lnchr := launcher.New().
+		Context(rodCtx).
+		NoSandbox(true).
+		Headless(true).
+		Set("disable-gpu").
+		Set("disable-dev-shm-usage").
+		Set("disable-extensions").
+		Set("disable-setuid-sandbox").
+		Set("no-first-run").
+		Set("no-default-browser-check")
+	defer lnchr.Cleanup()
+	defer lnchr.Kill()
+
+	u, launchErr := lnchr.Launch()
+	if launchErr != nil {
+		return nil, fmt.Errorf("headless browser launch failed: %w", launchErr)
+	}
+
+	browser := rod.New().ControlURL(u).Context(rodCtx).MustConnect()
 	defer func() { _ = browser.Close() }()
 
-	page := browser.MustPage()
+	page := browser.MustPage().Timeout(40 * time.Second)
 	page.MustNavigate("https://www.linkedin.com/login")
 	page.MustWaitLoad()
 

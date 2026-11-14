@@ -78,6 +78,10 @@ func (g *GitHubCommentSender) SearchRelevantIssues(ctx context.Context, companyD
 	if g.client == nil {
 		return nil, fmt.Errorf("GitHubCommentSender: client not initialized")
 	}
+	org := strings.TrimSpace(companyDomain)
+	if org == "" {
+		return nil, nil
+	}
 
 	// Extract owner from domain or use a search approach
 	// We search for issues mentioning keywords in the company's GitHub repos
@@ -96,8 +100,8 @@ func (g *GitHubCommentSender) SearchRelevantIssues(ctx context.Context, companyD
 	var targets []IssueTarget
 
 	for _, term := range searchTerms {
-		query := fmt.Sprintf("%s org:%s is:issue is:open", term, companyDomain)
-		results, _, err := g.client.Search.Issues(ctx, query, &github.SearchOptions{
+		query := fmt.Sprintf("%s org:%s is:issue is:open", term, org)
+		results, resp, err := g.client.Search.Issues(ctx, query, &github.SearchOptions{
 			Sort:  "updated",
 			Order: "desc",
 			ListOptions: github.ListOptions{
@@ -106,6 +110,9 @@ func (g *GitHubCommentSender) SearchRelevantIssues(ctx context.Context, companyD
 		})
 		if err != nil {
 			slog.Info(fmt.Sprintf("GitHubCommentSender: Search error for %q: %v", query, err))
+			if resp != nil && (resp.StatusCode == 401 || resp.StatusCode == 403) {
+				return nil, fmt.Errorf("GitHubCommentSender: search halted on HTTP %d: %w", resp.StatusCode, err)
+			}
 			continue
 		}
 
@@ -159,8 +166,8 @@ func CalculateRelevance(term, title, body string) int {
 	lowerTitle := strings.ToLower(title)
 	lowerBody := strings.ToLower(body)
 
-	// High-value keywords
-	highValue := []string{"MCP", "model context protocol", "agent", "orchestrat", "tool routing", "LLM"}
+	// High-value keywords (lowercased to match lowerTitle / lowerBody)
+	highValue := []string{"mcp", "model context protocol", "agent", "orchestrat", "tool routing", "llm"}
 	for _, kw := range highValue {
 		if strings.Contains(lowerTitle, kw) {
 			score += 3
@@ -260,6 +267,22 @@ func (g *GitHubCommentSender) FindAndComment(ctx context.Context, company db.Com
 
 // extractOrgFromDomain extracts the likely GitHub org name from a company domain.
 func extractOrgFromDomain(domain string) string {
+	domain = strings.TrimSpace(domain)
+	if domain == "" {
+		return ""
+	}
+	// Handle github.com/<owner>[/<repo>] domains from TargetDiscoveryWorker
+	trimmed := strings.TrimPrefix(strings.TrimPrefix(domain, "https://"), "http://")
+	trimmed = strings.TrimPrefix(trimmed, "www.")
+	if strings.HasPrefix(strings.ToLower(trimmed), "github.com/") {
+		rest := strings.Trim(trimmed[len("github.com/"):], "/")
+		parts := strings.Split(rest, "/")
+		if len(parts) >= 1 && parts[0] != "" {
+			return parts[0]
+		}
+		return ""
+	}
+
 	// Handle URLs
 	if strings.HasPrefix(domain, "http") {
 		parsed, err := url.Parse(domain)

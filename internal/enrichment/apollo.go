@@ -78,6 +78,9 @@ func (a *ApolloSource) Enrich(ctx context.Context, company db.Company) ([]db.Con
 	if domain == "" {
 		return nil, fmt.Errorf("apollo: invalid domain %q", company.Domain)
 	}
+	if isSharedCodeHostDomain(domain) {
+		return nil, nil
+	}
 
 	slog.Info(fmt.Sprintf("ApolloSource: Searching for contacts at %s (%s)", company.Name, domain))
 

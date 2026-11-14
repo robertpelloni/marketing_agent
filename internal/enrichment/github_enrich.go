@@ -12,6 +12,7 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"gitlab.com/robertpelloni/marketing_agent/internal/db"
@@ -46,6 +47,7 @@ type GitHubEnrichSource struct {
 	cooldown         time.Duration
 	failureTimes     []time.Time
 	openUntil        time.Time
+	tokenInvalid     atomic.Bool
 	mu               sync.Mutex
 }
 
@@ -111,14 +113,37 @@ func isRetryableGitHubStatus(code int) bool {
 	return code == http.StatusTooManyRequests || code >= 500
 }
 
+// applyAuth attaches the configured GitHub token unless an earlier 401 proved
+// the token was revoked/expired.
+func (g *GitHubEnrichSource) applyAuth(req *http.Request) {
+	if g.Token != "" && !g.tokenInvalid.Load() {
+		req.Header.Set("Authorization", "token "+g.Token)
+	}
+}
+
 // doWithRetry executes req with bounded exponential backoff. The request is
 // cloned per attempt. Retry-After (seconds) is honored when GitHub sends it.
-// Context cancellation aborts the wait between attempts.
+// If an authenticated request receives 401 Unauthorized (revoked/expired PAT),
+// the token is disabled in-memory and the request is immediately retried
+// unauthenticated against GitHub's public API.
 func (g *GitHubEnrichSource) doWithRetry(req *http.Request) (*http.Response, error) {
 	attempts := g.maxAttempts()
 	var lastErr error
 	for attempt := 0; attempt < attempts; attempt++ {
-		resp, err := g.HTTPClient.Do(req.Clone(req.Context()))
+		cloned := req.Clone(req.Context())
+		if g.tokenInvalid.Load() {
+			cloned.Header.Del("Authorization")
+		}
+		resp, err := g.HTTPClient.Do(cloned)
+		if err == nil && resp.StatusCode == http.StatusUnauthorized && cloned.Header.Get("Authorization") != "" {
+			_ = resp.Body.Close()
+			if g.tokenInvalid.CompareAndSwap(false, true) {
+				slog.Warn("GitHubEnrichSource: GITHUB_TOKEN returned 401 Unauthorized; falling back to unauthenticated public GitHub API")
+			}
+			unauthReq := req.Clone(req.Context())
+			unauthReq.Header.Del("Authorization")
+			resp, err = g.HTTPClient.Do(unauthReq)
+		}
 		if err == nil && !isRetryableGitHubStatus(resp.StatusCode) {
 			g.recordSuccess()
 			return resp, nil
@@ -213,20 +238,30 @@ func (g *GitHubEnrichSource) Enrich(ctx context.Context, company db.Company) ([]
 	if g.circuitOpen() {
 		return nil, fmt.Errorf("github: circuit open (cooling down after repeated failures)")
 	}
-	// Derive GitHub org name from the company
-	orgName := g.companyToOrgName(company)
-	if orgName == "" {
-		return nil, fmt.Errorf("github: could not determine org name for %s", company.Name)
+	// Fast path: if the company domain already names a specific GitHub repo
+	// (e.g. "github.com/owner/repo" from TargetDiscoveryWorker), inspect its
+	// commits directly first without spending Search API quota.
+	var repos []struct{ FullName string }
+	if directRepo := directRepoFullName(company.Domain); directRepo != "" {
+		repos = append(repos, struct{ FullName string }{FullName: directRepo})
 	}
 
-	slog.Info(fmt.Sprintf("GitHubEnrichSource: Searching for commits at org %s (%s)", orgName, company.Name))
+	orgName := g.companyToOrgName(company)
+	if len(repos) == 0 {
+		if orgName == "" {
+			return nil, fmt.Errorf("github: could not determine org name for %s", company.Name)
+		}
 
-	// Try to find the org's repos
-	repos, err := g.searchOrgRepos(ctx, orgName)
-	if err != nil {
-		repos, err = g.searchByCompanyName(ctx, company.Name)
+		slog.Info(fmt.Sprintf("GitHubEnrichSource: Searching for commits at org %s (%s)", orgName, company.Name))
+
+		// Try to find the org's repos
+		var err error
+		repos, err = g.searchOrgRepos(ctx, orgName)
 		if err != nil {
-			return nil, fmt.Errorf("github: repo search failed for %s: %w", orgName, err)
+			repos, err = g.searchByCompanyName(ctx, company.Name)
+			if err != nil {
+				return nil, fmt.Errorf("github: repo search failed for %s: %w", orgName, err)
+			}
 		}
 	}
 
@@ -328,9 +363,7 @@ func (g *GitHubEnrichSource) searchRepos(ctx context.Context, query string) ([]s
 	}
 
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
-	if g.Token != "" {
-		req.Header.Set("Authorization", "token "+g.Token)
-	}
+	g.applyAuth(req)
 
 	resp, err := g.doWithRetry(req)
 	if err != nil {
@@ -372,9 +405,7 @@ func (g *GitHubEnrichSource) fetchRecentCommits(ctx context.Context, fullName st
 	}
 
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
-	if g.Token != "" {
-		req.Header.Set("Authorization", "token "+g.Token)
-	}
+	g.applyAuth(req)
 
 	resp, err := g.doWithRetry(req)
 	if err != nil {
@@ -394,9 +425,55 @@ func (g *GitHubEnrichSource) fetchRecentCommits(ctx context.Context, fullName st
 	return commits, nil
 }
 
+// directRepoFullName extracts "owner/repo" when domain is formatted as
+// "github.com/owner/repo" or "https://github.com/owner/repo".
+func directRepoFullName(domain string) string {
+	d := strings.TrimSpace(domain)
+	d = strings.TrimPrefix(d, "https://")
+	d = strings.TrimPrefix(d, "http://")
+	d = strings.TrimPrefix(d, "www.")
+	if !strings.HasPrefix(strings.ToLower(d), "github.com/") {
+		return ""
+	}
+	rest := strings.Trim(d[len("github.com/"):], "/")
+	parts := strings.Split(rest, "/")
+	if len(parts) >= 2 && isValidOrgName(parts[0]) && isValidRepoSegment(parts[1]) {
+		return parts[0] + "/" + parts[1]
+	}
+	return ""
+}
+
+func isValidRepoSegment(s string) bool {
+	if len(s) < 1 || len(s) > 100 {
+		return false
+	}
+	for _, r := range s {
+		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') ||
+			(r >= '0' && r <= '9') || r == '-' || r == '_' || r == '.' {
+			continue
+		}
+		return false
+	}
+	return true
+}
+
 // companyToOrgName derives a GitHub org name from a company record.
 // Includes sanity checks to avoid passing garbage HN comment text as GitHub queries.
 func (g *GitHubEnrichSource) companyToOrgName(company db.Company) string {
+	// Prefer explicit github.com/<owner>[/<repo>] domain when present, since
+	// TargetDiscoveryWorker stores repo name in company.Name and owner/repo in Domain.
+	d := strings.TrimSpace(company.Domain)
+	d = strings.TrimPrefix(d, "https://")
+	d = strings.TrimPrefix(d, "http://")
+	d = strings.TrimPrefix(d, "www.")
+	if strings.HasPrefix(strings.ToLower(d), "github.com/") {
+		rest := strings.Trim(d[len("github.com/"):], "/")
+		parts := strings.Split(rest, "/")
+		if len(parts) >= 1 && isValidOrgName(parts[0]) {
+			return parts[0]
+		}
+	}
+
 	name := strings.TrimSpace(company.Name)
 
 	// If the name looks like a valid GitHub handle, use it directly

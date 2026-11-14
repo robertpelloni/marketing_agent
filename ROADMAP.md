@@ -1,32 +1,31 @@
 # ROADMAP — marketing_agent
 
-Source of truth for long-term direction. Short-term tasks live in TODO.md.
-Verified against repo + production (5.161.250.43) on 2026-11-07.
+Source of truth for long-term direction. Short-term tasks live in `TODO.md`.
+Verified against repository and Hetzner production (`5.161.250.43`) through `2026-11-14` (`v0.7.4`).
 
-## M1 — Repo/prod parity lock (DONE 2026-11-07)
-- Trial-funnel pages, sitemap dates, outreach docs merged main <- backup/wip-leader-sync-20261107, pushed.
-- Production already served these files; repo now matches. Rule: scp to /var/www/hypernexus.site only from committed main.
+## M1 — Repo/prod parity lock (DONE 2026-11-07 / 2026-11-13)
+- Trial-funnel pages, sitemap dates, outreach docs, and `/opt/marketing_agent` checkout synced cleanly to `main` across both GitHub (`github`) and GitLab (`origin`).
+- Rule: publish static site updates to `/var/www/hypernexus.site` and `/var/www/tormentnexus.site` only from committed `main`.
 
-## M2 — $1.99 trial verification
-- Live click-test: homepage button -> /checkout.html -> Stripe shows $1.99 one-time.
-- Decide: keep one-time $1.99 (current) vs $1.99/mo recurring (one-line: interval month).
-- Backend already supports ad-hoc price_amount (no new Stripe Price ID needed).
+## M2 — `$1.99` first-month -> `$5/mo` recurring funnel verification
+- Implemented (`93f09a8` / `34303c35`): homepage & pricing CTAs -> `/checkout.html` -> Stripe Checkout creates `$5/mo` subscription with `$3.01`-off once-coupon (`$1.99` immediate first-month charge, no free-trial copy).
+- Remaining gate: live operator card charge + webhook subscription provisioning check.
 
-## M3 — Outreach blitz
-- Copy drafted for all 11 posts. Remaining is manual: LinkedIn, X, Hashnode, Medium (account auth required).
-- Track in POSTING_GUIDE.md sync checklist + marketing/outreach_queue_2026-11-03.md.
+## M3 — Outreach blitz & autonomous multi-channel cadence (CORE ENGINE READY `v0.7.4`)
+- Copy drafted for all 11 launch posts (`POSTING_GUIDE.md` + `marketing/outreach_queue_2026-11-03.md`); manual account-authenticated posts (LinkedIn, X, Hashnode, Medium) remain in `TODO.md`.
+- Autonomous 5-step cadence engine hardened in `v0.7.4`: monotonic `TemplateID` progression (fixing Step 2/3 loop), delivery-before-persistence invariants, unauthenticated GitHub commit enrichment fallback for the 17,953+ discovered leads, and bounded `go-rod` browser lifecycle.
 
-## M4 - Integration suite green (DONE 2026-11-13, v0.7.3)
-- All workflows green on main: CI, Docker Build, Integration Tests, Deploy (lint/test/build/staging/production), CodeQL.
-- Root causes fixed: .dockerignore excluded the Go module; golangci action too old for Go 1.25; 43 lint issues; missing migrations 000013 (deals.cadence_step) and 000014 (interactions.template_id/response_id); enricher used the contact-joined outreach query so contactless deals could never enrich; staging smoke targeted the wrong port.
+## M4 — Integration & CI suite green (DONE 2026-11-13, `v0.7.3`)
+- All 5 GitHub Actions workflows green on `main`: `CI`, `Docker Build`, `Integration Tests`, `Deploy`, and `CodeQL`, guarded by `internal/db/schema_test.go`.
 
-## M5 — Marketing bot autonomy
-- scripts/marketing_bot is the canonical runner (per AGENTS.md). Legacy auto_*/apollo_* one-offs in scripts/ to be archived (see TODO).
-- Missing secrets (DEVTO_API_KEY, BLUESKY_*, etc.) block any automated posting. No auto-post until keys exist.
+## M5 — Marketing bot & external provider credentials
+- `scripts/marketing_bot` is the canonical social runner (legacy `auto_*`/`apollo_*` scripts archived under `scripts/archive/`).
+- Dashboard Section `6A` and `/api/v1/metrics` (`enrichment_sources`) expose real-time provider status; rotating valid keys in `/opt/marketing_agent/.env` (`DEEPSEEK_API_KEY`, `HERMES_API_KEY`, `APOLLO_API_KEY`, `HUNTER_API_KEY`, `GITHUB_TOKEN`, `DEVTO_API_KEY`, `BLUESKY_*`) immediately unlocks full-rate enrichment, LLM blog generation, and social auto-posting without code changes.
 
-## M6 - Dashboard (DONE 2026-11-13, v0.7.3)
-- Merged feature/v0.7.1-consolidated-dashboard into main. / is the single operations page: six high-value-first sections (Subscription, KPIs, Outreach, Deals, Social, Pipeline Ops) with quick-nav anchors and tooltips. /dashboard/outreach 301-redirects to /#outreach (legacy page archived under web/dashboard/archive/). /demo stays as the separate TormentNexus Cloud Console subproject view; /health, /health/detailed, /metrics, and /api/v1/metrics are linked from the nav.
-- System tray (Windows desktop runs): cmd/marketing_agent/systray.go provides Open Dashboard, Outreach, both sites, Blog, Restart Service, and Quit Servers & Exit. On Linux the service is headless under systemd (systray_unix.go blocks without a tray).
+## M6 — Single-page Operations Hub & Observability (DONE `v0.7.3`–`v0.7.4`)
+- `/` is the unified single-page operations hub (Subscription, KPIs, Cold Outreach, Active Deals, Social/DevRel, Pipeline Ops, Operator Tools `6D`, Provider Credentials `6A`); `/dashboard/outreach` 301-redirects to `/#outreach`; `/demo` serves the TormentNexus Cloud Console view.
+- `/health`, `/health/detailed` (with stamped `version` and accurate DeepSeek/Hermes label), `/metrics` (Prometheus), and `/api/v1/metrics` (JSON pool + enrichment counters + `version`) provide headless production observability.
 
 ## Non-goals
-- checkout.html in sitemap: deliberately excluded (transactional page).
+- `checkout.html` in `sitemap.xml`: deliberately excluded (transactional page).
+- Workstation server execution: prohibited per standing Hetzner-only policy (`start.bat` guard).

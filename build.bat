@@ -1,21 +1,19 @@
 @echo off
-echo Updating submodules (if configured)...
+setlocal
+echo Updating submodules if configured...
 git submodule update --init --recursive 2>nul
-if %errorlevel% neq 0 (
-    echo Submodule update skipped (no submodules configured).
-)
+if errorlevel 1 echo Submodule update skipped - no submodules configured.
 
-echo Running Merge Integrity Tests...
-go test ./internal/gitcheck/...
-if %errorlevel% neq 0 (
-    echo Integrity check failed! Please resolve conflicts or sync with main.
-    exit /b %errorlevel%
-)
+set VERSION=dev
+if exist VERSION set /p VERSION=<VERSION
+if "%VERSION%"=="dev" if exist VERSION.md set /p VERSION=<VERSION.md
 
-echo Building Marketing Agent...
-go build -o bin/marketing_agent.exe ./cmd/marketing_agent
-if %errorlevel% neq 0 (
+REM NOTE: Do NOT run `go test ./internal/gitcheck/...` here - its test suite runs
+REM `git reset` against the active working tree. Keep build.bat aligned with build.sh.
+echo Building Marketing Agent v%VERSION%...
+go build -trimpath -ldflags "-X main.version=%VERSION%" -o bin\marketing_agent.exe .\cmd\marketing_agent
+if errorlevel 1 (
     echo Build failed!
-    exit /b %errorlevel%
+    exit /b 1
 )
-echo Build successful — bin/marketing_agent.exe
+echo Build successful - bin\marketing_agent.exe v%VERSION%

@@ -11,6 +11,46 @@ import (
 	"github.com/go-rod/rod/lib/launcher"
 )
 
+// linkedInSendSem serializes headless Chromium sessions for LinkedIn outreach
+// to cap memory/CPU footprint and prevent orphaned renderers on Linux VPS hosts.
+var linkedInSendSem = make(chan struct{}, 1)
+
+const linkedInSenderTimeout = 45 * time.Second
+
+func launchHeadlessRod(ctx context.Context) (*rod.Browser, func(), error) {
+	lnchr := launcher.New().
+		Context(ctx).
+		NoSandbox(true).
+		Headless(true).
+		Set("disable-gpu").
+		Set("disable-dev-shm-usage").
+		Set("disable-extensions").
+		Set("disable-setuid-sandbox").
+		Set("no-first-run").
+		Set("no-default-browser-check")
+
+	u, err := lnchr.Launch()
+	if err != nil {
+		lnchr.Kill()
+		lnchr.Cleanup()
+		return nil, func() {}, fmt.Errorf("rod launch failed: %w", err)
+	}
+
+	b := rod.New().ControlURL(u).Context(ctx)
+	if err := b.Connect(); err != nil {
+		lnchr.Kill()
+		lnchr.Cleanup()
+		return nil, func() {}, fmt.Errorf("rod connect failed: %w", err)
+	}
+
+	cleanup := func() {
+		_ = b.Close()
+		lnchr.Kill()
+		lnchr.Cleanup()
+	}
+	return b, cleanup, nil
+}
+
 // LinkedInSender sends messages via LinkedIn messaging.
 // Note: LinkedIn does not provide a public API for direct messaging.
 // This implementation uses:
@@ -77,25 +117,29 @@ func (l *LinkedInSender) Send(ctx context.Context, msg LinkedInMessage) error {
 
 // sendViaRod uses the go-rod headless browser to send a message on LinkedIn.
 func (l *LinkedInSender) sendViaRod(ctx context.Context, msg LinkedInMessage) (err error) {
+	select {
+	case linkedInSendSem <- struct{}{}:
+		defer func() { <-linkedInSendSem }()
+	case <-ctx.Done():
+		return ctx.Err()
+	}
+
+	rodCtx, cancel := context.WithTimeout(ctx, linkedInSenderTimeout)
+	defer cancel()
+
 	defer func() {
 		if r := recover(); r != nil {
-			err = fmt.Errorf("headless message send panicked: %v", r)
+			err = fmt.Errorf("headless message send panicked or timed out: %v", r)
 		}
 	}()
 
-	// Configure rod launcher with all required flags for Linux VPS (root/no sandbox)
-	u := launcher.New().
-		NoSandbox(true).
-		Headless(true).
-		Set("disable-gpu").
-		Set("disable-dev-shm-usage").
-		Set("disable-extensions").
-		Set("disable-setuid-sandbox").
-		MustLaunch()
-	browser := rod.New().ControlURL(u).MustConnect()
-	defer func() { _ = browser.Close() }()
+	browser, cleanup, launchErr := launchHeadlessRod(rodCtx)
+	if launchErr != nil {
+		return launchErr
+	}
+	defer cleanup()
 
-	page := browser.MustPage()
+	page := browser.MustPage().Timeout(40 * time.Second)
 
 	// 1. Navigate to login
 	page.MustNavigate("https://www.linkedin.com/login")
@@ -185,16 +229,29 @@ func (l *LinkedInSender) SendConnectionRequest(ctx context.Context, profileURL, 
 
 // connectViaRod uses the go-rod headless browser to send a connection request.
 func (l *LinkedInSender) connectViaRod(ctx context.Context, profileURL, note string) (err error) {
+	select {
+	case linkedInSendSem <- struct{}{}:
+		defer func() { <-linkedInSendSem }()
+	case <-ctx.Done():
+		return ctx.Err()
+	}
+
+	rodCtx, cancel := context.WithTimeout(ctx, linkedInSenderTimeout)
+	defer cancel()
+
 	defer func() {
 		if r := recover(); r != nil {
-			err = fmt.Errorf("headless connection request panicked: %v", r)
+			err = fmt.Errorf("headless connection request panicked or timed out: %v", r)
 		}
 	}()
 
-	browser := rod.New().MustConnect()
-	defer func() { _ = browser.Close() }()
+	browser, cleanup, launchErr := launchHeadlessRod(rodCtx)
+	if launchErr != nil {
+		return launchErr
+	}
+	defer cleanup()
 
-	page := browser.MustPage()
+	page := browser.MustPage().Timeout(40 * time.Second)
 
 	// 1. Navigate to login
 	page.MustNavigate("https://www.linkedin.com/login")

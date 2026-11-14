@@ -3,16 +3,20 @@
 ## Architecture & Framework Rules
 - **Repository Identity**: `marketing_agent` (formerly `enterprise_sales_bot`), written in Go 1.25 modular monolith architecture with PostgreSQL for persistent state management.
 - **Dual-Brand Split**: Dynamic routing between `hypernexus.site` (corporate/enterprise) and `tormentnexus.site` (open-source developers).
-- **Single Page Dashboard Philosophy**: Keep the web dashboard consolidated on a single responsive view (`/`), avoiding scattered subpages and keeping high-value conversion indicators at the top.
-- **Headless Unix vs Desktop Windows Systray**: Windows desktop runs `getlantern/systray` for taskbar notifications and interactive launchers. Unix/Linux runners operate headlessly in background mode controlled by OS signals.
-- **Cadence Engine Max Attempts**: Configured to `MaxAttempts: 10` across multi-channel touches (Email -> GitHub -> Email -> LinkedIn -> Email) to ensure leads receive sustained, high-value touches before exhaustion.
-- **Testing Guardrails**: Target specific internal packages (`go test ./internal/... ./cmd/...`) to avoid executing unconfigured submodule tests.
+- **Single Page Dashboard Philosophy**: Keep the web dashboard consolidated on a single responsive view (`/`), avoiding scattered subpages and keeping high-value conversion indicators at the top (`/dashboard/outreach` 301-redirects to `/#outreach`; `/demo` remains the separate TormentNexus Cloud Console view).
+- **Headless Unix vs Desktop Windows Systray**: Windows desktop runs `getlantern/systray` for taskbar notifications and interactive launchers (`cmd/marketing_agent/systray.go`). Unix/Linux runners operate headlessly in background mode under `systemd`.
+- **Cadence Engine Invariants (`v0.7.4`)**:
+  - Configured to `MaxAttempts: 10` across a monotonic 5-step multi-channel sequence (`initial-email` -> `github-issue-comment` -> `followup-email` -> `linkedin-connect` -> `breakup-email`).
+  - Always resolve cadence position from `TemplateID` + `Direction` (`Outbound` / `Skipped`), never `Channel` alone (since Steps 1, 3, and 5 share `email`).
+  - Always execute channel delivery *before* persisting `Outbound` interactions or advancing `cadence_step`; record `Direction: "Skipped"` when an optional channel lacks a target so deals advance instead of stalling.
+- **GitHub Public API Resilience (`v0.7.4`)**: Never gate `GitHubEnrichSource` on a non-empty `GITHUB_TOKEN`. On HTTP `401`, atomically mark the token invalid in memory and retry unauthenticated against public endpoints (`/repos/{owner}/{repo}/commits`, public search, public Actions runs) using HTTP/1.1 (`TLSNextProto: empty map`) and the sliding-window circuit breaker.
+- **Headless Browser Guardrail (`v0.7.4`)**: All `go-rod` launches (`LinkedInSource`, `LinkedInSender`) on shared 2-vCPU / 8 GB VPS hosts MUST enforce a 1-slot semaphore, `<=45s` hard timeout, `NoSandbox(true)`, `disable-dev-shm-usage`, and deferred `lnchr.Kill()` + `lnchr.Cleanup()` so Chromium never leaks processes or `/tmp/rod` user-data dirs.
 
-## Standing Constraints & Lessons (2026-11-13)
-- **Hetzner only**: never run local servers (no local binary/Postgres/dashboard). Build and unit-test locally; deploy and watch logs only on 5.161.250.43.
-- **Always deploy**: every push is followed by a Hetzner deploy + health check in the same session.
-- **Test-suite hazard**: go test ./... in the repo root runs git reset against the checkout (internal/gitcheck & gitres tests) and bumps internal/autodev/VERSION*. Commit before full-suite runs or use a worktree.
-- **Migration discipline**: code-referenced columns MUST ship with a migration in the same commit (000013 cadence_step, 000014 template_id/response_id were retrofits for exactly this failure).
-- **Enrichment invariant**: enrichment queries must not require the contacts they exist to create (ListDealsForEnrichment vs the contact-joined ListDealsByState).
-- **Pricing truth**: $1.99 first month, then $5/mo (yearly $19.99). No free-trial copy anywhere.
-- **Systray**: Windows-only (cmd/marketing_agent/systray.go): Open Dashboard, Outreach, sites, Blog, Restart, Quit Servers & Exit. Linux runs headless under systemd.
+## Standing Constraints & Lessons
+- **Hetzner only (`5.161.250.43`)**: NEVER run local runtime servers (`marketing_agent.exe`, local Postgres, local web dashboard) on `BOBPC`. `start.bat` enforces this guard unless `--allow-local` is explicitly passed. Build and unit-test locally at `BELOW_NORMAL` priority; deploy and watch logs only on Hetzner.
+- **Always deploy**: Every push to `main` (`github` + `origin`/GitLab) must be deployed immediately to `5.161.250.43` (`/opt/marketing_agent/bin/marketing_agent`, `systemctl restart marketing-agent`, `/health` + `/health/detailed` + `/api/v1/metrics` verified) whenever SSH is reachable.
+- **Test-suite hazard**: Running `go test ./...` at the repo root runs `git reset` against the checkout (`internal/gitcheck` & `internal/gitres` tests) and bumps `internal/autodev/VERSION*`. Either test explicit non-`gitcheck`/`gitres` packages or run inside an isolated worktree after committing.
+- **GitHub push auth on `BOBPC`**: If shell `GITHUB_TOKEN` is expired/revoked (`401`), clear `GITHUB_TOKEN` in the command environment so Git Credential Manager's keyring credential is used.
+- **Migration discipline**: Code-referenced columns MUST ship with a migration in the same commit and pass `internal/db/schema_test.go`.
+- **Enrichment invariant**: Enrichment queries must not require the contacts they exist to create (`ListDealsForEnrichment` vs the contact-joined `ListDealsByState`).
+- **Pricing truth**: `\$1.99` first month, then `\$5/mo` (yearly `\$19.99`). No free-trial copy anywhere.

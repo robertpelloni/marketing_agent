@@ -181,15 +181,27 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 
 	isCorp := IsCorporate(salesCtx.Contact.Email, salesCtx.Company.Domain)
 
-	// Placeholder replacements for body
+	var nonEmptyStack []string
+	for _, ts := range salesCtx.Company.TechStack {
+		if trimmed := strings.TrimSpace(ts); trimmed != "" {
+			nonEmptyStack = append(nonEmptyStack, trimmed)
+		}
+	}
+	techStackVal := strings.Join(nonEmptyStack, ", ")
+	if techStackVal == "" {
+		techStackVal = "AI and modern engineering tooling"
+	}
+
+	// Placeholder replacements for body (with sensible defaults so missing fields
+	// never render awkward blank salutations like "Hi ,")
 	replacements := map[string]string{
-		"{{contact}}":       getValue(salesCtx.Contact.Name),
-		"{{company}}":       getValue(salesCtx.Company.Name),
-		"{{tech_stack}}":    strings.Join(salesCtx.Company.TechStack, ", "),
-		"{{role}}":          getValue(salesCtx.Contact.Role),
-		"{{github_handle}}": getValue(salesCtx.Contact.GitHubHandle),
-		"{{linkedin_url}}":  getValue(salesCtx.Contact.LinkedInURL),
-		"{{email}}":         getValue(salesCtx.Contact.Email),
+		"{{contact}}":       getValue(strings.TrimSpace(salesCtx.Contact.Name), "there"),
+		"{{company}}":       getValue(strings.TrimSpace(salesCtx.Company.Name), "your team"),
+		"{{tech_stack}}":    techStackVal,
+		"{{role}}":          getValue(strings.TrimSpace(salesCtx.Contact.Role), "engineering"),
+		"{{github_handle}}": getValue(strings.TrimSpace(salesCtx.Contact.GitHubHandle), "there"),
+		"{{linkedin_url}}":  getValue(strings.TrimSpace(salesCtx.Contact.LinkedInURL)),
+		"{{email}}":         getValue(strings.TrimSpace(salesCtx.Contact.Email)),
 		"{{specific_project}}": func() string {
 			if isCorp {
 				return "HyperNexus"

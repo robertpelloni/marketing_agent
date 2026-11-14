@@ -1,32 +1,27 @@
 # TODO — marketing_agent
 
-Immediate, granular tasks. Long-term direction lives in ROADMAP.md.
+Immediate, granular tasks. Long-term direction lives in `ROADMAP.md`.
 
-## Now
-- [x] Merge backup/wip-leader-sync-20261107 -> main, push (2026-11-07; main == origin/main)
-- [x] Confirm leader-sync FF finished before next merge (done 2026-11-13: github/main, GitLab main, and feature/v0.7.1 branch all merged and pushed)
-- [ ] Live real-charge test: 1.99 first month then 5-mo recurring (user running the charge).
-- [x] Decide one-time $1.99 vs recurring (recurring chosen 2026-11-08: 1.99 first month, 5-mo after).
-- [ ] Manual posts: LinkedIn (6) / X (tweets in POSTING_GUIDE) / Hashnode / Medium; tick sync checklist
+## Now (Operator / Account Auth Required)
+- [ ] Refresh rotated/revoked API keys in prod `/opt/marketing_agent/.env` (and workstation env): `GITHUB_TOKEN`, `DEEPSEEK_API_KEY`, `HERMES_API_KEY`, `APOLLO_API_KEY`, `HUNTER_API_KEY` (unauthenticated GitHub fallback + template outreach already active in `v0.7.4` meanwhile)
+- [ ] Live real-charge test: `$1.99` first month then `$5/mo` recurring on `https://hypernexus.site/checkout.html` (operator card test)
+- [ ] Manual posts: LinkedIn (6) / X (tweets in `POSTING_GUIDE.md`) / Hashnode / Medium; tick sync checklist
+- [ ] Marketing bot secrets: `DEVTO_API_KEY`, `BLUESKY_TN_PASSWORD`, `BLUESKY_HN_PASSWORD`, funded X API credits
+- [ ] Resubmit sitemap in Google Search Console after `lastmod` corrections
 
-## Next
-- [x] Integration workflow: fixed (2026-11-13/14: dockerignore, golangci Go 1.25, 43+ lint issues, migrations 000013/000014, enrichment query, staging port; all workflows green)
-- [ ] Marketing bot secrets: DEVTO_API_KEY, BLUESKY_TN/HN_PASSWORD, HERMES_API_KEY
-- [x] Archive legacy scripts/ runners superseded by scripts/marketing_bot/ (done 2026-11-13, scripts/archive/LEGACY_RUNNERS.md)
-  auto_marketing_bot.py, auto_marketing_bot_v2.py, autonomous_marketing.py,
-  auto_post.py, auto-post-all-platforms.py, apollo_bulk_export.js/.py dupes
-- [x] Decide fate of unreferenced media variants (2026-11-13: v3/v4/psychedelic/poster_optimized archived to hypernexus_site/archive/media/; poster.jpg kept, it is referenced)
-- [ ] Resubmit sitemap in Search Console after lastmod corrections
+## Completed in v0.7.4 (2026-11-14)
+- [x] Fix `CadenceTracker.GetNextStep` Step 2 ↔ Step 3 infinite loop so Steps 4 (`linkedin-connect`) and 5 (`breakup-email`) are reachable (`internal/communication/cadence.go`)
+- [x] Enforce delivery-before-persistence in `CadenceAwareManager.checkCadence` and `Manager.ProcessInbound("START_OUTREACH")`, recording `Skipped` when optional channels lack targets and syncing `outreach_log`
+- [x] Stop recording synthetic `START_OUTREACH` as fake `Inbound` / premature `StateEngaged`, remove duplicate 30m retry loop, add `401` LLM classifier fallback, and narrow `"spam"` unsubscribe false positive (`internal/communication/manager.go`)
+- [x] Enable unauthenticated `401` GitHub API fallback + `directRepoFullName` commits lookup across `GitHubEnrichSource`, `TargetDiscoveryWorker`, `GitHubIssueSource`, and `GitHubCITracker` so 17,953 discovered deals enrich even while `GITHUB_TOKEN` is revoked
+- [x] Fix lowercase `"mcp"`/`"llm"` bug in `github_sender.go` and blank-field placeholder defaults in `responder.go`
+- [x] Bound `go-rod` headless Chromium in `linkedin_source.go` and `linkedin_sender.go` (1-slot semaphore, 45s timeout, `NoSandbox(true)`, `Kill()` + `Cleanup()`) to protect shared Hetzner VPS RAM/disk
+- [x] Stamp and expose `version` (`0.7.4`) in `/health/detailed`, `/api/v1/metrics`, and `build.bat`; add Hetzner-only runtime guard to `start.bat`; merge Dependabot Go security updates (`echo/v4`, `golang.org/x/*`); refresh `README.md`, `CHANGELOG.md`, `MEMORY.md`, `ROADMAP.md`, and `HANDOFF.md`
 
-## Later
-- [x] signup.html: archived to hypernexus_site/archive/pages/ as dormant fallback (2026-11-13; was bypassed and unlinked)
-- [x] index_a.html / index_b.html stale variants: archived with indexB.html and orphan home_router.html (2026-11-13)
-- [x] pricing.html $5/mo toggle vs $1.99 trial button: reconciled (2026-11-13, 34303c35)
-## Autopilot directive 2026-11-12 dashboard plus cleanup queue
-- [x] Single-page dashboard: outreach merged into / (#outreach, 301 from legacy route); /demo kept as major subproject view and linked from nav; tooltips + high-value-first sections (v0.7.3, 2026-11-13)
-- [x] Nondestructive scripts archive: move legacy runners to archive with README (2026-11-13, scripts/archive/LEGACY_RUNNERS.md)
-- [x] Full run verified on Hetzner only (user directive: no local servers; prod deployed + journal watched each loop; live-Apollo test now skips on 401)
-- [x] Align checkout.html copy with the decided $1.99-first-month-then-$5/mo model (done 2026-11-13, 34303c35)
-- [x] Fix or skip-guard TestApolloSource_HealthCheck so the suite is green without live credentials (2026-11-13: 401 now skips like 403)
-
-- [x] Classify Apollo 401/403 as failure (not empty) for honest source telemetry (2026-11-13, 7c914640, verified in prod metrics: Apollo failures=100)
+## Completed Earlier (v0.7.1 – v0.7.3)
+- [x] Merge `backup/wip-leader-sync-20261107` -> `main`, push (`main == origin/main`)
+- [x] Confirm leader-sync FF + merge `feature/v0.7.1-consolidated-dashboard` (`github/main` + GitLab `origin/main` synced)
+- [x] Decide one-time `$1.99` vs recurring (`$1.99` first month, `$5/mo` after; `checkout.html` & `pricing.html` reconciled)
+- [x] Integration & CI workflows all green (`dockerignore`, `golangci-lint` Go 1.25, migrations `000013`/`000014`, schema-drift sentinel `internal/db/schema_test.go`, enrichment query fix)
+- [x] Single-page dashboard (`/`, `/#outreach` 301 redirect, Operator Tools `6D`, Provider Credential panel `6A`, `/api/v1/metrics` per-source counters, Apollo `401/403` failure classification)
+- [x] Nondestructive archive of legacy scripts (`scripts/archive/LEGACY_RUNNERS.md`), stale A/B pages, and unreferenced media (`hypernexus_site/archive/`)

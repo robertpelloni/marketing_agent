@@ -45,3 +45,23 @@ func TestApolloEnrich_Classifies401AsFailure(t *testing.T) {
 		t.Fatalf("expected 1 failure / 0 empty for Apollo 401, got %+v", got)
 	}
 }
+
+func TestHunterAndApollo_SkipSharedCodeHostDomain(t *testing.T) {
+	// If either source hit the network, apollo401Transport would return 401 error.
+	apollo := &ApolloSource{
+		APIKey:     "key",
+		HTTPClient: &http.Client{Transport: apollo401Transport{}},
+	}
+	hunter := &HunterSource{
+		APIKey:     "key",
+		HTTPClient: &http.Client{Transport: apollo401Transport{}},
+	}
+	repoLead := db.Company{Name: "botnexus", Domain: "github.com/sytone/botnexus"}
+
+	if contacts, err := apollo.Enrich(context.Background(), repoLead); err != nil || len(contacts) != 0 {
+		t.Fatalf("expected Apollo to skip github.com/owner/repo without HTTP call, got contacts=%v err=%v", contacts, err)
+	}
+	if contacts, err := hunter.Enrich(context.Background(), repoLead); err != nil || len(contacts) != 0 {
+		t.Fatalf("expected Hunter to skip github.com/owner/repo without HTTP call, got contacts=%v err=%v", contacts, err)
+	}
+}

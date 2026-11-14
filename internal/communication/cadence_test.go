@@ -305,3 +305,77 @@ func TestCadenceAwareManager_CheckCadence_NilDB(t *testing.T) {
 	// Should not panic with nil DB
 	cam.checkCadence(context.Background())
 }
+
+func TestCadenceTracker_GetNextStep_ProgressesAllFiveStepsWithoutLooping(t *testing.T) {
+	tracker := &CadenceTracker{db: nil}
+	schedule := DefaultCadence()
+	base := time.Now().Add(-10 * 24 * time.Hour)
+
+	var history []db.Interaction
+
+	// Step 1 -> Step 2
+	history = append(history, db.Interaction{
+		Direction:  "Outbound",
+		Channel:    "email",
+		TemplateID: "intro-email",
+		CreatedAt:  base,
+	})
+	step, prog, err := tracker.GetNextStep(context.Background(), 99, schedule, history)
+	if err != nil || step == nil || step.StepNumber != 2 {
+		t.Fatalf("after step 1 expected step 2, got step=%+v err=%v", step, err)
+	}
+
+	// Step 2 skipped (e.g. no open GitHub issues) -> Step 3
+	history = append(history, db.Interaction{
+		Direction:  "Skipped",
+		Channel:    "github",
+		TemplateID: "github-hook",
+		CreatedAt:  base.Add(24 * time.Hour),
+	})
+	step, prog, err = tracker.GetNextStep(context.Background(), 99, schedule, history)
+	if err != nil || step == nil || step.StepNumber != 3 {
+		t.Fatalf("after skipped step 2 expected step 3, got step=%+v err=%v", step, err)
+	}
+	if prog.TotalAttempts != 1 {
+		t.Fatalf("skipped step must not count as Outbound attempt, got %d", prog.TotalAttempts)
+	}
+
+	// Step 3 (second email!) -> MUST advance to Step 4 (not loop back to Step 2!)
+	history = append(history, db.Interaction{
+		Direction:  "Outbound",
+		Channel:    "email",
+		TemplateID: "followup-email",
+		CreatedAt:  base.Add(48 * time.Hour),
+	})
+	step, _, err = tracker.GetNextStep(context.Background(), 99, schedule, history)
+	if err != nil || step == nil || step.StepNumber != 4 {
+		t.Fatalf("after step 3 followup-email expected step 4 linkedin-connect, got step=%+v err=%v", step, err)
+	}
+
+	// Step 4 skipped (missing LinkedIn URL) -> Step 5 breakup-email
+	history = append(history, db.Interaction{
+		Direction:  "Skipped",
+		Channel:    "linkedin",
+		TemplateID: "linkedin-connect",
+		CreatedAt:  base.Add(72 * time.Hour),
+	})
+	step, _, err = tracker.GetNextStep(context.Background(), 99, schedule, history)
+	if err != nil || step == nil || step.StepNumber != 5 {
+		t.Fatalf("after skipped step 4 expected step 5 breakup-email, got step=%+v err=%v", step, err)
+	}
+
+	// Step 5 completed -> sequence exhausted
+	history = append(history, db.Interaction{
+		Direction:  "Outbound",
+		Channel:    "email",
+		TemplateID: "breakup-email",
+		CreatedAt:  base.Add(120 * time.Hour),
+	})
+	step, prog, err = tracker.GetNextStep(context.Background(), 99, schedule, history)
+	if err != nil {
+		t.Fatalf("unexpected error after step 5: %v", err)
+	}
+	if step != nil || !prog.IsExhausted {
+		t.Fatalf("expected sequence exhausted after step 5, got step=%+v exhausted=%v", step, prog.IsExhausted)
+	}
+}

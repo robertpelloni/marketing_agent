@@ -160,12 +160,28 @@ func (g *GitHubIssueSource) searchIssues(ctx context.Context, keyword string) ([
 		return nil, err
 	}
 
-	req.Header.Set("Authorization", "token "+g.Token)
+	if g.Token != "" {
+		req.Header.Set("Authorization", "token "+g.Token)
+	}
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
 
 	resp, err := g.Client.Do(req)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode == http.StatusUnauthorized && g.Token != "" {
+		_ = resp.Body.Close()
+		slog.Warn("GitHubIssueSource: GITHUB_TOKEN returned 401; clearing token and retrying unauthenticated")
+		g.Token = ""
+		req2, rerr := http.NewRequestWithContext(ctx, "GET", queryURL, nil)
+		if rerr != nil {
+			return nil, rerr
+		}
+		req2.Header.Set("Accept", "application/vnd.github.v3+json")
+		resp, err = g.Client.Do(req2)
+		if err != nil {
+			return nil, err
+		}
 	}
 	defer func() { _ = resp.Body.Close() }()
 
@@ -209,12 +225,28 @@ func (g *GitHubIssueSource) getOrgInfo(ctx context.Context, orgName string) (*gi
 		return nil, err
 	}
 
-	req.Header.Set("Authorization", "token "+g.Token)
+	if g.Token != "" {
+		req.Header.Set("Authorization", "token "+g.Token)
+	}
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
 
 	resp, err := g.Client.Do(req)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode == http.StatusUnauthorized && g.Token != "" {
+		_ = resp.Body.Close()
+		slog.Warn("GitHubIssueSource: GITHUB_TOKEN returned 401; clearing token and retrying unauthenticated")
+		g.Token = ""
+		req2, rerr := http.NewRequestWithContext(ctx, "GET", queryURL, nil)
+		if rerr != nil {
+			return nil, rerr
+		}
+		req2.Header.Set("Accept", "application/vnd.github.v3+json")
+		resp, err = g.Client.Do(req2)
+		if err != nil {
+			return nil, err
+		}
 	}
 	defer func() { _ = resp.Body.Close() }()
 

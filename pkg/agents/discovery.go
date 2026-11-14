@@ -93,7 +93,11 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 		},
 	}
 
-	result, _, err := client.Search.Repositories(ctx, query, opts)
+	result, resp, err := client.Search.Repositories(ctx, query, opts)
+	if err != nil && token != "" && resp != nil && (resp.StatusCode == 401 || resp.StatusCode == 403) {
+		slog.Warn("TormentNexus Outreach: GITHUB_TOKEN rejected during discovery search; retrying unauthenticated", "status", resp.StatusCode)
+		result, _, err = github.NewClient(nil).Search.Repositories(ctx, query, opts)
+	}
 	if err != nil {
 		slog.Info(fmt.Sprintf("TormentNexus Outreach Error: GitHub search failed: %v", err))
 		return

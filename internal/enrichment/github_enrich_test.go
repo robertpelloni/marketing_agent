@@ -134,3 +134,72 @@ func TestGitHubSearchDoesNotRetryClientErrors(t *testing.T) {
 		t.Fatalf("expected no retries on 404, got %d attempts", got)
 	}
 }
+
+type authFallbackTransport struct {
+	authCalls   atomic.Int32
+	unauthCalls atomic.Int32
+	body        string
+}
+
+func (a *authFallbackTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	if req.Header.Get("Authorization") != "" {
+		a.authCalls.Add(1)
+		return &http.Response{
+			StatusCode: http.StatusUnauthorized,
+			Header:     make(http.Header),
+			Body:       io.NopCloser(strings.NewReader(`{"message":"Bad credentials"}`)),
+			Request:    req,
+		}, nil
+	}
+	a.unauthCalls.Add(1)
+	return &http.Response{
+		StatusCode: http.StatusOK,
+		Header:     make(http.Header),
+		Body:       io.NopCloser(strings.NewReader(a.body)),
+		Request:    req,
+	}, nil
+}
+
+func TestGitHubEnrichFallsBackUnauthenticatedOn401AndUsesDirectRepoDomain(t *testing.T) {
+	rt := &authFallbackTransport{
+		body: `[{"sha":"abc123","commit":{"author":{"name":"Jane Founder","email":"jane@acme.dev"},"message":"release v1.0"}}]`,
+	}
+	src := &GitHubEnrichSource{
+		Token:       "revoked-token",
+		HTTPClient:  &http.Client{Transport: rt},
+		MaxAttempts: 2,
+		BaseDelay:   time.Millisecond,
+	}
+
+	contacts, err := src.Enrich(context.Background(), db.Company{
+		Name:   "mcp-router",
+		Domain: "github.com/acme-org/mcp-router",
+	})
+	if err != nil {
+		t.Fatalf("expected Enrich to succeed via unauthenticated fallback, got %v", err)
+	}
+	if len(contacts) != 1 {
+		t.Fatalf("expected 1 contact, got %d", len(contacts))
+	}
+	if contacts[0].Email != "jane@acme.dev" || contacts[0].GitHubHandle != "acme-org" {
+		t.Fatalf("unexpected contact: %+v", contacts[0])
+	}
+	if rt.authCalls.Load() != 1 {
+		t.Fatalf("expected revoked token to be tried once, got %d", rt.authCalls.Load())
+	}
+	if rt.unauthCalls.Load() != 1 {
+		t.Fatalf("expected 1 unauthenticated call (direct commits fast path), got %d", rt.unauthCalls.Load())
+	}
+
+	// Second call must skip the revoked token completely.
+	_, err = src.Enrich(context.Background(), db.Company{
+		Name:   "mcp-router",
+		Domain: "github.com/acme-org/mcp-router",
+	})
+	if err != nil {
+		t.Fatalf("second Enrich failed: %v", err)
+	}
+	if rt.authCalls.Load() != 1 {
+		t.Fatalf("expected revoked token not to be retried on subsequent calls, got %d", rt.authCalls.Load())
+	}
+}

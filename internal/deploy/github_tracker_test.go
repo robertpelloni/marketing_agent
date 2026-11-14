@@ -61,4 +61,13 @@ func TestGitHubCITracker_RetriesWithoutAuthOn401(t *testing.T) {
 	if got := requests.Load(); got != 2 {
 		t.Fatalf("expected exactly 2 requests (auth + unauth), got %d", got)
 	}
+
+	// Subsequent calls should skip sending the revoked token altogether.
+	status, err = tracker.GetLatestStatus(context.Background(), "main")
+	if err != nil || status != CIStatusSuccess {
+		t.Fatalf("expected cached unauthenticated poll to succeed, got status=%v err=%v", status, err)
+	}
+	if got := requests.Load(); got != 3 {
+		t.Fatalf("expected 3 total requests (cached invalid token skipped on 2nd poll), got %d", got)
+	}
 }

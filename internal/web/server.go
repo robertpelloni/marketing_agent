@@ -48,6 +48,26 @@ type Server struct {
 	billingClient billing.BillingClient
 	mux           *http.ServeMux
 	blogEngine    blogTriggerer // optional manual blog trigger
+	version       string
+}
+
+// SetVersion sets the build version reported by health and metrics endpoints.
+func (s *Server) SetVersion(v string) {
+	s.version = strings.TrimSpace(v)
+}
+
+func (s *Server) effectiveVersion() string {
+	if s.version != "" {
+		return s.version
+	}
+	return "dev"
+}
+
+func llmProviderLabel(p llm.LLMProvider) string {
+	if _, ok := p.(*llm.DeepSeekLLMProvider); ok {
+		return "DeepSeek"
+	}
+	return "Hermes"
 }
 
 // blogTriggerer allows the server to trigger blog post generation.
@@ -501,11 +521,12 @@ function controlContainer(action) {
 	llmStatus := "Mock"
 	llmColor := "#6c757d"
 	if checker, ok := s.llmProvider.(HermesHealthChecker); ok {
+		label := llmProviderLabel(s.llmProvider)
 		if err := checker.HealthCheck(r.Context()); err != nil {
-			llmStatus = fmt.Sprintf("Hermes: ERROR (%v)", err)
+			llmStatus = fmt.Sprintf("%s: ERROR (%v)", label, err)
 			llmColor = "#dc3545"
 		} else {
-			llmStatus = "Hermes: Connected"
+			llmStatus = label + ": Connected"
 			llmColor = "#28a745"
 		}
 	}
@@ -1324,6 +1345,7 @@ func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	health := make(map[string]interface{})
+	health["version"] = s.effectiveVersion()
 
 	// 1. Check DB
 	if err := s.db.Conn.PingContext(r.Context()); err != nil {
@@ -1342,10 +1364,11 @@ func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 
 	// 4. Check LLM/Hermes connectivity
 	if checker, ok := s.llmProvider.(HermesHealthChecker); ok {
+		label := llmProviderLabel(s.llmProvider)
 		if err := checker.HealthCheck(r.Context()); err != nil {
-			health["llm_provider"] = "ERROR: " + err.Error()
+			health["llm_provider"] = fmt.Sprintf("ERROR: %s: %s", label, err.Error())
 		} else {
-			health["llm_provider"] = "Hermes: Connected"
+			health["llm_provider"] = label + ": Connected"
 		}
 	} else {
 		health["llm_provider"] = "Mock"
@@ -1992,6 +2015,7 @@ func (s *Server) handleJSONMetrics(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_ = json.NewEncoder(w).Encode(map[string]interface{}{
+		"version":                 s.effectiveVersion(),
 		"db_max_open_connections": stats.MaxOpenConnections,
 		"db_open_connections":     stats.OpenConnections,
 		"db_in_use":               stats.InUse,

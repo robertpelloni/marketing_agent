@@ -67,6 +67,9 @@ func (h *HunterSource) Enrich(ctx context.Context, company db.Company) ([]db.Con
 	if domain == "" || strings.HasSuffix(domain, ".com") && len(domain) < 5 {
 		return nil, fmt.Errorf("hunter: invalid domain %q", company.Domain)
 	}
+	if isSharedCodeHostDomain(domain) {
+		return nil, nil
+	}
 
 	slog.Info(fmt.Sprintf("HunterSource: Searching for contacts at %s (%s)", company.Name, domain))
 

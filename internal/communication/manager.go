@@ -122,10 +122,11 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 				}
 			}
 
-			if !hasOutbound {
+			if !hasOutbound && strings.TrimSpace(contacts[0].Email) != "" {
 				slog.Info(fmt.Sprintf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email))
 				if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
 					slog.Info(fmt.Sprintf("Comm Manager Error: Failed to initiate outreach for deal %d: %v", deal.ID, err))
+					continue
 				}
 				if err := m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent); err != nil {
 					slog.Info(fmt.Sprintf("Comm Manager Error: Failed to update deal state to OutreachSent for deal %d: %v", deal.ID, err))
@@ -134,7 +135,8 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 		}
 	}
 
-	// Retry OutreachSent deals that never got a reply (email may have bounced or auth failed)
+	// Retry OutreachSent deals that never got a reply (spaced by >=24h so we never
+	// double-send alongside CadenceAwareManager within the same day)
 	retryDeals, err := m.db.ListDealsByState(ctx, db.StateOutreachSent)
 	if err != nil {
 		slog.Info(fmt.Sprintf("Comm Manager: Error listing retry deals: %v", err))
@@ -148,11 +150,15 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 			interactions, _ := m.db.ListInteractionsByContact(ctx, contacts[0].ID)
 			hasReply := false
 			outboundCount := 0
+			hasCadenceStep := false
 			var lastOutbound time.Time
 			for _, i := range interactions {
-				if i.Direction == "Inbound" {
+				if i.Direction == "Inbound" && i.RawText != "START_OUTREACH" {
 					hasReply = true
 					break
+				}
+				if i.TemplateID != "" {
+					hasCadenceStep = true
 				}
 				if i.Direction == "Outbound" {
 					outboundCount++
@@ -162,10 +168,11 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 				}
 			}
 
-			// Retry: up to 3 immediate retries, or cooldown retry (every 24h after 3)
+			// Defer follow-up touches to CadenceAwareManager when templates are active;
+			// only retry here if zero outbound touches ever succeeded or >=24h elapsed without template tracking.
 			shouldRetry := false
-			if !hasReply && contacts[0].Email != "" {
-				if outboundCount < 3 {
+			if !hasReply && !hasCadenceStep && strings.TrimSpace(contacts[0].Email) != "" {
+				if outboundCount == 0 {
 					shouldRetry = true
 				} else if outboundCount < 10 && time.Since(lastOutbound) > 24*time.Hour {
 					shouldRetry = true
@@ -192,32 +199,40 @@ func DefaultChannelForContact(contact db.Contact) string {
 	return string(db.ChannelEmail)
 }
 
-// ProcessInbound handles a new inbound message from a contact.
+// ProcessInbound handles a new inbound message from a contact (or internal
+// proactive trigger when text == "START_OUTREACH").
 func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text string) (string, error) {
-	// Determine the channel to use for this contact
 	channel := DefaultChannelForContact(contact)
+	isSyntheticOutreach := text == "START_OUTREACH"
 
-	// 1. Persist inbound interaction
-	inbound := db.Interaction{
-		ContactID: contact.ID,
-		Channel:   channel,
-		Direction: "Inbound",
-		RawText:   text,
-	}
-	err := m.db.CreateInteraction(ctx, &inbound)
-	if err != nil {
-		return "", err
+	// 1. Persist genuine inbound interactions only (never pollute DB with fake
+	// Inbound "START_OUTREACH" triggers).
+	if !isSyntheticOutreach {
+		inbound := db.Interaction{
+			ContactID: contact.ID,
+			Channel:   channel,
+			Direction: "Inbound",
+			RawText:   text,
+		}
+		if err := m.db.CreateInteraction(ctx, &inbound); err != nil {
+			return "", err
+		}
 	}
 
-	// 2. Classify intent
-	intent, err := m.classifier.Classify(ctx, text)
-	if err != nil {
-		return "", err
+	// 2. Classify intent (gracefully fall back to heuristic MockIntentClassifier if LLM is unavailable)
+	intent := IntentGeneral
+	if !isSyntheticOutreach {
+		var err error
+		intent, err = m.classifier.Classify(ctx, text)
+		if err != nil {
+			slog.Warn("Comm Manager: Primary intent classifier failed, falling back to heuristic classifier", "error", err)
+			intent, _ = (&MockIntentClassifier{}).Classify(ctx, text)
+		}
 	}
 
 	// 2b. Check for unsubscribe/bounce/opt-out signals before any processing.
 	// Immediately close the deal and send a confirmation to prevent further emails.
-	if isUnsubscribe(text) {
+	if !isSyntheticOutreach && isUnsubscribe(text) {
 		slog.Info(fmt.Sprintf("Comm Manager: Unsubscribe detected from %s — closing deal %d", contact.Email, contact.CompanyID))
 		deal, dealErr := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
 		if dealErr == nil {
@@ -227,7 +242,7 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	}
 
 	// 2c. Check for email bounce (delivery failure notifications)
-	if isBounce(text) {
+	if !isSyntheticOutreach && isBounce(text) {
 		slog.Info(fmt.Sprintf("Comm Manager: Email bounce detected for %s — marking contact as invalid", contact.Email))
 		deal, dealErr := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
 		if dealErr == nil {
@@ -254,7 +269,7 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		return "", fmt.Errorf("failed to get deal for strategy: %w", err)
 	}
 
-	if deal.CurrentState == db.StateResearched || deal.CurrentState == db.StateOutreachSent {
+	if !isSyntheticOutreach && (deal.CurrentState == db.StateResearched || deal.CurrentState == db.StateOutreachSent) {
 		if err := m.db.UpdateDealState(ctx, deal.ID, db.StateEngaged); err != nil {
 			slog.Info(fmt.Sprintf("Comm Manager: Failed to update deal state to Engaged: %v", err))
 		} else {
@@ -334,24 +349,11 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		}
 	}
 
-	// 4. Persist outbound interaction
-	outbound := db.Interaction{
-		ContactID:  contact.ID,
-		Channel:    channel,
-		Direction:  "Outbound",
-		RawText:    replyText,
-		Summary:    fmt.Sprintf("Reply to intent: %s", intent),
-		ResponseID: responseID,
-	}
-	err = m.db.CreateInteraction(ctx, &outbound)
-	if err != nil {
-		return "", err
-	}
-
-	// 5. Actually send the communication if sender is configured
+	// 4. Send the communication first when email sender is configured so failed
+	// deliveries do not record phantom Outbound interactions.
 	if m.sender != nil && contact.Email != "" && channel == "email" {
 		subject := fmt.Sprintf("Re: %s — HyperNexus", company.Name)
-		if text == "START_OUTREACH" {
+		if isSyntheticOutreach {
 			subject = fmt.Sprintf("HyperNexus for %s — Quick Question", company.Name)
 		}
 
@@ -363,13 +365,30 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 
 		if err := m.sender.Send(ctx, emailMsg); err != nil {
 			slog.Info(fmt.Sprintf("Comm Manager: Email send failed to %s: %v", contact.Email, err))
-		} else {
-			slog.Info(fmt.Sprintf("Comm Manager: Email sent to %s (%s)", contact.Email, subject))
+			return "", fmt.Errorf("email send failed: %w", err)
 		}
+		slog.Info(fmt.Sprintf("Comm Manager: Email sent to %s (%s)", contact.Email, subject))
 	} else if channel != "email" {
 		slog.Info(fmt.Sprintf("Comm Manager: Channel %q requires future implementation for %s — reply logged", channel, contact.Email))
 	} else if m.sender == nil {
 		slog.Info(fmt.Sprintf("Comm Manager: No email sender configured — reply logged but not sent to %s", contact.Email))
+	}
+
+	// 5. Persist outbound interaction
+	summary := fmt.Sprintf("Reply to intent: %s", intent)
+	if isSyntheticOutreach {
+		summary = "Initial outreach via email"
+	}
+	outbound := db.Interaction{
+		ContactID:  contact.ID,
+		Channel:    channel,
+		Direction:  "Outbound",
+		RawText:    replyText,
+		Summary:    summary,
+		ResponseID: responseID,
+	}
+	if err := m.db.CreateInteraction(ctx, &outbound); err != nil {
+		return "", err
 	}
 
 	return replyText, nil
@@ -408,7 +427,8 @@ func isUnsubscribe(text string) bool {
 		"unsubscribe", "opt out", "opt-out", "remove me",
 		"take me off", "stop emailing", "do not contact",
 		"don't contact", "please remove", "stop sending",
-		"no more emails", "leave me alone", "spam",
+		"no more emails", "leave me alone", "mark as spam",
+		"report spam", "stop spamming",
 	}
 	for _, phrase := range unsubPhrases {
 		if strings.Contains(lower, phrase) {

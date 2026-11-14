@@ -205,6 +205,19 @@ func cleanDomain(domain string) string {
 	return strings.ToLower(domain)
 }
 
+// isSharedCodeHostDomain returns true when a cleaned root domain belongs to a
+// multi-tenant repository/package host (e.g. "github.com/owner/repo" -> "github.com").
+// Querying Hunter or Apollo for "github.com" returns GitHub Inc. corporate staff
+// rather than the target repository's maintainers and wastes API quota.
+func isSharedCodeHostDomain(domain string) bool {
+	switch domain {
+	case "github.com", "gitlab.com", "bitbucket.org", "codeberg.org", "huggingface.co", "npmjs.com", "pypi.org", "crates.io":
+		return true
+	default:
+		return false
+	}
+}
+
 // isDecisionMaker checks if a role/title indicates a senior decision-maker.
 func isDecisionMaker(role string) bool {
 	lower := strings.ToLower(role)

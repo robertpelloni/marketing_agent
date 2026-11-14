@@ -12,7 +12,7 @@ Immediate, granular tasks. Long-term direction lives in ROADMAP.md.
 ## Next
 - [x] Integration workflow: fixed (2026-11-13/14: dockerignore, golangci Go 1.25, 43+ lint issues, migrations 000013/000014, enrichment query, staging port; all workflows green)
 - [ ] Marketing bot secrets: DEVTO_API_KEY, BLUESKY_TN/HN_PASSWORD, HERMES_API_KEY
-- [ ] Archive legacy scripts/ runners superseded by scripts/marketing_bot/ (verify unreferenced first):
+- [x] Archive legacy scripts/ runners superseded by scripts/marketing_bot/ (done 2026-11-13, scripts/archive/LEGACY_RUNNERS.md)
   auto_marketing_bot.py, auto_marketing_bot_v2.py, autonomous_marketing.py,
   auto_post.py, auto-post-all-platforms.py, apollo_bulk_export.js/.py dupes
 - [x] Decide fate of unreferenced media variants (2026-11-13: v3/v4/psychedelic/poster_optimized archived to hypernexus_site/archive/media/; poster.jpg kept, it is referenced)
@@ -26,7 +26,7 @@ Immediate, granular tasks. Long-term direction lives in ROADMAP.md.
 - [x] Single-page dashboard: outreach merged into / (#outreach, 301 from legacy route); /demo kept as major subproject view and linked from nav; tooltips + high-value-first sections (v0.7.3, 2026-11-13)
 - [x] Nondestructive scripts archive: move legacy runners to archive with README (2026-11-13, scripts/archive/LEGACY_RUNNERS.md)
 - [x] Full run verified on Hetzner only (user directive: no local servers; prod deployed + journal watched each loop; live-Apollo test now skips on 401)
-- [ ] Align checkout.html copy with the decided $1.99-first-month-then-$5/mo model (merge took the GitHub-side $1.99 first-month page; pricing.html kept the trial copy — reconcile both surfaces)
+- [x] Align checkout.html copy with the decided $1.99-first-month-then-$5/mo model (done 2026-11-13, 34303c35)
 - [x] Fix or skip-guard TestApolloSource_HealthCheck so the suite is green without live credentials (2026-11-13: 401 now skips like 403)
 
 - [x] Classify Apollo 401/403 as failure (not empty) for honest source telemetry (2026-11-13, 7c914640, verified in prod metrics: Apollo failures=100)

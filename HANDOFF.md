@@ -294,3 +294,9 @@ L2 COORD-SYNC8 push user-blocked 6 ahead
 - Apollo 401/403 now returns an error (was empty result): fallback chain behavior unchanged, telemetry honest. Prod metrics after deploy: Apollo.io failures=100 (was empty=100). Test: TestApolloEnrich_Classifies401AsFailure incl. fallback counter assertion.
 - CDP this loop: muse.ai tab replaced again (now RealEstateCRM site tab; reopening lands logged-out, no credentials handled). Gemini composer not locatable this pass (tab in a modal state); ChatGPT composer still holds another lane's unsent draft - not overwritten. Check-in recorded here; retry tabs next loop.
 - Remaining credential needs (unchanged): DeepSeek, Apollo, Hunter, Bluesky, X + manual post logins.
+
+## LOOP 2026-11-14 Muse Code
+- LLM fallthrough wired: DeepSeek unhealthy -> Hermes tried -> also unhealthy (both keys 401/404) -> DeepSeek kept, failure explicit in boot log. Boot: 'Hermes fallback also unhealthy (keeping DeepSeek)'.
+- Pattern: DeepSeek, MiMo/Hermes, Apollo, Hunter, and the laptop shell GITHUB_TOKEN are ALL invalid - looks like a batch key rotation/revocation. Robert: refresh keys in prod /opt/marketing_agent/.env (and laptop env) and every lane recovers.
+- Local git push to GitHub fails while shell GITHUB_TOKEN (invalid) overrides keyring; push with $env:GITHUB_TOKEN=$null. Fixed for 2dd63b11; prod pulled to 2dd63b11.
+- system_health intermittently 'Health check failed' = GitHub Actions API tracker erroring (likely secondary rate limits after search hammering); recovers on its own.

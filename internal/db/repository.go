@@ -153,6 +153,20 @@ func (db *DB) UpdateDealState(ctx context.Context, dealID int64, newState LeadSt
 	return nil
 }
 
+// TouchDealUpdatedAt bumps updated_at on a deal without changing its state so
+// FIFO queues (ORDER BY updated_at ASC) rotate past leads that cleanly yielded
+// zero contacts rather than re-processing the same 100 leads every cycle.
+func (db *DB) TouchDealUpdatedAt(ctx context.Context, dealID int64) error {
+	if db == nil || db.Conn == nil {
+		return fmt.Errorf("database connection is nil")
+	}
+	_, err := db.Conn.ExecContext(ctx, `UPDATE deals SET updated_at = $1 WHERE id = $2`, time.Now(), dealID)
+	if err != nil {
+		return fmt.Errorf("failed to touch deal updated_at: %w", err)
+	}
+	return nil
+}
+
 // ListDealsByState retrieves deals in a specific state.
 // ListAllCompanies retrieves all companies in the database.
 func (db *DB) ListAllCompanies(ctx context.Context) ([]Company, error) {

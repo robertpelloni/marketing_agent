@@ -174,7 +174,7 @@ func (a *ApolloSource) peopleSearch(ctx context.Context, domain string) ([]db.Co
 
 	var contacts []db.Contact
 	for _, p := range result.People {
-		if p.Email == "" {
+		if p.Email == "" || db.IsAutomatedOrUnroutableEmail(p.Email) {
 			continue
 		}
 

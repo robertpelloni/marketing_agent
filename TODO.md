@@ -3,13 +3,19 @@
 Immediate, granular tasks. Long-term direction lives in `ROADMAP.md`.
 
 ## Now (Operator / Account Auth Required)
-- [ ] **URGENT — Rotate expired `STRIPE_API_KEY` (`api_key_expired`)** in prod `/opt/marketing_agent/.env` (replace `rk_live_...` in `STRIPE_API_KEY` / `STRIPE_RESTRICTED_KEY` with an active `sk_live_`/`sk_test_` key or `rk_` key holding `Checkout Sessions: Write`, `Products: Write`, `Prices: Write`, `Customers: Write`, `Subscriptions: Write`, then `systemctl restart marketing-agent`) to unblock live unpaid `cs_...` session verification and the 8:18 AM daily QA scan
-- [ ] Refresh rotated/revoked API keys in prod `/opt/marketing_agent/.env` (and workstation env): `GITHUB_TOKEN`, `DEEPSEEK_API_KEY`, `HERMES_API_KEY`, `APOLLO_API_KEY`, `HUNTER_API_KEY` (unauthenticated GitHub fallback + template outreach already active in `v0.7.4` meanwhile)
-- [ ] Live real-charge card test: `$1.99` per-team 14-day trial today -> `$5/seat/mo` day 15 recurring on `https://hypernexus.site/checkout.html` (after `STRIPE_API_KEY` rotation; wire-level Stripe form parameters + server-side checkout verified in `v0.7.5`–`v0.7.6`)
+- [ ] Live real-charge card test: `$1.99` per-team 14-day trial today -> `$5/seat/mo` day 15 recurring on `https://hypernexus.site/checkout.html` (live `STRIPE_API_KEY` rotated and all 4 unpaid `cs_live_...` entry flows verified by both Antigravity & Bobbi on `2026-11-15`; final completed `$1.99` card charge is Robert's call)
+- [ ] Refresh remaining rotated/revoked third-party API keys in prod `/opt/marketing_agent/.env` (and workstation env): `GITHUB_TOKEN`, `DEEPSEEK_API_KEY`, `HERMES_API_KEY`, `APOLLO_API_KEY`, `HUNTER_API_KEY` (unauthenticated GitHub fallback, rate-limit circuit breaker, FIFO enrichment rotation, and template outreach active in `v0.7.7` meanwhile)
 - [ ] Decide on Bobbi's two optional site flags: `live.html` trial CTA target (`/contact.php` vs `/checkout.html`) and archiving/updating repo-only `$19.99` pages (`cloud_index_b`, `cloud_login_a/b`, `testimonials.html`)
 - [ ] Manual posts: LinkedIn (6) / X (tweets in `POSTING_GUIDE.md`) / Hashnode / Medium; tick sync checklist
 - [ ] Marketing bot secrets: `DEVTO_API_KEY`, `BLUESKY_TN_PASSWORD`, `BLUESKY_HN_PASSWORD`, funded X API credits
 - [ ] Resubmit sitemap in Google Search Console after `lastmod` corrections
+
+## Completed in v0.7.7 (2026-11-15)
+- [x] Rotate live `STRIPE_API_KEY` / `STRIPE_PUBLISHABLE_KEY` / `STRIPE_MANAGEMENT_KEY` in local `.env` and Hetzner `/opt/marketing_agent/.env`, verify `/health/detailed` -> `Stripe (live): Connected`, and verify all 4 live unpaid `cs_live_...` Gate 2 checkout sessions (confirmed by Bobbi's independent live walk on Muse)
+- [x] Filter AI-agent, CI-bot, and unroutable email addresses (`codex@openai.com`, `claude@anthropic.com`, `bot@renovateapp.com`, `*.github.io`, `*[bot]*`) across `GitHubEnrichSource`, `ApolloSource`, `HunterSource`, `CadenceAwareManager`, and `Manager` (`internal/db/contact_hygiene.go`)
+- [x] Fix `GitHubEnrichSource` `HTTP 403`/`429` rate-limit handling (`X-RateLimit-Remaining: 0` circuit trip + honest `Failures` accounting) and add `TouchDealUpdatedAt` FIFO queue rotation in `Enricher` so clean zero-contact leads rotate instead of blocking all `17,900+` discovered leads (`internal/enrichment/`, `internal/db/repository.go`)
+- [x] Stop `GitHubIssueSource` from fabricating `<org>.com`/`.io` NXDOMAINs (use verified `/users/{owner}` website or canonical `github.com/{owner}/{repo}`) and switch repo lookup from Search API to Core API `/repos/{owner}/{repo}` (`internal/scraper/github_issue_source.go`)
+- [x] Add `30m` in-memory cache + `15m` `429` backoff to `RSSFeedCrawler`, strip raw email/webmail targets from `Researcher`, skip already-compiled `TechnicalDossier` rows, and upgrade `IntentAggregator` multi-signal scoring (`internal/researcher/`)
 
 ## Completed in v0.7.6 (2026-11-14)
 - [x] Add cached `StripeBillingClient.HealthCheck` + `KeyMode` (`internal/billing/billing.go`) and surface live Stripe key validity (`api_key_expired` / `HTTP 401` vs write-only `rk_` vs `Connected`) in `/health/detailed` (`billing`) and Dashboard Section `6A`

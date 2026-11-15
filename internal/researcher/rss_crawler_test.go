@@ -229,3 +229,38 @@ func TestParseDate(t *testing.T) {
 		})
 	}
 }
+
+func TestRSSFeedCrawler_CachesFeedAcrossCallsAndBacksOffOn429(t *testing.T) {
+	var okFetches int
+	okServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		okFetches++
+		w.Header().Set("Content-Type", "application/rss+xml")
+		_, _ = w.Write([]byte(testRSSFeed))
+	}))
+	defer okServer.Close()
+
+	var rateLimitFetches int
+	rlServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		rateLimitFetches++
+		w.WriteHeader(http.StatusTooManyRequests)
+	}))
+	defer rlServer.Close()
+
+	crawler := &RSSFeedCrawler{
+		Feeds: []string{okServer.URL, rlServer.URL},
+	}
+
+	for _, target := range []string{"acme", "nonexistent", "acme", "ryu.yamamoto@icloud.com"} {
+		_, err := crawler.Crawl(context.Background(), target)
+		if err != nil {
+			t.Fatalf("unexpected error for %s: %v", target, err)
+		}
+	}
+
+	if okFetches != 1 {
+		t.Fatalf("expected 1 HTTP fetch for cached 200 RSS feed across 4 crawls, got %d", okFetches)
+	}
+	if rateLimitFetches != 1 {
+		t.Fatalf("expected 1 HTTP fetch for 429 feed (backoff cached), got %d", rateLimitFetches)
+	}
+}

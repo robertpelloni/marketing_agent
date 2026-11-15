@@ -74,11 +74,23 @@ type sourceResult struct {
 
 // FallbackReport contains the result of a full fallback chain attempt.
 type FallbackReport struct {
-	CompanyName   string
-	CompanyDomain string
-	SourceResults []sourceResult
-	FinalSuccess  bool
-	TotalContacts int
+	CompanyName    string
+	CompanyDomain  string
+	SourceResults  []sourceResult
+	FinalSuccess   bool
+	TotalContacts  int
+	SkippedGarbage bool
+	HadSourceError bool
+	AllCircuitOpen bool
+}
+
+func isDomainOnlyEnrichmentSource(source EnrichmentSource) bool {
+	switch source.(type) {
+	case *ApolloSource, *HunterSource:
+		return true
+	default:
+		return false
+	}
 }
 
 // NewFallbackSource creates a FallbackSource from an ordered list of
@@ -104,29 +116,46 @@ func NewFallbackSource(sources []EnrichmentSource, names []string) *FallbackSour
 // until one returns contacts without error. Logs each attempt with clear
 // pass/fail indicators.
 func (f *FallbackSource) Enrich(ctx context.Context, company db.Company) ([]db.Contact, error) {
+	contacts, _, err := f.EnrichWithReport(ctx, company)
+	return contacts, err
+}
+
+// EnrichWithReport executes the fallback chain and returns a structured report
+// distinguishing clean zero-contact checks from transient source/rate-limit errors.
+func (f *FallbackSource) EnrichWithReport(ctx context.Context, company db.Company) ([]db.Contact, *FallbackReport, error) {
 	f.mu.RLock()
 	defer f.mu.RUnlock()
-
-	// Skip companies with obviously garbage domains/names to avoid
-	// wasting API calls on HN comment parsing artifacts.
-	if isGarbageLead(company) {
-		slog.Info(fmt.Sprintf("FallbackSource: Skipping garbage lead %q (domain: %q)", company.Name, company.Domain))
-		return nil, nil
-	}
 
 	report := &FallbackReport{
 		CompanyName:   company.Name,
 		CompanyDomain: company.Domain,
 	}
 
+	// Skip companies with obviously garbage domains/names to avoid
+	// wasting API calls on HN comment parsing artifacts.
+	if isGarbageLead(company) {
+		report.SkippedGarbage = true
+		slog.Info(fmt.Sprintf("FallbackSource: Skipping garbage lead %q (domain: %q)", company.Name, company.Domain))
+		return nil, report, nil
+	}
+
+	sharedHost := isSharedCodeHostDomain(cleanDomain(company.Domain))
+	applicableSources := 0
+	circuitOpenCount := 0
+
 	for i, source := range f.sources {
 		name := f.names[i]
+
+		if sharedHost && isDomainOnlyEnrichmentSource(source) {
+			continue
+		}
+		applicableSources++
 
 		select {
 		case <-ctx.Done():
 			slog.Info(fmt.Sprintf("FallbackSource: Context cancelled at source %d/%d (%s) for %s",
 				i+1, len(f.sources), name, company.Domain))
-			return nil, ctx.Err()
+			return nil, report, ctx.Err()
 		default:
 		}
 
@@ -138,6 +167,10 @@ func (f *FallbackSource) Enrich(ctx context.Context, company db.Company) ([]db.C
 		result := sourceResult{Name: name}
 		if err != nil {
 			result.Error = err.Error()
+			report.HadSourceError = true
+			if strings.Contains(err.Error(), "circuit open") || strings.Contains(err.Error(), "rate limit") {
+				circuitOpenCount++
+			}
 			recordSourceOutcome(name, false, 0, true)
 			slog.Info(fmt.Sprintf("FallbackSource: ✗ %s failed: %v", name, err))
 			report.SourceResults = append(report.SourceResults, result)
@@ -161,13 +194,17 @@ func (f *FallbackSource) Enrich(ctx context.Context, company db.Company) ([]db.C
 
 		slog.Info(fmt.Sprintf("FallbackSource: ✓ %s returned %d contacts for %s (%s)",
 			name, len(contacts), company.Name, company.Domain))
-		return contacts, nil
+		return contacts, report, nil
+	}
+
+	if applicableSources > 0 && circuitOpenCount == applicableSources {
+		report.AllCircuitOpen = true
 	}
 
 	// All sources exhausted
 	slog.Info(fmt.Sprintf("FallbackSource: ✗ All sources exhausted for %s (%s) — no contacts found",
 		company.Name, company.Domain))
-	return nil, nil
+	return nil, report, nil
 }
 
 // Status returns a human-readable summary of the configured fallback chain.

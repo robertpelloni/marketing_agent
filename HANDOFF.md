@@ -1,30 +1,28 @@
-# HANDOFF.md — marketing_agent (`v0.7.6`, 2026-11-14)
+# HANDOFF.md — marketing_agent (`v0.7.7`, 2026-11-15)
 
 ## 1. Current State Summary
-- **Version:** `0.7.6` (`VERSION` and `VERSION.md` aligned)
-- **Remotes & Production:** Local `main`, GitHub (`github/main`), GitLab (`origin/main`), and Hetzner production (`5.161.250.43:/opt/marketing_agent`) synchronized on `v0.7.6` with clean working trees and exact deployed binary parity (`go version -m /opt/marketing_agent/bin/marketing_agent` -> `vcs.revision == git rev-parse HEAD`, `vcs.modified=false`).
+- **Version:** `0.7.7` (`VERSION` and `VERSION.md` aligned)
+- **Remotes & Production:** Local `main`, GitHub (`github/main`), GitLab (`origin/main`), and Hetzner production (`5.161.250.43:/opt/marketing_agent`) synchronized on `v0.7.7` with clean working trees and exact deployed binary parity (`go version -m /opt/marketing_agent/bin/marketing_agent` -> `vcs.revision == git rev-parse HEAD`, `vcs.modified=false`).
+- **Live Billing Status (Gate 2 Complete):** Live `STRIPE_API_KEY` rotated in `/opt/marketing_agent/.env` (`chmod 600`, LF-normalized); `http://127.0.0.1:8084/health/detailed` reports `"billing": "Stripe (live): Connected"`. All 4 live unpaid `cs_live_...` sessions (`homepage`, `pricing 3 seats`, `checkout 1 seat + email`, `founding 9->5 clamped seats`) passed both Antigravity wire/API checks and Bobbi's independent live browser walk on Muse.
 - **CDP Coordination Thread:** `https://muse.ai/thread/8f3e8782-3a1b-4afe-8520-2c81819e195b` (`HyperNexus main side chat`), prefixed with `[gemini in antigravity in c:\Users\hyper\workspace\marketing_agent on BOBPC]`.
 
-## 2. What Shipped in `v0.7.5` & `v0.7.6`
-1. **Gate 2 Server-Side Checkout Alignment (`v0.7.5`, commit `7bd3c18d2a124cfbb8710339b9e2b3911727f62e`):**
-   - Preserved 100% of Bobbi's pricing copy commit (`e5c43b8cd10e80498999ac25f3a86bd13db30d09`) across `hypernexus_site/` and `/var/www/hypernexus.site/`.
-   - Implemented `CreateHyperNexusTrialCheckout` & `BuildHyperNexusTrialSessionParams` (`internal/billing/billing.go`): single `mode="subscription"` Stripe Checkout session with `$1.99` (`199c`) one-time 14-day team trial today (`quantity: 1`, non-adjustable), `$5.00/seat/mo` (`500c`) recurring starting day 15 (`TrialPeriodDays = 14`, seats clamped `1–5`, adjustable `1..5`), and optional `$200.00` (`20000c`) one-time Founding Team Rate Lock (`12` months, persisted via `SetGrandfatheredRate` on `checkout.session.completed`).
-   - Removed the legacy `$3.01` coupon mechanism completely.
-   - Closed the `$0.01` forged-amount hole (`HTTP 400 Bad Request` on any client-supplied `price_amount` or `first_month_amount` + return-URL host allowlist in `internal/web/server.go`) and unified all buy buttons on `index.html`, `pricing.html`, `checkout.html`, and `cloud_login.html` to POST plan fields only.
-2. **Stripe Key Expiry Observability, Error Redaction & Wire-Level Verification (`v0.7.6`):**
-   - Added cached `StripeBillingClient.HealthCheck` + `KeyMode` (`internal/billing/billing.go`) and exposed live `STRIPE_API_KEY` health in `/health/detailed` (`billing` field) and Dashboard Section `6A` (`Stripe (checkout/billing)`).
-   - Hardened `handleCreateCheckout` (`internal/web/server.go`) to return `HTTP 503` with a redacted diagnostic on Stripe auth/config errors (`api_key_expired` / `401` / `403`) so secret key prefixes/suffixes are never echoed to public HTTP callers.
-   - Added wire-level `httptest.Server` tests (`internal/billing/billing_test.go`, `internal/web/checkout_test.go`) verifying exact `stripe-go/v81` form payloads across all 4 checkout entry flows plus expired-key redaction.
-   - Fixed `golangci-lint` `SA4006` in `internal/communication/cadence_test.go:323` so GitHub Actions `lint` passes cleanly.
+## 2. What Shipped in `v0.7.7`
+1. **Bot / AI-Agent / Unroutable Email Filtering (`internal/db/contact_hygiene.go`, `internal/enrichment/`, `internal/communication/`):**
+   - Added `db.IsAutomatedOrUnroutableEmail`, `db.IsAutomatedCommitAuthor`, `db.IsPersonalEmailDomain`, and `db.SelectOutreachContact`.
+   - Blocks AI coding agents (`codex@openai.com`, `claude@anthropic.com`, `cursoragent@cursor.com`, `devin@cognition.ai`), CI/dependency bots (`bot@renovateapp.com`, `*[bot]*`, `actions@github.com`, `snyk-bot`), and non-MX domains (`*.github.io`, `*.local`, `localhost`, `example.com`) during enrichment AND skips/blocks them in `CadenceAwareManager` and `Manager` so existing bot rows in Postgres are never emailed again.
+2. **GitHub Rate-Limit Circuit Breaker & FIFO Enrichment Queue Rotation (`internal/enrichment/github_enrich.go`, `fallback.go`, `worker.go`, `internal/db/repository.go`):**
+   - Fixed `GitHubEnrichSource` swallowing `HTTP 403` rate-limit exhaustion (`X-RateLimit-Remaining: 0`) into false `empty` results: now immediately opens the circuit until `Retry-After` / `X-RateLimit-Reset`, classifies rate-limited calls as `Failures`, treats `404`/`409` deleted/empty repos as clean empties, and skips domain-only `Apollo.io` / `Hunter.io` lanes on `github.com/` repo leads without inflating `empty` counters.
+   - Added `db.TouchDealUpdatedAt` in `Enricher`: clean zero-contact leads bump `updated_at` so `ListDealsForEnrichment` (`ORDER BY updated_at ASC LIMIT 100`) rotates across all `17,900+` discovered leads instead of repeating the same 100 unenrichable leads every hour, while rate-limited leads stay at the head of the queue.
+3. **Canonical GitHub Issue Lead Domains (`internal/scraper/github_issue_source.go`):**
+   - Stopped `GitHubIssueSource.Discover` from fabricating `<org>.com`/`.io` NXDOMAINs (`velella-sh.com`, etc.): checks `/users/{owner}` for a verified non-social website and otherwise stores canonical `github.com/{owner}/{repo}`, fetches repo metadata via Core API `/repos/{owner}/{repo}` instead of Search API `/search/repositories`, and breaks out of the keyword loop immediately on `429`/`403`.
+4. **Researcher Feed Caching, Target Hygiene & Dynamic Intent Scoring (`internal/researcher/`):**
+   - Added `30m` in-memory caching + `15m` `429`/`5xx` backoff to `RSSFeedCrawler` (eliminating `netflixtechblog.com/feed/ -> HTTP 429` spam).
+   - Skipped already-compiled `TechnicalDossier` rows in `Researcher`, stripped raw email addresses and consumer webmail domains (`gmail.com`, `icloud.com`) from crawler targets, disabled dead `401` `GITHUB_TOKEN` in `GitHubCrawler`, and upgraded `IntentAggregator.Aggregate` to score tech stack, corporate domains, market-cap tier, MCP/agent product fit, and live RSS/GitHub signals dynamically.
 
-## 3. Dependabot Audit Notes (2026-11-14)
-- `github/dependabot/go_modules/go_modules-20443bdb86` (`749d85d0`): **Skipped intentionally** — bumps `go.mod` toolchain directive from `go 1.25.0` to `go 1.26.0`, which conflicts with `.github/workflows/ci.yml` (`go-version: '1.25'`) and `golangci-lint`. Revisit only when CI runners upgrade to Go 1.26.
-- `github/dependabot/npm_and_yarn/npm_and_yarn-e9c900b0fc` (`61a41a74`): **Deferred intentionally** — bundles major breaking semver jumps (`zod 3 -> 4`, `@hono/node-server 1 -> 2`, `glob 13 -> 14`, `minimatch 9 -> 11`) across 10 extension/monorepo directories without TS migration verification.
+## 3. Dependabot Audit Notes
+- `github/dependabot/go_modules/go_modules-20443bdb86` (`749d85d0`): **Skipped intentionally** — bumps `go.mod` toolchain directive from `go 1.25.0` to `go 1.26.0`, conflicting with `.github/workflows/ci.yml` (`go-version: '1.25'`).
+- `github/dependabot/npm_and_yarn/npm_and_yarn-e9c900b0fc` (`61a41a74`): **Deferred intentionally** — bundles breaking major upgrades (`zod 3 -> 4`, `@hono/node-server 1 -> 2`).
 
-## 4. Open Blockers / Next Actions for Next Cycle
-1. **Rotate Expired `STRIPE_API_KEY` on Hetzner (`/opt/marketing_agent/.env`):**
-   - Live prod `STRIPE_API_KEY` (`rk_live_...knwwrr`, also in `STRIPE_RESTRICTED_KEY`) returns `HTTP 401 {"code":"api_key_expired"}` from `api.stripe.com` (now visible directly at `http://127.0.0.1:8084/health/detailed` -> `"billing": "ERROR: Stripe (live): STRIPE_API_KEY expired (api_key_expired)"`).
-   - Once Robert updates `STRIPE_API_KEY` (either `sk_live_`/`sk_test_` or `rk_` with `Checkout Sessions: Write`, `Products: Write`, `Prices: Write`, `Customers: Write`, `Subscriptions: Write`) and runs `systemctl restart marketing-agent`:
-     - Verify `curl -sS http://127.0.0.1:8084/health/detailed` reports `"billing": "Stripe (...): Connected"`.
-     - Create unpaid Stripe test sessions across the 4 entry flows (`homepage`, `pricing`, `checkout`, `founding`) and post the `cs_...` IDs + Stripe-returned line items & `trial_end` to `https://muse.ai/thread/8f3e8782-3a1b-4afe-8520-2c81819e195b`.
-2. **Rotate Other Provider Keys When Ready:** `GITHUB_TOKEN`, `DEEPSEEK_API_KEY`, `HERMES_API_KEY`, `APOLLO_API_KEY`, `HUNTER_API_KEY` in `/opt/marketing_agent/.env`.
+## 4. Open Items for Operator / Next Cycle
+1. **Optional Real-Card Charge Check:** Complete a real `$1.99` trial checkout on `https://hypernexus.site/checkout.html` whenever Robert chooses to verify live settlement + webhook tenant provisioning end-to-end.
+2. **Provider API Keys (`/opt/marketing_agent/.env`):** Refresh `GITHUB_TOKEN` (unlocks 5,000 req/hr GitHub enrichment & issue comments), `DEEPSEEK_API_KEY` / `HERMES_API_KEY` (unlocks live LLM replies & blog generation), and optional `APOLLO_API_KEY` / `HUNTER_API_KEY` / `DEVTO_API_KEY` / `BLUESKY_*`.

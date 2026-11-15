@@ -1,3 +1,20 @@
+## [0.7.7] - 2026-11-15
+
+### Added
+
+- **Shared Contact & Bot Email Hygiene (`internal/db/contact_hygiene.go`, `contact_hygiene_test.go`)**: Added `IsAutomatedOrUnroutableEmail`, `IsAutomatedCommitAuthor`, `IsPersonalEmailDomain`, and `SelectOutreachContact` to reject AI coding agents (`codex@openai.com`, `claude@anthropic.com`, `cursoragent@cursor.com`, `devin@cognition.ai`), CI/dependency bots (`*[bot]*`, `bot@renovateapp.com`, `actions@github.com`, `snyk-bot`), and non-MX/placeholder domains (`*.github.io`, `*.local`, `localhost`, `example.com`) while preserving human surnames ending in `bot` (`talbot`, `abbott`, `cabot`).
+- **In-Memory RSS Feed Caching & 429 Backoff (`internal/researcher/rss_crawler.go`)**: Added per-URL parsed-entry caching (`30m` default TTL) plus `15m` negative backoff caching on `HTTP 429` / `5xx` responses with an explicit `HyperNexus-ResearchBot/1.0` `User-Agent`, eliminating repeated per-lead RSS downloads that triggered `HTTP 429` on external engineering blogs.
+- **Multi-Signal Intent Scoring (`internal/researcher/intent.go`)**: Expanded `IntentAggregator.Aggregate` across hiring/issue signals, tech stack (`Go`/`Rust`/`TypeScript`/`Python`), verified corporate domains, market-cap tier, MCP/multi-agent product-fit keywords, and verified GitHub/RSS/competitor findings instead of collapsing leads onto a constant score of `25`.
+
+### Fixed
+
+- **Enrichment FIFO Queue Rotation & GitHub Rate-Limit Circuit Tripping (`internal/enrichment/github_enrich.go`, `fallback.go`, `worker.go`, `internal/db/repository.go`)**:
+  - `GitHubEnrichSource` now detects `HTTP 403`/`429` rate-limit exhaustion (`X-RateLimit-Remaining: 0` / `"rate limit"`), honors `Retry-After` / `X-RateLimit-Reset` to open the circuit breaker immediately without futile retries, treats `404`/`409` empty/deleted repos as clean empties, and propagates API errors instead of misreporting rate-limited commit fetches as `empty`.
+  - `FallbackSource` skips domain-only enrichment lanes (`Hunter.io`, `Apollo.io`) on shared code-host leads (`github.com/<owner>/<repo>`) without inflating `empty` telemetry counters, and `Enricher` calls `TouchDealUpdatedAt` on clean zero-contact checks so `ListDealsForEnrichment` (`ORDER BY updated_at ASC`) rotates through all `17,900+` discovered leads while leaving rate-limited leads queued for the next cycle.
+- **Outreach Bot Guardrails (`internal/communication/cadence.go`, `manager.go`)**: `CadenceAwareManager` and `Manager` now select the first valid human contact per company (`SelectOutreachContact`) and skip/refuse outbound email touches to automated or unroutable addresses already stored in Postgres.
+- **Canonical GitHub Issue Lead Domains & Core API Lookup (`internal/scraper/github_issue_source.go`)**: `GitHubIssueSource.Discover` now resolves verified profile websites via `/users/{owner}`, falls back to canonical `github.com/{owner}/{repo}` instead of fabricating `<org>.com`/`.io` NXDOMAINs, fetches repo metadata via Core API `/repos/{owner}/{repo}` instead of burning Search API quota, and exits the keyword loop early on `HTTP 429`/`403`.
+- **Researcher Target Hygiene & Deduplication (`internal/researcher/processor.go`, `crawlers.go`)**: `Researcher` now skips leads that already have a compiled `TechnicalDossier`, strips raw email addresses and consumer webmail domains (`gmail.com`, `icloud.com`, etc.) from crawler targets, and disables `401` `GITHUB_TOKEN` headers in `GitHubCrawler` after the first rejection.
+
 ## [0.7.6] - 2026-11-14
 
 ### Added

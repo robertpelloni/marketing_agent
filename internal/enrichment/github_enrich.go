@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -106,6 +107,56 @@ func (g *GitHubEnrichSource) recordFailure() {
 	}
 }
 
+// tripRateLimitCircuit immediately opens the circuit breaker for the given
+// cooldown window when GitHub reports exhausted rate limits (HTTP 403/429 with
+// X-RateLimit-Remaining: 0 or secondary rate limit message).
+func (g *GitHubEnrichSource) tripRateLimitCircuit(wait time.Duration) {
+	g.mu.Lock()
+	defer g.mu.Unlock()
+	if wait <= 0 {
+		if g.cooldown > 0 {
+			wait = g.cooldown
+		} else {
+			wait = 15 * time.Minute
+		}
+	}
+	until := time.Now().Add(wait)
+	if until.After(g.openUntil) {
+		g.openUntil = until
+		slog.Warn(fmt.Sprintf("GitHubEnrichSource: rate limit exhausted; circuit open for %v", wait.Round(time.Second)))
+	}
+}
+
+// rateLimitCooldown inspects GitHub rate-limit headers (Retry-After and
+// X-RateLimit-Reset) to compute a bounded cooldown duration.
+func (g *GitHubEnrichSource) rateLimitCooldown(h http.Header) time.Duration {
+	if ra := strings.TrimSpace(h.Get("Retry-After")); ra != "" {
+		if secs, err := strconv.ParseInt(ra, 10, 64); err == nil && secs > 0 {
+			d := time.Duration(secs) * time.Second
+			if d > time.Hour {
+				return time.Hour
+			}
+			return d
+		}
+	}
+	if resetStr := strings.TrimSpace(h.Get("X-RateLimit-Reset")); resetStr != "" {
+		if epoch, err := strconv.ParseInt(resetStr, 10, 64); err == nil && epoch > 0 {
+			wait := time.Until(time.Unix(epoch, 0)) + 5*time.Second
+			if wait < time.Minute {
+				wait = time.Minute
+			}
+			if wait > time.Hour {
+				wait = time.Hour
+			}
+			return wait
+		}
+	}
+	if g.cooldown > 0 {
+		return g.cooldown
+	}
+	return 15 * time.Minute
+}
+
 // isRetryableGitHubStatus reports whether a response status is worth
 // retrying: rate limiting and server-side failures are transient, other
 // 4xx answers will not change on a retry.
@@ -144,8 +195,31 @@ func (g *GitHubEnrichSource) doWithRetry(req *http.Request) (*http.Response, err
 			unauthReq.Header.Del("Authorization")
 			resp, err = g.HTTPClient.Do(unauthReq)
 		}
+		if err == nil && (resp.StatusCode == http.StatusForbidden || resp.StatusCode == http.StatusTooManyRequests) {
+			remainingZero := strings.TrimSpace(resp.Header.Get("X-RateLimit-Remaining")) == "0"
+			rateLimited := remainingZero
+			if !rateLimited && resp.StatusCode == http.StatusForbidden {
+				snippet, _ := io.ReadAll(io.LimitReader(resp.Body, 1024))
+				lowerSnippet := strings.ToLower(string(snippet))
+				if strings.Contains(lowerSnippet, "rate limit") || strings.Contains(lowerSnippet, "secondary rate") {
+					rateLimited = true
+				} else {
+					_ = resp.Body.Close()
+					resp.Body = io.NopCloser(strings.NewReader(string(snippet)))
+				}
+			}
+			if rateLimited {
+				wait := g.rateLimitCooldown(resp.Header)
+				_ = resp.Body.Close()
+				g.tripRateLimitCircuit(wait)
+				return nil, fmt.Errorf("github: rate limit exceeded (HTTP %d, cooldown %v)", resp.StatusCode, wait.Round(time.Second))
+			}
+		}
 		if err == nil && !isRetryableGitHubStatus(resp.StatusCode) {
 			g.recordSuccess()
+			if resp.StatusCode == http.StatusOK && strings.TrimSpace(resp.Header.Get("X-RateLimit-Remaining")) == "0" {
+				g.tripRateLimitCircuit(g.rateLimitCooldown(resp.Header))
+			}
 			return resp, nil
 		}
 		g.recordFailure()
@@ -272,6 +346,8 @@ func (g *GitHubEnrichSource) Enrich(ctx context.Context, company db.Company) ([]
 
 	seen := make(map[string]bool)
 	var contacts []db.Contact
+	var lastCommitErr error
+	hadCleanRepoCheck := false
 
 	for _, repo := range repos {
 		if len(contacts) >= 5 {
@@ -280,28 +356,35 @@ func (g *GitHubEnrichSource) Enrich(ctx context.Context, company db.Company) ([]
 
 		commits, err := g.fetchRecentCommits(ctx, repo.FullName, 20)
 		if err != nil {
+			lastCommitErr = err
+			if g.circuitOpen() {
+				break
+			}
 			continue
 		}
+		hadCleanRepoCheck = true
 
 		for _, commit := range commits {
 			email := strings.TrimSpace(commit.Commit.Author.Email)
 			name := strings.TrimSpace(commit.Commit.Author.Name)
-
-			if email == "" || seen[email] {
-				continue
-			}
-
 			lowerEmail := strings.ToLower(email)
-			if strings.Contains(lowerEmail, "noreply") ||
-				strings.Contains(lowerEmail, "github-actions") ||
-				strings.Contains(lowerEmail, "web-flow") ||
-				strings.HasPrefix(lowerEmail, "support@") ||
-				strings.HasPrefix(lowerEmail, "admin@") ||
-				strings.HasPrefix(lowerEmail, "info@") {
+
+			if lowerEmail == "" || seen[lowerEmail] {
 				continue
 			}
 
-			seen[email] = true
+			if db.IsAutomatedCommitAuthor(name, email) {
+				continue
+			}
+
+			seen[lowerEmail] = true
+			if name == "" {
+				if at := strings.IndexByte(email, '@'); at > 0 {
+					name = email[:at]
+				} else {
+					name = email
+				}
+			}
 
 			role := "Engineer"
 			if strings.Contains(strings.ToLower(commit.Commit.Message), "merge") ||
@@ -328,6 +411,9 @@ func (g *GitHubEnrichSource) Enrich(ctx context.Context, company db.Company) ([]
 	}
 
 	if len(contacts) == 0 {
+		if !hadCleanRepoCheck && lastCommitErr != nil {
+			return nil, lastCommitErr
+		}
 		slog.Info(fmt.Sprintf("GitHubEnrichSource: No usable commit emails found for %s", orgName))
 		return nil, nil
 	}
@@ -413,6 +499,11 @@ func (g *GitHubEnrichSource) fetchRecentCommits(ctx context.Context, fullName st
 	}
 	defer func() { _ = resp.Body.Close() }()
 
+	if resp.StatusCode == http.StatusNotFound || resp.StatusCode == http.StatusConflict {
+		// 404 (deleted/private repo) or 409 ("Git Repository is empty.") is a
+		// permanent empty state rather than a transient API failure.
+		return nil, nil
+	}
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("GitHub API returned %d for %s commits", resp.StatusCode, fullName)
 	}

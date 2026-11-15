@@ -214,3 +214,88 @@ func TestGitHubIssueSource_CompanyStruct(t *testing.T) {
 		t.Error("expected 1 hiring signal")
 	}
 }
+
+func TestGitHubIssueSource_Discover_UsesCanonicalRepoDomainAndStopsOn429(t *testing.T) {
+	var repoSearchCalls, issueSearchCalls int
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		switch r.URL.Path {
+		case "/search/issues":
+			issueSearchCalls++
+			if issueSearchCalls == 2 {
+				w.WriteHeader(http.StatusTooManyRequests)
+				_, _ = w.Write([]byte(`{"message":"API rate limit exceeded"}`))
+				return
+			}
+			_ = json.NewEncoder(w).Encode(githubIssueSearchResponse{
+				TotalCount: 2,
+				Issues: []struct {
+					HTMLURL   string `json:"html_url"`
+					Title     string `json:"title"`
+					Body      string `json:"body"`
+					RepoURL   string `json:"repository_url"`
+					CreatedAt string `json:"created_at"`
+				}{
+					{
+						HTMLURL: "https://github.com/velella-sh/agent-runtime/issues/1",
+						Title:   "MCP tool routing timeout",
+						RepoURL: "https://api.github.com/repos/velella-sh/agent-runtime",
+					},
+					{
+						HTMLURL: "https://github.com/acme-ai/orchestrator/issues/7",
+						Title:   "Multi-agent memory sync",
+						RepoURL: "https://api.github.com/repos/acme-ai/orchestrator",
+					},
+				},
+			})
+		case "/users/velella-sh":
+			_, _ = w.Write([]byte(`{"blog":"https://velella-sh.github.io"}`))
+		case "/users/acme-ai":
+			_, _ = w.Write([]byte(`{"blog":"https://www.acme-ai.dev/docs"}`))
+		case "/repos/velella-sh/agent-runtime":
+			_, _ = w.Write([]byte(`{"full_name":"velella-sh/agent-runtime","description":"agent runtime","language":"Rust","owner":{"login":"velella-sh"}}`))
+		case "/repos/acme-ai/orchestrator":
+			_, _ = w.Write([]byte(`{"full_name":"acme-ai/orchestrator","description":"enterprise platform","language":"Go","owner":{"login":"acme-ai"}}`))
+		case "/search/repositories":
+			repoSearchCalls++
+			w.WriteHeader(http.StatusInternalServerError)
+		default:
+			w.WriteHeader(http.StatusNotFound)
+		}
+	}))
+	defer server.Close()
+
+	src := &GitHubIssueSource{
+		Client:   server.Client(),
+		Token:    "test-token",
+		BaseURL:  server.URL,
+		Keywords: []string{"MCP", "agent orchestration", "tool calling", "LLM management"},
+	}
+
+	companies, err := src.Discover(context.Background(), nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if repoSearchCalls != 0 {
+		t.Fatalf("expected 0 /search/repositories calls (Core API fast path), got %d", repoSearchCalls)
+	}
+	if issueSearchCalls != 2 {
+		t.Fatalf("expected keyword loop to stop immediately on first 429 (2 calls instead of 4), got %d", issueSearchCalls)
+	}
+	if len(companies) != 2 {
+		t.Fatalf("expected 2 companies, got %d: %+v", len(companies), companies)
+	}
+
+	byName := make(map[string]db.Company, len(companies))
+	for _, c := range companies {
+		byName[c.Name] = c
+	}
+
+	if got := byName["velella-sh"].Domain; got != "github.com/velella-sh/agent-runtime" {
+		t.Fatalf("expected canonical github.com/owner/repo domain when org lacks corporate blog, got %q", got)
+	}
+	if got := byName["acme-ai"].Domain; got != "acme-ai.dev" {
+		t.Fatalf("expected verified profile blog domain acme-ai.dev, got %q", got)
+	}
+}

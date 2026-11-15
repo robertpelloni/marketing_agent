@@ -113,7 +113,12 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 				continue
 			}
 
-			interactions, _ := m.db.ListInteractionsByContact(ctx, contacts[0].ID)
+			primaryContact, hasValidEmail := db.SelectOutreachContact(contacts)
+			if !hasValidEmail {
+				continue
+			}
+
+			interactions, _ := m.db.ListInteractionsByContact(ctx, primaryContact.ID)
 			hasOutbound := false
 			for _, i := range interactions {
 				if i.Direction == "Outbound" {
@@ -122,9 +127,9 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 				}
 			}
 
-			if !hasOutbound && strings.TrimSpace(contacts[0].Email) != "" {
-				slog.Info(fmt.Sprintf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, contacts[0].Email))
-				if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
+			if !hasOutbound && strings.TrimSpace(primaryContact.Email) != "" {
+				slog.Info(fmt.Sprintf("Comm Manager: Initiating autonomous outreach for deal %d to %s", deal.ID, primaryContact.Email))
+				if _, err := m.ProcessInbound(ctx, primaryContact, "START_OUTREACH"); err != nil {
 					slog.Info(fmt.Sprintf("Comm Manager Error: Failed to initiate outreach for deal %d: %v", deal.ID, err))
 					continue
 				}
@@ -147,7 +152,12 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 				continue
 			}
 
-			interactions, _ := m.db.ListInteractionsByContact(ctx, contacts[0].ID)
+			primaryContact, hasValidEmail := db.SelectOutreachContact(contacts)
+			if !hasValidEmail {
+				continue
+			}
+
+			interactions, _ := m.db.ListInteractionsByContact(ctx, primaryContact.ID)
 			hasReply := false
 			outboundCount := 0
 			hasCadenceStep := false
@@ -171,7 +181,7 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 			// Defer follow-up touches to CadenceAwareManager when templates are active;
 			// only retry here if zero outbound touches ever succeeded or >=24h elapsed without template tracking.
 			shouldRetry := false
-			if !hasReply && !hasCadenceStep && strings.TrimSpace(contacts[0].Email) != "" {
+			if !hasReply && !hasCadenceStep && strings.TrimSpace(primaryContact.Email) != "" {
 				if outboundCount == 0 {
 					shouldRetry = true
 				} else if outboundCount < 10 && time.Since(lastOutbound) > 24*time.Hour {
@@ -180,8 +190,8 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 			}
 
 			if shouldRetry {
-				slog.Info(fmt.Sprintf("Comm Manager: Retrying outreach for deal %d to %s (attempt %d)", deal.ID, contacts[0].Email, outboundCount+1))
-				if _, err := m.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
+				slog.Info(fmt.Sprintf("Comm Manager: Retrying outreach for deal %d to %s (attempt %d)", deal.ID, primaryContact.Email, outboundCount+1))
+				if _, err := m.ProcessInbound(ctx, primaryContact, "START_OUTREACH"); err != nil {
 					slog.Info(fmt.Sprintf("Comm Manager Error: Retry failed for deal %d: %v", deal.ID, err))
 				}
 				// Don't change state — keep in OutreachSent
@@ -204,6 +214,10 @@ func DefaultChannelForContact(contact db.Contact) string {
 func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text string) (string, error) {
 	channel := DefaultChannelForContact(contact)
 	isSyntheticOutreach := text == "START_OUTREACH"
+
+	if isSyntheticOutreach && channel == string(db.ChannelEmail) && db.IsAutomatedOrUnroutableEmail(contact.Email) {
+		return "", fmt.Errorf("skipping automated or unroutable email %q", contact.Email)
+	}
 
 	// 1. Persist genuine inbound interactions only (never pollute DB with fake
 	// Inbound "START_OUTREACH" triggers).

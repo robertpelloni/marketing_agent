@@ -143,7 +143,7 @@ func (h *HunterSource) domainSearch(ctx context.Context, domain string) ([]db.Co
 
 	var contacts []db.Contact
 	for _, email := range result.Data.Emails {
-		if email.Value == "" {
+		if email.Value == "" || db.IsAutomatedOrUnroutableEmail(email.Value) {
 			continue
 		}
 

@@ -304,7 +304,9 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			continue
 		}
 
-		interactions, err := cam.db.ListInteractionsByContact(ctx, contacts[0].ID)
+		primaryContact, hasValidEmail := db.SelectOutreachContact(contacts)
+
+		interactions, err := cam.db.ListInteractionsByContact(ctx, primaryContact.ID)
 		if err != nil {
 			continue
 		}
@@ -325,14 +327,14 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 		// Trigger outreach based on channel
 		switch nextStep.Channel {
 		case db.ChannelEmail:
-			recipientEmail := strings.TrimSpace(contacts[0].Email)
-			if recipientEmail == "" {
-				slog.Info(fmt.Sprintf("CadenceAwareManager: Skipping email step %d for deal %d — contact has no email", nextStep.StepNumber, deal.ID))
+			recipientEmail := strings.TrimSpace(primaryContact.Email)
+			if !hasValidEmail || db.IsAutomatedOrUnroutableEmail(recipientEmail) {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Skipping email step %d for deal %d — missing or automated/unroutable email (%q)", nextStep.StepNumber, deal.ID, recipientEmail))
 				_ = cam.db.CreateInteraction(ctx, &db.Interaction{
-					ContactID:  contacts[0].ID,
+					ContactID:  primaryContact.ID,
 					Channel:    nextStep.Channel.String(),
 					Direction:  "Skipped",
-					Summary:    fmt.Sprintf("Skipped cadence step %d (%s): missing email", nextStep.StepNumber, nextStep.TemplateID),
+					Summary:    fmt.Sprintf("Skipped cadence step %d (%s): missing or automated email", nextStep.StepNumber, nextStep.TemplateID),
 					TemplateID: nextStep.TemplateID,
 				})
 				_ = cam.db.SetCadenceStep(ctx, deal.ID, nextStep.StepNumber)
@@ -344,7 +346,7 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			if err != nil {
 				slog.Info(fmt.Sprintf("CadenceAwareManager: Template %s not found for deal %d: %v", nextStep.TemplateID, deal.ID, err))
 				// Fallback to ProcessInbound
-				if _, err := cam.ProcessInbound(ctx, contacts[0], "START_OUTREACH"); err != nil {
+				if _, err := cam.ProcessInbound(ctx, primaryContact, "START_OUTREACH"); err != nil {
 					slog.Info(fmt.Sprintf("CadenceAwareManager: Fallback email step failed for deal %d: %v", deal.ID, err))
 				}
 				continue
@@ -357,11 +359,10 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 				continue
 			}
 
-			contact := contacts[0]
 			salesCtx := SalesContext{
 				Company:      *company,
 				Deal:         deal,
-				Contact:      contact,
+				Contact:      primaryContact,
 				Interactions: interactions,
 				LatestIntent: IntentGeneral, // We're proactively reaching out
 			}
@@ -405,7 +406,7 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 
 			// Create outbound interaction after successful delivery
 			outbound := db.Interaction{
-				ContactID:  contacts[0].ID,
+				ContactID:  primaryContact.ID,
 				Channel:    nextStep.Channel.String(),
 				Direction:  "Outbound",
 				RawText:    body,
@@ -427,10 +428,10 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			}
 
 		case db.ChannelLinkedIn:
-			if strings.TrimSpace(contacts[0].LinkedInURL) == "" {
+			if strings.TrimSpace(primaryContact.LinkedInURL) == "" {
 				slog.Info(fmt.Sprintf("CadenceAwareManager: Skipping LinkedIn step %d for deal %d — no LinkedIn profile URL populated", nextStep.StepNumber, deal.ID))
 				_ = cam.db.CreateInteraction(ctx, &db.Interaction{
-					ContactID:  contacts[0].ID,
+					ContactID:  primaryContact.ID,
 					Channel:    nextStep.Channel.String(),
 					Direction:  "Skipped",
 					Summary:    fmt.Sprintf("Skipped cadence step %d (%s): missing LinkedIn URL", nextStep.StepNumber, nextStep.TemplateID),
@@ -456,7 +457,7 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			salesCtx := SalesContext{
 				Company:      *company,
 				Deal:         deal,
-				Contact:      contacts[0],
+				Contact:      primaryContact,
 				Interactions: interactions,
 				LatestIntent: IntentGeneral,
 			}
@@ -476,7 +477,7 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			// Trigger send via active LinkedInSender BEFORE persisting Outbound interaction
 			if cam.linkedinSender != nil {
 				lkMsg := LinkedInMessage{
-					ProfileURL: contacts[0].LinkedInURL,
+					ProfileURL: primaryContact.LinkedInURL,
 					Subject:    subject,
 					Body:       body,
 				}
@@ -484,11 +485,11 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 					slog.Info(fmt.Sprintf("CadenceAwareManager: LinkedIn send failed for deal %d: %v", deal.ID, err))
 					continue
 				}
-				slog.Info(fmt.Sprintf("CadenceAwareManager: LinkedIn message sent successfully to %s (step %d, template %s)", contacts[0].LinkedInURL, nextStep.StepNumber, tmpl.ID))
+				slog.Info(fmt.Sprintf("CadenceAwareManager: LinkedIn message sent successfully to %s (step %d, template %s)", primaryContact.LinkedInURL, nextStep.StepNumber, tmpl.ID))
 			}
 
 			outbound := db.Interaction{
-				ContactID:  contacts[0].ID,
+				ContactID:  primaryContact.ID,
 				Channel:    nextStep.Channel.String(),
 				Direction:  "Outbound",
 				RawText:    body,
@@ -521,7 +522,7 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			salesCtx := SalesContext{
 				Company:      *company,
 				Deal:         deal,
-				Contact:      contacts[0],
+				Contact:      primaryContact,
 				Interactions: interactions,
 				LatestIntent: IntentGeneral,
 			}
@@ -543,7 +544,7 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 				orgName := extractOrgFromDomain(company.Domain)
 				if orgName == "" {
 					_ = cam.db.CreateInteraction(ctx, &db.Interaction{
-						ContactID:  contacts[0].ID,
+						ContactID:  primaryContact.ID,
 						Channel:    nextStep.Channel.String(),
 						Direction:  "Skipped",
 						Summary:    fmt.Sprintf("Skipped cadence step %d (%s): empty GitHub org", nextStep.StepNumber, tmpl.ID),
@@ -560,7 +561,7 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 				if len(targets) == 0 {
 					slog.Info(fmt.Sprintf("CadenceAwareManager: No relevant GitHub issues found for org %s — skipping step %d", orgName, nextStep.StepNumber))
 					_ = cam.db.CreateInteraction(ctx, &db.Interaction{
-						ContactID:  contacts[0].ID,
+						ContactID:  primaryContact.ID,
 						Channel:    nextStep.Channel.String(),
 						Direction:  "Skipped",
 						Summary:    fmt.Sprintf("Skipped cadence step %d (%s): no matching open GitHub issues for %s", nextStep.StepNumber, tmpl.ID, orgName),
@@ -578,7 +579,7 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			}
 
 			outbound := db.Interaction{
-				ContactID:  contacts[0].ID,
+				ContactID:  primaryContact.ID,
 				Channel:    nextStep.Channel.String(),
 				Direction:  "Outbound",
 				RawText:    body,

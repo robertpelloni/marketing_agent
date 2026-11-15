@@ -49,3 +49,18 @@ func TestIsUnsubscribe_DoesNotTriggerOnSpamFolderMention(t *testing.T) {
 		t.Fatal("explicit spam/opt-out threat must return true")
 	}
 }
+
+func TestProcessInbound_RefusesSyntheticOutreachToAutomatedEmail(t *testing.T) {
+	manager := NewManager(nil, &mockClassifier{}, &mockResponder{}, &mockStrategy{}, &mockOrderProcessor{}, nil)
+
+	for _, addr := range []string{"codex@openai.com", "bot@renovateapp.com", "bot@mcp-scanner.github.io"} {
+		_, err := manager.ProcessInbound(context.Background(), db.Contact{
+			ID:    1,
+			Name:  "Automated Agent",
+			Email: addr,
+		}, "START_OUTREACH")
+		if err == nil {
+			t.Fatalf("expected synthetic outreach to %s to be rejected", addr)
+		}
+	}
+}

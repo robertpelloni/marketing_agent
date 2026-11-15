@@ -51,23 +51,57 @@ func (e *Enricher) executeEnrichment(ctx context.Context) {
 	}
 
 	for _, deal := range deals {
+		select {
+		case <-ctx.Done():
+			return
+		default:
+		}
+
 		company, err := e.db.GetCompanyByID(ctx, deal.CompanyID)
 		if err != nil {
 			slog.Info(fmt.Sprintf("Enricher: Error getting company %d: %v", deal.CompanyID, err))
 			continue
 		}
 
-		err = e.enrichCompany(ctx, deal, *company)
+		stopBatch, err := e.enrichCompany(ctx, deal, *company)
 		if err != nil {
 			slog.Info(fmt.Sprintf("Enricher: Error enriching company %s: %v", company.Name, err))
+		}
+		if stopBatch {
+			slog.Info("Enricher: All applicable enrichment sources are cooling down; pausing remaining batch until next cycle")
+			return
 		}
 	}
 }
 
-func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.Company) error {
+func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.Company) (bool, error) {
+	hadSourceError := false
+	allCircuitOpen := false
+
 	for _, source := range e.sources {
-		contacts, err := source.Enrich(ctx, company)
+		if source == nil {
+			continue
+		}
+
+		var contacts []db.Contact
+		var err error
+		if fb, ok := source.(*FallbackSource); ok {
+			var report *FallbackReport
+			contacts, report, err = fb.EnrichWithReport(ctx, company)
+			if report != nil {
+				if report.HadSourceError {
+					hadSourceError = true
+				}
+				if report.AllCircuitOpen {
+					allCircuitOpen = true
+				}
+			}
+		} else {
+			contacts, err = source.Enrich(ctx, company)
+		}
+
 		if err != nil {
+			hadSourceError = true
 			slog.Info(fmt.Sprintf("Enricher: Error from source: %v", err))
 			continue
 		}
@@ -84,7 +118,7 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 			// Advance deal state to Researched
 			err = e.db.UpdateDealState(ctx, deal.ID, db.StateResearched)
 			if err != nil {
-				return fmt.Errorf("failed to update deal state: %w", err)
+				return false, fmt.Errorf("failed to update deal state: %w", err)
 			}
 
 			// Synchronize newly found contacts with the CRM (with retry logic)
@@ -104,8 +138,19 @@ func (e *Enricher) enrichCompany(ctx context.Context, deal db.Deal, company db.C
 			}
 
 			slog.Info(fmt.Sprintf("Enricher: Successfully enriched %s with %d contacts", company.Name, len(contacts)))
-			return nil
+			return false, nil
 		}
 	}
-	return nil
+
+	// Rotate FIFO enrichment queue (ORDER BY updated_at ASC) only when sources
+	// completed cleanly with zero contacts (e.g. noreply-only repos or garbage
+	// leads). Keep updated_at untouched on rate-limit/transient source errors so
+	// those leads stay first in line for the next cycle.
+	if !hadSourceError && e.db != nil {
+		if err := e.db.TouchDealUpdatedAt(ctx, deal.ID); err != nil {
+			slog.Info(fmt.Sprintf("Enricher: Failed to rotate deal %d updated_at: %v", deal.ID, err))
+		}
+	}
+
+	return allCircuitOpen, nil
 }

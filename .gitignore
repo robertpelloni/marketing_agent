@@ -14,8 +14,8 @@
 bin/
 dist/
 build/
-marketing_agent
-marketing_agent_linux
+/marketing_agent
+/marketing_agent_linux
 sales_bot
 sales_bot.exe
 tormentnexus-mcp-server
@@ -86,7 +86,6 @@ email_send_log.csv
 .kilo/
 .kimi-code/
 .mavis/
-.memory/
 .opencode/
 openhands/
 .pi/

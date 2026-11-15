@@ -429,10 +429,10 @@ func extractEntityParts(contentType, transferEncoding string, body io.Reader, pl
 		return
 	}
 
-	switch {
-	case mediaType == "text/plain" || mediaType == "message/delivery-status" || mediaType == "text/rfc822-headers":
+	switch mediaType {
+	case "text/plain", "message/delivery-status", "text/rfc822-headers":
 		*plainParts = append(*plainParts, text)
-	case mediaType == "text/html":
+	case "text/html":
 		*htmlParts = append(*htmlParts, text)
 	}
 }

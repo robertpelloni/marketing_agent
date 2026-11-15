@@ -1,3 +1,10 @@
+## [0.7.10] - 2026-11-15
+
+### Fixed
+
+- **Staticcheck `QF1002` Tagged Switch (`internal/communication/imap_receiver.go`)**: Converted `extractEntityParts` `mediaType` dispatch to a tagged `switch mediaType` so GitHub Actions `golangci-lint` (`lint` job) passes cleanly.
+- **Root-Anchored Binary Ignore & Memory Tracking (`.gitignore`)**: Anchored `/marketing_agent` and `/marketing_agent_linux` to the repo root (so `cmd/marketing_agent/` is never shadowed by `.gitignore`) and unignored `.memory/`.
+
 ## [0.7.9] - 2026-11-15
 
 ### Added

@@ -38,6 +38,12 @@ type HermesHealthChecker interface {
 	HealthCheck(ctx context.Context) error
 }
 
+// BillingHealthChecker is an optional interface for checking Stripe billing key validity.
+type BillingHealthChecker interface {
+	HealthCheck(ctx context.Context) error
+	KeyMode() string
+}
+
 // Server handles web dashboard requests.
 type Server struct {
 	db            *db.DB
@@ -1108,12 +1114,15 @@ tr:hover { background-color: #f8fafc; }
 		}
 		return `<span style="color: var(--danger); font-weight: bold;">not configured</span>`
 	}
+	_, stripeStatusHTML := s.billingHealthSummary(r.Context())
 	providerList := fmt.Sprintf(`
+						<li><strong>Stripe (checkout/billing):</strong> %s</li>
 						<li><strong>DeepSeek (blog/LLM):</strong> %s</li>
 						<li><strong>Apollo (enrichment):</strong> %s</li>
 						<li><strong>Hunter (enrichment):</strong> %s</li>
 						<li><strong>GitHub (enrichment/outreach):</strong> %s</li>
 						<li><strong>Hermes/MiMo:</strong> %s</li>`,
+		stripeStatusHTML,
 		providerConfigured("DEEPSEEK_API_KEY"),
 		providerConfigured("APOLLO_API_KEY"),
 		providerConfigured("HUNTER_API_KEY"),
@@ -1343,6 +1352,23 @@ func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	_, _ = fmt.Fprintln(w, "OK")
 }
 
+func (s *Server) billingHealthSummary(ctx context.Context) (string, string) {
+	if s.billingClient == nil {
+		return "Not configured", `<span style="color: var(--danger); font-weight: bold;">not configured</span>`
+	}
+	checker, ok := s.billingClient.(BillingHealthChecker)
+	if !ok {
+		return "Mock", `<span style="color: #6c757d; font-weight: bold;">mock</span>`
+	}
+	mode := checker.KeyMode()
+	if err := checker.HealthCheck(ctx); err != nil {
+		msg := fmt.Sprintf("ERROR: %s: %s", mode, err.Error())
+		return msg, fmt.Sprintf(`<span style="color: var(--danger); font-weight: bold;">%s</span>`, html.EscapeString(msg))
+	}
+	msg := mode + ": Connected"
+	return msg, fmt.Sprintf(`<span style="color: #23A55A; font-weight: bold;">%s</span>`, html.EscapeString(msg))
+}
+
 func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	health := make(map[string]interface{})
@@ -1374,6 +1400,10 @@ func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 	} else {
 		health["llm_provider"] = "Mock"
 	}
+
+	// 5. Check Stripe billing key validity (redacted; never exposes key bytes)
+	billingStatus, _ := s.billingHealthSummary(r.Context())
+	health["billing"] = billingStatus
 
 	if err := json.NewEncoder(w).Encode(health); err != nil {
 		slog.WarnContext(r.Context(), "Error encoding health JSON", "error", err)
@@ -1904,8 +1934,16 @@ func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
 		)
 	}
 	if err != nil {
-		slog.Error("Failed to create checkout session", "error", err)
-		writeCheckoutJSONError(w, http.StatusInternalServerError, "Failed to create checkout: "+err.Error())
+		slog.ErrorContext(r.Context(), "Failed to create checkout session", "error", err)
+		if isAuthErr, safeReason := billing.IsStripeAuthOrConfigError(err); isAuthErr {
+			writeCheckoutJSONError(w, http.StatusServiceUnavailable, "Checkout billing provider unavailable: "+safeReason)
+			return
+		}
+		if strings.Contains(err.Error(), "unknown tier:") {
+			writeCheckoutJSONError(w, http.StatusBadRequest, "Invalid pricing tier")
+			return
+		}
+		writeCheckoutJSONError(w, http.StatusBadGateway, "Unable to create checkout session")
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")

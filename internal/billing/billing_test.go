@@ -2,6 +2,12 @@ package billing
 
 import (
 	"context"
+	"fmt"
+	"io"
+	"net/http"
+	"net/http/httptest"
+	"net/url"
+	"strings"
 	"testing"
 
 	"github.com/stripe/stripe-go/v81"
@@ -142,5 +148,179 @@ func TestCreateCheckoutSessionWithPrice_RejectsHyperNexusProClientAmount(t *test
 	)
 	if err == nil {
 		t.Fatal("expected CreateCheckoutSessionWithPrice to reject client-supplied price_amount for TierHyperNexusPro")
+	}
+}
+
+func TestStripeBillingClient_WireLevelHyperNexusTrialCheckout_AllEntryFlows(t *testing.T) {
+	var capturedForms []url.Values
+	var capturedAuth string
+
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost || r.URL.Path != "/v1/checkout/sessions" {
+			t.Errorf("unexpected Stripe API request: %s %s", r.Method, r.URL.Path)
+			http.Error(w, "not found", http.StatusNotFound)
+			return
+		}
+		capturedAuth = r.Header.Get("Authorization")
+		raw, _ := io.ReadAll(r.Body)
+		vals, err := url.ParseQuery(string(raw))
+		if err != nil {
+			t.Errorf("failed parsing stripe form body: %v", err)
+		}
+		capturedForms = append(capturedForms, vals)
+
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = fmt.Fprintf(w, `{"id":"cs_test_flow_%d","object":"checkout.session","url":"https://checkout.stripe.com/c/pay/cs_test_flow_%d"}`, len(capturedForms), len(capturedForms))
+	}))
+	defer ts.Close()
+
+	backend := stripe.GetBackendWithConfig(stripe.APIBackend, &stripe.BackendConfig{
+		URL:               stripe.String(ts.URL),
+		HTTPClient:        ts.Client(),
+		MaxNetworkRetries: stripe.Int64(0),
+	})
+
+	client := NewStripeBillingClient("sk_test_wire_verify", "whsec_dummy", nil, "", "", nil)
+	client.APIBackend = backend
+
+	flows := []struct {
+		name      string
+		seats     int
+		wantSeats string
+		founding  bool
+		email     string
+	}{
+		{name: "homepage_default_trial", seats: 1, wantSeats: "1", founding: false, email: ""},
+		{name: "pricing_3_seats_trial", seats: 3, wantSeats: "3", founding: false, email: ""},
+		{name: "checkout_1_seat_with_email", seats: 1, wantSeats: "1", founding: false, email: "cto@acme.io"},
+		{name: "founding_clamped_9_to_5_seats", seats: 9, wantSeats: "5", founding: true, email: "founder@acme.io"},
+	}
+
+	for i, fl := range flows {
+		gotURL, err := client.CreateHyperNexusTrialCheckout(
+			context.Background(),
+			101,
+			fl.seats,
+			fl.founding,
+			fl.email,
+			"https://hypernexus.site/success.html",
+			"https://hypernexus.site/pricing.html",
+		)
+		if err != nil {
+			t.Fatalf("%s: unexpected error: %v", fl.name, err)
+		}
+		wantURL := fmt.Sprintf("https://checkout.stripe.com/c/pay/cs_test_flow_%d", i+1)
+		if gotURL != wantURL {
+			t.Fatalf("%s: got URL %q, want %q", fl.name, gotURL, wantURL)
+		}
+
+		form := capturedForms[i]
+		if form.Get("mode") != "subscription" {
+			t.Errorf("%s: mode = %q, want subscription", fl.name, form.Get("mode"))
+		}
+		if form.Get("subscription_data[trial_period_days]") != "14" {
+			t.Errorf("%s: trial_period_days = %q, want 14", fl.name, form.Get("subscription_data[trial_period_days]"))
+		}
+		if form.Get("discounts[0][coupon]") != "" {
+			t.Errorf("%s: unexpected coupon in wire payload: %q", fl.name, form.Get("discounts[0][coupon]"))
+		}
+		// Line 0: $1.99 one-time team trial today (qty 1, non-recurring, non-adjustable)
+		if form.Get("line_items[0][price_data][unit_amount]") != "199" || form.Get("line_items[0][quantity]") != "1" {
+			t.Errorf("%s: line_items[0] expected 199 x 1, got amt=%q qty=%q",
+				fl.name, form.Get("line_items[0][price_data][unit_amount]"), form.Get("line_items[0][quantity]"))
+		}
+		if form.Get("line_items[0][price_data][recurring][interval]") != "" {
+			t.Errorf("%s: line_items[0] must be one-time, got recurring=%q", fl.name, form.Get("line_items[0][price_data][recurring][interval]"))
+		}
+		// Line 1: $5.00/seat/mo recurring, clamped seats, adjustable 1..5
+		if form.Get("line_items[1][price_data][unit_amount]") != "500" ||
+			form.Get("line_items[1][price_data][recurring][interval]") != "month" ||
+			form.Get("line_items[1][quantity]") != fl.wantSeats {
+			t.Errorf("%s: line_items[1] mismatch: amt=%q interval=%q qty=%q (want %s)",
+				fl.name,
+				form.Get("line_items[1][price_data][unit_amount]"),
+				form.Get("line_items[1][price_data][recurring][interval]"),
+				form.Get("line_items[1][quantity]"),
+				fl.wantSeats,
+			)
+		}
+		if form.Get("line_items[1][adjustable_quantity][minimum]") != "1" || form.Get("line_items[1][adjustable_quantity][maximum]") != "5" {
+			t.Errorf("%s: adjustable_quantity bounds expected 1..5", fl.name)
+		}
+
+		if fl.founding {
+			if form.Get("line_items[2][price_data][unit_amount]") != "20000" || form.Get("line_items[2][quantity]") != "1" {
+				t.Errorf("%s: founding line_items[2] expected 20000 x 1, got amt=%q qty=%q",
+					fl.name, form.Get("line_items[2][price_data][unit_amount]"), form.Get("line_items[2][quantity]"))
+			}
+			if form.Get("line_items[2][price_data][recurring][interval]") != "" {
+				t.Errorf("%s: founding fee must be one-time", fl.name)
+			}
+		} else if form.Get("line_items[2][price_data][unit_amount]") != "" {
+			t.Errorf("%s: unexpected line_items[2] on non-founding flow", fl.name)
+		}
+
+		if form.Get("customer_email") != fl.email {
+			t.Errorf("%s: customer_email = %q, want %q", fl.name, form.Get("customer_email"), fl.email)
+		}
+	}
+
+	if !strings.Contains(capturedAuth, "sk_test_wire_verify") {
+		t.Errorf("expected Bearer auth header on Stripe request, got %q", capturedAuth)
+	}
+}
+
+func TestStripeBillingClient_HealthCheck_ExpiredVsWriteOnlyVsValid(t *testing.T) {
+	mode := "expired"
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		switch mode {
+		case "expired":
+			w.WriteHeader(http.StatusUnauthorized)
+			_, _ = w.Write([]byte(`{"error":{"code":"api_key_expired","message":"Expired API Key provided: rk_live_secret_knwwrr","type":"invalid_request_error"}}`))
+		case "write_only":
+			w.WriteHeader(http.StatusForbidden)
+			_, _ = w.Write([]byte(`{"error":{"message":"The provided key does not have the required permissions for this endpoint.","type":"invalid_request_error"}}`))
+		default:
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte(`{"object":"list","data":[],"has_more":false}`))
+		}
+	}))
+	defer ts.Close()
+
+	backend := stripe.GetBackendWithConfig(stripe.APIBackend, &stripe.BackendConfig{
+		URL:               stripe.String(ts.URL),
+		HTTPClient:        ts.Client(),
+		MaxNetworkRetries: stripe.Int64(0),
+	})
+
+	// 1. Expired restricted live key -> error reported, zero secret characters leaked
+	c1 := NewStripeBillingClient("rk_live_secret_knwwrr", "", nil, "", "", nil)
+	c1.APIBackend = backend
+	if c1.KeyMode() != "Stripe (live)" {
+		t.Fatalf("KeyMode() = %q, want Stripe (live)", c1.KeyMode())
+	}
+	err := c1.HealthCheck(context.Background())
+	if err == nil || !strings.Contains(err.Error(), "api_key_expired") {
+		t.Fatalf("expected api_key_expired health error, got %v", err)
+	}
+	if strings.Contains(err.Error(), "rk_live_") || strings.Contains(err.Error(), "knwwrr") {
+		t.Fatalf("HealthCheck leaked secret key fragment: %v", err)
+	}
+
+	// 2. Write-only restricted key (403 on list) -> authenticated & healthy
+	mode = "write_only"
+	c2 := NewStripeBillingClient("rk_test_write_only", "", nil, "", "", nil)
+	c2.APIBackend = backend
+	if err := c2.HealthCheck(context.Background()); err != nil {
+		t.Fatalf("expected write-only restricted key to pass HealthCheck, got %v", err)
+	}
+
+	// 3. Full key (200 OK) -> healthy
+	mode = "ok"
+	c3 := NewStripeBillingClient("sk_test_ok", "", nil, "", "", nil)
+	c3.APIBackend = backend
+	if err := c3.HealthCheck(context.Background()); err != nil {
+		t.Fatalf("expected active key to pass HealthCheck, got %v", err)
 	}
 }

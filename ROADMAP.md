@@ -1,15 +1,15 @@
 # ROADMAP — marketing_agent
 
 Source of truth for long-term direction. Short-term tasks live in `TODO.md`.
-Verified against repository and Hetzner production (`5.161.250.43`) through `2026-11-14` (`v0.7.5`).
+Verified against repository and Hetzner production (`5.161.250.43`) through `2026-11-14` (`v0.7.6`).
 
 ## M1 — Repo/prod parity lock (DONE 2026-11-07 / 2026-11-14)
 - Trial-funnel pages, sitemap dates, outreach docs, and `/opt/marketing_agent` checkout synced cleanly to `main` across both GitHub (`github`) and GitLab (`origin`), with deployed binary `vcs.revision` locked to committed `HEAD` (`vcs.modified=false`).
 - Rule: publish static site updates to `/var/www/hypernexus.site` and `/var/www/tormentnexus.site` only from committed `main`.
 
-## M2 — Finalized Gate 2 Pricing & Checkout Alignment (CODE + STRIPE SESSIONS DONE `v0.7.5`)
-- Copy aligned (`e5c43b8c`) and server-side checkout enforced (`v0.7.5`): one Stripe `subscription` session with `$1.99` one-time per-team 14-day trial fee today + `$5/seat/month` recurring (`TrialPeriodDays = 14`, seats clamped `1–5`) + optional `$200` Founding Team Rate Lock (`12` months), coupon mechanism removed, and client `price_amount` rejected with `HTTP 400`.
-- Remaining gate: live operator card real-charge + webhook tenant provisioning check.
+## M2 — Finalized Gate 2 Pricing & Checkout Alignment (CODE + WIRE VERIFIED `v0.7.5`–`v0.7.6`; PROD KEY ROTATION PENDING)
+- Copy aligned (`e5c43b8c`) and server-side checkout enforced (`v0.7.5`–`v0.7.6`): one Stripe `subscription` session with `$1.99` one-time per-team 14-day trial fee today + `$5/seat/month` recurring (`TrialPeriodDays = 14`, seats clamped `1–5`) + optional `$200` Founding Team Rate Lock (`12` months), coupon mechanism removed, client `price_amount` rejected with `HTTP 400`, wire-level `stripe-go` form payloads verified across all 4 entry flows, and `STRIPE_API_KEY` expiry surfaced in `/health/detailed` + Dashboard `6A`.
+- Remaining gate: rotate expired `STRIPE_API_KEY` (`api_key_expired`) in `/opt/marketing_agent/.env`, verify live unpaid `cs_...` sessions, and run operator real-card charge + webhook tenant provisioning check.
 
 ## M3 — Outreach blitz & autonomous multi-channel cadence (CORE ENGINE READY `v0.7.4`)
 - Copy drafted for all 11 launch posts (`POSTING_GUIDE.md` + `marketing/outreach_queue_2026-11-03.md`); manual account-authenticated posts (LinkedIn, X, Hashnode, Medium) remain in `TODO.md`.

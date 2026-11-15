@@ -9,6 +9,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/stripe/stripe-go/v81"
 	"gitlab.com/robertpelloni/marketing_agent/internal/billing"
 	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
@@ -130,5 +131,46 @@ func TestHandleCreateCheckout_StandardAndFoundingPlanFields(t *testing.T) {
 	srv2.handleCreateCheckout(rr3, req3)
 	if rr3.Code != http.StatusBadRequest {
 		t.Fatalf("expected 400 for untrusted success_url, got %d", rr3.Code)
+	}
+}
+
+func TestHandleCreateCheckout_RedactsExpiredStripeKeyError(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusUnauthorized)
+		_, _ = w.Write([]byte(`{"error":{"code":"api_key_expired","message":"Expired API Key provided: rk_live_secret_knwwrr","type":"invalid_request_error"}}`))
+	}))
+	defer ts.Close()
+
+	client := billing.NewStripeBillingClient("rk_live_secret_knwwrr", "", nil, "", "", nil)
+	client.APIBackend = stripe.GetBackendWithConfig(stripe.APIBackend, &stripe.BackendConfig{
+		URL:               stripe.String(ts.URL),
+		HTTPClient:        ts.Client(),
+		MaxNetworkRetries: stripe.Int64(0),
+	})
+
+	srv := &Server{billingClient: client}
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/billing/checkout", bytes.NewBufferString(`{
+		"tier": "HYPERNEXUS_PROFESSIONAL_LICENSE",
+		"plan": "trial",
+		"seats": 2
+	}`))
+	rr := httptest.NewRecorder()
+	srv.handleCreateCheckout(rr, req)
+
+	if rr.Code != http.StatusServiceUnavailable {
+		t.Fatalf("expected 503 Service Unavailable on expired Stripe key, got %d (%s)", rr.Code, rr.Body.String())
+	}
+	body := rr.Body.String()
+	if !strings.Contains(body, "api_key_expired") {
+		t.Errorf("expected redacted api_key_expired diagnostic in response, got %s", body)
+	}
+	if strings.Contains(body, "rk_live_") || strings.Contains(body, "knwwrr") {
+		t.Fatalf("checkout response leaked Stripe key fragment: %s", body)
+	}
+
+	healthStr, _ := srv.billingHealthSummary(context.Background())
+	if !strings.Contains(healthStr, "ERROR: Stripe (live): STRIPE_API_KEY expired (api_key_expired)") {
+		t.Errorf("expected billingHealthSummary to reflect expired key, got %q", healthStr)
 	}
 }

@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"regexp"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/stripe/stripe-go/v81"
@@ -97,7 +99,12 @@ type StripeBillingClient struct {
 	PriceIDHyperNexusPro        string
 	PriceIDHyperNexusProMonthly string
 	PriceIDHyperNexusProYearly  string
+	APIBackend                  stripe.Backend // optional override for testing
 	db                          SubscriptionStore
+
+	healthMu        sync.Mutex
+	healthCheckedAt time.Time
+	healthErr       error
 }
 
 // SubscriptionStore is the database interface for subscription storage.
@@ -129,6 +136,109 @@ func NewStripeBillingClient(apiKey, webhookSecret string, priceIDs map[Tier]stri
 }
 
 func (s *StripeBillingClient) stripe() { stripe.Key = s.APIKey }
+
+func (s *StripeBillingClient) sessionClient() session.Client {
+	b := s.APIBackend
+	if b == nil {
+		b = stripe.GetBackend(stripe.APIBackend)
+	}
+	return session.Client{B: b, Key: s.APIKey}
+}
+
+// KeyMode returns a non-sensitive label indicating whether the configured Stripe key
+// is a live key, test key, or unconfigured (never exposes any secret characters).
+func (s *StripeBillingClient) KeyMode() string {
+	k := strings.TrimSpace(s.APIKey)
+	switch {
+	case k == "":
+		return "Stripe (unconfigured)"
+	case strings.HasPrefix(k, "sk_live_"), strings.HasPrefix(k, "rk_live_"):
+		return "Stripe (live)"
+	case strings.HasPrefix(k, "sk_test_"), strings.HasPrefix(k, "rk_test_"):
+		return "Stripe (test)"
+	default:
+		return "Stripe"
+	}
+}
+
+// IsStripeAuthOrConfigError classifies upstream Stripe authentication/permission failures
+// into a redacted operator-safe reason string that never leaks secret key prefixes/suffixes.
+func IsStripeAuthOrConfigError(err error) (bool, string) {
+	if err == nil {
+		return false, ""
+	}
+	var stripeErr *stripe.Error
+	if errors.As(err, &stripeErr) {
+		switch {
+		case string(stripeErr.Code) == "api_key_expired":
+			return true, "STRIPE_API_KEY expired (api_key_expired)"
+		case stripeErr.HTTPStatusCode == http.StatusUnauthorized:
+			return true, "STRIPE_API_KEY unauthorized (HTTP 401)"
+		case stripeErr.HTTPStatusCode == http.StatusForbidden:
+			return true, "STRIPE_API_KEY insufficient permissions (HTTP 403)"
+		}
+	}
+	return false, ""
+}
+
+// HealthCheck probes Stripe API key validity with caching so dashboard/health endpoints
+// surface expired or invalid STRIPE_API_KEY values immediately without spamming api.stripe.com.
+func (s *StripeBillingClient) HealthCheck(ctx context.Context) error {
+	if strings.TrimSpace(s.APIKey) == "" {
+		return fmt.Errorf("STRIPE_API_KEY not configured")
+	}
+
+	s.healthMu.Lock()
+	ttl := 2 * time.Minute
+	if s.healthErr != nil {
+		ttl = 30 * time.Second
+	}
+	if !s.healthCheckedAt.IsZero() && time.Since(s.healthCheckedAt) < ttl {
+		cached := s.healthErr
+		s.healthMu.Unlock()
+		return cached
+	}
+	s.healthMu.Unlock()
+
+	probeCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	sc := s.sessionClient()
+	listParams := &stripe.CheckoutSessionListParams{}
+	listParams.Context = probeCtx
+	listParams.Single = true
+	listParams.Limit = stripe.Int64(1)
+
+	iter := sc.List(listParams)
+	_ = iter.Next()
+	err := iter.Err()
+
+	var probeErr error
+	if err != nil {
+		var stripeErr *stripe.Error
+		if errors.As(err, &stripeErr) {
+			switch {
+			case stripeErr.HTTPStatusCode == http.StatusForbidden:
+				// Key authenticated with Stripe (not expired/revoked); write-only restricted key.
+				probeErr = nil
+			case string(stripeErr.Code) == "api_key_expired":
+				probeErr = fmt.Errorf("STRIPE_API_KEY expired (api_key_expired)")
+			case stripeErr.HTTPStatusCode == http.StatusUnauthorized:
+				probeErr = fmt.Errorf("STRIPE_API_KEY unauthorized (HTTP 401)")
+			default:
+				probeErr = fmt.Errorf("stripe API error (HTTP %d)", stripeErr.HTTPStatusCode)
+			}
+		} else {
+			probeErr = fmt.Errorf("stripe API unreachable")
+		}
+	}
+
+	s.healthMu.Lock()
+	s.healthCheckedAt = time.Now()
+	s.healthErr = probeErr
+	s.healthMu.Unlock()
+	return probeErr
+}
 
 // --- Invoice Operations ---
 
@@ -309,12 +419,23 @@ func BuildHyperNexusTrialSessionParams(companyID int64, seats int, founding bool
 // CreateHyperNexusTrialCheckout creates a Stripe Checkout subscription session enforcing
 // the canonical server-side HyperNexus Professional License pricing.
 func (s *StripeBillingClient) CreateHyperNexusTrialCheckout(ctx context.Context, companyID int64, seats int, founding bool, customerEmail, successURL, cancelURL string) (string, error) {
-	s.stripe()
 	params, _ := BuildHyperNexusTrialSessionParams(companyID, seats, founding, customerEmail, successURL, cancelURL)
-	sess, err := session.New(params)
+	params.Context = ctx
+	sc := s.sessionClient()
+	sess, err := sc.New(params)
 	if err != nil {
+		if isAuth, safeReason := IsStripeAuthOrConfigError(err); isAuth {
+			s.healthMu.Lock()
+			s.healthCheckedAt = time.Now()
+			s.healthErr = errors.New(safeReason)
+			s.healthMu.Unlock()
+		}
 		return "", fmt.Errorf("stripe checkout session creation failed: %w", err)
 	}
+	s.healthMu.Lock()
+	s.healthCheckedAt = time.Now()
+	s.healthErr = nil
+	s.healthMu.Unlock()
 	return sess.URL, nil
 }
 

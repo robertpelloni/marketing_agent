@@ -1,3 +1,15 @@
+## [0.7.6] - 2026-11-14
+
+### Added
+
+- **Stripe Billing Key Health & Expiry Observability (`internal/billing/billing.go`, `internal/web/server.go`)**: Added cached `StripeBillingClient.HealthCheck` and `KeyMode` (`Stripe (live)` / `Stripe (test)`), surfacing live `STRIPE_API_KEY` validity (`api_key_expired` / `HTTP 401` detection, write-only restricted-key awareness, and zero secret-byte exposure) in `/health/detailed` (`billing` field) and Dashboard Section `6A` (`Stripe (checkout/billing)`).
+- **Wire-Level Stripe Checkout Form Verification (`internal/billing/billing_test.go`, `internal/web/checkout_test.go`)**: Added end-to-end `httptest.Server` tests verifying the exact `application/x-www-form-urlencoded` `/v1/checkout/sessions` payloads serialized by `stripe-go/v81` across all 4 entry flows (`homepage`, `pricing 3 seats`, `checkout 1 seat + email`, `founding 9->5 clamped seats`) as well as expired-key health and redaction behavior.
+
+### Fixed
+
+- **Redacted Public Checkout Error Responses (`internal/web/server.go`)**: `handleCreateCheckout` no longer echoes raw upstream `stripe.Error` strings (which include masked key prefixes/suffixes on `api_key_expired`) to unauthenticated callers; returns `HTTP 503 Service Unavailable` with a redacted diagnostic on Stripe auth/config errors and `HTTP 502 Bad Gateway` on upstream failures while logging full details server-side.
+- **CI Staticcheck Cleanup (`internal/communication/cadence_test.go`)**: Fixed `SA4006` unused `prog` assignment at line 323 so GitHub Actions `golangci-lint` (`lint` job) passes cleanly.
+
 ## [0.7.5] - 2026-11-14
 
 ### Fixed

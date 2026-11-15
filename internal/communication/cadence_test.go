@@ -324,6 +324,9 @@ func TestCadenceTracker_GetNextStep_ProgressesAllFiveStepsWithoutLooping(t *test
 	if err != nil || step == nil || step.StepNumber != 2 {
 		t.Fatalf("after step 1 expected step 2, got step=%+v err=%v", step, err)
 	}
+	if prog.TotalAttempts != 1 {
+		t.Fatalf("expected 1 outbound attempt after step 1, got %d", prog.TotalAttempts)
+	}
 
 	// Step 2 skipped (e.g. no open GitHub issues) -> Step 3
 	history = append(history, db.Interaction{

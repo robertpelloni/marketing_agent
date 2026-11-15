@@ -1,3 +1,10 @@
+## [0.7.8] - 2026-11-15
+
+### Fixed
+
+- **Staticcheck `QF1003` Cleanup (`internal/researcher/crawlers.go`)**: Replaced `if/else if/else` on `resp.StatusCode` with a tagged `switch` in `GitHubCrawler.Crawl` so GitHub Actions `golangci-lint` (`lint` job) passes cleanly.
+- **Foundation-Model & Self-Repo Discovery Exclusion (`internal/scraper/github_issue_source.go`, `pkg/agents/discovery.go`)**: Added `anthropic`, `anthropics`, `openai`, `modelcontextprotocol`, `cloudflare`, `vercel`, `huggingface`, `hypernexussoft`, and `robertpelloni` to GitHub issue/repository discovery exclusion filters so official vendor SDK repos (e.g. `anthropics/claude-agent-sdk-python`) and self-owned repos are never ingested as cold-outreach prospects.
+
 ## [0.7.7] - 2026-11-15
 
 ### Added

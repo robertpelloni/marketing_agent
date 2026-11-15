@@ -46,12 +46,13 @@ func (g *GitHubCrawler) Crawl(ctx context.Context, target string) (string, error
 
 			resp, doErr := g.Client.Do(req)
 			if doErr == nil {
-				if resp.StatusCode == http.StatusUnauthorized {
+				switch resp.StatusCode {
+				case http.StatusUnauthorized:
 					_ = resp.Body.Close()
 					if g.tokenInvalid.CompareAndSwap(false, true) {
 						slog.Warn("GitHubCrawler: GITHUB_TOKEN returned 401; disabling dead token for research crawls")
 					}
-				} else if resp.StatusCode == http.StatusOK {
+				case http.StatusOK:
 					var repos []struct {
 						Name        string `json:"name"`
 						Description string `json:"description"`
@@ -70,7 +71,7 @@ func (g *GitHubCrawler) Crawl(ctx context.Context, target string) (string, error
 						}
 						return fmt.Sprintf("REAL-TIME GitHub INSIGHT for %s: Active repositories [%s]. Analyzing codebase for state management and orchestration patterns.", target, strings.Join(names, ", ")), nil
 					}
-				} else {
+				default:
 					_ = resp.Body.Close()
 				}
 			}

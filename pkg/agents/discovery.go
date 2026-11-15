@@ -104,6 +104,9 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 	}
 
 	for _, repo := range result.Repositories {
+		if owner := repo.GetOwner().GetLogin(); isExcludedDiscoveryOwner(owner) {
+			continue
+		}
 		domain := fmt.Sprintf("github.com/%s", repo.GetFullName())
 		// #nosec G706 -- Domain name is used for context in informational logs
 		slog.Info(fmt.Sprintf("TormentNexus Outreach: Evaluating repository: %s", domain))
@@ -141,5 +144,16 @@ func (w *TargetDiscoveryWorker) discover(ctx context.Context) {
 			// #nosec G706 -- Domain name is used for context in success logs
 			slog.Info(fmt.Sprintf("TormentNexus Outreach Success: New lead discovered: %s", domain))
 		}
+	}
+}
+
+func isExcludedDiscoveryOwner(owner string) bool {
+	switch strings.ToLower(strings.TrimSpace(owner)) {
+	case "anthropic", "anthropics", "openai", "google", "microsoft", "meta", "facebook",
+		"apple", "amazon", "aws", "github", "gitlab", "modelcontextprotocol",
+		"cloudflare", "vercel", "huggingface", "hypernexussoft", "robertpelloni":
+		return true
+	default:
+		return false
 	}
 }

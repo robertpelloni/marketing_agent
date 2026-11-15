@@ -431,6 +431,8 @@ func (g *GitHubIssueSource) isExcludedOrg(orgName string) bool {
 		"gitlab", "atlassian", "jetbrains", "docker", "kubernetes",
 		"canonical", "redhat", "ibm", "oracle", "salesforce", "slack",
 		"stripe", "twilio", "mongodb", "elastic", "confluent",
+		"anthropic", "anthropics", "openai", "modelcontextprotocol",
+		"cloudflare", "vercel", "huggingface",
 	}
 
 	for _, ex := range excluded {

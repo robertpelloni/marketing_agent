@@ -215,8 +215,8 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	channel := DefaultChannelForContact(contact)
 	isSyntheticOutreach := text == "START_OUTREACH"
 
-	if isSyntheticOutreach && channel == string(db.ChannelEmail) && db.IsAutomatedOrUnroutableEmail(contact.Email) {
-		return "", fmt.Errorf("skipping automated or unroutable email %q", contact.Email)
+	if isSyntheticOutreach && channel == string(db.ChannelEmail) && db.IsAutomatedCommitAuthor(contact.Name, contact.Email) {
+		return "", fmt.Errorf("skipping automated or unroutable contact %q <%s>", contact.Name, contact.Email)
 	}
 
 	// 1. Persist genuine inbound interactions only (never pollute DB with fake
@@ -233,20 +233,25 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		}
 	}
 
-	// 2. Classify intent (gracefully fall back to heuristic MockIntentClassifier if LLM is unavailable)
-	intent := IntentGeneral
+	freshText := text
 	if !isSyntheticOutreach {
-		var err error
-		intent, err = m.classifier.Classify(ctx, text)
-		if err != nil {
-			slog.Warn("Comm Manager: Primary intent classifier failed, falling back to heuristic classifier", "error", err)
-			intent, _ = (&MockIntentClassifier{}).Classify(ctx, text)
-		}
+		freshText = ExtractFreshInboundText(text)
 	}
 
-	// 2b. Check for unsubscribe/bounce/opt-out signals before any processing.
-	// Immediately close the deal and send a confirmation to prevent further emails.
-	if !isSyntheticOutreach && isUnsubscribe(text) {
+	// 2b. Check for email bounce (delivery failure notifications) BEFORE classification
+	// so mailer-daemon / DSN payloads never advance a deal to Engaged or trigger replies.
+	if !isSyntheticOutreach && isBounce(text) {
+		slog.Info(fmt.Sprintf("Comm Manager: Email bounce detected for %s — marking contact as invalid", contact.Email))
+		deal, dealErr := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
+		if dealErr == nil {
+			_ = m.db.UpdateDealState(ctx, deal.ID, db.StateClosedLost)
+		}
+		_ = m.db.UpdateContactEmail(ctx, contact.ID, "")
+		return "", nil
+	}
+
+	// 2c. Check for unsubscribe/opt-out signals on the sender's fresh message text.
+	if !isSyntheticOutreach && isUnsubscribe(freshText) {
 		slog.Info(fmt.Sprintf("Comm Manager: Unsubscribe detected from %s — closing deal %d", contact.Email, contact.CompanyID))
 		deal, dealErr := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
 		if dealErr == nil {
@@ -255,16 +260,26 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		return "You have been unsubscribed from further communications. No additional emails will be sent.", nil
 	}
 
-	// 2c. Check for email bounce (delivery failure notifications)
-	if !isSyntheticOutreach && isBounce(text) {
-		slog.Info(fmt.Sprintf("Comm Manager: Email bounce detected for %s — marking contact as invalid", contact.Email))
+	// 2d. Respect polite declines / non-commercial hobby-project replies immediately:
+	// close the deal so CadenceAwareManager stops follow-ups without sending pushy rebuttals.
+	if !isSyntheticOutreach && isPoliteDecline(freshText) {
+		slog.Info(fmt.Sprintf("Comm Manager: Polite decline detected from %s — closing deal for company %d without follow-up", contact.Email, contact.CompanyID))
 		deal, dealErr := m.db.GetDealByCompanyID(ctx, contact.CompanyID)
 		if dealErr == nil {
 			_ = m.db.UpdateDealState(ctx, deal.ID, db.StateClosedLost)
 		}
-		// Mark the contact's email as invalid so we don't try again
-		_ = m.db.UpdateContactEmail(ctx, contact.ID, "")
 		return "", nil
+	}
+
+	// 2. Classify intent (gracefully fall back to heuristic MockIntentClassifier if LLM is unavailable)
+	intent := IntentGeneral
+	if !isSyntheticOutreach {
+		var err error
+		intent, err = m.classifier.Classify(ctx, freshText)
+		if err != nil {
+			slog.Warn("Comm Manager: Primary intent classifier failed, falling back to heuristic classifier", "error", err)
+			intent, _ = (&MockIntentClassifier{}).Classify(ctx, freshText)
+		}
 	}
 
 	// 2a. Decide next action using strategy engine
@@ -363,6 +378,12 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		}
 	}
 
+	signoff := "HyperNexus Team"
+	if !IsCorporate(contact.Email, company.Domain) {
+		signoff = "TormentNexus Team"
+	}
+	replyText = SanitizeOutboundText(replyText, signoff)
+
 	// 4. Send the communication first when email sender is configured so failed
 	// deliveries do not record phantom Outbound interactions.
 	if m.sender != nil && contact.Email != "" && channel == "email" {
@@ -370,6 +391,7 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		if isSyntheticOutreach {
 			subject = fmt.Sprintf("HyperNexus for %s — Quick Question", company.Name)
 		}
+		subject = SanitizeOutboundText(subject, signoff)
 
 		emailMsg := EmailMessage{
 			To:      contact.Email,
@@ -452,16 +474,105 @@ func isUnsubscribe(text string) bool {
 	return false
 }
 
+// ExtractFreshInboundText strips an optional leading "Subject: ...\n\n" envelope
+// wrapper (when body text is non-empty) and removes quoted reply history ("On ... wrote:",
+// "> ..." lines, "-----Original Message-----") so opt-out, polite-decline, and intent
+// classifiers inspect only what the prospect actually wrote.
+func ExtractFreshInboundText(text string) string {
+	trimmed := strings.TrimSpace(text)
+	if strings.HasPrefix(trimmed, "Subject:") {
+		if idx := strings.Index(trimmed, "\n\n"); idx != -1 {
+			bodyPart := strings.TrimSpace(trimmed[idx+2:])
+			if bodyPart != "" {
+				trimmed = bodyPart
+			}
+		}
+	}
+	stripped := StripQuotedReply(trimmed)
+	if stripped != "" {
+		return stripped
+	}
+	return trimmed
+}
+
+// StripQuotedReply removes standard email reply quote blocks from plain-text bodies.
+func StripQuotedReply(body string) string {
+	normalized := strings.ReplaceAll(body, "\r\n", "\n")
+	lines := strings.Split(normalized, "\n")
+	var kept []string
+	for i, line := range lines {
+		trimLine := strings.TrimSpace(line)
+		lowerLine := strings.ToLower(trimLine)
+
+		if strings.HasPrefix(trimLine, "-----Original Message-----") ||
+			strings.HasPrefix(trimLine, "________________________________") ||
+			(strings.HasPrefix(lowerLine, "from:") && i+1 < len(lines) && strings.HasPrefix(strings.ToLower(strings.TrimSpace(lines[i+1])), "sent:")) {
+			break
+		}
+
+		// Match single-line or two-line wrapped "On <date>, <sender> wrote:" attribution headers.
+		if strings.HasPrefix(lowerLine, "on ") && strings.HasSuffix(lowerLine, "wrote:") {
+			break
+		}
+		if strings.HasPrefix(lowerLine, "on ") && i+1 < len(lines) {
+			nextLower := strings.ToLower(strings.TrimSpace(lines[i+1]))
+			if strings.HasSuffix(nextLower, "wrote:") {
+				break
+			}
+		}
+
+		if strings.HasPrefix(trimLine, ">") {
+			continue
+		}
+		kept = append(kept, line)
+	}
+	return strings.TrimSpace(strings.Join(kept, "\n"))
+}
+
+// isPoliteDecline detects clear non-interest or non-commercial/hobby-project replies
+// so the deal transitions cleanly to Closed_Lost without pushy follow-up cadences.
+func isPoliteDecline(text string) bool {
+	lower := strings.ToLower(text)
+	declinePhrases := []string{
+		"not interested",
+		"no thank you",
+		"no thanks",
+		"not currently exploring",
+		"not exploring new",
+		"pass for now",
+		"hard pass",
+		"not in the market",
+		"just a personal project",
+		"project for fun",
+		"not anywhere in the production",
+		"not in production",
+		"we're all set",
+		"we are all set",
+		"not looking for",
+		"close my file",
+	}
+	for _, phrase := range declinePhrases {
+		if strings.Contains(lower, phrase) {
+			return true
+		}
+	}
+	return false
+}
+
 // isBounce detects email delivery failure notifications.
 // Matches common bounce formats: mailer-daemon, delivery failure, etc.
 func isBounce(text string) bool {
 	lower := strings.ToLower(text)
+	if strings.Contains(lower, "delivery status notification (delay)") || strings.Contains(lower, "will retry for") {
+		return false
+	}
 	bouncePhrases := []string{
 		"mailer-daemon", "mail delivery", "delivery status notification",
 		"undelivered mail", "returned mail", "delivery failure",
-		"could not be delivered", "message blocked", "address rejected",
-		"no such user", "mailbox full", "user unknown",
-		"recipient rejected", "550 5.1.1", "550 5.4.1",
+		"could not be delivered", "couldn't be delivered", "wasn't delivered",
+		"address not found", "message blocked", "address rejected",
+		"no such user", "mailbox full", "inbox is full", "user unknown",
+		"recipient rejected", "550 5.1.1", "550 5.2.1", "550 5.4.1", "552 5.2.2",
 	}
 	for _, phrase := range bouncePhrases {
 		if strings.Contains(lower, phrase) {

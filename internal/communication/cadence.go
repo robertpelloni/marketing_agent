@@ -328,7 +328,7 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 		switch nextStep.Channel {
 		case db.ChannelEmail:
 			recipientEmail := strings.TrimSpace(primaryContact.Email)
-			if !hasValidEmail || db.IsAutomatedOrUnroutableEmail(recipientEmail) {
+			if !hasValidEmail || db.IsAutomatedCommitAuthor(primaryContact.Name, recipientEmail) {
 				slog.Info(fmt.Sprintf("CadenceAwareManager: Skipping email step %d for deal %d — missing or automated/unroutable email (%q)", nextStep.StepNumber, deal.ID, recipientEmail))
 				_ = cam.db.CreateInteraction(ctx, &db.Interaction{
 					ContactID:  primaryContact.ID,

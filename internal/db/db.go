@@ -183,7 +183,15 @@ HyperNexus Team`,
 	for _, tmpl := range templates {
 		query := `INSERT INTO templates (id, name, subject, body, channel, created_at, updated_at)
 			VALUES ($1, $2, $3, $4, $5, NOW(), NOW())
-			ON CONFLICT (id) DO NOTHING`
+			ON CONFLICT (id) DO UPDATE
+			SET name = EXCLUDED.name,
+			    subject = EXCLUDED.subject,
+			    body = EXCLUDED.body,
+			    updated_at = NOW()
+			WHERE templates.body ILIKE '%[Your Name]%'
+			   OR templates.body ILIKE '%[My Name]%'
+			   OR templates.body ILIKE '%LLM waterfall%'
+			   OR (templates.id = 'github-hook' AND templates.body NOT ILIKE '%hypernexus.site%')`
 		_, err := db.Conn.ExecContext(ctx, query,
 			tmpl.ID, tmpl.Name, tmpl.Subject, tmpl.Body, tmpl.Channel)
 		if err != nil {
@@ -201,6 +209,21 @@ HyperNexus Team`,
 	_, err := db.Conn.ExecContext(ctx, query)
 	if err != nil {
 		return fmt.Errorf("create template_metrics table: %w", err)
+	}
+
+	// Track processed inbound emails across restarts so IMAP polling is strictly idempotent.
+	inboundDedupQuery := `CREATE TABLE IF NOT EXISTS processed_inbound_emails (
+		message_key TEXT PRIMARY KEY,
+		folder TEXT NOT NULL DEFAULT 'INBOX',
+		uid BIGINT NOT NULL DEFAULT 0,
+		sender TEXT NOT NULL DEFAULT '',
+		subject TEXT NOT NULL DEFAULT '',
+		outcome TEXT NOT NULL DEFAULT '',
+		processed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+	);
+	CREATE INDEX IF NOT EXISTS idx_processed_inbound_folder_uid ON processed_inbound_emails (folder, uid);`
+	if _, err := db.Conn.ExecContext(ctx, inboundDedupQuery); err != nil {
+		return fmt.Errorf("create processed_inbound_emails table: %w", err)
 	}
 
 	return nil

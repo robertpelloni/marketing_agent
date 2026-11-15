@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"regexp"
 	"strings"
 
 	"gitlab.com/robertpelloni/marketing_agent/internal/db"
@@ -153,7 +154,15 @@ func (g *RAGResponseGenerator) Generate(ctx context.Context, salesCtx SalesConte
 		User:   userPrompt,
 	}
 
-	return g.llm.Generate(ctx, prompt)
+	rawReply, err := g.llm.Generate(ctx, prompt)
+	if err != nil {
+		return "", err
+	}
+	signoff := "HyperNexus Team"
+	if !isCorp {
+		signoff = "TormentNexus Team"
+	}
+	return SanitizeOutboundText(rawReply, signoff), nil
 }
 
 func (g *RAGResponseGenerator) truncateDocs(docs string) string {
@@ -243,5 +252,31 @@ func (g *RAGResponseGenerator) GenerateFromTemplate(ctx context.Context, tmpl *d
 		subject = strings.ReplaceAll(subject, "HyperNexus", "TormentNexus")
 	}
 
+	signoff := "HyperNexus Team"
+	if !isCorp {
+		signoff = "TormentNexus Team"
+	}
+	subject = SanitizeOutboundText(subject, signoff)
+	body = SanitizeOutboundText(body, signoff)
+
 	return subject, body, nil
+}
+
+var (
+	namePlaceholderRe = regexp.MustCompile(`(?i)\[\s*(your|my|sender|insert|agent|rep)\s+name\s*\]|\[\s*name\s*\]`)
+	bracketTokenRe    = regexp.MustCompile(`\{\{\s*[a-zA-Z0-9_]+\s*\}\}`)
+)
+
+// SanitizeOutboundText strips residual template placeholders (such as "[Your Name]"
+// or unreplaced "{{token}}" markers) before any outbound message is delivered.
+func SanitizeOutboundText(text, fallbackSignoff string) string {
+	if text == "" {
+		return ""
+	}
+	if strings.TrimSpace(fallbackSignoff) == "" {
+		fallbackSignoff = "HyperNexus Team"
+	}
+	cleaned := namePlaceholderRe.ReplaceAllString(text, fallbackSignoff)
+	cleaned = bracketTokenRe.ReplaceAllString(cleaned, "")
+	return strings.TrimSpace(cleaned)
 }

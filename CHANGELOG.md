@@ -1,3 +1,20 @@
+## [0.7.9] - 2026-11-15
+
+### Added
+
+- **Idempotent IMAP MIME Body Parser & Persistent UID/Message-ID Deduplication (`internal/communication/imap_receiver.go`, `imap_receiver_test.go`, `internal/db/db.go`, `repository.go`)**:
+  - Replaced `imap.FetchBody` (`BODYSTRUCTURE` metadata, which left `email.Body` empty on 100% of inbound emails) with `BODY.PEEK[]` (`&imap.BodySectionName{Peek: true}`) and full RFC 5322 `multipart/*` + `quoted-printable` / `base64` / HTML fallback decoding via `ParseRawMIMEBody`.
+  - Added `processed_inbound_emails` table + `GetMaxProcessedInboundUID` / `IsInboundEmailProcessed` / `MarkInboundEmailProcessed` and strict `uid > r.lastUID` filtering to eliminate the RFC 3501 `UID <lastUID+1>:*` high-water wrap-around loop and prevent duplicate `Inbound` rows across service restarts.
+- **Real Mailer-Daemon / DSN Bounce Recipient Processing (`internal/communication/imap_receiver.go`)**: Added `ExtractPermanentBounceRecipients` to parse `mailer-daemon@` / `postmaster@` DSNs before sender lookup, distinguishing temporary delivery delays (`(Delay)` / `will retry for`) from permanent `5xx` bounces and automatically clearing bounced `contacts.email` (`NULLIF($1, '')` so `contacts_email_key` `UNIQUE` never collides) + transitioning deals to `Closed_Lost`.
+- **Graceful Polite-Decline Handling & Outbound Placeholder Sanitizer (`internal/communication/manager.go`, `responder.go`)**:
+  - Added `ExtractFreshInboundText`, `StripQuotedReply`, and `isPoliteDecline` so quoted outreach blocks never pollute classification and polite non-commercial/decline replies transition deals cleanly to `Closed_Lost` without pushy rebuttals.
+  - Added `SanitizeOutboundText` across `Generate`, `GenerateFromTemplate`, and `Manager.ProcessInbound` to strip any `[Your Name]` / `[My Name]` / `{{...}}` placeholders before delivery, and updated `seedTemplates` (`internal/db/db.go`) to auto-upgrade legacy `[Your Name]` / LLM-waterfall rows in Postgres on startup.
+
+### Fixed
+
+- **OpenAI-Compatible `/v1` Gateway URL Normalization & Honest Error Diagnostics (`internal/llm/deepseek.go`, `hermes.go`, `llm_test.go`, `cmd/marketing_agent/main.go`)**: Normalized `BaseURL` (`normalizeOpenAIBaseRoot`) across `DeepSeekLLMProvider` and `HermesLLMProvider` so both root and `/v1` gateway URLs resolve `/v1/models` and `/v1/chat/completions` cleanly (surfacing accurate `401 (invalid_key)` status instead of misleading `404`), and enabled `LLMIntentClassifier` when `DEEPSEEK_API_KEY` is configured.
+- **Expanded Bot Author & Malformed TLD Filtering (`internal/db/contact_hygiene.go`, `contact_hygiene_test.go`, `internal/communication/cadence.go`)**: Blocked `action@github.com`, malformed numeric/unlinked TLDs (`*.unlinked2026...`, raw IP literals), and `-bot` / ` Bot` commit author names (`ellmos-multi-bot`, `MCP Scanner Bot`) in `SelectOutreachContact`.
+
 ## [0.7.8] - 2026-11-15
 
 ### Fixed

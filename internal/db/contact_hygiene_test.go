@@ -12,6 +12,9 @@ func TestIsAutomatedOrUnroutableEmail(t *testing.T) {
 		"12345+user@users.noreply.github.com",
 		"noreply@github.com",
 		"actions@github.com",
+		"action@github.com",
+		"lopesjrodrigo@gmail.com.unlinked202609291341",
+		"user@127.0.0.1",
 		"codex@openai.com",
 		"claude@anthropic.com",
 		"cursoragent@cursor.com",
@@ -55,6 +58,12 @@ func TestIsAutomatedCommitAuthor(t *testing.T) {
 	}
 	if !IsAutomatedCommitAuthor("Claude Code", "dev@acme.dev") {
 		t.Fatal("expected Claude Code author name to be blocked")
+	}
+	if !IsAutomatedCommitAuthor("ellmos-multi-bot", "notify@ellmos.dev") {
+		t.Fatal("expected -bot author name to be blocked")
+	}
+	if !IsAutomatedCommitAuthor("MCP Scanner Bot", "scanner@acme.dev") {
+		t.Fatal("expected ' Bot' author name to be blocked")
 	}
 	if IsAutomatedCommitAuthor("Jane Talbot", "talbot@acme.dev") {
 		t.Fatal("expected human author Jane Talbot to be allowed")

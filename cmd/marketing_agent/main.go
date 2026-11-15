@@ -271,8 +271,8 @@ func main() {
 
 	// 2g. Setup Intent Classifier
 	var classifier communication.IntentClassifier
-	if cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "" {
-		slog.Info("Communication: Initializing LLM-backed Intent Classifier via Hermes.")
+	if cfg.DeepSeekAPIKey != "" || (cfg.HermesAPIURL != "" && cfg.HermesAPIKey != "") {
+		slog.Info("Communication: Initializing LLM-backed Intent Classifier (with heuristic fallback).")
 		classifier = communication.NewLLMIntentClassifier(llmProvider)
 	} else {
 		slog.Info("Communication: Initializing Mock Intent Classifier.")

@@ -8,7 +8,6 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
-	"strings"
 	"time"
 )
 
@@ -34,14 +33,15 @@ type HermesConfig struct {
 	Model	string	// e.g. "free-llm" or any model available in Hermes
 }
 
-// NewHermesLLMProvider creates a provider that routes LLM calls through Hermes.
+// NewHermesLLMProvider creates a provider that routes LLM calls through Hermes
+// (or any OpenAI-compatible gateway).
 func NewHermesLLMProvider(cfg HermesConfig) *HermesLLMProvider {
 	return &HermesLLMProvider{
-		BaseURL:	strings.TrimRight(cfg.BaseURL, "/"),
-		APIKey:		cfg.APIKey,
-		Model:		cfg.Model,
+		BaseURL: normalizeOpenAIBaseRoot(cfg.BaseURL),
+		APIKey:  cfg.APIKey,
+		Model:   cfg.Model,
 		HTTPClient: &http.Client{
-			Timeout: 120 * time.Second,	// LLM calls can be slow
+			Timeout: 120 * time.Second, // LLM calls can be slow
 		},
 	}
 }
@@ -104,7 +104,8 @@ func (h *HermesLLMProvider) Generate(ctx context.Context, prompt Prompt) (string
 		return "", fmt.Errorf("hermes: failed to marshal request: %w", err)
 	}
 
-	url := h.BaseURL + "/v1/chat/completions"
+	baseRoot := normalizeOpenAIBaseRoot(h.BaseURL)
+	url := baseRoot + "/v1/chat/completions"
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(bodyBytes))
 	if err != nil {
 		return "", fmt.Errorf("hermes: failed to create request: %w", err)
@@ -150,23 +151,35 @@ func (h *HermesLLMProvider) Generate(ctx context.Context, prompt Prompt) (string
 	return content, nil
 }
 
-// HealthCheck verifies the Hermes API server is reachable and responding.
+// HealthCheck verifies the Hermes API server (or OpenAI-compatible gateway) is reachable.
 func (h *HermesLLMProvider) HealthCheck(ctx context.Context) error {
-	url := h.BaseURL + "/health"
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-	if err != nil {
-		return fmt.Errorf("hermes health: failed to create request: %w", err)
+	baseRoot := normalizeOpenAIBaseRoot(h.BaseURL)
+	paths := []string{"/health", "/v1/models"}
+	var lastStatus int
+
+	for _, p := range paths {
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, baseRoot+p, nil)
+		if err != nil {
+			return fmt.Errorf("hermes health: failed to create request: %w", err)
+		}
+		if h.APIKey != "" {
+			req.Header.Set("Authorization", "Bearer "+h.APIKey)
+		}
+
+		resp, err := h.HTTPClient.Do(req)
+		if err != nil {
+			return fmt.Errorf("hermes health: request failed: %w", err)
+		}
+		_ = resp.Body.Close()
+
+		if resp.StatusCode == http.StatusOK {
+			return nil
+		}
+		lastStatus = resp.StatusCode
+		if resp.StatusCode != http.StatusNotFound {
+			break
+		}
 	}
 
-	resp, err := h.HTTPClient.Do(req)
-	if err != nil {
-		return fmt.Errorf("hermes health: request failed: %w", err)
-	}
-	defer func() { _ = resp.Body.Close() }()
-
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("hermes health: API returned status %d", resp.StatusCode)
-	}
-
-	return nil
+	return fmt.Errorf("hermes health: API returned status %d", lastStatus)
 }

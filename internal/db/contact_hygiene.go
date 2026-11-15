@@ -13,6 +13,7 @@ var exactBlockedEmails = map[string]struct{}{
 	"devin@cognition.ai":     {},
 	"noreply@cognition.ai":   {},
 	"actions@github.com":     {},
+	"action@github.com":      {},
 	"noreply@github.com":     {},
 	"support@github.com":     {},
 	"bot@renovateapp.com":    {},
@@ -137,6 +138,20 @@ func IsAutomatedOrUnroutableEmail(email string) bool {
 		return true
 	}
 
+	// Reject malformed TLDs such as ".unlinked202609291341" or raw IPv4 literals
+	// while allowing IDN punycode TLDs ("xn--...").
+	tld := domain[strings.LastIndex(domain, ".")+1:]
+	if len(tld) < 2 {
+		return true
+	}
+	if !strings.HasPrefix(tld, "xn--") {
+		for i := 0; i < len(tld); i++ {
+			if tld[i] >= '0' && tld[i] <= '9' {
+				return true
+			}
+		}
+	}
+
 	if _, blocked := exactBlockedDomains[domain]; blocked {
 		return true
 	}
@@ -187,7 +202,12 @@ func IsAutomatedCommitAuthor(name, email string) bool {
 		"renovate", "renovate bot", "renovate-bot",
 		"semantic-release-bot", "snyk-bot", "snyk bot",
 		"codecov", "codecov-io", "greenkeeper",
-		"openai codex", "claude code", "cursor agent", "cursoragent", "devin ai":
+		"openai codex", "codex", "claude code", "cursor agent", "cursoragent", "devin ai":
+		return true
+	}
+
+	if strings.HasSuffix(lowerName, "-bot") || strings.HasSuffix(lowerName, "_bot") || strings.HasSuffix(lowerName, " bot") ||
+		strings.HasPrefix(lowerName, "bot-") || strings.HasPrefix(lowerName, "bot_") || strings.HasPrefix(lowerName, "bot ") {
 		return true
 	}
 
@@ -211,7 +231,7 @@ func SelectOutreachContact(contacts []Contact) (Contact, bool) {
 		return Contact{}, false
 	}
 	for _, c := range contacts {
-		if !IsAutomatedOrUnroutableEmail(c.Email) {
+		if !IsAutomatedCommitAuthor(c.Name, c.Email) {
 			return c, true
 		}
 	}

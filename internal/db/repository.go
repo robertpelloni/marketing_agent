@@ -418,19 +418,70 @@ func (db *DB) UpdateContactPreferredChannel(ctx context.Context, contactID int64
 }
 
 // UpdateContactEmail clears the email for a contact (used when email bounces).
+// UpdateContactEmail updates or clears the email for a contact (storing NULL when empty so
+// clearing multiple bounced contacts never violates contacts_email_key UNIQUE constraint).
 func (db *DB) UpdateContactEmail(ctx context.Context, contactID int64, email string) error {
-	query := `UPDATE contacts SET email = $1, updated_at = $2 WHERE id = $3`
-	_, err := db.Conn.ExecContext(ctx, query, email, time.Now(), contactID)
+	query := `UPDATE contacts SET email = NULLIF($1, ''), updated_at = $2 WHERE id = $3`
+	_, err := db.Conn.ExecContext(ctx, query, strings.TrimSpace(email), time.Now(), contactID)
 	if err != nil {
 		return fmt.Errorf("failed to update contact email: %w", err)
 	}
 	return nil
 }
 
+// GetMaxProcessedInboundUID returns the highest IMAP UID already processed in folder.
+func (db *DB) GetMaxProcessedInboundUID(ctx context.Context, folder string) (uint32, error) {
+	if db == nil || db.Conn == nil {
+		return 0, nil
+	}
+	var maxUID int64
+	err := db.Conn.QueryRowContext(ctx,
+		`SELECT COALESCE(MAX(uid), 0) FROM processed_inbound_emails WHERE folder = $1`,
+		folder,
+	).Scan(&maxUID)
+	if err != nil {
+		return 0, err
+	}
+	if maxUID < 0 {
+		return 0, nil
+	}
+	return uint32(maxUID), nil
+}
+
+// IsInboundEmailProcessed reports whether messageKey has already been handled.
+func (db *DB) IsInboundEmailProcessed(ctx context.Context, messageKey string) (bool, error) {
+	if db == nil || db.Conn == nil || strings.TrimSpace(messageKey) == "" {
+		return false, nil
+	}
+	var exists bool
+	err := db.Conn.QueryRowContext(ctx,
+		`SELECT EXISTS(SELECT 1 FROM processed_inbound_emails WHERE message_key = $1)`,
+		messageKey,
+	).Scan(&exists)
+	return exists, err
+}
+
+// MarkInboundEmailProcessed records an IMAP message as processed so restarts never re-ingest it.
+func (db *DB) MarkInboundEmailProcessed(ctx context.Context, messageKey, folder string, uid uint32, sender, subject, outcome string) error {
+	if db == nil || db.Conn == nil || strings.TrimSpace(messageKey) == "" {
+		return nil
+	}
+	_, err := db.Conn.ExecContext(ctx,
+		`INSERT INTO processed_inbound_emails (message_key, folder, uid, sender, subject, outcome, processed_at)
+		 VALUES ($1, $2, $3, $4, $5, $6, NOW())
+		 ON CONFLICT (message_key) DO UPDATE
+		 SET uid = GREATEST(processed_inbound_emails.uid, EXCLUDED.uid),
+		     outcome = EXCLUDED.outcome,
+		     processed_at = NOW()`,
+		messageKey, folder, int64(uid), sender, subject, outcome,
+	)
+	return err
+}
+
 // ListContactsByCompany retrieves all contacts for a specific company.
 func (db *DB) ListContactsByCompany(ctx context.Context, companyID int64) ([]Contact, error) {
 	query := `
-		SELECT id, company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at
+		SELECT id, company_id, name, COALESCE(role, ''), COALESCE(email, ''), COALESCE(github_handle, ''), COALESCE(linkedin_url, ''), COALESCE(preferred_channel, ''), created_at, updated_at
 		FROM contacts
 		WHERE company_id = $1
 		ORDER BY id ASC
@@ -470,7 +521,7 @@ func (db *DB) GetContactByEmail(ctx context.Context, email string) (*Contact, er
 	}
 
 	query := `
-		SELECT id, company_id, name, role, email, github_handle, linkedin_url, preferred_channel, created_at, updated_at
+		SELECT id, company_id, name, COALESCE(role, ''), COALESCE(email, ''), COALESCE(github_handle, ''), COALESCE(linkedin_url, ''), COALESCE(preferred_channel, ''), created_at, updated_at
 		FROM contacts
 		WHERE LOWER(email) = LOWER($1)
 		LIMIT 1

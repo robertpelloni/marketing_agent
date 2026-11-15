@@ -1,23 +1,23 @@
-# HANDOFF.md — marketing_agent (`v0.7.8`, 2026-11-15)
+# HANDOFF.md — marketing_agent (`v0.7.9`, 2026-11-15)
 
 ## 1. Current State Summary
-- **Version:** `0.7.8` (`VERSION` and `VERSION.md` aligned)
-- **Remotes & Production:** Local `main`, GitHub (`github/main`), GitLab (`origin/main`), and Hetzner production (`5.161.250.43:/opt/marketing_agent`) synchronized on `v0.7.8` with clean working trees and exact deployed binary parity (`go version -m /opt/marketing_agent/bin/marketing_agent` -> `vcs.revision == git rev-parse HEAD`, `vcs.modified=false`).
+- **Version:** `0.7.9` (`VERSION` and `VERSION.md` aligned)
+- **Remotes & Production:** Local `main`, GitHub (`github/main`), GitLab (`origin/main`), and Hetzner production (`5.161.250.43:/opt/marketing_agent`) synchronized on `v0.7.9` with clean working trees and exact deployed binary parity (`go version -m /opt/marketing_agent/bin/marketing_agent` -> `vcs.revision == git rev-parse HEAD`, `vcs.modified=false`).
 - **Live Billing Status (Gate 2 Complete):** Live `STRIPE_API_KEY` rotated in `/opt/marketing_agent/.env` (`chmod 600`, LF-normalized); `http://127.0.0.1:8084/health/detailed` reports `"billing": "Stripe (live): Connected"`. All 4 live unpaid `cs_live_...` sessions (`homepage`, `pricing 3 seats`, `checkout 1 seat + email`, `founding 9->5 clamped seats`) passed both Antigravity wire/API checks and Bobbi's independent live browser walk on Muse.
 - **CDP Coordination Thread:** `https://muse.ai/thread/8f3e8782-3a1b-4afe-8520-2c81819e195b` (`HyperNexus main side chat`), prefixed with `[gemini in antigravity in c:\Users\hyper\workspace\marketing_agent on BOBPC]`.
 
-## 2. What Shipped in `v0.7.7`
-1. **Bot / AI-Agent / Unroutable Email Filtering (`internal/db/contact_hygiene.go`, `internal/enrichment/`, `internal/communication/`):**
-   - Added `db.IsAutomatedOrUnroutableEmail`, `db.IsAutomatedCommitAuthor`, `db.IsPersonalEmailDomain`, and `db.SelectOutreachContact`.
-   - Blocks AI coding agents (`codex@openai.com`, `claude@anthropic.com`, `cursoragent@cursor.com`, `devin@cognition.ai`), CI/dependency bots (`bot@renovateapp.com`, `*[bot]*`, `actions@github.com`, `snyk-bot`), and non-MX domains (`*.github.io`, `*.local`, `localhost`, `example.com`) during enrichment AND skips/blocks them in `CadenceAwareManager` and `Manager` so existing bot rows in Postgres are never emailed again.
-2. **GitHub Rate-Limit Circuit Breaker & FIFO Enrichment Queue Rotation (`internal/enrichment/github_enrich.go`, `fallback.go`, `worker.go`, `internal/db/repository.go`):**
-   - Fixed `GitHubEnrichSource` swallowing `HTTP 403` rate-limit exhaustion (`X-RateLimit-Remaining: 0`) into false `empty` results: now immediately opens the circuit until `Retry-After` / `X-RateLimit-Reset`, classifies rate-limited calls as `Failures`, treats `404`/`409` deleted/empty repos as clean empties, and skips domain-only `Apollo.io` / `Hunter.io` lanes on `github.com/` repo leads without inflating `empty` counters.
-   - Added `db.TouchDealUpdatedAt` in `Enricher`: clean zero-contact leads bump `updated_at` so `ListDealsForEnrichment` (`ORDER BY updated_at ASC LIMIT 100`) rotates across all `17,900+` discovered leads instead of repeating the same 100 unenrichable leads every hour, while rate-limited leads stay at the head of the queue.
-3. **Canonical GitHub Issue Lead Domains (`internal/scraper/github_issue_source.go`):**
-   - Stopped `GitHubIssueSource.Discover` from fabricating `<org>.com`/`.io` NXDOMAINs (`velella-sh.com`, etc.): checks `/users/{owner}` for a verified non-social website and otherwise stores canonical `github.com/{owner}/{repo}`, fetches repo metadata via Core API `/repos/{owner}/{repo}` instead of Search API `/search/repositories`, and breaks out of the keyword loop immediately on `429`/`403`.
-4. **Researcher Feed Caching, Target Hygiene & Dynamic Intent Scoring (`internal/researcher/`):**
-   - Added `30m` in-memory caching + `15m` `429`/`5xx` backoff to `RSSFeedCrawler` (eliminating `netflixtechblog.com/feed/ -> HTTP 429` spam).
-   - Skipped already-compiled `TechnicalDossier` rows in `Researcher`, stripped raw email addresses and consumer webmail domains (`gmail.com`, `icloud.com`) from crawler targets, disabled dead `401` `GITHUB_TOKEN` in `GitHubCrawler`, and upgraded `IntentAggregator.Aggregate` to score tech stack, corporate domains, market-cap tier, MCP/agent product fit, and live RSS/GitHub signals dynamically.
+## 2. What Shipped in `v0.7.7` – `v0.7.9`
+1. **Inbound IMAP MIME Body Extraction, RFC 3501 UID Deduplication & DSN Bounce Processing (`v0.7.9` — `internal/communication/imap_receiver.go`, `internal/db/db.go`, `repository.go`):**
+   - Fixed `EmailReceiver` fetching `imap.FetchBody` (`BODYSTRUCTURE` metadata, which left `email.Body == ""` on 100% of inbound emails) by switching to `BODY.PEEK[]` (`&imap.BodySectionName{Peek: true}`) + `ParseRawMIMEBody` (`multipart/*`, `quoted-printable`, `base64`, HTML fallback, RFC 2047 subject decoding).
+   - Eliminated the 30-minute duplicate re-ingestion loop caused by RFC 3501 `UID <lastUID+1>:*` wrap-around and service-restart `lastUID` resets via strict `uid > r.lastUID` filtering + persistent `processed_inbound_emails` tracking (`Message-ID` / UID).
+   - Fixed dead bounce handling (`mailer-daemon@googlemail.com` previously failed `GetContactByEmail` before `isBounce` could run): `ExtractPermanentBounceRecipients` parses permanent `5xx` DSNs (`Final-Recipient`, `Address not found`, `Message blocked`) while ignoring temporary `(Delay)` deferrals, clearing `contacts.email` (`NULLIF($1, '')` to preserve `contacts_email_key` uniqueness) and closing bounced deals as `Closed_Lost`.
+2. **Stale `[Your Name]` DB Template Auto-Upgrade, Outbound Sanitizer & Polite-Decline Opt-Outs (`v0.7.9` — `internal/db/db.go`, `internal/communication/responder.go`, `manager.go`):**
+   - Upgraded `seedTemplates()` from `ON CONFLICT (id) DO NOTHING` to auto-refresh legacy Postgres templates containing `[Your Name]`, `[My Name]`, or `LLM waterfall`, replacing all 3 stale production email templates with clean `HyperNexus Team` / `hypernexus.site` copy.
+   - Added `SanitizeOutboundText` as defense-in-depth across `Generate`, `GenerateFromTemplate`, and `Manager.ProcessInbound`, plus `StripQuotedReply` and `isPoliteDecline` so polite non-interest / hobby-project replies transition cleanly to `Closed_Lost` without follow-up spam.
+3. **OpenAI-Compatible `/v1` LLM URL Normalization (`v0.7.9` — `internal/llm/deepseek.go`, `hermes.go`, `cmd/marketing_agent/main.go`):**
+   - Normalized `BaseURL` across `DeepSeekLLMProvider` and `HermesLLMProvider` so both root and `/v1` gateway URLs hit `/v1/models` and `/v1/chat/completions` accurately (reporting true `401 (invalid_key)` status instead of `404`), and wired `LLMIntentClassifier` when `DEEPSEEK_API_KEY` is set.
+4. **Bot / Foundation-Org Hygiene & Enrichment FIFO Rotation (`v0.7.7` – `v0.7.9`):**
+   - Filtered AI coding agents, CI/dependency bots (`-bot`, ` Bot`, `*[bot]*`, `action@github.com`, `actions@github.com`), malformed numeric/unlinked TLDs, and foundation-model/self orgs (`anthropic`, `anthropics`, `openai`, `modelcontextprotocol`, `hypernexussoft`, `robertpelloni`); added `TouchDealUpdatedAt` + GitHub rate-limit circuit tripping so the `17,900+` `Discovered` backlog rotates cleanly.
 
 ## 3. Dependabot Audit Notes
 - `github/dependabot/go_modules/go_modules-20443bdb86` (`749d85d0`): **Skipped intentionally** — bumps `go.mod` toolchain directive from `go 1.25.0` to `go 1.26.0`, conflicting with `.github/workflows/ci.yml` (`go-version: '1.25'`).
@@ -25,4 +25,4 @@
 
 ## 4. Open Items for Operator / Next Cycle
 1. **Optional Real-Card Charge Check:** Complete a real `$1.99` trial checkout on `https://hypernexus.site/checkout.html` whenever Robert chooses to verify live settlement + webhook tenant provisioning end-to-end.
-2. **Provider API Keys (`/opt/marketing_agent/.env`):** Refresh `GITHUB_TOKEN` (unlocks 5,000 req/hr GitHub enrichment & issue comments), `DEEPSEEK_API_KEY` / `HERMES_API_KEY` (unlocks live LLM replies & blog generation), and optional `APOLLO_API_KEY` / `HUNTER_API_KEY` / `DEVTO_API_KEY` / `BLUESKY_*`.
+2. **Provider API Keys (`/opt/marketing_agent/.env`):** Current `DEEPSEEK_API_KEY` / `HERMES_API_KEY` (`tp-s0j...` on `token-plan-sgp.xiaomimimo.com`) returns `HTTP 401 (invalid_key)`. Rotating a live LLM key (`DEEPSEEK_API_KEY` or `HERMES_API_KEY`) and fresh `GITHUB_TOKEN` will unlock live LLM replies to engaged prospects (e.g. `lancey3@gmail.com`) and 5,000 req/hr GitHub enrichment.

@@ -21,6 +21,10 @@ func (e *errorBillingClient) GetInvoiceStatus(ctx context.Context, invoiceID str
 	return billing.InvoicePending, nil
 }
 
+func (e *errorBillingClient) CreateHyperNexusTrialCheckout(ctx context.Context, companyID int64, seats int, founding bool, customerEmail, successURL, cancelURL string) (string, error) {
+	return "", errors.New("billing service down")
+}
+
 func (e *errorBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier billing.Tier, successURL, cancelURL string, seats int) (string, error) {
 	return "", errors.New("billing service down")
 }
@@ -57,6 +61,10 @@ func (s *successBillingClient) CreateInvoice(ctx context.Context, deal db.Deal, 
 
 func (s *successBillingClient) GetInvoiceStatus(ctx context.Context, invoiceID string) (billing.InvoiceStatus, error) {
 	return billing.InvoicePending, nil
+}
+
+func (s *successBillingClient) CreateHyperNexusTrialCheckout(ctx context.Context, companyID int64, seats int, founding bool, customerEmail, successURL, cancelURL string) (string, error) {
+	return "https://checkout.stripe.com/test", nil
 }
 
 func (s *successBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier billing.Tier, successURL, cancelURL string, seats int) (string, error) {

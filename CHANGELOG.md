@@ -1,3 +1,14 @@
+## [0.7.5] - 2026-11-14
+
+### Fixed
+
+- **Gate 2 Server-Side Subscription & Trial Checkout (`internal/billing/billing.go`, `internal/web/server.go`)**: Enforced the finalized HyperNexus Professional License pricing strictly server-side inside a single Stripe Checkout `subscription` session (`CreateHyperNexusTrialCheckout` / `BuildHyperNexusTrialSessionParams`):
+  - `$1.99` (`199` cents) one-time per-team 14-day trial fee charged today (`quantity: 1`, non-adjustable).
+  - `$5.00/seat/month` (`500` cents) recurring subscription starting day 15 (`TrialPeriodDays: 14`, `seats` clamped `1–5`).
+  - Optional `$200.00` (`20000` cents) one-time Founding Team Rate Lock line item when `founding: true` / `plan: "founding"`, persisting the grandfathered `$5.00/seat` 12-month rate lock on `checkout.session.completed`.
+  - Removed the legacy `$3.01` once-coupon mechanism and closed the `$0.01` forged-amount hole: `POST /api/v1/billing/checkout` now deterministically rejects any client-supplied `price_amount` or `first_month_amount` with `HTTP 400 Bad Request` (and validates `success_url`/`cancel_url` hosts).
+- **Unified Plan-Field Checkout Payloads (`hypernexus_site/index.html`, `pricing.html`, `checkout.html`, `cloud_login.html`)**: Preserved commit `e5c43b8c` pricing copy verbatim while updating all entry buttons to send server-validated plan fields (`tier`, `plan`, `seats`, `founding`) instead of raw amounts, adding buyer-selectable seat count (`1–5`) and optional `$200` Founding Team Rate Lock controls on `pricing.html` and `checkout.html`.
+
 ## [0.7.4] - 2026-11-14
 
 ### Fixed

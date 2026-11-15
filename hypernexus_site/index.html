@@ -1533,7 +1533,7 @@
                     <script>
                     function buyNow(){
                       if(typeof plausible==='function')plausible('Buy Now Click');
-                      fetch('/api/v1/billing/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier:'HYPERNEXUS_PROFESSIONAL_LICENSE',seats:1,price_amount:window.__price_amount||199,interval:window.__pricing_plan==='yearly'?'year':'month',success_url:'https://hypernexus.site/success.html',cancel_url:'https://hypernexus.site/#pricing'})})
+                      fetch('/api/v1/billing/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier:'HYPERNEXUS_PROFESSIONAL_LICENSE',plan:'trial',seats:1,founding:false,success_url:'https://hypernexus.site/success.html',cancel_url:'https://hypernexus.site/#pricing'})})
                       .then(function(r){
                         if(!r.ok) throw new Error('Server error '+r.status);
                         return r.json();

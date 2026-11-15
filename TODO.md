@@ -4,10 +4,17 @@ Immediate, granular tasks. Long-term direction lives in `ROADMAP.md`.
 
 ## Now (Operator / Account Auth Required)
 - [ ] Refresh rotated/revoked API keys in prod `/opt/marketing_agent/.env` (and workstation env): `GITHUB_TOKEN`, `DEEPSEEK_API_KEY`, `HERMES_API_KEY`, `APOLLO_API_KEY`, `HUNTER_API_KEY` (unauthenticated GitHub fallback + template outreach already active in `v0.7.4` meanwhile)
-- [ ] Live real-charge test: `$1.99` first month then `$5/mo` recurring on `https://hypernexus.site/checkout.html` (operator card test)
+- [ ] Live real-charge card test: `$1.99` per-team 14-day trial today -> `$5/seat/mo` day 15 recurring on `https://hypernexus.site/checkout.html` (server-side Stripe session + line items + 14-day trial verified in `v0.7.5`; operator real card charge remaining)
+- [ ] Decide on Bobbi's two optional site flags: `live.html` trial CTA target (`/contact.php` vs `/checkout.html`) and archiving/updating repo-only `$19.99` pages (`cloud_index_b`, `cloud_login_a/b`, `testimonials.html`)
 - [ ] Manual posts: LinkedIn (6) / X (tweets in `POSTING_GUIDE.md`) / Hashnode / Medium; tick sync checklist
 - [ ] Marketing bot secrets: `DEVTO_API_KEY`, `BLUESKY_TN_PASSWORD`, `BLUESKY_HN_PASSWORD`, funded X API credits
 - [ ] Resubmit sitemap in Google Search Console after `lastmod` corrections
+
+## Completed in v0.7.5 (2026-11-14)
+- [x] Sync Bobbi's live pricing copy commit `e5c43b8c` cleanly into `main` without losing a single word of copy
+- [x] Implement server-side `CreateHyperNexusTrialCheckout` (`$1.99` one-time team trial today + `$5/seat/month` recurring with `TrialPeriodDays = 14` + optional `$200` Founding Team Rate Lock line item, seats clamped `1–5`, `$3.01` coupon removed, founding grandfathering persisted on `checkout.session.completed`)
+- [x] Close `$0.01` forged-amount hole (`HTTP 400 Bad Request` on any client-supplied `price_amount` / `first_month_amount`, plus return-URL host allowlist) and unify homepage, pricing, and checkout buttons on plan fields (`internal/billing/billing_test.go`, `internal/web/checkout_test.go`)
+- [x] Commit cleanly BEFORE building Linux binary so deployed `vcs.revision` matches `git rev-parse HEAD` (`vcs.modified=false`), deploy `v0.7.5` + updated HTML to Hetzner `5.161.250.43`, and verify unpaid Stripe test sessions across all entry points
 
 ## Completed in v0.7.4 (2026-11-14)
 - [x] Fix `CadenceTracker.GetNextStep` Step 2 ↔ Step 3 infinite loop so Steps 4 (`linkedin-connect`) and 5 (`breakup-email`) are reachable (`internal/communication/cadence.go`)

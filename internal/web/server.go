@@ -14,6 +14,7 @@ import (
 	"log/slog"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -1783,6 +1784,30 @@ func (s *Server) notifyTormentNexusProvision(ctx context.Context, checkoutMsg st
 	slog.InfoContext(ctx, "TormentNexus provisioning triggered", "url", provisionURL)
 }
 
+func isAllowedCheckoutReturnURL(rawURL string) bool {
+	u, err := url.Parse(strings.TrimSpace(rawURL))
+	if err != nil || u.Host == "" {
+		return false
+	}
+	host := strings.ToLower(u.Hostname())
+	if u.Scheme == "http" && (host == "localhost" || host == "127.0.0.1") {
+		return true
+	}
+	if u.Scheme != "https" {
+		return false
+	}
+	return host == "hypernexus.site" ||
+		strings.HasSuffix(host, ".hypernexus.site") ||
+		host == "tormentnexus.site" ||
+		strings.HasSuffix(host, ".tormentnexus.site")
+}
+
+func writeCheckoutJSONError(w http.ResponseWriter, status int, msg string) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	_ = json.NewEncoder(w).Encode(map[string]string{"error": msg})
+}
+
 func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
 	setCORSHeaders(w, r)
 	if r.Method == http.MethodOptions {
@@ -1790,47 +1815,101 @@ func (s *Server) handleCreateCheckout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		writeCheckoutJSONError(w, http.StatusMethodNotAllowed, "Method not allowed")
 		return
 	}
 	if s.billingClient == nil {
-		http.Error(w, "Billing not configured", http.StatusServiceUnavailable)
+		writeCheckoutJSONError(w, http.StatusServiceUnavailable, "Billing not configured")
 		return
 	}
 	var req struct {
 		CompanyID        int64  `json:"company_id"`
 		Tier             string `json:"tier"`
+		Plan             string `json:"plan"`
 		Seats            int    `json:"seats"`
-		PriceAmount      int64  `json:"price_amount"`
+		Founding         bool   `json:"founding"`
+		Email            string `json:"email"`
+		Name             string `json:"name"`
+		PriceAmount      *int64 `json:"price_amount"`
 		Interval         string `json:"interval"`
-		FirstMonthAmount int64  `json:"first_month_amount"`
+		FirstMonthAmount *int64 `json:"first_month_amount"`
 		SuccessURL       string `json:"success_url"`
 		CancelURL        string `json:"cancel_url"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		writeCheckoutJSONError(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
-	if req.Seats <= 0 {
-		req.Seats = 5
+
+	// Never accept raw or forged client amounts; all pricing is enforced server-side.
+	if req.PriceAmount != nil || req.FirstMonthAmount != nil {
+		writeCheckoutJSONError(w, http.StatusBadRequest, "client-supplied price_amount and first_month_amount are not permitted; pricing is enforced server-side")
+		return
 	}
-	if req.Seats > 100000 {
-		req.Seats = 100000
+
+	successURL := strings.TrimSpace(req.SuccessURL)
+	if successURL == "" {
+		successURL = "https://hypernexus.site/success.html"
+	} else if !isAllowedCheckoutReturnURL(successURL) {
+		writeCheckoutJSONError(w, http.StatusBadRequest, "Invalid success_url host")
+		return
 	}
-	var url string
+
+	cancelURL := strings.TrimSpace(req.CancelURL)
+	if cancelURL == "" {
+		cancelURL = "https://hypernexus.site/pricing.html"
+	} else if !isAllowedCheckoutReturnURL(cancelURL) {
+		writeCheckoutJSONError(w, http.StatusBadRequest, "Invalid cancel_url host")
+		return
+	}
+
+	tierRaw := strings.TrimSpace(req.Tier)
+	planRaw := strings.TrimSpace(req.Plan)
+	isHyperNexusTrial := tierRaw == "" ||
+		strings.EqualFold(tierRaw, string(billing.TierHyperNexusPro)) ||
+		strings.EqualFold(tierRaw, "trial") ||
+		strings.EqualFold(tierRaw, "founding") ||
+		strings.EqualFold(tierRaw, "pro")
+
+	var checkoutURL string
 	var err error
-	if req.PriceAmount > 0 {
-		url, err = s.billingClient.CreateCheckoutSessionWithPrice(r.Context(), req.CompanyID, billing.Tier(req.Tier), req.SuccessURL, req.CancelURL, req.Seats, req.PriceAmount, req.Interval, req.FirstMonthAmount)
+	if isHyperNexusTrial {
+		seats := billing.ClampHyperNexusTrialSeats(req.Seats)
+		founding := req.Founding || strings.EqualFold(planRaw, "founding") || strings.EqualFold(tierRaw, "founding")
+		checkoutURL, err = s.billingClient.CreateHyperNexusTrialCheckout(
+			r.Context(),
+			req.CompanyID,
+			seats,
+			founding,
+			strings.TrimSpace(req.Email),
+			successURL,
+			cancelURL,
+		)
 	} else {
-		url, err = s.billingClient.CreateCheckoutSessionWithInterval(r.Context(), req.CompanyID, billing.Tier(req.Tier), req.SuccessURL, req.CancelURL, req.Seats, req.Interval)
+		seats := req.Seats
+		if seats <= 0 {
+			seats = 1
+		}
+		if seats > 100000 {
+			seats = 100000
+		}
+		checkoutURL, err = s.billingClient.CreateCheckoutSessionWithInterval(
+			r.Context(),
+			req.CompanyID,
+			billing.Tier(tierRaw),
+			successURL,
+			cancelURL,
+			seats,
+			strings.TrimSpace(req.Interval),
+		)
 	}
 	if err != nil {
 		slog.Error("Failed to create checkout session", "error", err)
-		http.Error(w, "Failed to create checkout: "+err.Error(), http.StatusInternalServerError)
+		writeCheckoutJSONError(w, http.StatusInternalServerError, "Failed to create checkout: "+err.Error())
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(map[string]string{"url": url})
+	_ = json.NewEncoder(w).Encode(map[string]string{"url": checkoutURL})
 }
 
 func (s *Server) handleGetSubscription(w http.ResponseWriter, r *http.Request) {

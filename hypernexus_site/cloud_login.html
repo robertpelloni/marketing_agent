@@ -606,9 +606,9 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               tier: "HYPERNEXUS_PROFESSIONAL_LICENSE",
+              plan: "trial",
               seats: 1,
-              price_amount: window.__price_amount || 500,
-              interval: window.__pricing_plan === "yearly" ? "year" : "month",
+              founding: false,
               success_url: "https://hypernexus.site/success.html",
               cancel_url: "https://cloud.hypernexus.site/",
             }),

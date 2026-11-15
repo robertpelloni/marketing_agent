@@ -13,7 +13,6 @@ import (
 
 	"github.com/stripe/stripe-go/v81"
 	"github.com/stripe/stripe-go/v81/checkout/session"
-	"github.com/stripe/stripe-go/v81/coupon"
 	"github.com/stripe/stripe-go/v81/customer"
 	"github.com/stripe/stripe-go/v81/invoice"
 	"github.com/stripe/stripe-go/v81/price"
@@ -23,7 +22,17 @@ import (
 	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 )
 
-const tnProvisionURL = "http://127.0.0.1:7778/api/account/provision"
+const (
+	tnProvisionURL = "http://127.0.0.1:7778/api/account/provision"
+
+	// Canonical server-side pricing for HYPERNEXUS_PROFESSIONAL_LICENSE (Gate 2).
+	HyperNexusTrialFeeCents    int64 = 199   // $1.99 one-time per team today
+	HyperNexusSeatMonthlyCents int64 = 500   // $5.00/seat/month recurring from day 15
+	HyperNexusFoundingFeeCents int64 = 20000 // $200.00 optional one-time founding lock (12 months)
+	HyperNexusTrialDays        int64 = 14    // 14-day trial before recurring seat billing begins
+	HyperNexusMinSeats         int   = 1
+	HyperNexusMaxTrialSeats    int   = 5
+)
 
 var subdomainRe = regexp.MustCompile(`[^a-z0-9-]+`)
 
@@ -68,6 +77,7 @@ type SubscriptionInfo struct {
 type BillingClient interface {
 	CreateInvoice(ctx context.Context, deal db.Deal, company db.Company) (string, error)
 	GetInvoiceStatus(ctx context.Context, invoiceID string) (InvoiceStatus, error)
+	CreateHyperNexusTrialCheckout(ctx context.Context, companyID int64, seats int, founding bool, customerEmail, successURL, cancelURL string) (string, error)
 	CreateCheckoutSession(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int) (string, error)
 	CreateCheckoutSessionWithInterval(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int, interval string) (string, error)
 	CreateCheckoutSessionWithPrice(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int, priceAmount int64, interval string, firstMonthAmount int64) (string, error)
@@ -172,7 +182,146 @@ func (s *StripeBillingClient) priceIDForTier(tier Tier) string {
 	}
 }
 
+// ClampHyperNexusTrialSeats clamps requested trial seats into the canonical [1, 5] window.
+func ClampHyperNexusTrialSeats(seats int) int {
+	if seats < HyperNexusMinSeats {
+		return HyperNexusMinSeats
+	}
+	if seats > HyperNexusMaxTrialSeats {
+		return HyperNexusMaxTrialSeats
+	}
+	return seats
+}
+
+// BuildHyperNexusTrialSessionParams constructs the canonical server-side Stripe Checkout
+// subscription session parameters for HYPERNEXUS_PROFESSIONAL_LICENSE:
+//   - Line Item 1: $1.99 one-time per-team 14-day trial fee (charged today, non-adjustable)
+//   - Line Item 2: $5.00/seat/month recurring subscription (TrialPeriodDays=14, seats clamped 1..5)
+//   - Line Item 3 (optional): $200.00 one-time Founding Team Rate Lock (locks $5/seat/month for 12 months)
+func BuildHyperNexusTrialSessionParams(companyID int64, seats int, founding bool, customerEmail, successURL, cancelURL string) (*stripe.CheckoutSessionParams, int) {
+	clampedSeats := ClampHyperNexusTrialSeats(seats)
+	if strings.TrimSpace(successURL) == "" {
+		successURL = "https://hypernexus.site/success.html"
+	}
+	if strings.TrimSpace(cancelURL) == "" {
+		cancelURL = "https://hypernexus.site/pricing.html"
+	}
+
+	foundingStr := "false"
+	planName := "trial"
+	if founding {
+		foundingStr = "true"
+		planName = "founding"
+	}
+
+	meta := map[string]string{
+		"company_id":      fmt.Sprintf("%d", companyID),
+		"tier":            string(TierHyperNexusPro),
+		"plan":            planName,
+		"seats":           fmt.Sprintf("%d", clampedSeats),
+		"trial_days":      fmt.Sprintf("%d", HyperNexusTrialDays),
+		"trial_fee_cents": fmt.Sprintf("%d", HyperNexusTrialFeeCents),
+		"seat_rate_cents": fmt.Sprintf("%d", HyperNexusSeatMonthlyCents),
+		"founding_lock":   foundingStr,
+	}
+	if founding {
+		meta["founding_fee_cents"] = fmt.Sprintf("%d", HyperNexusFoundingFeeCents)
+		meta["rate_lock_months"] = "12"
+	}
+
+	subMeta := make(map[string]string, len(meta))
+	for k, v := range meta {
+		subMeta[k] = v
+	}
+
+	lineItems := []*stripe.CheckoutSessionLineItemParams{
+		{
+			PriceData: &stripe.CheckoutSessionLineItemPriceDataParams{
+				Currency:   stripe.String(string(stripe.CurrencyUSD)),
+				UnitAmount: stripe.Int64(HyperNexusTrialFeeCents),
+				ProductData: &stripe.CheckoutSessionLineItemPriceDataProductDataParams{
+					Name:        stripe.String("HyperNexus 14-Day Team Trial"),
+					Description: stripe.String("One-time 14-day trial fee per team (up to 5 seats)"),
+				},
+			},
+			Quantity: stripe.Int64(1),
+		},
+		{
+			PriceData: &stripe.CheckoutSessionLineItemPriceDataParams{
+				Currency:   stripe.String(string(stripe.CurrencyUSD)),
+				UnitAmount: stripe.Int64(HyperNexusSeatMonthlyCents),
+				Recurring: &stripe.CheckoutSessionLineItemPriceDataRecurringParams{
+					Interval: stripe.String(string(stripe.PriceRecurringIntervalMonth)),
+				},
+				ProductData: &stripe.CheckoutSessionLineItemPriceDataProductDataParams{
+					Name:        stripe.String("HyperNexus Professional License"),
+					Description: stripe.String("$5/seat/month starting day 15 after 14-day trial"),
+				},
+			},
+			Quantity: stripe.Int64(int64(clampedSeats)),
+			AdjustableQuantity: &stripe.CheckoutSessionLineItemAdjustableQuantityParams{
+				Enabled: stripe.Bool(true),
+				Minimum: stripe.Int64(int64(HyperNexusMinSeats)),
+				Maximum: stripe.Int64(int64(HyperNexusMaxTrialSeats)),
+			},
+		},
+	}
+
+	if founding {
+		lineItems = append(lineItems, &stripe.CheckoutSessionLineItemParams{
+			PriceData: &stripe.CheckoutSessionLineItemPriceDataParams{
+				Currency:   stripe.String(string(stripe.CurrencyUSD)),
+				UnitAmount: stripe.Int64(HyperNexusFoundingFeeCents),
+				ProductData: &stripe.CheckoutSessionLineItemPriceDataProductDataParams{
+					Name:        stripe.String("HyperNexus Founding Team Rate Lock"),
+					Description: stripe.String("One-time, non-refundable fee — locks $5/seat/month for 12 months"),
+				},
+			},
+			Quantity: stripe.Int64(1),
+		})
+	}
+
+	params := &stripe.CheckoutSessionParams{
+		Mode:       stripe.String(string(stripe.CheckoutSessionModeSubscription)),
+		SuccessURL: stripe.String(successURL),
+		CancelURL:  stripe.String(cancelURL),
+		LineItems:  lineItems,
+		Metadata:   meta,
+		SubscriptionData: &stripe.CheckoutSessionSubscriptionDataParams{
+			TrialPeriodDays: stripe.Int64(HyperNexusTrialDays),
+			TrialSettings: &stripe.CheckoutSessionSubscriptionDataTrialSettingsParams{
+				EndBehavior: &stripe.CheckoutSessionSubscriptionDataTrialSettingsEndBehaviorParams{
+					MissingPaymentMethod: stripe.String("cancel"),
+				},
+			},
+			Metadata: subMeta,
+		},
+	}
+
+	trimmedEmail := strings.TrimSpace(customerEmail)
+	if trimmedEmail != "" && strings.Contains(trimmedEmail, "@") && !strings.ContainsAny(trimmedEmail, " \t\r\n") {
+		params.CustomerEmail = stripe.String(trimmedEmail)
+	}
+
+	return params, clampedSeats
+}
+
+// CreateHyperNexusTrialCheckout creates a Stripe Checkout subscription session enforcing
+// the canonical server-side HyperNexus Professional License pricing.
+func (s *StripeBillingClient) CreateHyperNexusTrialCheckout(ctx context.Context, companyID int64, seats int, founding bool, customerEmail, successURL, cancelURL string) (string, error) {
+	s.stripe()
+	params, _ := BuildHyperNexusTrialSessionParams(companyID, seats, founding, customerEmail, successURL, cancelURL)
+	sess, err := session.New(params)
+	if err != nil {
+		return "", fmt.Errorf("stripe checkout session creation failed: %w", err)
+	}
+	return sess.URL, nil
+}
+
 func (s *StripeBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int) (string, error) {
+	if tier == TierHyperNexusPro {
+		return s.CreateHyperNexusTrialCheckout(ctx, companyID, seats, false, "", successURL, cancelURL)
+	}
 	s.stripe()
 	priceID := s.priceIDForTier(tier)
 	if priceID == "" {
@@ -182,10 +331,11 @@ func (s *StripeBillingClient) CreateCheckoutSession(ctx context.Context, company
 }
 
 // CreateCheckoutSessionWithInterval creates a checkout session using a fixed,
-// pre-configured price for the given tier and billing interval. Unlike
-// CreateCheckoutSessionWithPrice it never creates new Products/Prices on the
-// fly, so the Stripe account stays clean (one price per tier + interval).
+// pre-configured price for the given tier and billing interval.
 func (s *StripeBillingClient) CreateCheckoutSessionWithInterval(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int, interval string) (string, error) {
+	if tier == TierHyperNexusPro {
+		return s.CreateHyperNexusTrialCheckout(ctx, companyID, seats, false, "", successURL, cancelURL)
+	}
 	s.stripe()
 	priceID := s.priceIDForTierAndInterval(tier, interval)
 	if priceID == "" {
@@ -208,7 +358,7 @@ func (s *StripeBillingClient) priceIDForTierAndInterval(tier Tier, interval stri
 
 func (s *StripeBillingClient) createSession(ctx context.Context, companyID int64, tier Tier, priceID, successURL, cancelURL string, seats int) (string, error) {
 	if seats <= 0 {
-		seats = 5
+		seats = 1
 	}
 	if seats > 100000 {
 		seats = 100000
@@ -246,10 +396,8 @@ func (s *StripeBillingClient) createSession(ctx context.Context, companyID int64
 		},
 	}
 
-	// Add 7-day trial period for subscription mode
 	if mode == stripe.CheckoutSessionModeSubscription {
-		trialPeriodDays := int64(7)
-		// Require payment method during trial
+		trialPeriodDays := int64(14)
 		params.SubscriptionData = &stripe.CheckoutSessionSubscriptionDataParams{
 			TrialPeriodDays: stripe.Int64(trialPeriodDays),
 			TrialSettings: &stripe.CheckoutSessionSubscriptionDataTrialSettingsParams{
@@ -272,8 +420,12 @@ func getPrice(_ context.Context, priceID string) (*stripe.Price, error) {
 	return price.Get(priceID, nil)
 }
 
-// CreateCheckoutSessionWithPrice creates a checkout session with a custom price amount.
+// CreateCheckoutSessionWithPrice rejects client-supplied amounts for HYPERNEXUS_PROFESSIONAL_LICENSE
+// and creates server-controlled sessions without coupons for internal enterprise deals only.
 func (s *StripeBillingClient) CreateCheckoutSessionWithPrice(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int, priceAmount int64, interval string, firstMonthAmount int64) (string, error) {
+	if tier == TierHyperNexusPro {
+		return "", fmt.Errorf("client-supplied price_amount is not permitted for tier %s; pricing is enforced server-side", tier)
+	}
 	s.stripe()
 
 	if seats <= 0 {
@@ -283,10 +435,9 @@ func (s *StripeBillingClient) CreateCheckoutSessionWithPrice(ctx context.Context
 		seats = 100000
 	}
 	if priceAmount <= 0 {
-		priceAmount = 500 // Default $5
+		return "", fmt.Errorf("price_amount must be positive")
 	}
 
-	// Create a price on-the-fly
 	priceParams := &stripe.PriceParams{
 		UnitAmount: stripe.Int64(priceAmount),
 		Currency:   stripe.String(string(stripe.CurrencyUSD)),
@@ -332,48 +483,12 @@ func (s *StripeBillingClient) CreateCheckoutSessionWithPrice(ctx context.Context
 			},
 		},
 		Metadata: map[string]string{
-			"company_id":  fmt.Sprintf("%d", companyID),
-			"tier":        string(tier),
-			"seats":       fmt.Sprintf("%d", seats),
-			"price":       fmt.Sprintf("%d", priceAmount),
-			"interval":    interval,
-			"first_month": fmt.Sprintf("%d", firstMonthAmount),
+			"company_id": fmt.Sprintf("%d", companyID),
+			"tier":       string(tier),
+			"seats":      fmt.Sprintf("%d", seats),
+			"price":      fmt.Sprintf("%d", priceAmount),
+			"interval":   interval,
 		},
-	}
-
-	// First-month discount: e.g. $1.99 first month, then full price.
-	// Once-duration coupon keeps one recurring price, no trial delay.
-	firstMonthDiscount := firstMonthAmount > 0 && firstMonthAmount < priceAmount &&
-		mode == stripe.CheckoutSessionModeSubscription
-	if firstMonthDiscount {
-		off := priceAmount - firstMonthAmount
-		c, err := coupon.New(&stripe.CouponParams{
-			AmountOff: stripe.Int64(off),
-			Currency:  stripe.String(string(stripe.CurrencyUSD)),
-			Duration:  stripe.String("once"),
-			Name:      stripe.String(fmt.Sprintf("%s first month $%0.2f", string(tier), float64(firstMonthAmount)/100)),
-		})
-		if err != nil {
-			return "", fmt.Errorf("failed to create first-month coupon: %w", err)
-		}
-		params.Discounts = []*stripe.CheckoutSessionDiscountParams{
-			{Coupon: stripe.String(c.ID)},
-		}
-	}
-
-	// 7-day trial for subscriptions without a first-month discount,
-	// so a discounted first month charges immediately.
-	if mode == stripe.CheckoutSessionModeSubscription && !firstMonthDiscount {
-		trialPeriodDays := int64(7)
-		// Require payment method during trial
-		params.SubscriptionData = &stripe.CheckoutSessionSubscriptionDataParams{
-			TrialPeriodDays: stripe.Int64(trialPeriodDays),
-			TrialSettings: &stripe.CheckoutSessionSubscriptionDataTrialSettingsParams{
-				EndBehavior: &stripe.CheckoutSessionSubscriptionDataTrialSettingsEndBehaviorParams{
-					MissingPaymentMethod: stripe.String("cancel"),
-				},
-			},
-		}
 	}
 
 	sess, err := session.New(params)
@@ -507,19 +622,20 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 		_, _ = fmt.Sscanf(companyIDStr, "%d", &companyID)
 	}
 
+	var custEmail, custName string
+	if sess.CustomerDetails != nil {
+		custEmail = sess.CustomerDetails.Email
+		custName = sess.CustomerDetails.Name
+	}
+
 	if companyID == 0 {
-		var email, name string
-		if sess.CustomerDetails != nil {
-			email = sess.CustomerDetails.Email
-			name = sess.CustomerDetails.Name
-		}
-		if email == "" {
+		if custEmail == "" {
 			return "", fmt.Errorf("companyID is 0 and no customer email available in checkout session details")
 		}
 		var err error
-		companyID, err = s.db.ResolveCompanyID(ctx, email, name)
+		companyID, err = s.db.ResolveCompanyID(ctx, custEmail, custName)
 		if err != nil {
-			return "", fmt.Errorf("failed to resolve company ID for email %s: %w", email, err)
+			return "", fmt.Errorf("failed to resolve company ID for email %s: %w", custEmail, err)
 		}
 		companyIDStr = fmt.Sprintf("%d", companyID)
 	}
@@ -529,15 +645,20 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 		tierStr = "professional"
 	}
 
-	// Create Stripe customer if not exists
-	custParams := &stripe.CustomerParams{
-		Email:    stripe.String(sess.CustomerDetails.Email),
-		Name:     stripe.String(sess.CustomerDetails.Name),
-		Metadata: map[string]string{"company_id": companyIDStr},
-	}
-	cust, err := customer.New(custParams)
-	if err != nil {
-		return "", fmt.Errorf("failed to create Stripe customer: %w", err)
+	var custID string
+	if sess.Customer != nil && sess.Customer.ID != "" {
+		custID = sess.Customer.ID
+	} else {
+		custParams := &stripe.CustomerParams{
+			Email:    stripe.String(custEmail),
+			Name:     stripe.String(custName),
+			Metadata: map[string]string{"company_id": companyIDStr},
+		}
+		cust, err := customer.New(custParams)
+		if err != nil {
+			return "", fmt.Errorf("failed to create Stripe customer: %w", err)
+		}
+		custID = cust.ID
 	}
 
 	// Get the subscription from the session
@@ -552,7 +673,14 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 
 	rate := 0.0
 	seats := 1
-	if len(sub.Items.Data) > 0 {
+	for _, item := range sub.Items.Data {
+		if item != nil && item.Price != nil && item.Price.Recurring != nil {
+			rate = float64(item.Price.UnitAmount) / 100
+			seats = int(item.Quantity)
+			break
+		}
+	}
+	if rate == 0.0 && len(sub.Items.Data) > 0 && sub.Items.Data[0].Price != nil {
 		rate = float64(sub.Items.Data[0].Price.UnitAmount) / 100
 		seats = int(sub.Items.Data[0].Quantity)
 	}
@@ -563,9 +691,19 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 		trialEnd = &t
 	}
 
-	_, err = s.db.CreateSubscription(ctx, companyID, Tier(tierStr), sub.ID, cust.ID, rate, seats, trialEnd)
+	_, err = s.db.CreateSubscription(ctx, companyID, Tier(tierStr), sub.ID, custID, rate, seats, trialEnd)
 	if err != nil {
 		return "", fmt.Errorf("failed to save subscription: %w", err)
+	}
+
+	if sess.Metadata["founding_lock"] == "true" || sub.Metadata["founding_lock"] == "true" {
+		lockedRate := rate
+		if lockedRate <= 0 {
+			lockedRate = float64(HyperNexusSeatMonthlyCents) / 100
+		}
+		if err := s.db.SetGrandfatheredRate(ctx, sub.ID, lockedRate); err != nil {
+			slog.Warn("failed to set founding grandfathered rate", "stripe_sub_id", sub.ID, "error", err)
+		}
 	}
 
 	slog.Info("subscription created via checkout",
@@ -573,10 +711,12 @@ func (s *StripeBillingClient) handleCheckoutCompleted(ctx context.Context, event
 		"tier", tierStr,
 		"stripe_sub_id", sub.ID,
 		"rate", rate,
+		"seats", seats,
+		"founding_lock", sess.Metadata["founding_lock"],
 	)
 
 	// Provision TormentNexus tenant (non-blocking side effect)
-	go provisionTN(ctx, sess.CustomerDetails.Email, sess.CustomerDetails.Name, tierStr, seats)
+	go provisionTN(ctx, custEmail, custName, tierStr, seats)
 
 	return fmt.Sprintf("subscription created: %s", sub.ID), nil
 }
@@ -701,6 +841,10 @@ func (m *MockBillingClient) CreateInvoice(ctx context.Context, deal db.Deal, com
 
 func (m *MockBillingClient) GetInvoiceStatus(ctx context.Context, invoiceID string) (InvoiceStatus, error) {
 	return InvoicePaid, nil
+}
+
+func (m *MockBillingClient) CreateHyperNexusTrialCheckout(ctx context.Context, companyID int64, seats int, founding bool, customerEmail, successURL, cancelURL string) (string, error) {
+	return "http://localhost:8087/checkout/success", nil
 }
 
 func (m *MockBillingClient) CreateCheckoutSession(ctx context.Context, companyID int64, tier Tier, successURL, cancelURL string, seats int) (string, error) {

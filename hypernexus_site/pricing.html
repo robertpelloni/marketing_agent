@@ -431,20 +431,34 @@
           <li>Full data export for 30 days after cancellation, then deleted</li>
         </ul>
 
+        <div style="margin:20px 0 16px;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;text-align:left">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
+            <label for="pricing-seats" style="font-size:13px;color:#cbd5e1;font-weight:600">Team seats (1–5)</label>
+            <input id="pricing-seats" type="number" min="1" max="5" value="1" style="width:72px;padding:6px 10px;background:#0f172a;border:1px solid rgba(255,255,255,0.2);border-radius:6px;color:#fff;font-size:14px;text-align:center" />
+          </div>
+          <label for="pricing-founding" style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;color:#cbd5e1;line-height:1.5">
+            <input id="pricing-founding" type="checkbox" style="margin-top:3px;accent-color:#4cd964" />
+            <span>Add Founding Team Rate Lock (+$200 one-time, non-refundable — locks $5/seat/month for 12 months)</span>
+          </label>
+        </div>
+
         <button onclick="buyNow()" class="btn btn-primary">
           Sign Up Now!!!
         </button>
         <script>
           function buyNow() {
+            var seatsEl = document.getElementById("pricing-seats");
+            var foundingEl = document.getElementById("pricing-founding");
+            var seats = Math.min(5, Math.max(1, parseInt(seatsEl ? seatsEl.value : "1", 10) || 1));
+            var founding = !!(foundingEl && foundingEl.checked);
             fetch("/api/v1/billing/checkout", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 tier: "HYPERNEXUS_PROFESSIONAL_LICENSE",
-                seats: 1,
-                price_amount: window.__pricing_plan === "yearly" ? 1999 : 500,
-                interval: window.__pricing_plan === "yearly" ? "year" : "month",
-                first_month_amount: window.__pricing_plan === "yearly" ? 0 : 199,
+                plan: founding ? "founding" : "trial",
+                seats: seats,
+                founding: founding,
                 success_url: "https://hypernexus.site/success.html",
                 cancel_url: "https://hypernexus.site/pricing.html",
               }),

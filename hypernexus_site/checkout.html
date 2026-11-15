@@ -200,6 +200,16 @@
                     <label for="name">Name</label>
                     <input type="text" id="name" placeholder="Your name" required>
                 </div>
+                <div class="form-group">
+                    <label for="seats">Team Seats (1–5 included in $1.99 trial, then $5/seat/month)</label>
+                    <input type="number" id="seats" min="1" max="5" value="1" required>
+                </div>
+                <div class="form-group" style="background:#27272a;border:1px solid #3f3f46;border-radius:6px;padding:0.75rem">
+                    <label for="founding" style="display:flex;align-items:flex-start;gap:0.625rem;margin-bottom:0;cursor:pointer;color:#e4e4e7;line-height:1.4">
+                        <input type="checkbox" id="founding" style="width:auto;padding:0;margin-top:0.2rem;accent-color:#22c55e">
+                        <span>Founding teams: $200 one-time, non-refundable — locks $5/seat/month for 12 months.</span>
+                    </label>
+                </div>
                 <div class="error" id="errorMsg"></div>
                 <button type="submit" class="btn btn-primary" id="submitBtn">
                     Start Your 14-Day Trial — $1.99
@@ -226,11 +236,21 @@
     </div>
 
         <script>
-        
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('seats')) {
+            const parsedSeats = Math.min(5, Math.max(1, parseInt(urlParams.get('seats'), 10) || 1));
+            document.getElementById('seats').value = String(parsedSeats);
+        }
+        if (urlParams.get('founding') === '1' || urlParams.get('founding') === 'true' || urlParams.get('plan') === 'founding') {
+            document.getElementById('founding').checked = true;
+        }
+
         document.getElementById('checkout-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const name = document.getElementById('name').value;
+            const seats = Math.min(5, Math.max(1, parseInt(document.getElementById('seats').value, 10) || 1));
+            const founding = document.getElementById('founding').checked;
             const submitBtn = document.getElementById('submitBtn');
             const errorEl = document.getElementById('errorMsg');
 
@@ -244,18 +264,24 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         tier: 'HYPERNEXUS_PROFESSIONAL_LICENSE',
-                        seats: 1, price_amount: 500, interval: 'month', first_month_amount: 199,
+                        plan: founding ? 'founding' : 'trial',
+                        seats: seats,
+                        founding: founding,
+                        email: email,
+                        name: name,
                         success_url: 'https://hypernexus.site/success.html',
                         cancel_url: 'https://hypernexus.site/checkout.html'
                     })
                 });
 
                 const data = await res.json();
+                const allowed = data && typeof data.url === 'string' && /^https:\/\/([a-z0-9-]+\.)*(stripe\.com|hypernexus\.site)\//i.test(data.url);
 
-                if (res.ok && data.url) {
-                    window.location.href = data.url;
+                if (res.ok && allowed) {
+                    window.location.assign(data.url);
+                    return;
                 } else {
-                    errorEl.textContent = data.error || 'Checkout failed';
+                    errorEl.textContent = (data && data.error) || 'Checkout failed';
                     errorEl.style.display = 'block';
                 }
             } catch (err) {
@@ -268,7 +294,6 @@
         });
 
         // Check for success parameter
-        const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('success') === 'true') {
             document.getElementById('checkoutCard').style.display = 'none';
             document.getElementById('successCard').style.display = 'block';

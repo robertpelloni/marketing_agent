@@ -176,7 +176,10 @@ func (w *SocialPosterWorker) generateAndPost(ctx context.Context, brand, platfor
 			brand, platform, username, content))
 	}
 
-	// Always persist to DB for audit trail
+	// Always persist to DB for audit trail. Use a fresh context: the
+	// post context may already be expired (e.g. a headless LinkedIn post
+	// that consumed the full timeout), which previously made every such
+	// cycle log a spurious "context deadline exceeded" DB error.
 	if w.db != nil {
 		status := "posted"
 		if !posted {
@@ -190,7 +193,9 @@ func (w *SocialPosterWorker) generateAndPost(ctx context.Context, brand, platfor
 			Status:          status,
 			CreatedAt:       time.Now(),
 		}
-		if err := w.db.CreateSocialPost(ctx, post); err != nil {
+		persistCtx, persistCancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer persistCancel()
+		if err := w.db.CreateSocialPost(persistCtx, post); err != nil {
 			slog.Error("SocialPoster DB Error: failed to save post log", "error", err)
 		}
 	}

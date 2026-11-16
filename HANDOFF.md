@@ -40,3 +40,9 @@
 ## FIX 2026-11-16 Muse Code (Gmail daily limit)
 - Outreach failed count growth traced to Gmail 550 5.4.5 daily limit: cadence aborted per cycle now on isDailyLimitError (f6b9191a, test + deployed). Failed stats before fix are quota artifacts, not recipient failures.
 - Gmail daily quota exhaustion also proves cadence email volume is substantial; consider pacing/multi-account if volume keeps hitting the cap.
+
+## DIRECTIVES 2026-11-16 (user) Muse Code
+- GITHUB_TOKEN refreshed from workspace parent .env (validated ghp_, search 30/min + core quota): saved to local marketing_agent/.env (single line) and prod /opt/marketing_agent/.env (backup env.bak-token-*). Verified post-restart: GitHub Commits 17 successes / 0 failures - authenticated lane healthy. GITHUB_POSTING_DISABLED is set in prod env - check its value before expecting comment posts.
+- Apollo/Hunter RETIRED from enrichment chain (b2ede783) + dashboard panel updated (531d5a80). GitHub-only enrichment.
+- FreeLLM (aimm-freellm.service, :4000, /opt/aimoneymachine/freellm): up 16h+, 454 models, actively routing/judging. Probes: 1x 90s timeout, 1x 21s success, 1x cached instant; 139 failed provider attempts/24h with self-healing model disables. Verdict: works, fine as fallback, NOT primary-grade reliability/latency. Candidate: point marketing_agent LLM at http://127.0.0.1:4000/v1 (model free-llm) as DeepSeek stopgap - awaiting user nod.
+- Bluesky: user can supply credentials (env names already present). X: user will NOT fund credits - X lane stays failing 402 each social cycle unless keys blanked or a disable flag is added.

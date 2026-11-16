@@ -119,21 +119,10 @@ func main() {
 	var enrichmentSources []enrichment.EnrichmentSource
 	var sourceNames []string
 
-	if cfg.HunterAPIKey != "" {
-		slog.Info("Enrichment: Initializing Hunter.io source.")
-		enrichmentSources = append(enrichmentSources, enrichment.NewHunterSource(cfg.HunterAPIKey))
-		sourceNames = append(sourceNames, "Hunter.io")
-	} else {
-		slog.Info("Enrichment: No HUNTER_API_KEY set - skipping Hunter.io.")
-	}
-
-	if cfg.ApolloAPIKey != "" {
-		slog.Info("Enrichment: Initializing Apollo.io source.")
-		enrichmentSources = append(enrichmentSources, enrichment.NewApolloSource(cfg.ApolloAPIKey))
-		sourceNames = append(sourceNames, "Apollo.io")
-	} else {
-		slog.Info("Enrichment: No APOLLO_API_KEY set - skipping Apollo.io.")
-	}
+	// Apollo.io and Hunter.io retired 2026-11-16 (user decision): both
+	// lanes proved useless here (invalid keys, zero yielded contacts vs
+	// GitHub's ~500 successes/cycle). GitHub is the sole enrichment source.
+	slog.Info("Enrichment: Apollo/Hunter retired; GitHub-only enrichment.")
 
 	// GitHub commit email fallback — always enabled because public repository
 	// commit history works unauthenticated (60 req/hr) as well as authenticated.

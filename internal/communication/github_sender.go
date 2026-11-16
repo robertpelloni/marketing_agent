@@ -16,9 +16,15 @@ import (
 // GitHubCommentSender posts technical comments on GitHub Issues and PRs
 // as a "technical hook" outreach for target companies.
 type GitHubCommentSender struct {
-	client   *github.Client
-	repo     string // e.g. "robertpelloni/marketing_agent"
-	username string // GitHub username for the bot account
+	client *github.Client
+	// anon is used for public search when the configured token is rejected
+	// (401/403): issue search is public data, so a dead token must not halt
+	// discovery. Posting still requires auth and is skipped while
+	// tokenRejected is set, rather than recording failed sends per deal.
+	anon          *github.Client
+	repo          string // e.g. "robertpelloni/marketing_agent"
+	username      string // GitHub username for the bot account
+	tokenRejected bool
 }
 
 // NewGitHubCommentSender creates a GitHubCommentSender.
@@ -40,6 +46,7 @@ func NewGitHubCommentSender(repo string) *GitHubCommentSender {
 
 	return &GitHubCommentSender{
 		client:   github.NewClient(tc),
+		anon:     github.NewClient(nil),
 		repo:     repo,
 		username: os.Getenv("GITHUB_BOT_USERNAME"),
 	}
@@ -99,15 +106,34 @@ func (g *GitHubCommentSender) SearchRelevantIssues(ctx context.Context, companyD
 
 	var targets []IssueTarget
 
+	searchClient := g.client
+	if g.tokenRejected && g.anon != nil {
+		searchClient = g.anon
+	}
 	for _, term := range searchTerms {
 		query := fmt.Sprintf("%s org:%s is:issue is:open", term, org)
-		results, resp, err := g.client.Search.Issues(ctx, query, &github.SearchOptions{
+		results, resp, err := searchClient.Search.Issues(ctx, query, &github.SearchOptions{
 			Sort:  "updated",
 			Order: "desc",
 			ListOptions: github.ListOptions{
 				PerPage: 3,
 			},
 		})
+		if err != nil && resp != nil && (resp.StatusCode == 401 || resp.StatusCode == 403) && !g.tokenRejected && g.anon != nil {
+			// Token rejected: mark it and retry this query anonymously
+			// instead of halting discovery for every deal (prod recorded
+			// dozens of failed sends per cadence run on a revoked token).
+			slog.Info(fmt.Sprintf("GitHubCommentSender: token rejected (HTTP %d), switching to anonymous search", resp.StatusCode))
+			g.tokenRejected = true
+			searchClient = g.anon
+			results, resp, err = searchClient.Search.Issues(ctx, query, &github.SearchOptions{
+				Sort:  "updated",
+				Order: "desc",
+				ListOptions: github.ListOptions{
+					PerPage: 3,
+				},
+			})
+		}
 		if err != nil {
 			slog.Info(fmt.Sprintf("GitHubCommentSender: Search error for %q: %v", query, err))
 			if resp != nil && (resp.StatusCode == 401 || resp.StatusCode == 403) {
@@ -250,6 +276,14 @@ func (g *GitHubCommentSender) FindAndComment(ctx context.Context, company db.Com
 		if t.Relevance > bestTarget.Relevance {
 			bestTarget = t
 		}
+	}
+
+	if g.tokenRejected {
+		// Posting requires auth; with a rejected token every attempt would
+		// be recorded as a failed send. Skip gracefully until the token is
+		// refreshed — discovery above still produced value (issue targets).
+		slog.Info(fmt.Sprintf("GitHubCommentSender: skipping comment post for %s: GITHUB_TOKEN rejected (refresh token to resume GitHub outreach)", company.Name))
+		return nil
 	}
 
 	// Generate and post the comment

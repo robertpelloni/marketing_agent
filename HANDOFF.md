@@ -31,3 +31,8 @@
 - Latest Antigravity for this project: fac645a2 'Analyzing Project and PI Session' (enterprise_sales_bot workspace, 11,387 steps, active 2026-11-15): site QA audits (bad links, umami/blogs, inbound bodies, Hetzner QA) against marketing_agent. No marketing_agent-scoped conversation exists in the Antigravity index; HN imported-sessions upstream unavailable (empty fallback).
 - Re-ran its bad-link audit on v0.7.10: MDMAtk download links already fixed by other lanes (releases.hypernexus.site live 200). Remaining trial copy normalized on download/account/checkout/compare (5d9fc59a, deployed to /var/www, live verified).
 - Funnel update: Outreach_Sent 1,039 (cadence firing), contacts 4,359, Closed_Lost 52, Negotiating 2. DeepSeek still 401; disk 84% watch.
+
+## FIX 2026-11-16 Muse Code (GitHub comment sender)
+- GitHubCommentSender: 401/403 on search now switches to anonymous client + marks tokenRejected; posting skipped gracefully while rejected; anonymous 403 rate-limit (10/min) stops search softly with no error so cadence records no failed sends (46980ef2, deployed, health OK). Tests: AnonFallbackOn401, AnonRateLimitStopsSoftly.
+- Context: 27 failed outreach rows on 2026-11-16 traced to revoked GITHUB_TOKEN in this sender (not email). Refreshing GITHUB_TOKEN re-enables GitHub comment outreach; until then discovery still works anonymously within quota.
+- Note: system_health intermittently 'Health check failed' when GitHub API rate limits bite the unauthenticated tracker; recovers.

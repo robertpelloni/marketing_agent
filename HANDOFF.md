@@ -36,3 +36,7 @@
 - GitHubCommentSender: 401/403 on search now switches to anonymous client + marks tokenRejected; posting skipped gracefully while rejected; anonymous 403 rate-limit (10/min) stops search softly with no error so cadence records no failed sends (46980ef2, deployed, health OK). Tests: AnonFallbackOn401, AnonRateLimitStopsSoftly.
 - Context: 27 failed outreach rows on 2026-11-16 traced to revoked GITHUB_TOKEN in this sender (not email). Refreshing GITHUB_TOKEN re-enables GitHub comment outreach; until then discovery still works anonymously within quota.
 - Note: system_health intermittently 'Health check failed' when GitHub API rate limits bite the unauthenticated tracker; recovers.
+
+## FIX 2026-11-16 Muse Code (Gmail daily limit)
+- Outreach failed count growth traced to Gmail 550 5.4.5 daily limit: cadence aborted per cycle now on isDailyLimitError (f6b9191a, test + deployed). Failed stats before fix are quota artifacts, not recipient failures.
+- Gmail daily quota exhaustion also proves cadence email volume is substantial; consider pacing/multi-account if volume keeps hitting the cap.

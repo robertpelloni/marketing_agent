@@ -26,6 +26,15 @@ Verified against repository and Hetzner production (`5.161.250.43`) through `202
 - `/` is the unified single-page operations hub (Subscription, KPIs, Cold Outreach, Active Deals, Social/DevRel, Pipeline Ops, Operator Tools `6D`, Provider Credentials `6A`); `/dashboard/outreach` 301-redirects to `/#outreach`; `/demo` serves the TormentNexus Cloud Console view.
 - `/health`, `/health/detailed` (with stamped `version`, live Stripe health, and accurate DeepSeek/Hermes label), `/metrics` (Prometheus), and `/api/v1/metrics` (JSON pool + accurate enrichment counters + `version`) provide headless production observability.
 
+## M7 — Provider truth in UI & lane retirement (DONE 2026-11-16)
+- X/Twitter lane retired via `TWITTER_DISABLED` (X credits depleted, HTTP 402; user will not fund): hub gate + `ErrTwitterCreditsDepleted` sentinel + poster skip for unregistered platforms, so no 402 WARN/simulated rows each 4h cycle.
+- Dashboard Section 6A now reports lane flags truthfully (`providerPanelList`): X lane and GitHub comment posting show `disabled via …` instead of "configured"; `/api/v1/leads` wired into Operator Tools (6D) with a List Leads control.
+- LLM stopgap: prod DeepSeek-compatible endpoint repointed to local FreeLLM (`http://127.0.0.1:4000`, model `free-llm`) after the MiMo token-plan key returned 401; `/health/detailed` reports `DeepSeek: Connected`. A real provider key rotation remains the durable fix (TODO).
+
+## M8 — Repo hygiene (DONE 2026-11-16)
+- `main` locked 0/0 to GitHub + GitLab; submodules removed by design (corrupt `.gitmodules` removed in `a514a978`) — the two remote branches whose only unique commits bump the removed `borg` pointer (`github/fix/jules-borg-pin`, `github/backup/fdafa92-pre-borg-repin`) are deliberately NOT merged and kept as archives.
+- 20 retired/superseded scripts archived to `scripts/archive/2026-11/`; index in `scripts/SCRIPTS_INDEX.md`.
+
 ## Non-goals
 - `checkout.html` in `sitemap.xml`: deliberately excluded (transactional page).
 - Workstation server execution: prohibited per standing Hetzner-only policy (`start.bat` guard).

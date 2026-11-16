@@ -10,6 +10,17 @@ Immediate, granular tasks. Long-term direction lives in `ROADMAP.md`.
 - [ ] Marketing bot secrets: `DEVTO_API_KEY`, `BLUESKY_TN_PASSWORD`, `BLUESKY_HN_PASSWORD`, funded X API credits
 - [ ] Resubmit sitemap in Google Search Console after `lastmod` corrections
 
+## Done 2026-11-16 (autopilot loop)
+- [x] Retire X lane: `TWITTER_DISABLED=true` (prod env) + hub gate + `ErrTwitterCreditsDepleted` sentinel + poster skip for unregistered platforms (`pkg/agents/social_platform*.go`, `social_poster.go`, tests green, deployed)
+- [x] FreeLLM LLM stopgap on prod (`DEEPSEEK_BASE_URL=http://127.0.0.1:4000`, `free-llm`); `/health/detailed` -> `DeepSeek: Connected`. Durable fix still needs a real key rotation below.
+- [x] Dashboard truth: Section 6A `providerPanelList` shows `TWITTER_DISABLED` / `GITHUB_POSTING_DISABLED` lane state; Leads API wired into Operator Tools 6D (`internal/web/server.go`, `dashboard_panel_test.go`)
+- [x] Archive 20 retired/superseded scripts to `scripts/archive/2026-11/` + `scripts/SCRIPTS_INDEX.md`; track `scripts/patch-nginx-hypernexus.py` (already live)
+- [x] Git: `main` 0/0 vs GitHub+GitLab; `borg`-pointer branches (`fix/jules-borg-pin`, `backup/fdafa92-pre-borg-repin`) deliberately unmerged (submodule removed by design)
+
+## Watch
+- [ ] Hetzner disk 84% (13G free): no target under `/opt/marketing_agent` (~500M); check `/var/log/journal` (216M) and Docker/borg caches before it tightens
+- [ ] `system_health: "Main branch status: Pending"` in `/health/detailed` after restart — confirm it returns to Success (GitHub rate-limit sensitivity noted 2026-11-16)
+
 ## Completed in v0.7.7 (2026-11-15)
 - [x] Rotate live `STRIPE_API_KEY` / `STRIPE_PUBLISHABLE_KEY` / `STRIPE_MANAGEMENT_KEY` in local `.env` and Hetzner `/opt/marketing_agent/.env`, verify `/health/detailed` -> `Stripe (live): Connected`, and verify all 4 live unpaid `cs_live_...` Gate 2 checkout sessions (confirmed by Bobbi's independent live walk on Muse)
 - [x] Filter AI-agent, CI-bot, and unroutable email addresses (`codex@openai.com`, `claude@anthropic.com`, `bot@renovateapp.com`, `*.github.io`, `*[bot]*`) across `GitHubEnrichSource`, `ApolloSource`, `HunterSource`, `CadenceAwareManager`, and `Manager` (`internal/db/contact_hygiene.go`)

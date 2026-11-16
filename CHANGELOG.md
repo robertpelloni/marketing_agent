@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Added
+
+- **Dashboard Lane Truth & Leads UI (`internal/web/server.go`, `dashboard_panel_test.go`)**: Extracted Section 6A provider list into `providerPanelList`, which now reports `X/Twitter (social posting)` and `GitHub comment posting` lane state from `TWITTER_DISABLED` / `GITHUB_POSTING_DISABLED` (amber `disabled via …`) instead of only credential presence; wired `/api/v1/leads` into Operator Tools 6D with a List Leads control (count + first entries, honest non-array error state).
+- **Scripts Index (`scripts/SCRIPTS_INDEX.md`)**: Canonical vs archived inventory for `scripts/`; 20 retired Apollo/Hunter and superseded social-poster scripts moved to `scripts/archive/2026-11/` via `git mv`.
+
 ### Fixed
 
 - **X/Twitter 402 Failure Spam (`pkg/agents/social_platform.go`, `social_platform_bluesky.go`, `social_poster.go`)**: Added `TWITTER_DISABLED=true` hub gate (mirrors `GITHUB_POSTING_DISABLED`), an `ErrTwitterCreditsDepleted` sentinel for HTTP 402 so a credits-depleted lane logs once as disabled instead of WARN + simulated DB rows every 4h social cycle, and a poster-level skip for platforms with no registered provider (no LLM generation, no simulated rows). Focused tests in `pkg/agents/social_platform_test.go`.

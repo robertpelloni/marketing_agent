@@ -77,6 +77,49 @@ func llmProviderLabel(p llm.LLMProvider) string {
 	return "Hermes"
 }
 
+// providerPanelList renders the Section 6A provider/lane status list.
+// It reports credential presence (env names only, never values) plus the
+// operator lane flags (TWITTER_DISABLED, GITHUB_POSTING_DISABLED) so the
+// dashboard matches what the workers actually do each cycle: a lane that
+// is disabled in env must read as disabled here, not "configured".
+func providerPanelList(stripeStatusHTML string) string {
+	configured := func(names ...string) string {
+		for _, n := range names {
+			if os.Getenv(n) != "" {
+				return `<span style="color: #23A55A; font-weight: bold;">configured</span>`
+			}
+		}
+		return `<span style="color: var(--danger); font-weight: bold;">not configured</span>`
+	}
+	disabled := func(flag string) string {
+		return fmt.Sprintf(`<span style="color: #d97706; font-weight: bold;">disabled via %s</span>`, flag)
+	}
+
+	xLane := configured("TWITTER_API_KEY", "TWITTER_BEARER_TOKEN")
+	if os.Getenv("TWITTER_DISABLED") == "true" {
+		xLane = disabled("TWITTER_DISABLED")
+	}
+	githubPosting := `<span style="color: #23A55A; font-weight: bold;">enabled</span>`
+	if os.Getenv("GITHUB_POSTING_DISABLED") == "true" {
+		githubPosting = disabled("GITHUB_POSTING_DISABLED")
+	}
+
+	return fmt.Sprintf(`
+						<li><strong>Stripe (checkout/billing):</strong> %s</li>
+						<li><strong>DeepSeek (blog/LLM):</strong> %s</li>
+						<li><strong>Apollo/Hunter:</strong> retired 2026-11-16 (GitHub-only enrichment)</li>
+						<li><strong>GitHub (enrichment/outreach):</strong> %s</li>
+						<li><strong>GitHub comment posting:</strong> %s</li>
+						<li><strong>X/Twitter (social posting):</strong> %s</li>
+						<li><strong>Hermes/MiMo:</strong> %s</li>`,
+		stripeStatusHTML,
+		configured("DEEPSEEK_API_KEY"),
+		configured("GITHUB_TOKEN"),
+		githubPosting,
+		xLane,
+		configured("HERMES_API_KEY", "HERMES_API_URL"))
+}
+
 // blogTriggerer allows the server to trigger blog post generation.
 type blogTriggerer interface {
 	GenerateNextPost(ctx context.Context)
@@ -1102,30 +1145,8 @@ tr:hover { background-color: #f8fafc; }
 					<h4 style="margin: 0 0 10px 0; font-size: 0.95rem;">Infrastructure Health</h4>
 					<ul style="padding-left: 20px; font-size: 0.85rem; margin: 0; line-height: 1.8;">`)
 
-	// Provider credential presence (names only, never values). Credential
-	// gaps (invalid DeepSeek key, missing Apollo key, etc.) otherwise only
-	// surface as log spam; this panel makes the operator-visible state
-	// explicit on the one dashboard page.
-	providerConfigured := func(names ...string) string {
-		for _, n := range names {
-			if os.Getenv(n) != "" {
-				return `<span style="color: #23A55A; font-weight: bold;">configured</span>`
-			}
-		}
-		return `<span style="color: var(--danger); font-weight: bold;">not configured</span>`
-	}
 	_, stripeStatusHTML := s.billingHealthSummary(r.Context())
-	providerList := fmt.Sprintf(`
-						<li><strong>Stripe (checkout/billing):</strong> %s</li>
-						<li><strong>DeepSeek (blog/LLM):</strong> %s</li>
-						<li><strong>Apollo/Hunter:</strong> retired 2026-11-16 (GitHub-only enrichment)</li>
-						<li><strong>GitHub (enrichment/outreach):</strong> %s</li>
-						<li><strong>Hermes/MiMo:</strong> %s</li>`,
-		stripeStatusHTML,
-		providerConfigured("DEEPSEEK_API_KEY"),
-
-		providerConfigured("GITHUB_TOKEN"),
-		providerConfigured("HERMES_API_KEY", "HERMES_API_URL"))
+	providerList := providerPanelList(stripeStatusHTML)
 
 	_, _ = fmt.Fprintf(w, `
 						<li><strong>Deployment Engine:</strong> <span style="color: #23A55A; font-weight: bold;">%s %s</span></li>
@@ -1253,6 +1274,9 @@ tr:hover { background-color: #f8fafc; }
 				<h4 style="margin: 0 0 8px 0; font-size: 0.9rem;">Outreach Export</h4>
 				<p style="font-size: 0.8rem; color: #64748b; margin: 0 0 8px 0;">Full outreach log as CSV. <span class="tooltip">[?] <span class="tooltiptext">Downloads /api/v1/outreach/export: company, email, category, status, and sent time for every logged send.</span></span></p>
 				<a href="/api/v1/outreach/export" class="action-btn" style="text-decoration: none;">Download Outreach CSV</a>
+				<h4 style="margin: 16px 0 8px 0; font-size: 0.9rem;">Leads (API)</h4>
+				<p style="font-size: 0.8rem; color: #64748b; margin: 0 0 8px 0;">Company leads behind the Deals pipeline. <span class="tooltip">[?] <span class="tooltiptext">Fetches /api/v1/leads (GET lists companies, POST creates one) and shows the count plus the first entries here. Full CRM work happens in the Deals section above.</span></span></p>
+				<button class="action-btn" onclick="listLeads()">List Leads</button>
 				<h4 style="margin: 16px 0 8px 0; font-size: 0.9rem;">GDPR Requests</h4>
 				<label style="font-size: 0.82rem; display: block; margin-bottom: 6px;">Contact email
 					<span class="tooltip">[?] <span class="tooltiptext">Export returns all stored data for this email as JSON. Delete permanently removes it (soft-delete plus GDPR erasure). Delete cannot be undone.</span></span>
@@ -1276,6 +1300,13 @@ tr:hover { background-color: #f8fafc; }
 	}
 	function containerAction(action) {
 		fetch('/api/v1/container/' + action, { method: 'POST' }).then(function(r){ return r.text().then(function(t){ toolsOut('Container ' + action + ' -> HTTP ' + r.status + ': ' + t); }); }).catch(function(e){ toolsOut('Container ' + action + ' failed: ' + e); });
+	}
+	function listLeads() {
+		fetch('/api/v1/leads').then(function(r){ return r.json(); }).then(function(leads){
+			if (!Array.isArray(leads)) { toolsOut('Leads -> unexpected response: ' + JSON.stringify(leads).slice(0, 400)); return; }
+			var names = leads.slice(0, 10).map(function(l){ return (l.name || l.Name || JSON.stringify(l)).toString(); });
+			toolsOut('Leads -> ' + leads.length + ' companies' + (names.length ? ':\n- ' + names.join('\n- ') : ''));
+		}).catch(function(e){ toolsOut('Leads failed: ' + e); });
 	}
 	function gdprExport() {
 		var email = document.getElementById('gdprEmail').value.trim();

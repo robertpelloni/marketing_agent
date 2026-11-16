@@ -52,3 +52,11 @@
 - X lane fixed in code: TWITTER_DISABLED hub gate + ErrTwitterCreditsDepleted sentinel (402) + poster skip for unregistered platforms (no LLM gen, no simulated rows). Tests: pkg/agents/social_platform_test.go (3 tests, green). Prod env sets TWITTER_DISABLED=true.
 - scripts/patch-nginx-hypernexus.py committed; patch already live (verified /features 301, extensionless 200, real 404).
 - FreeLLM stopgap wired (prod env only, backup taken): DEEPSEEK_BASE_URL=http://127.0.0.1:4000, DEEPSEEK_MODEL=free-llm, placeholder key. FreeLLM chat verified from prod host before switch. Rollback: restore env backup + restart.
+
+## LOOP 2026-11-16 Muse Code (autopilot directive)
+- Git sanitization: main 0/0 vs GitHub+GitLab @ 058d6c39. Submodules removed by design; borg-pointer branches (fix/jules-borg-pin, backup/fdafa92-pre-borg-repin) deliberately unmerged (recorded ROADMAP M8). Stashes from v0.7.0 era left untouched.
+- Dashboard: Section 6A extracted to providerPanelList (lane truth: TWITTER_DISABLED / GITHUB_POSTING_DISABLED shown amber); /api/v1/leads wired into Operator Tools 6D (List Leads). Tests: internal/web/dashboard_panel_test.go green. Dashboard remains the single-page hub (Subscription/KPIs/Outreach/Deals/Social/Ops/Tools + Demo Console) - no fragmentation to consolidate. No system tray icon exists for this project (headless Go service under systemd; quit = systemctl stop marketing-agent).
+- Scripts: 20 retired Apollo/Hunter + superseded poster scripts git-mv'd to scripts/archive/2026-11/; scripts/SCRIPTS_INDEX.md indexes canonical vs kept-unreferenced.
+- Log watch findings (prod, post-deploy): Gmail 550 5.4.5 daily limit hit again (cadence abort contains it; volume pacing is the durable fix); LinkedIn headless (go-rod) times out on the VPS every cycle -> simulation fallback, and its 60s context used to poison the audit-row persist (fixed 058d6c39: fresh 10s persist ctx); Reddit headless stays skipped by design.
+- Coordination: Edge CDP 9222 check-in SUBMITTED to Muse canonical thread 8f3e8782 as [muse-wonder-1.0 in muse-cli in C:\Users\hyper\workspace\marketing_agent on laptop]. No Gemini/ChatGPT tabs open - nothing sent there.
+- Deployed: 058d6c39 (vcs parity clean, version 0.7.10), /health/detailed all green except system_health Pending (watch).

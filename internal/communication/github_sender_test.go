@@ -77,6 +77,35 @@ func TestGitHubCommentSender_AnonFallbackOn401(t *testing.T) {
 	}
 }
 
+// Anonymous search hitting the 10/min quota (403 while tokenRejected) must
+// stop softly: no error, so cadence records no failed send for quota.
+func TestGitHubCommentSender_AnonRateLimitStopsSoftly(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Header.Get("Authorization") != "" {
+			w.WriteHeader(http.StatusUnauthorized)
+			_, _ = fmt.Fprintln(w, `{"message":"Bad credentials"}`)
+			return
+		}
+		w.WriteHeader(http.StatusForbidden)
+		_, _ = fmt.Fprintln(w, `{"message":"API rate limit exceeded"}`)
+	}))
+	defer server.Close()
+
+	authClient := testGitHubClient(t, server.URL, &http.Client{
+		Transport: &authTransport{token: "revoked"},
+	})
+	anonClient := testGitHubClient(t, server.URL, nil)
+	sender := &GitHubCommentSender{client: authClient, anon: anonClient, repo: "robertpelloni/marketing_agent"}
+
+	targets, err := sender.SearchRelevantIssues(context.Background(), "acme")
+	if err != nil {
+		t.Fatalf("expected soft stop with no error, got %v", err)
+	}
+	if len(targets) != 0 {
+		t.Fatalf("expected no targets under rate limit, got %d", len(targets))
+	}
+}
+
 type authTransport struct {
 	token string
 	base  http.RoundTripper

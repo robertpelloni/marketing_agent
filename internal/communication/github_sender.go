@@ -137,6 +137,15 @@ func (g *GitHubCommentSender) SearchRelevantIssues(ctx context.Context, companyD
 		if err != nil {
 			slog.Info(fmt.Sprintf("GitHubCommentSender: Search error for %q: %v", query, err))
 			if resp != nil && (resp.StatusCode == 401 || resp.StatusCode == 403) {
+				if g.tokenRejected {
+					// Anonymous search is capped at 10 req/min and this
+					// cadence fans out 9 terms per deal; a 403 here means
+					// quota, not a dead lane. Stop searching softly and
+					// return what we have (usually nothing) with no error,
+					// so cadence does not record failed sends for it.
+					slog.Info("GitHubCommentSender: anonymous search rate-limited, stopping search for this cycle")
+					break
+				}
 				return nil, fmt.Errorf("GitHubCommentSender: search halted on HTTP %d: %w", resp.StatusCode, err)
 			}
 			continue

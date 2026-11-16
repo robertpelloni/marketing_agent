@@ -1118,14 +1118,12 @@ tr:hover { background-color: #f8fafc; }
 	providerList := fmt.Sprintf(`
 						<li><strong>Stripe (checkout/billing):</strong> %s</li>
 						<li><strong>DeepSeek (blog/LLM):</strong> %s</li>
-						<li><strong>Apollo (enrichment):</strong> %s</li>
-						<li><strong>Hunter (enrichment):</strong> %s</li>
+						<li><strong>Apollo/Hunter:</strong> retired 2026-11-16 (GitHub-only enrichment)</li>
 						<li><strong>GitHub (enrichment/outreach):</strong> %s</li>
 						<li><strong>Hermes/MiMo:</strong> %s</li>`,
 		stripeStatusHTML,
 		providerConfigured("DEEPSEEK_API_KEY"),
-		providerConfigured("APOLLO_API_KEY"),
-		providerConfigured("HUNTER_API_KEY"),
+
 		providerConfigured("GITHUB_TOKEN"),
 		providerConfigured("HERMES_API_KEY", "HERMES_API_URL"))
 

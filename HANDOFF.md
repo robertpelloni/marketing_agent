@@ -26,3 +26,8 @@
 ## 4. Open Items for Operator / Next Cycle
 1. **Optional Real-Card Charge Check:** Complete a real `$1.99` trial checkout on `https://hypernexus.site/checkout.html` whenever Robert chooses to verify live settlement + webhook tenant provisioning end-to-end.
 2. **Provider API Keys (`/opt/marketing_agent/.env`):** Current `DEEPSEEK_API_KEY` / `HERMES_API_KEY` (`tp-s0j...` on `token-plan-sgp.xiaomimimo.com`) returns `HTTP 401 (invalid_key)`. Rotating a live LLM key (`DEEPSEEK_API_KEY` or `HERMES_API_KEY`) and fresh `GITHUB_TOKEN` will unlock live LLM replies to engaged prospects (e.g. `lancey3@gmail.com`) and 5,000 req/hr GitHub enrichment.
+
+## LOOP 2026-11-16 Muse Code (Antigravity catch-up)
+- Latest Antigravity for this project: fac645a2 'Analyzing Project and PI Session' (enterprise_sales_bot workspace, 11,387 steps, active 2026-11-15): site QA audits (bad links, umami/blogs, inbound bodies, Hetzner QA) against marketing_agent. No marketing_agent-scoped conversation exists in the Antigravity index; HN imported-sessions upstream unavailable (empty fallback).
+- Re-ran its bad-link audit on v0.7.10: MDMAtk download links already fixed by other lanes (releases.hypernexus.site live 200). Remaining trial copy normalized on download/account/checkout/compare (5d9fc59a, deployed to /var/www, live verified).
+- Funnel update: Outreach_Sent 1,039 (cadence firing), contacts 4,359, Closed_Lost 52, Negotiating 2. DeepSeek still 401; disk 84% watch.

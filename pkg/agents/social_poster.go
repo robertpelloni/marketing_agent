@@ -2,6 +2,7 @@ package agents
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 	"strings"
@@ -75,9 +76,15 @@ func (w *SocialPosterWorker) postAll(ctx context.Context) {
 		},
 	}
 
-	// Process platforms in parallel with timeouts
+	// Process platforms in parallel with timeouts. Platforms with no
+	// registered provider (unconfigured or disabled, e.g. TWITTER_DISABLED)
+	// are skipped entirely: no LLM generation, no simulated DB rows.
 	var wg sync.WaitGroup
 	for _, platform := range platforms {
+		if w.hub.Provider(platform) == nil {
+			slog.Info(fmt.Sprintf("SocialPoster: %s not configured/disabled (skipped)", platform))
+			continue
+		}
 		wg.Add(2)
 		go func(p, brand string, uname string) {
 			defer wg.Done()
@@ -144,14 +151,24 @@ func (w *SocialPosterWorker) generateAndPost(ctx context.Context, brand, platfor
 	}
 
 	posted := false
+	depleted := false
 	if provider := w.hub.Provider(platform); provider != nil {
 		postCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
 		defer cancel()
 		if err := provider.Post(postCtx, req); err != nil {
-			slog.Warn(fmt.Sprintf("SocialPoster: %s post failed for %s: %v — falling back to simulation", platform, brand, err))
+			if errors.Is(err, ErrTwitterCreditsDepleted) {
+				depleted = true
+				slog.Info(fmt.Sprintf("SocialPoster: %s credits depleted for %s — lane disabled until funded (set TWITTER_DISABLED=true to silence)", platform, brand))
+			} else {
+				slog.Warn(fmt.Sprintf("SocialPoster: %s post failed for %s: %v — falling back to simulation", platform, brand, err))
+			}
 		} else {
 			posted = true
 		}
+	}
+
+	if depleted {
+		return
 	}
 
 	if !posted {

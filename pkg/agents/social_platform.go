@@ -68,7 +68,11 @@ func NewSocialPosterHub() *SocialPosterHub {
 	}
 
 	// Twitter / X (uses env TWITTER_BEARER_TOKEN, or TWITTER_API_KEY + TWITTER_API_SECRET + TWITTER_ACCESS_TOKEN + TWITTER_ACCESS_SECRET)
-	if bt := os.Getenv("TWITTER_BEARER_TOKEN"); bt != "" || os.Getenv("TWITTER_API_KEY") != "" {
+	// TWITTER_DISABLED=true retires the lane (e.g. X credits depleted, HTTP 402)
+	// so the social cycle skips it instead of logging a failure every cycle.
+	if os.Getenv("TWITTER_DISABLED") == "true" {
+		slog.Info("SocialPosterHub: Twitter disabled via TWITTER_DISABLED=true (skipped)")
+	} else if bt := os.Getenv("TWITTER_BEARER_TOKEN"); bt != "" || os.Getenv("TWITTER_API_KEY") != "" {
 		register(NewTwitterProvider(
 			os.Getenv("TWITTER_API_KEY"), os.Getenv("TWITTER_API_SECRET"),
 			os.Getenv("TWITTER_ACCESS_TOKEN"), os.Getenv("TWITTER_ACCESS_SECRET"),

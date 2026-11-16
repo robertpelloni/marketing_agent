@@ -46,3 +46,9 @@
 - Apollo/Hunter RETIRED from enrichment chain (b2ede783) + dashboard panel updated (531d5a80). GitHub-only enrichment.
 - FreeLLM (aimm-freellm.service, :4000, /opt/aimoneymachine/freellm): up 16h+, 454 models, actively routing/judging. Probes: 1x 90s timeout, 1x 21s success, 1x cached instant; 139 failed provider attempts/24h with self-healing model disables. Verdict: works, fine as fallback, NOT primary-grade reliability/latency. Candidate: point marketing_agent LLM at http://127.0.0.1:4000/v1 (model free-llm) as DeepSeek stopgap - awaiting user nod.
 - Bluesky: user can supply credentials (env names already present). X: user will NOT fund credits - X lane stays failing 402 each social cycle unless keys blanked or a disable flag is added.
+
+## LOOP 2026-11-16 Muse Code (catch-up continuation)
+- Caught up from repo state (HEAD cedfdbc2 v0.7.10) + HANDOFF/TODO. Prod verified: /health/detailed OK (Stripe live, DB OK), disk 84% (13G free, /opt/marketing_agent only ~500M - watch, no cleanup target there), GITHUB_POSTING_DISABLED=true in prod env (GitHub comment posting intentionally off; discovery/enrichment unaffected).
+- X lane fixed in code: TWITTER_DISABLED hub gate + ErrTwitterCreditsDepleted sentinel (402) + poster skip for unregistered platforms (no LLM gen, no simulated rows). Tests: pkg/agents/social_platform_test.go (3 tests, green). Prod env sets TWITTER_DISABLED=true.
+- scripts/patch-nginx-hypernexus.py committed; patch already live (verified /features 301, extensionless 200, real 404).
+- FreeLLM stopgap wired (prod env only, backup taken): DEEPSEEK_BASE_URL=http://127.0.0.1:4000, DEEPSEEK_MODEL=free-llm, placeholder key. FreeLLM chat verified from prod host before switch. Rollback: restore env backup + restart.

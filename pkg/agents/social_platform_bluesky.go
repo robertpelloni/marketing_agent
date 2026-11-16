@@ -8,6 +8,7 @@ import (
 	"crypto/sha1"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log/slog"
@@ -236,6 +237,11 @@ func (p *RedditProvider) Post(ctx context.Context, req PostRequest) (err error) 
 
 // ─── Twitter / X API v2 Client ──────────────────────────────────────────
 
+// ErrTwitterCreditsDepleted marks an X API 402 (credits depleted). The
+// account cannot post until credits are funded, so callers should treat
+// this as a disabled lane rather than a transient post failure.
+var ErrTwitterCreditsDepleted = errors.New("twitter: credits depleted (HTTP 402)")
+
 type TwitterProvider struct {
 	APIKey       string
 	APISecret    string
@@ -244,6 +250,7 @@ type TwitterProvider struct {
 	BearerToken  string
 	client       *http.Client
 	dryRun       bool
+	baseURL      string
 }
 
 func NewTwitterProvider(apiKey, apiSecret, accessToken, accessSecret, bearerToken string) *TwitterProvider {
@@ -255,6 +262,7 @@ func NewTwitterProvider(apiKey, apiSecret, accessToken, accessSecret, bearerToke
 		BearerToken:  bearerToken,
 		client:       &http.Client{Timeout: 30 * time.Second},
 		dryRun:       os.Getenv("TWITTER_DRY_RUN") == "true" || os.Getenv("DRY_RUN") == "true",
+		baseURL:      "https://api.twitter.com",
 	}
 }
 func (p *TwitterProvider) Name() string { return "twitter" }
@@ -268,7 +276,7 @@ func (p *TwitterProvider) Post(ctx context.Context, req PostRequest) error {
 	payload := map[string]string{"text": req.Content}
 	body, _ := json.Marshal(payload)
 
-	apiURL := "https://api.twitter.com/2/tweets"
+	apiURL := p.baseURL + "/2/tweets"
 	httpReq, _ := http.NewRequestWithContext(ctx, "POST", apiURL, bytes.NewReader(body))
 	httpReq.Header.Set("Content-Type", "application/json")
 
@@ -290,6 +298,9 @@ func (p *TwitterProvider) Post(ctx context.Context, req PostRequest) error {
 
 	if resp.StatusCode != 200 && resp.StatusCode != 201 {
 		respBody, _ := io.ReadAll(resp.Body)
+		if resp.StatusCode == http.StatusPaymentRequired {
+			return fmt.Errorf("%w: %s", ErrTwitterCreditsDepleted, truncate(string(respBody), 300))
+		}
 		return fmt.Errorf("twitter post: HTTP %d: %s", resp.StatusCode, truncate(string(respBody), 300))
 	}
 

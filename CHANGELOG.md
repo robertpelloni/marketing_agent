@@ -1,3 +1,10 @@
+## [Unreleased]
+
+### Fixed
+
+- **X/Twitter 402 Failure Spam (`pkg/agents/social_platform.go`, `social_platform_bluesky.go`, `social_poster.go`)**: Added `TWITTER_DISABLED=true` hub gate (mirrors `GITHUB_POSTING_DISABLED`), an `ErrTwitterCreditsDepleted` sentinel for HTTP 402 so a credits-depleted lane logs once as disabled instead of WARN + simulated DB rows every 4h social cycle, and a poster-level skip for platforms with no registered provider (no LLM generation, no simulated rows). Focused tests in `pkg/agents/social_platform_test.go`.
+- **Nginx Site Patch Script (`scripts/patch-nginx-hypernexus.py`)**: Tracked the already-applied live hypernexus.site patch (extensionless `.html` via `try_files $uri $uri.html`, real 404, `/features` 301) — verified live: `/features` 301, `/download.html` 200, unknown path 404.
+
 ## [0.7.10] - 2026-11-15
 
 ### Fixed

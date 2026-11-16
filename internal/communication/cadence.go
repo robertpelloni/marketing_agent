@@ -242,6 +242,18 @@ type CadenceAwareManager struct {
 	githubSender   *GitHubCommentSender
 }
 
+// isDailyLimitError reports whether an email send error is the provider's
+// daily quota rejection (Gmail 550 5.4.5). Retrying per-deal is pointless
+// until the quota window resets, and each retry was being recorded as a
+// per-recipient failed send, corrupting outreach stats.
+func isDailyLimitError(err error) bool {
+	if err == nil {
+		return false
+	}
+	msg := err.Error()
+	return strings.Contains(msg, "Daily user sending limit exceeded") || strings.Contains(msg, "5.4.5")
+}
+
 // NewCadenceAwareManager wraps an existing Manager with cadence tracking.
 func NewCadenceAwareManager(mgr *Manager, database *db.DB) *CadenceAwareManager {
 	botRepo := os.Getenv("GITHUB_BOT_REPOSITORY")
@@ -389,6 +401,14 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 					Body:    body,
 				}
 				if err := cam.sender.Send(ctx, emailMsg); err != nil {
+					if isDailyLimitError(err) {
+						// Provider daily quota exhausted: abort the whole cycle
+						// instead of burning every remaining deal into a
+						// "failed" stat (prod logged 45 in one run). Deals keep
+						// their cadence step and retry after quota reset.
+						slog.Info(fmt.Sprintf("CadenceAwareManager: Daily sending limit reached, aborting cadence cycle: %v", err))
+						return
+					}
 					slog.Info(fmt.Sprintf("CadenceAwareManager: Email send failed for deal %d: %v", deal.ID, err))
 					cam.recordOutreachLog(ctx, company.Name, recipientEmail, tmpl.ID, "failed")
 					continue

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work With AI Agents — TormentNexus Blog</title>
+<meta name="description" content="Coordinate multiple AI coding harnesses through one control plane with a session bus: register, assign, broadcast, collect.">
+<style>body{background:#0a0a0f;color:#e0e0e0;font-family:Inter,-apple-system,sans-serif;padding:40px 20px;max-width:820px;margin:0 auto;line-height:1.7}h1,h2{color:#fff}a{color:#00ff88;text-decoration:none}code{background:rgba(255,255,255,.08);padding:2px 6px;border-radius:4px}</style>
+</head>
+<body>
+<nav><a href="/blog/">← Blog</a> · <a href="/">TormentNexus</a></nav>
+<h1>Work With AI Agents: Coordinating Multiple Coding Harnesses</h1>
+<p>Most developers now have several AI coding tools installed — a couple of CLIs, an IDE assistant, maybe a GUI agent or two. Each keeps its own config, its own memory, and its own idea of what the project is. TormentNexus gives them one control plane: shared memory, shared MCP routing, and a <strong>session bus</strong> so sessions can coordinate instead of colliding.</p>
+<h2>The session bus</h2>
+<p>Sessions register with a harness name, model, and role. A coordinator session can then assign a task to one worker, broadcast to all of them, poll inboxes, and collect reports when they finish. Acknowledgements are per-recipient, so a broadcast stays pending for peers that have not read it yet. The bus is backed by the local kernel, with the L1 scratchpad as a fallback when the kernel is briefly unavailable.</p>
+<h2>One config, every harness</h2>
+<p>Extensions for each harness install the same skills, hooks, and MCP configuration, and pin shell tools off in favor of parity tools when a model requires it. The result: start work in one harness, hand it off through the bus, and pick it up in another with the same memory and tools waiting.</p>
+<p>See <a href="/blog/ai-coding-workflow.html">the workflow loop</a> that ties it together, or <a href="/download.html">download the stack</a>.</p>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Give AI a Memory — TormentNexus Blog</title>
+<meta name="description" content="How persistent local memory (scratchpad, vector vault, cold archive) lets AI coding agents remember decisions across sessions.">
+<style>body{background:#0a0a0f;color:#e0e0e0;font-family:Inter,-apple-system,sans-serif;padding:40px 20px;max-width:820px;margin:0 auto;line-height:1.7}h1,h2{color:#fff}a{color:#00ff88;text-decoration:none}code{background:rgba(255,255,255,.08);padding:2px 6px;border-radius:4px}</style>
+</head>
+<body>
+<nav><a href="/blog/">← Blog</a> · <a href="/">TormentNexus</a></nav>
+<h1>Give AI a Memory: Persistent Context Across Every Session</h1>
+<p>Every new AI coding session starts from zero. The agent does not know which database you chose last week, why a migration was written the way it was, or that the staging server is the one box it must never restart. You re-explain, it re-discovers, and the work compounds far less than it should.</p>
+<h2>Three tiers, one vault</h2>
+<p>TormentNexus (the engine behind HyperNexus) stores memory locally in three tiers. The <strong>L1 scratchpad</strong> holds the active goal, objective, and handoff notes — small, fast, and loaded at session start. The <strong>L2 vector vault</strong> holds facts and observations searchable by meaning and by full-text index, so "what did we decide about billing?" finds the answer even when the wording differs. The <strong>L3 cold archive</strong> keeps older session transcripts compressed and searchable, so nothing is ever truly lost.</p>
+<h2>Recall before work</h2>
+<p>The workflow change is simple: before planning, the agent recalls. It loads the scratchpad goal, searches L2 for the topic at hand, and only then starts editing. Decisions, gotchas, and owner preferences survive model switches, harness switches, and reboots — because the memory belongs to your machine, not to a chat window.</p>
+<h2>Local-first, by default</h2>
+<p>The vault is SQLite on your disk. No memory leaves the machine unless you configure an upstream. That makes the system safe for proprietary code and useful offline: memory search, session bootstrap, and tool routing all run against the local kernel on <code>127.0.0.1:7778</code>.</p>
+<p><a href="/download.html">Download TormentNexus</a> and give your next session the context your last one earned.</p>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Run LLMs Locally — TormentNexus Blog</title>
+<meta name="description" content="An offline-first AI development stack: local models, local memory, and a local kernel that keeps working when the cloud does not.">
+<style>body{background:#0a0a0f;color:#e0e0e0;font-family:Inter,-apple-system,sans-serif;padding:40px 20px;max-width:820px;margin:0 auto;line-height:1.7}h1,h2{color:#fff}a{color:#00ff88;text-decoration:none}code{background:rgba(255,255,255,.08);padding:2px 6px;border-radius:4px}</style>
+</head>
+<body>
+<nav><a href="/blog/">← Blog</a> · <a href="/">TormentNexus</a></nav>
+<h1>Run LLMs Locally: An Offline-First AI Development Stack</h1>
+<p>Cloud models are powerful, but they come with rate limits, quota windows, and the occasional hard stop in the middle of a refactor. A local-first stack keeps the essential loop on your machine: local models for inference where they fit, local memory always, and a local kernel routing between the two.</p>
+<h2>What runs where</h2>
+<p>The TormentNexus kernel (Go, single binary) serves memory, tool routing, and session coordination on <code>127.0.0.1:7778</code>. Local model servers plug in as providers alongside cloud ones, and a provider <em>waterfall</em> fails over in order — local first, cloud when a task needs more capability, next provider when one returns a rate limit instead of an answer.</p>
+<h2>Why local memory matters most</h2>
+<p>Even if inference goes to the cloud, your project memory should not have to. Decisions, handoffs, and session history live in local SQLite, searchable in milliseconds, and available on a plane with no Wi-Fi. When the cloud comes back, the agents pick up exactly where they left off.</p>
+<h2>What you give up, honestly</h2>
+<p>Frontier cloud models are still stronger on the hardest reasoning. The local-first answer is not "never use the cloud" — it is "never depend on it for memory, routing, or session state," and choose per task where inference happens.</p>
+<p><a href="/download.html">Download the stack</a> or read how <a href="/blog/give-ai-a-memory.html">persistent memory</a> is structured.</p>
+</body>
+</html>

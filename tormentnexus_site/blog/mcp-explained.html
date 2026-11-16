@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP Explained — TormentNexus Blog</title>
+<meta name="description" content="The Model Context Protocol in plain terms: servers, tools, discovery, and why progressive routing matters at 14,000+ servers.">
+<style>body{background:#0a0a0f;color:#e0e0e0;font-family:Inter,-apple-system,sans-serif;padding:40px 20px;max-width:820px;margin:0 auto;line-height:1.7}h1,h2{color:#fff}a{color:#00ff88;text-decoration:none}code{background:rgba(255,255,255,.08);padding:2px 6px;border-radius:4px}</style>
+</head>
+<body>
+<nav><a href="/blog/">← Blog</a> · <a href="/">TormentNexus</a></nav>
+<h1>MCP Explained: The Model Context Protocol in Plain Terms</h1>
+<p>The Model Context Protocol (MCP) is a standard way for AI agents to call external tools: a server advertises tools with names, descriptions, and JSON schemas, and the agent invokes them by name. One server might search the web, another query your database, another control a browser. Any MCP-compatible harness — Claude Code, Codex, Copilot, Cursor, and dozens more — can use the same servers.</p>
+<h2>The scaling problem</h2>
+<p>There are well over 14,000 MCP servers. Listing every tool from every server would flood the model's context with tens of thousands of schemas before any real work begins. The fix is <strong>progressive tool routing</strong>: keep a searchable catalog, predict which tools a task needs, and inject only those few schemas. In practice this cuts tool-context tokens by roughly 95% while keeping the full catalog one search away.</p>
+<h2>What a control plane adds</h2>
+<p>A local MCP control plane (TormentNexus runs one on <code>127.0.0.1:7778</code>) aggregates servers, caches the tool inventory, routes calls, and records what happened. The agent sees a small, relevant toolset; you keep one place to audit, enable, or disable capabilities across every harness you use.</p>
+<p>Start with the <a href="/download.html">download page</a>, or read <a href="/blog/work-with-ai-agents.html">how multiple agents coordinate</a> through the same control plane.</p>
+</body>
+</html>

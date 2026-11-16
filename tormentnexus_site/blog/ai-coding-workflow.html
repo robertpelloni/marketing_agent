@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An AI Coding Workflow That Survives Restarts — TormentNexus Blog</title>
+<meta name="description" content="Recall, discover, execute, persist, verify: the five-step loop that makes AI agent work compound across sessions and harnesses.">
+<style>body{background:#0a0a0f;color:#e0e0e0;font-family:Inter,-apple-system,sans-serif;padding:40px 20px;max-width:820px;margin:0 auto;line-height:1.7}h1,h2{color:#fff}a{color:#00ff88;text-decoration:none}code{background:rgba(255,255,255,.08);padding:2px 6px;border-radius:4px}</style>
+</head>
+<body>
+<nav><a href="/blog/">← Blog</a> · <a href="/">TormentNexus</a></nav>
+<h1>An AI Coding Workflow That Survives Restarts</h1>
+<p>Agent sessions end — quota, crash, context limit, or just the end of the day. A workflow that depends on one long-lived chat is fragile. The loop below is the one TormentNexus is built around, and it works in any harness:</p>
+<h2>1. Recall</h2>
+<p>Load the active goal and search memory for the topic before touching code. Most "agent mistakes" are really missing context that already existed somewhere.</p>
+<h2>2. Discover</h2>
+<p>Find the tools and code paths the task needs — progressively, not by dumping every tool schema and file into context. Search the repo graph, then read only the bodies that matter.</p>
+<h2>3. Execute</h2>
+<p>Make the smallest change that satisfies the requirement, in the harness best suited to it. Other sessions can work in parallel through the session bus without stepping on the same files.</p>
+<h2>4. Persist</h2>
+<p>Store what was learned — decisions, verification results, and the next step — back into memory, and update the handoff. This is the step that turns one session's work into the next session's head start.</p>
+<h2>5. Verify</h2>
+<p>Run the project's own tests and checks against the real code, and record the outcome. A result that was never observed is a guess, and guesses do not belong in the handoff.</p>
+<p>Then the next session — yours, or another model's — starts at step 1 with everything intact. <a href="/download.html">Download TormentNexus</a> to run the loop locally.</p>
+</body>
+</html>

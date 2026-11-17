@@ -8,11 +8,20 @@ import (
 	"net"
 	"net/smtp"
 	"os"
+	"sync"
 	"time"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
+
+// gmailAuthBreakerWindow is how long Send suppresses attempts after the
+// provider rejects the credentials themselves (OAuth client disabled /
+// refresh token revoked). Every caller path (cadence, comm manager)
+// otherwise retries per deal and logs the same ERROR each time; the
+// breaker collapses that to one trip log per window while still
+// surfacing an error to every caller.
+const gmailAuthBreakerWindow = 15 * time.Minute
 
 // GmailOAuth2Sender implements EmailSender using Gmail SMTP with OAuth2 XOAUTH2.
 type GmailOAuth2Sender struct {
@@ -21,17 +30,26 @@ type GmailOAuth2Sender struct {
 	refreshToken string
 	fromEmail    string
 	fromName     string
+
+	mu            sync.Mutex
+	authDownUntil time.Time
+	lastAuthErr   error
+	now           func() time.Time
+	sendFn        func(to string, msg []byte) error
 }
 
 // NewGmailOAuth2Sender creates a new Gmail OAuth2 email sender.
 func NewGmailOAuth2Sender() *GmailOAuth2Sender {
-	return &GmailOAuth2Sender{
+	s := &GmailOAuth2Sender{
 		clientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 		clientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
 		refreshToken: os.Getenv("GOOGLE_REFRESH_TOKEN"),
 		fromEmail:    os.Getenv("SMTP_FROM"),
 		fromName:     os.Getenv("SMTP_FROM_NAME"),
+		now:          time.Now,
 	}
+	s.sendFn = s.sendViaSMTP
+	return s
 }
 
 // Send sends an email using Gmail SMTP with OAuth2 XOAUTH2.
@@ -45,12 +63,37 @@ func (s *GmailOAuth2Sender) Send(ctx context.Context, msg EmailMessage) error {
 	emailMsg := fmt.Sprintf("From: %s\r\nTo: %s\r\nSubject: %s\r\nContent-Type: text/plain; charset=UTF-8\r\nMIME-Version: 1.0\r\n\r\n%s",
 		from, msg.To, msg.Subject, msg.Body)
 
+	// Auth breaker: after a provider-side credential rejection, fail
+	// fast for the window instead of re-fetching a token (and logging
+	// the same ERROR) for every deal on every caller path.
+	s.mu.Lock()
+	if s.lastAuthErr != nil && s.now().Before(s.authDownUntil) {
+		downErr, until := s.lastAuthErr, s.authDownUntil
+		s.mu.Unlock()
+		return fmt.Errorf("gmail oauth2: auth breaker open until %s: %w", until.Format(time.RFC3339), downErr)
+	}
+	s.mu.Unlock()
+
 	// Send via SMTP with OAuth2
-	err := s.sendViaSMTP(msg.To, []byte(emailMsg))
+	err := s.sendFn(msg.To, []byte(emailMsg))
 	if err != nil {
+		if isProviderAuthError(err) {
+			s.mu.Lock()
+			tripped := s.lastAuthErr == nil || !s.now().Before(s.authDownUntil)
+			s.lastAuthErr, s.authDownUntil = err, s.now().Add(gmailAuthBreakerWindow)
+			s.mu.Unlock()
+			if tripped {
+				slog.Error("GmailOAuth2: provider auth rejected — auth breaker open", "until", s.authDownUntil.Format(time.RFC3339), "error", err)
+			}
+			return err
+		}
 		slog.Error("GmailOAuth2: Failed to send email", "to", msg.To, "error", err)
 		return err
 	}
+
+	s.mu.Lock()
+	s.lastAuthErr, s.authDownUntil = nil, time.Time{}
+	s.mu.Unlock()
 
 	slog.Info("GmailOAuth2: Email sent", "to", msg.To, "subject", msg.Subject)
 	return nil

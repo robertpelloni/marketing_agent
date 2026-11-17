@@ -89,5 +89,11 @@
 - Autodev test pollution fixed at source (e112bca0 deployed): finalizeCycle honors GO_TEST_MODE; full `go test ./...` (20 pkgs) now leaves a clean tree (was: phantom VERSION/CHANGELOG bumps under internal/autodev after every run).
 - Disk still 91% (6.9G free, stable this cycle). Health all-green; Pending is CI on the new push. Operator items unchanged.
 
+## LOOP 2026-11-17 Muse Code (autopilot round 9; round 8 = MEMORY.md docs)
+- SECURITY FIX (6ffeb777 + 45971bfb, deployed): /api/v1/leads, /api/v1/outreach/export, /api/v1/metrics, /metrics were UNAUTHENTICATED while the service binds *:8084 and nginx proxies /api/v1/ publicly - outreach CSV (emails), full CRM list/create, DB metrics all internet-facing. Now session-gated (303 unauth; dashboard same-origin unaffected). Public funnel (health/quote/checkout/newsletter/stats aggregates) unchanged.
+- Leads 500 root-caused via new handler error logging: NULL market_cap_tier (+ NULL arrays) scan failures; COALESCE fix verified live (200, 24k companies, 6.7MB - pagination TODO'd). handleDetailedHealth nil-guards added (was panic on nil deps).
+- MCP scope: the box's MCP stack is the separate HyperNexus kernel project (:7778, healthy v1.0.13, 31d uptime) + hypernexus-cloud/dashboard/watchdog services, all running. Exhaustive MCP tool testing belongs to that project, not marketing_agent; this repo's go/ subtree is vendored.
+- Verified externally: IP:8084 answers (hence the auth fix mattered); static session cookie value noted as tech debt in TODO.
+
 ## LOOP 2026-11-17 Muse Code (autopilot round 7)
 - Released v0.7.11 (49643912, deployed, health version=0.7.11): the 2026-11-16/17 fix batch. Worker inventory audited: all 12 goroutine workers in main.go log started (scraper, enricher, researcher, CRM, outreach/discovery, deployer, social poster, blog, discussions, comm manager, IMAP, autodev orchestrator) + deployment monitor. Nothing not-running that should run except operator-blocked lanes.

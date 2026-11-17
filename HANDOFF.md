@@ -73,3 +73,8 @@
 - LinkedIn retirement completed on all 3 surfaces (c954a78b deployed): social hub gate, cadence linkedin-connect -> Skipped via linkedInLaneDisabled, discovery LinkedInSource.Discover -> immediate nil (was 47s timeout + 3 fabricated companies; test fails on old code exactly that way, passes now). All three verified in one prod startup log.
 - New findings: IMAP inbound login invalid (operator: refresh app password - TODO); one FreeLLM blog-gen 120s timeout (stopgap flakiness, watch).
 - CDP check-in SUBMITTED (Bobbi tab); no Gemini/ChatGPT tabs. Deployed c954a78b, vcs parity clean.
+
+## LOOP 2026-11-17 Muse Code (autopilot directive, round 4)
+- LLM stopgap hardened (b2209e18 deployed): DEEPSEEK_MODEL=free-llm-plain (reasoning free-llm leaked "The user wants..." thinking into copy + timed out on blogs), DEEPSEEK_TIMEOUT_SECONDS=300 (new provider config, default 120, TestDeepSeekTimeoutConfigurable). Verified: long generations succeed (3,286 tokens), direct marketing succeeds, cadence Gmail abort still clean.
+- Remaining noise explained: pre-fix PID deadline line, designed Gmail abort, one Bluesky createSession connection timeout (fell back to simulation; posted fine in earlier cycles - watch).
+- DEPLOY.md updated with lane flags/stopgap/mail repairs. system_health returned to Success. Operator list unchanged: Gmail OAuth re-enable, IMAP app password, real LLM key rotation, disk 86% (other tenants).

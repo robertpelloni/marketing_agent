@@ -60,17 +60,19 @@ func (w *SocialPosterWorker) Run(ctx context.Context, interval time.Duration) {
 func (w *SocialPosterWorker) postAll(ctx context.Context) {
 	platforms := []string{"bluesky", "twitter", "linkedin"}
 
-	// Separate accounts for both brands
+	// Separate accounts for both brands (Bluesky handles resolve from
+	// env — the real accounts are mdmatk / hypernexusllc, not the
+	// fictional brand-named handles previously hardcoded here)
 	usernames := map[string]map[string]string{
 		"tormentnexus": {
 			"reddit":   "MDMAtk",
-			"bluesky":  "tormentnexus.bsky.social",
+			"bluesky":  blueskyAccountForBrand("tormentnexus"),
 			"linkedin": "TormentNexus Community",
 			"twitter":  "@tormentnexus",
 		},
 		"hypernexus": {
 			"reddit":   "MDMAtk",
-			"bluesky":  "hypernexus.bsky.social",
+			"bluesky":  blueskyAccountForBrand("hypernexus"),
 			"linkedin": "HyperNexus Enterprise",
 			"twitter":  "@hypernexus_site",
 		},

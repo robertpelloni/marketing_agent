@@ -155,16 +155,38 @@ func (h *SocialPosterHub) Registered() []string {
 	return names
 }
 
+// blueskyAccountForBrand resolves a brand's real Bluesky handle from
+// env (BLUESKY_HANDLE / BLUESKY_HYPERNEXUS_HANDLE). The previously
+// hardcoded tormentnexus.bsky.social / hypernexus.bsky.social values
+// were fictional — the actual accounts are mdmatk.bsky.social and
+// hypernexusllc.bsky.social — which the per-account provider now
+// (correctly) refused to post as.
+func blueskyAccountForBrand(brand string) string {
+	switch brand {
+	case "tormentnexus":
+		if h := os.Getenv("BLUESKY_HANDLE"); h != "" {
+			return h
+		}
+		return "tormentnexus.bsky.social"
+	case "hypernexus":
+		if h := os.Getenv("BLUESKY_HYPERNEXUS_HANDLE"); h != "" {
+			return h
+		}
+		return "hypernexus.bsky.social"
+	}
+	return ""
+}
+
 func defaultAccounts() map[string]map[string]string {
 	return map[string]map[string]string{
 		"tormentnexus": {
-			"bluesky":  "tormentnexus.bsky.social",
+			"bluesky":  blueskyAccountForBrand("tormentnexus"),
 			"reddit":   "MDMAtk",
 			"twitter":  "@tormentnexus",
 			"linkedin": "TormentNexus Community",
 		},
 		"hypernexus": {
-			"bluesky":  "hypernexus.bsky.social",
+			"bluesky":  blueskyAccountForBrand("hypernexus"),
 			"reddit":   "MDMAtk",
 			"twitter":  "@hypernexus_site",
 			"linkedin": "HyperNexus Enterprise",

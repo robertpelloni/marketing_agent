@@ -93,6 +93,9 @@
 - Lane telemetry shipped (7aac3e9e, deployed, vcs parity verified): /api/v1/metrics includes lanes{twitter,linkedin,github_posting}_disabled. Metrics route is auth-gated, so live body verified via unit test + binary parity, not curl.
 - Note: /opt/marketing_agent git checkout was stale (531d5a80); fast-forwarded to main (9198fceb) in round 16 - tracked tree clean, untracked dirs are runtime artifacts (blog_output, data exports). Binary deploys remain scp swaps.
 
+## LOOP 2026-11-17 Muse Code (autopilot round 21)
+- Funnel check (vs 2026-11-16 baseline): Discovered 15,405 | Researched 7,094 | Outreach_Sent 1,416 (+377) | Engaged 162 | Closed_Lost 70 (+18) | Negotiating 2 | contacts 7,462 (+3,103). Discovery/enrichment/research producing strongly; sends grow via non-email channels while Gmail is operator-blocked. outreach_log failed=8,558 cumulative is historic (pre-abort era + outage attempts), not a new signal. Steady state otherwise (Success, disk 88%).
+
 ## LOOP 2026-11-17 Muse Code (autopilot round 20)
 - Steady-state watch: health Success on v0.7.12, load 0.23, NRestarts=0, MemoryHigh guard in place, Gmail breaker cycling as designed (operator OAuth still disabled). Disk crept 87->88% (9.2G free) from other tenants - keep watching; at this rate weeks of headroom, not days. No code changes.
 

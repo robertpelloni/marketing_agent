@@ -36,3 +36,13 @@ Standing rule: every push to main is deployed in the same session. Do not run lo
 4. Restart: mv .new over bin/marketing_agent; systemctl restart marketing-agent.
 5. Verify: curl http://127.0.0.1:8084/health (expect OK) and /health/detailed (database OK, system_health Success); journalctl -u marketing-agent --since '-5 minutes' for ERRORs.
 Notes: prod repo /opt/marketing_agent is a clean checkout of main (synced 2026-11-13; backup of prior stale files in /root/prod-backup-20261113/). Prod DB already has pgvector; fresh local Postgres without pgvector fails migration 000009. GitHub Actions Deploy workflow also exists but its production job is DEPLOY_HOST-gated; manual deploy above is the operative path.
+
+## Operator Lane Flags & LLM Stopgap (2026-11-17)
+Prod `/opt/marketing_agent/.env` (backups: `.env.bak-20261116-freellm`, binary `.bak-*` alongside):
+- `TWITTER_DISABLED=true` — X lane retired (credits depleted, HTTP 402; user will not fund). Hub + panel honor it.
+- `LINKEDIN_DISABLED=true` — LinkedIn retired on all 3 surfaces (social hub, cadence step -> Skipped, discovery source). Headless Chromium times out on this VPS and caused an OOM kill (2026-11-17 02:28 UTC).
+- `GITHUB_POSTING_DISABLED=true` — GitHub comment posting off; discovery/enrichment unaffected.
+- LLM stopgap: `DEEPSEEK_BASE_URL=http://127.0.0.1:4000`, `DEEPSEEK_MODEL=free-llm`, placeholder key — the DeepSeek-compatible provider talks to the local FreeLLM router (`aimm-freellm.service`) because the MiMo token-plan key returns 401. Health reports `DeepSeek: Connected`. Durable fix: rotate a real `DEEPSEEK_API_KEY`/`HERMES_API_KEY` and restore the upstream base URL.
+- Known operator repairs pending: Gmail OAuth client disabled by Google (`disabled_client`; re-enable in Google Cloud Console) and IMAP app password invalid (`Invalid credentials`). Cadence aborts cleanly around both.
+- Dependabot is scoped by `.github/dependabot.yml` (gomod/npm/github-actions only); unscoped `uv` jobs against vendored `go/agents/` previously poisoned `system_health`.
+- Test-suite note: `go test ./...` passes (20 pkgs) but `internal/autodev` tests write version-bump pollution into `internal/autodev/VERSION*`/`CHANGELOG.md` — restore those files after a full run (`git checkout -- internal/autodev/`).

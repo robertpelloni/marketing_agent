@@ -1,8 +1,11 @@
 package agents
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
 	"log/slog"
 	"net/http"
 	"os"
@@ -17,6 +20,7 @@ type GitHubDiscussionsEngager struct {
 	Token      string
 	HTTPClient *http.Client
 	dryRun     bool
+	apiURL     string
 }
 
 // NewGitHubDiscussionsEngager creates a GitHub Discussions engagement bot.
@@ -28,6 +32,7 @@ func NewGitHubDiscussionsEngager(token string) *GitHubDiscussionsEngager {
 		Token:      token,
 		HTTPClient: &http.Client{Timeout: 30 * time.Second},
 		dryRun:     os.Getenv("DRY_RUN") == "true",
+		apiURL:     "https://api.github.com/graphql",
 	}
 }
 
@@ -51,6 +56,14 @@ func (g *GitHubDiscussionsEngager) Run(ctx context.Context, interval time.Durati
 func (g *GitHubDiscussionsEngager) engage(ctx context.Context) {
 	if g.Token == "" {
 		slog.Info("GitHubDiscussions: No GITHUB_TOKEN — skipping")
+		return
+	}
+
+	// Posting is operator-gated: with GITHUB_POSTING_DISABLED=true this
+	// worker must not search or reply at all (prod stance since the token
+	// refresh; replies would be real public comments).
+	if os.Getenv("GITHUB_POSTING_DISABLED") == "true" {
+		slog.Info("GitHubDiscussions: Posting disabled via GITHUB_POSTING_DISABLED — skipping cycle")
 		return
 	}
 
@@ -115,23 +128,64 @@ func (g *GitHubDiscussionsEngager) searchDiscussions(ctx context.Context, query 
 		}
 	}`, query)
 
-	body := fmt.Sprintf(`{"query": %q}`, gql)
-	req, _ := http.NewRequestWithContext(ctx, "POST", "https://api.github.com/graphql",
-		strings.NewReader(body))
+	payload, _ := json.Marshal(map[string]string{"query": gql})
+	req, _ := http.NewRequestWithContext(ctx, "POST", g.apiURL, bytes.NewReader(payload))
 	req.Header.Set("Authorization", "bearer "+g.Token)
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := g.HTTPClient.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("discussions search: %w", err)
 	}
 	defer func() { _ = resp.Body.Close() }()
 
-	// Simple regex parsing of GraphQL response (TODO: use proper JSON unmarshal)
+	respBody, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("discussions search: HTTP %d: %s", resp.StatusCode, truncate(string(respBody), 200))
+	}
+
+	// Proper JSON decoding of the GraphQL envelope (replaces the old
+	// regex/skeleton stub that discarded every response and returned 0).
+	var envelope struct {
+		Data struct {
+			Search struct {
+				Edges []struct {
+					Node struct {
+						ID         string `json:"id"`
+						Title      string `json:"title"`
+						URL        string `json:"url"`
+						Body       string `json:"body"`
+						Repository struct {
+							NameWithOwner string `json:"nameWithOwner"`
+						} `json:"repository"`
+					} `json:"node"`
+				} `json:"edges"`
+			} `json:"search"`
+		} `json:"data"`
+		Errors []struct {
+			Message string `json:"message"`
+		} `json:"errors"`
+	}
+	if err := json.Unmarshal(respBody, &envelope); err != nil {
+		return nil, fmt.Errorf("discussions search: decode response: %w", err)
+	}
+	if len(envelope.Errors) > 0 {
+		return nil, fmt.Errorf("discussions search: GraphQL error: %s", envelope.Errors[0].Message)
+	}
+
 	var results []discussionResult
-	// For now, skip complex parsing. The important thing is the skeleton is here.
-	_ = results
-	return nil, nil
+	for _, e := range envelope.Data.Search.Edges {
+		n := e.Node
+		if n.ID == "" || n.Title == "" {
+			continue // non-Discussion or empty node
+		}
+		r := discussionResult{Title: n.Title, URL: n.URL, Body: n.Body, DiscussionNodeID: n.ID}
+		if owner, name, ok := strings.Cut(n.Repository.NameWithOwner, "/"); ok {
+			r.RepoOwner, r.RepoName = owner, name
+		}
+		results = append(results, r)
+	}
+	return results, nil
 }
 
 func (g *GitHubDiscussionsEngager) buildComment(d discussionResult) string {
@@ -147,8 +201,44 @@ Happy to answer any questions!`, d.Title)
 }
 
 func (g *GitHubDiscussionsEngager) postReply(ctx context.Context, discussionNodeID, comment string) error {
-	// GraphQL mutation to add discussion comment
-	_ = discussionNodeID
-	_ = comment
+	// Real addDiscussionComment mutation (was a no-op stub that reported
+	// success without posting anything).
+	mutation := `mutation($discussionId: ID!, $body: String!) {
+		addDiscussionComment(input: {discussionId: $discussionId, body: $body}) {
+			comment { id }
+		}
+	}`
+	payload, _ := json.Marshal(map[string]any{
+		"query": mutation,
+		"variables": map[string]string{
+			"discussionId": discussionNodeID,
+			"body":         comment,
+		},
+	})
+	req, _ := http.NewRequestWithContext(ctx, "POST", g.apiURL, bytes.NewReader(payload))
+	req.Header.Set("Authorization", "bearer "+g.Token)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := g.HTTPClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("discussions reply: %w", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+
+	respBody, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("discussions reply: HTTP %d: %s", resp.StatusCode, truncate(string(respBody), 200))
+	}
+	var envelope struct {
+		Errors []struct {
+			Message string `json:"message"`
+		} `json:"errors"`
+	}
+	if err := json.Unmarshal(respBody, &envelope); err != nil {
+		return fmt.Errorf("discussions reply: decode response: %w", err)
+	}
+	if len(envelope.Errors) > 0 {
+		return fmt.Errorf("discussions reply: GraphQL error: %s", envelope.Errors[0].Message)
+	}
 	return nil
 }

@@ -35,6 +35,15 @@ type LinkedInSource struct {
 // Discover searches for companies and contacts matching the target criteria.
 // When LinkedIn credentials are not configured, returns simulated high-value targets.
 func (l *LinkedInSource) Discover(ctx context.Context, keywords []string) ([]db.Company, error) {
+	// LINKEDIN_DISABLED=true retires the lane (same flag as the social
+	// hub and cadence): no headless scrape (it times out on the VPS and
+	// Chromium is the main OOM risk) and no simulated fallback either —
+	// a retired lane must not fabricate leads into the CRM.
+	if os.Getenv("LINKEDIN_DISABLED") == "true" {
+		slog.Info("LinkedInSource: disabled via LINKEDIN_DISABLED=true, skipping discovery")
+		return nil, nil
+	}
+
 	// Load credentials from config or environment
 	if l.Username == "" {
 		l.Username = os.Getenv("LINKEDIN_USERNAME")

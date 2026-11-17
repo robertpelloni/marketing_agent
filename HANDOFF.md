@@ -89,6 +89,9 @@
 - Autodev test pollution fixed at source (e112bca0 deployed): finalizeCycle honors GO_TEST_MODE; full `go test ./...` (20 pkgs) now leaves a clean tree (was: phantom VERSION/CHANGELOG bumps under internal/autodev after every run).
 - Disk still 91% (6.9G free, stable this cycle). Health all-green; Pending is CI on the new push. Operator items unchanged.
 
+## LOOP 2026-11-17 Muse Code (autopilot round 13)
+- Gmail auth circuit breaker shipped (57254341, deployed): 15m fail-fast after provider auth rejection on ALL caller paths; verified live (single trip log 07:22:38 UTC, cadence abort follows, sender quiet after). Box load spiked to 103 earlier (other tenants' Rust build/Ollama - ours 23MB idle); Stripe 'unreachable' blip was that starvation, self-recovered.
+
 ## LOOP 2026-11-17 Muse Code (autopilot round 12)
 - Dashboard Leads paging controls shipped (c4527c1f, deployed): Prev/Next + range display over paginated /api/v1/leads. Verified: health Success, leads-noauth 303, zero panics post-deploy, JS parse-checked.
 - Gmail per-attempt ERROR lines continue at low rate from Comm Manager initiations (sender-level log; cadence cycles abort cleanly). Only fixable by operator re-enabling the OAuth client.

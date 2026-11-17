@@ -2,6 +2,7 @@
 
 ### Fixed
 
+- **Lane Telemetry in Metrics (`internal/web/server.go`)**: `/api/v1/metrics` now includes `lanes` (`twitter_disabled`, `linkedin_disabled`, `github_posting_disabled` from the same env truth as the 6A panel), so retired channels are visible to machine consumers, not only the dashboard HTML. Tests: `lanes_metrics_test.go`.
 - **Disk Gauge in Health (`internal/web/disk_linux.go`, `server.go`)**: `/health/detailed` now reports `disk` (e.g. `87% used (9.7G free)`) via `statfs` on Linux (other platforms report `unknown`), so the shared-VPS disk cliff is visible in the standard health check. Tests: `disk_test.go`. Docs: VISION/IDEAS status addenda refreshed to v0.7.11 reality.
 - **Gmail Auth Circuit Breaker (`internal/communication/gmail_oauth2_sender.go`)**: After a provider-side credential rejection (`disabled_client` etc.), `Send` trips a 15-minute breaker: one ERROR trip log per window, then every caller (cadence, comm manager) fails fast with an "auth breaker open" error — which cadence still classifies as provider-auth and aborts on — instead of a token fetch + identical ERROR per deal. Success clears it. Tests: `gmail_oauth2_sender_test.go` (trip/suppress/retry-after-window, non-auth errors ignored, clear-on-success).
 - **Dashboard Leads Paging Controls (`internal/web/server.go`)**: Operator Tools Leads gained Prev/Next page buttons with range display (`N–M of total`) walking the paginated `/api/v1/leads` 10 at a time (was: first 10 only, no way to page). JS syntax-verified; API bounds covered by `leads_pagination_test.go`.

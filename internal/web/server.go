@@ -2228,6 +2228,17 @@ func (s *Server) handlePrometheusMetrics(w http.ResponseWriter, r *http.Request)
 }
 
 // handleJSONMetrics exports application and DB connection pool metrics as JSON.
+// laneFlags reports operator lane switches for metrics/dashboard
+// consumers (same env truth as providerPanelList): a retired lane must
+// be visible in machine-readable telemetry, not only in the 6A HTML.
+func laneFlags() map[string]bool {
+	return map[string]bool{
+		"twitter_disabled":        os.Getenv("TWITTER_DISABLED") == "true",
+		"linkedin_disabled":       os.Getenv("LINKEDIN_DISABLED") == "true",
+		"github_posting_disabled": os.Getenv("GITHUB_POSTING_DISABLED") == "true",
+	}
+}
+
 func (s *Server) handleJSONMetrics(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	setCORSHeaders(w, r)
@@ -2248,6 +2259,8 @@ func (s *Server) handleJSONMetrics(w http.ResponseWriter, r *http.Request) {
 		// Per-source enrichment outcomes (attempts/successes/empty/failures)
 		// so failing lanes are visible without reading service logs.
 		"enrichment_sources": enrichment.SourceStats(),
+		// Operator lane switches (retired channels) for telemetry.
+		"lanes": laneFlags(),
 	})
 }
 

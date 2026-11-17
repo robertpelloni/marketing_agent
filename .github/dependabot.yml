@@ -1,0 +1,27 @@
+# Dependabot scope for marketing_agent.
+#
+# Without this file, Dependabot (enabled repo-side on GitHub) auto-detects
+# ecosystems from the dependency graph and keeps attempting `uv` updates
+# against the vendored Python subtree at go/agents/software-agent-sdk.
+# Those dynamic jobs fail on every push and poison the combined commit
+# status, which the deployment tracker surfaces as system_health=Failure
+# even though CI/Integration/Deploy/Docker/CodeQL are all green.
+# Scope updates to the ecosystems this repo actually maintains.
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gomod"
+    directory: "/go"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

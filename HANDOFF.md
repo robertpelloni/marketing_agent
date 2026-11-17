@@ -84,3 +84,7 @@
 - DISK ESCALATION: Hetzner 91% (6.9G free, was 86%): other tenants (aicrm/ercm/build-leadg) write ~1G backups to /tmp hourly. Owner cleanup decision needed; this project's footprint ~500M. If disk fills, Postgres dies first.
 - Cron loop scheduled: job 6060af34 every 15m (permanent, skips while active) re-runs this directive.
 - Verified: cadence GitHub step already honors GITHUB_POSTING_DISABLED (github_sender.go:60); codebase TODO scan clean except Reddit API-only (recorded, lane retired by design).
+
+## LOOP 2026-11-17 Muse Code (autopilot round 6)
+- Autodev test pollution fixed at source (e112bca0 deployed): finalizeCycle honors GO_TEST_MODE; full `go test ./...` (20 pkgs) now leaves a clean tree (was: phantom VERSION/CHANGELOG bumps under internal/autodev after every run).
+- Disk still 91% (6.9G free, stable this cycle). Health all-green; Pending is CI on the new push. Operator items unchanged.

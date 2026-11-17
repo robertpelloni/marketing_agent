@@ -173,7 +173,9 @@ func (s *Server) routes() {
 	s.mux.Handle("/health/detailed", rl.middleware(http.HandlerFunc(s.handleDetailedHealth)))
 	s.mux.Handle("/api/v1/webhook/github", rl.middleware(http.HandlerFunc(s.handleGitHubWebhook)))
 	s.mux.Handle("/api/v1/quote", rl.middleware(http.HandlerFunc(s.handleGenerateQuote)))
-	s.mux.Handle("/api/v1/leads", rl.middleware(http.HandlerFunc(s.handleLeadsAPI)))
+	// Leads are operator CRM data (list + create): auth-gated (was public
+	// while the service binds *:8084 — unauthenticated CRM dump/injection).
+	s.mux.Handle("/api/v1/leads", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleLeadsAPI))))
 	s.mux.Handle("/api/v1/deals", rl.middleware(http.HandlerFunc(s.handleDealsAPI)))
 
 	// GDPR Endpoints
@@ -207,11 +209,15 @@ func (s *Server) routes() {
 	// Outreach dashboard (public — read-only stats for hypernexus.site)
 	s.mux.Handle("/api/v1/outreach/stats", rl.middleware(http.HandlerFunc(s.handleOutreachStats)))
 	s.mux.Handle("/dashboard/outreach", rl.middleware(http.HandlerFunc(s.handleOutreachDashboard)))
-	s.mux.Handle("/api/v1/outreach/export", rl.middleware(http.HandlerFunc(s.handleOutreachExport)))
+	// Outreach export contains contact emails (operator data): auth-gated.
+	// The service binds *:8084 and nginx proxies /api/v1/ publicly, so an
+	// unauthenticated export was an internet-facing PII dump.
+	s.mux.Handle("/api/v1/outreach/export", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleOutreachExport))))
 
-	// Metrics endpoints (Prometheus and JSON format)
-	s.mux.Handle("/metrics", rl.middleware(http.HandlerFunc(s.handlePrometheusMetrics)))
-	s.mux.Handle("/api/v1/metrics", rl.middleware(http.HandlerFunc(s.handleJSONMetrics)))
+	// Metrics endpoints (Prometheus and JSON format) — operator internals,
+	// auth-gated for the same reason; the dashboard links them post-login.
+	s.mux.Handle("/metrics", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handlePrometheusMetrics))))
+	s.mux.Handle("/api/v1/metrics", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleJSONMetrics))))
 }
 
 // allowedOrigins returns true if the given Origin header is from a trusted site.
@@ -1409,8 +1415,11 @@ func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 	health := make(map[string]interface{})
 	health["version"] = s.effectiveVersion()
 
-	// 1. Check DB
-	if err := s.db.Conn.PingContext(r.Context()); err != nil {
+	// 1. Check DB (nil-guarded: health must report, never panic)
+	if s.db == nil || s.db.Conn == nil {
+		health["database"] = "ERROR: database unavailable"
+		w.WriteHeader(http.StatusServiceUnavailable)
+	} else if err := s.db.Conn.PingContext(r.Context()); err != nil {
 		health["database"] = "ERROR: " + err.Error()
 		w.WriteHeader(http.StatusServiceUnavailable)
 	} else {
@@ -1418,7 +1427,10 @@ func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 2. Check CI/Sync status
-	healthStatus, _ := s.tracker.GetSystemHealth(r.Context())
+	healthStatus := "unknown"
+	if s.tracker != nil {
+		healthStatus, _ = s.tracker.GetSystemHealth(r.Context())
+	}
 	health["system_health"] = healthStatus
 
 	// 3. Worker liveness
@@ -1584,6 +1596,9 @@ func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
 		}
 		companies, err := s.db.ListAllCompanies(r.Context())
 		if err != nil {
+			// Log the real error: a swallowed err here hid a NULL-array
+			// scan failure behind a bare 500 for an entire release.
+			slog.Error("Leads API: ListAllCompanies failed", "error", err)
 			http.Error(w, "Failed to retrieve leads", http.StatusInternalServerError)
 			return
 		}

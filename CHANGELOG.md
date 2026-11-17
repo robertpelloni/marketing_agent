@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Fixed
+
+- **Operator Endpoints Auth-Gated (`internal/web/server.go`)**: `/api/v1/leads`, `/api/v1/outreach/export`, `/api/v1/metrics`, and `/metrics` now require the dashboard session (`s.auth.Middleware`). The service binds `*:8084` and nginx proxies `/api/v1/` publicly, so the outreach CSV (contact emails), the full company list, lead creation, and DB metrics were internet-facing without auth. Public funnel endpoints (health, quote, checkout, newsletter, outreach stats aggregates) stay open. Tests: `routes_auth_test.go`; staging script now expects 303 for export.
+- **Leads 500 Root Cause (`internal/db/repository.go`, `internal/web/server.go`)**: `ListAllCompanies` failed scanning NULL `tech_stack`/`hiring_signals` arrays (2,075 prod rows) via `pq.Array`; query now `COALESCE`s arrays to `'{}'` and checks `rows.Err()`. The handler also logs the real error instead of swallowing it behind a bare 500. `handleDetailedHealth` nil-guards DB/tracker so health reports instead of panicking.
+
 ## [0.7.11] - 2026-11-17
 
 ### Added

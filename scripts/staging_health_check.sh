@@ -43,8 +43,8 @@ check_endpoint "GET" "/api/v1/outreach/stats" "200"
 check_endpoint "GET" "/api/v1/social/reddit" "200"
 check_endpoint "GET" "/api/social/reddit" "200"
 
-# 4. CSV Outreach Export
-check_endpoint "GET" "/api/v1/outreach/export" "200"
+# 4. CSV Outreach Export (auth-gated since v0.7.11: unauthenticated = 303 to /login)
+check_endpoint "GET" "/api/v1/outreach/export" "303"
 
 echo "------------------------------------------"
 if [ "${FAILED}" -eq 0 ]; then

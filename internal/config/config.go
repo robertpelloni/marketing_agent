@@ -30,9 +30,10 @@ type Config struct {
 	SecretKey string
 
 	// DeepSeek LLM (alternative to Hermes)
-	DeepSeekAPIKey  string
-	DeepSeekModel   string
-	DeepSeekBaseURL string
+	DeepSeekAPIKey       string
+	DeepSeekModel        string
+	DeepSeekBaseURL      string
+	DeepSeekTimeoutSecs  int
 
 	// Safety
 	DryRun bool
@@ -104,6 +105,13 @@ func Load() *Config {
 		}
 	}
 
+	deepSeekTimeoutSecs := 120
+	if ts := os.Getenv("DEEPSEEK_TIMEOUT_SECONDS"); ts != "" {
+		if n, err := strconv.Atoi(ts); err == nil && n > 0 {
+			deepSeekTimeoutSecs = n
+		}
+	}
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
@@ -157,9 +165,10 @@ func Load() *Config {
 		SecretKey: os.Getenv("SECRET_KEY"),
 
 		// DeepSeek LLM
-		DeepSeekAPIKey:  os.Getenv("DEEPSEEK_API_KEY"),
-		DeepSeekModel:   getEnv("DEEPSEEK_MODEL", "deepseek-chat"),
-		DeepSeekBaseURL: getEnv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
+		DeepSeekAPIKey:      os.Getenv("DEEPSEEK_API_KEY"),
+		DeepSeekModel:       getEnv("DEEPSEEK_MODEL", "deepseek-chat"),
+		DeepSeekBaseURL:     getEnv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
+		DeepSeekTimeoutSecs: deepSeekTimeoutSecs,
 
 		// Safety
 		DryRun: os.Getenv("DRY_RUN") == "true",

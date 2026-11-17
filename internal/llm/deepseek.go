@@ -30,6 +30,10 @@ type DeepSeekConfig struct {
 	APIKey  string // DeepSeek API key (sk-...)
 	Model   string // e.g. "deepseek-chat" or "deepseek-reasoner"
 	BaseURL string // Override base URL (default: https://api.deepseek.com)
+	// TimeoutSeconds bounds a single generation call. Long-form blog
+	// generation through slow routers needs more than the 120s default;
+	// non-positive values keep the default.
+	TimeoutSeconds int
 }
 
 func normalizeOpenAIBaseRoot(raw string) string {
@@ -47,12 +51,16 @@ func NewDeepSeekLLMProvider(cfg DeepSeekConfig) *DeepSeekLLMProvider {
 	if baseRoot == "" {
 		baseRoot = "https://api.deepseek.com"
 	}
+	timeout := 120 * time.Second
+	if cfg.TimeoutSeconds > 0 {
+		timeout = time.Duration(cfg.TimeoutSeconds) * time.Second
+	}
 	return &DeepSeekLLMProvider{
 		APIKey:  cfg.APIKey,
 		Model:   cfg.Model,
 		BaseURL: baseRoot,
 		HTTPClient: &http.Client{
-			Timeout: 120 * time.Second,
+			Timeout: timeout,
 		},
 	}
 }

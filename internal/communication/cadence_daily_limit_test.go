@@ -21,6 +21,21 @@ func TestIsDailyLimitError(t *testing.T) {
 	}
 }
 
+func TestLinkedInLaneDisabled(t *testing.T) {
+	t.Setenv("LINKEDIN_DISABLED", "true")
+	if !linkedInLaneDisabled() {
+		t.Error("expected LinkedIn lane disabled when LINKEDIN_DISABLED=true")
+	}
+	t.Setenv("LINKEDIN_DISABLED", "")
+	if linkedInLaneDisabled() {
+		t.Error("expected LinkedIn lane enabled when LINKEDIN_DISABLED unset")
+	}
+	t.Setenv("LINKEDIN_DISABLED", "false")
+	if linkedInLaneDisabled() {
+		t.Error("expected LinkedIn lane enabled when LINKEDIN_DISABLED=false")
+	}
+}
+
 func TestIsProviderAuthError(t *testing.T) {
 	disabled := errors.New(`failed to get token: oauth2: "disabled_client" "The OAuth client was disabled."`)
 	if !isProviderAuthError(disabled) {

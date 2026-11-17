@@ -254,6 +254,14 @@ func isDailyLimitError(err error) bool {
 	return strings.Contains(msg, "Daily user sending limit exceeded") || strings.Contains(msg, "5.4.5")
 }
 
+// linkedInLaneDisabled reports whether the LinkedIn lane is retired via
+// LINKEDIN_DISABLED=true (same operator flag as the social hub). The
+// headless sender times out on the VPS and Chromium is the service's main
+// OOM risk, so cadence records the step Skipped instead of attempting it.
+func linkedInLaneDisabled() bool {
+	return os.Getenv("LINKEDIN_DISABLED") == "true"
+}
+
 // isProviderAuthError reports whether an email send failed before any
 // recipient contact because the provider credentials themselves were
 // rejected (Gmail OAuth client disabled/revoked: disabled_client,
@@ -476,6 +484,18 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			}
 
 		case db.ChannelLinkedIn:
+			if linkedInLaneDisabled() {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: Skipping LinkedIn step %d for deal %d — LINKEDIN_DISABLED=true", nextStep.StepNumber, deal.ID))
+				_ = cam.db.CreateInteraction(ctx, &db.Interaction{
+					ContactID:  primaryContact.ID,
+					Channel:    nextStep.Channel.String(),
+					Direction:  "Skipped",
+					Summary:    fmt.Sprintf("Skipped cadence step %d (%s): LinkedIn lane disabled", nextStep.StepNumber, nextStep.TemplateID),
+					TemplateID: nextStep.TemplateID,
+				})
+				_ = cam.db.SetCadenceStep(ctx, deal.ID, nextStep.StepNumber)
+				continue
+			}
 			if strings.TrimSpace(primaryContact.LinkedInURL) == "" {
 				slog.Info(fmt.Sprintf("CadenceAwareManager: Skipping LinkedIn step %d for deal %d — no LinkedIn profile URL populated", nextStep.StepNumber, deal.ID))
 				_ = cam.db.CreateInteraction(ctx, &db.Interaction{

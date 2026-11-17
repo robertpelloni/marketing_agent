@@ -93,6 +93,9 @@
 - Lane telemetry shipped (7aac3e9e, deployed, vcs parity verified): /api/v1/metrics includes lanes{twitter,linkedin,github_posting}_disabled. Metrics route is auth-gated, so live body verified via unit test + binary parity, not curl.
 - Note: /opt/marketing_agent git checkout was stale (531d5a80); fast-forwarded to main (9198fceb) in round 16 - tracked tree clean, untracked dirs are runtime artifacts (blog_output, data exports). Binary deploys remain scp swaps.
 
+## LOOP 2026-11-17 Muse Code (autopilot round 25)
+- bsky.social probe from VPS: 200 in 80ms - the 09:42 createSession timeouts were transient (load-spike era). Next social cycle (~13:42 UTC) expected to post both brands as their real accounts. No code action.
+
 ## LOOP 2026-11-17 Muse Code (autopilot round 24)
 - Blog fix verified live: startup generation failed 09:46 (FreeLLM timeout) and state stayed total_posts=845/used=845 (old code would have burned it to 846). Bluesky: only the startup cycle since deploy; both brands fail on bsky.social connection timeouts (network) - judge recovery at next 4h cycle. Health Success.
 

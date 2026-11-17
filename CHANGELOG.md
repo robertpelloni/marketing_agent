@@ -2,6 +2,7 @@
 
 ### Fixed
 
+- **Leads Pagination (`internal/db/repository.go`, `internal/web/server.go`)**: `GET /api/v1/leads` now paginates — `?limit` (default 100, max 500) and `?offset` (floor 0), stable `ORDER BY id`, total in `X-Total-Count` — instead of returning all ~24k companies (6.7MB). `ListCompaniesPage`/`CountCompanies` added; `ListAllCompanies` delegates unbounded for internal callers. Dashboard List Leads fetches the first 10 and shows the total. Tests: `leads_pagination_test.go` (9 bound cases).
 - **Operator Endpoints Auth-Gated (`internal/web/server.go`)**: `/api/v1/leads`, `/api/v1/outreach/export`, `/api/v1/metrics`, and `/metrics` now require the dashboard session (`s.auth.Middleware`). The service binds `*:8084` and nginx proxies `/api/v1/` publicly, so the outreach CSV (contact emails), the full company list, lead creation, and DB metrics were internet-facing without auth. Public funnel endpoints (health, quote, checkout, newsletter, outreach stats aggregates) stay open. Tests: `routes_auth_test.go`; staging script now expects 303 for export.
 - **Leads 500 Root Cause (`internal/db/repository.go`, `internal/web/server.go`)**: `ListAllCompanies` failed scanning NULL `tech_stack`/`hiring_signals` arrays (2,075 prod rows) via `pq.Array`; query now `COALESCE`s arrays to `'{}'` and checks `rows.Err()`. The handler also logs the real error instead of swallowing it behind a bare 500. `handleDetailedHealth` nil-guards DB/tracker so health reports instead of panicking.
 

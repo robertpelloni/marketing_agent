@@ -174,7 +174,27 @@ func (db *DB) TouchDealUpdatedAt(ctx context.Context, dealID int64) error {
 // market_cap_tier (plain string scan) — each made GET /api/v1/leads
 // fail with a bare 500, compounded by the handler swallowing the error.
 func (db *DB) ListAllCompanies(ctx context.Context) ([]Company, error) {
-	rows, err := db.Conn.QueryContext(ctx, "SELECT id, name, domain, COALESCE(tech_stack, '{}'), COALESCE(hiring_signals, '{}'), COALESCE(market_cap_tier, ''), created_at, updated_at FROM companies")
+	return db.ListCompaniesPage(ctx, 0, 0)
+}
+
+// CountCompanies returns the total company count for pagination headers.
+func (db *DB) CountCompanies(ctx context.Context) (int, error) {
+	var n int
+	err := db.Conn.QueryRowContext(ctx, "SELECT COUNT(*) FROM companies").Scan(&n)
+	return n, err
+}
+
+// ListCompaniesPage returns one stable page of companies (ORDER BY id).
+// limit <= 0 means no limit (internal callers only; the HTTP handler
+// always passes its clamped bounds).
+func (db *DB) ListCompaniesPage(ctx context.Context, limit, offset int) ([]Company, error) {
+	query := "SELECT id, name, domain, COALESCE(tech_stack, '{}'), COALESCE(hiring_signals, '{}'), COALESCE(market_cap_tier, ''), created_at, updated_at FROM companies ORDER BY id"
+	args := []interface{}{}
+	if limit > 0 {
+		query += " LIMIT $1 OFFSET $2"
+		args = append(args, limit, offset)
+	}
+	rows, err := db.Conn.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
 	}

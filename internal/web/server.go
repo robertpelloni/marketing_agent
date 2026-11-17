@@ -1287,7 +1287,7 @@ tr:hover { background-color: #f8fafc; }
 				<p style="font-size: 0.8rem; color: #64748b; margin: 0 0 8px 0;">Full outreach log as CSV. <span class="tooltip">[?] <span class="tooltiptext">Downloads /api/v1/outreach/export: company, email, category, status, and sent time for every logged send.</span></span></p>
 				<a href="/api/v1/outreach/export" class="action-btn" style="text-decoration: none;">Download Outreach CSV</a>
 				<h4 style="margin: 16px 0 8px 0; font-size: 0.9rem;">Leads (API)</h4>
-				<p style="font-size: 0.8rem; color: #64748b; margin: 0 0 8px 0;">Company leads behind the Deals pipeline. <span class="tooltip">[?] <span class="tooltiptext">Fetches /api/v1/leads (GET lists companies, POST creates one) and shows the count plus the first entries here. Full CRM work happens in the Deals section above.</span></span></p>
+				<p style="font-size: 0.8rem; color: #64748b; margin: 0 0 8px 0;">Company leads behind the Deals pipeline. <span class="tooltip">[?] <span class="tooltiptext">Fetches /api/v1/leads paginated (?limit default 100, max 500, &offset; total in X-Total-Count header, auth required) and shows the first 10 plus the total here. Full CRM work happens in the Deals section above.</span></span></p>
 				<button class="action-btn" onclick="listLeads()">List Leads</button>
 				<h4 style="margin: 16px 0 8px 0; font-size: 0.9rem;">GDPR Requests</h4>
 				<label style="font-size: 0.82rem; display: block; margin-bottom: 6px;">Contact email
@@ -1314,10 +1314,13 @@ tr:hover { background-color: #f8fafc; }
 		fetch('/api/v1/container/' + action, { method: 'POST' }).then(function(r){ return r.text().then(function(t){ toolsOut('Container ' + action + ' -> HTTP ' + r.status + ': ' + t); }); }).catch(function(e){ toolsOut('Container ' + action + ' failed: ' + e); });
 	}
 	function listLeads() {
-		fetch('/api/v1/leads').then(function(r){ return r.json(); }).then(function(leads){
-			if (!Array.isArray(leads)) { toolsOut('Leads -> unexpected response: ' + JSON.stringify(leads).slice(0, 400)); return; }
-			var names = leads.slice(0, 10).map(function(l){ return (l.name || l.Name || JSON.stringify(l)).toString(); });
-			toolsOut('Leads -> ' + leads.length + ' companies' + (names.length ? ':\n- ' + names.join('\n- ') : ''));
+		fetch('/api/v1/leads?limit=10&offset=0').then(function(r){
+			var total = r.headers.get('X-Total-Count');
+			return r.json().then(function(leads){ return { leads: leads, total: total }; });
+		}).then(function(res){
+			if (!Array.isArray(res.leads)) { toolsOut('Leads -> unexpected response: ' + JSON.stringify(res.leads).slice(0, 400)); return; }
+			var names = res.leads.map(function(l){ return (l.name || l.Name || JSON.stringify(l)).toString(); });
+			toolsOut('Leads -> first ' + res.leads.length + ' of ' + (res.total || '?') + ' companies (?limit up to 500 &offset to page):' + (names.length ? '\n- ' + names.join('\n- ') : ''));
 		}).catch(function(e){ toolsOut('Leads failed: ' + e); });
 	}
 	function gdprExport() {
@@ -1578,6 +1581,28 @@ func (s *Server) handleGenerateQuote(w http.ResponseWriter, r *http.Request) {
 }
 
 // REST API for external pipeline management
+// parseLeadsPagination clamps ?limit/?offset to safe bounds: limit
+// defaults to 100 and caps at 500 (the unpaginated table is ~24k rows /
+// 6.7MB), offset floors at 0. Unparsable values fall back to defaults
+// rather than failing the request.
+func parseLeadsPagination(r *http.Request) (limit, offset int) {
+	limit, offset = 100, 0
+	if v := r.URL.Query().Get("limit"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 {
+			limit = n
+		}
+	}
+	if limit > 500 {
+		limit = 500
+	}
+	if v := r.URL.Query().Get("offset"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n > 0 {
+			offset = n
+		}
+	}
+	return limit, offset
+}
+
 func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
 	// CORS Headers
 	setCORSHeaders(w, r)
@@ -1589,18 +1614,30 @@ func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodGet:
-		// Example: List all leads
+		// List leads, paginated: ?limit (default 100, max 500) &offset.
+		// The full table is ~24k companies / 6.7MB JSON, so unbounded
+		// list responses are no longer served. Total rides in
+		// X-Total-Count so clients can page deliberately.
 		if s.db == nil {
 			http.Error(w, "Database connection unavailable", http.StatusServiceUnavailable)
 			return
 		}
-		companies, err := s.db.ListAllCompanies(r.Context())
+		limit, offset := parseLeadsPagination(r)
+		companies, err := s.db.ListCompaniesPage(r.Context(), limit, offset)
 		if err != nil {
 			// Log the real error: a swallowed err here hid a NULL-array
 			// scan failure behind a bare 500 for an entire release.
-			slog.Error("Leads API: ListAllCompanies failed", "error", err)
+			slog.Error("Leads API: ListCompaniesPage failed", "error", err)
 			http.Error(w, "Failed to retrieve leads", http.StatusInternalServerError)
 			return
+		}
+		if companies == nil {
+			companies = []db.Company{}
+		}
+		if total, cerr := s.db.CountCompanies(r.Context()); cerr == nil {
+			w.Header().Set("X-Total-Count", fmt.Sprintf("%d", total))
+		} else {
+			slog.Error("Leads API: CountCompanies failed", "error", cerr)
 		}
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(companies)

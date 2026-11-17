@@ -453,13 +453,25 @@ func (be *BlogEngine) nextTopic() BlogTopic {
 		}
 	}
 
-	// Record usage
-	be.state.UsedTopics = append(be.state.UsedTopics, selected.Title)
-	be.state.LastTopicAt[selected.Title] = time.Now().UTC().Format(time.RFC3339)
+	// Selection only — usage is recorded in generateAndPublish AFTER a
+	// successful publish. Recording here burned topics and inflated
+	// TotalPosts on every failed generation (state claimed 844 posts
+	// with the newest file months old).
+	return selected
+}
+
+// recordPublished marks a topic used and counts the post. Called only
+// after publish() succeeds, so state reflects files actually written.
+func (be *BlogEngine) recordPublished(topic BlogTopic) {
+	be.mu.Lock()
+	defer be.mu.Unlock()
+	be.state.UsedTopics = append(be.state.UsedTopics, topic.Title)
+	if be.state.LastTopicAt == nil {
+		be.state.LastTopicAt = make(map[string]string)
+	}
+	be.state.LastTopicAt[topic.Title] = time.Now().UTC().Format(time.RFC3339)
 	be.state.TotalPosts++
 	be.saveState()
-
-	return selected
 }
 
 func (be *BlogEngine) GenerateNextPost(ctx context.Context) {
@@ -469,20 +481,25 @@ func (be *BlogEngine) GenerateNextPost(ctx context.Context) {
 }
 
 // GenerateBatch generates up to N posts sequentially, waiting for each to complete.
-// Returns how many were generated. Useful for bulk-filling the blog catalog.
+// Returns how many were actually published. Useful for bulk-filling the blog catalog.
 func (be *BlogEngine) GenerateBatch(ctx context.Context, n int) int {
 	count := 0
 	for i := 0; i < n; i++ {
 		topic := be.nextTopic()
-		be.generateAndPublish(ctx, topic)
-		count++
+		if be.generateAndPublish(ctx, topic) {
+			count++
+		}
 		// Quick pause between generations to avoid rate limits
 		time.Sleep(2 * time.Second)
 	}
 	return count
 }
 
-func (be *BlogEngine) generateAndPublish(ctx context.Context, topic BlogTopic) {
+// generateAndPublish generates and publishes one post, reporting whether
+// it was actually published. Topic usage and the post count are recorded
+// only on success (see recordPublished); failures leave the topic
+// available for the next cycle.
+func (be *BlogEngine) generateAndPublish(ctx context.Context, topic BlogTopic) bool {
 
 	brand := "tormentnexus"
 	if topic.Category == "enterprise" {
@@ -498,21 +515,23 @@ func (be *BlogEngine) generateAndPublish(ctx context.Context, topic BlogTopic) {
 	post, err := be.generatePost(ctx, topic, brand, angle)
 	if err != nil {
 		slog.Error("BlogEngine: Failed to generate post", "error", err, "topic", topic.Title)
-		return
+		return false
 	}
 
 	if be.dryRun {
 		slog.Info(fmt.Sprintf("BlogEngine [DRY RUN] Would publish: %s", post.Title))
-		return
+		return false
 	}
 
 	if err := be.publish(ctx, post); err != nil {
 		slog.Error("BlogEngine: Failed to publish post", "error", err, "slug", post.Slug)
-		return
+		return false
 	}
 
+	be.recordPublished(topic)
 	slog.Info(fmt.Sprintf("BlogEngine: Published \"%s\" (%s) — post #%d",
 		post.Title, post.Slug, be.state.TotalPosts))
+	return true
 }
 
 func (be *BlogEngine) generatePost(ctx context.Context, topic BlogTopic, brand string, angle string) (*BlogPost, error) {

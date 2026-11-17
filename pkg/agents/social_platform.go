@@ -50,9 +50,19 @@ func NewSocialPosterHub() *SocialPosterHub {
 		hub.providers[p.Name()] = p
 	}
 
-	// Bluesky (Go AT Protocol client — uses env BLUESKY_HANDLE, BLUESKY_APP_PASSWORD)
+	// Bluesky (Go AT Protocol client) — per-account credentials:
+	// BLUESKY_HANDLE/BLUESKY_APP_PASSWORD plus the hypernexus pair
+	// BLUESKY_HYPERNEXUS_HANDLE/BLUESKY_HYPERNEXUS_APP_PASSWORD. Each
+	// brand posts only as its own account (see BlueskyProvider).
+	blueskyAccounts := map[string]string{}
 	if h := os.Getenv("BLUESKY_HANDLE"); h != "" {
-		register(NewBlueskyProvider(h, os.Getenv("BLUESKY_APP_PASSWORD")))
+		blueskyAccounts[h] = os.Getenv("BLUESKY_APP_PASSWORD")
+	}
+	if h := os.Getenv("BLUESKY_HYPERNEXUS_HANDLE"); h != "" {
+		blueskyAccounts[h] = os.Getenv("BLUESKY_HYPERNEXUS_APP_PASSWORD")
+	}
+	if len(blueskyAccounts) > 0 {
+		register(NewBlueskyProvider(blueskyAccounts))
 	} else {
 		slog.Info("SocialPosterHub: Bluesky not configured (set BLUESKY_HANDLE + BLUESKY_APP_PASSWORD)")
 	}

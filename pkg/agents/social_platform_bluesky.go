@@ -25,19 +25,24 @@ import (
 
 // ─── Bluesky AT Protocol Client (pure Go, no external deps) ─────────────
 
+// BlueskyProvider posts via the AT Protocol with per-account
+// credentials (handle -> app password). It previously held ONE
+// credential and posted both brands as that account while logging the
+// requested brand account — hypernexus content would have landed on
+// the tormentnexus account. Unknown accounts are now refused.
 type BlueskyProvider struct {
-	Handle   string
-	Password string
+	accounts map[string]string
 	client   *http.Client
 	dryRun   bool
+	baseURL  string
 }
 
-func NewBlueskyProvider(handle, password string) *BlueskyProvider {
+func NewBlueskyProvider(accounts map[string]string) *BlueskyProvider {
 	return &BlueskyProvider{
-		Handle:   handle,
-		Password: password,
+		accounts: accounts,
 		client:   &http.Client{Timeout: 30 * time.Second},
 		dryRun:   os.Getenv("BLUESKY_DRY_RUN") == "true" || os.Getenv("DRY_RUN") == "true",
+		baseURL:  "https://bsky.social",
 	}
 }
 func (p *BlueskyProvider) Name() string { return "bluesky" }
@@ -82,10 +87,17 @@ func (p *BlueskyProvider) Post(ctx context.Context, req PostRequest) error {
 		return nil
 	}
 
-	// 1. Create session (authenticate)
-	session, err := p.createSession(ctx)
+	// 1. Create session with the credential for THIS account only.
+	password, ok := p.accounts[req.AccountID]
+	if !ok || password == "" {
+		return fmt.Errorf("bluesky: no credentials for account %s (refusing to post as another account)", req.AccountID)
+	}
+	session, err := p.createSession(ctx, req.AccountID, password)
 	if err != nil {
 		return fmt.Errorf("bluesky auth: %w", err)
+	}
+	if session.Handle != "" && session.Handle != req.AccountID {
+		return fmt.Errorf("bluesky: authenticated as %s, cannot post as %s", session.Handle, req.AccountID)
 	}
 
 	// 2. Build the post record
@@ -95,7 +107,7 @@ func (p *BlueskyProvider) Post(ctx context.Context, req PostRequest) error {
 	}
 
 	// 3. Create the record via the AT Protocol
-	recordURL := "https://bsky.social/xrpc/com.atproto.repo.createRecord"
+	recordURL := p.baseURL + "/xrpc/com.atproto.repo.createRecord"
 	payload := atprotoRecord{
 		Repo:       session.Did,
 		Collection: "app.bsky.feed.post",
@@ -122,15 +134,15 @@ func (p *BlueskyProvider) Post(ctx context.Context, req PostRequest) error {
 	return nil
 }
 
-func (p *BlueskyProvider) createSession(ctx context.Context) (*atprotoSession, error) {
+func (p *BlueskyProvider) createSession(ctx context.Context, handle, password string) (*atprotoSession, error) {
 	body := map[string]string{
-		"identifier": p.Handle,
-		"password":   p.Password,
+		"identifier": handle,
+		"password":   password,
 	}
 	payload, _ := json.Marshal(body)
 
 	req, _ := http.NewRequestWithContext(ctx, "POST",
-		"https://bsky.social/xrpc/com.atproto.server.createSession",
+		p.baseURL+"/xrpc/com.atproto.server.createSession",
 		bytes.NewReader(payload))
 	req.Header.Set("Content-Type", "application/json")
 

@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.7.11] - 2026-11-17
+
 ### Added
 
 - **Dashboard Lane Truth & Leads UI (`internal/web/server.go`, `dashboard_panel_test.go`)**: Extracted Section 6A provider list into `providerPanelList`, which now reports `X/Twitter (social posting)` and `GitHub comment posting` lane state from `TWITTER_DISABLED` / `GITHUB_POSTING_DISABLED` (amber `disabled via …`) instead of only credential presence; wired `/api/v1/leads` into Operator Tools 6D with a List Leads control (count + first entries, honest non-array error state).

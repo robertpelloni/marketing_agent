@@ -89,6 +89,10 @@
 - Autodev test pollution fixed at source (e112bca0 deployed): finalizeCycle honors GO_TEST_MODE; full `go test ./...` (20 pkgs) now leaves a clean tree (was: phantom VERSION/CHANGELOG bumps under internal/autodev after every run).
 - Disk still 91% (6.9G free, stable this cycle). Health all-green; Pending is CI on the new push. Operator items unchanged.
 
+## LOOP 2026-11-17 Muse Code (autopilot round 15)
+- Lane telemetry shipped (7aac3e9e, deployed, vcs parity verified): /api/v1/metrics includes lanes{twitter,linkedin,github_posting}_disabled. Metrics route is auth-gated, so live body verified via unit test + binary parity, not curl.
+- Note: /opt/marketing_agent git checkout is stale (531d5a80) - deploys are scp binary swaps, checkout unused for runtime; harmless, sync it if ever used again.
+
 ## LOOP 2026-11-17 Muse Code (autopilot round 14)
 - Disk gauge shipped (73eeafa0, deployed): /health/detailed reports `disk: "87% used (9.6G free)"` via statfs (Linux; unknown elsewhere). VISION + IDEAS refreshed with v0.7.11 addenda (lane retirements, stopgap, grounded next ideas: multi-account Gmail pacing, breaker telemetry in metrics, blog retry/salvage, tenant self-service, disk guardrail - now done).
 - Load normalized (0.5). Gmail breaker holding (3 breaker/panic lines/hr window, all expected).

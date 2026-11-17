@@ -23,11 +23,25 @@ func TestOperatorEndpointsRequireAuth(t *testing.T) {
 		}
 	}
 
-	// With the admin session cookie the request must reach the handler
-	// (nil DB then fails as 500/503, which proves auth passed it through).
+	// The old static magic value must no longer authenticate (v0.7.11
+	// signed sessions replaced it).
+	reqLegacy, _ := http.NewRequest("GET", "/api/v1/leads", nil)
+	reqLegacy.AddCookie(&http.Cookie{Name: "sales_bot_session", Value: "authorized_admin_session"})
+	rrLegacy := httptest.NewRecorder()
+	server.ServeHTTP(rrLegacy, reqLegacy)
+	if rrLegacy.Code != http.StatusSeeOther {
+		t.Errorf("legacy static cookie: expected 303, got %d", rrLegacy.Code)
+	}
+
+	// With a real signed session cookie the request must reach the
+	// handler (nil DB then fails as 500/503, proving auth passed it).
+	token, err := server.auth.Login("admin")
+	if err != nil {
+		t.Fatalf("mint admin session: %v", err)
+	}
 	for _, path := range []string{"/api/v1/leads", "/api/v1/metrics"} {
 		req, _ := http.NewRequest("GET", path, nil)
-		req.AddCookie(&http.Cookie{Name: "sales_bot_session", Value: "authorized_admin_session"})
+		req.AddCookie(&http.Cookie{Name: "sales_bot_session", Value: token})
 		rr := httptest.NewRecorder()
 		server.ServeHTTP(rr, req)
 		if rr.Code == http.StatusSeeOther {

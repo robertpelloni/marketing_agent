@@ -74,9 +74,10 @@ func TestWebHandlers_NoDB(t *testing.T) {
 	})
 
 	t.Run("Metrics Endpoints", func(t *testing.T) {
-		// Metrics are auth-gated operator internals (v0.7.11): send the
-		// admin session cookie like the dashboard does.
-		authCookie := &http.Cookie{Name: "sales_bot_session", Value: "authorized_admin_session"}
+		// Metrics are auth-gated operator internals: send a real signed
+		// admin session like the dashboard login issues.
+		token, _ := server.auth.Login("admin")
+		authCookie := &http.Cookie{Name: "sales_bot_session", Value: token}
 
 		// Prometheus text format
 		req, _ := http.NewRequest("GET", "/metrics", nil)

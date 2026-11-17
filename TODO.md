@@ -24,7 +24,7 @@ Immediate, granular tasks. Long-term direction lives in `ROADMAP.md`.
 - [ ] `system_health` Failure root cause found: failing Dependabot `uv` dynamic jobs (vendored `go/agents/software-agent-sdk`) poison combined status while CI/Integration/Deploy/Docker/CodeQL are green on HEAD. `.github/dependabot.yml` now scopes ecosystems — confirm `system_health` returns to Success after the next push cycle.
 - [ ] OOM kill 2026-11-17 02:28 UTC (718M peak, systemd auto-restarted): headless Chromium lanes are the prime suspect; LinkedIn social lane now gated off. Consider a systemd `MemoryHigh` guard for marketing-agent if OOM recurs. Cadence `linkedin-connect` still uses the headless `LinkedInSender` — watch for repeats.
 - [x] Leads API pagination: `?limit` (default 100, max 500) + `?offset`, `X-Total-Count`, dashboard shows first 10 of total (was full 24k/6.7MB list)
-- [ ] Session cookie is a static magic value (`authorized_admin_session` in `internal/auth/auth.go`) — replace with signed/expiring sessions when auth is next touched.
+- [x] Session cookie hardened: HMAC-signed expiring tokens (`v1.<subject>.<exp>.<sig>`, `SESSION_SECRET` or admin-password-derived) replace the static `authorized_admin_session` value; all web cookie parses validated via `auth.CompanyID`
 
 ## Completed in v0.7.7 (2026-11-15)
 - [x] Rotate live `STRIPE_API_KEY` / `STRIPE_PUBLISHABLE_KEY` / `STRIPE_MANAGEMENT_KEY` in local `.env` and Hetzner `/opt/marketing_agent/.env`, verify `/health/detailed` -> `Stripe (live): Connected`, and verify all 4 live unpaid `cs_live_...` Gate 2 checkout sessions (confirmed by Bobbi's independent live walk on Muse)

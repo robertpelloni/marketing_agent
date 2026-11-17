@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"crypto/hmac"
 	"crypto/sha256"
 	"database/sql"
 	"encoding/hex"
@@ -8,14 +9,19 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
+
+// sessionTTL bounds every issued session (matches the cookie Expires).
+const sessionTTL = 24 * time.Hour
 
 // Authenticator handles simple session-based authentication.
 type Authenticator struct {
 	adminPasswordHash string
 	sessionCookieName string
+	sessionSecret     []byte
 	db                *sql.DB
 }
 
@@ -26,19 +32,93 @@ func NewAuthenticator(db *sql.DB) *Authenticator {
 		password = "admin" // Default for development
 	}
 
+	// Session signing secret: SESSION_SECRET when set, otherwise derived
+	// from the admin password so existing deployments keep working with
+	// no new required env (rotating either invalidates all sessions,
+	// which is the desired response to a credential change).
+	secret := os.Getenv("SESSION_SECRET")
+	if secret == "" {
+		secret = password
+	}
+	key := sha256.Sum256([]byte("sales-bot-session:" + secret))
+
 	hash := sha256.Sum256([]byte(password))
 	return &Authenticator{
 		adminPasswordHash: hex.EncodeToString(hash[:]),
 		sessionCookieName: "sales_bot_session",
+		sessionSecret:     key[:],
 		db:                db,
 	}
+}
+
+// sign mints a session token: v1.<subject>.<expiryUnix>.<hmacHex>.
+// The previous static values ("authorized_admin_session", bare
+// "company_<id>") were forgeable by anyone who read the source; a token
+// now proves possession of the signing secret and expires.
+func (a *Authenticator) sign(subject string, expiry time.Time) string {
+	payload := fmt.Sprintf("v1.%s.%d", subject, expiry.Unix())
+	mac := hmac.New(sha256.New, a.sessionSecret)
+	mac.Write([]byte(payload))
+	return payload + "." + hex.EncodeToString(mac.Sum(nil))
+}
+
+// IssueSession mints a signed session token for a subject ("admin" or
+// "company_<id>") expiring after sessionTTL.
+func (a *Authenticator) IssueSession(subject string) string {
+	return a.sign(subject, time.Now().Add(sessionTTL))
+}
+
+// ValidateSession verifies signature and expiry, returning the subject.
+func (a *Authenticator) ValidateSession(token string) (string, bool) {
+	parts := strings.Split(token, ".")
+	if len(parts) != 4 || parts[0] != "v1" {
+		return "", false
+	}
+	subject := parts[1]
+	if subject != "admin" && !strings.HasPrefix(subject, "company_") {
+		return "", false
+	}
+	exp, err := strconv.ParseInt(parts[2], 10, 64)
+	if err != nil || time.Now().Unix() > exp {
+		return "", false
+	}
+	payload := strings.Join(parts[:3], ".")
+	mac := hmac.New(sha256.New, a.sessionSecret)
+	mac.Write([]byte(payload))
+	expected := hex.EncodeToString(mac.Sum(nil))
+	if !hmac.Equal([]byte(parts[3]), []byte(expected)) {
+		return "", false
+	}
+	return subject, true
+}
+
+// Subject returns the validated session subject for a request.
+func (a *Authenticator) Subject(r *http.Request) (string, bool) {
+	cookie, err := r.Cookie(a.sessionCookieName)
+	if err != nil {
+		return "", false
+	}
+	return a.ValidateSession(cookie.Value)
+}
+
+// CompanyID returns the tenant company id for a company session.
+func (a *Authenticator) CompanyID(r *http.Request) (int64, bool) {
+	subject, ok := a.Subject(r)
+	if !ok {
+		return 0, false
+	}
+	var id int64
+	if _, err := fmt.Sscanf(subject, "company_%d", &id); err != nil || id <= 0 {
+		return 0, false
+	}
+	return id, true
 }
 
 // Login verifies the password and sets a session cookie.
 func (a *Authenticator) Login(password string) (string, error) {
 	hash := sha256.Sum256([]byte(password))
 	if hex.EncodeToString(hash[:]) == a.adminPasswordHash {
-		return "authorized_admin_session", nil
+		return a.IssueSession("admin"), nil
 	}
 
 	// Check if this is a paid company logging in using domain, name, or Stripe customer ID
@@ -55,7 +135,7 @@ func (a *Authenticator) Login(password string) (string, error) {
 			LIMIT 1`
 		err := a.db.QueryRow(query, password).Scan(&companyID, &tier, &state)
 		if err == nil {
-			return fmt.Sprintf("company_%d", companyID), nil
+			return a.IssueSession(fmt.Sprintf("company_%d", companyID)), nil
 		}
 	}
 
@@ -71,8 +151,7 @@ func (a *Authenticator) Middleware(next http.Handler) http.Handler {
 			return
 		}
 
-		cookie, err := r.Cookie(a.sessionCookieName)
-		if err != nil || (cookie.Value != "authorized_admin_session" && !strings.HasPrefix(cookie.Value, "company_")) {
+		if _, ok := a.Subject(r); !ok {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}

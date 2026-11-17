@@ -326,14 +326,11 @@ func (s *Server) handleDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Determine if this is a company session
+	// Determine if this is a company session (signed token, validated)
 	var companyID int64
 	var isCompanySession bool
-	cookieSession, errSession := r.Cookie("sales_bot_session")
-	if errSession == nil && strings.HasPrefix(cookieSession.Value, "company_") {
-		if _, errScan := fmt.Sscanf(cookieSession.Value, "company_%d", &companyID); errScan == nil {
-			isCompanySession = true
-		}
+	if cid, ok := s.auth.CompanyID(r); ok {
+		companyID, isCompanySession = cid, true
 	}
 
 	if isCompanySession {
@@ -2390,13 +2387,11 @@ func (s *Server) handleContainerStart(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	cookie, err := r.Cookie("sales_bot_session")
-	if err != nil || !strings.HasPrefix(cookie.Value, "company_") {
+	companyID, ok := s.auth.CompanyID(r)
+	if !ok {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
-	var companyID int64
-	_, _ = fmt.Sscanf(cookie.Value, "company_%d", &companyID)
 
 	if err := StartContainer(r.Context(), companyID); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -2411,13 +2406,11 @@ func (s *Server) handleContainerStop(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	cookie, err := r.Cookie("sales_bot_session")
-	if err != nil || !strings.HasPrefix(cookie.Value, "company_") {
+	companyID, ok := s.auth.CompanyID(r)
+	if !ok {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
-	var companyID int64
-	_, _ = fmt.Sscanf(cookie.Value, "company_%d", &companyID)
 
 	if err := StopContainer(r.Context(), companyID); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -2432,13 +2425,11 @@ func (s *Server) handleContainerRestart(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	cookie, err := r.Cookie("sales_bot_session")
-	if err != nil || !strings.HasPrefix(cookie.Value, "company_") {
+	companyID, ok := s.auth.CompanyID(r)
+	if !ok {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
-	var companyID int64
-	_, _ = fmt.Sscanf(cookie.Value, "company_%d", &companyID)
 
 	if err := RestartContainer(r.Context(), companyID); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

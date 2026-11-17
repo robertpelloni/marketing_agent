@@ -274,6 +274,15 @@ func (o *Orchestrator) ExecuteStep(ctx context.Context) {
 }
 
 func (o *Orchestrator) finalizeCycle(ctx context.Context, task *Task) {
+	// Version governance writes VERSION/VERSION.md/CHANGELOG.md relative
+	// to the CWD. Under `go test` that CWD is this package directory, so
+	// test runs used to bump the committed version files (tree pollution
+	// after every full-suite run). Tests already set GO_TEST_MODE=true;
+	// honor it here like the SKIP_AUTODEV_* flags.
+	if os.Getenv("GO_TEST_MODE") == "true" {
+		slog.Info("Autodev: GO_TEST_MODE — skipping version governance writes")
+		return
+	}
 	slog.Info("Autodev: Finalizing cycle with version governance...")
 
 	// 1. Update VERSION file (bump build number)

@@ -1447,6 +1447,14 @@ func (s *Server) handleDetailedHealth(w http.ResponseWriter, r *http.Request) {
 	}
 	health["system_health"] = healthStatus
 
+	// 2b. Disk headroom (shared VPS: other tenants' backups hit 91% in
+	// 2026-11; surface the cliff here before Postgres feels it)
+	if pct, free, ok := diskUsage(); ok {
+		health["disk"] = fmt.Sprintf("%d%% used (%.1fG free)", pct, float64(free)/(1<<30))
+	} else {
+		health["disk"] = "unknown"
+	}
+
 	// 3. Worker liveness
 	health["workers"] = "active"
 

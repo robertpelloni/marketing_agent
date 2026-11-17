@@ -93,6 +93,9 @@
 - Lane telemetry shipped (7aac3e9e, deployed, vcs parity verified): /api/v1/metrics includes lanes{twitter,linkedin,github_posting}_disabled. Metrics route is auth-gated, so live body verified via unit test + binary parity, not curl.
 - Note: /opt/marketing_agent git checkout was stale (531d5a80); fast-forwarded to main (9198fceb) in round 16 - tracked tree clean, untracked dirs are runtime artifacts (blog_output, data exports). Binary deploys remain scp swaps.
 
+## LOOP 2026-11-17 Muse Code (autopilot round 29)
+- Pipeline hygiene finding: Negotiating=2 both updated today (live). Engaged=162 is mostly a July bulk artifact (150/162 share 2026-07-28 timestamps; only 7 touched in November) - with IMAP inbound dead, reply-driven engagement can't progress; the IMAP password refresh (TODO) is what revives this stage. Treat dashboard Engaged count as stale until then.
+
 ## LOOP 2026-11-17 Muse Code (autopilot round 25)
 - bsky.social probe from VPS: 200 in 80ms - the 09:42 createSession timeouts were transient (load-spike era). Next social cycle (~13:42 UTC) expected to post both brands as their real accounts. No code action.
 

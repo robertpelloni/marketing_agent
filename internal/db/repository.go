@@ -169,12 +169,12 @@ func (db *DB) TouchDealUpdatedAt(ctx context.Context, dealID int64) error {
 
 // ListDealsByState retrieves deals in a specific state.
 // ListAllCompanies retrieves all companies in the database.
-// Array columns are COALESCE'd: thousands of rows carry NULL tech_stack /
-// hiring_signals, and pq.Array cannot scan a NULL array — that made
-// GET /api/v1/leads fail with a bare 500 (compounded by the handler
-// swallowing the error, fixed at the same time).
+// Nullable columns are COALESCE'd: prod rows carry NULL tech_stack /
+// hiring_signals arrays (pq.Array cannot scan NULL) and NULL
+// market_cap_tier (plain string scan) — each made GET /api/v1/leads
+// fail with a bare 500, compounded by the handler swallowing the error.
 func (db *DB) ListAllCompanies(ctx context.Context) ([]Company, error) {
-	rows, err := db.Conn.QueryContext(ctx, "SELECT id, name, domain, COALESCE(tech_stack, '{}'), COALESCE(hiring_signals, '{}'), market_cap_tier, created_at, updated_at FROM companies")
+	rows, err := db.Conn.QueryContext(ctx, "SELECT id, name, domain, COALESCE(tech_stack, '{}'), COALESCE(hiring_signals, '{}'), COALESCE(market_cap_tier, ''), created_at, updated_at FROM companies")
 	if err != nil {
 		return nil, err
 	}

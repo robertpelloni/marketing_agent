@@ -1284,8 +1284,12 @@ tr:hover { background-color: #f8fafc; }
 				<p style="font-size: 0.8rem; color: #64748b; margin: 0 0 8px 0;">Full outreach log as CSV. <span class="tooltip">[?] <span class="tooltiptext">Downloads /api/v1/outreach/export: company, email, category, status, and sent time for every logged send.</span></span></p>
 				<a href="/api/v1/outreach/export" class="action-btn" style="text-decoration: none;">Download Outreach CSV</a>
 				<h4 style="margin: 16px 0 8px 0; font-size: 0.9rem;">Leads (API)</h4>
-				<p style="font-size: 0.8rem; color: #64748b; margin: 0 0 8px 0;">Company leads behind the Deals pipeline. <span class="tooltip">[?] <span class="tooltiptext">Fetches /api/v1/leads paginated (?limit default 100, max 500, &offset; total in X-Total-Count header, auth required) and shows the first 10 plus the total here. Full CRM work happens in the Deals section above.</span></span></p>
-				<button class="action-btn" onclick="listLeads()">List Leads</button>
+				<p style="font-size: 0.8rem; color: #64748b; margin: 0 0 8px 0;">Company leads behind the Deals pipeline. <span class="tooltip">[?] <span class="tooltiptext">Fetches /api/v1/leads paginated (?limit default 100, max 500, &offset; total in X-Total-Count header, auth required), 10 per page here — Prev/Next walk the full list. Full CRM work happens in the Deals section above.</span></span></p>
+				<div style="display: flex; gap: 8px; flex-wrap: wrap;">
+					<button class="action-btn" onclick="listLeads(0)">List Leads</button>
+					<button class="action-btn" onclick="pageLeads(-1)">← Prev Page</button>
+					<button class="action-btn" onclick="pageLeads(1)">Next Page →</button>
+				</div>
 				<h4 style="margin: 16px 0 8px 0; font-size: 0.9rem;">GDPR Requests</h4>
 				<label style="font-size: 0.82rem; display: block; margin-bottom: 6px;">Contact email
 					<span class="tooltip">[?] <span class="tooltiptext">Export returns all stored data for this email as JSON. Delete permanently removes it (soft-delete plus GDPR erasure). Delete cannot be undone.</span></span>
@@ -1310,15 +1314,25 @@ tr:hover { background-color: #f8fafc; }
 	function containerAction(action) {
 		fetch('/api/v1/container/' + action, { method: 'POST' }).then(function(r){ return r.text().then(function(t){ toolsOut('Container ' + action + ' -> HTTP ' + r.status + ': ' + t); }); }).catch(function(e){ toolsOut('Container ' + action + ' failed: ' + e); });
 	}
-	function listLeads() {
-		fetch('/api/v1/leads?limit=10&offset=0').then(function(r){
+	var leadsOffset = 0, leadsTotal = null;
+	function listLeads(offset) {
+		leadsOffset = Math.max(0, offset || 0);
+		fetch('/api/v1/leads?limit=10&offset=' + leadsOffset).then(function(r){
 			var total = r.headers.get('X-Total-Count');
 			return r.json().then(function(leads){ return { leads: leads, total: total }; });
 		}).then(function(res){
 			if (!Array.isArray(res.leads)) { toolsOut('Leads -> unexpected response: ' + JSON.stringify(res.leads).slice(0, 400)); return; }
+			if (res.total) leadsTotal = parseInt(res.total, 10);
 			var names = res.leads.map(function(l){ return (l.name || l.Name || JSON.stringify(l)).toString(); });
-			toolsOut('Leads -> first ' + res.leads.length + ' of ' + (res.total || '?') + ' companies (?limit up to 500 &offset to page):' + (names.length ? '\n- ' + names.join('\n- ') : ''));
+			var range = res.leads.length ? (leadsOffset + 1) + '–' + (leadsOffset + res.leads.length) : '0';
+			toolsOut('Leads -> ' + range + ' of ' + (leadsTotal !== null ? leadsTotal : '?') + ' companies:' + (names.length ? '\n- ' + names.join('\n- ') : ''));
 		}).catch(function(e){ toolsOut('Leads failed: ' + e); });
+	}
+	function pageLeads(dir) {
+		var next = leadsOffset + dir * 10;
+		if (next < 0) next = 0;
+		if (leadsTotal !== null && next >= leadsTotal) { toolsOut('Leads -> already at the last page (' + leadsTotal + ' companies).'); return; }
+		listLeads(next);
 	}
 	function gdprExport() {
 		var email = document.getElementById('gdprEmail').value.trim();

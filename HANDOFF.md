@@ -89,6 +89,10 @@
 - Autodev test pollution fixed at source (e112bca0 deployed): finalizeCycle honors GO_TEST_MODE; full `go test ./...` (20 pkgs) now leaves a clean tree (was: phantom VERSION/CHANGELOG bumps under internal/autodev after every run).
 - Disk still 91% (6.9G free, stable this cycle). Health all-green; Pending is CI on the new push. Operator items unchanged.
 
+## LOOP 2026-11-17 Muse Code (autopilot round 10)
+- Signed sessions shipped (6de5084f, deployed): static `authorized_admin_session`/`company_N` cookies replaced by HMAC-SHA256 `v1.<subject>.<exp>.<sig>` tokens (24h). Secret = SESSION_SECRET or ADMIN_PASSWORD-derived (no new required prod env). All 4 web cookie parses now validated via auth.CompanyID. Live-verified: legacy + forged company cookies -> 303, wrong-password login -> 401, health green. Existing browsers/tenants must log in once more. Full suite 21 pkgs green.
+- Leads pagination also shipped this cycle (d9525181): limit default 100/max 500, X-Total-Count 24116, verified 579B page vs 6.7MB.
+
 ## LOOP 2026-11-17 Muse Code (autopilot round 9; round 8 = MEMORY.md docs)
 - SECURITY FIX (6ffeb777 + 45971bfb, deployed): /api/v1/leads, /api/v1/outreach/export, /api/v1/metrics, /metrics were UNAUTHENTICATED while the service binds *:8084 and nginx proxies /api/v1/ publicly - outreach CSV (emails), full CRM list/create, DB metrics all internet-facing. Now session-gated (303 unauth; dashboard same-origin unaffected). Public funnel (health/quote/checkout/newsletter/stats aggregates) unchanged.
 - Leads 500 root-caused via new handler error logging: NULL market_cap_tier (+ NULL arrays) scan failures; COALESCE fix verified live (200, 24k companies, 6.7MB - pagination TODO'd). handleDetailedHealth nil-guards added (was panic on nil deps).

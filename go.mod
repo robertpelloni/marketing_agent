@@ -1,6 +1,6 @@
 module gitlab.com/robertpelloni/marketing_agent
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/emersion/go-imap v1.2.1
@@ -12,7 +12,7 @@ require (
 	github.com/lib/pq v1.12.3
 	github.com/stripe/stripe-go/v81 v81.4.0
 	github.com/wailsapp/wails/v2 v2.13.0
-	golang.org/x/oauth2 v0.30.0
+	golang.org/x/oauth2 v0.38.0
 	golang.org/x/text v0.41.0
 	golang.org/x/time v0.15.0
 )

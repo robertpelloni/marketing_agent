@@ -78,3 +78,9 @@
 - LLM stopgap hardened (b2209e18 deployed): DEEPSEEK_MODEL=free-llm-plain (reasoning free-llm leaked "The user wants..." thinking into copy + timed out on blogs), DEEPSEEK_TIMEOUT_SECONDS=300 (new provider config, default 120, TestDeepSeekTimeoutConfigurable). Verified: long generations succeed (3,286 tokens), direct marketing succeeds, cadence Gmail abort still clean.
 - Remaining noise explained: pre-fix PID deadline line, designed Gmail abort, one Bluesky createSession connection timeout (fell back to simulation; posted fine in earlier cycles - watch).
 - DEPLOY.md updated with lane flags/stopgap/mail repairs. system_health returned to Success. Operator list unchanged: Gmail OAuth re-enable, IMAP app password, real LLM key rotation, disk 86% (other tenants).
+
+## LOOP 2026-11-17 Muse Code (autopilot round 5, 15m cron 6060af34)
+- GitHub Discussions engager was a silent no-op skeleton in prod (search discarded responses, postReply nil-stub). Implemented for real (752f44c2): GraphQL JSON decode + addDiscussionComment mutation + GITHUB_POSTING_DISABLED cycle gate; 4 tests green. Prod stays gated off until operator unsets the flag.
+- DISK ESCALATION: Hetzner 91% (6.9G free, was 86%): other tenants (aicrm/ercm/build-leadg) write ~1G backups to /tmp hourly. Owner cleanup decision needed; this project's footprint ~500M. If disk fills, Postgres dies first.
+- Cron loop scheduled: job 6060af34 every 15m (permanent, skips while active) re-runs this directive.
+- Verified: cadence GitHub step already honors GITHUB_POSTING_DISABLED (github_sender.go:60); codebase TODO scan clean except Reddit API-only (recorded, lane retired by design).

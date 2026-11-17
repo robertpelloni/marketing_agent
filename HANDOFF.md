@@ -93,6 +93,9 @@
 - Lane telemetry shipped (7aac3e9e, deployed, vcs parity verified): /api/v1/metrics includes lanes{twitter,linkedin,github_posting}_disabled. Metrics route is auth-gated, so live body verified via unit test + binary parity, not curl.
 - Note: /opt/marketing_agent git checkout was stale (531d5a80); fast-forwarded to main (9198fceb) in round 16 - tracked tree clean, untracked dirs are runtime artifacts (blog_output, data exports). Binary deploys remain scp swaps.
 
+## LOOP 2026-11-17 Muse Code (autopilot round 17)
+- Configured gates exercised locally: go vet clean (all touched pkgs), bash -n OK on committed blobs for both CI-checked scripts (local failure was CRLF checkout artifact only), prometheus rules assert OK, VERSION==VERSION.md (0.7.11). golangci-lint NOT locally runnable (binary built go1.26 panics on go1.27 tree) - gate remains CI-proven via Deploy workflow lint job (success on HEAD). Full test suite already green round 10; no code changed this round.
+
 ## LOOP 2026-11-17 Muse Code (autopilot round 14)
 - Disk gauge shipped (73eeafa0, deployed): /health/detailed reports `disk: "87% used (9.6G free)"` via statfs (Linux; unknown elsewhere). VISION + IDEAS refreshed with v0.7.11 addenda (lane retirements, stopgap, grounded next ideas: multi-account Gmail pacing, breaker telemetry in metrics, blog retry/salvage, tenant self-service, disk guardrail - now done).
 - Load normalized (0.5). Gmail breaker holding (3 breaker/panic lines/hr window, all expected).

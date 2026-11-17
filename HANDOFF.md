@@ -89,6 +89,11 @@
 - Autodev test pollution fixed at source (e112bca0 deployed): finalizeCycle honors GO_TEST_MODE; full `go test ./...` (20 pkgs) now leaves a clean tree (was: phantom VERSION/CHANGELOG bumps under internal/autodev after every run).
 - Disk still 91% (6.9G free, stable this cycle). Health all-green; Pending is CI on the new push. Operator items unchanged.
 
+## LOOP 2026-11-17 Muse Code (autopilot round 11)
+- Signed-session build verified settled: no panic, NRestarts=0, ~17MB; system_health Pending only while Docker/Deploy workflows run on the docs push (CI/CodeQL/Integration success).
+- OOM guard applied: MemoryHigh=1G drop-in persisted (50-MemoryHigh.conf), verified live (ActiveState=active, health green). TODO system_health + OOM items closed; DEPLOY.md documents guard + session secret behavior.
+- CDP retry: canonical Muse thread 8f3e8782 open (check-in sent); still NO Gemini/ChatGPT tabs in Edge - nothing to send there. Disk 87% (10G free).
+
 ## LOOP 2026-11-17 Muse Code (autopilot round 10)
 - Signed sessions shipped (6de5084f, deployed): static `authorized_admin_session`/`company_N` cookies replaced by HMAC-SHA256 `v1.<subject>.<exp>.<sig>` tokens (24h). Secret = SESSION_SECRET or ADMIN_PASSWORD-derived (no new required prod env). All 4 web cookie parses now validated via auth.CompanyID. Live-verified: legacy + forged company cookies -> 303, wrong-password login -> 401, health green. Existing browsers/tenants must log in once more. Full suite 21 pkgs green.
 - Leads pagination also shipped this cycle (d9525181): limit default 100/max 500, X-Total-Count 24116, verified 579B page vs 6.7MB.

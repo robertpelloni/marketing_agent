@@ -67,3 +67,9 @@
 - **system_health=Failure root cause:** unscoped Dependabot `uv` dynamic jobs failing on vendored `go/agents/software-agent-sdk`; CI/Integration/Deploy/Docker/CodeQL all green on HEAD. Scoped `.github/dependabot.yml` shipped (force-added; `.github/` is gitignored at .gitignore:80). Confirm Success next cycle.
 - **Disk 86% (11G free):** growth is other tenants' /tmp backups (3.3G) + playwright cache (701M) - left untouched, owner decision in TODO.
 - Full `go test ./...` green (20 packages, BelowNormal). Deployed 04d8d588, vcs parity clean. CDP check-in SUBMITTED to open Bobbi tab (thread b6ac3348..., note: differs from canonical 8f3e8782 in §1); no Gemini/ChatGPT tabs open.
+
+## LOOP 2026-11-17 Muse Code (autopilot directive, round 3)
+- Verified round 2 held: system_health=Success (dependabot scoping effective), Gmail abort contained (single-digit lines/day), no new OOM, service ~19-22MB with headless lanes off.
+- LinkedIn retirement completed on all 3 surfaces (c954a78b deployed): social hub gate, cadence linkedin-connect -> Skipped via linkedInLaneDisabled, discovery LinkedInSource.Discover -> immediate nil (was 47s timeout + 3 fabricated companies; test fails on old code exactly that way, passes now). All three verified in one prod startup log.
+- New findings: IMAP inbound login invalid (operator: refresh app password - TODO); one FreeLLM blog-gen 120s timeout (stopgap flakiness, watch).
+- CDP check-in SUBMITTED (Bobbi tab); no Gemini/ChatGPT tabs. Deployed c954a78b, vcs parity clean.

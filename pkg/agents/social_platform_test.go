@@ -29,6 +29,16 @@ func TestHubRegistersTwitterWhenEnabled(t *testing.T) {
 	}
 }
 
+func TestHubSkipsLinkedInWhenDisabled(t *testing.T) {
+	t.Setenv("LINKEDIN_USERNAME", "someone")
+	t.Setenv("LINKEDIN_DISABLED", "true")
+
+	hub := NewSocialPosterHub()
+	if hub.Provider("linkedin") != nil {
+		t.Fatal("expected linkedin provider to be skipped when LINKEDIN_DISABLED=true")
+	}
+}
+
 func TestTwitterPostCreditsDepletedIsSentinel(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusPaymentRequired)

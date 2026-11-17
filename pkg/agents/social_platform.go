@@ -83,7 +83,12 @@ func NewSocialPosterHub() *SocialPosterHub {
 	}
 
 	// LinkedIn — uses LINKEDIN_USERNAME, LINKEDIN_PASSWORD (headless browser via go-rod)
-	if u := os.Getenv("LINKEDIN_USERNAME"); u != "" {
+	// LINKEDIN_DISABLED=true retires the lane: the headless sender times
+	// out on the VPS (and Chromium is the service's main OOM risk), so
+	// cycles skip it instead of burning 60s per brand on simulation.
+	if os.Getenv("LINKEDIN_DISABLED") == "true" {
+		slog.Info("SocialPosterHub: LinkedIn disabled via LINKEDIN_DISABLED=true (skipped)")
+	} else if u := os.Getenv("LINKEDIN_USERNAME"); u != "" {
 		register(NewLinkedInProvider(communication.NewLinkedInSender()))
 	} else {
 		slog.Info("SocialPosterHub: LinkedIn not configured (set LINKEDIN_USERNAME + LINKEDIN_PASSWORD)")

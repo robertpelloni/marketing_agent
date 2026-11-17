@@ -99,6 +99,10 @@ func providerPanelList(stripeStatusHTML string) string {
 	if os.Getenv("TWITTER_DISABLED") == "true" {
 		xLane = disabled("TWITTER_DISABLED")
 	}
+	linkedInLane := configured("LINKEDIN_USERNAME")
+	if os.Getenv("LINKEDIN_DISABLED") == "true" {
+		linkedInLane = disabled("LINKEDIN_DISABLED")
+	}
 	githubPosting := `<span style="color: #23A55A; font-weight: bold;">enabled</span>`
 	if os.Getenv("GITHUB_POSTING_DISABLED") == "true" {
 		githubPosting = disabled("GITHUB_POSTING_DISABLED")
@@ -111,12 +115,14 @@ func providerPanelList(stripeStatusHTML string) string {
 						<li><strong>GitHub (enrichment/outreach):</strong> %s</li>
 						<li><strong>GitHub comment posting:</strong> %s</li>
 						<li><strong>X/Twitter (social posting):</strong> %s</li>
+						<li><strong>LinkedIn (social posting):</strong> %s</li>
 						<li><strong>Hermes/MiMo:</strong> %s</li>`,
 		stripeStatusHTML,
 		configured("DEEPSEEK_API_KEY"),
 		configured("GITHUB_TOKEN"),
 		githubPosting,
 		xLane,
+		linkedInLane,
 		configured("HERMES_API_KEY", "HERMES_API_URL"))
 }
 

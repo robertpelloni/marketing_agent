@@ -7,6 +7,10 @@
 
 ### Fixed
 
+- **Cadence Abort on Provider Auth Rejection (`internal/communication/cadence.go`)**: Added `isProviderAuthError` (`disabled_client`, `invalid_grant`, `invalid_client`, token-fetch failures) alongside the Gmail daily-limit abort: when the Gmail OAuth client is disabled provider-side, the cadence cycle now aborts with one operator-action log line instead of recording a failed send per deal (observed live 2026-11-17 after Google disabled the OAuth client). Test: `TestIsProviderAuthError`.
+- **LinkedIn Lane Gate (`pkg/agents/social_platform.go`)**: `LINKEDIN_DISABLED=true` skips the headless LinkedIn provider at hub registration (same pattern as `TWITTER_DISABLED`); the lane timed out every cycle on the VPS and Chromium is the service's main OOM risk (OOM kill 2026-11-17 02:28 UTC, 718M peak). Panel 6A now also reports the LinkedIn lane state. Test: `TestHubSkipsLinkedInWhenDisabled`.
+- **Dependabot Scope (`.github/dependabot.yml`)**: New config limiting updates to `gomod` (`/`, `/go`), `npm` (`/`), and `github-actions` (`/`). Unscoped Dependabot was attempting failing `uv` updates against the vendored `go/agents/software-agent-sdk` subtree on every push, poisoning combined commit status (`system_health=Failure` while all real workflows were green).
+
 - **X/Twitter 402 Failure Spam (`pkg/agents/social_platform.go`, `social_platform_bluesky.go`, `social_poster.go`)**: Added `TWITTER_DISABLED=true` hub gate (mirrors `GITHUB_POSTING_DISABLED`), an `ErrTwitterCreditsDepleted` sentinel for HTTP 402 so a credits-depleted lane logs once as disabled instead of WARN + simulated DB rows every 4h social cycle, and a poster-level skip for platforms with no registered provider (no LLM generation, no simulated rows). Focused tests in `pkg/agents/social_platform_test.go`.
 - **Nginx Site Patch Script (`scripts/patch-nginx-hypernexus.py`)**: Tracked the already-applied live hypernexus.site patch (extensionless `.html` via `try_files $uri $uri.html`, real 404, `/features` 301) — verified live: `/features` 301, `/download.html` 200, unknown path 404.
 

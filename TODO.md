@@ -18,8 +18,10 @@ Immediate, granular tasks. Long-term direction lives in `ROADMAP.md`.
 - [x] Git: `main` 0/0 vs GitHub+GitLab; `borg`-pointer branches (`fix/jules-borg-pin`, `backup/fdafa92-pre-borg-repin`) deliberately unmerged (submodule removed by design)
 
 ## Watch
-- [ ] Hetzner disk 84% (13G free): no target under `/opt/marketing_agent` (~500M); check `/var/log/journal` (216M) and Docker/borg caches before it tightens
-- [ ] `system_health: "Main branch status: Pending"` in `/health/detailed` after restart — confirm it returns to Success (GitHub rate-limit sensitivity noted 2026-11-16)
+- [ ] **Gmail OAuth client DISABLED (2026-11-17, operator action):** Google disabled the OAuth client (`disabled_client` on token fetch) — ALL cadence email fails until the client is re-enabled/replaced in Google Cloud Console. Code now aborts the cycle with one clear line (`isProviderAuthError`) instead of per-deal failures. After re-enabling, also confirm the refresh token still works.
+- [ ] Hetzner disk 86% (11G free, worsening): growth is other tenants' `/tmp` backups (ercm/foreclosure/contentplanner, 3.3G) + `/root/.cache/ms-playwright` (701M) — NOT this project's data; owner decision before any cleanup. `/opt/marketing_agent` itself is ~500M.
+- [ ] `system_health` Failure root cause found: failing Dependabot `uv` dynamic jobs (vendored `go/agents/software-agent-sdk`) poison combined status while CI/Integration/Deploy/Docker/CodeQL are green on HEAD. `.github/dependabot.yml` now scopes ecosystems — confirm `system_health` returns to Success after the next push cycle.
+- [ ] OOM kill 2026-11-17 02:28 UTC (718M peak, systemd auto-restarted): headless Chromium lanes are the prime suspect; LinkedIn social lane now gated off. Consider a systemd `MemoryHigh` guard for marketing-agent if OOM recurs. Cadence `linkedin-connect` still uses the headless `LinkedInSender` — watch for repeats.
 
 ## Completed in v0.7.7 (2026-11-15)
 - [x] Rotate live `STRIPE_API_KEY` / `STRIPE_PUBLISHABLE_KEY` / `STRIPE_MANAGEMENT_KEY` in local `.env` and Hetzner `/opt/marketing_agent/.env`, verify `/health/detailed` -> `Stripe (live): Connected`, and verify all 4 live unpaid `cs_live_...` Gate 2 checkout sessions (confirmed by Bobbi's independent live walk on Muse)

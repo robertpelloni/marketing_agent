@@ -254,6 +254,24 @@ func isDailyLimitError(err error) bool {
 	return strings.Contains(msg, "Daily user sending limit exceeded") || strings.Contains(msg, "5.4.5")
 }
 
+// isProviderAuthError reports whether an email send failed before any
+// recipient contact because the provider credentials themselves were
+// rejected (Gmail OAuth client disabled/revoked: disabled_client,
+// invalid_grant, invalid_client). Like the daily limit, retrying per-deal
+// is pointless — every send fails identically — but unlike quota this
+// needs an operator to re-enable/replace the OAuth client; the cycle
+// abort keeps it one clear log line instead of a failed stat per deal.
+func isProviderAuthError(err error) bool {
+	if err == nil {
+		return false
+	}
+	msg := err.Error()
+	return strings.Contains(msg, "disabled_client") ||
+		strings.Contains(msg, "invalid_grant") ||
+		strings.Contains(msg, "invalid_client") ||
+		strings.Contains(msg, "failed to get token")
+}
+
 // NewCadenceAwareManager wraps an existing Manager with cadence tracking.
 func NewCadenceAwareManager(mgr *Manager, database *db.DB) *CadenceAwareManager {
 	botRepo := os.Getenv("GITHUB_BOT_REPOSITORY")
@@ -407,6 +425,16 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 						// "failed" stat (prod logged 45 in one run). Deals keep
 						// their cadence step and retry after quota reset.
 						slog.Info(fmt.Sprintf("CadenceAwareManager: Daily sending limit reached, aborting cadence cycle: %v", err))
+						return
+					}
+					if isProviderAuthError(err) {
+						// Credentials rejected provider-side (e.g. Gmail
+						// OAuth client disabled): every send this cycle
+						// would fail identically. Abort with one clear
+						// operator action instead of a failed stat per
+						// deal; deals keep their step and retry once the
+						// operator re-enables the OAuth client.
+						slog.Info(fmt.Sprintf("CadenceAwareManager: Email provider auth rejected (re-enable/replace the Gmail OAuth client), aborting cadence cycle: %v", err))
 						return
 					}
 					slog.Info(fmt.Sprintf("CadenceAwareManager: Email send failed for deal %d: %v", deal.ID, err))

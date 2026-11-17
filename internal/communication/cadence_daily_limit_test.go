@@ -20,3 +20,19 @@ func TestIsDailyLimitError(t *testing.T) {
 		t.Error("nil must not be treated as daily limit")
 	}
 }
+
+func TestIsProviderAuthError(t *testing.T) {
+	disabled := errors.New(`failed to get token: oauth2: "disabled_client" "The OAuth client was disabled."`)
+	if !isProviderAuthError(disabled) {
+		t.Error("expected disabled_client token error to be detected")
+	}
+	if !isProviderAuthError(errors.New("oauth2: invalid_grant: token revoked")) {
+		t.Error("expected invalid_grant to be detected")
+	}
+	if isProviderAuthError(errors.New("550 5.4.5 Daily user sending limit exceeded")) {
+		t.Error("daily-limit quota error is not an auth error (handled separately)")
+	}
+	if isProviderAuthError(errors.New("connection refused")) || isProviderAuthError(nil) {
+		t.Error("unrelated/nil errors must not be treated as auth errors")
+	}
+}

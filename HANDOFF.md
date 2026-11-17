@@ -93,6 +93,10 @@
 - Lane telemetry shipped (7aac3e9e, deployed, vcs parity verified): /api/v1/metrics includes lanes{twitter,linkedin,github_posting}_disabled. Metrics route is auth-gated, so live body verified via unit test + binary parity, not curl.
 - Note: /opt/marketing_agent git checkout was stale (531d5a80); fast-forwarded to main (9198fceb) in round 16 - tracked tree clean, untracked dirs are runtime artifacts (blog_output, data exports). Binary deploys remain scp swaps.
 
+## LOOP 2026-11-17 Muse Code (autopilot round 23)
+- Blog accounting fixed (40d42dec): topics/count only after successful publish (state claimed 844 posts vs 402 files). Bluesky wrong-account posting fixed: per-account credentials from env (6a539d33) after discovering hardcoded brand handles were fictional (real: mdmatk.bsky.social / hypernexusllc.bsky.social).
+- Live verification: credentials resolve correctly now; current blocker is bsky.social createSession connection timeouts from the VPS (both brands, network-level, was working earlier today) - retries next 4h cycle, falls back to simulation meanwhile. Not a credential problem (would be HTTP 401).
+
 ## LOOP 2026-11-17 Muse Code (autopilot round 22)
 - Watch: no new error classes in 3h (43 ERRORs all Gmail-breaker/FreeLLM/pre-fix-probe artifacts). Health Success, disk 87-88% oscillation (9.1-9.2G free). No changes.
 

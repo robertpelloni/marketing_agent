@@ -64,6 +64,34 @@ func TestBlueskyPostsAsRequestedAccount(t *testing.T) {
 	}
 }
 
+func TestBlueskyRetriesSessionOnceOnFailure(t *testing.T) {
+	calls := 0
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "createSession") {
+			calls++
+			if calls == 1 {
+				w.WriteHeader(http.StatusBadGateway)
+				return
+			}
+			_ = json.NewEncoder(w).Encode(map[string]string{"accessJwt": "tok-a", "handle": "mdmatk.bsky.social", "did": "did:plc:a"})
+			return
+		}
+		_ = json.NewEncoder(w).Encode(map[string]string{"uri": "at://post/1"})
+	}))
+	defer srv.Close()
+
+	p := NewBlueskyProvider(map[string]string{"mdmatk.bsky.social": "pw"})
+	p.baseURL = srv.URL
+	p.retryBackoff = 0
+
+	if err := p.Post(context.Background(), PostRequest{Brand: "tormentnexus", Platform: "bluesky", Content: "hi", AccountID: "mdmatk.bsky.social"}); err != nil {
+		t.Fatalf("post must succeed after one session retry, got: %v", err)
+	}
+	if calls != 2 {
+		t.Errorf("expected 2 createSession calls (1 fail + 1 retry), got %d", calls)
+	}
+}
+
 func TestBlueskyRefusesUnknownAccount(t *testing.T) {
 	calls := 0
 	srv := fakeBsky(t, &calls)

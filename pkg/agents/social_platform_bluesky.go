@@ -35,14 +35,17 @@ type BlueskyProvider struct {
 	client   *http.Client
 	dryRun   bool
 	baseURL  string
+	// retryBackoff waits between the single createSession retry.
+	retryBackoff time.Duration
 }
 
 func NewBlueskyProvider(accounts map[string]string) *BlueskyProvider {
 	return &BlueskyProvider{
-		accounts: accounts,
-		client:   &http.Client{Timeout: 30 * time.Second},
-		dryRun:   os.Getenv("BLUESKY_DRY_RUN") == "true" || os.Getenv("DRY_RUN") == "true",
-		baseURL:  "https://bsky.social",
+		accounts:     accounts,
+		client:       &http.Client{Timeout: 30 * time.Second},
+		dryRun:       os.Getenv("BLUESKY_DRY_RUN") == "true" || os.Getenv("DRY_RUN") == "true",
+		baseURL:      "https://bsky.social",
+		retryBackoff: 2 * time.Second,
 	}
 }
 func (p *BlueskyProvider) Name() string { return "bluesky" }
@@ -92,9 +95,22 @@ func (p *BlueskyProvider) Post(ctx context.Context, req PostRequest) error {
 	if !ok || password == "" {
 		return fmt.Errorf("bluesky: no credentials for account %s (refusing to post as another account)", req.AccountID)
 	}
+	// One retry on session creation: on the shared 2-vCPU VPS, cycle-time
+	// contention starved the first attempt past its timeout while the
+	// endpoint itself answered in ~100ms. Retrying BEFORE any record
+	// exists cannot double-post.
 	session, err := p.createSession(ctx, req.AccountID, password)
 	if err != nil {
-		return fmt.Errorf("bluesky auth: %w", err)
+		slog.Info(fmt.Sprintf("Bluesky: createSession failed for %s (%v) — retrying once", req.AccountID, err))
+		select {
+		case <-ctx.Done():
+			return fmt.Errorf("bluesky auth: %w", err)
+		case <-time.After(p.retryBackoff):
+		}
+		session, err = p.createSession(ctx, req.AccountID, password)
+		if err != nil {
+			return fmt.Errorf("bluesky auth: %w", err)
+		}
 	}
 	if session.Handle != "" && session.Handle != req.AccountID {
 		return fmt.Errorf("bluesky: authenticated as %s, cannot post as %s", session.Handle, req.AccountID)

@@ -60,3 +60,10 @@
 - Log watch findings (prod, post-deploy): Gmail 550 5.4.5 daily limit hit again (cadence abort contains it; volume pacing is the durable fix); LinkedIn headless (go-rod) times out on the VPS every cycle -> simulation fallback, and its 60s context used to poison the audit-row persist (fixed 058d6c39: fresh 10s persist ctx); Reddit headless stays skipped by design.
 - Coordination: Edge CDP 9222 check-in SUBMITTED to Muse canonical thread 8f3e8782 as [muse-wonder-1.0 in muse-cli in C:\Users\hyper\workspace\marketing_agent on laptop]. No Gemini/ChatGPT tabs open - nothing sent there.
 - Deployed: 058d6c39 (vcs parity clean, version 0.7.10), /health/detailed all green except system_health Pending (watch).
+
+## LOOP 2026-11-17 Muse Code (autopilot directive, round 2)
+- **Gmail OAuth client DISABLED by Google** (found in prod logs): every cadence email fails at token fetch (`disabled_client`). Operator must re-enable/replace the OAuth client in Google Cloud Console; code mitigation shipped (e12df7be): `isProviderAuthError` aborts the cadence cycle with one operator-action line - verified live (1 attempt -> abort, no per-deal failed stats).
+- **OOM kill 2026-11-17 02:28 UTC** (718M peak, systemd restart): headless Chromium lanes prime suspect. LinkedIn social lane gated off (`LINKEDIN_DISABLED=true`, hub gate + panel line, 04d8d588 deployed). Cadence linkedin-connect still headless - watch.
+- **system_health=Failure root cause:** unscoped Dependabot `uv` dynamic jobs failing on vendored `go/agents/software-agent-sdk`; CI/Integration/Deploy/Docker/CodeQL all green on HEAD. Scoped `.github/dependabot.yml` shipped (force-added; `.github/` is gitignored at .gitignore:80). Confirm Success next cycle.
+- **Disk 86% (11G free):** growth is other tenants' /tmp backups (3.3G) + playwright cache (701M) - left untouched, owner decision in TODO.
+- Full `go test ./...` green (20 packages, BelowNormal). Deployed 04d8d588, vcs parity clean. CDP check-in SUBMITTED to open Bobbi tab (thread b6ac3348..., note: differs from canonical 8f3e8782 in §1); no Gemini/ChatGPT tabs open.

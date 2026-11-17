@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.7.12] - 2026-11-17
+
 ### Fixed
 
 - **Lane Telemetry in Metrics (`internal/web/server.go`)**: `/api/v1/metrics` now includes `lanes` (`twitter_disabled`, `linkedin_disabled`, `github_posting_disabled` from the same env truth as the 6A panel), so retired channels are visible to machine consumers, not only the dashboard HTML. Tests: `lanes_metrics_test.go`.

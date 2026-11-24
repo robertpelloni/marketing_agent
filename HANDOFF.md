@@ -93,6 +93,10 @@
 - Lane telemetry shipped (7aac3e9e, deployed, vcs parity verified): /api/v1/metrics includes lanes{twitter,linkedin,github_posting}_disabled. Metrics route is auth-gated, so live body verified via unit test + binary parity, not curl.
 - Note: /opt/marketing_agent git checkout was stale (531d5a80); fast-forwarded to main (9198fceb) in round 16 - tracked tree clean, untracked dirs are runtime artifacts (blog_output, data exports). Binary deploys remain scp swaps.
 
+## ROAST CYCLE COMPLETE 2026-11-24 Muse Code
+- BOBBI ROAST LANDED (canonical thread): hits triaged - clean-main/repricing NOT this repo (verified absent/shipped); simulated presence pre-fixed; "recovery items unowned" acknowledged (escalated, operator-only). Her flagged 5AM burst VERIFIED INVERTED: a retry storm - 571,754 failed outreach_log rows (321,878 on Nov 21, ~26k/hr). Root cause: Gmail token minted but SMTP XOAUTH2 rejected (`auth failed 400 Bearer`/535), a shape isProviderAuthError never matched, so neither cadence abort nor Gmail breaker tripped. FIXED 2f124055 (SMTP-stage shapes classified; breaker-trip + classifier tests), binary staged (2f124055, parity clean), service still operator-stopped.
+- ChatGPT: brief + 2 report-backs delivered/acked in its tangled coordination thread; no clean roast extractable (virtualized thread) - NOT fabricated. Gemini conversation is titled "Brutal Roast and Fix List"; both report-backs confirmed in-thread. Report-back #2 sent to Muse (acked) + ChatGPT (acked).
+
 ## ROAST CYCLE 2026-11-24 Muse Code (owner-requested)
 - Gemini, Muse (canonical thread), and ChatGPT were all sent scripts/roast-brief.md via Edge CDP. GEMINI ROAST LANDED IN FULL (brutal + top-10). Muse/ChatGPT replies had not landed at report time (busy multi-lane threads) - harvest pending, loop will collect.
 - Fixed from the merged findings (b36ecaf9, binary staged on stopped prod, vcs parity clean): (1) StripReasoningLeak in ALL LLM providers (think blocks + "The user wants..." preambles, fail-closed) - Gemini #2; (2) startup jitter 30-90s for SocialPoster/BlogEngine first runs - Gemini #9. Tests green (sanitize 7 cases, jitter bounds, pkg/llm+agents suites).

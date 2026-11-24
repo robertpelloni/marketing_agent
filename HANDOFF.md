@@ -93,6 +93,9 @@
 - Lane telemetry shipped (7aac3e9e, deployed, vcs parity verified): /api/v1/metrics includes lanes{twitter,linkedin,github_posting}_disabled. Metrics route is auth-gated, so live body verified via unit test + binary parity, not curl.
 - Note: /opt/marketing_agent git checkout was stale (531d5a80); fast-forwarded to main (9198fceb) in round 16 - tracked tree clean, untracked dirs are runtime artifacts (blog_output, data exports). Binary deploys remain scp swaps.
 
+## ROAST CYCLE CLOSED-FINAL 2026-11-24 Muse Code
+- ChatGPT collection exhausted: thread 6af7ac50 reopened + fully re-extracted twice more, plus a short direct in-thread demand (acked). Its replies remain GPT-6 business-plan ACKs; no marketing_agent roast exists in that thread. Recorded permanently as NOT DELIVERED (4 attempts). Gemini + Bobbi roasts stand as the cycle's input; all surviving fixes already shipped (b36ecaf9, 2f124055). No new code from this collection pass.
+
 ## ROAST CYCLE FINAL 2026-11-24 Muse Code
 - ChatGPT collection closed: thread 6af7ac50 fully extracted (step-scroll + direct innerText). Its replies address the United Beats business plan / GPT-6 coordination ACKs - it never produced a marketing_agent roast despite the brief + 2 report-backs being in-thread (all acked). NOT fabricated. Gemini + Bobbi carried the roast; ChatGPT lane notified that if it drops one, the loop will triage it. Helper kept: scripts/cdp_extract_chatgpt.js (step-scroll extractor for virtualized ChatGPT threads).
 - No surviving code fixes from ChatGPT (nothing to triage). Shipped fixes stand: b36ecaf9 (sanitizer + jitter), 2f124055 (retry-storm classification).

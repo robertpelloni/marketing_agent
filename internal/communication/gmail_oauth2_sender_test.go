@@ -47,6 +47,27 @@ func TestGmailAuthBreakerTripsAndSuppresses(t *testing.T) {
 	}
 }
 
+func TestGmailAuthBreakerTripsOnSMTPAuthFailure(t *testing.T) {
+	// Nov 2026 storm shape: token minted, SMTP XOAUTH2 rejected it.
+	// The cadence abort + this breaker both key off isProviderAuthError,
+	// which originally only matched token-stage errors — 571k failed
+	// outreach_log rows resulted.
+	s := NewGmailOAuth2Sender()
+	calls := 0
+	s.sendFn = func(to string, msg []byte) error {
+		calls++
+		return errors.New(`auth failed: unexpected server response: {"status":"400","schemes":"Bearer"}`)
+	}
+	ctx := context.Background()
+	msg := EmailMessage{To: "a@b.com", Subject: "s", Body: "b"}
+
+	_ = s.Send(ctx, msg)
+	_ = s.Send(ctx, msg)
+	if calls != 1 {
+		t.Fatalf("SMTP auth failure must trip the breaker (1 attempt), got %d", calls)
+	}
+}
+
 func TestGmailBreakerIgnoresNonAuthErrors(t *testing.T) {
 	s := NewGmailOAuth2Sender()
 	calls := 0

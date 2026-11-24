@@ -44,6 +44,12 @@ func TestIsProviderAuthError(t *testing.T) {
 	if !isProviderAuthError(errors.New("oauth2: invalid_grant: token revoked")) {
 		t.Error("expected invalid_grant to be detected")
 	}
+	if !isProviderAuthError(errors.New(`auth failed: unexpected server response: {"status":"400","schemes":"Bearer","scope":"https://mail.google.com/"}`)) {
+		t.Error("SMTP XOAUTH2 auth rejection must be treated as provider auth error (the Nov 2026 retry-storm shape)")
+	}
+	if !isProviderAuthError(errors.New("535 5.7.8 Username and Password not accepted")) {
+		t.Error("SMTP 535 credential rejection must be treated as provider auth error")
+	}
 	if isProviderAuthError(errors.New("550 5.4.5 Daily user sending limit exceeded")) {
 		t.Error("daily-limit quota error is not an auth error (handled separately)")
 	}

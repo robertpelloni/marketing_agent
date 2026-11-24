@@ -264,11 +264,14 @@ func linkedInLaneDisabled() bool {
 
 // isProviderAuthError reports whether an email send failed before any
 // recipient contact because the provider credentials themselves were
-// rejected (Gmail OAuth client disabled/revoked: disabled_client,
-// invalid_grant, invalid_client). Like the daily limit, retrying per-deal
-// is pointless — every send fails identically — but unlike quota this
-// needs an operator to re-enable/replace the OAuth client; the cycle
-// abort keeps it one clear log line instead of a failed stat per deal.
+// rejected. Covers both stages: token fetch (disabled_client,
+// invalid_grant, invalid_client) and SMTP XOAUTH2 auth (the Nov 2026
+// storm shape: the token minted but Gmail SMTP rejected it with
+// "auth failed: ... 400 Bearer" / 535). Like the daily limit, retrying
+// per-deal is pointless — every send fails identically — but unlike
+// quota this needs an operator to re-enable/replace the credentials;
+// the cycle abort keeps it one clear log line instead of a failed stat
+// per deal (its absence produced 571k failed rows in Nov 2026).
 func isProviderAuthError(err error) bool {
 	if err == nil {
 		return false
@@ -277,7 +280,10 @@ func isProviderAuthError(err error) bool {
 	return strings.Contains(msg, "disabled_client") ||
 		strings.Contains(msg, "invalid_grant") ||
 		strings.Contains(msg, "invalid_client") ||
-		strings.Contains(msg, "failed to get token")
+		strings.Contains(msg, "failed to get token") ||
+		strings.Contains(msg, "auth failed") ||
+		strings.Contains(msg, "Username and Password not accepted") ||
+		strings.Contains(msg, "AuthenticationRequired")
 }
 
 // NewCadenceAwareManager wraps an existing Manager with cadence tracking.

@@ -1,6 +1,6 @@
 ## [Unreleased]
 
-## [0.7.12] - 2026-11-17
+## [0.7.13] - 2026-11-24
 
 ### Fixed
 
@@ -12,6 +12,10 @@
 - **Blog Accounting Fixed (`pkg/agents/blog_engine.go`)**: `nextTopic()` recorded topic usage + `TotalPosts++` at *selection* time, so every failed generation (LLM timeouts) and every restart's immediate attempt burned a topic and inflated the count — prod state claimed 844 posts with 402 files, newest months old. Accounting now happens only after a successful `publish()` (`recordPublished`); failed topics stay available next cycle, and `GenerateBatch` counts only published posts. Tests: `blog_engine_test.go`.
 - **Bluesky Real Account Handles (`pkg/agents/social_platform.go`, `social_poster.go`)**: Brand→account resolution is env-driven via `blueskyAccountForBrand` (`BLUESKY_HANDLE`/`BLUESKY_HYPERNEXUS_HANDLE`). The hardcoded `tormentnexus.bsky.social`/`hypernexus.bsky.social` were fictional — real accounts are `mdmatk.bsky.social`/`hypernexusllc.bsky.social` — so the new per-account provider (correctly) refused everything until the mapping told the truth. Tests: `bluesky_account_test.go`.
 - **Bluesky Per-Account Credentials (`pkg/agents/social_platform_bluesky.go`, `social_platform.go`)**: The provider held ONE credential and posted both brands as that account while logging the requested brand (`session.Handle` was never checked) — hypernexus content would have landed on the tormentnexus account. It now takes a handle→password map (hub wires `BLUESKY_*` + `BLUESKY_HYPERNEXUS_*` env pairs, both present in prod), creates the session with the requested account's credential, verifies the returned handle matches, and refuses accounts it has no credential for. Tests: `bluesky_provider_test.go` (per-account sessions, unknown-account refusal with zero HTTP calls).
+## [0.7.12] - 2026-11-17
+
+### Fixed
+
 - **Lane Telemetry in Metrics (`internal/web/server.go`)**: `/api/v1/metrics` now includes `lanes` (`twitter_disabled`, `linkedin_disabled`, `github_posting_disabled` from the same env truth as the 6A panel), so retired channels are visible to machine consumers, not only the dashboard HTML. Tests: `lanes_metrics_test.go`.
 - **Disk Gauge in Health (`internal/web/disk_linux.go`, `server.go`)**: `/health/detailed` now reports `disk` (e.g. `87% used (9.7G free)`) via `statfs` on Linux (other platforms report `unknown`), so the shared-VPS disk cliff is visible in the standard health check. Tests: `disk_test.go`. Docs: VISION/IDEAS status addenda refreshed to v0.7.11 reality.
 - **Gmail Auth Circuit Breaker (`internal/communication/gmail_oauth2_sender.go`)**: After a provider-side credential rejection (`disabled_client` etc.), `Send` trips a 15-minute breaker: one ERROR trip log per window, then every caller (cadence, comm manager) fails fast with an "auth breaker open" error — which cadence still classifies as provider-auth and aborts on — instead of a token fetch + identical ERROR per deal. Success clears it. Tests: `gmail_oauth2_sender_test.go` (trip/suppress/retry-after-window, non-auth errors ignored, clear-on-success).

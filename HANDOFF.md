@@ -93,6 +93,10 @@
 - Lane telemetry shipped (7aac3e9e, deployed, vcs parity verified): /api/v1/metrics includes lanes{twitter,linkedin,github_posting}_disabled. Metrics route is auth-gated, so live body verified via unit test + binary parity, not curl.
 - Note: /opt/marketing_agent git checkout was stale (531d5a80); fast-forwarded to main (9198fceb) in round 16 - tracked tree clean, untracked dirs are runtime artifacts (blog_output, data exports). Binary deploys remain scp swaps.
 
+## ROAST CYCLE DEFINITIVE CLOSE 2026-11-24 Muse Code
+- CHATGPT ROAST COLLECTED via fresh thread (chatgpt.com/c/6b04ece2, opened with unique URL marker; tangled lane thread 6af7ac50 never delivered). Verdict aligns: kill as autonomous platform, salvage HITL core; severity 1-2/10 commercial/metrics/reliability. Surviving item done: historical exposure audit (918bddd7) - zero external leads/export requests in retained nginx logs (Nov 23-24); pre-gating window unauditable (no archives, :8084 never IP-logged) + retention TODO. Other items: owner/commercial or already shipped (sanitizer=#6, breakers+MemoryHigh=#8, zombie lanes flag-neutralized=#7).
+- Report-backs: ChatGPT fresh thread replied (ok), Muse acked; Gemini completion note unconfirmed (bridge NO_SEND_BTN flakiness; its earlier report-backs #1/#2 are confirmed in-thread). All three roasts + triage now recorded here.
+
 ## ROAST CYCLE CLOSED-FINAL 2026-11-24 Muse Code
 - ChatGPT collection exhausted: thread 6af7ac50 reopened + fully re-extracted twice more, plus a short direct in-thread demand (acked). Its replies remain GPT-6 business-plan ACKs; no marketing_agent roast exists in that thread. Recorded permanently as NOT DELIVERED (4 attempts). Gemini + Bobbi roasts stand as the cycle's input; all surviving fixes already shipped (b36ecaf9, 2f124055). No new code from this collection pass.
 

@@ -93,6 +93,9 @@
 - Lane telemetry shipped (7aac3e9e, deployed, vcs parity verified): /api/v1/metrics includes lanes{twitter,linkedin,github_posting}_disabled. Metrics route is auth-gated, so live body verified via unit test + binary parity, not curl.
 - Note: /opt/marketing_agent git checkout was stale (531d5a80); fast-forwarded to main (9198fceb) in round 16 - tracked tree clean, untracked dirs are runtime artifacts (blog_output, data exports). Binary deploys remain scp swaps.
 
+## RELEASE v0.7.13 2026-11-24 Muse Code
+- v0.7.13 cut (e986a4b1): bundles the roast-cycle batch under its own version (staged binary previously said 0.7.12 while carrying post-release fixes). Binary staged on stopped prod (parity clean), prod checkout fast-forwarded to e986a4b1 (VERSION 0.7.13). Service remains operator-stopped; restart brings up v0.7.13.
+
 ## ROAST CYCLE DEFINITIVE CLOSE 2026-11-24 Muse Code
 - CHATGPT ROAST COLLECTED via fresh thread (chatgpt.com/c/6b04ece2, opened with unique URL marker; tangled lane thread 6af7ac50 never delivered). Verdict aligns: kill as autonomous platform, salvage HITL core; severity 1-2/10 commercial/metrics/reliability. Surviving item done: historical exposure audit (918bddd7) - zero external leads/export requests in retained nginx logs (Nov 23-24); pre-gating window unauditable (no archives, :8084 never IP-logged) + retention TODO. Other items: owner/commercial or already shipped (sanitizer=#6, breakers+MemoryHigh=#8, zombie lanes flag-neutralized=#7).
 - Report-backs: ChatGPT fresh thread replied (ok), Muse acked; Gemini completion note unconfirmed (bridge NO_SEND_BTN flakiness; its earlier report-backs #1/#2 are confirmed in-thread). All three roasts + triage now recorded here.

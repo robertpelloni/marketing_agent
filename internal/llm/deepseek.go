@@ -132,7 +132,7 @@ func (d *DeepSeekLLMProvider) Generate(ctx context.Context, prompt Prompt) (stri
 		return "", fmt.Errorf("deepseek: no choices in response")
 	}
 
-	content := chatResp.Choices[0].Message.Content
+	content := StripReasoningLeak(chatResp.Choices[0].Message.Content)
 
 	slog.Info(fmt.Sprintf("DeepSeekLLM: model=%s tokens=%d+%d=%d finish=%s",
 		d.Model,

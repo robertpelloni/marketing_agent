@@ -393,7 +393,10 @@ func (be *BlogEngine) Run(ctx context.Context, interval time.Duration) {
 	slog.Info(fmt.Sprintf("BlogEngine: Auto-blog generator started (interval: %v, output: %s, topics: %d)",
 		interval, be.outputDir, len(blogTopics)))
 
-	// Generate first post immediately
+	// Generate first post after the startup jitter (spreads restart load)
+	if !waitFirstRun(ctx, "BlogEngine") {
+		return
+	}
 	be.GenerateNextPost(ctx)
 
 	for {

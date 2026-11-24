@@ -43,7 +43,10 @@ func (w *SocialPosterWorker) Run(ctx context.Context, interval time.Duration) {
 
 	slog.Info(fmt.Sprintf("SocialPoster: Dual-branded social media posting worker started (interval: %v)...", interval))
 
-	// Run first post immediately
+	// Run first post after the startup jitter (spreads restart load)
+	if !waitFirstRun(ctx, "SocialPoster") {
+		return
+	}
 	w.postAll(ctx)
 
 	for {

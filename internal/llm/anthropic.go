@@ -123,7 +123,7 @@ func (a *AnthropicLLMProvider) Generate(ctx context.Context, prompt Prompt) (str
 		return "", fmt.Errorf("anthropic: no choices in response")
 	}
 
-	content := chatResp.Content[0].Text
+	content := StripReasoningLeak(chatResp.Content[0].Text)
 
 	slog.Info(fmt.Sprintf("AnthropicLLM: model=%s tokens=%d+%d=%d",
 		a.Model,

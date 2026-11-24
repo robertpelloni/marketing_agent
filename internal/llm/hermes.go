@@ -138,7 +138,7 @@ func (h *HermesLLMProvider) Generate(ctx context.Context, prompt Prompt) (string
 		return "", fmt.Errorf("hermes: no choices in response")
 	}
 
-	content := chatResp.Choices[0].Message.Content
+	content := StripReasoningLeak(chatResp.Choices[0].Message.Content)
 
 	slog.Info(fmt.Sprintf("HermesLLM: model=%s tokens=%d+%d=%d finish=%s",
 		h.Model,

@@ -425,6 +425,27 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 				continue
 			}
 
+			// HITL consensus mode (default): draft only — record the
+			// draft for the approval queue, advance the step so the
+			// sequence keeps drafting, and NEVER send autonomously.
+			if !AutonomousSendEnabled() {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: HITL draft queued for deal %d (step %d, template %s) — awaiting human approval", deal.ID, nextStep.StepNumber, tmpl.ID))
+				cam.recordOutreachLog(ctx, company.Name, recipientEmail, tmpl.ID, "draft")
+				_ = cam.db.CreateInteraction(ctx, &db.Interaction{
+					ContactID:  primaryContact.ID,
+					Channel:    nextStep.Channel.String(),
+					Direction:  "Draft",
+					RawText:    body,
+					Summary:    fmt.Sprintf("DRAFT awaiting approval — cadence step %d: %s | Subject: %s", nextStep.StepNumber, tmpl.ID, subject),
+					TemplateID: tmpl.ID,
+				})
+				if deal.CurrentState == db.StateResearched {
+					_ = cam.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent)
+				}
+				_ = cam.db.SetCadenceStep(ctx, deal.ID, nextStep.StepNumber)
+				continue
+			}
+
 			// Send email FIRST before persisting Outbound interaction or advancing cadence step
 			if cam.sender != nil {
 				emailMsg := EmailMessage{
@@ -490,6 +511,18 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			}
 
 		case db.ChannelLinkedIn:
+			if !AutonomousSendEnabled() {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: HITL draft queued for deal %d (LinkedIn step %d) — awaiting human approval", nextStep.StepNumber, deal.ID))
+				_ = cam.db.CreateInteraction(ctx, &db.Interaction{
+					ContactID:  primaryContact.ID,
+					Channel:    nextStep.Channel.String(),
+					Direction:  "Draft",
+					Summary:    fmt.Sprintf("DRAFT awaiting approval — cadence step %d (%s): LinkedIn outreach to %s", nextStep.StepNumber, nextStep.TemplateID, primaryContact.LinkedInURL),
+					TemplateID: nextStep.TemplateID,
+				})
+				_ = cam.db.SetCadenceStep(ctx, deal.ID, nextStep.StepNumber)
+				continue
+			}
 			if linkedInLaneDisabled() {
 				slog.Info(fmt.Sprintf("CadenceAwareManager: Skipping LinkedIn step %d for deal %d — LINKEDIN_DISABLED=true", nextStep.StepNumber, deal.ID))
 				_ = cam.db.CreateInteraction(ctx, &db.Interaction{
@@ -610,6 +643,22 @@ func (cam *CadenceAwareManager) checkCadence(ctx context.Context) {
 			_, body, err := ragResponder.GenerateFromTemplate(ctx, tmpl, salesCtx)
 			if err != nil {
 				slog.Info(fmt.Sprintf("CadenceAwareManager: GitHub template rendering failed: %v", err))
+				continue
+			}
+
+			// HITL consensus mode (default): draft only — queue the
+			// comment body for approval, advance, never post.
+			if !AutonomousSendEnabled() {
+				slog.Info(fmt.Sprintf("CadenceAwareManager: HITL draft queued for deal %d (GitHub step %d, template %s) — awaiting human approval", deal.ID, nextStep.StepNumber, tmpl.ID))
+				_ = cam.db.CreateInteraction(ctx, &db.Interaction{
+					ContactID:  primaryContact.ID,
+					Channel:    nextStep.Channel.String(),
+					Direction:  "Draft",
+					RawText:    body,
+					Summary:    fmt.Sprintf("DRAFT awaiting approval — cadence step %d: %s (GitHub comment for %s)", nextStep.StepNumber, tmpl.ID, company.Name),
+					TemplateID: tmpl.ID,
+				})
+				_ = cam.db.SetCadenceStep(ctx, deal.ID, nextStep.StepNumber)
 				continue
 			}
 

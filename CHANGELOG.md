@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+## [0.8.0] - 2026-11-24
+
+### Changed
+
+- **HITL Consensus Mode (`internal/communication/hitl.go`, `cadence.go`, `manager.go`, `pkg/agents/social_poster.go`, `internal/web/server.go`, `internal/db/repository.go`)**: Accepting the unanimous three-lane roast consensus (kill the autonomous sender, keep research + drafting): autonomous sending is now OPT-IN via `OUTREACH_AUTONOMOUS_SEND=true` and OFF by default. Cadence email/GitHub/LinkedIn steps, Manager replies/outreach, and social posts generate content and record it as `Direction/Status = Draft` in the new Approval Queue (dashboard Section 7, `/api/v1/drafts` + approve/reject transitions, auth-gated, XSS-escaped rendering) instead of sending. Deals no longer claim `OutreachSent` for drafts. Approval records the human decision only; sending stays an explicit operator act (send-on-approve is the documented next step).
+
 ## [0.7.13] - 2026-11-24
 
 ### Fixed

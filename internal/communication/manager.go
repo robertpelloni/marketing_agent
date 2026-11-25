@@ -133,8 +133,12 @@ func (m *Manager) pollAndProcess(ctx context.Context) {
 					slog.Info(fmt.Sprintf("Comm Manager Error: Failed to initiate outreach for deal %d: %v", deal.ID, err))
 					continue
 				}
-				if err := m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent); err != nil {
-					slog.Info(fmt.Sprintf("Comm Manager Error: Failed to update deal state to OutreachSent for deal %d: %v", deal.ID, err))
+				// In HITL mode the artifact is a Draft, not a send — the
+				// deal must not claim OutreachSent until a human approves.
+				if AutonomousSendEnabled() {
+					if err := m.db.UpdateDealState(ctx, deal.ID, db.StateOutreachSent); err != nil {
+						slog.Info(fmt.Sprintf("Comm Manager Error: Failed to update deal state to OutreachSent for deal %d: %v", deal.ID, err))
+					}
 				}
 			}
 		}
@@ -385,8 +389,14 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 	replyText = SanitizeOutboundText(replyText, signoff)
 
 	// 4. Send the communication first when email sender is configured so failed
-	// deliveries do not record phantom Outbound interactions.
-	if m.sender != nil && contact.Email != "" && channel == "email" {
+	// deliveries do not record phantom Outbound interactions. In HITL
+	// consensus mode (default) nothing is sent: the reply is persisted
+	// as a Draft below for the approval queue.
+	drafted := false
+	if !AutonomousSendEnabled() && channel == "email" && contact.Email != "" {
+		drafted = true
+		slog.Info(fmt.Sprintf("Comm Manager: HITL draft queued for %s — awaiting human approval (no autonomous send)", contact.Email))
+	} else if m.sender != nil && contact.Email != "" && channel == "email" {
 		subject := fmt.Sprintf("Re: %s — HyperNexus", company.Name)
 		if isSyntheticOutreach {
 			subject = fmt.Sprintf("HyperNexus for %s — Quick Question", company.Name)
@@ -410,15 +420,20 @@ func (m *Manager) ProcessInbound(ctx context.Context, contact db.Contact, text s
 		slog.Info(fmt.Sprintf("Comm Manager: No email sender configured — reply logged but not sent to %s", contact.Email))
 	}
 
-	// 5. Persist outbound interaction
+	// 5. Persist outbound interaction (Direction Draft in HITL mode)
 	summary := fmt.Sprintf("Reply to intent: %s", intent)
 	if isSyntheticOutreach {
 		summary = "Initial outreach via email"
 	}
+	direction := "Outbound"
+	if drafted {
+		direction = "Draft"
+		summary = "DRAFT awaiting approval — " + summary
+	}
 	outbound := db.Interaction{
 		ContactID:  contact.ID,
 		Channel:    channel,
-		Direction:  "Outbound",
+		Direction:  direction,
 		RawText:    replyText,
 		Summary:    summary,
 		ResponseID: responseID,

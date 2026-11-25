@@ -605,6 +605,70 @@ func (db *DB) CreateInteraction(ctx context.Context, interaction *Interaction) e
 	return nil
 }
 
+// DraftItem is one approval-queue entry: a Draft interaction joined with
+// its contact and company for dashboard display.
+type DraftItem struct {
+	ID           int64     `json:"id"`
+	ContactID    int64     `json:"contact_id"`
+	Channel      string    `json:"channel"`
+	Summary      string    `json:"summary"`
+	RawText      string    `json:"raw_text"`
+	TemplateID   string    `json:"template_id"`
+	ContactName  string    `json:"contact_name"`
+	ContactEmail string    `json:"contact_email"`
+	CompanyName  string    `json:"company_name"`
+	CreatedAt    time.Time `json:"created_at"`
+}
+
+// ListDraftInteractions returns pending approval-queue drafts, newest first.
+func (db *DB) ListDraftInteractions(ctx context.Context, limit int) ([]DraftItem, error) {
+	if limit <= 0 {
+		limit = 50
+	}
+	rows, err := db.Conn.QueryContext(ctx, `
+		SELECT i.id, i.contact_id, COALESCE(i.channel, ''), COALESCE(i.summary, ''), COALESCE(i.raw_text, ''),
+		       COALESCE(i.template_id, ''), COALESCE(c.name, ''), COALESCE(c.email, ''), COALESCE(co.name, ''), i.created_at
+		FROM interactions i
+		JOIN contacts c ON c.id = i.contact_id
+		LEFT JOIN companies co ON co.id = c.company_id
+		WHERE i.direction = 'Draft'
+		ORDER BY i.created_at DESC
+		LIMIT $1`, limit)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list drafts: %w", err)
+	}
+	defer func() { _ = rows.Close() }()
+
+	var drafts []DraftItem
+	for rows.Next() {
+		var d DraftItem
+		if err := rows.Scan(&d.ID, &d.ContactID, &d.Channel, &d.Summary, &d.RawText, &d.TemplateID, &d.ContactName, &d.ContactEmail, &d.CompanyName, &d.CreatedAt); err != nil {
+			return nil, err
+		}
+		drafts = append(drafts, d)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return drafts, nil
+}
+
+// UpdateDraftDirection transitions a Draft interaction to Approved or
+// Rejected. The WHERE guard makes the transition one-way: rows that are
+// no longer drafts report 0 affected and the caller errors.
+func (db *DB) UpdateDraftDirection(ctx context.Context, interactionID int64, direction string) (bool, error) {
+	if direction != "Approved" && direction != "Rejected" {
+		return false, fmt.Errorf("invalid draft transition: %q", direction)
+	}
+	res, err := db.Conn.ExecContext(ctx, `
+		UPDATE interactions SET direction = $1 WHERE id = $2 AND direction = 'Draft'`, direction, interactionID)
+	if err != nil {
+		return false, fmt.Errorf("failed to update draft: %w", err)
+	}
+	n, _ := res.RowsAffected()
+	return n > 0, nil
+}
+
 // UpdateInteractionSuccess updates the success status of an existing interaction.
 func (db *DB) UpdateInteractionSuccess(ctx context.Context, interactionID int64, success bool) error {
 	query := `

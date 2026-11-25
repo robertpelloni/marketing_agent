@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	"gitlab.com/robertpelloni/marketing_agent/internal/communication"
 	"gitlab.com/robertpelloni/marketing_agent/internal/db"
 	"gitlab.com/robertpelloni/marketing_agent/internal/llm"
 )
@@ -157,7 +158,14 @@ func (w *SocialPosterWorker) generateAndPost(ctx context.Context, brand, platfor
 
 	posted := false
 	depleted := false
-	if provider := w.hub.Provider(platform); provider != nil {
+	drafted := false
+	if !communication.AutonomousSendEnabled() {
+		// HITL consensus mode (default): draft only — content is
+		// generated and queued below with status "draft"; the provider
+		// is never called, so nothing posts autonomously.
+		drafted = true
+		slog.Info(fmt.Sprintf("SocialPoster: HITL draft queued — Brand: %s | Platform: %s | Account: %s", brand, platform, username))
+	} else if provider := w.hub.Provider(platform); provider != nil {
 		postCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
 		defer cancel()
 		if err := provider.Post(postCtx, req); err != nil {
@@ -176,7 +184,7 @@ func (w *SocialPosterWorker) generateAndPost(ctx context.Context, brand, platfor
 		return
 	}
 
-	if !posted {
+	if !posted && !drafted {
 		slog.Info(fmt.Sprintf("SocialPoster [SIMULATION] — Brand: %s | Platform: %s | Account: %s\nContent: %s",
 			brand, platform, username, content))
 	}
@@ -187,7 +195,9 @@ func (w *SocialPosterWorker) generateAndPost(ctx context.Context, brand, platfor
 	// cycle log a spurious "context deadline exceeded" DB error.
 	if w.db != nil {
 		status := "posted"
-		if !posted {
+		if drafted {
+			status = "draft"
+		} else if !posted {
 			status = "simulated"
 		}
 		post := &db.SocialPost{

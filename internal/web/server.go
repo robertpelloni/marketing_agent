@@ -176,6 +176,12 @@ func (s *Server) routes() {
 	// Leads are operator CRM data (list + create): auth-gated (was public
 	// while the service binds *:8084 — unauthenticated CRM dump/injection).
 	s.mux.Handle("/api/v1/leads", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleLeadsAPI))))
+
+	// HITL approval queue (consensus mode): drafts awaiting human
+	// approval/rejection. Auth-gated like other operator data.
+	s.mux.Handle("/api/v1/drafts", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleDraftsList))))
+	s.mux.Handle("/api/v1/drafts/approve", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleDraftApprove))))
+	s.mux.Handle("/api/v1/drafts/reject", rl.middleware(s.auth.Middleware(http.HandlerFunc(s.handleDraftReject))))
 	s.mux.Handle("/api/v1/deals", rl.middleware(http.HandlerFunc(s.handleDealsAPI)))
 
 	// GDPR Endpoints
@@ -718,6 +724,7 @@ tr:hover { background-color: #f8fafc; }
 			<a href="#social" title="Multi-platform social and DevRel hub">Social</a>
 			<a href="#ops" title="Infrastructure, tasks, and pipeline telemetry controls">Pipeline Ops</a>
 			<a href="#tools" title="Quote generator, tenant containers, outreach export, and GDPR requests">Tools</a>
+			<a href="#approvals" title="Human approval queue: drafted outreach awaiting your decision (HITL consensus mode)">Approval Queue</a>
 			<a href="/demo" title="TormentNexus Cloud Console demo (separate subproject view)">Demo Console</a>
 			<a href="/health" title="Service and database health (JSON)">Health</a>
 			<a href="/api/v1/metrics" title="Database pool and service metrics (JSON)">Metrics</a>
@@ -1303,6 +1310,21 @@ tr:hover { background-color: #f8fafc; }
 		</div>
 		<div id="toolsResult" style="margin-top: 14px; font-family: monospace; font-size: 11px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; white-space: pre-wrap;">Tool results appear here.</div>
 	</div>
+
+	<!-- SECTION 7: HITL Approval Queue (consensus mode: drafts, never auto-sent) -->
+	<div class="card" id="approvals" style="border-top: 4px solid var(--warning, #d97706);">
+		<div class="card-header">
+			<div>
+				<span class="section-badge" style="background: #fef3c7; color: #92400e;">7</span>
+				Approval Queue — Human-in-the-Loop Drafts
+				<span class="tooltip" style="font-size: 0.75rem; color: #64748b; margin-left: 6px;">[?]
+					<span class="tooltiptext">Consensus mode (OUTREACH_AUTONOMOUS_SEND unset): cadence, replies, and social posts are drafted here instead of being sent. Approve records your decision; actually sending stays an explicit operator act. Set OUTREACH_AUTONOMOUS_SEND=true only if you deliberately restore autonomous sending.</span>
+				</span>
+			</div>
+			<button class="action-btn" onclick="loadDrafts()">Refresh Queue</button>
+		</div>
+		<div id="draftsList" style="font-size: 0.85rem;">Loading drafts…</div>
+	</div>
 </div>
 
 <script>
@@ -1334,6 +1356,29 @@ tr:hover { background-color: #f8fafc; }
 		if (leadsTotal !== null && next >= leadsTotal) { toolsOut('Leads -> already at the last page (' + leadsTotal + ' companies).'); return; }
 		listLeads(next);
 	}
+	function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+	function loadDrafts() {
+		fetch('/api/v1/drafts').then(function(r){ return r.json(); }).then(function(drafts){
+			var el = document.getElementById('draftsList');
+			if (!Array.isArray(drafts) || drafts.length === 0) { el.textContent = 'No drafts awaiting approval.'; return; }
+			el.innerHTML = drafts.map(function(d){
+				var who = esc(d.company_name) + ' — ' + esc(d.contact_name) + ' &lt;' + esc(d.contact_email) + '&gt;';
+				return '<div style="border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; margin-bottom: 8px;">' +
+					'<div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap;"><strong>' + who + '</strong><span>' + (d.channel || '') + ' · ' + (d.created_at || '') + '</span></div>' +
+					'<div style="color:#475569; margin: 4px 0;">' + esc(d.summary) + '</div>' +
+					'<div style="white-space: pre-wrap; background:#f8fafc; padding:8px; border-radius:4px; max-height:140px; overflow:auto;">' + esc(d.raw_text) + '</div>' +
+					'<div style="margin-top:6px; display:flex; gap:8px;"><button class="action-btn" onclick="decideDraft(' + d.id + ', true)">Approve</button>' +
+					'<button class="action-btn" style="background: var(--danger);" onclick="decideDraft(' + d.id + ', false)">Reject</button></div></div>';
+			}).join('');
+		}).catch(function(e){ document.getElementById('draftsList').textContent = 'Failed to load drafts: ' + e; });
+	}
+	function decideDraft(id, approve) {
+		fetch('/api/v1/drafts/' + (approve ? 'approve' : 'reject') + '?id=' + id, { method: 'POST' }).then(function(r){
+			if (!r.ok) { return r.text().then(function(t){ throw new Error('HTTP ' + r.status + ': ' + t); }); }
+			loadDrafts();
+		}).catch(function(e){ alert('Decision failed: ' + e); });
+	}
+	if (document.getElementById('draftsList')) { loadDrafts(); }
 	function gdprExport() {
 		var email = document.getElementById('gdprEmail').value.trim();
 		if (!email) { toolsOut('Enter a contact email first.'); return; }
@@ -1620,6 +1665,69 @@ func parseLeadsPagination(r *http.Request) (limit, offset int) {
 		}
 	}
 	return limit, offset
+}
+
+// handleDraftsList returns pending HITL drafts (newest 50) as JSON.
+func (s *Server) handleDraftsList(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if s.db == nil || s.db.Conn == nil {
+		http.Error(w, "Database connection unavailable", http.StatusServiceUnavailable)
+		return
+	}
+	drafts, err := s.db.ListDraftInteractions(r.Context(), 50)
+	if err != nil {
+		slog.Error("Drafts API: list failed", "error", err)
+		http.Error(w, "Failed to list drafts", http.StatusInternalServerError)
+		return
+	}
+	if drafts == nil {
+		drafts = []db.DraftItem{}
+	}
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(drafts)
+}
+
+func (s *Server) handleDraftApprove(w http.ResponseWriter, r *http.Request) {
+	s.handleDraftTransition(w, r, "Approved")
+}
+
+func (s *Server) handleDraftReject(w http.ResponseWriter, r *http.Request) {
+	s.handleDraftTransition(w, r, "Rejected")
+}
+
+// handleDraftTransition marks one draft Approved/Rejected. Approval is a
+// human decision record only — actually sending remains an explicit
+// operator act (consensus: no autonomous sends, and no send-on-approve
+// automation either in this version).
+func (s *Server) handleDraftTransition(w http.ResponseWriter, r *http.Request, direction string) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if s.db == nil || s.db.Conn == nil {
+		http.Error(w, "Database connection unavailable", http.StatusServiceUnavailable)
+		return
+	}
+	id, err := strconv.ParseInt(r.URL.Query().Get("id"), 10, 64)
+	if err != nil || id <= 0 {
+		http.Error(w, "Invalid draft id", http.StatusBadRequest)
+		return
+	}
+	updated, err := s.db.UpdateDraftDirection(r.Context(), id, direction)
+	if err != nil {
+		slog.Error("Drafts API: transition failed", "error", err, "id", id, "direction", direction)
+		http.Error(w, "Failed to update draft", http.StatusInternalServerError)
+		return
+	}
+	if !updated {
+		http.Error(w, "Draft not found or already decided", http.StatusConflict)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]string{"status": direction})
 }
 
 func (s *Server) handleLeadsAPI(w http.ResponseWriter, r *http.Request) {

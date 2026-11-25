@@ -26,6 +26,9 @@ Verified against repository and Hetzner production (`5.161.250.43`) through `202
 - `/` is the unified single-page operations hub (Subscription, KPIs, Cold Outreach, Active Deals, Social/DevRel, Pipeline Ops, Operator Tools `6D`, Provider Credentials `6A`); `/dashboard/outreach` 301-redirects to `/#outreach`; `/demo` serves the TormentNexus Cloud Console view.
 - `/health`, `/health/detailed` (with stamped `version`, live Stripe health, and accurate DeepSeek/Hermes label), `/metrics` (Prometheus), and `/api/v1/metrics` (JSON pool + accurate enrichment counters + `version`) provide headless production observability.
 
+## M9 — HITL consensus pivot (DONE 2026-11-24, v0.8.0)
+- Three-lane roast consensus (Gemini/Bobbi/ChatGPT) accepted by owner: kill the autonomous omnichannel sender, salvage research + drafting. Implemented: `OUTREACH_AUTONOMOUS_SEND` opt-in (default off); cadence/Manager/social generate drafts only; Approval Queue (dashboard Section 7 + `/api/v1/drafts`) records human Approve/Reject; deals never claim `OutreachSent` for drafts. Next step (not built): send-on-approve dispatch + commercial validation (50 manual prospects, one paid pilot) per ChatGPT fix #1.
+
 ## M7 — Provider truth in UI & lane retirement (DONE 2026-11-16)
 - X/Twitter lane retired via `TWITTER_DISABLED` (X credits depleted, HTTP 402; user will not fund): hub gate + `ErrTwitterCreditsDepleted` sentinel + poster skip for unregistered platforms, so no 402 WARN/simulated rows each 4h cycle.
 - Dashboard Section 6A now reports lane flags truthfully (`providerPanelList`): X lane and GitHub comment posting show `disabled via …` instead of "configured"; `/api/v1/leads` wired into Operator Tools (6D) with a List Leads control.

@@ -93,6 +93,10 @@
 - Lane telemetry shipped (7aac3e9e, deployed, vcs parity verified): /api/v1/metrics includes lanes{twitter,linkedin,github_posting}_disabled. Metrics route is auth-gated, so live body verified via unit test + binary parity, not curl.
 - Note: /opt/marketing_agent git checkout was stale (531d5a80); fast-forwarded to main (9198fceb) in round 16 - tracked tree clean, untracked dirs are runtime artifacts (blog_output, data exports). Binary deploys remain scp swaps.
 
+## CONSENSUS ACCEPTED — v0.8.0 2026-11-24 (owner directive)
+- Owner accepted the unanimous three-lane verdict (kill autonomous sender, salvage research+drafting). Implemented 835d2189: OUTREACH_AUTONOMOUS_SEND opt-in (default OFF); cadence (email/GitHub/LinkedIn), Manager replies/outreach, and social posts record Direction/Status=Draft; new Approval Queue (dashboard S7 + GET /api/v1/drafts + POST approve/reject, auth-gated, one-way transitions, XSS-escaped); deals never claim OutreachSent for drafts. Approve = decision record only; send-on-approve is the next step (ROADMAP M9).
+- Verification: focused pkgs + full `go test ./...` 21/21 green; dashboard JS parse-checked. Binary staged (835d2189 parity), prod checkout synced, service NOT restarted (operator stop stands). All 3 lanes notified: Muse acked, Gemini acked, ChatGPT fresh thread delivered (ok).
+
 ## RELEASE v0.7.13 2026-11-24 Muse Code
 - v0.7.13 cut (e986a4b1): bundles the roast-cycle batch under its own version (staged binary previously said 0.7.12 while carrying post-release fixes). Binary staged on stopped prod (parity clean), prod checkout fast-forwarded to e986a4b1 (VERSION 0.7.13). Service remains operator-stopped; restart brings up v0.7.13.
 
